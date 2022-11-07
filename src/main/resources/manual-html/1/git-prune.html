@@ -1,0 +1,166 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-PRUNE</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-PRUNE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-prune -
+Prune all unreachable objects from the object database</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+prune</i> [-n] [-v] [--progress] [--expire &lt;time&gt;]
+[--] [&lt;head&gt;...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><b><big>Note</big></b>
+<br>
+In most cases, users should run <i>git gc</i>, which calls
+<i>git prune</i>. See the section &quot;NOTES&quot;,
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This runs
+<i>git fsck --unreachable</i> using all the refs available
+in <b>refs/</b>, optionally with additional set of objects
+specified on the command line, and prunes all unpacked
+objects unreachable from any of these head objects from the
+object database. In addition, it prunes the unpacked objects
+that are also found in packs by running <i>git
+prune-packed</i>. It also removes entries from .git/shallow
+that are not reachable by any ref.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+unreachable, packed objects will remain. If this is not
+desired, see <b>git-repack</b>(1).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>-n,
+--dry-run</big></p>
+
+<p style="margin-left:17%;"><big>Do not remove anything;
+just report what it would remove.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>-v,
+--verbose</big></p>
+
+<p style="margin-left:17%;"><big>Report all removed
+objects.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>--progress</big></p>
+
+<p style="margin-left:17%;"><big>Show progress.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>--expire
+&lt;time&gt;</big></p>
+
+<p style="margin-left:17%;"><big>Only expire loose objects
+older than &lt;time&gt;.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>--</big></p>
+
+<p style="margin-left:17%;"><big>Do not interpret any more
+arguments as options.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>&lt;head&gt;...</big></p>
+
+<p style="margin-left:17%;"><big>In addition to objects
+reachable from any of our references, keep objects reachable
+from listed &lt;head&gt;s.</big></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>To prune
+objects not used by your repository or another that borrows
+from your repository via its
+<b>.git/objects/info/alternates</b>:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>$ git
+prune $(cd ../another &amp;&amp; git rev-parse
+--all)</big></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>In most
+cases, users will not need to call <i>git prune</i>
+directly, but should instead call <i>git gc</i>, which
+handles pruning along with many other housekeeping
+tasks.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>For a
+description of which objects are considered for pruning, see
+<i>git fsck</i>'s --unreachable option.</big></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>git-fsck</b>(1),
+<b>git-gc</b>(1), <b>git-reflog</b>(1)</big></p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>Part of
+the <b>git</b>(1) suite</big></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:43 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-REQUEST-PULL</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-REQUEST-PULL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">git-request-pull
+- Generates a summary of pending changes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+request-pull</i> [-p] &lt;start&gt; &lt;url&gt;
+[&lt;end&gt;]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Generate a
+request asking your upstream project to pull changes into
+their tree. The request, printed to the standard output,
+begins with the branch description, summarizes the changes
+and indicates from where they can be pulled.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The upstream
+project is expected to have the commit named by
+<b>&lt;start&gt;</b> and the output asks it to integrate the
+changes you made since that commit, up to the commit named
+by <b>&lt;end&gt;</b>, by visiting the repository named by
+<b>&lt;url&gt;</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-p</p>
+
+<p style="margin-left:17%;">Include patch text in the
+output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;start&gt;</p>
+
+<p style="margin-left:17%;">Commit to start at. This names
+a commit that is already in the upstream history.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;url&gt;</p>
+
+<p style="margin-left:17%;">The repository URL to be pulled
+from.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;end&gt;</p>
+
+<p style="margin-left:17%;">Commit to end at (defaults to
+HEAD). This names the commit at the tip of the history you
+are asking to be pulled.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When the
+repository named by <b>&lt;url&gt;</b> has the commit at a
+tip of a ref that is different from the ref you have
+locally, you can use the <b>&lt;local&gt;:&lt;remote&gt;</b>
+syntax, to have its local name, a colon <b>:</b>, and its
+remote name.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Imagine that
+you built your work on your <b>master</b> branch on top of
+the <b>v1.0</b> release, and want it to be integrated to the
+project. First you push that change to your public
+repository for others to see:</p>
+
+<p style="margin-left:17%; margin-top: 1em">git push
+https://git.ko.xz/project master</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then, you run
+this command:</p>
+
+<p style="margin-left:17%; margin-top: 1em">git
+request-pull v1.0 https://git.ko.xz/project master</p>
+
+<p style="margin-left:11%; margin-top: 1em">which will
+produce a request to the upstream, summarizing the changes
+between the <b>v1.0</b> release and your <b>master</b>, to
+pull it from your public repository.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you pushed
+your change to a branch whose name is different from the one
+you have locally, e.g.</p>
+
+<p style="margin-left:17%; margin-top: 1em">git push
+https://git.ko.xz/project master:for-linus</p>
+
+<p style="margin-left:11%; margin-top: 1em">then you can
+ask that to be pulled with</p>
+
+<p style="margin-left:17%; margin-top: 1em">git
+request-pull v1.0 https://git.ko.xz/project
+master:for-linus</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

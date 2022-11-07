@@ -1,0 +1,278 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:20 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PW-CAT</title>
+
+</head>
+<body>
+
+<h1 align="center">PW-CAT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pw-cat - Play
+and record media with PipeWire</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pw-cat</b>
+[<i>options</i>] [<i>FILE</i>] <b><br>
+pw-play</b> [<i>options</i>] [<i>FILE</i>] <b><br>
+pw-record</b> [<i>options</i>] [<i>FILE</i>] <b><br>
+pw-midiplay</b> [<i>options</i>] [<i>FILE</i>] <b><br>
+pw-midirecord</b> [<i>options</i>] [<i>FILE</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pw-cat</b>
+is a simple tool for playing back or capturing raw or
+encoded media files on a PipeWire server. It understands all
+audio file formats supported by <b>libsndfile</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h |
+--help</b></p>
+
+<p style="margin-left:22%;">Show help.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Show version information.</p>
+
+<p style="margin-left:11%;"><b>-v | --verbose</b></p>
+
+<p style="margin-left:22%;">Verbose operation.</p>
+
+<p style="margin-left:11%;"><b>-R | --remote=NAME</b></p>
+
+<p style="margin-left:22%;">The name the <i>remote</i>
+instance to connect to. If left unspecified, a connection is
+made to the default PipeWire instance.</p>
+
+<p style="margin-left:11%;"><b>-p | --playback</b></p>
+
+<p style="margin-left:22%;">Playback mode. Read data from
+the specified file, and play it back. If the tool is called
+under the name <b>pw-play</b> or <b>pw-midiplay</b> this is
+the default.</p>
+
+<p style="margin-left:11%;"><b>-r | --record</b></p>
+
+<p style="margin-left:22%;">Recording mode. Capture data
+and write it to the specified file. If the tool is called
+under the name <b>pw-record</b> or <b>pw-midirecord</b> this
+is the default.</p>
+
+<p style="margin-left:11%;"><b>-m | --midi</b></p>
+
+<p style="margin-left:22%;">MIDI mode. <i>FILE</i> is a
+MIDI file. If the tool is called under the name
+<b>pw-midiplay</b> or <b>pw-midirecord</b> this is the
+default.</p>
+
+
+<p style="margin-left:11%;"><b>--media-type=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">Set the media type property
+(default Audio/Midi depending on mode). The media type is
+used by the session manager to select a suitable target to
+link to.</p>
+
+
+<p style="margin-left:11%;"><b>--media-category=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">Set the media category property
+(default Playback/Capture depending on mode). The media type
+is used by the session manager to select a suitable target
+to link to.</p>
+
+
+<p style="margin-left:11%;"><b>--media-role=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">Set the media role property
+(default Music). The media type is used by the session
+manager to select a suitable target to link to.</p>
+
+
+<p style="margin-left:11%;"><b>--target=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">Set a node target (default
+auto). The value can be:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>auto</b></p></td>
+<td width="4%"></td>
+<td width="46%">
+
+
+<p>Automatically select (Default)</p></td>
+<td width="22%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>0</b></p></td>
+<td width="4%"></td>
+<td width="46%">
+
+
+<p>Don't try to link this node</p></td>
+<td width="22%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>&lt;id&gt;</b></p></td>
+<td width="4%"></td>
+<td width="46%">
+
+
+<p>The id of a target node</p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--latency=VALUE[</b><i>units</i><b>]</b></p>
+
+<p style="margin-left:22%;">Set the node latency (default
+100ms)</p>
+
+<p style="margin-left:22%; margin-top: 1em">The latency
+determines the minimum amount of time it takes for a sample
+to travel from application to device (playback) and from
+device to application (capture).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The latency
+determines the size of the buffers that the application will
+be able to fill. Lower latency means smaller buffers but
+higher overhead. Higher latency means larger buffers and
+lower overhead.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Units can be
+<b>s</b> for seconds, <b>ms</b> for milliseconds, <b>us</b>
+for microseconds, <b>ns</b> for nanoseconds. If no units are
+given, the latency value is samples with the samplerate of
+the file.</p>
+
+<p style="margin-left:11%;"><b>--list-targets</b></p>
+
+<p style="margin-left:22%;">List the available targets for
+<b>--target</b></p>
+
+<p style="margin-left:11%;"><b>-q | --quality=VALUE</b></p>
+
+<p style="margin-left:22%;">Resampler quality. When the
+samplerate of the source or destination file does not match
+the samplerate of the server, the data will be resampled.
+Higher quality uses more CPU. Values between 0 and 15 are
+allowed, the default quality is 4.</p>
+
+<p style="margin-left:11%;"><b>--rate=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">The sample rate, default
+48000.</p>
+
+
+<p style="margin-left:11%;"><b>--channels=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">The number of channels, default
+2.</p>
+
+
+<p style="margin-left:11%;"><b>--channel-map=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">The channelmap. Possible values
+include: <b>mono</b>, <b>stereo</b>, <b>surround-21</b>,
+<b>quad</b>, <b>surround-22</b>, <b>surround-40</b>,
+<b>surround-31</b>, <b>surround-41</b>, <b>surround-50</b>,
+<b>surround-51</b>, <b>surround-51r</b>, <b>surround-70</b>,
+<b>surround-71</b> or a comma separated list of channel
+names: <b>FL</b>, <b>FR</b>, <b>FC</b>, <b>LFE</b>,
+<b>SL</b>, <b>SR</b>, <b>FLC</b>, <b>FRC</b>, <b>RC</b>,
+<b>RL</b>, <b>RR</b>, <b>TC</b>, <b>TFL</b>, <b>TFC</b>,
+<b>TFR</b>, <b>TRL</b>, <b>TRC</b>, <b>TRR</b>, <b>RLC</b>,
+<b>RRC</b>, <b>FLW</b>, <b>FRW</b>, <b>LFE2</b>, <b>FLH</b>,
+<b>FCH</b>, <b>FRH</b>, <b>TFLC</b>, <b>TFRC</b>,
+<b>TSL</b>, <b>TSR</b>, <b>LLFR</b>, <b>RLFE</b>, <b>BC</b>,
+<b>BLC</b>, <b>BRC</b></p>
+
+
+<p style="margin-left:11%;"><b>--format=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">The sample format to use. One
+of: <b>s8</b>, <b>s16</b> (default), <b>s24</b>, <b>s32</b>,
+<b>f32</b>, <b>f64</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--volume=</b><i>VALUE</i></p>
+
+<p style="margin-left:22%;">The stream volume, default
+1.000.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The PipeWire
+Developers &lt;-
+<i>https://gitlab.freedesktop.org/pipewire/pipewire/issues</i>&gt;;
+PipeWire is available from <i>https://pipewire.org</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>PipeWire(1)</b></i>,
+<b>pw-mon(1)</b>,</p>
+<hr>
+</body>
+</html>

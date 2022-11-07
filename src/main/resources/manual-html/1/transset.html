@@ -1,0 +1,202 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:11 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TRANSSET</title>
+
+</head>
+<body>
+
+<h1 align="center">TRANSSET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">transset - Set
+transparency on a window</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>transset</b>
+[<i>-options ...</i>] [<i>opacity</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>transset</b>
+is a simple program for X servers supporting the XFIXES,
+DAMAGE, and COMPOSITE extensions. It lets the user set the
+transparency on a window.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>opacity</i> value is a number from 0 to 1, with zero
+being fully transparent and 1 being fully opaque. If no
+<i>opacity</i> argument is given, a default value of 0.75 is
+used for the opacity value. If neither <b>--inc</b> nor
+<b>--dec</b> are given, the opacity is treated as an
+absolute value and set to the given opacity value. If
+<b>--inc</b> or <b>--dec</b> is specified, then the opacity
+is treated as a relative value to increase or decrease the
+current opacity by.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-display</b>
+<i>display</i></p>
+
+<p style="margin-left:23%;">This option specifies the
+server to use; see <i>X(7)</i>.</p>
+
+<p style="margin-left:11%;"><b>-h</b>, <b>--help</b></p>
+
+<p style="margin-left:23%;">This option displays a help
+message and exits.</p>
+
+<p style="margin-left:11%;"><b>-t</b>, <b>--toggle</b></p>
+
+<p style="margin-left:23%;">This option forces a toggle of
+opacity. If the current opacity is not set to fully opaque
+(opacity 1.0), it will be reset to fully opaque. If the
+window is already fully opaque, the opacity will be set
+normally.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--click</b></p>
+
+<p style="margin-left:23%;">This option selects the target
+window by waiting for the user to click the mouse - the
+topmost window under the mouse cursor when the mouse click
+occurs will be used as the target.</p>
+
+<p style="margin-left:11%;"><b>-p</b>, <b>--point</b></p>
+
+<p style="margin-left:23%;">This option selects the window
+currently under the cursor to be the target.</p>
+
+<p style="margin-left:11%;"><b>-a</b>, <b>--actual</b></p>
+
+<p style="margin-left:23%;">This option selects the window
+that currently has input focus to be the target.</p>
+
+<p style="margin-left:11%;"><b>-n</b>, <b>--name</b>
+<i>name</i></p>
+
+<p style="margin-left:23%;">This option selects the target
+window by name, where <i>name</i> is matched as a regular
+expression, unless <b>--no-regex</b> is also specified.</p>
+
+<p style="margin-left:11%;"><b>--no-regex</b></p>
+
+<p style="margin-left:23%;">This option disables treating
+the <i>name</i> argument to <b>--name</b> as a regular
+expression.</p>
+
+<p style="margin-left:11%;"><b>-i</b>, <b>--id</b></p>
+
+<p style="margin-left:23%;">This option selects the target
+window by window id.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--inc</b></p></td>
+<td width="5%"></td>
+<td width="77%">
+
+
+<p>This option increases the window opacity by the given
+<i>opacity</i> argument.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--dec</b></p></td>
+<td width="5%"></td>
+<td width="77%">
+
+
+<p>This option decreases the window opacity by the given
+<i>opacity</i> argument.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-m</b>, <b>--min</b>
+<i>opacity</i></p>
+
+<p style="margin-left:23%;">This option sets the minimum
+possible opacity value. It defaults to 0 if this option is
+not given.</p>
+
+<p style="margin-left:11%;"><b>-x</b>, <b>--max</b>
+<i>opacity</i></p>
+
+<p style="margin-left:23%;">This option sets the maximum
+possible opacity value. It defaults to 1 if this option is
+not given.</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:23%;">This option prints some
+additional debug info as the program operates.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:23%;">This option prints the program
+version number and exits.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Probably.
+Please report any you find to
+https://bugs.freedesktop.org/enter_bug.cgi?product=xorg.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Matthew
+Hawn</p>
+<hr>
+</body>
+</html>

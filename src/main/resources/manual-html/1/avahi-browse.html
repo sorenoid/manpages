@@ -1,0 +1,191 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:08 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>avahi-browse</title>
+
+</head>
+<body>
+
+<h1 align="center">avahi-browse</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COMMENTS">COMMENTS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">avahi-browse -
+Browse for mDNS/DNS-SD services using the Avahi daemon</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>avahi-browse
+[</b><i>options</i><b>]</b> <i>service-type</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>avahi-browse
+[</b><i>options</i><b>] --all</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>avahi-browse
+[</b><i>options</i><b>] --browse-domains</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>avahi-browse
+[</b><i>options</i><b>] --dump-db</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>avahi-browse-domains
+[</b><i>options</i><b>]</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Browse for
+mDNS/DNS-SD network services and browsing domains using the
+Avahi daemon.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Specify a
+DNS-SD service type (e.g. _http._tcp) to browse for on the
+command line, or <b>-a</b> to browse for all available
+service types. Items that appear on the network are prefixed
+with &quot;+&quot;, items that disappear are prefixed with
+&quot;-&quot;. If <b>--resolve</b> is passed items that are
+resolved are prefixed with &quot;=&quot;. <b><br>
+-a | --all</b></p>
+
+<p style="margin-left:22%;">Browse for all service types
+registered on the LAN, not just the one specified on the
+command line.</p>
+
+<p style="margin-left:11%;"><b>-D |
+--browse-domains</b></p>
+
+<p style="margin-left:22%;">Browse for browsing domains
+instead for services. avahi-browse-domains is equivalent to
+avahi-browse --browse-domains</p>
+
+<p style="margin-left:11%;"><b>-d | --domain=</b>
+<i>DOMAIN</i></p>
+
+<p style="margin-left:22%;">Browse in the specified domain.
+If omitted avahi-browse will browse in the default browsing
+domain (usually: local)</p>
+
+<p style="margin-left:11%;"><b>-v | --verbose</b></p>
+
+<p style="margin-left:22%;">Enable verbose mode.</p>
+
+<p style="margin-left:11%;"><b>-t | --terminate</b></p>
+
+<p style="margin-left:22%;">Terminate after dumping a more
+or less complete list.</p>
+
+<p style="margin-left:11%;"><b>-c | --cache</b></p>
+
+<p style="margin-left:22%;">Terminate after dumping all
+entries available in the cache.</p>
+
+<p style="margin-left:11%;"><b>-l | --ignore-local</b></p>
+
+<p style="margin-left:22%;">Ignore local services, show
+only remote services.</p>
+
+<p style="margin-left:11%;"><b>-r | --resolve</b></p>
+
+<p style="margin-left:22%;">Automatically resolve services
+found.</p>
+
+<p style="margin-left:11%;"><b>-f | --no-fail</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t fail if the daemon
+is not found running. Instead, wait until it appears. If it
+disconnects, try to reconnect.</p>
+
+<p style="margin-left:11%;"><b>-p | --parsable</b></p>
+
+<p style="margin-left:22%;">Make output easily parsable for
+usage in scripts. If enabled fields are separated by
+semicolons (;), service names are escaped. It is recommended
+to combine this with <b>--no-db-lookup</b>.</p>
+
+<p style="margin-left:11%;"><b>-k | --no-db-lookup</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t lookup services
+types in service type database.</p>
+
+<p style="margin-left:11%;"><b>-b | --dump-db</b></p>
+
+<p style="margin-left:22%;">Dump the service type database
+(may be combined with -k)</p>
+
+<p style="margin-left:11%;"><b>-h | --help</b></p>
+
+<p style="margin-left:22%;">Show help.</p>
+
+<p style="margin-left:11%;"><b>-V | --version</b></p>
+
+<p style="margin-left:22%;">Show version information.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Avahi
+Developers &lt;avahi (at) lists (dot) freedesktop (dot)
+org&gt;; Avahi is available from
+<b>http://avahi.org/</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>avahi-publish(1)</b>,
+<b>avahi-resolve(1)</b>, <b>avahi-daemon(8)</b></p>
+
+<h2>COMMENTS
+<a name="COMMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This man page
+was written using <b>xml2man(1)</b> by Oliver Kurth.</p>
+<hr>
+</body>
+</html>

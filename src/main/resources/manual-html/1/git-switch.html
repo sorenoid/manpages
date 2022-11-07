@@ -1,0 +1,396 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:47 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-SWITCH</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-SWITCH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-switch -
+Switch branches</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+switch</i> [&lt;options&gt;] [--no-guess] &lt;branch&gt;
+<i><br>
+git switch</i> [&lt;options&gt;] --detach
+[&lt;start-point&gt;] <i><br>
+git switch</i> [&lt;options&gt;] (-c|-C) &lt;new-branch&gt;
+[&lt;start-point&gt;] <i><br>
+git switch</i> [&lt;options&gt;] --orphan
+&lt;new-branch&gt;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Switch to a
+specified branch. The working tree and the index are updated
+to match the branch. All new commits will be added to the
+tip of this branch.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Optionally a
+new branch could be created with either <b>-c</b>,
+<b>-C</b>, automatically from a remote branch of same name
+(see <b>--guess</b>), or detach the working tree from any
+branch with <b>--detach</b>, along with switching.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Switching
+branches does not require a clean index and working tree
+(i.e. no differences compared to <b>HEAD</b>). The operation
+is aborted however if the operation leads to loss of local
+changes, unless told otherwise with <b>--discard-changes</b>
+or <b>--merge</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">THIS COMMAND IS
+EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;branch&gt;</p>
+
+<p style="margin-left:17%;">Branch to switch to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;new-branch&gt;</p>
+
+<p style="margin-left:17%;">Name for the new branch.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;start-point&gt;</p>
+
+<p style="margin-left:17%;">The starting point for the new
+branch. Specifying a <b>&lt;start-point&gt;</b> allows you
+to create a branch based on some other point in history than
+where HEAD currently points. (Or, in the case of
+<b>--detach</b>, allows you to inspect and detach from some
+other point.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">You can use the
+<b>@{-N}</b> syntax to refer to the N-th last branch/commit
+switched to using &quot;git switch&quot; or &quot;git
+checkout&quot; operation. You may also specify <b>-</b>
+which is synonymous to <b>@{-1}</b>. This is often used to
+switch quickly between two branches, or to undo a branch
+switch by mistake.</p>
+
+<p style="margin-left:17%; margin-top: 1em">As a special
+case, you may use <b>A...B</b> as a shortcut for the merge
+base of <b>A</b> and <b>B</b> if there is exactly one merge
+base. You can leave out at most one of <b>A</b> and
+<b>B</b>, in which case it defaults to <b>HEAD</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-c
+&lt;new-branch&gt;, --create &lt;new-branch&gt;</p>
+
+<p style="margin-left:17%;">Create a new branch named
+<b>&lt;new-branch&gt;</b> starting at
+<b>&lt;start-point&gt;</b> before switching to the branch.
+This is a convenient shortcut for:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git branch
+&lt;new-branch&gt; <br>
+$ git switch &lt;new-branch&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">-C
+&lt;new-branch&gt;, --force-create &lt;new-branch&gt;</p>
+
+<p style="margin-left:17%;">Similar to <b>--create</b>
+except that if <b>&lt;new-branch&gt;</b> already exists, it
+will be reset to <b>&lt;start-point&gt;</b>. This is a
+convenient shortcut for:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git branch -f
+&lt;new-branch&gt; <br>
+$ git switch &lt;new-branch&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">-d,
+--detach</p>
+
+<p style="margin-left:17%;">Switch to a commit for
+inspection and discardable experiments. See the
+&quot;DETACHED HEAD&quot; section in <b>git-checkout</b>(1)
+for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--guess,
+--no-guess</p>
+
+<p style="margin-left:17%;">If <b>&lt;branch&gt;</b> is not
+found but there does exist a tracking branch in exactly one
+remote (call it <b>&lt;remote&gt;</b>) with a matching name,
+treat as equivalent to</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git switch -c
+&lt;branch&gt; --track &lt;remote&gt;/&lt;branch&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the branch
+exists in multiple remotes and one of them is named by the
+<b>checkout.defaultRemote</b> configuration variable,
+we&rsquo;ll use that one for the purposes of disambiguation,
+even if the <b>&lt;branch&gt;</b> isn&rsquo;t unique across
+all remotes. Set it to e.g.
+<b>checkout.defaultRemote=origin</b> to always checkout
+remote branches from there if <b>&lt;branch&gt;</b> is
+ambiguous but exists on the <i>origin</i> remote. See also
+<b>checkout.defaultRemote</b> in <b>git-config</b>(1).</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>--guess</b>
+is the default behavior. Use <b>--no-guess</b> to disable
+it.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+behavior can be set via the <b>checkout.guess</b>
+configuration variable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-f, --force</p>
+
+<p style="margin-left:17%;">An alias for
+<b>--discard-changes</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--discard-changes</p>
+
+<p style="margin-left:17%;">Proceed even if the index or
+the working tree differs from <b>HEAD</b>. Both the index
+and working tree are restored to match the switching target.
+If <b>--recurse-submodules</b> is specified, submodule
+content is also restored to match the switching target. This
+is used to throw away local changes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-m, --merge</p>
+
+<p style="margin-left:17%;">If you have local modifications
+to one or more files that are different between the current
+branch and the branch to which you are switching, the
+command refuses to switch branches in order to preserve your
+modifications in context. However, with this option, a
+three-way merge between the current branch, your working
+tree contents, and the new branch is done, and you will be
+on the new branch.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When a merge
+conflict happens, the index entries for conflicting paths
+are left unmerged, and you need to resolve the conflicts and
+mark the resolved paths with <b>git add</b> (or <b>git
+rm</b> if the merge should result in deletion of the
+path).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--conflict=&lt;style&gt;</p>
+
+<p style="margin-left:17%;">The same as <b>--merge</b>
+option above, but changes the way the conflicting hunks are
+presented, overriding the <b>merge.conflictStyle</b>
+configuration variable. Possible values are
+&quot;merge&quot; (default) and &quot;diff3&quot; (in
+addition to what is shown by &quot;merge&quot; style, shows
+the original contents).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-q, --quiet</p>
+
+<p style="margin-left:17%;">Quiet, suppress feedback
+messages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--progress,
+--no-progress</p>
+
+<p style="margin-left:17%;">Progress status is reported on
+the standard error stream by default when it is attached to
+a terminal, unless <b>--quiet</b> is specified. This flag
+enables progress reporting even if not attached to a
+terminal, regardless of <b>--quiet</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-t, --track</p>
+
+<p style="margin-left:17%;">When creating a new branch, set
+up &quot;upstream&quot; configuration. <b>-c</b> is implied.
+See <b>--track</b> in <b>git-branch</b>(1) for details.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no <b>-c</b>
+option is given, the name of the new branch will be derived
+from the remote-tracking branch, by looking at the local
+part of the refspec configured for the corresponding remote,
+and then stripping the initial part up to the &quot;*&quot;.
+This would tell us to use <b>hack</b> as the local branch
+when branching off of <b>origin/hack</b> (or
+<b>remotes/origin/hack</b>, or even
+<b>refs/remotes/origin/hack</b>). If the given name has no
+slash, or the above guessing results in an empty name, the
+guessing is aborted. You can explicitly give a name with
+<b>-c</b> in such a case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--no-track</p>
+
+<p style="margin-left:17%;">Do not set up
+&quot;upstream&quot; configuration, even if the
+<b>branch.autoSetupMerge</b> configuration variable is
+true.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--orphan
+&lt;new-branch&gt;</p>
+
+<p style="margin-left:17%;">Create a new <i>orphan</i>
+branch, named <b>&lt;new-branch&gt;</b>. All tracked files
+are removed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--ignore-other-worktrees</p>
+
+<p style="margin-left:17%;"><b>git switch</b> refuses when
+the wanted ref is already checked out by another worktree.
+This option makes it check the ref out anyway. In other
+words, the ref can be held by more than one worktree.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--recurse-submodules,
+--no-recurse-submodules</p>
+
+<p style="margin-left:17%;">Using
+<b>--recurse-submodules</b> will update the content of all
+active submodules according to the commit recorded in the
+superproject. If nothing (or <b>--no-recurse-submodules</b>)
+is used, submodules working trees will not be updated. Just
+like <b>git-submodule</b>(1), this will detach <b>HEAD</b>
+of the submodules.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command switches to the &quot;master&quot; branch:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch
+master</p>
+
+<p style="margin-left:11%; margin-top: 1em">After working
+in the wrong branch, switching to the correct branch would
+be done using:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch
+mytopic</p>
+
+<p style="margin-left:11%; margin-top: 1em">However, your
+&quot;wrong&quot; branch and correct &quot;mytopic&quot;
+branch may differ in files that you have modified locally,
+in which case the above switch would fail like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch
+mytopic <br>
+error: You have local changes to 'frotz'; not switching
+branches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can give
+the <b>-m</b> flag to the command, which would try a
+three-way merge:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch -m
+mytopic <br>
+Auto-merging frotz</p>
+
+<p style="margin-left:11%; margin-top: 1em">After this
+three-way merge, the local modifications are <i>not</i>
+registered in your index file, so <b>git diff</b> would show
+you what changes you made since the tip of the new
+branch.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To switch back
+to the previous branch before we switched to mytopic (i.e.
+&quot;master&quot; branch):</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch
+-</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can grow a
+new branch from any commit. For example, switch to
+&quot;HEAD~3&quot; and create branch &quot;fixup&quot;:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch -c
+fixup HEAD~3 <br>
+Switched to a new branch 'fixup'</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+start a new branch from a remote branch of the same
+name:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch
+new-topic <br>
+Branch 'new-topic' set up to track remote branch 'new-topic'
+from 'origin' <br>
+Switched to a new branch 'new-topic'</p>
+
+<p style="margin-left:11%; margin-top: 1em">To check out
+commit <b>HEAD~3</b> for temporary inspection or experiment
+without creating a new branch:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch
+--detach HEAD~3 <br>
+HEAD is now at 9fc9555312 Merge branch
+'cc/shared-index-permbits'</p>
+
+<p style="margin-left:11%; margin-top: 1em">If it turns out
+whatever you have done is worth keeping, you can always
+create a new name for it (without switching away):</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git switch -c
+good-surprises</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git-checkout</b>(1),
+<b>git-branch</b>(1)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

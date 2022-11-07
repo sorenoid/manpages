@@ -1,0 +1,3081 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:10 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>STRACE</title>
+
+</head>
+<body>
+
+<h1 align="center">STRACE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#SETUID INSTALLATION">SETUID INSTALLATION</a><br>
+<a href="#MULTIPLE PERSONALITIES SUPPORT">MULTIPLE PERSONALITIES SUPPORT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">strace - trace
+system calls and signals</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>strace</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+
+<p style="margin-top: 1em">[<b>-ACdffhikqqrtttTvVwxxyyzZ</b>]
+[<b>-I&nbsp;</b><i>n</i>] [<b>-b&nbsp;</b><i>execve</i>]
+[<b>-e&nbsp;</b><i>expr</i>]...
+[<b>-O&nbsp;</b><i>overhead</i>]
+[<b>-S&nbsp;</b><i>sortby</i>]
+[<b>-U&nbsp;</b><i>columns</i>]
+[<b>-a&nbsp;</b><i>column</i>] [<b>-o&nbsp;</b><i>file</i>]
+[<b>-s&nbsp;</b><i>strsize</i>]
+[<b>-X&nbsp;</b><i>format</i>]
+[<b>-P&nbsp;</b><i>path</i>]...
+[<b>-p&nbsp;</b><i>pid</i>]... [<b>--seccomp-bpf</b>] {
+<b>-p&nbsp;</b><i>pid</i> | [<b>-DDD</b>]
+[<b>-E&nbsp;</b><i>var</i>[=<i>val</i>]]...
+[<b>-u&nbsp;</b><i>username</i>] <i>command</i>
+[<i>args</i>] }</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>strace</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>-c</b> [<b>-dfwzZ</b>]
+[<b>-I&nbsp;</b><i>n</i>] [<b>-b&nbsp;</b><i>execve</i>]
+[<b>-e&nbsp;</b><i>expr</i>]...
+[<b>-O&nbsp;</b><i>overhead</i>]
+[<b>-S&nbsp;</b><i>sortby</i>]
+[<b>-U&nbsp;</b><i>columns</i>]
+[<b>-P&nbsp;</b><i>path</i>]...
+[<b>-p&nbsp;</b><i>pid</i>]... [<b>--seccomp-bpf</b>] {
+<b>-p&nbsp;</b><i>pid</i> | [<b>-DDD</b>]
+[<b>-E&nbsp;</b><i>var</i>[=<i>val</i>]]...
+[<b>-u&nbsp;</b><i>username</i>] <i>command</i>
+[<i>args</i>] }</p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the simplest
+case <b>strace</b> runs the specified <i>command</i> until
+it exits. It intercepts and records the system calls which
+are called by a process and the signals which are received
+by a process. The name of each system call, its arguments
+and its return value are printed on standard error or to the
+file specified with the <b>-o</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>strace</b>
+is a useful diagnostic, instructional, and debugging tool.
+System administrators, diagnosticians and trouble-shooters
+will find it invaluable for solving problems with programs
+for which the source is not readily available since they do
+not need to be recompiled in order to trace them. Students,
+hackers and the overly-curious will find that a great deal
+can be learned about a system and its system calls by
+tracing even ordinary programs. And programmers will find
+that since system calls and signals are events that happen
+at the user/kernel interface, a close examination of this
+boundary is very useful for bug isolation, sanity checking
+and attempting to capture race conditions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each line in
+the trace contains the system call name, followed by its
+arguments in parentheses and its return value. An example
+from stracing the command &quot;cat /dev/null&quot; is:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">open(&quot;/dev/null&quot;,
+O_RDONLY) = 3</p>
+
+<p style="margin-left:11%; margin-top: 1em">Errors
+(typically a return value of -1) have the errno symbol and
+error string appended.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">open(&quot;/foo/bar&quot;,
+O_RDONLY) = -1 ENOENT (No such file or directory)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Signals are
+printed as signal symbol and decoded siginfo structure. An
+excerpt from stracing and interrupting the command
+&quot;sleep 666&quot; is:</p>
+
+<p style="margin-left:17%; margin-top: 1em">sigsuspend([]
+&lt;unfinished ...&gt; <br>
+--- SIGINT {si_signo=SIGINT, si_code=SI_USER, si_pid=...}
+--- <br>
++++ killed by SIGINT +++</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a system
+call is being executed and meanwhile another one is being
+called from a different thread/process then <b>strace</b>
+will try to preserve the order of those events and mark the
+ongoing call as being <i>unfinished</i>. When the call
+returns it will be marked as <i>resumed</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">[pid 28772]
+select(4, [3], NULL, NULL, NULL &lt;unfinished ...&gt; <br>
+[pid 28779] clock_gettime(CLOCK_REALTIME, {1130322148,
+939977000}) = 0 <br>
+[pid 28772] &lt;... select resumed&gt; ) = 1 (in [3])</p>
+
+<p style="margin-left:11%; margin-top: 1em">Interruption of
+a (restartable) system call by a signal delivery is
+processed differently as kernel terminates the system call
+and also arranges its immediate reexecution after the signal
+handler completes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">read(0,
+0x7ffff72cf5cf, 1) = ? ERESTARTSYS (To be restarted) <br>
+--- SIGALRM ... --- <br>
+rt_sigreturn(0xe) = 0 <br>
+read(0, &quot;&quot;, 1) = 0</p>
+
+<p style="margin-left:11%; margin-top: 1em">Arguments are
+printed in symbolic form with passion. This example shows
+the shell performing &quot;&gt;&gt;xyzzy&quot; output
+redirection:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">open(&quot;xyzzy&quot;,
+O_WRONLY|O_APPEND|O_CREAT, 0666) = 3</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here, the
+second and the third argument of <b>open</b>(2) are decoded
+by breaking down the flag argument into its three bitwise-OR
+constituents and printing the mode value in octal by
+tradition. Where the traditional or native usage differs
+from ANSI or POSIX, the latter forms are preferred. In some
+cases, <b>strace</b> output is proven to be more readable
+than the source.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Structure
+pointers are dereferenced and the members are displayed as
+appropriate. In most cases, arguments are formatted in the
+most C-like fashion possible. For example, the essence of
+the command &quot;ls -l /dev/null&quot; is captured as:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">lstat(&quot;/dev/null&quot;,
+{st_mode=S_IFCHR|0666, st_rdev=makedev(0x1, 0x3), ...}) =
+0</p>
+
+<p style="margin-left:11%; margin-top: 1em">Notice how the
+&rsquo;struct stat&rsquo; argument is dereferenced and how
+each member is displayed symbolically. In particular,
+observe how the <b>st_mode</b> member is carefully decoded
+into a bitwise-OR of symbolic and numeric values. Also
+notice in this example that the first argument to
+<b>lstat</b>(2) is an input to the system call and the
+second argument is an output. Since output arguments are not
+modified if the system call fails, arguments may not always
+be dereferenced. For example, retrying the &quot;ls -l&quot;
+example with a non-existent file produces the following
+line:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">lstat(&quot;/foo/bar&quot;,
+0xb004) = -1 ENOENT (No such file or directory)</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this case
+the porch light is on but nobody is home.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Syscalls
+unknown to <b>strace</b> are printed raw, with the unknown
+system call number printed in hexadecimal form and prefixed
+with &quot;syscall_&quot;:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">syscall_0xbad(0x1,
+0x2, 0x3, 0x4, 0x5, 0x6) = -1 ENOSYS (Function not
+implemented)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Character
+pointers are dereferenced and printed as C strings.
+Non-printing characters in strings are normally represented
+by ordinary C escape codes. Only the first <i>strsize</i>
+(32 by default) bytes of strings are printed; longer strings
+have an ellipsis appended following the closing quote. Here
+is a line from &quot;ls -l&quot; where the
+<b>getpwuid</b>(3) library routine is reading the password
+file:</p>
+
+<p style="margin-left:17%; margin-top: 1em">read(3,
+&quot;root::0:0:System Administrator:/&quot;..., 1024) =
+422</p>
+
+<p style="margin-left:11%; margin-top: 1em">While
+structures are annotated using curly braces, simple pointers
+and arrays are printed using square brackets with commas
+separating elements. Here is an example from the command
+<b>id</b>(1) on a system with supplementary group ids:</p>
+
+<p style="margin-left:17%; margin-top: 1em">getgroups(32,
+[100, 0]) = 2</p>
+
+<p style="margin-left:11%; margin-top: 1em">On the other
+hand, bit-sets are also shown using square brackets, but set
+elements are separated only by a space. Here is the shell,
+preparing to execute an external command:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">sigprocmask(SIG_BLOCK,
+[CHLD TTOU], []) = 0</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here, the
+second argument is a bit-set of two signals, <b>SIGCHLD</b>
+and <b>SIGTTOU</b>. In some cases, the bit-set is so full
+that printing out the unset elements is more valuable. In
+that case, the bit-set is prefixed by a tilde like this:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">sigprocmask(SIG_UNBLOCK,
+~[], NULL) = 0</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here, the
+second argument represents the full set of all signals.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>General</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>-e</b> <i>expr</i></p></td>
+<td width="7%"></td>
+<td width="71%">
+
+
+<p>A qualifying expression which modifies which events to
+trace or how to trace them. The format of the expression
+is:</p> </td></tr>
+</table>
+
+
+<p style="margin-left:45%; margin-top: 1em">[<i>qualifier</i><b>=</b>][<b>!</b>]<i>value</i>[<b>,</b><i>value</i>]...</p>
+
+<p style="margin-left:29%; margin-top: 1em">where
+<i>qualifier</i> is one of <b>trace</b> (or <b>t</b>),
+<b>abbrev</b> (or <b>a</b>), <b>verbose</b> (or <b>v</b>),
+<b>raw</b> (or <b>x</b>), <b>signal</b> (or <b>signals</b>
+or <b>s</b>), <b>read</b> (or <b>reads</b> or <b>r</b>),
+<b>write</b> (or <b>writes</b> or <b>w</b>), <b>fault</b>,
+<b>inject</b>, <b>status</b>, <b>quiet</b> (or <b>silent</b>
+or <b>silence</b> or <b>q</b>), <b>decode-fds</b> (or
+<b>decode-fd</b>), <b>decode-pids</b> (or
+<b>decode-pid</b>), or <b>kvm</b>, and <i>value</i> is a
+qualifier-dependent symbol or number. The default qualifier
+is <b>trace</b>. Using an exclamation mark negates the set
+of values. For example, <b>-e&nbsp;open</b> means literally
+<b>-e&nbsp;trace</b>=<b>open</b> which in turn means trace
+only the <b>open</b> system call. By contrast,
+<b>-e&nbsp;trace</b>=!<b>open</b> means to trace every
+system call except <b>open</b>. In addition, the special
+values <b>all</b> and <b>none</b> have the obvious
+meanings.</p>
+
+<p style="margin-left:29%; margin-top: 1em">Note that some
+shells use the exclamation point for history expansion even
+inside quoted arguments. If so, you must escape the
+exclamation point with a backslash.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Startup</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+
+<p style="margin-top: 1em"><b>-E&nbsp;</b><i>var</i>=<i>val</i></p> </td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--env</b>=<i>var</i>=<i>val</i></p>
+
+<p style="margin-left:29%;">Run command with
+<i>var</i>=<i>val</i> in its list of environment
+variables.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>-E</b> <i>var</i></p></td>
+<td width="4%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>--env</b>=<i>var</i></p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Remove <i>var</i> from the inherited list of environment
+variables before passing it on to the command.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>-p</b> <i>pid</i></p></td>
+<td width="4%"></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--attach</b>=<i>pid</i></p>
+
+<p style="margin-left:29%;">Attach to the process with the
+process <small>ID</small> <i>pid</i> and begin tracing. The
+trace may be terminated at any time by a keyboard interrupt
+signal (<b>CTRL-C</b>). <b>strace</b> will respond by
+detaching itself from the traced process(es) leaving it
+(them) to continue running. Multiple <b>-p</b> options can
+be used to attach to many processes in addition to
+<i>command</i> (which is optional if at least one <b>-p</b>
+option is given). Multiple process IDs, separated by either
+comma (&ldquo;,&rdquo;), space (&ldquo; &rdquo;), tab, or
+newline character, can be provided as an argument to a
+single <b>-p</b> option, so, for example, <b>-p</b>
+&quot;$(pidof PROG)&quot; and <b>-p</b> &quot;$(pgrep
+PROG)&quot; syntaxes are supported.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-u</b> <i>username</i></p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--user</b>=<i>username</i></p>
+
+<p style="margin-left:29%;">Run command with the user
+<small>ID</small> , group <small>ID</small> , and
+supplementary groups of <i>username</i>. This option is only
+useful when running as root and enables the correct
+execution of setuid and/or setgid binaries. Unless this
+option is used setuid and setgid programs are executed
+without effective privileges.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Tracing</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>-b</b> <i>syscall</i></p></td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--detach-on</b>=<i>syscall</i></p>
+
+<p style="margin-left:29%;">If specified syscall is
+reached, detach from traced process. Currently, only
+<b>execve</b>(2) syscall is supported. This option is useful
+if you want to trace multi-threaded process and therefore
+require <b>-f</b>, but don&rsquo;t want to trace its
+(potentially very complex) children.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-D</b></p></td>
+<td width="72%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--daemonize</b></p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--daemonize</b>=<b>grandchild</b></p>
+
+<p style="margin-left:29%;">Run tracer process as a
+grandchild, not as the parent of the tracee. This reduces
+the visible effect of <b>strace</b> by keeping the tracee a
+direct child of the calling process.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-DD</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--daemonize</b>=<b>pgroup
+<br>
+--daemonize</b>=<b>pgrp</b></p>
+
+<p style="margin-left:29%;">Run tracer process as
+tracee&rsquo;s grandchild in a separate process group. In
+addition to reduction of the visible effect of
+<b>strace</b>, it also avoids killing of <b>strace</b> with
+<b>kill</b>(2) issued to the whole process group.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-DDD</b></p></td>
+<td width="83%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--daemonize</b>=<b>session</b></p>
+
+<p style="margin-left:29%;">Run tracer process as
+tracee&rsquo;s grandchild in a separate session (&quot;true
+daemonisation&quot;). In addition to reduction of the
+visible effect of <b>strace</b>, it also avoids killing of
+<b>strace</b> upon session termination.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-f</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--follow-forks</b></p>
+
+<p style="margin-left:29%;">Trace child processes as they
+are created by currently traced processes as a result of the
+<b>fork</b>(2), <b>vfork</b>(2) and <b>clone</b>(2) system
+calls. Note that <b>-p</b> <i>PID</i> <b>-f</b> will attach
+all threads of process <i>PID</i> if it is multi-threaded,
+not only thread with <i>thread_id</i> = <i>PID</i>.</p>
+
+<p style="margin-left:11%;"><b>--output-separately</b></p>
+
+<p style="margin-left:29%;">If the
+<b>--output</b>=<i>filename</i> option is in effect, each
+processes trace is written to <i>filename</i>.<i>pid</i>
+where <i>pid</i> is the numeric process id of each
+process.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-ff</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--follow-forks
+--output-separately</b></p>
+
+<p style="margin-left:29%;">Combine the effects of
+<b>--follow-forks</b> and <b>--output-separately</b>
+options. This is incompatible with <b>-c</b>, since no
+per-process counts are kept.</p>
+
+<p style="margin-left:29%; margin-top: 1em">One might want
+to consider using <b>strace-log-merge</b>(1) to obtain a
+combined strace log view.</p>
+
+<p style="margin-left:11%;"><b>-I</b> <i>interruptible</i>
+<b><br>
+--interruptible</b>=<i>interruptible</i></p>
+
+<p style="margin-left:29%;">When <b>strace</b> can be
+interrupted by signals (such as pressing <b>CTRL-C</b>).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="20%">
+
+
+<p><b>1</b>, <b>anywhere</b></p></td>
+<td width="3%"></td>
+<td width="48%">
+
+
+<p>no signals are blocked;</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="20%">
+
+
+<p><b>2</b>, <b>waiting</b></p></td>
+<td width="3%"></td>
+<td width="48%">
+
+
+<p>fatal signals are blocked while decoding syscall
+(default);</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="20%">
+
+
+<p><b>3</b>, <b>never</b></p></td>
+<td width="3%"></td>
+<td width="48%">
+
+
+<p>fatal signals are always blocked (default if <b>-o</b>
+<i>FILE PROG</i>);</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="20%">
+
+
+<p><b>4</b>, <b>never_tstp</b></p></td>
+<td width="3%"></td>
+<td width="48%">
+
+
+<p>fatal signals and <b>SIGTSTP</b> (<b>CTRL-Z</b>) are
+always blocked (useful to make <b>strace -o</b> <i>FILE
+PROG</i> not stop on <b>CTRL-Z</b>, default if
+<b>-D</b>).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Filtering
+<br>
+-e&nbsp;trace</b>=<i>syscall_set</i> <b><br>
+--trace</b>=<i>syscall_set</i></p>
+
+<p style="margin-left:29%;">Trace only the specified set of
+system calls. <i>syscall_set</i> is defined as
+[<b>!</b>]<i>value</i>[<b>,</b><i>value</i>], and
+<i>value</i> can be one of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><i>syscall</i></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace specific syscall, specified by its name (but see
+<b>NOTES</b>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>?</b><i>value</i></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Question mark before the syscall qualification allows
+suppression of error in case no syscalls matched the
+qualification provided.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>/</b><i>regex</i></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace only those system calls that match the
+<i>regex</i>. You can use <b>POSIX</b> Extended Regular
+Expression syntax (see <b>regex</b>(7)).</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><i>syscall</i><b>@64</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace <i>syscall</i> only for the 64-bit
+personality.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><i>syscall</i><b>@32</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace <i>syscall</i> only for the 32-bit
+personality.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><i>syscall</i><b>@x32</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace <i>syscall</i> only for the 32-on-64-bit
+personality.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%file</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>file</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace all system calls which take a file name as an
+argument. You can think of this as an abbreviation for
+<b>-e&nbsp;trace</b>=<b>open</b>,<b>stat</b>,<b>chmod</b>,<b>unlink</b>,...
+which is useful to seeing what files the process is
+referencing. Furthermore, using the abbreviation will ensure
+that you don&rsquo;t accidentally forget to include a call
+like <b>lstat</b>(2) in the list. Betchya woulda forgot that
+one. The syntax without a preceding percent sign
+(&quot;<b>-e trace</b>=<b>file</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%process</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>process</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls associated with process lifecycle
+(creation, exec, termination). The syntax without a
+preceding percent sign (&quot;<b>-e
+trace</b>=<b>process</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%net</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%network</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>network</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace all the network related system calls. The syntax
+without a preceding percent sign (&quot;<b>-e
+trace</b>=<b>network</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%signal</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>signal</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace all signal related system calls. The syntax
+without a preceding percent sign (&quot;<b>-e
+trace</b>=<b>signal</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%ipc</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>ipc</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace all IPC related system calls. The syntax without a
+preceding percent sign (&quot;<b>-e
+trace</b>=<b>ipc</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%desc</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>desc</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace all file descriptor related system calls. The
+syntax without a preceding percent sign (&quot;<b>-e
+trace</b>=<b>desc</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%memory</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>memory</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace all memory mapping related system calls. The
+syntax without a preceding percent sign (&quot;<b>-e
+trace</b>=<b>memory</b>&quot;) is deprecated.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%creds</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls that read or modify user and group
+identifiers or capability sets.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%stat</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace stat syscall variants.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%lstat</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace lstat syscall variants.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%fstat</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace fstat, fstatat, and statx syscall variants.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%%stat</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace syscalls used for requesting file status (stat,
+lstat, fstat, fstatat, statx, and their variants).</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%statfs</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace statfs, statfs64, statvfs, osf_statfs, and
+osf_statfs64 system calls. The same effect can be achieved
+with <b>-e&nbsp;trace</b>=<b>/^(.*_)?statv?fs</b> regular
+expression.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%fstatfs</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace fstatfs, fstatfs64, fstatvfs, osf_fstatfs, and
+osf_fstatfs64 system calls. The same effect can be achieved
+with <b>-e&nbsp;trace</b>=<b>/fstatv?fs</b> regular
+expression.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%%statfs</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace syscalls related to file system statistics
+(statfs-like, fstatfs-like, and ustat). The same effect can
+be achieved with
+<b>-e&nbsp;trace</b>=<b>/statv?fs|fsstat|ustat</b> regular
+expression.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%clock</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls that read or modify system
+clocks.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="17%">
+
+
+<p><b>%pure</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace syscalls that always succeed and have no
+arguments. Currently, this list includes
+<b>arc_gettls</b>(2), <b>getdtablesize</b>(2),
+<b>getegid</b>(2), <b>getegid32</b>(2), <b>geteuid</b>(2),
+<b>geteuid32</b>(2), <b>getgid</b>(2), <b>getgid32</b>(2),
+<b>getpagesize</b>(2), <b>getpgrp</b>(2), <b>getpid</b>(2),
+<b>getppid</b>(2), <b>get_thread_area</b>(2) (on
+architectures other than x86), <b>gettid</b>(2),
+<b>get_tls</b>(2), <b>getuid</b>(2), <b>getuid32</b>(2),
+<b>getxgid</b>(2), <b>getxpid</b>(2), <b>getxuid</b>(2),
+<b>kern_features</b>(2), and <b>metag_get_tls</b>(2)
+syscalls.</p> </td></tr>
+</table>
+
+<p style="margin-left:29%; margin-top: 1em">The <b>-c</b>
+option is useful for determining which system calls might be
+useful to trace. For example,
+<b>trace</b>=<b>open,close,read,write</b> means to only
+trace those four system calls. Be careful when making
+inferences about the user/kernel boundary if only a subset
+of system calls are being monitored. The default is
+<b>trace</b>=<b>all</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;signal</b>=<i>set</i>
+<b><br>
+--signal</b>=<i>set</i></p>
+
+<p style="margin-left:29%;">Trace only the specified subset
+of signals. The default is <b>signal</b>=<b>all</b>. For
+example, <b>signal</b>=!<b>SIGIO</b> (or
+<b>signal</b>=!<b>io</b>) causes <b>SIGIO</b> signals not to
+be traced.</p>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;status</b>=<i>set</i>
+<b><br>
+--status</b>=<i>set</i></p>
+
+<p style="margin-left:29%;">Print only system calls with
+the specified return status. The default is
+<b>status</b>=<b>all</b>. When using the <b>status</b>
+qualifier, because <b>strace</b> waits for system calls to
+return before deciding whether they should be printed or
+not, the traditional order of events may not be preserved
+anymore. If two system calls are executed by concurrent
+threads, <b>strace</b> will first print both the entry and
+exit of the first system call to exit, regardless of their
+respective entry time. The entry and exit of the second
+system call to exit will be printed afterwards. Here is an
+example when <b>select</b>(2) is called, but a different
+thread calls <b>clock_gettime</b>(2) before <b>select</b>(2)
+finishes:</p>
+
+<p style="margin-left:35%; margin-top: 1em">[pid 28779]
+1130322148.939977 clock_gettime(CLOCK_REALTIME, {1130322148,
+939977000}) = 0 <br>
+[pid 28772] 1130322148.438139 select(4, [3], NULL, NULL,
+NULL) = 1 (in [3])</p>
+
+<p style="margin-left:29%; margin-top: 1em"><i>set</i> can
+include the following elements:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="35%">
+
+
+<p><b>successful</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls that returned without an error code.
+The <b>-z</b> option has the effect of
+<b>status</b>=<b>successful</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="35%">
+
+
+<p><b>failed</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls that returned with an error code. The
+<b>-Z</b> option has the effect of
+<b>status</b>=<b>failed</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="35%">
+
+
+<p><b>unfinished</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls that did not return. This might
+happen, for example, due to an execve call in a neighbour
+thread.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="35%">
+
+
+<p><b>unavailable</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls that returned but strace failed to
+fetch the error status.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="35%">
+
+
+<p><b>detached</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Trace system calls for which strace detached before the
+return.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="35%">
+
+
+<p><b>-P</b> <i>path</i></p></td>
+<td width="3%"></td>
+<td width="51%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--trace-path</b>=<i>path</i></p>
+
+<p style="margin-left:29%;">Trace only system calls
+accessing <i>path</i>. Multiple <b>-P</b> options can be
+used to specify several paths.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-z</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--successful-only</b></p>
+
+<p style="margin-left:29%;">Print only syscalls that
+returned without an error code.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-Z</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--failed-only</b></p>
+
+<p style="margin-left:29%;">Print only syscalls that
+returned with an error code.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output
+format</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>-a</b> <i>column</i></p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--columns</b>=<i>column</i></p>
+
+<p style="margin-left:29%;">Align return values in a
+specific column (default column 40).</p>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;abbrev</b>=<i>syscall_set</i>
+<b><br>
+--abbrev</b>=<i>syscall_set</i></p>
+
+<p style="margin-left:29%;">Abbreviate the output from
+printing each member of large structures. The syntax of the
+<i>syscall_set</i> specification is the same as in the <b>-e
+trace</b> option. The default is <b>abbrev</b>=<b>all</b>.
+The <b>-v</b> option has the effect of
+<b>abbrev</b>=<b>none</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;verbose</b>=<i>syscall_set</i>
+<b><br>
+--verbose</b>=<i>syscall_set</i></p>
+
+<p style="margin-left:29%;">Dereference structures for the
+specified set of system calls. The syntax of the
+<i>syscall_set</i> specification is the same as in the <b>-e
+trace</b> option. The default is
+<b>verbose</b>=<b>all</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;raw</b>=<i>syscall_set</i>
+<b><br>
+--raw</b>=<i>syscall_set</i></p>
+
+<p style="margin-left:29%;">Print raw, undecoded arguments
+for the specified set of system calls. The syntax of the
+<i>syscall_set</i> specification is the same as in the <b>-e
+trace</b> option. This option has the effect of causing all
+arguments to be printed in hexadecimal. This is mostly
+useful if you don&rsquo;t trust the decoding or you need to
+know the actual numeric value of an argument. See also <b>-X
+raw</b> option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-e&nbsp;read</b>=<i>set</i></p></td>
+<td width="1%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--read</b>=<i>set</i></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Perform a full hexadecimal and ASCII dump of all the
+data read from file descriptors listed in the specified set.
+For example, to see all input activity on file descriptors
+<i>3</i> and <i>5</i> use
+<b>-e&nbsp;read</b>=<i>3</i>,<i>5</i>. Note that this is
+independent from the normal tracing of the <b>read</b>(2)
+system call which is controlled by the option
+<b>-e&nbsp;trace</b>=<b>read</b>.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;write</b>=<i>set</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--write</b>=<i>set</i></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Perform a full hexadecimal and ASCII dump of all the
+data written to file descriptors listed in the specified
+set. For example, to see all output activity on file
+descriptors <i>3</i> and <i>5</i> use
+<b>-e&nbsp;write</b>=<i>3</i>,<i>5</i>. Note that this is
+independent from the normal tracing of the <b>write</b>(2)
+system call which is controlled by the option
+<b>-e&nbsp;trace</b>=<b>write</b>.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;quiet</b>=<i>set</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--quiet</b>=<i>set</i></p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--silent</b>=<i>set</i>
+<b><br>
+--silence</b>=<i>set</i></p>
+
+<p style="margin-left:29%;">Suppress various information
+messages. The default is <b>quiet</b>=<b>none</b>.
+<i>set</i> can include the following elements:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>attach</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Suppress messages about attaching and detaching
+(&quot;<b>[ Process NNNN attached ]</b>&quot;, &quot;<b>[
+Process NNNN detached ]</b>&quot;).</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>exit</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Suppress messages about process exits (&quot;<b>+++
+exited with SSS +++</b>&quot;).</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>path-resolution</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Suppress messages about resolution of paths provided via
+the <b>-P</b> option (&quot;<b>Requested path
+&quot;...&quot; resolved into
+&quot;...&quot;</b>&quot;).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>personality</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Suppress messages about process personality changes
+(&quot;<b>[ Process PID=NNNN runs in PPP mode.
+]</b>&quot;).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>thread-execve</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>superseded</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Suppress messages about process being superseded by
+<b>execve</b>(2) in another thread (&quot;<b>+++ superseded
+by execve in pid NNNN +++</b>&quot;).</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;decode-fds</b>=<i>set</i>
+<b><br>
+--decode-fds</b>=<i>set</i></p>
+
+<p style="margin-left:29%;">Decode various information
+associated with file descriptors. The default is
+<b>decode-fds</b>=<b>none</b>. <i>set</i> can include the
+following elements:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="9%">
+
+
+<p><b>path</b></p></td>
+<td width="4%"></td>
+<td width="58%">
+
+
+<p>Print file paths. Also enables printing of
+tracee&rsquo;s current working directory when
+<b>AT_FDCWD</b> constant is used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="9%">
+
+
+<p><b>socket</b></p></td>
+<td width="4%"></td>
+<td width="58%">
+
+
+<p>Print socket protocol-specific information,</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="9%">
+
+
+<p><b>dev</b></p></td>
+<td width="4%"></td>
+<td width="58%">
+
+
+<p>Print character/block device numbers.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="9%">
+
+
+<p><b>pidfd</b></p></td>
+<td width="4%"></td>
+<td width="58%">
+
+
+<p>Print PIDs associated with pidfd file descriptors.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;decode-pids</b>=<i>set</i>
+<b><br>
+--decode-pids</b>=<i>set</i></p>
+
+<p style="margin-left:29%;">Decode various information
+associated with process IDs (and also thread IDs, process
+group IDs, and session IDs). The default is
+<b>decode-pids</b>=<b>none</b>. <i>set</i> can include the
+following elements:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p><b>comm</b></p></td>
+<td width="5%"></td>
+<td width="58%">
+
+
+<p>Print command names associated with thread or process
+IDs.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p><b>pidns</b></p></td>
+<td width="5%"></td>
+<td width="58%">
+
+
+<p>Print thread, process, process group, and session IDs in
+strace&rsquo;s PID namespace if the tracee is in a different
+PID namespace.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p><b>-e&nbsp;kvm</b>=<b>vcpu</b></p></td>
+<td width="5%"></td>
+<td width="58%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p><b>--kvm</b>=<b>vcpu</b></p></td>
+<td width="5%"></td>
+<td width="58%">
+</td></tr>
+</table>
+
+<p style="margin-left:29%; margin-top: 1em">Print the exit
+reason of kvm vcpu. Requires Linux kernel version 4.16.0 or
+higher.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-i</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--instruction-pointer</b></p>
+
+<p style="margin-left:29%;">Print the instruction pointer
+at the time of the system call.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--syscall-number</b></p>
+
+<p style="margin-left:29%;">Print the syscall number.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-k</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--stack-traces</b></p>
+
+<p style="margin-left:29%;">Print the execution stack trace
+of the traced processes after each system call.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-o</b> <i>filename</i></p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--output</b>=<i>filename</i></p>
+
+<p style="margin-left:29%;">Write the trace output to the
+file <i>filename</i> rather than to stderr.
+<i>filename</i>.<i>pid</i> form is used if <b>-ff</b> option
+is supplied. If the argument begins with &rsquo;|&rsquo; or
+&rsquo;!&rsquo;, the rest of the argument is treated as a
+command and all output is piped to it. This is convenient
+for piping the debugging output to a program without
+affecting the redirections of executed programs. The latter
+is not compatible with <b>-ff</b> option currently.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-A</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--output-append-mode</b></p>
+
+<p style="margin-left:29%;">Open the file provided in the
+<b>-o</b> option in append mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>-q</b></p></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>--quiet</b></p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--quiet</b>=<b>attach</b>,<b>personality</b></p>
+
+<p style="margin-left:29%;">Suppress messages about
+attaching, detaching, and personality changes. This happens
+automatically when output is redirected to a file and the
+command is run directly instead of attaching.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-qq</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--quiet</b>=<b>attach</b>,<b>personality</b>,<b>exit</b></p>
+
+<p style="margin-left:29%;">Suppress messages attaching,
+detaching, personality changes, and about process exit
+status.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-qqq</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--quiet</b>=<b>all</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Suppress all suppressible messages (please refer to the
+<b>-e quiet</b> option description for the full list of
+suppressible messages).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-r</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--relative-timestamps</b>[=<i>precision</i>]</p>
+
+<p style="margin-left:29%;">Print a relative timestamp upon
+entry to each system call. This records the time difference
+between the beginning of successive system calls.
+<i>precision</i> can be one of <b>s</b> (for seconds),
+<b>ms</b> (milliseconds), <b>us</b> (microseconds), or
+<b>ns</b> (nanoseconds), and allows setting the precision of
+time value being printed. Default is <b>us</b>
+(microseconds). Note that since <b>-r</b> option uses the
+monotonic clock time for measuring time difference and not
+the wall clock time, its measurements can differ from the
+difference in time reported by the <b>-t</b> option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>-s</b> <i>strsize</i></p></td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--string-limit</b>=<i>strsize</i></p>
+
+<p style="margin-left:29%;">Specify the maximum string size
+to print (the default is 32). Note that filenames are not
+considered strings and are always printed in full.</p>
+
+
+<p style="margin-left:11%;"><b>--absolute-timestamps</b>[=[[<b>format:</b>]<i>format</i>],[[<b>precision:</b>]<i>precision</i>]]
+<b><br>
+
+--timestamps</b>[=[[<b>format:</b>]<i>format</i>],[[<b>precision:</b>]<i>precision</i>]]</p>
+
+<p style="margin-left:29%;">Prefix each line of the trace
+with the wall clock time in the specified <i>format</i> with
+the specified <i>precision</i>. <i>format</i> can be one of
+the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="6%">
+
+
+<p><b>none</b></p></td>
+<td width="16%"></td>
+<td width="49%">
+
+
+<p>No time stamp is printed. Can be used to override the
+previous setting.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="6%">
+
+
+<p><b>time</b></p></td>
+<td width="16%"></td>
+<td width="49%">
+
+
+<p>Wall clock time (<b>strftime</b>(3) format string is
+<b>%T</b>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="6%">
+
+
+<p><b>unix</b></p></td>
+<td width="16%"></td>
+<td width="49%">
+
+
+<p>Number of seconds since the epoch (<b>strftime</b>(3)
+format string is <b>%s</b>).</p></td></tr>
+</table>
+
+
+<p style="margin-left:29%; margin-top: 1em"><i>precision</i>
+can be one of <b>s</b> (for seconds), <b>ms</b>
+(milliseconds), <b>us</b> (microseconds), or <b>ns</b>
+(nanoseconds). Default arguments for the option are
+<b>format:time</b>,<b>precision:s</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-t</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--absolute-timestamps</b></p>
+
+<p style="margin-left:29%;">Prefix each line of the trace
+with the wall clock time.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-tt</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--absolute-timestamps</b>=<b>precision:us</b></p>
+
+<p style="margin-left:29%;">If given twice, the time
+printed will include the microseconds.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-ttt</b></p></td>
+<td width="83%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--absolute-timestamps</b>=<b>format:unix</b>,<b>precision:us</b></p>
+
+<p style="margin-left:29%;">If given thrice, the time
+printed will include the microseconds and the leading
+portion will be printed as the number of seconds since the
+epoch.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-T</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--syscall-times</b>[=<i>precision</i>]</p>
+
+<p style="margin-left:29%;">Show the time spent in system
+calls. This records the time difference between the
+beginning and the end of each system call. <i>precision</i>
+can be one of <b>s</b> (for seconds), <b>ms</b>
+(milliseconds), <b>us</b> (microseconds), or <b>ns</b>
+(nanoseconds), and allows setting the precision of time
+value being printed. Default is <b>us</b>
+(microseconds).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-v</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--no-abbrev</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Print unabbreviated versions of environment, stat,
+termios, etc. calls. These structures are very common in
+calls and so the default behavior displays a reasonable
+subset of structure members. Use this option to get all of
+the gory details.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--strings-in-hex</b>[=<i>option</i>]</p>
+
+<p style="margin-left:29%;">Control usage of escape
+sequences with hexadecimal numbers in the printed strings.
+Normally (when no <b>--strings-in-hex</b> or <b>-x</b>
+option is supplied), escape sequences are used to print
+non-printable and non-ASCII characters (that is, characters
+with a character code less than 32 or greater than 127), or
+to disambiguate the output (so, for quotes and other
+characters that encase the printed string, for example,
+angle brackets, in case of file descriptor path output); for
+the former use case, unless it is a white space character
+that has a symbolic escape sequence defined in the C
+standard (that is, &ldquo;<b>\t</b>&rdquo; for a horizontal
+tab, &ldquo;<b>\n</b>&rdquo; for a newline,
+&ldquo;<b>\v</b>&rdquo; for a vertical tab,
+&ldquo;<b>\f</b>&rdquo; for a form feed page break, and
+&ldquo;<b>\r</b>&rdquo; for a carriage return) are printed
+using escape sequences with numbers that correspond to their
+byte values, with octal number format being the default.
+<i>option</i> can be one of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>none</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Hexadecimal numbers are not used in the output at all.
+When there is a need to emit an escape sequence, octal
+numbers are used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>non-ascii-chars</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Hexadecimal numbers are used instead of octal in the
+escape sequences.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>non-ascii</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>Strings that contain non-ASCII characters are printed
+using escape sequences with hexadecimal numbers.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="23%">
+
+
+<p><b>all</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>All strings are printed using escape sequences with
+hexadecimal numbers.</p></td></tr>
+</table>
+
+<p style="margin-left:29%; margin-top: 1em">When the option
+is supplied without an argument, <b>all</b> is assumed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-x</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--strings-in-hex</b>=<b>non-ascii</b></p>
+
+<p style="margin-left:29%;">Print all non-ASCII strings in
+hexadecimal string format.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-xx</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--strings-in-hex</b>[=<b>all</b>]</p>
+
+<p style="margin-left:29%;">Print all strings in
+hexadecimal string format.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>-X</b> <i>format</i></p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--const-print-style</b>=<i>format</i></p>
+
+<p style="margin-left:29%;">Set the format for printing of
+named constants and flags. Supported <i>format</i> values
+are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="29%">
+
+
+<p><b>raw</b></p></td>
+<td width="5%"></td>
+<td width="55%">
+
+
+<p>Raw number output, without decoding.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="29%">
+
+
+<p><b>abbrev</b></p></td>
+<td width="5%"></td>
+<td width="55%">
+
+
+<p>Output a named constant or a set of flags instead of the
+raw number if they are found. This is the default
+<b>strace</b> behaviour.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="29%">
+
+
+<p><b>verbose</b></p></td>
+<td width="5%"></td>
+<td width="55%">
+
+
+<p>Output both the raw value and the decoded string (as a
+comment).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="29%">
+
+
+<p><b>-y</b></p></td>
+<td width="5%"></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--decode-fds <br>
+--decode-fds</b>=<b>path</b></p>
+
+<p style="margin-left:29%;">Print paths associated with
+file descriptor arguments and with the <b>AT_FDCWD</b>
+constant.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-yy</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--decode-fds</b>=<b>all</b></p>
+
+<p style="margin-left:29%;">Print all available information
+associated with file descriptors: protocol-specific
+information associated with socket file descriptors,
+block/character device number associated with device file
+descriptors, and PIDs associated with pidfd file
+descriptors.</p>
+
+<p style="margin-left:11%;"><b>--pidns-translation <br>
+--decode-pids</b>=<b>pidns</b></p>
+
+<p style="margin-left:29%;">If strace and tracee are in
+different PID namespaces, print PIDs in strace&rsquo;s
+namespace, too.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-Y</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--decode-pids</b>=<b>comm</b></p>
+
+<p style="margin-left:29%;">Print command names for
+PIDs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Statistics</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--summary-only</b></p>
+
+<p style="margin-left:29%;">Count time, calls, and errors
+for each system call and report a summary on program exit,
+suppressing the regular output. This attempts to show system
+time (CPU time spent running in the kernel) independent of
+wall clock time. If <b>-c</b> is used with <b>-f</b>, only
+aggregate totals for all traced processes are kept.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-C</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>--summary</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Like <b>-c</b> but also print regular output while
+processes are running.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>-O</b> <i>overhead</i></p></td>
+<td width="1%"></td>
+<td width="71%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--summary-syscall-overhead</b>=<i>overhead</i></p>
+
+<p style="margin-left:29%;">Set the overhead for tracing
+system calls to <i>overhead</i>. This is useful for
+overriding the default heuristic for guessing how much time
+is spent in mere measuring when timing system calls using
+the <b>-c</b> option. The accuracy of the heuristic can be
+gauged by timing a given program run without tracing (using
+<b>time</b>(1)) and comparing the accumulated system call
+time to the total produced using <b>-c</b>.</p>
+
+<p style="margin-left:29%; margin-top: 1em">The format of
+<i>overhead</i> specification is described in section
+<i>Time specification format description</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>-S</b> <i>sortby</i></p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--summary-sort-by</b>=<i>sortby</i></p>
+
+<p style="margin-left:29%;">Sort the output of the
+histogram printed by the <b>-c</b> option by the specified
+criterion. Legal values are <b>time</b> (or
+<b>time-percent</b> or <b>time-total</b> or
+<b>total-time</b>), <b>min-time</b> (or <b>shortest</b> or
+<b>time-min</b>), <b>max-time</b> (or <b>longest</b> or
+<b>time-max</b>), <b>avg-time</b> (or <b>time-avg</b>),
+<b>calls</b> (or <b>count</b>), <b>errors</b> (or
+<b>error</b>), <b>name</b> (or <b>syscall</b> or
+<b>syscall-name</b>), and <b>nothing</b> (or <b>none</b>);
+default is <b>time</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>-U</b> <i>columns</i></p></td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--summary-columns</b>=<i>columns</i></p>
+
+<p style="margin-left:29%;">Configure a set (and order) of
+columns being shown in the call summary. The <i>columns</i>
+argument is a comma-separated list with items being one of
+the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>time-percent</b> (or <b>time</b>)</p></td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Percentage of cumulative time consumed by a specific
+system call.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>total-time</b> (or <b>time-total</b>)</p></td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Total system (or wall clock, if <b>-w</b> option is
+provided) time consumed by a specific system call.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>min-time</b> (or <b>shortest</b> or
+<b>time-min</b>)</p> </td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Minimum observed call duration.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>max-time</b> (or <b>longest</b> or
+<b>time-max</b>)</p> </td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Maximum observed call duration.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>avg-time</b> (or <b>time-avg</b>)</p></td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Average call duration.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>calls</b> (or <b>count</b>)</p></td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Call count.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>errors</b> (or <b>error</b>)</p></td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Error count.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="53%">
+
+
+<p><b>name</b> (or <b>syscall</b> or
+<b>syscall-name</b>)</p> </td>
+<td width="3%"></td>
+<td width="15%">
+
+
+<p>Syscall name.</p></td></tr>
+</table>
+
+<p style="margin-left:29%; margin-top: 1em">The default
+value is
+<b>time-percent</b>,<b>total-time</b>,<b>avg-time</b>,<b>calls</b>,<b>errors</b>,<b>name</b>.
+If the <b>name</b> field is not supplied explicitly, it is
+added as the last column.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-w</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--summary-wall-clock</b></p>
+
+<p style="margin-left:29%;">Summarise the time difference
+between the beginning and end of each system call. The
+default is to summarise the system time.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Tampering
+<br>
+
+-e&nbsp;inject</b>=<i>syscall_set</i>[:<b>error</b>=<i>errno</i>|:<b>retval</b>=<i>value</i>][:<b>signal</b>=<i>sig</i>][:<b>syscall</b>=<i>syscall</i>][:<b>delay_enter</b>=<i>delay</i>][:<b>delay_exit</b>=<i>delay</i>][:<b>poke_enter</b>=<i>@argN=DATAN,@argM=DATAM...</i>][:<b>poke_exit</b>=<i>@argN=DATAN,@argM=DATAM...</i>][:<b>when</b>=<i>expr</i>]
+<b><br>
+
+--inject</b>=<i>syscall_set</i>[:<b>error</b>=<i>errno</i>|:<b>retval</b>=<i>value</i>][:<b>signal</b>=<i>sig</i>][:<b>syscall</b>=<i>syscall</i>][:<b>delay_enter</b>=<i>delay</i>][:<b>delay_exit</b>=<i>delay</i>][:<b>poke_enter</b>=<i>@argN=DATAN,@argM=DATAM...</i>][:<b>poke_exit</b>=<i>@argN=DATAN,@argM=DATAM...</i>][:<b>when</b>=<i>expr</i>]</p>
+
+<p style="margin-left:29%;">Perform syscall tampering for
+the specified set of syscalls. The syntax of the
+<i>syscall_set</i> specification is the same as in the <b>-e
+trace</b> option.</p>
+
+<p style="margin-left:29%; margin-top: 1em">At least one of
+<b>error</b>, <b>retval</b>, <b>signal</b>,
+<b>delay_enter</b>, <b>delay_exit</b>, <b>poke_enter</b>, or
+<b>poke_exit</b> options has to be specified. <b>error</b>
+and <b>retval</b> are mutually exclusive.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>error</b>=<i>errno</i> option is specified, a fault is
+injected into a syscall invocation: the syscall number is
+replaced by -1 which corresponds to an invalid syscall
+(unless a syscall is specified with :<b>syscall=</b>
+option), and the error code is specified using a symbolic
+<i>errno</i> value like <b>ENOSYS</b> or a numeric value
+within 1..4095 range.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>retval</b>=<i>value</i> option is specified, success
+injection is performed: the syscall number is replaced by
+-1, but a bogus success value is returned to the callee.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>signal</b>=<i>sig</i> option is specified with either a
+symbolic value like <b>SIGSEGV</b> or a numeric value within
+1..<b>SIGRTMAX</b> range, that signal is delivered on
+entering every syscall specified by the <i>set</i>.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>delay_enter</b>=<i>delay</i> or
+:<b>delay_exit</b>=<i>delay</i> options are specified, delay
+injection is performed: the tracee is delayed by time period
+specified by <i>delay</i> on entering or exiting the
+syscall, respectively. The format of <i>delay</i>
+specification is described in section <i>Time specification
+format description</i>.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>poke_enter</b>=<i>@argN=DATAN,@argM=DATAM...</i> or
+:<b>poke_exit</b>=<i>@argN=DATAN,@argM=DATAM...</i> options
+are specified, tracee&rsquo;s memory at locations, pointed
+to by system call arguments <i>argN</i> and <i>argM</i>
+(going from <i>arg1</i> to <i>arg7</i>) is overwritten by
+data <i>DATAN</i> and <i>DATAM</i> (specified in hexadecimal
+format; for example
+:<b>poke_enter</b>=<i>@arg1=0000DEAD0000BEEF</i>).
+:<b>poke_enter</b> modifies memory on syscall enter, and
+:<b>poke_exit</b> - on exit.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>signal</b>=<i>sig</i> option is specified without
+:<b>error</b>=<i>errno</i>, :<b>retval</b>=<i>value</i> or
+:<b>delay_{enter,exit}</b>=<i>usecs</i> options, then only a
+signal <i>sig</i> is delivered without a syscall fault or
+delay injection. Conversely, :<b>error</b>=<i>errno</i> or
+:<b>retval</b>=<i>value</i> option without
+:<b>delay_enter</b>=<i>delay</i>,
+:<b>delay_exit</b>=<i>delay</i> or :<b>signal</b>=<i>sig</i>
+options injects a fault without delivering a signal or
+injecting a delay, etc.</p>
+
+<p style="margin-left:29%; margin-top: 1em">If
+:<b>signal</b>=<i>sig</i> option is specified together with
+:<b>error</b>=<i>errno</i> or :<b>retval</b>=<i>value</i>,
+then both injection of a fault or success and signal
+delivery are performed.</p>
+
+<p style="margin-left:29%; margin-top: 1em">if
+:<b>syscall</b>=<i>syscall</i> option is specified, the
+corresponding syscall with no side effects is injected
+instead of -1. Currently, only &quot;pure&quot; (see <b>-e
+trace</b>=<b>%pure</b> description) syscalls can be
+specified there.</p>
+
+<p style="margin-left:29%; margin-top: 1em">Unless a
+:<b>when</b>=<i>expr</i> subexpression is specified, an
+injection is being made into every invocation of each
+syscall from the <i>set</i>.</p>
+
+<p style="margin-left:29%; margin-top: 1em">The format of
+the subexpression is:</p>
+
+
+<p style="margin-left:45%; margin-top: 1em"><i>first</i>[<b>..</b><i>last</i>][<b>+</b>[<i>step</i>]]</p>
+
+<p style="margin-left:29%; margin-top: 1em">Number
+<i>first</i> stands for the first invocation number in the
+range, number <i>last</i> stands for the last invocation
+number in the range, and <i>step</i> stands for the step
+between two consecutive invocations. The following
+combinations are useful:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="25%">
+
+
+<p><i>first</i></p></td>
+<td width="3%"></td>
+<td width="43%">
+
+
+<p>For every syscall from the <i>set</i>, perform an
+injection for the syscall invocation number <i>first</i>
+only.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="25%">
+
+
+<p><i>first</i><b>..</b><i>last</i></p></td>
+<td width="3%"></td>
+<td width="43%">
+
+
+<p>For every syscall from the <i>set</i>, perform an
+injection for the syscall invocation number <i>first</i> and
+all subsequent invocations until the invocation number
+<i>last</i> (inclusive).</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="25%">
+
+
+<p><i>first</i><b>+</b></p></td>
+<td width="3%"></td>
+<td width="43%">
+
+
+<p>For every syscall from the <i>set</i>, perform
+injections for the syscall invocation number <i>first</i>
+and all subsequent invocations.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="25%">
+
+
+<p><i>first</i><b>..</b><i>last</i><b>+</b></p></td>
+<td width="3%"></td>
+<td width="43%">
+
+
+<p>For every syscall from the <i>set</i>, perform
+injections for the syscall invocation number <i>first</i>
+and all subsequent invocations until the invocation number
+<i>last</i> (inclusive).</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="25%">
+
+
+<p><i>first</i><b>+</b><i>step</i></p></td>
+<td width="3%"></td>
+<td width="43%">
+
+
+<p>For every syscall from the <i>set</i>, perform
+injections for syscall invocations number <i>first</i>,
+<i>first</i>+<i>step</i>,
+<i>first</i>+<i>step</i>+<i>step</i>, and so on.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="25%">
+
+
+<p><i>first</i><b>..</b><i>last</i><b>+</b><i>step</i></p></td>
+<td width="3%"></td>
+<td width="43%">
+
+
+<p>Same as the previous, but consider only syscall
+invocations with numbers up to <i>last</i> (inclusive).</p></td></tr>
+</table>
+
+<p style="margin-left:29%; margin-top: 1em">For example, to
+fail each third and subsequent chdir syscalls with
+<b>ENOENT</b>, use
+<b>-e&nbsp;inject</b>=<i>chdir</i>:<b>error</b>=<i>ENOENT</i>:<b>when</b>=<i>3</i><b>+</b>.</p>
+
+<p style="margin-left:29%; margin-top: 1em">The valid range
+for numbers <i>first</i> and <i>step</i> is 1..65535, and
+for number <i>last</i> is 1..65534.</p>
+
+<p style="margin-left:29%; margin-top: 1em">An injection
+expression can contain only one <b>error</b>= or
+<b>retval</b>= specification, and only one <b>signal</b>=
+specification. If an injection expression contains multiple
+<b>when</b>= specifications, the last one takes
+precedence.</p>
+
+<p style="margin-left:29%; margin-top: 1em">Accounting of
+syscalls that are subject to injection is done per syscall
+and per tracee.</p>
+
+<p style="margin-left:29%; margin-top: 1em">Specification
+of syscall injection can be combined with other syscall
+filtering options, for example, <b>-P</b>
+<i>/dev/urandom</i> <b>-e
+inject</b>=<i>file</i>:<b>error</b>=<i>ENOENT</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-e&nbsp;fault</b>=<i>syscall_set</i>[:<b>error</b>=<i>errno</i>][:<b>when</b>=<i>expr</i>]
+<b><br>
+
+--fault</b>=<i>syscall_set</i>[:<b>error</b>=<i>errno</i>][:<b>when</b>=<i>expr</i>]</p>
+
+<p style="margin-left:29%;">Perform syscall fault injection
+for the specified set of syscalls.</p>
+
+<p style="margin-left:29%; margin-top: 1em">This is
+equivalent to more generic <b>-e&nbsp;inject</b>= expression
+with default value of <i>errno</i> option set to
+<b>ENOSYS</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>-d</b></p></td>
+<td width="7%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>--debug</b></p></td>
+<td width="7%"></td>
+<td width="71%">
+
+
+<p>Show some debugging output of <b>strace</b> itself on
+the standard error.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>-F</b></p></td>
+<td width="7%"></td>
+<td width="71%">
+
+
+<p>This option is deprecated. It is retained for backward
+compatibility only and may be removed in future releases.
+Usage of multiple instances of <b>-F</b> option is still
+equivalent to a single <b>-f</b>, and it is ignored at all
+if used along with one or more instances of <b>-f</b>
+option.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>-h</b></p></td>
+<td width="7%"></td>
+<td width="71%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>--help</b></p></td>
+<td width="7%"></td>
+<td width="71%">
+
+
+<p>Print the help summary.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--seccomp-bpf</b></p>
+
+<p style="margin-left:29%;">Try to enable use of
+seccomp-bpf (see <b>seccomp</b>(2)) to have
+<b>ptrace</b>(2)-stops only when system calls that are being
+traced occur in the traced processes. This option has no
+effect unless <b>-f</b>/<b>--follow-forks</b> is also
+specified. <b>--seccomp-bpf</b> is also not applicable to
+processes attached using <b>-p</b>/<b>--attach</b> option.
+An attempt to enable system calls filtering using
+seccomp-bpf may fail for various reasons, e.g. there are too
+many system calls to filter, the seccomp API is not
+available, or <b>strace</b> itself is being traced. In cases
+when seccomp-bpf filter setup failed, <b>strace</b> proceeds
+as usual and stops traced processes on every system
+call.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>-V</b></p></td>
+<td width="4%"></td>
+<td width="54%">
+</td>
+<td width="17%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><b>--version</b></p></td>
+<td width="4%"></td>
+<td width="54%">
+
+
+<p>Print the version number of <b>strace</b>.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Time
+specification format description</b> <br>
+Time values can be specified as a decimal floating point
+number (in a format accepted by <b>strtod</b>(3)),
+optionally followed by one of the following suffices that
+specify the unit of time: <b>s</b> (seconds), <b>ms</b>
+(milliseconds), <b>us</b> (microseconds), or <b>ns</b>
+(nanoseconds). If no suffix is specified, the value is
+interpreted as microseconds.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The described
+format is used for <b>-O</b>, <b>-e
+inject</b>=<b>delay_enter</b>, and <b>-e
+inject</b>=<b>delay_exit</b> options.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When
+<i>command</i> exits, <b>strace</b> exits with the same exit
+status. If <i>command</i> is terminated by a signal,
+<b>strace</b> terminates itself with the same signal, so
+that <b>strace</b> can be used as a wrapper process
+transparent to the invoking parent process. Note that
+parent-child relationship (signal stop notifications,
+<b>getppid</b>(2) value, etc) between traced process and its
+parent are not preserved unless <b>-D</b> is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using
+<b>-p</b> without a <i>command</i>, the exit status of
+<b>strace</b> is zero unless no processes has been attached
+or there was an unexpected error in doing the tracing.</p>
+
+<h2>SETUID INSTALLATION
+<a name="SETUID INSTALLATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>strace</b> is installed setuid to root then the invoking
+user will be able to attach to and trace processes owned by
+any user. In addition setuid and setgid programs will be
+executed and traced with the correct effective privileges.
+Since only users trusted with full root privileges should be
+allowed to do these things, it only makes sense to install
+<b>strace</b> as setuid to root when the users who can
+execute it are restricted to those users who have this
+trust. For example, it makes sense to install a special
+version of <b>strace</b> with mode &rsquo;rwsr-xr--&rsquo;,
+user <b>root</b> and group <b>trace</b>, where members of
+the <b>trace</b> group are trusted users. If you do use this
+feature, please remember to install a regular non-setuid
+version of <b>strace</b> for ordinary users to use.</p>
+
+<h2>MULTIPLE PERSONALITIES SUPPORT
+<a name="MULTIPLE PERSONALITIES SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On some
+architectures, <b>strace</b> supports decoding of syscalls
+for processes that use different ABI rather than the one
+<b>strace</b> uses. Specifically, in addition to decoding
+native ABI, <b>strace</b> can decode the following ABIs on
+the following architectures:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-1435661.png" alt="Image grohtml-1435661.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">[1]</p></td>
+<td width="3%"></td>
+<td width="70%">
+
+
+<p style="margin-top: 1em">When <b>strace</b> is built as
+an x86_64 application</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>[2]</p></td>
+<td width="3%"></td>
+<td width="70%">
+
+
+<p>When <b>strace</b> is built as an x32 application</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>[3]</p></td>
+<td width="3%"></td>
+<td width="70%">
+
+
+<p>Big endian only</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">This support is
+optional and relies on ability to generate and parse
+structure definitions during the build time. Please refer to
+the output of the <b>strace -V</b> command in order to
+figure out what support is available in your <b>strace</b>
+build (&quot;non-native&quot; refers to an ABI that differs
+from the ABI <b>strace</b> has):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>m32-mpers</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>strace</b> can trace and
+properly decode non-native 32-bit binaries.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>no-m32-mpers</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p><b>strace</b> can trace, but cannot properly decode
+non-native 32-bit binaries.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>mx32-mpers</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p><b>strace</b> can trace and properly decode non-native
+32-on-64-bit binaries.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>no-mx32-mpers</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p><b>strace</b> can trace, but cannot properly decode
+non-native 32-on-64-bit binaries.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the output
+contains neither <b>m32-mpers</b> nor <b>no-m32-mpers</b>,
+then decoding of non-native 32-bit binaries is not
+implemented at all or not applicable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Likewise, if
+the output contains neither <b>mx32-mpers</b> nor
+<b>no-mx32-mpers</b>, then decoding of non-native
+32-on-64-bit binaries is not implemented at all or not
+applicable.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is a pity
+that so much tracing clutter is produced by systems
+employing shared libraries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is
+instructive to think about system call inputs and outputs as
+data-flow across the user/kernel boundary. Because
+user-space and kernel-space are separate and
+address-protected, it is sometimes possible to make
+deductive inferences about process behavior using inputs and
+outputs as propositions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In some cases,
+a system call will differ from the documented behavior or
+have a different name. For example, the <b>faccessat</b>(2)
+system call does not have <i>flags</i> argument, and the
+<b>setrlimit</b>(2) library function uses
+<b>prlimit64</b>(2) system call on modern (2.6.38+) kernels.
+These discrepancies are normal but idiosyncratic
+characteristics of the system call interface and are
+accounted for by C library wrapper functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some system
+calls have different names in different architectures and
+personalities. In these cases, system call filtering and
+printing uses the names that match corresponding
+<b>__NR_</b>* kernel macros of the tracee&rsquo;s
+architecture and personality. There are two exceptions from
+this general rule: <b>arm_fadvise64_64</b>(2) ARM syscall
+and <b>xtensa_fadvise64_64</b>(2) Xtensa syscall are
+filtered and printed as <b>fadvise64_64</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">On x32,
+syscalls that are intended to be used by 64-bit processes
+and not x32 ones (for example, <b>readv</b>(2), that has
+syscall number 19 on x86_64, with its x32 counterpart has
+syscall number 515), but called with
+<b>__X32_SYSCALL_BIT</b> flag being set, are designated with
+<b>#64</b> suffix.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On some
+platforms a process that is attached to with the <b>-p</b>
+option may observe a spurious <b>EINTR</b> return from the
+current system call that is not restartable. (Ideally, all
+system calls should be restarted on <b>strace</b> attach,
+making the attach invisible to the traced process, but a few
+system calls aren&rsquo;t. Arguably, every instance of such
+behavior is a kernel bug.) This may have an unpredictable
+effect on the process if the process takes no action to
+restart the system call.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As
+<b>strace</b> executes the specified <i>command</i> directly
+and does not employ a shell for that, scripts without
+shebang that usually run just fine when invoked by shell
+fail to execute with <b>ENOEXEC</b> error. It is advisable
+to manually supply a shell as a <i>command</i> with the
+script as its argument.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Programs that
+use the <i>setuid</i> bit do not have effective user
+<small>ID</small> privileges while being traced.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A traced
+process runs slowly (but check out the <b>--seccomp-bpf</b>
+option).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Traced
+processes which are descended from <i>command</i> may be
+left running after an interrupt signal (<b>CTRL-C</b>).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The original
+<b>strace</b> was written by Paul Kranenburg for SunOS and
+was inspired by its <b>trace</b> utility. The SunOS version
+of <b>strace</b> was ported to Linux and enhanced by Branko
+Lankester, who also wrote the Linux kernel support. Even
+though Paul released <b>strace</b> 2.5 in 1992,
+Branko&rsquo;s work was based on Paul&rsquo;s <b>strace</b>
+1.5 release from 1991. In 1993, Rick Sladkey merged
+<b>strace</b> 2.5 for SunOS and the second release of
+<b>strace</b> for Linux, added many of the features of
+<b>truss</b>(1) from SVR4, and produced an <b>strace</b>
+that worked on both platforms. In 1994 Rick ported
+<b>strace</b> to SVR4 and Solaris and wrote the automatic
+configuration support. In 1995 he ported <b>strace</b> to
+Irix and tired of writing about himself in the third
+person.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Beginning with
+1996, <b>strace</b> was maintained by Wichert Akkerman.
+During his tenure, <b>strace</b> development migrated to
+CVS; ports to FreeBSD and many architectures on Linux
+(including ARM, IA-64, MIPS, PA-RISC, PowerPC, s390, SPARC)
+were introduced. In 2002, the burden of <b>strace</b>
+maintainership was transferred to Roland McGrath. Since
+then, <b>strace</b> gained support for several new Linux
+architectures (AMD64, s390x, SuperH), bi-architecture
+support for some of them, and received numerous additions
+and improvements in syscalls decoders on Linux;
+<b>strace</b> development migrated to <b>git</b> during that
+period. Since 2009, <b>strace</b> is actively maintained by
+Dmitry Levin. <b>strace</b> gained support for AArch64, ARC,
+AVR32, Blackfin, Meta, Nios II, OpenRISC 1000, RISC-V,
+Tile/TileGx, Xtensa architectures since that time. In 2012,
+unmaintained and apparently broken support for non-Linux
+operating systems was removed. Also, in 2012 <b>strace</b>
+gained support for path tracing and file descriptor path
+decoding. In 2014, support for stack traces printing was
+added. In 2016, syscall fault injection was implemented.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the
+additional information, please refer to the <b>NEWS</b> file
+and <b>strace</b> repository commit log.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Problems with
+<b>strace</b> should be reported to the
+<a href="mailto:strace-devel@lists.strace.io"><b>strace</b>
+mailing list</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>strace-log-merge</b>(1),
+<b>ltrace</b>(1), <b>perf-trace</b>(1), <b>trace-cmd</b>(1),
+<b>time</b>(1), <b>ptrace</b>(2), <b>proc</b>(5) <br>
+<a href="https://strace.io/"><b>strace</b> Home Page</a></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The complete
+list of <b>strace</b> contributors can be found in the
+<b>CREDITS</b> file.</p>
+<hr>
+</body>
+</html>

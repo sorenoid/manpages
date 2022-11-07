@@ -1,0 +1,2609 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BITMAP</title>
+
+</head>
+<body>
+
+<h1 align="center">BITMAP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMAND LINE OPTIONS">COMMAND LINE OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#EDITING">EDITING</a><br>
+<a href="#DRAWING COMMANDS">DRAWING COMMANDS</a><br>
+<a href="#FILE MENU">FILE MENU</a><br>
+<a href="#EDIT MENU">EDIT MENU</a><br>
+<a href="#CUT AND PASTE">CUT AND PASTE</a><br>
+<a href="#WIDGETS">WIDGETS</a><br>
+<a href="#COLORS">COLORS</a><br>
+<a href="#BITMAP WIDGET">BITMAP WIDGET</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bitmap, bmtoa,
+atobm - bitmap editor and converter utilities for the X
+Window System</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bitmap</b> [
+<i>-options</i> ... ] [ <i>filename</i> ] [ <i>basename</i>
+]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bmtoa</b> [
+<b>-chars</b> ... ] [ <i>filename</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>atobm</b> [
+<b>-chars</b> <i>cc</i> ] [ <b>-name</b> <i>variable</i> ] [
+<b>-xhot</b> <i>number</i> ] [ <b>-yhot</b> <i>number</i> ]
+[ <i>filename</i> ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>bitmap</i> program is a rudimentary tool for creating or
+editing rectangular images made up of 1&rsquo;s and
+0&rsquo;s. Bitmaps are used in X for defining clipping
+regions, cursor shapes, icon shapes, and tile and stipple
+patterns.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>bmtoa</i> and <i>atobm</i> filters convert <i>bitmap</i>
+files (FILE FORMAT) to and from ASCII strings. They are most
+commonly used to quickly print out bitmaps and to generate
+versions for including in text.</p>
+
+<h2>COMMAND LINE OPTIONS
+<a name="COMMAND LINE OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Bitmap</i>
+supports the standard X Toolkit command line arguments (see
+<i>X</i>(7)). The following additional arguments are
+supported as well. <b><br>
+-size</b> <i>WIDTHxHEIGHT</i></p>
+
+<p style="margin-left:17%;">Specifies size of the grid in
+squares.</p>
+
+<p style="margin-left:11%;"><b>-sw</b> <i>dimension</i></p>
+
+<p style="margin-left:17%;">Specifies the width of squares
+in pixels.</p>
+
+<p style="margin-left:11%;"><b>-sh</b> <i>dimension</i></p>
+
+<p style="margin-left:17%;">Specifies the height of squares
+in pixels.</p>
+
+<p style="margin-left:11%;"><b>-gt</b> <i>dimension</i></p>
+
+<p style="margin-left:17%;">Grid tolerance. If the square
+dimensions fall below the specified value, grid will be
+automatically turned off.</p>
+
+<p style="margin-left:11%;"><b>-grid, +grid</b></p>
+
+<p style="margin-left:17%;">Turns on or off the grid
+lines.</p>
+
+<p style="margin-left:11%;"><b>-axes, +axes</b></p>
+
+<p style="margin-left:17%;">Turns on or off the major
+axes.</p>
+
+<p style="margin-left:11%;"><b>-dashed, +dashed</b></p>
+
+<p style="margin-left:17%;">Turns on or off dashing for the
+frame and grid lines.</p>
+
+<p style="margin-left:11%;"><b>-stippled, +stippled</b></p>
+
+<p style="margin-left:17%;">Turns on or off stippling of
+highlighted squares.</p>
+
+<p style="margin-left:11%;"><b>-proportional,
++proportional</b></p>
+
+<p style="margin-left:17%;">Turns proportional mode on or
+off. If proportional mode is on, square width is equal to
+square height. If proportional mode is off, <i>bitmap</i>
+will use the smaller square dimension, if they were
+initially different.</p>
+
+<p style="margin-left:11%;"><b>-dashes</b>
+<i>filename</i></p>
+
+<p style="margin-left:17%;">Specifies the bitmap to be used
+as a stipple for dashing.</p>
+
+<p style="margin-left:11%;"><b>-stipple</b>
+<i>filename</i></p>
+
+<p style="margin-left:17%;">Specifies the bitmap to be used
+as a stipple for highlighting.</p>
+
+<p style="margin-left:11%;"><b>-hl</b> <i>color</i></p>
+
+<p style="margin-left:17%;">Specifies the color used for
+highlighting.</p>
+
+<p style="margin-left:11%;"><b>-fr</b> <i>color</i></p>
+
+<p style="margin-left:17%;">Specifies the color used for
+the frame and grid lines.</p>
+
+<p style="margin-left:11%;"><b>filename</b></p>
+
+<p style="margin-left:17%;">Specifies the bitmap to be
+initially loaded into the program. If the file does not
+exist, <i>bitmap</i> will assume it is a new file.</p>
+
+<p style="margin-left:11%;"><b>basename</b></p>
+
+<p style="margin-left:17%;">Specifies the basename to be
+used in the C code output file. If it is different than the
+basename in the working file, <i>bitmap</i> will change it
+when saving the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Bmtoa</i>
+accepts the following option: <b><br>
+-chars</b> <i>cc</i></p>
+
+<p style="margin-left:17%;">This option specifies the pair
+of characters to use in the string version of the bitmap.
+The first character is used for 0 bits and the second
+character is used for 1 bits. The default is to use dashes
+(-) for 0&rsquo;s and sharp signs (#) for 1&rsquo;s.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Atobm</i>
+accepts the following options: <b><br>
+-chars</b> <i>cc</i></p>
+
+<p style="margin-left:17%;">This option specifies the pair
+of characters to use when converting string bitmaps into
+arrays of numbers. The first character represents a 0 bit
+and the second character represents a 1 bit. The default is
+to use dashes (-) for 0&rsquo;s and sharp signs (#) for
+1&rsquo;s.</p>
+
+<p style="margin-left:11%;"><b>-name</b>
+<i>variable</i></p>
+
+<p style="margin-left:17%;">This option specifies the
+variable name to be used when writing out the bitmap file.
+The default is to use the basename of the <i>filename</i>
+command line argument or leave it blank if the standard
+input is read.</p>
+
+<p style="margin-left:11%;"><b>-xhot</b> <i>number</i></p>
+
+<p style="margin-left:17%;">This option specifies the X
+coordinate of the hotspot. Only positive values are allowed.
+By default, no hotspot information is included.</p>
+
+<p style="margin-left:11%;"><b>-yhot</b> <i>number</i></p>
+
+<p style="margin-left:17%;">This option specifies the Y
+coordinate of the hotspot. Only positive values are allowed.
+By default, no hotspot information is included.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Bitmap</i>
+displays grid in which each square represents a single bit
+in the picture being edited. Actual size of the bitmap
+image, as it would appear normally and inverted, can be
+obtained by pressing <b>Meta-I</b> key. You are free to move
+the image popup out of the way to continue editing. Pressing
+the left mouse button in the popup window or <b>Meta-I</b>
+again will remove the real size bitmap image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the bitmap
+is to be used for defining a cursor, one of the squares in
+the images may be designated as the hot spot. This
+determines where the cursor is actually pointing. For
+cursors with sharp tips (such as arrows or fingers), this is
+usually at the end of the tip; for symmetric cursors (such
+as crosses or bullseyes), this is usually at the center.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bitmaps are
+stored as small C code fragments suitable for including in
+applications. They provide an array of bits as well as
+symbolic constants giving the width, height, and hot spot
+(if specified) that may be used in creating cursors, icons,
+and tiles.</p>
+
+<h2>EDITING
+<a name="EDITING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To edit a
+bitmap image simply click on one of the buttons with drawing
+commands (<b>Point, Curve, Line, Rectangle,</b> etc.) and
+move the pointer into the bitmap grid window. Press one of
+the buttons on your mouse and the appropriate action will
+take place. You can either set, clear or invert the gird
+squares. Setting a grid square corresponds to setting a bit
+in the bitmap image to 1. Clearing a grid square corresponds
+to setting a bit in the bitmap image to 0. Inverting a grid
+square corresponds to changing a bit in the bitmap image
+from 0 to 1 or 1 to 0, depending what its previous state
+was. The default behavior of mouse buttons is as specified
+below.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>MouseButton1</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="46%">
+
+
+<p>Set</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>MouseButton2</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="46%">
+
+
+<p>Invert</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>MouseButton3</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="46%">
+
+
+<p>Clear</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>MouseButton4</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="46%">
+
+
+<p>Clear</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>MouseButton5</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="46%">
+
+
+<p>Clear</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">This default
+behavior can be changed by setting the button function
+resources. An example is provided below.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>bitmap*button1Function: Set</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>bitmap*button2Function: Clear</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>bitmap*button3Function: Invert</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>etc.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The button
+function applies to all drawing commands, including copying,
+moving and pasting, flood filling and setting the hot
+spot.</p>
+
+<h2>DRAWING COMMANDS
+<a name="DRAWING COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here is the
+list of drawing commands accessible through the buttons at
+the left side of the application&rsquo;s window. Some
+commands can be aborted by pressing A inside the bitmap
+window, allowing the user to select different guiding points
+where applicable. <b><br>
+Clear</b></p>
+
+<p style="margin-left:17%;">This command clears all bits in
+the bitmap image. The grid squares will be set to the
+background color. Pressing C inside the bitmap window has
+the same effect.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Set</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>This command sets all bits in the bitmap image. The grid
+squares will be set to the foreground color. Pressing S
+inside the bitmap window has the same effect.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Invert</b></p>
+
+<p style="margin-left:17%;">This command inverts all bits
+in the bitmap image. The grid squares will be inverted
+appropriately. Pressing I inside the bitmap window has the
+same effect.</p>
+
+<p style="margin-left:11%;"><b>Mark</b></p>
+
+<p style="margin-left:17%;">This command is used to mark an
+area of the grid by dragging out a rectangular shape in the
+highlighting color. Once the area is marked, it can be
+operated on by a number of commands (see <b>Up, Down, Left,
+Right, Rotate, Flip, Cut,</b> etc.) Only one marked area can
+be present at any time. If you attempt to mark another area,
+the old mark will vanish. The same effect can be achieved by
+pressing <b>Shift-MouseButton1</b> and dragging out a
+rectangle in the grid window. Pressing
+<b>Shift-MouseButton2</b> will mark the entire grid
+area.</p>
+
+<p style="margin-left:11%;"><b>Unmark</b></p>
+
+<p style="margin-left:17%;">This command will cause the
+marked area to vanish. The same effect can be achieved by
+pressing <b>Shift-MouseButton3</b>.</p>
+
+<p style="margin-left:11%;"><b>Copy</b></p>
+
+<p style="margin-left:17%;">This command is used to copy an
+area of the grid from one location to another. If there is
+no marked grid area displayed, <b>Copy</b> behaves just like
+<b>Mark</b> described above. Once there is a marked grid
+area displayed in the highlighting color, this command has
+two alternative behaviors. If you click a mouse button
+inside the marked area, you will be able to drag the
+rectangle that represents the marked area to the desired
+location. After you release the mouse button, the area will
+be copied. If you click outside the marked area, <b>Copy</b>
+will assume that you wish to mark a different region of the
+bitmap image, thus it will behave like <b>Mark</b>
+again.</p>
+
+<p style="margin-left:11%;"><b>Move</b></p>
+
+<p style="margin-left:17%;">This command is used to move an
+area of the grid from one location to another. Its behavior
+resembles the behavior of <b>Copy</b> command, except that
+the marked area will be moved instead of copied.</p>
+
+<p style="margin-left:11%;"><b>Flip Horizontally</b></p>
+
+<p style="margin-left:17%;">This command will flip the
+bitmap image with respect to the horizontal axes. If a
+marked area of the grid is highlighted, it will operate only
+inside the marked area. Pressing H inside the bitmap window
+has the same effect.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>Up</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>This command moves the bitmap image one pixel up. If a
+marked area of the grid is highlighted, it will operate only
+inside the marked area. Pressing UpArrow inside the bitmap
+window has the same effect.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Flip Vertically</b></p>
+
+<p style="margin-left:17%;">This command will flip the
+bitmap image with respect to the vertical axes. If a marked
+area of the grid is highlighted, it will operate only inside
+the marked area. Pressing V inside the bitmap window has the
+same effect.</p>
+
+<p style="margin-left:11%;"><b>Left</b></p>
+
+<p style="margin-left:17%;">This command moves the bitmap
+image one pixel to the left. If a marked area of the grid is
+highlighted, it will operate only inside the marked area.
+Pressing LeftArrow inside the bitmap window has the same
+effect.</p>
+
+<p style="margin-left:11%;"><b>Fold</b></p>
+
+<p style="margin-left:17%;">This command will fold the
+bitmap image so that the opposite corners become adjacent.
+This is useful when creating bitmap images for tiling.
+Pressing F inside the bitmap window has the same effect.</p>
+
+<p style="margin-left:11%;"><b>Right</b></p>
+
+<p style="margin-left:17%;">This command moves the bitmap
+image one pixel to the right. If a marked area of the grid
+is highlighted, it will operate only inside the marked area.
+Pressing RightArrow inside the bitmap window has the same
+effect.</p>
+
+<p style="margin-left:11%;"><b>Rotate Left</b></p>
+
+<p style="margin-left:17%;">This command rotates the bitmap
+image 90 degrees to the left (counter clockwise.) If a
+marked area of the grid is highlighted, it will operate only
+inside the marked area. Pressing L inside the bitmap window
+has the same effect.</p>
+
+<p style="margin-left:11%;"><b>Down</b></p>
+
+<p style="margin-left:17%;">This command moves the bitmap
+image one pixel down. If a marked area of the grid is
+highlighted, it will operate only inside the marked area.
+Pressing DownArrow inside the bitmap window has the same
+effect.</p>
+
+<p style="margin-left:11%;"><b>Rotate Right</b></p>
+
+<p style="margin-left:17%;">This command rotates the bitmap
+image 90 degrees to the right (clockwise.) If a marked area
+of the grid is highlighted, it will operate only inside the
+marked area. Pressing R inside the bitmap window has the
+same effect.</p>
+
+<p style="margin-left:11%;"><b>Point</b></p>
+
+<p style="margin-left:17%;">This command will change the
+grid squares underneath the mouse pointer if a mouse button
+is being pressed down. If you drag the mouse button
+continuously, the line may not be continuous, depending on
+the speed of your system and frequency of mouse motion
+events.</p>
+
+<p style="margin-left:11%;"><b>Curve</b></p>
+
+<p style="margin-left:17%;">This command will change the
+grid squares underneath the mouse pointer if a mouse button
+is being pressed down. If you drag the mouse button
+continuously, it will make sure that the line is continuous.
+If your system is slow or <i>bitmap</i> receives very few
+mouse motion events, it might behave quite strangely.</p>
+
+<p style="margin-left:11%;"><b>Line</b></p>
+
+<p style="margin-left:17%;">This command will change the
+gird squares in a line between two squares. Once you press a
+mouse button in the grid window, <i>bitmap</i> will
+highlight the line from the square where the mouse button
+was initially pressed to the square where the mouse pointer
+is located. By releasing the mouse button you will cause the
+change to take effect, and the highlighted line will
+disappear.</p>
+
+<p style="margin-left:11%;"><b>Rectangle</b></p>
+
+<p style="margin-left:17%;">This command will change the
+gird squares in a rectangle between two squares. Once you
+press a mouse button in the grid window, <i>bitmap</i> will
+highlight the rectangle from the square where the mouse
+button was initially pressed to the square where the mouse
+pointer is located. By releasing the mouse button you will
+cause the change to take effect, and the highlighted
+rectangle will disappear.</p>
+
+<p style="margin-left:11%;"><b>Filled Rectangle</b></p>
+
+<p style="margin-left:17%;">This command is identical to
+<b>Rectangle</b>, except at the end the rectangle will be
+filled rather than outlined.</p>
+
+<p style="margin-left:11%;"><b>Circle</b></p>
+
+<p style="margin-left:17%;">This command will change the
+gird squares in a circle between two squares. Once you press
+a mouse button in the grid window, <i>bitmap</i> will
+highlight the circle from the square where the mouse button
+was initially pressed to the square where the mouse pointer
+is located. By releasing the mouse button you will cause the
+change to take effect, and the highlighted circle will
+disappear.</p>
+
+<p style="margin-left:11%;"><b>Filled Circle</b></p>
+
+<p style="margin-left:17%;">This command is identical to
+<b>Circle</b>, except at the end the circle will be filled
+rather than outlined.</p>
+
+<p style="margin-left:11%;"><b>Flood Fill</b></p>
+
+<p style="margin-left:17%;">This command will flood fill
+the connected area underneath the mouse pointer when you
+click on the desired square. Diagonally adjacent squares are
+not considered to be connected.</p>
+
+<p style="margin-left:11%;"><b>Set Hot Spot</b></p>
+
+<p style="margin-left:17%;">This command designates one
+square in the grid as the hot spot if this bitmap image is
+to be used for defining a cursor. Pressing a mouse button in
+the desired square will cause a diamond shape to be
+displayed.</p>
+
+<p style="margin-left:11%;"><b>Clear Hot Spot</b></p>
+
+<p style="margin-left:17%;">This command removes any
+designated hot spot from the bitmap image.</p>
+
+<p style="margin-left:11%;"><b>Undo</b></p>
+
+<p style="margin-left:17%;">This command will undo the last
+executed command. It has depth one, that is, pressing
+<b>Undo</b> after <b>Undo</b> will undo itself.</p>
+
+<h2>FILE MENU
+<a name="FILE MENU"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The File menu
+commands can be accessed by pressing the File button and
+selecting the appropriate menu entry, or by pressing Ctrl
+key with another key. These commands deal with files and
+global bitmap parameters, such as size, basename, filename
+etc.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>New</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>This command will clear the editing area and prompt for
+the name of the new file to be edited. It will not load in
+the new file.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Load</b></p>
+
+<p style="margin-left:17%;">This command is used to load a
+new bitmap file into the bitmap editor. If the current image
+has not been saved, user will be asked whether to save or
+ignore the changes. The editor can edit only one file at a
+time. If you need interactive editing, run a number of
+editors and use cut and paste mechanism as described
+below.</p>
+
+<p style="margin-left:11%;"><b>Insert</b></p>
+
+<p style="margin-left:17%;">This command is used to insert
+a bitmap file into the image being currently edited. After
+being prompted for the filename, click inside the grid
+window and drag the outlined rectangle to the location where
+you want to insert the new file.</p>
+
+<p style="margin-left:11%;"><b>Save</b></p>
+
+<p style="margin-left:17%;">This command will save the
+bitmap image. It will not prompt for the filename unless it
+is said to be &lt;none&gt;. If you leave the filename
+undesignated or -, the output will be piped to stdout.</p>
+
+<p style="margin-left:11%;"><b>Save As</b></p>
+
+<p style="margin-left:17%;">This command will save the
+bitmap image after prompting for a new filename. It should
+be used if you want to change the filename.</p>
+
+<p style="margin-left:11%;"><b>Resize</b></p>
+
+<p style="margin-left:17%;">This command is used to resize
+the editing area to the new number of pixels. The size
+should be entered in the WIDTHxHEIGHT format. The
+information in the image being edited will not be lost
+unless the new size is smaller that the current image size.
+The editor was not designed to edit huge files.</p>
+
+<p style="margin-left:11%;"><b>Rescale</b></p>
+
+<p style="margin-left:17%;">This command is used to rescale
+the editing area to the new width and height. The size
+should be entered in the WIDTHxHEIGHT format. It will not do
+antialiasing and information will be lost if you rescale to
+the smaller sizes. Feel free to add you own algorithms for
+better rescaling.</p>
+
+<p style="margin-left:11%;"><b>Filename</b></p>
+
+<p style="margin-left:17%;">This command is used to change
+the filename without changing the basename nor saving the
+file. If you specify - for a filename, the output will be
+piped to stdout.</p>
+
+<p style="margin-left:11%;"><b>Basename</b></p>
+
+<p style="margin-left:17%;">This command is used to change
+the basename, if a different one from the specified filename
+is desired.</p>
+
+<p style="margin-left:11%;"><b>Quit</b></p>
+
+<p style="margin-left:17%;">This command will terminate the
+bitmap application. If the file was not saved, user will be
+prompted and asked whether to save the image or not. This
+command is preferred over killing the process.</p>
+
+<h2>EDIT MENU
+<a name="EDIT MENU"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Edit menu
+commands can be accessed by pressing the Edit button and
+selecting the appropriate menu entry, or by pressing Meta
+key with another key. These commands deal with editing
+facilities such as grid, axes, zooming, cut and paste, etc.
+<b><br>
+Image</b></p>
+
+<p style="margin-left:17%;">This command will display the
+image being edited and its inverse in its actual size in a
+separate window. The window can be moved away to continue
+with editing. Pressing the left mouse button in the image
+window will cause it to disappear from the screen.</p>
+
+<p style="margin-left:11%;"><b>Grid</b></p>
+
+<p style="margin-left:17%;">This command controls the grid
+in the editing area. If the grid spacing is below the value
+specified by gridTolerance resource (8 by default), the grid
+will be automatically turned off. It can be enforced by
+explicitly activating this command.</p>
+
+<p style="margin-left:11%;"><b>Dashed</b></p>
+
+<p style="margin-left:17%;">This command controls the
+stipple for drawing the grid lines. The stipple specified by
+dashes resource can be turned on or off by activating this
+command.</p>
+
+<p style="margin-left:11%;"><b>Axes</b></p>
+
+<p style="margin-left:17%;">This command controls the
+highlighting of the main axes of the image being edited. The
+actual lines are not part of the image. They are provided to
+aid user when constructing symmetrical images, or whenever
+having the main axes highlighted helps your editing.</p>
+
+<p style="margin-left:11%;"><b>Stippled</b></p>
+
+<p style="margin-left:17%;">This command controls the
+stippling of the highlighted areas of the bitmap image. The
+stipple specified by stipple resource can be turned on or
+off by activating this command.</p>
+
+<p style="margin-left:11%;"><b>Proportional</b></p>
+
+<p style="margin-left:17%;">This command controls the
+proportional mode. If the proportional mode is on, width and
+height of all image squares are forced to be equal,
+regardless of the proportions of the bitmap window.</p>
+
+<p style="margin-left:11%;"><b>Zoom</b></p>
+
+<p style="margin-left:17%;">This command controls the zoom
+mode. If there is a marked area of the image already
+displayed, bitmap will automatically zoom into it.
+Otherwise, user will have to highlight an area to be edited
+in the zoom mode and bitmap will automatically switch into
+it. One can use all the editing commands and other utilities
+in the zoom mode. When you zoom out, undo command will undo
+the whole zoom session.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Cut</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>This commands cuts the contents of the highlighted image
+area into the internal cut and paste buffer.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Copy</b></p>
+
+<p style="margin-left:17%;">This command copies the
+contents of the highlighted image area into the internal cut
+and paste buffer.</p>
+
+<p style="margin-left:11%;"><b>Paste</b></p>
+
+<p style="margin-left:17%;">This command will check if
+there are any other bitmap applications with a highlighted
+image area, or if there is something in the internal cut and
+paste buffer and copy it to the image. To place the copied
+image, click in the editing window and drag the outlined
+image to the position where you want to place i, and then
+release the button.</p>
+
+<h2>CUT AND PASTE
+<a name="CUT AND PASTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Bitmap supports
+two cut and paste mechanisms; the internal cut and paste and
+the global X selection cut and paste. The internal cut and
+paste is used when executing copy and move drawing commands
+and also cut and copy commands from the edit menu. The
+global X selection cut and paste is used whenever there is a
+highlighted area of a bitmap image displayed anywhere on the
+screen. To copy a part of image from another bitmap editor
+simply highlight the desired area by using the Mark command
+or pressing the shift key and dragging the area with the
+left mouse button. When the selected area becomes
+highlighted, any other applications (such as xterm, etc.)
+that use primary selection will discard their selection
+values and unhighlight the appropriate information. Now, use
+the Paste command for the Edit menu or control mouse button
+to copy the selected part of image into another (or the
+same) bitmap application. If you attempt to do this without
+a visible highlighted image area, the bitmap will fall back
+to the internal cut and paste buffer and paste whatever was
+there stored at the moment.</p>
+
+<h2>WIDGETS
+<a name="WIDGETS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Below is the
+widget structure of the <i>bitmap</i> application.
+Indentation indicates hierarchical structure. The widget
+class name is given first, followed by the widget instance
+name. All widgets except the bitmap widget are from the
+standard Athena widget set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bitmap
+bitmap</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+
+
+<p>TransientShell image</p></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+
+
+<p>Box box</p></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Label normalImage</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Label invertedImage</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+
+
+<p>TransientShell input</p></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+
+
+<p>Dialog dialog</p></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command okay</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command cancel</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+
+
+<p>TransientShell error</p></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+
+
+<p>Dialog dialog</p></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command abort</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command retry</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+
+
+<p>TransientShell qsave</p></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+
+
+<p>Dialog dialog</p></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command yes</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command no</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Command cancel</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+
+
+<p>Paned parent</p></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+
+
+<p>Form formy</p></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>MenuButton fileButton</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>SimpleMenu fileMenu</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB new</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB load</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB insert</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB save</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB saveAs</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB resize</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB rescale</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB filename</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB basename</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeLine line</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB quit</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>MenuButton editButton</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>SimpleMenu editMenu</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB image</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB grid</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB dashed</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB axes</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB stippled</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB proportional</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB zoom</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeLine line</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB cut</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB copy</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>SmeBSB paste</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Label status</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+
+
+<p>Pane pane</p></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Bitmap bitmap</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Form form</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command clear</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command set</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command invert</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle mark</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command unmark</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle copy</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle move</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command flipHoriz</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command up</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command flipVert</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command left</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command fold</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command right</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command rotateLeft</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command down</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command rotateRight</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle point</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle curve</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle line</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle rectangle</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle filledRectangle</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle circle</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle filledCircle</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle floodFill</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Toggle setHotSpot</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command clearHotSpot</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+
+
+<p>Command undo</p></td></tr>
+</table>
+
+<h2>COLORS
+<a name="COLORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you would
+like bitmap to be viewable in color, include the following
+in the #ifdef COLOR section of the file you read with
+xrdb:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">*customization:
+-color</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will cause
+bitmap to pick up the colors in the app-defaults color
+customization file:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/X11/app-defaults/Bitmap-color</p>
+
+<h2>BITMAP WIDGET
+<a name="BITMAP WIDGET"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Bitmap widget
+is a stand-alone widget for editing raster images. It is not
+designed to edit large images, although it may be used in
+that purpose as well. It can be freely incorporated with
+other applications and used as a standard editing tool. The
+following are the resources provided by the bitmap
+widget.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-1307861.png" alt="Image grohtml-1307861.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">All the Simple
+Widget resources plus ...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="23%"></td>
+<td width="8%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-1307862.png" alt="Image grohtml-1307862.png"></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Davor Matic,
+MIT X Consortium</p>
+<hr>
+</body>
+</html>

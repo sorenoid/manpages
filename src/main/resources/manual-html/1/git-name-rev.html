@@ -1,0 +1,164 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:28 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-NAME-REV</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-NAME-REV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-name-rev -
+Find symbolic names for given revs</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+name-rev</i> [--tags] [--refs=&lt;pattern&gt;] <br>
+( --all | --stdin | &lt;commit-ish&gt;... )</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Finds symbolic
+names suitable for human digestion for revisions given in
+any format parsable by <i>git rev-parse</i>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">--tags</p>
+
+<p style="margin-left:17%;">Do not use branch names, but
+only tags to name the commits</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--refs=&lt;pattern&gt;</p>
+
+<p style="margin-left:17%;">Only use refs whose names match
+a given shell pattern. The pattern can be one of branch
+name, tag name or fully qualified ref name. If given
+multiple times, use refs whose names match any of the given
+shell patterns. Use <b>--no-refs</b> to clear any previous
+ref patterns given.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--exclude=&lt;pattern&gt;</p>
+
+<p style="margin-left:17%;">Do not use any ref whose name
+matches a given shell pattern. The pattern can be one of
+branch name, tag name or fully qualified ref name. If given
+multiple times, a ref will be excluded when it matches any
+of the given patterns. When used together with --refs, a ref
+will be used as a match only when it matches at least one
+--refs pattern and does not match any --exclude patterns.
+Use <b>--no-exclude</b> to clear the list of exclude
+patterns.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--all</p>
+
+<p style="margin-left:17%;">List all commits reachable from
+all refs</p>
+
+<p style="margin-left:11%; margin-top: 1em">--stdin</p>
+
+<p style="margin-left:17%;">Transform stdin by substituting
+all the 40-character SHA-1 hexes (say $hex) with &quot;$hex
+($rev_name)&quot;. When used with --name-only, substitute
+with &quot;$rev_name&quot;, omitting $hex altogether.
+Intended for the scripter&rsquo;s use.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--name-only</p>
+
+<p style="margin-left:17%;">Instead of printing both the
+SHA-1 and the name, print only the name. If given with
+--tags the usual tag prefix of &quot;tags/&quot; is also
+omitted from the name, matching the output of
+<b>git-describe</b> more closely.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-undefined</p>
+
+<p style="margin-left:17%;">Die with error code != 0 when a
+reference is undefined, instead of printing
+<b>undefined</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--always</p>
+
+<p style="margin-left:17%;">Show uniquely abbreviated
+commit object as fallback.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Given a commit,
+find out where it is relative to the local refs. Say
+somebody wrote you about that fantastic commit
+33db5f4d9027a10e477ccf054b2c1ab94f74c85a. Of course, you
+look into the commit, but that only tells you what happened,
+but not the context.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Enter <i>git
+name-rev</i>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">% git name-rev
+33db5f4d9027a10e477ccf054b2c1ab94f74c85a <br>
+33db5f4d9027a10e477ccf054b2c1ab94f74c85a tags/v0.99~940</p>
+
+<p style="margin-left:11%; margin-top: 1em">Now you are
+wiser, because you know that it happened 940 revisions
+before v0.99.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another nice
+thing you can do is:</p>
+
+<p style="margin-left:17%; margin-top: 1em">% git log | git
+name-rev --stdin</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

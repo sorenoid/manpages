@@ -1,0 +1,300 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:43 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pnmtopng</title>
+
+</head>
+<body>
+
+<h1 align="center">pnmtopng</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTE">NOTE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtopng -
+convert a portable anymap into a Portable Network Graphics
+file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopng</b>
+[-verbose] [-downscale] [-interlace] [-alpha file] <br>
+[-transparent [=]color] [-background color] [-gamma value]
+<br>
+[-hist] [-chroma wx wy rx ry gx gy bx by] [-phys x y unit]
+<br>
+[-text file] [-ztxt file] [-time [yy]yy-mm-dd hh:mm:ss] <br>
+[-filter type] [-compression level] [-force]
+[<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a
+portable pixmap as input. Produces a Portable Network
+Graphics file as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Color values in
+PNG files are either eight or sixteen bits wide, so
+<i>pnmtopng</i> will automatically scale colors to have a
+maxval of 255 or 65535. Grayscale files will be produced
+with bit depths 1, 2, 4, 8 or 16. An extra <i>pnmdepth</i>
+step is not necessary.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Display the format of the
+output file.</p>
+
+<p style="margin-left:11%;"><b>-downscale</b></p>
+
+<p style="margin-left:22%;">Enables scaling of maxvalues of
+more then 65535 to 16 bit. Since this means loss of image
+data, the step is not performed by default.</p>
+
+<p style="margin-left:11%;"><b>-interlace</b></p>
+
+<p style="margin-left:22%;">Creates an interlaced PNG file
+(Adam7).</p>
+
+<p style="margin-left:11%;"><b>-alpha file</b></p>
+
+<p style="margin-left:22%;">The alpha channel of pixel (or
+image) specifies the transparency of a pixel. To create this
+fourth pixel value a separate <i>.pbm-</i> or
+<i>.pgm-file</i> is needed. In this file black (0) stands
+for fully transparant and white (1) will become opaque. The
+sizes of both pbm/pgm/ppm-files must be the same. If the
+information contained in the alpha mask can also be
+represented as a transparency index, it will be used, since
+this should result in a smaller image file.</p>
+
+<p style="margin-left:11%;"><b>-transparent color</b></p>
+
+<p style="margin-left:22%;"><b>ppmtogif</b> marks the
+specified color as transparent in the PNG image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You specify the
+color as in <b>ppmmake</b>(1).<b>E.g. red</b> or
+<b>rgb:ff/00/0d</b>. If the color you specify is not present
+in the image, <b>pnmtopnm</b> selects instead the color in
+the image that is closest to the one you specify. Closeness
+is measured as a cartesian distance between colors in RGB
+space. If multiple colors are equidistant, <b>pnmtopnm</b>
+chooses one of them arbitrarily.</p>
+
+<p style="margin-left:22%; margin-top: 1em">However, if you
+prefix your color specification with &quot;=&quot;, e.g.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>-transparent
+=red</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Only the exact
+color you specify will be transparent. If that color does
+not appear in the image, there will be no transparency.
+<b>pnmtopng</b> issues an information message when this is
+the case.</p>
+
+<p style="margin-left:11%;"><b>-background color</b></p>
+
+<p style="margin-left:22%;">To create a background color
+chunck in the <i>png-file,</i> which can be used for
+subsequent alpha-channel or transparent-color conversions.
+See -transparent for format of color.</p>
+
+<p style="margin-left:11%;"><b>-gamma value</b></p>
+
+<p style="margin-left:22%;">Creates an gAMA chunk. By
+providing the gamma-value of the <i>pnm-file</i> the
+software that lateron will display the <i>png-file</i> will
+be able to do the necessary gamma-corrections. A good
+rule-of-thumb is that when the file is created by a software
+program (like a CAD-program or a ray-tracer) the value is
+probably 1.0. When the <i>pnm-file</i> looks good on a
+non-gamma corrected PC display (which has itself a
+gamma-value of 2.2 - 2.8), a value of 0.45 should be
+given.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-hist</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use this parameter to create a chunk that specifies the
+frequency (or histogram) of the colors in the image.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-chroma white point X and Y,
+red X and Y, green X and Y, and blue X and <br>
+Y</b></p>
+
+<p style="margin-left:22%;">To specify the white point and
+rgb values following the CIE-1931 spec.</p>
+
+<p style="margin-left:11%;"><b>-phys x y unit</b></p>
+
+<p style="margin-left:22%;">When your image should not be
+displayed with square but with rectangular pixels this
+option should be used to create a pHYS chunk. When the
+unit-value is 0 the x and y only gives the ratio of pixel
+width and height. When it is 1 the x and y specify the
+number of pixels per meter.</p>
+
+<p style="margin-left:11%;"><b>-text file</b></p>
+
+<p style="margin-left:22%;">Allows to include comments in
+the text-chunk of the <i>png-file.</i> The format of the
+text-file is as follows: when the first column does not
+contain a blank or a tab, the first word is considered to be
+the keyword. For keywords to contain spaces, enclose them in
+double-quotes. <br>
+When the first character on a line is a blank or tab, the
+rest of the line is a new line of the current comment. Note
+that the initial spaces are not considered to be part of the
+comment line.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Here is an
+example: <br>
+------------------------------------------- <br>
+Title PNG-file <br>
+Author your name <br>
+Description how to include a text-chunk <br>
+into a PNG file <br>
+&quot;Creation date&quot; 3-feb-1987 <br>
+Software pnmtopng <br>
+-------------------------------------------</p>
+
+<p style="margin-left:11%;"><b>-ztxt file</b></p>
+
+<p style="margin-left:22%;">The same as -text, but now the
+text will be compressed.</p>
+
+<p style="margin-left:11%;"><b>-time yy-mm-dd hh:mm:ss or
+-time yyyy-mm-dd hh:mm:ss</b></p>
+
+<p style="margin-left:22%;">This option allows you to
+specify the (modification)time. The year parameter can be
+given as a two- or a four-digit value.</p>
+
+<p style="margin-left:11%;"><b>-filter type</b></p>
+
+<p style="margin-left:22%;">When the types of filters must
+be restricted you can specify here which filter you want to
+use. Allowed values are: 0 (none), 1 (sub), 2 (up), 3 (avg)
+and 4 (paeth).</p>
+
+<p style="margin-left:11%;"><b>-compression level</b></p>
+
+<p style="margin-left:22%;">To explicitly set the
+compression level of zlib use this parameter. Select a level
+between 0 for no compression (max speed) and 9 for maximum
+compression.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-force</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>When set, -force limits the optimizations of pnmtopng. A
+png-file similar to the pnm-input is as much as possible
+enforced. For example no paletted files will be created and
+alpha-channel images will not be converted to images with a
+transparency chunck.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">All flags can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pngtopnm(1),
+gif2png(1), pnmgamma(1), pnm(5)</p>
+
+<h2>NOTE
+<a name="NOTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Instead of
+xxxtopnm|pnmtopng, a specific converter should be used, if
+available. E.g. <i>gif2png</i> (GIF conversion), etc.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There could be
+an option to read the comment text from pnm comments instead
+of a separate file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+could be much faster, with a bit of code optimizing.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995-1997 by Alexander Lehmann <br>
+and Willem van Schaik.</p>
+<hr>
+</body>
+</html>

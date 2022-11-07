@@ -1,0 +1,483 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:23 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-CAT-FILE</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-CAT-FILE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#OUTPUT">OUTPUT</a><br>
+<a href="#BATCH OUTPUT">BATCH OUTPUT</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-cat-file -
+Provide content or type and size information for repository
+objects</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+cat-file</i> (-t [--allow-unknown-type]| -s
+[--allow-unknown-type]| -e | -p | &lt;type&gt; | --textconv
+| --filters ) [--path=&lt;path&gt;] &lt;object&gt; <i><br>
+git cat-file</i> (--batch[=&lt;format&gt;] |
+--batch-check[=&lt;format&gt;]) [ --textconv | --filters ]
+[--follow-symlinks]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In its first
+form, the command provides the content or the type of an
+object in the repository. The type is required unless
+<b>-t</b> or <b>-p</b> is used to find the object type, or
+<b>-s</b> is used to find the object size, or
+<b>--textconv</b> or <b>--filters</b> is used (which imply
+type &quot;blob&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the second
+form, a list of objects (separated by linefeeds) is provided
+on stdin, and the SHA-1, type, and size of each object is
+printed on stdout. The output format can be overridden using
+the optional <b>&lt;format&gt;</b> argument. If either
+<b>--textconv</b> or <b>--filters</b> was specified, the
+input is expected to list the object names followed by the
+path name, separated by a single whitespace, so that the
+appropriate drivers can be determined.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;object&gt;</p>
+
+<p style="margin-left:17%;">The name of the object to show.
+For a more complete list of ways to spell object names, see
+the &quot;SPECIFYING REVISIONS&quot; section in
+<b>gitrevisions</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-t</p>
+
+<p style="margin-left:17%;">Instead of the content, show
+the object type identified by <b>&lt;object&gt;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-s</p>
+
+<p style="margin-left:17%;">Instead of the content, show
+the object size identified by <b>&lt;object&gt;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-e</p>
+
+<p style="margin-left:17%;">Exit with zero status if
+<b>&lt;object&gt;</b> exists and is a valid object. If
+<b>&lt;object&gt;</b> is of an invalid format exit with
+non-zero and emits an error on stderr.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-p</p>
+
+<p style="margin-left:17%;">Pretty-print the contents of
+<b>&lt;object&gt;</b> based on its type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;type&gt;</p>
+
+<p style="margin-left:17%;">Typically this matches the real
+type of <b>&lt;object&gt;</b> but asking for a type that can
+trivially be dereferenced from the given
+<b>&lt;object&gt;</b> is also permitted. An example is to
+ask for a &quot;tree&quot; with <b>&lt;object&gt;</b> being
+a commit object that contains it, or to ask for a
+&quot;blob&quot; with <b>&lt;object&gt;</b> being a tag
+object that points at it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--textconv</p>
+
+<p style="margin-left:17%;">Show the content as transformed
+by a textconv filter. In this case, <b>&lt;object&gt;</b>
+has to be of the form <b>&lt;tree-ish&gt;:&lt;path&gt;</b>,
+or <b>:&lt;path&gt;</b> in order to apply the filter to the
+content recorded in the index at <b>&lt;path&gt;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--filters</p>
+
+<p style="margin-left:17%;">Show the content as converted
+by the filters configured in the current working tree for
+the given <b>&lt;path&gt;</b> (i.e. smudge filters,
+end-of-line conversion, etc). In this case,
+<b>&lt;object&gt;</b> has to be of the form
+<b>&lt;tree-ish&gt;:&lt;path&gt;</b>, or
+<b>:&lt;path&gt;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--path=&lt;path&gt;</p>
+
+<p style="margin-left:17%;">For use with <b>--textconv</b>
+or <b>--filters</b>, to allow specifying an object name and
+a path separately, e.g. when it is difficult to figure out
+the revision from which the blob came.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--batch,
+--batch=&lt;format&gt;</p>
+
+<p style="margin-left:17%;">Print object information and
+contents for each object provided on stdin. May not be
+combined with any other options or arguments except
+<b>--textconv</b> or <b>--filters</b>, in which case the
+input lines also need to specify the path, separated by
+whitespace. See the section <b>BATCH OUTPUT</b> below for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--batch-check,
+--batch-check=&lt;format&gt;</p>
+
+<p style="margin-left:17%;">Print object information for
+each object provided on stdin. May not be combined with any
+other options or arguments except <b>--textconv</b> or
+<b>--filters</b>, in which case the input lines also need to
+specify the path, separated by whitespace. See the section
+<b>BATCH OUTPUT</b> below for details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--batch-all-objects</p>
+
+<p style="margin-left:17%;">Instead of reading a list of
+objects on stdin, perform the requested batch operation on
+all objects in the repository and any alternate object
+stores (not just reachable objects). Requires <b>--batch</b>
+or <b>--batch-check</b> be specified. By default, the
+objects are visited in order sorted by their hashes; see
+also <b>--unordered</b> below. Objects are presented as-is,
+without respecting the &quot;replace&quot; mechanism of
+<b>git-replace</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">--buffer</p>
+
+<p style="margin-left:17%;">Normally batch output is
+flushed after each object is output, so that a process can
+interactively read and write from <b>cat-file</b>. With this
+option, the output uses normal stdio buffering; this is much
+more efficient when invoking <b>--batch-check</b> on a large
+number of objects.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--unordered</p>
+
+<p style="margin-left:17%;">When <b>--batch-all-objects</b>
+is in use, visit objects in an order which may be more
+efficient for accessing the object contents than hash order.
+The exact details of the order are unspecified, but if you
+do not require a specific order, this should generally
+result in faster output, especially with <b>--batch</b>.
+Note that <b>cat-file</b> will still show each object only
+once, even if it is stored multiple times in the
+repository.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--allow-unknown-type</p>
+
+<p style="margin-left:17%;">Allow <b>-s</b> or <b>-t</b> to
+query broken/corrupt objects of unknown type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--follow-symlinks</p>
+
+<p style="margin-left:17%;">With <b>--batch</b> or
+<b>--batch-check</b>, follow symlinks inside the repository
+when requesting objects with extended SHA-1 expressions of
+the form tree-ish:path-in-tree. Instead of providing output
+about the link itself, provide output about the linked-to
+object. If a symlink points outside the tree-ish (e.g. a
+link to <b>/foo</b> or a root-level link to <b>../foo</b>),
+the portion of the link which is outside the tree will be
+printed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+does not (currently) work correctly when an object in the
+index is specified (e.g. <b>:link</b> instead of
+<b>HEAD:link</b>) rather than one in the tree.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+cannot (currently) be used unless <b>--batch</b> or
+<b>--batch-check</b> is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example,
+consider a git repository containing:</p>
+
+<p style="margin-left:23%; margin-top: 1em">f: a file
+containing &quot;hello\n&quot; <br>
+link: a symlink to f <br>
+dir/link: a symlink to ../f <br>
+plink: a symlink to ../f <br>
+alink: a symlink to /etc/passwd</p>
+
+<p style="margin-left:17%; margin-top: 1em">For a regular
+file <b>f</b>, <b>echo HEAD:f | git cat-file --batch</b>
+would print</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">ce013625030ba8dba906f756967f9e9ca394464a
+blob 6</p>
+
+<p style="margin-left:17%; margin-top: 1em">And <b>echo
+HEAD:link | git cat-file --batch --follow-symlinks</b> would
+print the same thing, as would <b>HEAD:dir/link</b>, as they
+both point at <b>HEAD:f</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Without
+<b>--follow-symlinks</b>, these would print data about the
+symlink itself. In the case of <b>HEAD:link</b>, you would
+see</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">4d1ae35ba2c8ec712fa2a379db44ad639ca277bd
+blob 1</p>
+
+<p style="margin-left:17%; margin-top: 1em">Both
+<b>plink</b> and <b>alink</b> point outside the tree, so
+they would respectively print:</p>
+
+<p style="margin-left:23%; margin-top: 1em">symlink 4 <br>
+../f</p>
+
+<p style="margin-left:23%; margin-top: 1em">symlink 11 <br>
+/etc/passwd</p>
+
+<h2>OUTPUT
+<a name="OUTPUT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If <b>-t</b> is
+specified, one of the <b>&lt;type&gt;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>-s</b> is
+specified, the size of the <b>&lt;object&gt;</b> in
+bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>-e</b> is
+specified, no output, unless the <b>&lt;object&gt;</b> is
+malformed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>-p</b> is
+specified, the contents of <b>&lt;object&gt;</b> are
+pretty-printed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>&lt;type&gt;</b> is specified, the raw (though
+uncompressed) contents of the <b>&lt;object&gt;</b> will be
+returned.</p>
+
+<h2>BATCH OUTPUT
+<a name="BATCH OUTPUT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>--batch</b> or <b>--batch-check</b> is given,
+<b>cat-file</b> will read objects from stdin, one per line,
+and print information about them. By default, the whole line
+is considered as an object, as if it were fed to
+<b>git-rev-parse</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can specify
+the information shown for each object by using a custom
+<b>&lt;format&gt;</b>. The <b>&lt;format&gt;</b> is copied
+literally to stdout for each object, with placeholders of
+the form <b>%(atom)</b> expanded, followed by a newline. The
+available atoms are:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>objectname</b></p>
+
+<p style="margin-left:17%;">The full hex representation of
+the object name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>objecttype</b></p>
+
+<p style="margin-left:17%;">The type of the object (the
+same as <b>cat-file -t</b> reports).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>objectsize</b></p>
+
+<p style="margin-left:17%;">The size, in bytes, of the
+object (the same as <b>cat-file -s</b> reports).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>objectsize:disk</b></p>
+
+<p style="margin-left:17%;">The size, in bytes, that the
+object takes up on disk. See the note about on-disk sizes in
+the <b>CAVEATS</b> section below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deltabase</b></p>
+
+<p style="margin-left:17%;">If the object is stored as a
+delta on-disk, this expands to the full hex representation
+of the delta base object name. Otherwise, expands to the
+null OID (all zeroes). See <b>CAVEATS</b> below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rest</b></p>
+
+<p style="margin-left:17%;">If this atom is used in the
+output string, input lines are split at the first whitespace
+boundary. All characters before that whitespace are
+considered to be the object name; characters after that
+first run of whitespace (i.e., the &quot;rest&quot; of the
+line) are output in place of the <b>%(rest)</b> atom.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no format is
+specified, the default format is <b>%(objectname)
+%(objecttype) %(objectsize)</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>--batch</b> is specified, the object information is
+followed by the object contents (consisting of
+<b>%(objectsize)</b> bytes), followed by a newline.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+<b>--batch</b> without a custom format would produce:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;oid&gt; SP
+&lt;type&gt; SP &lt;size&gt; LF <br>
+&lt;contents&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">Whereas
+<b>--batch-check='%(objectname) %(objecttype)'</b> would
+produce:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;oid&gt; SP
+&lt;type&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a name is
+specified on stdin that cannot be resolved to an object in
+the repository, then <b>cat-file</b> will ignore any custom
+format and print:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;object&gt;
+SP missing LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a name is
+specified that might refer to more than one object (an
+ambiguous short sha), then <b>cat-file</b> will ignore any
+custom format and print:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;object&gt;
+SP ambiguous LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>--follow-symlinks</b> is used, and a symlink in the
+repository points outside the repository, then
+<b>cat-file</b> will ignore any custom format and print:</p>
+
+<p style="margin-left:17%; margin-top: 1em">symlink SP
+&lt;size&gt; LF <br>
+&lt;symlink&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">The symlink
+will either be absolute (beginning with a <b>/</b>), or
+relative to the tree root. For instance, if dir/link points
+to <b>../../foo</b>, then <b>&lt;symlink&gt;</b> will be
+<b>../foo</b>. <b>&lt;size&gt;</b> is the size of the
+symlink in bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>--follow-symlinks</b> is used, the following error
+messages will be displayed:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;object&gt;
+SP missing LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">is printed when
+the initial symlink requested does not exist.</p>
+
+<p style="margin-left:17%; margin-top: 1em">dangling SP
+&lt;size&gt; LF <br>
+&lt;object&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">is printed when
+the initial symlink exists, but something that it
+(transitive-of) points to does not.</p>
+
+<p style="margin-left:17%; margin-top: 1em">loop SP
+&lt;size&gt; LF <br>
+&lt;object&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">is printed for
+symlink loops (or any symlinks that require more than 40
+link resolutions to resolve).</p>
+
+<p style="margin-left:17%; margin-top: 1em">notdir SP
+&lt;size&gt; LF <br>
+&lt;object&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">is printed
+when, during symlink resolution, a file is used as a
+directory name.</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+sizes of objects on disk are reported accurately, but care
+should be taken in drawing conclusions about which refs or
+objects are responsible for disk usage. The size of a packed
+non-delta object may be much larger than the size of objects
+which delta against it, but the choice of which object is
+the base and which is the delta is arbitrary and is subject
+to change during a repack.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note also that
+multiple copies of an object may be present in the object
+database; in this case, it is undefined which copy&rsquo;s
+size or delta base will be reported.</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

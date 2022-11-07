@@ -1,0 +1,133 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:28 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TRACKER3-INFO</title>
+
+</head>
+<body>
+
+<h1 align="center">TRACKER3-INFO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">tracker3-info -
+Retrieve all information available for a certain file.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3
+info</b> [<i>options</i>...] &lt;<i>file1</i>&gt;
+[[<i>file2</i>] ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3
+info</b> asks for all the known metadata available for the
+given <i>file</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Multiple
+<i>file</i> arguments can be provided to retrieve
+information about multiple files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>file</i>
+argument can be either a local path or a URI. It also does
+not have to be an absolute path.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f,
+--full-namespaces</b></p>
+
+<p style="margin-left:17%;">By default, all keys and values
+reported about any given <i>file</i> are returned in
+shortened form, for example, <i>nie:title</i> is shown
+instead of
+<i>http://tracker.api.gnome.org/ontology/v3/nie#title</i>.
+This makes things much easier to see generally and the
+output is less cluttered. This option reverses that so FULL
+namespaces are shown instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c,
+--plain-text-content</b></p>
+
+<p style="margin-left:17%;">If the resource being displayed
+has nie:PlainTextContent (i.e. information about the content
+of the resource, which could be the contents of a file on
+the disk), then this option displays that in the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i,
+--resource-is-iri</b></p>
+
+<p style="margin-left:17%;">In most cases, the <i>file</i>
+argument supplied points to a URL or PATH which is queried
+for according to the resource associated with it by
+<i>nie:url</i>. However, in cases where the <i>file</i>
+specified turns out to be the actual URN itself, this
+argument is required to tell &quot;tracker3 info&quot; not
+to do the extra step of looking up the URN related by
+<i>nie:url</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+consider that you store URNs by the actual URL itself and
+use the unique nie:url in another resource (which is quite
+reasonable when using containers and multi-resource
+conditions), you would need this argument to tell
+&quot;tracker3 info&quot; that the <i>file</i> supplied is
+actually a URN not URL.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t,
+--turtle</b></p>
+
+<p style="margin-left:17%;">Output results as Turtle RDF.
+If -f is enabled, full URIs are shown for subjects,
+predicates and objects; otherwise, shortened URIs are used,
+and all the prefixes Tracker knows about are printed at the
+top of the output.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3-sparql</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>http://nepomuk.semanticdesktop.org/
+http://www.w3.org/TR/rdf-sparql-query/</b></p>
+<hr>
+</body>
+</html>

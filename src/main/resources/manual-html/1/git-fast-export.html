@@ -1,0 +1,419 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:44 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-FAST-EXPORT</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-FAST-EXPORT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#ANONYMIZING">ANONYMIZING</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">git-fast-export
+- Git data exporter</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+fast-export [&lt;options&gt;]</i> | <i>git
+fast-import</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+dumps the given revisions in a form suitable to be piped
+into <i>git fast-import</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use it
+as a human-readable bundle replacement (see
+<b>git-bundle</b>(1)), or as a format that can be edited
+before being fed to <i>git fast-import</i> in order to do
+history rewrites (an ability relied on by tools like <i>git
+filter-repo</i>).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">--progress=&lt;n&gt;</p>
+
+<p style="margin-left:17%;">Insert <i>progress</i>
+statements every &lt;n&gt; objects, to be shown by <i>git
+fast-import</i> during import.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--signed-tags=(verbatim|warn|warn-strip|strip|abort)</p>
+
+<p style="margin-left:17%;">Specify how to handle signed
+tags. Since any transformation after the export can change
+the tag names (which can also happen when excluding
+revisions) the signatures will not match.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When asking to
+<i>abort</i> (which is the default), this program will die
+when encountering a signed tag. With <i>strip</i>, the tags
+will silently be made unsigned, with <i>warn-strip</i> they
+will be made unsigned but a warning will be displayed, with
+<i>verbatim</i>, they will be silently exported and with
+<i>warn</i>, they will be exported, but you will see a
+warning.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--tag-of-filtered-object=(abort|drop|rewrite)</p>
+
+<p style="margin-left:17%;">Specify how to handle tags
+whose tagged object is filtered out. Since revisions and
+files to export can be limited by path, tagged objects may
+be filtered completely.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When asking to
+<i>abort</i> (which is the default), this program will die
+when encountering such a tag. With <i>drop</i> it will omit
+such tags from the output. With <i>rewrite</i>, if the
+tagged object is a commit, it will rewrite the tag to tag an
+ancestor commit (via parent rewriting; see
+<b>git-rev-list</b>(1))</p>
+
+<p style="margin-left:11%; margin-top: 1em">-M, -C</p>
+
+<p style="margin-left:17%;">Perform move and/or copy
+detection, as described in the <b>git-diff</b>(1) manual
+page, and use it to generate rename and copy commands in the
+output dump.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that
+earlier versions of this command did not complain and
+produced incorrect results if you gave these options.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--export-marks=&lt;file&gt;</p>
+
+<p style="margin-left:17%;">Dumps the internal marks table
+to &lt;file&gt; when complete. Marks are written one per
+line as <b>:markid SHA-1</b>. Only marks for revisions are
+dumped; marks for blobs are ignored. Backends can use this
+file to validate imports after they have been completed, or
+to save the marks table across incremental runs. As
+&lt;file&gt; is only opened and truncated at completion, the
+same path can also be safely given to --import-marks. The
+file will not be written if no new object has been
+marked/exported.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--import-marks=&lt;file&gt;</p>
+
+<p style="margin-left:17%;">Before processing any input,
+load the marks specified in &lt;file&gt;. The input file
+must exist, must be readable, and must use the same format
+as produced by --export-marks.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--mark-tags</p>
+
+<p style="margin-left:17%;">In addition to labelling blobs
+and commits with mark ids, also label tags. This is useful
+in conjunction with <b>--export-marks</b> and
+<b>--import-marks</b>, and is also useful (and necessary)
+for exporting of nested tags. It does not hurt other cases
+and would be the default, but many fast-import frontends are
+not prepared to accept tags with mark identifiers.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Any commits (or
+tags) that have already been marked will not be exported
+again. If the backend uses a similar --import-marks file,
+this allows for incremental bidirectional exporting of the
+repository by keeping the marks the same across runs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--fake-missing-tagger</p>
+
+<p style="margin-left:17%;">Some old repositories have tags
+without a tagger. The fast-import protocol was pretty strict
+about that, and did not allow that. So fake a tagger to be
+able to fast-import the output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--use-done-feature</p>
+
+<p style="margin-left:17%;">Start the stream with a
+<i>feature done</i> stanza, and terminate it with a
+<i>done</i> command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--no-data</p>
+
+<p style="margin-left:17%;">Skip output of blob objects and
+instead refer to blobs via their original SHA-1 hash. This
+is useful when rewriting the directory structure or history
+of a repository without touching the contents of individual
+files. Note that the resulting stream can only be used by a
+repository which already contains the necessary objects.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--full-tree</p>
+
+<p style="margin-left:17%;">This option will cause
+fast-export to issue a &quot;deleteall&quot; directive for
+each commit followed by a full list of all files in the
+commit (as opposed to just listing the files which are
+different from the commit&rsquo;s first parent).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--anonymize</p>
+
+<p style="margin-left:17%;">Anonymize the contents of the
+repository while still retaining the shape of the history
+and stored tree. See the section on <b>ANONYMIZING</b>
+below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--anonymize-map=&lt;from&gt;[:&lt;to&gt;]</p>
+
+<p style="margin-left:17%;">Convert token
+<b>&lt;from&gt;</b> to <b>&lt;to&gt;</b> in the anonymized
+output. If <b>&lt;to&gt;</b> is omitted, map
+<b>&lt;from&gt;</b> to itself (i.e., do not anonymize it).
+See the section on <b>ANONYMIZING</b> below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--reference-excluded-parents</p>
+
+<p style="margin-left:17%;">By default, running a command
+such as <b>git fast-export master~5..master</b> will not
+include the commit master~5 and will make master~4 no longer
+have master~5 as a parent (though both the old master~4 and
+new master~4 will have all the same files). Use
+--reference-excluded-parents to instead have the stream
+refer to commits in the excluded range of history by their
+sha1sum. Note that the resulting stream can only be used by
+a repository which already contains the necessary parent
+commits.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--show-original-ids</p>
+
+<p style="margin-left:17%;">Add an extra directive to the
+output for commits and blobs, <b>original-oid
+&lt;SHA1SUM&gt;</b>. While such directives will likely be
+ignored by importers such as git-fast-import, it may be
+useful for intermediary filters (e.g. for rewriting commit
+messages which refer to older commits, or for stripping
+blobs by id).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--reencode=(yes|no|abort)</p>
+
+<p style="margin-left:17%;">Specify how to handle
+<b>encoding</b> header in commit objects. When asking to
+<i>abort</i> (which is the default), this program will die
+when encountering such a commit object. With <i>yes</i>, the
+commit message will be re-encoded into UTF-8. With
+<i>no</i>, the original encoding will be preserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--refspec</p>
+
+<p style="margin-left:17%;">Apply the specified refspec to
+each ref exported. Multiple of them can be specified.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[&lt;git-rev-list-args&gt;...]</p>
+
+<p style="margin-left:17%;">A list of arguments, acceptable
+to <i>git rev-parse</i> and <i>git rev-list</i>, that
+specifies the specific objects and references to export. For
+example, <b>master~10..master</b> causes the current master
+reference to be exported along with all objects added since
+its 10th ancestor commit and (unless the
+--reference-excluded-parents option is specified) all files
+common to master~9 and master~10.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+fast-export --all | (cd /empty/repository &amp;&amp; git
+fast-import)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will
+export the whole repository and import it into the existing
+empty repository. Except for reencoding commits that are not
+in UTF-8, it would be a one-to-one mirror.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+fast-export master~5..master | <br>
+sed &quot;s|refs/heads/master|refs/heads/other|&quot; | <br>
+git fast-import</p>
+
+<p style="margin-left:11%; margin-top: 1em">This makes a
+new branch called <i>other</i> from <i>master~5..master</i>
+(i.e. if <i>master</i> has linear history, it will take the
+last 5 commits).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+assumes that none of the blobs and commit messages
+referenced by that revision range contains the string
+<i>refs/heads/master</i>.</p>
+
+<h2>ANONYMIZING
+<a name="ANONYMIZING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>--anonymize</b> option is given, git will attempt to
+remove all identifying information from the repository while
+still retaining enough of the original tree and history
+patterns to reproduce some bugs. The goal is that a git bug
+which is found on a private repository will persist in the
+anonymized repository, and the latter can be shared with git
+developers to help solve the bug.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With this
+option, git will replace all refnames, paths, blob contents,
+commit and tag messages, names, and email addresses in the
+output with anonymized data. Two instances of the same
+string will be replaced equivalently (e.g., two commits with
+the same author will have the same anonymized author in the
+output, but bear no resemblance to the original author
+string). The relationship between commits, branches, and
+tags is retained, as well as the commit timestamps (but the
+commit messages and refnames bear no resemblance to the
+originals). The relative makeup of the tree is retained
+(e.g., if you have a root tree with 10 files and 3 trees, so
+will the output), but their names and the contents of the
+files will be replaced.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you think
+you have found a git bug, you can start by exporting an
+anonymized stream of the whole repository:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+fast-export --anonymize --all &gt;anon-stream</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then confirm
+that the bug persists in a repository created from that
+stream (many bugs will not, as they really do depend on the
+exact repository contents):</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git init
+anon-repo <br>
+$ cd anon-repo <br>
+$ git fast-import &lt;../anon-stream <br>
+$ ... test your bug ...</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+anonymized repository shows the bug, it may be worth sharing
+<b>anon-stream</b> along with a regular bug report. Note
+that the anonymized stream compresses very well, so gzipping
+it is encouraged. If you want to examine the stream to see
+that it does not contain any private data, you can peruse it
+directly before sending. You may also want to try:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ perl -pe
+'s/\d+/X/g' &lt;anon-stream | sort -u | less</p>
+
+<p style="margin-left:11%; margin-top: 1em">which shows all
+of the unique lines (with numbers converted to
+&quot;X&quot;, to collapse &quot;User 0&quot;, &quot;User
+1&quot;, etc into &quot;User X&quot;). This produces a much
+smaller output, and it is usually easy to quickly confirm
+that there is no private data in the stream.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Reproducing
+some bugs may require referencing particular commits or
+paths, which becomes challenging after refnames and paths
+have been anonymized. You can ask for a particular token to
+be left as-is or mapped to a new value. For example, if you
+have a bug which reproduces with <b>git rev-list sensitive
+-- secret.c</b>, you can run:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+fast-export --anonymize --all \ <br>
+--anonymize-map=sensitive:foo \ <br>
+--anonymize-map=secret.c:bar.c \ <br>
+&gt;stream</p>
+
+<p style="margin-left:11%; margin-top: 1em">After importing
+the stream, you can then run <b>git rev-list foo --
+bar.c</b> in the anonymized repository.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that paths
+and refnames are split into tokens at slash boundaries. The
+command above would anonymize <b>subdir/secret.c</b> as
+something like <b>path123/bar.c</b>; you could then search
+for <b>bar.c</b> in the anonymized repository to determine
+the final pathname.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make
+referencing the final pathname simpler, you can map each
+path component; so if you also anonymize <b>subdir</b> to
+<b>publicdir</b>, then the final pathname would be
+<b>publicdir/bar.c</b>.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Since <i>git
+fast-import</i> cannot tag trees, you will not be able to
+export the linux.git repository completely, as it contains a
+tag referencing a tree instead of a commit.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git-fast-import</b>(1)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

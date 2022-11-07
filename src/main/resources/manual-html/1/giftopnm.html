@@ -1,0 +1,186 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:13 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>giftopnm</title>
+
+</head>
+<body>
+
+<h1 align="center">giftopnm</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#RESTRICTIONS">RESTRICTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">giftopnm -
+convert a GIF file into a portable anymap</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>giftopnm</b>
+[<b>--alphaout=</b>{<i>alpha-filename</i>,<b>-</b>}]
+[<b>-verbose</b>] [<b>-comments</b>] [<b>-image</b>
+<i>N</i>] [<i>GIFfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is a
+graphics format converter from the GIF format to the PNM
+(i.e. PBM, PGM, or PPM) format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the image
+contains only black and maximally bright white, the output
+is PBM. If the image contains more than those two colors,
+but only grays, the output is PGM. If the image contains
+other colors, the output is PPM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you have an
+animated GIF file, you can extract individual frames from it
+with <b>gifsicle</b> and then convert those using
+<b>giftopnm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A GIF image
+contains rectangular pixels. They all have the same aspect
+ratio, but may not be square (it&rsquo;s actually quite
+unusual for them not to be square, but it could happen). The
+pixels of a Netpbm image are always square. Because of the
+engineering complexity to do otherwise, <b>giftopnm</b>
+converts a GIF image to a Netpbm image pixel-for-pixel. This
+means if the GIF pixels are not square, the Netpbm output
+image has the wrong aspect ratio. In this case,
+<b>giftopnm</b> issues an informational message telling you
+to run <b>pnmscale</b> to correct the output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--alphaout=</b><i>alpha-filename</i></p>
+
+<p style="margin-left:22%;"><b>giftopnm</b> creates a PGM
+(portable graymap) file containing the alpha channel values
+in the input image. If the input image doesn&rsquo;t contain
+an alpha channel, the <i>alpha-filename</i> file contains
+all zero (transparent) alpha values. If you don&rsquo;t
+specify <b>--alphaout</b>, <b>giftopnm</b> does not generate
+an alpha file, and if the input image has an alpha channel,
+<b>giftopnm</b> simply discards it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-</b> as the filename, <b>giftopnm</b> writes the alpha
+output to Standard Output and discards the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<b>pnmcomp</b>(1) for one way to use the alpha output
+file.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Produce verbose output about
+the GIF file input.</p>
+
+<p style="margin-left:11%;"><b>-comments</b></p>
+
+<p style="margin-left:22%;">Only output GIF89 comment
+fields.</p>
+
+<p style="margin-left:11%;"><b>-image</b> <i>N</i></p>
+
+<p style="margin-left:22%;">Output the specified gif image
+from the input GIF archive (where <i>N</i> is
+&rsquo;1&rsquo;, &rsquo;2&rsquo;, &rsquo;20&rsquo;...).
+Normally there is only one image per file, so this option is
+not needed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All flags can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>RESTRICTIONS
+<a name="RESTRICTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This does not
+correctly handle the Plain Text Extension of the GIF89
+standard, since I did not have any example input files
+containing them.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtogif</b>(1),
+<b>ppmcolormask</b>(1), <b>pnmcomp</b>(1),
+<b>gifsicle</b>(1) &lt;http://www.lcdf.org/gifsicle&gt;,
+<b>ppm</b>(5).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1993 by David Koblas (koblas@netcom.com)</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you use
+<b>giftopnm</b>, you are using a patent on the LZW
+compression method which is owned by Unisys, and in all
+probability you do not have a license from Unisys to do so.
+Unisys typically asks $5000 for a license for trivial use of
+the patent. Unisys has never enforced the patent against
+trivial users, and has made statements that it is much less
+concerned about people using the patent for decompression
+(which is what <b>giftopnm</b> does than for compression.
+The patent expires in 2003 / 2004, depending on the
+country.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Rumor has it
+that IBM also owns a patent covering <b>giftopnm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A replacement
+for the GIF format that does not require any patents to use
+is the PNG format.</p>
+<hr>
+</body>
+</html>

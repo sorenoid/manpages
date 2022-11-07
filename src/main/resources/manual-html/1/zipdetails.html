@@ -1,0 +1,326 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:38 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ZIPDETAILS</title>
+
+</head>
+<body>
+
+<h1 align="center">ZIPDETAILS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#TODO">TODO</a><br>
+<a href="#SUPPORT">SUPPORT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">zipdetails -
+display the internal structure of zip files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">zipdetails
+[-v][--scan] zipfile.zip <br>
+zipdetails -h <br>
+zipdetails --version</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Zipdetails
+displays information about the internal record structure of
+zip files. It is not concerned with displaying any details
+of the compressed data stored in the zip file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+assumes prior understanding of the internal structure of a
+Zip file. You should have a copy of the Zip
+<small>APPNOTE</small> file at hand to help understand the
+output from this program (&quot; <small>SEE
+ALSO&quot;</small> for details).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default
+Behaviour</b> <br>
+By default the program expects to be given a well-formed zip
+file. It will navigate the Zip file by first parsing the zip
+central directory at the end of the file. If that is found,
+it will then walk through the zip records starting at the
+beginning of the file. Any badly formed zip data structures
+encountered are likely to terminate the program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the program
+finds any structural problems with the zip file it will
+print a summary at the end of the output report. The set of
+error cases reported is very much a work in progress, so
+don&rsquo;t rely on this feature to find all the possible
+errors in a zip file. If you have suggestions for use-cases
+where this could be enhanced please consider creating an
+enhancement request (see &quot; <small>SUPPORT&quot;</small>
+).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Scan-Mode</b>
+<br>
+If you do have a potentially corrupt zip file, particulatly
+where the central directory at the end of the file is
+absent/incomplete, you can try usng the &quot;--scan&quot;
+option to search for zip records that are still present.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When Scan-mode
+is enabled, the program will walk the zip file from the
+start blindly looking for the 4-byte signatures that preceed
+each of the zip data structures. If it finds any of the
+recognised signatures it will attempt to dump the associated
+zip record. For very large zip files, this operation can
+take a long time to run.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+4-byte signatures used in zip files can sometimes match with
+random data stored in the zip file, so care is needed
+interpreting the results.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OPTIONS</small></b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-h</p></td>
+<td width="4%"></td>
+<td width="19%">
+
+
+<p>Display help</p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">--scan</p>
+
+<p style="margin-left:18%;">Walk the zip file loking for
+possible zip records. Can be error-prone. See
+&quot;Scan-Mode&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-v</p></td>
+<td width="4%"></td>
+<td width="65%">
+
+
+<p>Enable Verbose mode. See &quot;Verbose Output&quot;.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">--version</p>
+
+<p style="margin-left:18%;">Display version number of the
+program and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default
+Output</b> <br>
+By default zipdetails will output the details of the zip
+file in three columns. <br>
+Column 1</p>
+
+<p style="margin-left:18%;">This contains the offset from
+the start of the file in hex.</p>
+
+<p style="margin-left:11%;">Column 2</p>
+
+<p style="margin-left:18%;">This contains a textual
+description of the field.</p>
+
+<p style="margin-left:11%;">Column 3</p>
+
+<p style="margin-left:18%;">If the field contains a numeric
+value it will be displayed in hex. Zip stores most numbers
+in little-endian format - the value displayed will have the
+little-endian encoding removed.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Next, is an
+optional description of what the value means.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Verbose
+Output</b> <br>
+If the &quot;-v&quot; option is present, column 1 is
+expanded to include</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="6%"></td>
+<td width="82%">
+
+
+<p>The offset from the start of the file in hex.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="6%"></td>
+<td width="82%">
+
+
+<p>The length of the field in hex.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="6%"></td>
+<td width="82%">
+
+
+<p>A hex dump of the bytes in field in the order they are
+stored in the zip file.</p></td></tr>
+</table>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+zip file features are not supported by this program:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="6%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">Multi-part archives.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="6%"></td>
+<td width="82%">
+
+
+<p>The strong encryption features defined in the &quot;
+<small>APPNOTE&quot;</small> document.</p></td></tr>
+</table>
+
+<h2>TODO
+<a name="TODO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Error handling
+is a work in progress. If the program encounters a problem
+reading a zip file it is likely to terminate with an
+unhelpful error message.</p>
+
+<h2>SUPPORT
+<a name="SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">General
+feedback/questions/bug reports should be sent to
+&lt;https://github.com/pmqs/IO-Compress/issues&gt;
+(preferred) or
+&lt;https://rt.cpan.org/Public/Dist/Display.html?Name=IO-Compress&gt;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The primary
+reference for Zip files is the &quot;
+<small>APPNOTE&quot;</small> document available at
+&lt;http://www.pkware.com/documents/casestudies/APPNOTE.TXT&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An alternative
+reference is the Info-Zip appnote. This is available from
+&lt;ftp://ftp.info-zip.org/pub/infozip/doc/&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;zipinfo&quot; program that comes with the info-zip
+distribution (&lt;http://www.info-zip.org/&gt;) can also
+display details of the structure of a zip file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+Archive::Zip::SimpleZip, IO::Compress::Zip,
+IO::Uncompress::Unzip.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Paul Marquess
+<i>pmqs@cpan.org</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2011-2021 Paul Marquess. All rights reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

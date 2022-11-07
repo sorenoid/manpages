@@ -1,0 +1,1957 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:09 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>OBJDUMP</title>
+
+</head>
+<body>
+
+<h1 align="center">OBJDUMP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">objdump -
+display information from object files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">objdump
+[<b>-a</b>|<b>--archive-headers</b>] <br>
+[<b>-b</b> <i>bfdname</i>|<b>--target=</b><i>bfdname</i>]
+<br>
+[<b>-C</b>|<b>--demangle</b>[=<i>style</i>] ] <br>
+[<b>-d</b>|<b>--disassemble</b>[=<i>symbol</i>]] <br>
+[<b>-D</b>|<b>--disassemble-all</b>] <br>
+[<b>-z</b>|<b>--disassemble-zeroes</b>] <br>
+[<b>-EB</b>|<b>-EL</b>|<b>--endian=</b>{big | little }] <br>
+[<b>-f</b>|<b>--file-headers</b>] <br>
+[<b>-F</b>|<b>--file-offsets</b>] <br>
+[<b>--file-start-context</b>] <br>
+[<b>-g</b>|<b>--debugging</b>] <br>
+[<b>-e</b>|<b>--debugging-tags</b>] <br>
+[<b>-h</b>|<b>--section-headers</b>|<b>--headers</b>] <br>
+[<b>-i</b>|<b>--info</b>] <br>
+[<b>-j</b> <i>section</i>|<b>--section=</b><i>section</i>]
+<br>
+[<b>-l</b>|<b>--line-numbers</b>] <br>
+[<b>-S</b>|<b>--source</b>] <br>
+[<b>--source-comment</b>[=<i>text</i>]] <br>
+[<b>-m</b>
+<i>machine</i>|<b>--architecture=</b><i>machine</i>] <br>
+[<b>-M</b>
+<i>options</i>|<b>--disassembler-options=</b><i>options</i>]
+<br>
+[<b>-p</b>|<b>--private-headers</b>] <br>
+[<b>-P</b> <i>options</i>|<b>--private=</b><i>options</i>]
+<br>
+[<b>-r</b>|<b>--reloc</b>] <br>
+[<b>-R</b>|<b>--dynamic-reloc</b>] <br>
+[<b>-s</b>|<b>--full-contents</b>] <br>
+[<b>-W[lLiaprmfFsoORtUuTgAck]</b>| <b><br>
+
+--dwarf</b>[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=str-offsets,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links]]
+<br>
+[<b>-WK</b>|<b>--dwarf=follow-links</b>] <br>
+[<b>-WN</b>|<b>--dwarf=no-follow-links</b>] <br>
+[<b>-L</b>|<b>--process-links</b>] <br>
+[<b>--ctf=</b><i>section</i>] <br>
+[<b>-G</b>|<b>--stabs</b>] <br>
+[<b>-t</b>|<b>--syms</b>] <br>
+[<b>-T</b>|<b>--dynamic-syms</b>] <br>
+[<b>-x</b>|<b>--all-headers</b>] <br>
+[<b>-w</b>|<b>--wide</b>] <br>
+[<b>--start-address=</b><i>address</i>] <br>
+[<b>--stop-address=</b><i>address</i>] <br>
+[<b>--no-addresses</b>] <br>
+[<b>--prefix-addresses</b>] <br>
+[<b>--[no-]show-raw-insn</b>] <br>
+[<b>--adjust-vma=</b><i>offset</i>] <br>
+[<b>--dwarf-depth=</b><i>n</i>] <br>
+[<b>--dwarf-start=</b><i>n</i>] <br>
+[<b>--ctf-parent=</b><i>section</i>] <br>
+[<b>--no-recurse-limit</b>|<b>--recurse-limit</b>] <br>
+[<b>--special-syms</b>] <br>
+[<b>--prefix=</b><i>prefix</i>] <br>
+[<b>--prefix-strip=</b><i>level</i>] <br>
+[<b>--insn-width=</b><i>width</i>] <br>
+[<b>--visualize-jumps[=color|=extended-color|=off]</b> <br>
+[<b>-U</b> <i>method</i>] [<b>--unicode=</b><i>method</i>]
+<br>
+[<b>-V</b>|<b>--version</b>] <br>
+[<b>-H</b>|<b>--help</b>] <i><br>
+objfile</i>...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>objdump</b>
+displays information about one or more object files. The
+options control what particular information to display. This
+information is mostly useful to programmers who are working
+on the compilation tools, as opposed to programmers who just
+want their program to compile and work.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>objfile</i>...
+are the object files to be examined. When you specify
+archives, <b>objdump</b> shows information on each of the
+member object files.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The long and
+short forms of options, shown here as alternatives, are
+equivalent. At least one option from the list
+<b>-a,-d,-D,-e,-f,-g,-G,-h,-H,-p,-P,-r,-R,-s,-S,-t,-T,-V,-x</b>
+must be given.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--archive-header</b></p>
+
+<p style="margin-left:17%;">If any of the <i>objfile</i>
+files are archives, display the archive header information
+(in a format similar to <b>ls -l</b>). Besides the
+information you could list with <b>ar tv</b>, <b>objdump
+-a</b> shows the object file format of each archive
+member.</p>
+
+
+<p style="margin-left:11%;"><b>--adjust-vma=</b><i>offset</i></p>
+
+<p style="margin-left:17%;">When dumping information, first
+add <i>offset</i> to all the section addresses. This is
+useful if the section addresses do not correspond to the
+symbol table, which can happen when putting sections at
+particular addresses when using a format which can not
+represent section addresses, such as a.out.</p>
+
+<p style="margin-left:11%;"><b>-b</b> <i>bfdname</i>
+<b><br>
+--target=</b><i>bfdname</i></p>
+
+<p style="margin-left:17%;">Specify that the object-code
+format for the object files is <i>bfdname</i>. This option
+may not be necessary; <i>objdump</i> can automatically
+recognize many formats.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+example,</p>
+
+<p style="margin-left:17%; margin-top: 1em">objdump -b
+oasys -m vax -h fu.o</p>
+
+<p style="margin-left:17%; margin-top: 1em">displays
+summary information from the section headers (<b>-h</b>) of
+<i>fu.o</i>, which is explicitly identified (<b>-m</b>) as a
+<small>VAX</small> object file in the format produced by
+Oasys compilers. You can list the formats available with the
+<b>-i</b> option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-C</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--demangle[=</b><i>style</i><b>]</b></p>
+
+<p style="margin-left:17%;">Decode (<i>demangle</i>)
+low-level symbol names into user-level names. Besides
+removing any initial underscore prepended by the system,
+this makes C <small>++</small> function names readable.
+Different compilers have different mangling styles. The
+optional demangling style argument can be used to choose an
+appropriate demangling style for your compiler.</p>
+
+<p style="margin-left:11%;"><b>--recurse-limit <br>
+--no-recurse-limit <br>
+--recursion-limit <br>
+--no-recursion-limit</b></p>
+
+<p style="margin-left:17%;">Enables or disables a limit on
+the amount of recursion performed whilst demangling strings.
+Since the name mangling formats allow for an infinite level
+of recursion it is possible to create strings whose decoding
+will exhaust the amount of stack space available on the host
+machine, triggering a memory fault. The limit tries to
+prevent this from happening by restricting recursion to 2048
+levels of nesting.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+for this limit to be enabled, but disabling it may be
+necessary in order to demangle truly complicated names. Note
+however that if the recursion limit is disabled then stack
+exhaustion is possible and any bug reports about such an
+event will be rejected.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-g</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--debugging</b></p>
+
+<p style="margin-left:17%;">Display debugging information.
+This attempts to parse <small>STABS</small> debugging format
+information stored in the file and print it out using a C
+like syntax. If no <small>STABS</small> debugging was found
+this option falls back on the <b>-W</b> option to print any
+<small>DWARF</small> information in the file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-e</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--debugging-tags</b></p>
+
+<p style="margin-left:17%;">Like <b>-g</b>, but the
+information is generated in a format compatible with ctags
+tool.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--disassemble <br>
+--disassemble=</b><i>symbol</i></p>
+
+<p style="margin-left:17%;">Display the assembler mnemonics
+for the machine instructions from the input file. This
+option only disassembles those sections which are expected
+to contain instructions. If the optional <i>symbol</i>
+argument is given, then display the assembler mnemonics
+starting at <i>symbol</i>. If <i>symbol</i> is a function
+name then disassembly will stop at the end of the function,
+otherwise it will stop when the next symbol is encountered.
+If there are no matches for <i>symbol</i> then nothing will
+be displayed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note if the
+<b>--dwarf=follow-links</b> option is enabled then any
+symbol tables in linked debug info files will be read in and
+used when disassembling.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-D</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--disassemble-all</b></p>
+
+<p style="margin-left:17%;">Like <b>-d</b>, but disassemble
+the contents of all sections, not just those expected to
+contain instructions.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+also has a subtle effect on the disassembly of instructions
+in code sections. When option <b>-d</b> is in effect objdump
+will assume that any symbols present in a code section occur
+on the boundary between instructions and it will refuse to
+disassemble across such a boundary. When option <b>-D</b> is
+in effect however this assumption is supressed. This means
+that it is possible for the output of <b>-d</b> and
+<b>-D</b> to differ if, for example, data is stored in code
+sections.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the target
+is an <small>ARM</small> architecture this switch also has
+the effect of forcing the disassembler to decode pieces of
+data found in code sections as if they were
+instructions.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note if the
+<b>--dwarf=follow-links</b> option is enabled then any
+symbol tables in linked debug info files will be read in and
+used when disassembling.</p>
+
+<p style="margin-left:11%;"><b>--no-addresses</b></p>
+
+<p style="margin-left:17%;">When disassembling, don&rsquo;t
+print addresses on each line or for symbols and relocation
+offsets. In combination with <b>--no-show-raw-insn</b> this
+may be useful for comparing compiler output.</p>
+
+<p style="margin-left:11%;"><b>--prefix-addresses</b></p>
+
+<p style="margin-left:17%;">When disassembling, print the
+complete address on each line. This is the older disassembly
+format.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-EB</b></p></td>
+<td width="85%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-EL</b></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--endian={big|little}</b></p>
+
+<p style="margin-left:17%;">Specify the endianness of the
+object files. This only affects disassembly. This can be
+useful when disassembling a file format which does not
+describe endianness information, such as S-records.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-f</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--file-headers</b></p>
+
+<p style="margin-left:17%;">Display summary information
+from the overall header of each of the <i>objfile</i>
+files.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-F</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--file-offsets</b></p>
+
+<p style="margin-left:17%;">When disassembling sections,
+whenever a symbol is displayed, also display the file offset
+of the region of data that is about to be dumped. If zeroes
+are being skipped, then when disassembly resumes, tell the
+user how many zeroes were skipped and the file offset of the
+location from where the disassembly resumes. When dumping
+sections, display the file offset of the location from where
+the dump starts.</p>
+
+
+<p style="margin-left:11%;"><b>--file-start-context</b></p>
+
+<p style="margin-left:17%;">Specify that when displaying
+interlisted source code/disassembly (assumes <b>-S</b>) from
+a file that has not yet been displayed, extend the context
+to the start of the file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--section-headers <br>
+--headers</b></p>
+
+<p style="margin-left:17%;">Display summary information
+from the section headers of the object file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">File segments
+may be relocated to nonstandard addresses, for example by
+using the <b>-Ttext</b>, <b>-Tdata</b>, or <b>-Tbss</b>
+options to <b>ld</b>. However, some object file formats,
+such as a.out, do not store the starting address of the file
+segments. In those situations, although <b>ld</b> relocates
+the sections correctly, using <b>objdump -h</b> to list the
+file section headers cannot show the correct addresses.
+Instead, it shows the usual addresses, which are implicit
+for the target.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note, in some
+cases it is possible for a section to have both the
+<small>READONLY</small> and the <small>NOREAD</small>
+attributes set. In such cases the <small>NOREAD</small>
+attribute takes precedence, but <b>objdump</b> will report
+both since the exact setting of the flag bits might be
+important.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-H</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Print a summary of the options
+to <b>objdump</b> and exit.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-i</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--info</b></p>
+
+<p style="margin-left:17%;">Display a list showing all
+architectures and object formats available for specification
+with <b>-b</b> or <b>-m</b>.</p>
+
+<p style="margin-left:11%;"><b>-j</b> <i>name</i> <b><br>
+--section=</b><i>name</i></p>
+
+<p style="margin-left:17%;">Display information only for
+section <i>name</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-L</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--process-links</b></p>
+
+<p style="margin-left:17%;">Display the contents of
+non-debug sections found in separate debuginfo files that
+are linked to the main file. This option automatically
+implies the <b>-WK</b> option, and only sections requested
+by other command line options will be displayed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-l</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--line-numbers</b></p>
+
+<p style="margin-left:17%;">Label the display (using
+debugging information) with the filename and source line
+numbers corresponding to the object code or relocs shown.
+Only useful with <b>-d</b>, <b>-D</b>, or <b>-r</b>.</p>
+
+<p style="margin-left:11%;"><b>-m</b> <i>machine</i>
+<b><br>
+--architecture=</b><i>machine</i></p>
+
+<p style="margin-left:17%;">Specify the architecture to use
+when disassembling object files. This can be useful when
+disassembling object files which do not describe
+architecture information, such as S-records. You can list
+the available architectures with the <b>-i</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the target
+is an <small>ARM</small> architecture then this switch has
+an additional effect. It restricts the disassembly to only
+those instructions supported by the architecture specified
+by <i>machine</i>. If it is necessary to use this switch
+because the input file does not contain any architecture
+information, but it is also desired to disassemble all the
+instructions use <b>-marm</b>.</p>
+
+<p style="margin-left:11%;"><b>-M</b> <i>options</i>
+<b><br>
+--disassembler-options=</b><i>options</i></p>
+
+<p style="margin-left:17%;">Pass target specific
+information to the disassembler. Only supported on some
+targets. If it is necessary to specify more than one
+disassembler option then multiple <b>-M</b> options can be
+used or can be placed together into a comma separated
+list.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+<small>ARC,</small> <b>dsp</b> controls the printing of
+<small>DSP</small> instructions, <b>spfp</b> selects the
+printing of <small>FPX</small> single precision
+<small>FP</small> instructions, <b>dpfp</b> selects the
+printing of <small>FPX</small> double precision
+<small>FP</small> instructions, <b>quarkse_em</b> selects
+the printing of special QuarkSE-EM instructions,
+<b>fpuda</b> selects the printing of double precision assist
+instructions, <b>fpus</b> selects the printing of
+<small>FPU</small> single precision <small>FP</small>
+instructions, while <b>fpud</b> selects the printing of
+<small>FPU</small> double precision <small>FP</small>
+instructions. Additionally, one can choose to have all the
+immediates printed in hexadecimal using <b>hex</b>. By
+default, the short immediates are printed using the decimal
+representation, while the long immediate values are printed
+as hexadecimal.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>cpu=...</b>
+allows one to enforce a particular <small>ISA</small> when
+disassembling instructions, overriding the <b>-m</b> value
+or whatever is in the <small>ELF</small> file. This might be
+useful to select <small>ARC EM</small> or <small>HS
+ISA,</small> because architecture is same for those and
+disassembler relies on private <small>ELF</small> header
+data to decide if code is for <small>EM</small> or
+<small>HS.</small> This option might be specified multiple
+times - only the latest value will be used. Valid values are
+same as for the assembler <b>-mcpu=...</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the target
+is an <small>ARM</small> architecture then this switch can
+be used to select which register name set is used during
+disassembler. Specifying <b>-M reg-names-std</b> (the
+default) will select the register names as used in
+<small>ARM</small> &rsquo;s instruction set documentation,
+but with register 13 called &rsquo;sp&rsquo;, register 14
+called &rsquo;lr&rsquo; and register 15 called
+&rsquo;pc&rsquo;. Specifying <b>-M reg-names-apcs</b> will
+select the name set used by the <small>ARM</small> Procedure
+Call Standard, whilst specifying <b>-M reg-names-raw</b>
+will just use <b>r</b> followed by the register number.</p>
+
+<p style="margin-left:17%; margin-top: 1em">There are also
+two variants on the <small>APCS</small> register naming
+scheme enabled by <b>-M reg-names-atpcs</b> and <b>-M
+reg-names-special-atpcs</b> which use the ARM/Thumb
+Procedure Call Standard naming conventions. (Either with the
+normal register names or the special register names).</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option can
+also be used for <small>ARM</small> architectures to force
+the disassembler to interpret all instructions as Thumb
+instructions by using the switch
+<b>--disassembler-options=force-thumb</b>. This can be
+useful when attempting to disassemble thumb code produced by
+other compilers.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For AArch64
+targets this switch can be used to set whether instructions
+are disassembled as the most general instruction using the
+<b>-M no-aliases</b> option or whether instruction notes
+should be generated as comments in the disasssembly using
+<b>-M notes</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For the x86,
+some of the options duplicate functions of the <b>-m</b>
+switch, but allow finer grained control. <br>
+&quot;x86-64&quot; <br>
+&quot;i386&quot; <br>
+&quot;i8086&quot;</p>
+
+<p style="margin-left:23%;">Select disassembly for the
+given architecture.</p>
+
+<p style="margin-left:17%;">&quot;intel&quot; <br>
+&quot;att&quot;</p>
+
+<p style="margin-left:23%;">Select between intel syntax
+mode and <small>AT&amp;T</small> syntax mode.</p>
+
+<p style="margin-left:17%;">&quot;amd64&quot; <br>
+&quot;intel64&quot;</p>
+
+<p style="margin-left:23%;">Select between <small>AMD64
+ISA</small> and Intel64 <small>ISA.</small></p>
+
+<p style="margin-left:17%;">&quot;intel-mnemonic&quot; <br>
+&quot;att-mnemonic&quot;</p>
+
+<p style="margin-left:23%;">Select between intel mnemonic
+mode and <small>AT&amp;T</small> mnemonic mode. Note:
+&quot;intel-mnemonic&quot; implies &quot;intel&quot; and
+&quot;att-mnemonic&quot; implies &quot;att&quot;.</p>
+
+<p style="margin-left:17%;">&quot;addr64&quot; <br>
+&quot;addr32&quot; <br>
+&quot;addr16&quot; <br>
+&quot;data32&quot; <br>
+&quot;data16&quot;</p>
+
+<p style="margin-left:23%;">Specify the default address
+size and operand size. These five options will be overridden
+if &quot;x86-64&quot;, &quot;i386&quot; or &quot;i8086&quot;
+appear later in the option string.</p>
+
+<p style="margin-left:17%;">&quot;suffix&quot;</p>
+
+<p style="margin-left:23%;">When in <small>AT&amp;T</small>
+mode and also for a limited set of instructions when in
+Intel mode, instructs the disassembler to print a mnemonic
+suffix even when the suffix could be inferred by the
+operands or, for certain instructions, the execution
+mode&rsquo;s defaults.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For PowerPC,
+the <b>-M</b> argument <b>raw</b> selects disasssembly of
+hardware insns rather than aliases. For example, you will
+see &quot;rlwinm&quot; rather than &quot;clrlwi&quot;, and
+&quot;addi&quot; rather than &quot;li&quot;. All of the
+<b>-m</b> arguments for <b>gas</b> that select a
+<small>CPU</small> are supported. These are: <b>403</b>,
+<b>405</b>, <b>440</b>, <b>464</b>, <b>476</b>, <b>601</b>,
+<b>603</b>, <b>604</b>, <b>620</b>, <b>7400</b>,
+<b>7410</b>, <b>7450</b>, <b>7455</b>, <b>750cl</b>,
+<b>821</b>, <b>850</b>, <b>860</b>, <b>a2</b>, <b>booke</b>,
+<b>booke32</b>, <b>cell</b>, <b>com</b>, <b>e200z4</b>,
+<b>e300</b>, <b>e500</b>, <b>e500mc</b>, <b>e500mc64</b>,
+<b>e500x2</b>, <b>e5500</b>, <b>e6500</b>, <b>efs</b>,
+<b>power4</b>, <b>power5</b>, <b>power6</b>, <b>power7</b>,
+<b>power8</b>, <b>power9</b>, <b>power10</b>, <b>ppc</b>,
+<b>ppc32</b>, <b>ppc64</b>, <b>ppc64bridge</b>,
+<b>ppcps</b>, <b>pwr</b>, <b>pwr2</b>, <b>pwr4</b>,
+<b>pwr5</b>, <b>pwr5x</b>, <b>pwr6</b>, <b>pwr7</b>,
+<b>pwr8</b>, <b>pwr9</b>, <b>pwr10</b>, <b>pwrx</b>,
+<b>titan</b>, and <b>vle</b>. <b>32</b> and <b>64</b> modify
+the default or a prior <small>CPU</small> selection,
+disabling and enabling 64-bit insns respectively. In
+addition, <b>altivec</b>, <b>any</b>, <b>htm</b>,
+<b>vsx</b>, and <b>spe</b> add capabilities to a previous
+<i>or later</i> <small>CPU</small> selection. <b>any</b>
+will disassemble any opcode known to binutils, but in cases
+where an opcode has two different meanings or different
+arguments, you may not see the disassembly you expect. If
+you disassemble without giving a <small>CPU</small>
+selection, a default will be chosen from information gleaned
+by <small>BFD</small> from the object files headers, but the
+result again may not be as you expect.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+<small>MIPS,</small> this option controls the printing of
+instruction mnemonic names and register names in
+disassembled instructions. Multiple selections from the
+following may be specified as a comma separated string, and
+invalid options are ignored: <br>
+&quot;no-aliases&quot;</p>
+
+<p style="margin-left:23%;">Print the &rsquo;raw&rsquo;
+instruction mnemonic instead of some pseudo instruction
+mnemonic. I.e., print &rsquo;daddu&rsquo; or
+&rsquo;or&rsquo; instead of &rsquo;move&rsquo;,
+&rsquo;sll&rsquo; instead of &rsquo;nop&rsquo;, etc.</p>
+
+<p style="margin-left:17%;">&quot;msa&quot;</p>
+
+<p style="margin-left:23%;">Disassemble <small>MSA</small>
+instructions.</p>
+
+<p style="margin-left:17%;">&quot;virt&quot;</p>
+
+<p style="margin-left:23%;">Disassemble the virtualization
+<small>ASE</small> instructions.</p>
+
+<p style="margin-left:17%;">&quot;xpa&quot;</p>
+
+<p style="margin-left:23%;">Disassemble the eXtended
+Physical Address ( <small>XPA</small> ) <small>ASE</small>
+instructions.</p>
+
+
+<p style="margin-left:17%;">&quot;gpr-names=<i>ABI</i>&quot;</p>
+
+<p style="margin-left:23%;">Print <small>GPR</small>
+(general-purpose register) names as appropriate for the
+specified <small>ABI.</small> By default, <small>GPR</small>
+names are selected according to the <small>ABI</small> of
+the binary being disassembled.</p>
+
+
+<p style="margin-left:17%;">&quot;fpr-names=<i>ABI</i>&quot;</p>
+
+<p style="margin-left:23%;">Print <small>FPR</small>
+(floating-point register) names as appropriate for the
+specified <small>ABI.</small> By default, <small>FPR</small>
+numbers are printed rather than names.</p>
+
+
+<p style="margin-left:17%;">&quot;cp0-names=<i>ARCH</i>&quot;</p>
+
+<p style="margin-left:23%;">Print <small>CP0</small>
+(system control coprocessor; coprocessor 0) register names
+as appropriate for the <small>CPU</small> or architecture
+specified by <i><small>ARCH</small></i> . By default,
+<small>CP0</small> register names are selected according to
+the architecture and <small>CPU</small> of the binary being
+disassembled.</p>
+
+
+<p style="margin-left:17%;">&quot;hwr-names=<i>ARCH</i>&quot;</p>
+
+<p style="margin-left:23%;">Print <small>HWR</small>
+(hardware register, used by the &quot;rdhwr&quot;
+instruction) names as appropriate for the <small>CPU</small>
+or architecture specified by <i><small>ARCH</small></i> . By
+default, <small>HWR</small> names are selected according to
+the architecture and <small>CPU</small> of the binary being
+disassembled.</p>
+
+
+<p style="margin-left:17%;">&quot;reg-names=<i>ABI</i>&quot;</p>
+
+<p style="margin-left:23%;">Print <small>GPR</small> and
+<small>FPR</small> names as appropriate for the selected
+<small>ABI.</small></p>
+
+
+<p style="margin-left:17%;">&quot;reg-names=<i>ARCH</i>&quot;</p>
+
+<p style="margin-left:23%;">Print CPU-specific register
+names ( <small>CP0</small> register and <small>HWR</small>
+names) as appropriate for the selected <small>CPU</small> or
+architecture.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For any of the
+options listed above, <i><small>ABI</small></i> or
+<i><small>ARCH</small></i> may be specified as
+<b>numeric</b> to have numbers printed rather than names,
+for the selected types of registers. You can list the
+available values of <i><small>ABI</small></i> and
+<i><small>ARCH</small></i> using the <b>--help</b>
+option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+<small>VAX,</small> you can specify function entry addresses
+with <b>-M entry:0xf00ba</b>. You can use this multiple
+times to properly disassemble <small>VAX</small> binary
+files that don&rsquo;t contain symbol tables (like
+<small>ROM</small> dumps). In these cases, the function
+entry mask would otherwise be decoded as <small>VAX</small>
+instructions, which would probably lead the rest of the
+function being wrongly disassembled.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--private-headers</b></p>
+
+<p style="margin-left:17%;">Print information that is
+specific to the object file format. The exact information
+printed depends upon the object file format. For some object
+file formats, no additional information is printed.</p>
+
+<p style="margin-left:11%;"><b>-P</b> <i>options</i>
+<b><br>
+--private=</b><i>options</i></p>
+
+<p style="margin-left:17%;">Print information that is
+specific to the object file format. The argument
+<i>options</i> is a comma separated list that depends on the
+format (the lists of options is displayed with the
+help).</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+<small>XCOFF,</small> the available options are: <br>
+&quot;header&quot; <br>
+&quot;aout&quot; <br>
+&quot;sections&quot; <br>
+&quot;syms&quot; <br>
+&quot;relocs&quot; <br>
+&quot;lineno,&quot; <br>
+&quot;loader&quot; <br>
+&quot;except&quot; <br>
+&quot;typchk&quot; <br>
+&quot;traceback&quot; <br>
+&quot;toc&quot; <br>
+&quot;ldinfo&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">Not all object
+formats support this option. In particular the
+<small>ELF</small> format does not use it.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--reloc</b></p>
+
+<p style="margin-left:17%;">Print the relocation entries of
+the file. If used with <b>-d</b> or <b>-D</b>, the
+relocations are printed interspersed with the
+disassembly.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-R</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--dynamic-reloc</b></p>
+
+<p style="margin-left:17%;">Print the dynamic relocation
+entries of the file. This is only meaningful for dynamic
+objects, such as certain types of shared libraries. As for
+<b>-r</b>, if used with <b>-d</b> or <b>-D</b>, the
+relocations are printed interspersed with the
+disassembly.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--full-contents</b></p>
+
+<p style="margin-left:17%;">Display the full contents of
+any sections requested. By default all non-empty sections
+are displayed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--source</b></p>
+
+<p style="margin-left:17%;">Display source code intermixed
+with disassembly, if possible. Implies <b>-d</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--source-comment[=</b><i>txt</i><b>]</b></p>
+
+<p style="margin-left:17%;">Like the <b>-S</b> option, but
+all source code lines are displayed with a prefix of
+<i>txt</i>. Typically <i>txt</i> will be a comment string
+which can be used to distinguish the assembler code from the
+source code. If <i>txt</i> is not provided then a default
+string of <i>&quot;# &quot;</i> (hash followed by a space),
+will be used.</p>
+
+
+<p style="margin-left:11%;"><b>--prefix=</b><i>prefix</i></p>
+
+<p style="margin-left:17%;">Specify <i>prefix</i> to add to
+the absolute paths when used with <b>-S</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--prefix-strip=</b><i>level</i></p>
+
+<p style="margin-left:17%;">Indicate how many initial
+directory names to strip off the hardwired absolute paths.
+It has no effect without <b>--prefix=</b><i>prefix</i>.</p>
+
+<p style="margin-left:11%;"><b>--show-raw-insn</b></p>
+
+<p style="margin-left:17%;">When disassembling
+instructions, print the instruction in hex as well as in
+symbolic form. This is the default except when
+<b>--prefix-addresses</b> is used.</p>
+
+<p style="margin-left:11%;"><b>--no-show-raw-insn</b></p>
+
+<p style="margin-left:17%;">When disassembling
+instructions, do not print the instruction bytes. This is
+the default when <b>--prefix-addresses</b> is used.</p>
+
+
+<p style="margin-left:11%;"><b>--insn-width=</b><i>width</i></p>
+
+<p style="margin-left:17%;">Display <i>width</i> bytes on a
+single line when disassembling instructions.</p>
+
+
+<p style="margin-left:11%;"><b>--visualize-jumps[=color|=extended-color|=off]</b></p>
+
+<p style="margin-left:17%;">Visualize jumps that stay
+inside a function by drawing <small>ASCII</small> art
+between the start and target addresses. The optional
+<b>=color</b> argument adds color to the output using simple
+terminal colors. Alternatively the <b>=extended-color</b>
+argument will add color using 8bit colors, but these might
+not work on all terminals.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If it is
+necessary to disable the <b>visualize-jumps</b> option after
+it has previously been enabled then use
+<b>visualize-jumps=off</b>.</p>
+
+<p style="margin-left:11%;"><b>-W[lLiaprmfFsoORtUuTgAckK]
+<br>
+
+--dwarf[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=str-offsets,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]</b></p>
+
+<p style="margin-left:17%;">Displays the contents of the
+<small>DWARF</small> debug sections in the file, if any are
+present. Compressed debug sections are automatically
+decompressed (temporarily) before they are displayed. If one
+or more of the optional letters or words follows the switch
+then only those type(s) of data will be dumped. The letters
+and words refer to the following information:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;a&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=abbrev&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_abbrev</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;A&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=addr&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_addr</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;c&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=cu_index&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_cu_index</b> and/or <b>.debug_tu_index</b>
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;f&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=frames&quot;</p>
+
+<p style="margin-left:23%;">Display the raw contents of a
+<b>.debug_frame</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;F&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=frames-interp&quot;</p>
+
+<p style="margin-left:23%;">Display the interpreted
+contents of a <b>.debug_frame</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;g&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=gdb_index&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.gdb_index</b> and/or <b>.debug_names</b> sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;i&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=info&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_info</b> section. Note: the output from this
+option can also be restricted by the use of the
+<b>--dwarf-depth</b> and <b>--dwarf-start</b> options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;k&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=links&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.gnu_debuglink</b>, <b>.gnu_debugaltlink</b> and
+<b>.debug_sup</b> sections, if any of them are present. Also
+displays any links to separate dwarf object files (dwo), if
+they are specified by the DW_AT_GNU_dwo_name or
+DW_AT_dwo_name attributes in the <b>.debug_info</b>
+section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;K&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=follow-links&quot;</p>
+
+<p style="margin-left:23%;">Display the contents of any
+selected debug sections that are found in linked, separate
+debug info file(s). This can result in multiple versions of
+the same debug section being displayed if it exists in more
+than one file.</p>
+
+<p style="margin-left:23%; margin-top: 1em">In addition,
+when displaying <small>DWARF</small> attributes, if a form
+is found that references the separate debug info file, then
+the referenced contents will also be displayed.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Note - in some
+distributions this option is enabled by default. It can be
+disabled via the <b>N</b> debug option. The default can be
+chosen when configuring the binutils via the
+<b>--enable-follow-debug-links=yes</b> or
+<b>--enable-follow-debug-links=no</b> options. If these are
+not used then the default is to enable the following of
+debug links.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;N&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">&quot;=no-follow-links&quot;</p>
+
+<p style="margin-left:23%;">Disables the following of links
+to separate debug info files.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;l&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=rawline&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_line</b> section in a raw format.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;L&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=decodedline&quot;</p>
+
+<p style="margin-left:23%;">Displays the interpreted
+contents of the <b>.debug_line</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;m&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=macro&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_macro</b> and/or <b>.debug_macinfo</b>
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;o&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=loc&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_loc</b> and/or <b>.debug_loclists</b>
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;O&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=str-offsets&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_str_offsets</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;p&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=pubnames&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_pubnames</b> and/or <b>.debug_gnu_pubnames</b>
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;r&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=aranges&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_aranges</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;R&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=Ranges&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_ranges</b> and/or <b>.debug_rnglists</b>
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;s&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=str&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_str</b>, <b>.debug_line_str</b> and/or
+<b>.debug_str_offsets</b> sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;t&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=pubtype&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.debug_pubtypes</b> and/or <b>.debug_gnu_pubtypes</b>
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;T&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=trace_aranges&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.trace_aranges</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;u&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=trace_abbrev&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.trace_abbrev</b> section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;U&quot;</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;=trace_info&quot;</p>
+
+<p style="margin-left:23%;">Displays the contents of the
+<b>.trace_info</b> section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note:
+displaying the contents of <b>.debug_static_funcs</b>,
+<b>.debug_static_vars</b> and <b>debug_weaknames</b>
+sections is not currently supported.</p>
+
+
+<p style="margin-left:11%;"><b>--dwarf-depth=</b><i>n</i></p>
+
+<p style="margin-left:17%;">Limit the dump of the
+&quot;.debug_info&quot; section to <i>n</i> children. This
+is only useful with <b>--debug-dump=info</b>. The default is
+to print all DIEs; the special value 0 for <i>n</i> will
+also have this effect.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With a non-zero
+value for <i>n</i>, DIEs at or deeper than <i>n</i> levels
+will not be printed. The range for <i>n</i> is
+zero-based.</p>
+
+
+<p style="margin-left:11%;"><b>--dwarf-start=</b><i>n</i></p>
+
+<p style="margin-left:17%;">Print only DIEs beginning with
+the <small>DIE</small> numbered <i>n</i>. This is only
+useful with <b>--debug-dump=info</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If specified,
+this option will suppress printing of any header information
+and all DIEs before the <small>DIE</small> numbered
+<i>n</i>. Only siblings and children of the specified
+<small>DIE</small> will be printed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This can be
+used in conjunction with <b>--dwarf-depth</b>.</p>
+
+<p style="margin-left:11%;"><b>--dwarf-check</b></p>
+
+<p style="margin-left:17%;">Enable additional checks for
+consistency of Dwarf information.</p>
+
+
+<p style="margin-left:11%;"><b>--ctf[=</b><i>section</i><b>]</b></p>
+
+<p style="margin-left:17%;">Display the contents of the
+specified <small>CTF</small> section. <small>CTF</small>
+sections themselves contain many subsections, all of which
+are displayed in order.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default,
+display the name of the section named <i>.ctf</i>, which is
+the name emitted by <b>ld</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--ctf-parent=</b><i>member</i></p>
+
+<p style="margin-left:17%;">If the <small>CTF</small>
+section contains ambiguously-defined types, it will consist
+of an archive of many <small>CTF</small> dictionaries, all
+inheriting from one dictionary containing unambiguous types.
+This member is by default named <i>.ctf</i>, like the
+section containing it, but it is possible to change this
+name using the &quot;ctf_link_set_memb_name_changer&quot;
+function at link time. When looking at <small>CTF</small>
+archives that have been created by a linker that uses the
+name changer to rename the parent archive member,
+<b>--ctf-parent</b> can be used to specify the name used for
+the parent.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-G</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--stabs</b></p>
+
+<p style="margin-left:17%;">Display the full contents of
+any sections requested. Display the contents of the .stab
+and .stab.index and .stab.excl sections from an
+<small>ELF</small> file. This is only useful on systems
+(such as Solaris 2.0) in which &quot;.stab&quot; debugging
+symbol-table entries are carried in an <small>ELF</small>
+section. In most other file formats, debugging symbol-table
+entries are interleaved with linkage symbols, and are
+visible in the <b>--syms</b> output.</p>
+
+
+<p style="margin-left:11%;"><b>--start-address=</b><i>address</i></p>
+
+<p style="margin-left:17%;">Start displaying data at the
+specified address. This affects the output of the <b>-d</b>,
+<b>-r</b> and <b>-s</b> options.</p>
+
+
+<p style="margin-left:11%;"><b>--stop-address=</b><i>address</i></p>
+
+<p style="margin-left:17%;">Stop displaying data at the
+specified address. This affects the output of the <b>-d</b>,
+<b>-r</b> and <b>-s</b> options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--syms</b></p>
+
+<p style="margin-left:17%;">Print the symbol table entries
+of the file. This is similar to the information provided by
+the <b>nm</b> program, although the display format is
+different. The format of the output depends upon the format
+of the file being dumped, but there are two main types. One
+looks like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">[ 4](sec 3)(fl
+0x00)(ty 0)(scl 3) (nx 1) 0x00000000 .bss <br>
+[ 6](sec 1)(fl 0x00)(ty 0)(scl 2) (nx 0) 0x00000000 fred</p>
+
+<p style="margin-left:17%; margin-top: 1em">where the
+number inside the square brackets is the number of the entry
+in the symbol table, the <i>sec</i> number is the section
+number, the <i>fl</i> value are the symbol&rsquo;s flag
+bits, the <i>ty</i> number is the symbol&rsquo;s type, the
+<i>scl</i> number is the symbol&rsquo;s storage class and
+the <i>nx</i> value is the number of auxiliary entries
+associated with the symbol. The last two fields are the
+symbol&rsquo;s value and its name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The other
+common output format, usually seen with <small>ELF</small>
+based files, looks like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">00000000 l d
+.bss 00000000 .bss <br>
+00000000 g .text 00000000 fred</p>
+
+<p style="margin-left:17%; margin-top: 1em">Here the first
+number is the symbol&rsquo;s value (sometimes referred to as
+its address). The next field is actually a set of characters
+and spaces indicating the flag bits that are set on the
+symbol. These characters are described below. Next is the
+section with which the symbol is associated or <i>*ABS*</i>
+if the section is absolute (ie not connected with any
+section), or <i>*UND*</i> if the section is referenced in
+the file being dumped, but not defined there.</p>
+
+<p style="margin-left:17%; margin-top: 1em">After the
+section name comes another field, a number, which for common
+symbols is the alignment and for other symbol is the size.
+Finally the symbol&rsquo;s name is displayed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The flag
+characters are divided into 7 groups as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;l&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;g&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;u&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;!&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a local (l), global (g), unique global
+(u), neither global nor local (a space) or both global and
+local (!). A symbol can be neither local or global for a
+variety of reasons, e.g., because it is used for debugging,
+but it is probably an indication of a bug if it is ever both
+local and global. Unique global symbols are a
+<small>GNU</small> extension to the standard set of
+<small>ELF</small> symbol bindings. For such a symbol the
+dynamic linker will make sure that in the entire process
+there is just one symbol with this name and type in use.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;w&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is weak (w) or strong (a space).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;C&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol denotes a constructor (C) or an ordinary
+symbol (a space).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;W&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a warning (W) or a normal symbol (a
+space). A warning symbol&rsquo;s name is a message to be
+displayed if the symbol following the warning symbol is ever
+referenced.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;I&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;i&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is an indirect reference to another symbol
+(I), a function to be evaluated during reloc processing (i)
+or a normal symbol (a space).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;d&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;D&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a debugging symbol (d) or a dynamic symbol
+(D) or a normal symbol (a space).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;F&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;f&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;O&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is the name of a function (F) or a file (f)
+or an object (O) or just a normal symbol (a space).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>-T</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--dynamic-syms</b></p>
+
+<p style="margin-left:17%;">Print the dynamic symbol table
+entries of the file. This is only meaningful for dynamic
+objects, such as certain types of shared libraries. This is
+similar to the information provided by the <b>nm</b> program
+when given the <b>-D</b> (<b>--dynamic</b>) option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The output
+format is similar to that produced by the <b>--syms</b>
+option, except that an extra field is inserted before the
+symbol&rsquo;s name, giving the version information
+associated with the symbol. If the version is the default
+version to be used when resolving unversioned references to
+the symbol then it&rsquo;s displayed as is, otherwise
+it&rsquo;s put into parentheses.</p>
+
+<p style="margin-left:11%;"><b>--special-syms</b></p>
+
+<p style="margin-left:17%;">When displaying symbols include
+those which the target considers to be special in some way
+and which would not normally be of interest to the user.</p>
+
+<p style="margin-left:11%;"><b>-U</b> <i>[d|i|l|e|x|h]</i>
+<b><br>
+
+--unicode=</b><i>[default|invalid|locale|escape|hex|highlight]</i></p>
+
+<p style="margin-left:17%;">Controls the display of
+<small>UTF-8</small> encoded multibyte characters in
+strings. The default (<b>--unicode=default</b>) is to give
+them no special treatment. The <b>--unicode=locale</b>
+option displays the sequence in the current locale, which
+may or may not support them. The options
+<b>--unicode=hex</b> and <b>--unicode=invalid</b> display
+them as hex byte sequences enclosed by either angle brackets
+or curly braces.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>--unicode=escape</b> option displays them as escape
+sequences (<i>\uxxxx</i>) and the <b>--unicode=highlight</b>
+option displays them as escape sequences highlighted in red
+(if supported by the output device). The colouring is
+intended to draw attention to the presence of unicode
+sequences where they might not be expected.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print the version number of
+<b>objdump</b> and exit.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-x</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--all-headers</b></p>
+
+<p style="margin-left:17%;">Display all available header
+information, including the symbol table and relocation
+entries. Using <b>-x</b> is equivalent to specifying all of
+<b>-a -f -h -p -r -t</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-w</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--wide</b></p>
+
+<p style="margin-left:17%;">Format some lines for output
+devices that have more than 80 columns. Also do not truncate
+symbol names when they are displayed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-z</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--disassemble-zeroes</b></p>
+
+<p style="margin-left:17%;">Normally the disassembly output
+will skip blocks of zeroes. This option directs the
+disassembler to disassemble those blocks, just like any
+other data.</p>
+
+<p style="margin-left:11%;"><b>@</b><i>file</i></p>
+
+<p style="margin-left:17%;">Read command-line options from
+<i>file</i>. The options read are inserted in place of the
+original @<i>file</i> option. If <i>file</i> does not exist,
+or cannot be read, then the option will be treated
+literally, and not removed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Options in
+<i>file</i> are separated by whitespace. A whitespace
+character may be included in an option by surrounding the
+entire option in either single or double quotes. Any
+character (including a backslash) may be included by
+prefixing the character to be included with a backslash. The
+<i>file</i> may itself contain additional @<i>file</i>
+options; any such options will be processed recursively.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nm</b>(1),
+<b>readelf</b>(1), and the Info entries for
+<i>binutils</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1991-2022 Free Software Foundation, Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy, distribute and/or modify this document
+under the terms of the <small>GNU</small> Free Documentation
+License, Version 1.3 or any later version published by the
+Free Software Foundation; with no Invariant Sections, with
+no Front-Cover Texts, and with no Back-Cover Texts. A copy
+of the license is included in the section entitled &quot;
+<small>GNU</small> Free Documentation License&quot;.</p>
+<hr>
+</body>
+</html>

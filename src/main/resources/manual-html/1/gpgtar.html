@@ -1,0 +1,422 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GPGTAR</title>
+
+</head>
+<body>
+
+<h1 align="center">GPGTAR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgtar</b> -
+Encrypt or sign files into an archive</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgtar</b>
+[<i>options</i>] <i>filename1 [ filename2, ... ] directory1
+[ directory2, ... ]</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>gpgtar</b></i>
+encrypts or signs files into an archive. It is an gpg-ized
+tar using the same format as used by PGP&rsquo;s PGP
+Zip.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgtar</b>
+understands these options: <b><br>
+--create</b></p>
+
+<p style="margin-left:22%;">Put given files and directories
+into a vanilla &rsquo;&rsquo;ustar&rsquo;&rsquo;
+archive.</p>
+
+<p style="margin-left:11%;"><b>--extract</b></p>
+
+<p style="margin-left:22%;">Extract all files from a
+vanilla &rsquo;&rsquo;ustar&rsquo;&rsquo; archive.</p>
+
+<p style="margin-left:11%;"><b>--encrypt</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-e</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Encrypt given files and directories into an archive.
+This option may be combined with option <b>--symmetric</b>
+for an archive that may be decrypted via a secret key or a
+passphrase.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--decrypt</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-d</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Extract all files from an encrypted archive.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--sign</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-s</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Make a signed archive from the given files and
+directories. This can be combined with option
+<b>--encrypt</b> to create a signed and then encrypted
+archive.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--list-archive</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="66%">
+
+
+<p>List the contents of the specified archive.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--symmetric</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Encrypt with a symmetric cipher using a passphrase. The
+default symmetric cipher used is AES-128, but may be chosen
+with the <b>--cipher-algo</b> option to <b>gpg</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--recipient</b> <i>user</i>
+<b><br>
+-r</b> <i>user</i></p>
+
+<p style="margin-left:22%;">Encrypt for user id
+<i>user</i>. For details see <b>gpg</b>.</p>
+
+<p style="margin-left:11%;"><b>--local-user</b> <i>user</i>
+<b><br>
+-u</b> <i>user</i></p>
+
+<p style="margin-left:22%;">Use <i>user</i> as the key to
+sign with. For details see <b>gpg</b>.</p>
+
+<p style="margin-left:11%;"><b>--output</b> <i>file</i>
+<b><br>
+-o</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Write the archive to the
+specified file <i>file</i>.</p>
+
+<p style="margin-left:11%;"><b>--verbose</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="52%">
+
+
+<p>Enable extra informational output.</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="8%"></td>
+<td width="47%">
+
+
+<p>Try to be as quiet as possible.</p></td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--skip-crypto</b></p>
+
+<p style="margin-left:22%;">Skip all crypto operations and
+create or extract vanilla &rsquo;&rsquo;ustar&rsquo;&rsquo;
+archives.</p>
+
+<p style="margin-left:11%;"><b>--dry-run</b></p>
+
+<p style="margin-left:22%;">Do not actually output the
+extracted files.</p>
+
+<p style="margin-left:11%;"><b>--directory</b>
+<i>dir</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-C</b> <i>dir</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Extract the files into the directory <i>dir</i>. The
+default is to take the directory name from the input
+filename. If no input filename is known a directory named
+&rsquo;<i>GPGARCH</i>&rsquo; is used. For tarball creation,
+switch to directory <i>dir</i> before performing any
+operations.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--files-from</b> <i>file</i>
+<b><br>
+-T</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Take the file names to work
+from the file <i>file</i>; one file per line.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--null</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Modify option <b>--files-from</b> to use a binary nul
+instead of a linefeed to separate file names.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--utf8-strings</b></p>
+
+<p style="margin-left:22%;">Assume that the file names read
+by <b>--files-from</b> are UTF-8 encoded. This option has an
+effect only on Windows where the active code page is
+otherwise assumed.</p>
+
+<p style="margin-left:11%;"><b>--openpgp</b></p>
+
+<p style="margin-left:22%;">This option has no effect
+because OpenPGP encryption and signing is the default.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--cms</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option is reserved and shall not be used. It will
+eventually be used to encrypt or sign using the CMS
+protocol; but that is not yet implemented.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--set-filename</b>
+<i>file</i></p>
+
+<p style="margin-left:22%;">Use the last component of
+<i>file</i> as the output directory. The default is to take
+the directory name from the input filename. If no input
+filename is known a directory named
+&rsquo;<i>GPGARCH</i>&rsquo; is used. This option is
+deprecated in favor of option <b>--directory</b>.</p>
+
+<p style="margin-left:11%;"><b>--gpg</b> <i>gpgcmd</i></p>
+
+<p style="margin-left:22%;">Use the specified command
+<i>gpgcmd</i> instead of <b>gpg</b>.</p>
+
+<p style="margin-left:11%;"><b>--gpg-args</b>
+<i>args</i></p>
+
+<p style="margin-left:22%;">Pass the specified extra
+options to <b>gpg</b>.</p>
+
+<p style="margin-left:11%;"><b>--tar-args</b>
+<i>args</i></p>
+
+<p style="margin-left:22%;">Assume <i>args</i> are standard
+options of the command <b>tar</b> and parse them. The only
+supported tar options are &quot;--directory&quot;,
+&quot;--files-from&quot;, and &quot;--null&quot; This is an
+obsolete options because those supported tar options can
+also be given directly.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print version of the program
+and exit.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p>Display a brief help page and exit.</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Encrypt the
+contents of directory &rsquo;<i>mydocs</i>&rsquo; for user
+Bob to file &rsquo;<i>test1</i>&rsquo;:</p>
+
+<p style="margin-left:14%; margin-top: 1em">gpgtar
+--encrypt --output test1 -r Bob mydocs</p>
+
+<p style="margin-left:11%; margin-top: 1em">List the
+contents of archive &rsquo;<i>test1</i>&rsquo;:</p>
+
+<p style="margin-left:14%; margin-top: 1em">gpgtar
+--list-archive test1</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+returns 0 if everything was fine, 1 otherwise.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg</b>(1),
+<b>tar</b>(1),</p>
+
+<p style="margin-left:11%; margin-top: 1em">The full
+documentation for this tool is maintained as a Texinfo
+manual. If GnuPG and the info program are properly installed
+at your site, the command</p>
+
+<p style="margin-left:14%; margin-top: 1em">info gnupg</p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual including a menu structure and
+an index.</p>
+<hr>
+</body>
+</html>

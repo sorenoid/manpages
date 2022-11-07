@@ -1,0 +1,2059 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:50 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>TNFTP(1) BSD General Commands Manual TNFTP(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>tnftp</b> &mdash; Internet
+file transfer program</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:14%;"><b>tnftp</b>
+[<b>-46AadefginpRtVv?</b>] [<b>-N&nbsp;</b><i>netrc</i>]
+[<b>-o&nbsp;</b><i>output</i>] [<b>-P&nbsp;</b><i>port</i>]
+[<b>-q&nbsp;</b><i>quittime</i>]
+[<b>-r&nbsp;</b><i>retry</i>]
+[<b>-s&nbsp;</b><i>srcaddr</i>] [</p>
+
+<p><b>-T&nbsp;</b> <i><br>
+dir</i>,<i>max</i>[,<i>inc</i>] ]
+[<b>-x&nbsp;</b><i>xfersize</i>] [ <br>
+[ <i><br>
+user</i>@]<i>host&nbsp;</i>[ <i><br>
+port</i>] ] [ <br>
+[<i>user</i>@]<i>host</i>:[<i>path</i>][/] ] [ <br>
+file:///<i>path</i> ] [ <br>
+ftp://[ <i><br>
+user</i>[:<i>password</i>]@]<i>host</i>[ <br>
+:<i>port</i>]/<i>path</i>[/][;type=<i>type</i>] ] [ <br>
+http://[ <i><br>
+user</i>[:<i>password</i>]@]<i>host</i>[ <br>
+:<i>port</i>]/<i>path</i> ] [ <br>
+https://[ <i><br>
+user</i>[:<i>password</i>]@]<i>host</i>[ <br>
+:<i>port</i>]/<i>path</i> ] <i>...</i></p>
+
+<p style="margin-left:14%;"><b>tnftp
+-u&nbsp;</b><i>url&nbsp;file&nbsp;...</i></p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>tnftp</b> is the user
+interface to the Internet standard File Transfer Protocol.
+The program allows a user to transfer files to and from a
+remote network site.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The last five
+arguments will fetch a file using the FTP or HTTP protocols,
+or by direct copying, into the current directory. This is
+ideal for scripts. Refer to <i>AUTO-FETCHING FILES</i> below
+for more information.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Options may be
+specified at the command line, or to the command
+interpreter.</p>
+
+<p style="margin-top: 1em"><b>-4</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Forces
+<b>tnftp</b> to only use IPv4 addresses.</p>
+
+<p style="margin-top: 1em"><b>-6</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Forces
+<b>tnftp</b> to only use IPv6 addresses.</p>
+
+<p style="margin-top: 1em"><b>-A</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Force active
+mode FTP. By default, <b>tnftp</b> will try to use passive
+mode FTP and fall back to active mode if passive is not
+supported by the server. This option causes <b>tnftp</b> to
+always use an active connection. It is only useful for
+connecting to very old servers that do not implement passive
+mode properly.</p>
+
+<p style="margin-top: 1em"><b>-a</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Causes
+<b>tnftp</b> to bypass normal login procedure, and use an
+anonymous login instead.</p>
+
+<p style="margin-top: 1em"><b>-d</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Enables
+debugging.</p>
+
+<p style="margin-top: 1em"><b>-e</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Disables
+command line editing. This is useful for Emacs ange-ftp
+mode.</p>
+
+<p style="margin-top: 1em"><b>-f</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Forces a cache
+reload for transfers that go through the FTP or HTTP
+proxies.</p>
+
+<p style="margin-top: 1em"><b>-g</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Disables file
+name globbing.</p>
+
+<p style="margin-top: 1em"><b>-i</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Turns off
+interactive prompting during multiple file transfers.</p>
+
+<p style="margin-top: 1em"><b>-N</b> <i>netrc</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use
+<i>netrc</i> instead of <i>~/.netrc</i>. Refer to <i>THE
+.netrc FILE</i> for more information.</p>
+
+<p style="margin-top: 1em"><b>-n</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Restrains
+<b>tnftp</b> from attempting &ldquo;auto-login&rdquo; upon
+initial connection for non auto-fetch transfers. If
+auto-login is enabled, <b>tnftp</b> will check the
+<i>.netrc</i> (see below) file in the user&rsquo;s home
+directory for an entry describing an account on the remote
+machine. If no entry exists, <b>tnftp</b> will prompt for
+the remote machine login name (default is the user identity
+on the local machine), and, if necessary, prompt for a
+password and an account with which to login. To override the
+auto-login for auto-fetch transfers, specify the username
+(and optionally, password) as appropriate.</p>
+
+<p style="margin-top: 1em"><b>-o</b> <i>output</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+auto-fetching files, save the contents in <i>output</i>.
+<i>output</i> is parsed according to the <i>FILE NAMING
+CONVENTIONS</i> below. If <i>output</i> is not
+&rsquo;-&rsquo; or doesn&rsquo;t start with &rsquo;|&rsquo;,
+then only the first file specified will be retrieved into
+<i>output</i>; all other files will be retrieved into the
+basename of their remote name.</p>
+
+<p style="margin-top: 1em"><b>-P</b> <i>port</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Sets the port
+number to <i>port</i>.</p>
+
+<p style="margin-top: 1em"><b>-p</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Enable passive
+mode operation for use behind connection filtering
+firewalls. This option has been deprecated as <b>tnftp</b>
+now tries to use passive mode by default, falling back to
+active mode if the server does not support passive
+connections.</p>
+
+<p style="margin-top: 1em"><b>-q</b> <i>quittime</i></p>
+
+<p style="margin-left:22%;">Quit if the connection has
+stalled for <i>quittime</i> seconds.</p>
+
+<p style="margin-top: 1em"><b>-R</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Restart all
+non-proxied auto-fetches.</p>
+
+<p style="margin-top: 1em"><b>-r</b> <i>wait</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Retry the
+connection attempt if it failed, pausing for <i>wait</i>
+seconds.</p>
+
+<p style="margin-top: 1em"><b>-s</b> <i>srcaddr</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Uses
+<i>srcaddr</i> as the local IP address for all
+connections.</p>
+
+<p style="margin-top: 1em"><b>-t</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Enables packet
+tracing.</p>
+
+<p style="margin-top: 1em"><b>-T</b>
+<i>direction</i>,<i>maximum</i>[ <br>
+,<i>increment</i>]</p>
+
+<p style="margin-left:22%;">Set the maximum transfer rate
+for <i>direction</i> to <i>maximum</i> bytes/second, and if
+specified, the increment to <i>increment</i> bytes/second.
+Refer to <b>rate</b> for more information.</p>
+
+<p style="margin-top: 1em"><b>-u</b> <i>url
+file&nbsp;...</i></p>
+
+<p style="margin-left:22%;">Upload files on the command
+line to <i>url</i> where <i>url</i> is one of the
+&rsquo;ftp://&rsquo; URL types as supported by auto-fetch
+(with an optional target filename for single file uploads),
+and <i>file</i> is one or more local files to be
+uploaded.</p>
+
+<p style="margin-top: 1em"><b>-V</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Disable
+<b>verbose</b> and <b>progress</b>, overriding the default
+of enabled when output is to a terminal.</p>
+
+<p style="margin-top: 1em"><b>-v</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Enable
+<b>verbose</b> and <b>progress</b>. This is the default if
+output is to a terminal (and in the case of <b>progress</b>,
+<b>tnftp</b> is the foreground process). Forces <b>tnftp</b>
+to show all responses from the remote server, as well as
+report on data transfer statistics.</p>
+
+<p style="margin-top: 1em"><b>-x</b> <i>xfersize</i></p>
+
+<p style="margin-left:22%;">Set the size of the socket send
+and receive buffers to <i>xfersize</i>. Refer to
+<b>xferbuf</b> for more information.</p>
+
+<p style="margin-top: 1em"><b>-</b>?</p>
+
+<p style="margin-left:22%; margin-top: 1em">Display help to
+stdout, and exit.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The client host
+with which <b>tnftp</b> is to communicate may be specified
+on the command line. If this is done, <b>tnftp</b> will
+immediately attempt to establish a connection to an FTP
+server on that host; otherwise, <b>tnftp</b> will enter its
+command interpreter and await instructions from the user.
+When <b>tnftp</b> is awaiting commands from the user the
+prompt &rsquo;ftp&gt;&rsquo; is provided to the user. The
+following commands are recognized by <b>tnftp</b>:</p>
+
+<p style="margin-top: 1em"><b>!</b> [<i>command</i>
+[<i>args</i>]]</p>
+
+<p style="margin-left:22%;">Invoke an interactive shell on
+the local machine. If there are arguments, the first is
+taken to be a command to execute directly, with the rest of
+the arguments as its arguments.</p>
+
+<p style="margin-top: 1em"><b>$</b> <i>macro-name</i>
+[<i>args</i>]</p>
+
+<p style="margin-left:22%;">Execute the macro
+<i>macro-name</i> that was defined with the <b>macdef</b>
+command. Arguments are passed to the macro unglobbed.</p>
+
+<p style="margin-top: 1em"><b>account</b>
+[<i>passwd</i>]</p>
+
+<p style="margin-left:22%;">Supply a supplemental password
+required by a remote system for access to resources once a
+login has been successfully completed. If no argument is
+included, the user will be prompted for an account password
+in a non-echoing input mode.</p>
+
+<p style="margin-top: 1em"><b>append</b> <i>local-file</i>
+[<i>remote-file</i>]</p>
+
+<p style="margin-left:22%;">Append a local file to a file
+on the remote machine. If <i>remote-file</i> is left
+unspecified, the local file name is used in naming the
+remote file after being altered by any <b>ntrans</b> or
+<b>nmap</b> setting. File transfer uses the current settings
+for <b>type</b>, <b>format</b>, <b>mode</b>, and
+<b>structure</b>.</p>
+
+<p style="margin-top: 1em"><b>ascii</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Set the file
+transfer <b>type</b> to network ASCII. This is the default
+type.</p>
+
+<p style="margin-top: 1em"><b>bell</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Arrange that a
+bell be sounded after each file transfer command is
+completed.</p>
+
+<p style="margin-top: 1em"><b>binary</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Set the file
+transfer <b>type</b> to support binary image transfer.</p>
+
+<p style="margin-top: 1em"><b>bye</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Terminate the
+FTP session with the remote server and exit <b>tnftp</b>. An
+end of file will also terminate the session and exit.</p>
+
+<p style="margin-top: 1em"><b>case</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle remote
+computer file name case mapping during <b>get</b>,
+<b>mget</b> and <b>mput</b> commands. When <b>case</b> is on
+(default is off), remote computer file names with all
+letters in upper case are written in the local directory
+with the letters mapped to lower case.</p>
+
+<p style="margin-top: 1em"><b>cd</b>
+<i>remote-directory</i></p>
+
+<p style="margin-left:22%;">Change the working directory on
+the remote machine to <i>remote-directory</i>.</p>
+
+<p style="margin-top: 1em"><b>cdup</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Change the
+remote machine working directory to the parent of the
+current remote machine working directory.</p>
+
+<p style="margin-top: 1em"><b>chmod</b> <i>mode
+remote-file</i></p>
+
+<p style="margin-left:22%;">Change the permission modes of
+the file <i>remote-file</i> on the remote system to
+<i>mode</i>.</p>
+
+<p style="margin-top: 1em"><b>close</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Terminate the
+FTP session with the remote server, and return to the
+command interpreter. Any defined macros are erased.</p>
+
+<p style="margin-top: 1em"><b>cr</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle carriage
+return stripping during ascii type file retrieval. Records
+are denoted by a carriage return/linefeed sequence during
+ascii type file transfer. When <b>cr</b> is on (the
+default), carriage returns are stripped from this sequence
+to conform with the UNIX single linefeed record delimiter.
+Records on non-UNIX remote systems may contain single
+linefeeds; when an ascii type transfer is made, these
+linefeeds may be distinguished from a record delimiter only
+when <b>cr</b> is off.</p>
+
+<p style="margin-top: 1em"><b>debug</b>
+[<i>debug-value</i>]</p>
+
+<p style="margin-left:22%;">Toggle debugging mode. If an
+optional <i>debug-value</i> is specified it is used to set
+the debugging level. When debugging is on, <b>tnftp</b>
+prints each command sent to the remote machine, preceded by
+the string &rsquo;--&gt;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>delete</b>
+<i>remote-file</i></p>
+
+<p style="margin-left:22%;">Delete the file
+<i>remote-file</i> on the remote machine.</p>
+
+<p style="margin-top: 1em"><b>dir</b> [<i>remote-path</i>
+[<i>local-file</i>]]</p>
+
+<p style="margin-left:22%;">Print a listing of the contents
+of a directory on the remote machine. The listing includes
+any system-dependent information that the server chooses to
+include; for example, most UNIX systems will produce output
+from the command &rsquo;ls -l&rsquo;. If <i>remote-path</i>
+is left unspecified, the current working directory is used.
+If interactive prompting is on, <b>tnftp</b> will prompt the
+user to verify that the last argument is indeed the target
+local file for receiving <b>dir</b> output. If no local file
+is specified, or if <i>local-file</i> is
+&rsquo;<b>-</b>&rsquo;, the output is sent to the
+terminal.</p>
+
+<p style="margin-top: 1em"><b>disconnect</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>close</b>.</p>
+
+<p style="margin-top: 1em"><b>edit</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle command
+line editing, and context sensitive command and file
+completion. This is automatically enabled if input is from a
+terminal, and disabled otherwise.</p>
+
+<p style="margin-top: 1em"><b>epsv</b>, <b>epsv4</b>,
+<b>epsv6</b></p>
+
+<p style="margin-left:22%;">Toggle the use of the extended
+EPSV and EPRT commands on all IP, IPv4, and IPv6 connections
+respectively. First try EPSV/EPRT, and then PASV/PORT. This
+is enabled by default. If an extended command fails then
+this option will be temporarily disabled for the duration of
+the current connection, or until <b>epsv</b>, <b>epsv4</b>,
+or <b>epsv6</b> is executed again.</p>
+
+<p style="margin-top: 1em"><b>exit</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>bye</b>.</p>
+
+<p style="margin-top: 1em"><b>features</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Display what
+features the remote server supports (using the FEAT
+command).</p>
+
+<p style="margin-top: 1em"><b>fget</b> <i>localfile</i></p>
+
+<p style="margin-left:22%;">Retrieve the files listed in
+<i>localfile</i>, which has one line per filename.</p>
+
+<p style="margin-top: 1em"><b>form</b> <i>format</i></p>
+
+<p style="margin-left:22%;">Set the file transfer
+<b>form</b> to <i>format</i>. The default (and only
+supported) format is &ldquo;non-print&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>ftp</b> <i>host</i>
+[<i>port</i>]</p>
+
+<p style="margin-left:22%;">A synonym for <b>open</b>.</p>
+
+<p style="margin-top: 1em"><b>gate</b> [<i>host</i>
+[<i>port</i>]]</p>
+
+<p style="margin-left:22%;">Toggle gate-ftp mode, which
+used to connect through the TIS FWTK and Gauntlet FTP
+proxies. This will not be permitted if the gate-ftp server
+hasn&rsquo;t been set (either explicitly by the user, or
+from the FTPSERVER environment variable). If <i>host</i> is
+given, then gate-ftp mode will be enabled, and the gate-ftp
+server will be set to <i>host</i>. If <i>port</i> is also
+given, that will be used as the port to connect to on the
+gate-ftp server.</p>
+
+<p style="margin-top: 1em"><b>get</b> <i>remote-file</i>
+[<i>local-file</i>]</p>
+
+<p style="margin-left:22%;">Retrieve the <i>remote-file</i>
+and store it on the local machine. If the local file name is
+not specified, it is given the same name it has on the
+remote machine, subject to alteration by the current
+<b>case</b>, <b>ntrans</b>, and <b>nmap</b> settings. The
+current settings for <b>type</b>, <b>form</b>, <b>mode</b>,
+and <b>structure</b> are used while transferring the
+file.</p>
+
+<p style="margin-top: 1em"><b>glob</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle filename
+expansion for <b>mdelete</b>, <b>mget</b>, <b>mput</b>, and
+<b>mreget</b>. If globbing is turned off with <b>glob</b>,
+the file name arguments are taken literally and not
+expanded. Globbing for <b>mput</b> is done as in csh(1). For
+<b>mdelete</b>, <b>mget</b>, and <b>mreget</b>, each remote
+file name is expanded separately on the remote machine and
+the lists are not merged. Expansion of a directory name is
+likely to be different from expansion of the name of an
+ordinary file: the exact result depends on the foreign
+operating system and FTP server, and can be previewed by
+doing &rsquo;mls remote-files -&rsquo;. Note: <b>mget</b>,
+<b>mput</b> and <b>mreget</b> are not meant to transfer
+entire directory subtrees of files. That can be done by
+transferring a tar(1) archive of the subtree (in binary
+mode).</p>
+
+<p style="margin-top: 1em"><b>hash</b> [<i>size</i>]</p>
+
+<p style="margin-left:22%;">Toggle hash-sign
+(&rsquo;#&rsquo;) printing for each data block transferred.
+The size of a data block defaults to 1024 bytes. This can be
+changed by specifying <i>size</i> in bytes. Enabling
+<b>hash</b> disables <b>progress</b>.</p>
+
+<p style="margin-top: 1em"><b>help</b> [<i>command</i>]</p>
+
+<p style="margin-left:22%;">Print an informative message
+about the meaning of <i>command</i>. If no argument is
+given, <b>tnftp</b> prints a list of the known commands.</p>
+
+<p style="margin-top: 1em"><b>idle</b> [<i>seconds</i>]</p>
+
+<p style="margin-left:22%;">Set the inactivity timer on the
+remote server to <i>seconds</i> seconds. If <i>seconds</i>
+is omitted, the current inactivity timer is printed.</p>
+
+<p style="margin-top: 1em"><b>image</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>binary</b>.</p>
+
+<p style="margin-top: 1em"><b>lcd</b>
+[<i>directory</i>]</p>
+
+<p style="margin-left:22%;">Change the working directory on
+the local machine. If no <i>directory</i> is specified, the
+user&rsquo;s home directory is used.</p>
+
+<p style="margin-top: 1em"><b>less</b> <i>file</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>page</b>.</p>
+
+<p style="margin-top: 1em"><b>lpage</b>
+<i>local-file</i></p>
+
+<p style="margin-left:22%;">Display <i>local-file</i> with
+the program specified by the <b>set pager</b> option.</p>
+
+<p style="margin-top: 1em"><b>lpwd</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Print the
+working directory on the local machine.</p>
+
+<p style="margin-top: 1em"><b>ls</b> [<i>remote-path</i>
+[<i>local-file</i>]]</p>
+
+<p style="margin-left:22%;">A synonym for <b>dir</b>.</p>
+
+<p style="margin-top: 1em"><b>macdef</b>
+<i>macro-name</i></p>
+
+<p style="margin-left:22%;">Define a macro. Subsequent
+lines are stored as the macro <i>macro-name</i>; a null line
+(consecutive newline characters in a file or carriage
+returns from the terminal) terminates macro input mode.
+There is a limit of 16 macros and 4096 total characters in
+all defined macros. Macro names can be a maximum of 8
+characters. Macros are only applicable to the current
+session they are defined within (or if defined outside a
+session, to the session invoked with the next <b>open</b>
+command), and remain defined until a <b>close</b> command is
+executed. To invoke a macro, use the <b>$</b> command (see
+above).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The macro
+processor interprets &rsquo;$&rsquo; and &rsquo;\&rsquo; as
+special characters. A &rsquo;$&rsquo; followed by a number
+(or numbers) is replaced by the corresponding argument on
+the macro invocation command line. A &rsquo;$&rsquo;
+followed by an &rsquo;i&rsquo; signals the macro processor
+that the executing macro is to be looped. On the first pass
+&rsquo;$i&rsquo; is replaced by the first argument on the
+macro invocation command line, on the second pass it is
+replaced by the second argument, and so on. A
+&rsquo;\&rsquo; followed by any character is replaced by
+that character. Use the &rsquo;\&rsquo; to prevent special
+treatment of the &rsquo;$&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>mdelete</b>
+[<i>remote-files</i>]</p>
+
+<p style="margin-left:22%;">Delete the <i>remote-files</i>
+on the remote machine.</p>
+
+<p style="margin-top: 1em"><b>mdir</b> <i>remote-files
+local-file</i></p>
+
+<p style="margin-left:22%;">Like <b>dir</b>, except
+multiple remote files may be specified. If interactive
+prompting is on, <b>tnftp</b> will prompt the user to verify
+that the last argument is indeed the target local file for
+receiving <b>mdir</b> output.</p>
+
+<p style="margin-top: 1em"><b>mget</b>
+<i>remote-files</i></p>
+
+<p style="margin-left:22%;">Expand the <i>remote-files</i>
+on the remote machine and do a <b>get</b> for each file name
+thus produced. See <b>glob</b> for details on the filename
+expansion. Resulting file names will then be processed
+according to <b>case</b>, <b>ntrans</b>, and <b>nmap</b>
+settings. Files are transferred into the local working
+directory, which can be changed with &rsquo;lcd
+directory&rsquo;; new local directories can be created with
+&rsquo;! mkdir directory&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>mkdir</b>
+<i>directory-name</i></p>
+
+<p style="margin-left:22%;">Make a directory on the remote
+machine.</p>
+
+<p style="margin-top: 1em"><b>mls</b> <i>remote-files
+local-file</i></p>
+
+<p style="margin-left:22%;">Like <b>ls</b>, except multiple
+remote files may be specified, and the <i>local-file</i>
+must be specified. If interactive prompting is on,
+<b>tnftp</b> will prompt the user to verify that the last
+argument is indeed the target local file for receiving
+<b>mls</b> output.</p>
+
+<p style="margin-top: 1em"><b>mlsd</b>
+[<i>remote-path</i>]</p>
+
+<p style="margin-left:22%;">Display the contents of
+<i>remote-path</i> (which should default to the current
+directory if not given) in a machine-parsable form, using
+MLSD. The format of display can be changed with
+&rsquo;remopts mlst ...&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>mlst</b>
+[<i>remote-path</i>]</p>
+
+<p style="margin-left:22%;">Display the details about
+<i>remote-path</i> (which should default to the current
+directory if not given) in a machine-parsable form, using
+MLST. The format of display can be changed with
+&rsquo;remopts mlst ...&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>mode</b> <i>mode-name</i></p>
+
+<p style="margin-left:22%;">Set the file transfer
+<b>mode</b> to <i>mode-name</i>. The default (and only
+supported) mode is &ldquo;stream&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>modtime</b>
+<i>remote-file</i></p>
+
+<p style="margin-left:22%;">Show the last modification time
+of the file on the remote machine, in RFC 2822 format.</p>
+
+<p style="margin-top: 1em"><b>more</b> <i>file</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>page</b>.</p>
+
+<p style="margin-top: 1em"><b>mput</b>
+<i>local-files</i></p>
+
+<p style="margin-left:22%;">Expand wild cards in the list
+of local files given as arguments and do a <b>put</b> for
+each file in the resulting list. See <b>glob</b> for details
+of filename expansion. Resulting file names will then be
+processed according to <b>ntrans</b> and <b>nmap</b>
+settings.</p>
+
+<p style="margin-top: 1em"><b>mreget</b>
+<i>remote-files</i></p>
+
+<p style="margin-left:22%;">As per <b>mget</b>, but
+performs a <b>reget</b> instead of <b>get</b>.</p>
+
+<p style="margin-top: 1em"><b>msend</b>
+<i>local-files</i></p>
+
+<p style="margin-left:22%;">A synonym for <b>mput</b>.</p>
+
+<p style="margin-top: 1em"><b>newer</b> <i>remote-file</i>
+[<i>local-file</i>]</p>
+
+<p style="margin-left:22%;">Get the file only if the
+modification time of the remote file is more recent that the
+file on the current system. If the file does not exist on
+the current system, the remote file is considered
+<b>newer</b>. Otherwise, this command is identical to
+<b>get</b>.</p>
+
+<p style="margin-top: 1em"><b>nlist</b> [<i>remote-path</i>
+[<i>local-file</i>]]</p>
+
+<p style="margin-left:22%;">A synonym for <b>ls</b>.</p>
+
+<p style="margin-top: 1em"><b>nmap</b> [<i>inpattern
+outpattern</i>]</p>
+
+<p style="margin-left:22%;">Set or unset the filename
+mapping mechanism. If no arguments are specified, the
+filename mapping mechanism is unset. If arguments are
+specified, remote filenames are mapped during <b>mput</b>
+commands and <b>put</b> commands issued without a specified
+remote target filename. If arguments are specified, local
+filenames are mapped during <b>mget</b> commands and
+<b>get</b> commands issued without a specified local target
+filename. This command is useful when connecting to a
+non-UNIX remote computer with different file naming
+conventions or practices. The mapping follows the pattern
+set by <i>inpattern</i> and <i>outpattern</i>.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>inpattern</i>
+is a template for incoming filenames (which may have already
+been processed according to the <b>ntrans</b> and
+<b>case</b> settings). Variable templating is accomplished
+by including the sequences &rsquo;$1&rsquo;,
+&rsquo;$2&rsquo;, ..., &rsquo;$9&rsquo; in <i>inpattern</i>.
+Use &rsquo;\&rsquo; to prevent this special treatment of the
+&rsquo;$&rsquo; character. All other characters are treated
+literally, and are used to determine the <b>nmap</b>
+[<i>inpattern</i>] variable values. For example, given
+<i>inpattern</i> &rsquo;$1.$2&rsquo; and the remote file
+name &rsquo;mydata.data&rsquo;, &rsquo;$1&rsquo; would have
+the value &rsquo;mydata&rsquo;, and &rsquo;$2&rsquo; would
+have the value &rsquo;data&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>outpattern</i> determines the resulting mapped filename.
+The sequences &rsquo;$1&rsquo;, &rsquo;$2&rsquo;, ...,
+&rsquo;$9&rsquo; are replaced by any value resulting from
+the <i>inpattern</i> template. The sequence &rsquo;$0&rsquo;
+is replaced by the original filename. Additionally, the
+sequence &ldquo;[<i>seq1</i>, <i>seq2</i>]&rdquo; is
+replaced by <i>seq1</i> if <i>seq1</i> is not a null string;
+otherwise it is replaced by <i>seq2</i>. For example, the
+command</p>
+
+<p style="margin-left:29%; margin-top: 1em">nmap $1.$2.$3
+[$1,$2].[$2,file]</p>
+
+<p style="margin-left:22%; margin-top: 1em">would yield the
+output filename &rsquo;myfile.data&rsquo; for input
+filenames &rsquo;myfile.data&rsquo; and
+&rsquo;myfile.data.old&rsquo;, &rsquo;myfile.file&rsquo; for
+the input filename &rsquo;myfile&rsquo;, and
+&rsquo;myfile.myfile&rsquo; for the input filename
+&rsquo;.myfile&rsquo;. Spaces may be included in
+<i>outpattern</i>, as in the example:</p>
+
+<p style="margin-left:29%; margin-top: 1em">nmap $1 sed s/
+*$// &gt; $1</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use the
+&rsquo;\&rsquo; character to prevent special treatment of
+the &rsquo;$&rsquo;, &rsquo;[&rsquo;, &rsquo;]&rsquo;, and
+&rsquo;,&rsquo; characters.</p>
+
+<p style="margin-top: 1em"><b>ntrans</b> [<i>inchars</i>
+[<i>outchars</i>]]</p>
+
+<p style="margin-left:22%;">Set or unset the filename
+character translation mechanism. If no arguments are
+specified, the filename character translation mechanism is
+unset. If arguments are specified, characters in remote
+filenames are translated during <b>mput</b> commands and
+<b>put</b> commands issued without a specified remote target
+filename. If arguments are specified, characters in local
+filenames are translated during <b>mget</b> commands and
+<b>get</b> commands issued without a specified local target
+filename. This command is useful when connecting to a
+non-UNIX remote computer with different file naming
+conventions or practices. Characters in a filename matching
+a character in <i>inchars</i> are replaced with the
+corresponding character in <i>outchars</i>. If the
+character&rsquo;s position in <i>inchars</i> is longer than
+the length of <i>outchars</i>, the character is deleted from
+the file name.</p>
+
+<p style="margin-top: 1em"><b>open</b> <i>host</i>
+[<i>port</i>]</p>
+
+<p style="margin-left:22%;">Establish a connection to the
+specified <i>host</i> FTP server. An optional port number
+may be supplied, in which case, <b>tnftp</b> will attempt to
+contact an FTP server at that port. If the <b>set
+auto-login</b> option is on (default), <b>tnftp</b> will
+also attempt to automatically log the user in to the FTP
+server (see below).</p>
+
+<p style="margin-top: 1em"><b>page</b> <i>file</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Retrieve
+<b>file</b> and display with the program specified by the
+<b>set pager</b> option.</p>
+
+<p style="margin-top: 1em"><b>passive</b> [<b>auto</b>]</p>
+
+<p style="margin-left:22%;">Toggle passive mode (if no
+arguments are given). If <b>auto</b> is given, act as if
+FTPMODE is set to &rsquo;auto&rsquo;. If passive mode is
+turned on (default), <b>tnftp</b> will send a PASV command
+for all data connections instead of a PORT command. The PASV
+command requests that the remote server open a port for the
+data connection and return the address of that port. The
+remote server listens on that port and the client connects
+to it. When using the more traditional PORT command, the
+client listens on a port and sends that address to the
+remote server, who connects back to it. Passive mode is
+useful when using <b>tnftp</b> through a gateway router or
+host that controls the directionality of traffic. (Note that
+though FTP servers are required to support the PASV command
+by RFC 1123, some do not.)</p>
+
+<p style="margin-top: 1em"><b>pdir</b>
+[<i>remote-path</i>]</p>
+
+<p style="margin-left:22%;">Perform <b>dir</b>
+[<i>remote-path</i>], and display the result with the
+program specified by the <b>set pager</b> option.</p>
+
+<p style="margin-top: 1em"><b>pls</b>
+[<i>remote-path</i>]</p>
+
+<p style="margin-left:22%;">Perform <b>ls</b>
+[<i>remote-path</i>], and display the result with the
+program specified by the <b>set pager</b> option.</p>
+
+<p style="margin-top: 1em"><b>pmlsd</b>
+[<i>remote-path</i>]</p>
+
+<p style="margin-left:22%;">Perform <b>mlsd</b>
+[<i>remote-path</i>], and display the result with the
+program specified by the <b>set pager</b> option.</p>
+
+<p style="margin-top: 1em"><b>preserve</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle
+preservation of modification times on retrieved files.</p>
+
+<p style="margin-top: 1em"><b>progress</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle display
+of transfer progress bar. The progress bar will be disabled
+for a transfer that has <i>local-file</i> as
+&rsquo;<b>-</b>&rsquo; or a command that starts with
+&rsquo;|&rsquo;. Refer to <i>FILE NAMING CONVENTIONS</i> for
+more information. Enabling <b>progress</b> disables
+<b>hash</b>.</p>
+
+<p style="margin-top: 1em"><b>prompt</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle
+interactive prompting. Interactive prompting occurs during
+multiple file transfers to allow the user to selectively
+retrieve or store files. If prompting is turned off (default
+is on), any <b>mget</b> or <b>mput</b> will transfer all
+files, and any <b>mdelete</b> will delete all files.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When prompting
+is on, the following commands are available at a prompt:</p>
+
+<p style="margin-top: 1em"><b>a</b></p>
+
+<p style="margin-left:35%; margin-top: 1em">Answer
+&rsquo;yes&rsquo; to the current file, and automatically
+answer &rsquo;yes&rsquo; to any remaining files for the
+current command.</p>
+
+<p style="margin-top: 1em"><b>n</b></p>
+
+<p style="margin-left:35%; margin-top: 1em">Answer
+&rsquo;no&rsquo;, and do not transfer the file.</p>
+
+<p style="margin-top: 1em"><b>p</b></p>
+
+<p style="margin-left:35%; margin-top: 1em">Answer
+&rsquo;yes&rsquo; to the current file, and turn off prompt
+mode (as is &ldquo;prompt off&rdquo; had been given).</p>
+
+<p style="margin-top: 1em"><b>q</b></p>
+
+<p style="margin-left:35%; margin-top: 1em">Terminate the
+current operation.</p>
+
+<p style="margin-top: 1em"><b>y</b></p>
+
+<p style="margin-left:35%; margin-top: 1em">Answer
+&rsquo;yes&rsquo;, and transfer the file.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:35%; margin-top: 1em">Display a help
+message.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Any other
+response will answer &rsquo;yes&rsquo; to the current
+file.</p>
+
+<p style="margin-top: 1em"><b>proxy</b>
+<i>ftp-command</i></p>
+
+<p style="margin-left:22%;">Execute an FTP command on a
+secondary control connection. This command allows
+simultaneous connection to two remote FTP servers for
+transferring files between the two servers. The first
+<b>proxy</b> command should be an <b>open</b>, to establish
+the secondary control connection. Enter the command
+&rsquo;proxy ?&rsquo; to see other FTP commands executable
+on the secondary connection. The following commands behave
+differently when prefaced by <b>proxy</b>: <b>open</b> will
+not define new macros during the auto-login process,
+<b>close</b> will not erase existing macro definitions,
+<b>get</b> and <b>mget</b> transfer files from the host on
+the primary control connection to the host on the secondary
+control connection, and <b>put</b>, <b>mput</b>, and
+<b>append</b> transfer files from the host on the secondary
+control connection to the host on the primary control
+connection. Third party file transfers depend upon support
+of the FTP protocol PASV command by the server on the
+secondary control connection.</p>
+
+<p style="margin-top: 1em"><b>put</b> <i>local-file</i>
+[<i>remote-file</i>]</p>
+
+<p style="margin-left:22%;">Store a local file on the
+remote machine. If <i>remote-file</i> is left unspecified,
+the local file name is used after processing according to
+any <b>ntrans</b> or <b>nmap</b> settings in naming the
+remote file. File transfer uses the current settings for
+<b>type</b>, <b>format</b>, <b>mode</b>, and
+<b>structure</b>.</p>
+
+<p style="margin-top: 1em"><b>pwd</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Print the name
+of the current working directory on the remote machine.</p>
+
+<p style="margin-top: 1em"><b>quit</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>bye</b>.</p>
+
+<p style="margin-top: 1em"><b>quote</b> [<i>arg
+...</i>]</p>
+
+<p style="margin-left:22%;">The arguments specified are
+sent, verbatim, to the remote FTP server.</p>
+
+<p style="margin-top: 1em"><b>rate</b> <i>direction</i> [
+<i><br>
+maximum</i> [ <i><br>
+increment</i>]]</p>
+
+<p style="margin-left:22%;">Throttle the maximum transfer
+rate to <i>maximum</i> bytes/second. If <i>maximum</i> is 0,
+disable the throttle.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>direction</i>
+may be one of:</p>
+
+<p><b>all</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Both
+directions.</p>
+
+<p><b>get</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Incoming
+transfers.</p>
+
+<p><b>put</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Outgoing
+transfers.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>maximum</i>
+can be modified on the fly by <i>increment</i> bytes
+(default: 1024) each time a given signal is received:</p>
+
+<p style="margin-top: 1em">SIGUSR1</p>
+
+<p style="margin-left:41%; margin-top: 1em">Increment
+<i>maximum</i> by <i>increment</i> bytes.</p>
+
+<p style="margin-top: 1em">SIGUSR2</p>
+
+<p style="margin-left:41%; margin-top: 1em">Decrement
+<i>maximum</i> by <i>increment</i> bytes. The result must be
+a positive number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<i>maximum</i> is not supplied, the current throttle rates
+are displayed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note:
+<b>rate</b> is not yet implemented for ascii mode
+transfers.</p>
+
+<p style="margin-top: 1em"><b>rcvbuf</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Set the size of the socket
+receive buffer to <i>size</i>.</p>
+
+<p style="margin-top: 1em"><b>recv</b> <i>remote-file</i>
+[<i>local-file</i>]</p>
+
+<p style="margin-left:22%;">A synonym for <b>get</b>.</p>
+
+<p style="margin-top: 1em"><b>reget</b> <i>remote-file</i>
+[<i>local-file</i>]</p>
+
+<p style="margin-left:22%;"><b>reget</b> acts like
+<b>get</b>, except that if <i>local-file</i> exists and is
+smaller than <i>remote-file</i>, <i>local-file</i> is
+presumed to be a partially transferred copy of
+<i>remote-file</i> and the transfer is continued from the
+apparent point of failure. This command is useful when
+transferring very large files over networks that are prone
+to dropping connections.</p>
+
+<p style="margin-top: 1em"><b>remopts</b> <i>command</i>
+[<i>command-options</i>]</p>
+
+<p style="margin-left:22%;">Set options on the remote FTP
+server for <i>command</i> to <i>command-options</i> (whose
+absence is handled on a command-specific basis). Remote FTP
+commands known to support options include: MLST (used for
+MLSD and MLST).</p>
+
+<p style="margin-top: 1em"><b>rename</b> [<i>from</i>
+[<i>to</i>]]</p>
+
+<p style="margin-left:22%;">Rename the file <i>from</i> on
+the remote machine, to the file <i>to</i>.</p>
+
+<p style="margin-top: 1em"><b>reset</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Clear reply
+queue. This command re-synchronizes command/reply sequencing
+with the remote FTP server. Resynchronization may be
+necessary following a violation of the FTP protocol by the
+remote server.</p>
+
+<p style="margin-top: 1em"><b>restart</b> <i>marker</i></p>
+
+<p style="margin-left:22%;">Restart the immediately
+following <b>get</b> or <b>put</b> at the indicated
+<i>marker</i>. On UNIX systems, marker is usually a byte
+offset into the file.</p>
+
+<p style="margin-top: 1em"><b>rhelp</b>
+[<i>command-name</i>]</p>
+
+<p style="margin-left:22%;">Request help from the remote
+FTP server. If a <i>command-name</i> is specified it is
+supplied to the server as well.</p>
+
+<p style="margin-top: 1em"><b>rmdir</b>
+<i>directory-name</i></p>
+
+<p style="margin-left:22%;">Delete a directory on the
+remote machine.</p>
+
+<p style="margin-top: 1em"><b>rstatus</b>
+[<i>remote-file</i>]</p>
+
+<p style="margin-left:22%;">With no arguments, show status
+of remote machine. If <i>remote-file</i> is specified, show
+status of <i>remote-file</i> on remote machine.</p>
+
+<p style="margin-top: 1em"><b>runique</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle storing
+of files on the local system with unique filenames. If a
+file already exists with a name equal to the target local
+filename for a <b>get</b> or <b>mget</b> command, a
+&rsquo;.1&rsquo; is appended to the name. If the resulting
+name matches another existing file, a &rsquo;.2&rsquo; is
+appended to the original name. If this process continues up
+to &rsquo;.99&rsquo;, an error message is printed, and the
+transfer does not take place. The generated unique filename
+will be reported. Note that <b>runique</b> will not affect
+local files generated from a shell command (see below). The
+default value is off.</p>
+
+<p style="margin-top: 1em"><b>send</b> <i>local-file</i>
+[<i>remote-file</i>]</p>
+
+<p style="margin-left:22%;">A synonym for <b>put</b>.</p>
+
+<p style="margin-top: 1em"><b>sendport</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle the use
+of PORT commands. By default, <b>tnftp</b> will attempt to
+use a PORT command when establishing a connection for each
+data transfer. The use of PORT commands can prevent delays
+when performing multiple file transfers. If the PORT command
+fails, <b>tnftp</b> will use the default data port. When the
+use of PORT commands is disabled, no attempt will be made to
+use PORT commands for each data transfer. This is useful for
+certain FTP implementations which do ignore PORT commands
+but, incorrectly, indicate they&rsquo;ve been accepted.</p>
+
+<p style="margin-top: 1em"><b>set</b> [<i>option
+value</i>]</p>
+
+<p style="margin-left:22%;">Set <i>option</i> to
+<i>value</i>. If <i>option</i> and <i>value</i> are not
+given, display all of the options and their values. The
+currently supported options are:</p>
+
+<p style="margin-top: 1em"><b>anonpass</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$FTPANONPASS</p>
+
+<p style="margin-top: 1em"><b>ftp_proxy</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$ftp_proxy.</p>
+
+<p style="margin-top: 1em"><b>http_proxy</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$http_proxy.</p>
+
+<p style="margin-top: 1em"><b>https_proxy</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$https_proxy.</p>
+
+<p style="margin-top: 1em"><b>no_proxy</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$no_proxy.</p>
+
+<p style="margin-top: 1em"><b>pager</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$PAGER.</p>
+
+<p style="margin-top: 1em"><b>prompt</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$FTPPROMPT.</p>
+
+<p style="margin-top: 1em"><b>rprompt</b></p>
+
+<p style="margin-left:46%; margin-top: 1em">Defaults to
+$FTPRPROMPT.</p>
+
+<p style="margin-top: 1em"><b>site</b> [<i>arg ...</i>]</p>
+
+<p style="margin-left:22%;">The arguments specified are
+sent, verbatim, to the remote FTP server as a SITE
+command.</p>
+
+<p style="margin-top: 1em"><b>size</b>
+<i>remote-file</i></p>
+
+<p style="margin-left:22%;">Return size of
+<i>remote-file</i> on remote machine.</p>
+
+<p style="margin-top: 1em"><b>sndbuf</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Set the size of the socket send
+buffer to <i>size</i>.</p>
+
+<p style="margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Show the
+current status of <b>tnftp</b>.</p>
+
+<p style="margin-top: 1em"><b>struct</b>
+<i>struct-name</i></p>
+
+<p style="margin-left:22%;">Set the file transfer
+<i>structure</i> to <i>struct-name</i>. The default (and
+only supported) structure is &ldquo;file&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>sunique</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle storing
+of files on remote machine under unique file names. The
+remote FTP server must support FTP protocol STOU command for
+successful completion. The remote server will report unique
+name. Default value is off.</p>
+
+<p style="margin-top: 1em"><b>system</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Show the type
+of operating system running on the remote machine.</p>
+
+<p style="margin-top: 1em"><b>tenex</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Set the file
+transfer type to that needed to talk to TENEX machines.</p>
+
+<p style="margin-top: 1em"><b>throttle</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">A synonym for
+<b>rate</b>.</p>
+
+<p style="margin-top: 1em"><b>trace</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle packet
+tracing.</p>
+
+<p style="margin-top: 1em"><b>type</b>
+[<i>type-name</i>]</p>
+
+<p style="margin-left:22%;">Set the file transfer
+<b>type</b> to <i>type-name</i>. If no type is specified,
+the current type is printed. The default type is network
+ASCII.</p>
+
+<p style="margin-top: 1em"><b>umask</b>
+[<i>newmask</i>]</p>
+
+<p style="margin-left:22%;">Set the default umask on the
+remote server to <i>newmask</i>. If <i>newmask</i> is
+omitted, the current umask is printed.</p>
+
+<p style="margin-top: 1em"><b>unset</b> <i>option</i></p>
+
+<p style="margin-left:22%;">Unset <i>option</i>. Refer to
+<b>set</b> for more information.</p>
+
+<p style="margin-top: 1em"><b>usage</b> <i>command</i></p>
+
+<p style="margin-left:22%;">Print the usage message for
+<i>command</i>.</p>
+
+<p style="margin-top: 1em"><b>user</b> <i>user-name</i> [
+<i><br>
+password</i> [ <i><br>
+account</i>]]</p>
+
+<p style="margin-left:22%;">Identify yourself to the remote
+FTP server. If the <i>password</i> is not specified and the
+server requires it, <b>tnftp</b> will prompt the user for it
+(after disabling local echo). If an <i>account</i> field is
+not specified, and the FTP server requires it, the user will
+be prompted for it. If an <i>account</i> field is specified,
+an account command will be relayed to the remote server
+after the login sequence is completed if the remote server
+did not require it for logging in. Unless <b>tnftp</b> is
+invoked with &ldquo;auto-login&rdquo; disabled, this process
+is done automatically on initial connection to the FTP
+server.</p>
+
+<p style="margin-top: 1em"><b>verbose</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Toggle verbose
+mode. In verbose mode, all responses from the FTP server are
+displayed to the user. In addition, if verbose is on, when a
+file transfer completes, statistics regarding the efficiency
+of the transfer are reported. By default, verbose is on.</p>
+
+<p style="margin-top: 1em"><b>xferbuf</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Set the size of the socket send
+and receive buffers to <i>size</i>.</p>
+
+<p style="margin-top: 1em"><b>?</b> [<i>command</i>]</p>
+
+<p style="margin-left:22%;">A synonym for <b>help</b>.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Command
+arguments which have embedded spaces may be quoted with
+quote &rsquo;&quot;&rsquo; marks.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Commands which
+toggle settings can take an explicit <b>on</b> or <b>off</b>
+argument to force the setting appropriately.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Commands which
+take a byte count as an argument (e.g., <b>hash</b>,
+<b>rate</b>, and <b>xferbuf</b>) support an optional suffix
+on the argument which changes the interpretation of the
+argument. Supported suffixes are:</p>
+
+<p>b</p>
+
+<p style="margin-left:21%; margin-top: 1em">Causes no
+modification. (Optional)</p>
+
+<p>k</p>
+
+<p style="margin-left:21%; margin-top: 1em">Kilo; multiply
+the argument by 1024</p>
+
+<p>m</p>
+
+<p style="margin-left:21%; margin-top: 1em">Mega; multiply
+the argument by 1048576</p>
+
+<p>g</p>
+
+<p style="margin-left:21%; margin-top: 1em">Giga; multiply
+the argument by 1073741824</p>
+
+<p style="margin-left:6%; margin-top: 1em">If <b>tnftp</b>
+receives a SIGINFO (see the <b>status</b> argument of
+stty(1)) or SIGQUIT signal whilst a transfer is in progress,
+the current transfer rate statistics will be written to the
+standard error output, in the same format as the standard
+completion message.</p>
+
+<p style="margin-top: 1em"><b>AUTO-FETCHING FILES</b></p>
+
+<p style="margin-left:6%;">In addition to standard
+commands, this version of <b>tnftp</b> supports an
+auto-fetch feature. To enable auto-fetch, simply pass the
+list of hostnames/files on the command line.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The following
+formats are valid syntax for an auto-fetch element:</p>
+
+<p style="margin-top: 1em">[ <i><br>
+user</i>@]<i>host</i>:[ <i><br>
+path</i>][ <br>
+/]</p>
+
+<p style="margin-left:14%;">&ldquo;Classic&rdquo; FTP
+format.</p>
+
+<p style="margin-left:14%; margin-top: 1em">If <i>path</i>
+contains a glob character and globbing is enabled, (see
+<b>glob</b>), then the equivalent of &rsquo;mget path&rsquo;
+is performed.</p>
+
+<p style="margin-left:14%; margin-top: 1em">If the
+directory component of <i>path</i> contains no globbing
+characters, it is stored locally with the name basename (see
+basename(1)) of <b>path</b>, in the current directory.
+Otherwise, the full remote name is used as the local name,
+relative to the local root directory.</p>
+
+<p style="margin-top: 1em">ftp://[ <i><br>
+user</i>[ <br>
+:<i>password</i>]@]<i>host</i>[ <br>
+:<i>port</i>]/<i>path</i>[ <br>
+/][ <br>
+;type=<i>type</i>]</p>
+
+<p style="margin-left:14%;">An FTP URL, retrieved using the
+FTP protocol if <b>set ftp_proxy</b> isn&rsquo;t defined.
+Otherwise, transfer the URL using HTTP via the proxy defined
+in <b>set ftp_proxy</b>. If <b>set ftp_proxy</b> isn&rsquo;t
+defined and <i>user</i> is given, login as <i>user</i>. In
+this case, use <i>password</i> if supplied, otherwise prompt
+the user for one.</p>
+
+<p style="margin-left:14%; margin-top: 1em">If a suffix of
+&rsquo;;type=A&rsquo; or &rsquo;;type=I&rsquo; is supplied,
+then the transfer type will take place as ascii or binary
+(respectively). The default transfer type is binary.</p>
+
+<p style="margin-left:14%; margin-top: 1em">In order to be
+compliant with RFC 3986, <b>tnftp</b> interprets the
+<i>path</i> part of an &rsquo;ftp://&rsquo; auto-fetch URL
+as follows:</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">The &rsquo;/&rsquo; immediately
+after the <i>host</i>[</p>
+
+<p>:<i>port</i> ] is interpreted as a separator before the
+<i>path</i>, and not as part of the <i>path</i> itself.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">The <i>path</i> is interpreted
+as a &rsquo;</p>
+
+<p>/ &rsquo;-separated list of name components. For all but
+the last such component, <b>tnftp</b> performs the
+equivalent of a <b>cd</b> command. For the last path
+component, <b>tnftp</b> performs the equivalent of a
+<b>get</b> command.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">Empty name components, which
+result from &rsquo;//&rsquo; within the <i>path</i>, or from
+an extra &rsquo;/&rsquo; at the beginning of the
+<i>path</i>, will cause the equivalent of a <b>cd</b>
+command without a directory name. This is unlikely to be
+useful.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">Any &rsquo;%<i>XX</i>&rsquo;
+codes (per RFC 3986) within the path components are decoded,
+with <i>XX</i> representing a character code in hexadecimal.
+This decoding takes place after the <i>path</i> has been
+split into components, but before each component is used in
+the equivalent of a <b>cd</b> or <b>get</b> command. Some
+often-used codes are &rsquo;%2F&rsquo; (which represents
+&rsquo;/&rsquo;) and &rsquo;%7E&rsquo; (which represents
+&rsquo;~&rsquo;).</p>
+
+<p style="margin-left:14%; margin-top: 1em">The above
+interpretation has the following consequences:</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">The path is interpreted
+relative to the default login directory of the specified
+user or of the &rsquo;anonymous&rsquo; user. If the <i>/</i>
+directory is required, use a leading path of
+&rsquo;%2F&rsquo;. If a user&rsquo;s home directory is
+required (and the remote server supports the syntax), use a
+leading path of &rsquo;%7E<i>user</i>/&rsquo;. For example,
+to retrieve <i>/etc/motd</i> from &rsquo;localhost&rsquo; as
+the user &rsquo;myname&rsquo; with the password
+&rsquo;mypass&rsquo;, use
+&rsquo;ftp://myname:mypass@localhost/%2fetc/motd&rsquo;</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">The exact <b>cd</b> and
+<b>get</b> commands can be controlled by careful choice of
+where to use &rsquo;/&rsquo; and where to use
+&rsquo;%2F&rsquo; (or &rsquo;%2f&rsquo;). For example, the
+following URLs correspond to the equivalents of the
+indicated commands:</p>
+
+<p style="margin-top: 1em">ftp://host/dir1/dir2/file</p>
+
+<p style="margin-left:63%; margin-top: 1em">&ldquo;cd
+dir1&rdquo;, &ldquo;cd dir2&rdquo;, &ldquo;get
+file&rdquo;.</p>
+
+
+<p style="margin-top: 1em">ftp://host/%2Fdir1/dir2/file</p>
+
+<p style="margin-left:63%; margin-top: 1em">&ldquo;cd
+/dir1&rdquo;, &ldquo;cd dir2&rdquo;, &ldquo;get
+file&rdquo;.</p>
+
+<p style="margin-top: 1em">ftp://host/dir1%2Fdir2/file</p>
+
+<p style="margin-left:63%; margin-top: 1em">&ldquo;cd
+dir1/dir2&rdquo;, &ldquo;get file&rdquo;.</p>
+
+
+<p style="margin-top: 1em">ftp://host/%2Fdir1%2Fdir2/file</p>
+
+<p style="margin-left:63%; margin-top: 1em">&ldquo;cd
+/dir1/dir2&rdquo;, &ldquo;get file&rdquo;.</p>
+
+
+<p style="margin-top: 1em">ftp://host/dir1%2Fdir2%2Ffile</p>
+
+<p style="margin-left:63%; margin-top: 1em">&ldquo;get
+dir1/dir2/file&rdquo;.</p>
+
+
+<p style="margin-top: 1em">ftp://host/%2Fdir1%2Fdir2%2Ffile</p>
+
+<p style="margin-left:63%; margin-top: 1em">&ldquo;get
+/dir1/dir2/file&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">You must have appropriate
+access permission for each of the intermediate directories
+that is used in the equivalent of a <b>cd</b> command.</p>
+
+<p style="margin-top: 1em">http://[ <i><br>
+user</i>[ <br>
+:<i>password</i>]@]<i>host</i>[ <br>
+:<i>port</i>]/<i>path</i></p>
+
+<p style="margin-left:14%;">An HTTP URL, retrieved using
+the HTTP protocol. If <b>set http_proxy</b> is defined, it
+is used as a URL to an HTTP proxy server. If HTTP
+authorization is required to retrieve <i>path</i>, and
+<i>user</i> (and optionally <i>password</i>) is in the URL,
+use them for the first attempt to authenticate.</p>
+
+<p style="margin-top: 1em">https://[ <i><br>
+user</i>[ <br>
+:<i>password</i>]@]<i>host</i>[ <br>
+:<i>port</i>]/<i>path</i></p>
+
+<p style="margin-left:14%;">An HTTPS URL, retrieved using
+the HTTPS protocol. If <b>set https_proxy</b> is defined, it
+is used as a URL to an HTTPS proxy server. If HTTPS
+authorization is required to retrieve <i>path</i>, and
+<i>user</i> (and optionally <i>password</i>) is in the URL,
+use them for the first attempt to authenticate. There is
+currently no certificate validation and verification.</p>
+
+<p style="margin-top: 1em">file:///<i>path</i></p>
+
+<p style="margin-left:14%;">A local URL, copied from
+<i>/path</i> on the local host.</p>
+
+<p style="margin-top: 1em">about:<i>topic</i></p>
+
+<p style="margin-left:14%;">Display information regarding
+<i>topic</i>; no file is retrieved for this auto-fetched
+element. Supported values include:</p>
+
+<p style="margin-top: 1em">about:ftp</p>
+
+<p style="margin-left:33%; margin-top: 1em">Information
+about <b>tnftp</b>.</p>
+
+<p style="margin-top: 1em">about:version</p>
+
+<p style="margin-left:33%; margin-top: 1em">The version of
+<b>tnftp</b>. Useful to provide when reporting problems.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Unless noted
+otherwise above, and <b>-o</b> <i>output</i> is not given,
+the file is stored in the current directory as the
+basename(1) of <i>path</i>. Note that if a HTTP redirect is
+received, the fetch is retried using the new target URL
+supplied by the server, with a corresponding new
+<i>path</i>. Using an explicit <b>-o</b> <i>output</i> is
+recommended, to avoid writing to unexpected file names.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If a classic
+format or an FTP URL format has a trailing &rsquo;/&rsquo;
+or an empty <i>path</i> component, then <b>tnftp</b> will
+connect to the site and <b>cd</b> to the directory given as
+the path, and leave the user in interactive mode ready for
+further input. This will not work if <b>set ftp_proxy</b> is
+being used.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Direct HTTP
+transfers use HTTP 1.1. Proxied FTP and HTTP transfers use
+HTTP 1.0.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If <b>-R</b> is
+given, all auto-fetches that don&rsquo;t go via the FTP or
+HTTP proxies will be restarted. For FTP, this is implemented
+by using <b>reget</b> instead of <b>get</b>. For HTTP, this
+is implemented by using the &rsquo;Range: bytes=&rsquo;
+HTTP/1.1 directive.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If WWW or proxy
+WWW authentication is required, you will be prompted to
+enter a username and password to authenticate with.</p>
+
+<p style="margin-left:6%; margin-top: 1em">When specifying
+IPv6 numeric addresses in a URL, you need to surround the
+address in square brackets. E.g.:
+&rsquo;ftp://[::1]:21/&rsquo;. This is because colons are
+used in IPv6 numeric address as well as being the separator
+for the port number.</p>
+
+<p style="margin-top: 1em"><b>ABORTING A FILE
+TRANSFER</b></p>
+
+<p style="margin-left:6%;">To abort a file transfer, use
+the terminal interrupt key (usually Ctrl-C). Sending
+transfers will be immediately halted. Receiving transfers
+will be halted by sending an FTP protocol ABOR command to
+the remote server, and discarding any further data received.
+The speed at which this is accomplished depends upon the
+remote server&rsquo;s support for ABOR processing. If the
+remote server does not support the ABOR command, the prompt
+will not appear until the remote server has completed
+sending the requested file.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If the terminal
+interrupt key sequence is used whilst <b>tnftp</b> is
+awaiting a reply from the remote server for the ABOR
+processing, then the connection will be closed. This is
+different from the traditional behaviour (which ignores the
+terminal interrupt during this phase), but is considered
+more useful.</p>
+
+<p style="margin-top: 1em"><b>FILE NAMING
+CONVENTIONS</b></p>
+
+<p style="margin-left:6%;">Files specified as arguments to
+<b>tnftp</b> commands are processed according to the
+following rules.</p>
+
+<p style="margin-top: 1em">1.</p>
+
+<p style="margin-left:13%;">If the file name
+&rsquo;<b>-</b>&rsquo; is specified, the <i>stdin</i> (for
+reading) or <i>stdout</i> (for writing) is used.</p>
+
+<p style="margin-top: 1em">2.</p>
+
+<p style="margin-left:13%;">If the first character of the
+file name is &rsquo;|&rsquo;, the remainder of the argument
+is interpreted as a shell command. <b>tnftp</b> then forks a
+shell, using popen(3) with the argument supplied, and reads
+(writes) from the stdout (stdin). If the shell command
+includes spaces, the argument must be quoted; e.g.
+&rsquo;&quot;|&nbsp;ls&nbsp;-lt&quot;&rsquo;. A particularly
+useful example of this mechanism is:
+&rsquo;dir&nbsp;&quot;&quot;&nbsp;|more&rsquo;.</p>
+
+<p style="margin-top: 1em">3.</p>
+
+<p style="margin-left:13%;">Failing the above checks, if
+globbing is enabled, local file names are expanded according
+to the rules used in the csh(1); see the <b>glob</b>
+command. If the <b>tnftp</b> command expects a single local
+file (e.g. <b>put</b>), only the first filename generated by
+the globbing operation is used.</p>
+
+<p style="margin-top: 1em">4.</p>
+
+<p style="margin-left:13%;">For <b>mget</b> commands and
+<b>get</b> commands with unspecified local file names, the
+local filename is the remote filename, which may be altered
+by a <b>case</b>, <b>ntrans</b>, or <b>nmap</b> setting. The
+resulting filename may then be altered if <b>runique</b> is
+on.</p>
+
+<p style="margin-top: 1em">5.</p>
+
+<p style="margin-left:13%;">For <b>mput</b> commands and
+<b>put</b> commands with unspecified remote file names, the
+remote filename is the local filename, which may be altered
+by a <b>ntrans</b> or <b>nmap</b> setting. The resulting
+filename may then be altered by the remote server if
+<b>sunique</b> is on.</p>
+
+<p style="margin-top: 1em"><b>FILE TRANSFER
+PARAMETERS</b></p>
+
+<p style="margin-left:6%;">The FTP specification specifies
+many parameters which may affect a file transfer. The
+<b>type</b> may be one of &ldquo;ascii&rdquo;,
+&ldquo;image&rdquo; (binary), &ldquo;ebcdic&rdquo;, and
+&ldquo;local byte size&rdquo; (for PDP-10&rsquo;s and
+PDP-20&rsquo;s mostly). <b>tnftp</b> supports the ascii and
+image types of file transfer, plus local byte size 8 for
+<b>tenex</b> mode transfers.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>tnftp</b>
+supports only the default values for the remaining file
+transfer parameters: <b>mode</b>, <b>form</b>, and
+<b>struct</b>.</p>
+
+<p style="margin-top: 1em"><b>THE .netrc FILE</b></p>
+
+<p style="margin-left:6%;">The <i>.netrc</i> file contains
+login and initialization information used by the auto-login
+process. It resides in the user&rsquo;s home directory,
+unless overridden with the <b>-N</b> <i>netrc</i> option, or
+specified in the NETRC environment variable. The following
+tokens are recognized; they may be separated by spaces,
+tabs, or new-lines:</p>
+
+<p style="margin-top: 1em"><b>machine</b> <i>name</i></p>
+
+<p style="margin-left:19%;">Identify a remote machine
+<i>name</i>. The auto-login process searches the
+<i>.netrc</i> file for a <b>machine</b> token that matches
+the remote machine specified on the <b>tnftp</b> command
+line or as an <b>open</b> command argument. Once a match is
+made, the subsequent <i>.netrc</i> tokens are processed,
+stopping when the end of file is reached or another
+<b>machine</b> or a <b>default</b> token is encountered.</p>
+
+<p style="margin-top: 1em"><b>default</b></p>
+
+<p style="margin-left:19%; margin-top: 1em">This is the
+same as <b>machine</b> <i>name</i> except that
+<b>default</b> matches any name. There can be only one
+<b>default</b> token, and it must be after all
+<b>machine</b> tokens. This is normally used as:</p>
+
+<p style="margin-left:27%; margin-top: 1em">default login
+anonymous password user@site</p>
+
+<p style="margin-left:19%; margin-top: 1em">thereby giving
+the user an automatic anonymous FTP login to machines not
+specified in <i>.netrc</i>. This can be overridden by using
+the <b>-n</b> flag to disable auto-login.</p>
+
+<p style="margin-top: 1em"><b>login</b> <i>name</i></p>
+
+<p style="margin-left:19%;">Identify a user on the remote
+machine. If this token is present, the auto-login process
+will initiate a login using the specified <i>name</i>.</p>
+
+<p style="margin-top: 1em"><b>password</b>
+<i>string</i></p>
+
+<p style="margin-left:19%;">Supply a password. If this
+token is present, the auto-login process will supply the
+specified string if the remote server requires a password as
+part of the login process. Note that if this token is
+present in the <i>.netrc</i> file for any user other than
+<i>anonymous</i>, <b>tnftp</b> will abort the auto-login
+process if the <i>.netrc</i> is readable by anyone besides
+the user.</p>
+
+<p style="margin-top: 1em"><b>account</b> <i>string</i></p>
+
+<p style="margin-left:19%;">Supply an additional account
+password. If this token is present, the auto-login process
+will supply the specified string if the remote server
+requires an additional account password, or the auto-login
+process will initiate an ACCT command if it does not.</p>
+
+<p style="margin-top: 1em"><b>macdef</b> <i>name</i></p>
+
+<p style="margin-left:19%;">Define a macro. This token
+functions like the <b>tnftp macdef</b> command functions. A
+macro is defined with the specified name; its contents begin
+with the next <i>.netrc</i> line and continue until a blank
+line (consecutive new-line characters) is encountered. Like
+the other tokens in the <i>.netrc</i> file, a <b>macdef</b>
+is applicable only to the <b>machine</b> definition
+preceding it. A <b>macdef</b> entry cannot be used by
+multiple <b>machine</b> definitions; rather, it must be
+defined following each <b>machine</b> it is intended to be
+used with. If a macro named <b>init</b> is defined, it is
+automatically executed as the last step in the auto-login
+process. For example,</p>
+
+<p style="margin-left:27%; margin-top: 1em">default <br>
+macdef init <br>
+epsv4 off</p>
+
+<p style="margin-left:19%; margin-top: 1em">followed by a
+blank line.</p>
+
+<p style="margin-top: 1em"><b>COMMAND LINE EDITING</b></p>
+
+<p style="margin-left:6%;"><b>tnftp</b> supports
+interactive command line editing, via the editline(3)
+library. It is enabled with the <b>edit</b> command, and is
+enabled by default if input is from a tty. Previous lines
+can be recalled and edited with the arrow keys, and other
+GNU Emacs-style editing keys may be used as well.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The editline(3)
+library is configured with a <i>.editrc</i> file &mdash;
+refer to editrc(5) for more information.</p>
+
+<p style="margin-left:6%; margin-top: 1em">An extra key
+binding is available to <b>tnftp</b> to provide context
+sensitive command and filename completion (including remote
+file completion). To use this, bind a key to the editline(3)
+command <b>ftp-complete</b>. By default, this is bound to
+the TAB key.</p>
+
+<p style="margin-top: 1em"><b>COMMAND LINE PROMPT</b></p>
+
+<p style="margin-left:6%;">By default, <b>tnftp</b>
+displays a command line prompt of
+&rsquo;ftp&gt;&nbsp;&rsquo; to the user. This can be changed
+with the <b>set prompt</b> command.</p>
+
+<p style="margin-left:6%; margin-top: 1em">A prompt can be
+displayed on the right side of the screen (after the command
+input) with the <b>set rprompt</b> command.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The following
+formatting sequences are replaced by the given
+information:</p>
+
+<p style="margin-top: 1em">%/</p>
+
+<p style="margin-left:21%; margin-top: 1em">The current
+remote working directory.</p>
+
+<p style="margin-top: 1em">%c[ <br>
+[ <br>
+0]<i>n</i>], %.[ <br>
+[ <br>
+0]<i>n</i>]</p>
+
+<p style="margin-left:21%;">The trailing component of the
+current remote working directory, or <i>n</i> trailing
+components if a digit <i>n</i> is given. If <i>n</i> begins
+with &rsquo;0&rsquo;, the number of skipped components
+precede the trailing component(s) in the format &ldquo;</p>
+
+<p>/&lt;<i>number</i>&gt;<i>trailing</i> &rdquo; (for
+&rsquo;%c&rsquo;) or &ldquo;...<i>trailing</i>&rdquo; (for
+&rsquo;%.&rsquo;).</p>
+
+<p style="margin-top: 1em">%M</p>
+
+<p style="margin-left:21%; margin-top: 1em">The remote host
+name.</p>
+
+<p style="margin-top: 1em">%m</p>
+
+<p style="margin-left:21%; margin-top: 1em">The remote host
+name, up to the first dot &rsquo;.&rsquo;.</p>
+
+<p style="margin-top: 1em">%n</p>
+
+<p style="margin-left:21%; margin-top: 1em">The remote user
+name.</p>
+
+<p style="margin-top: 1em">%%</p>
+
+<p style="margin-left:21%; margin-top: 1em">A single
+percent character &rsquo;%&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>ENVIRONMENT</b></p>
+
+<p style="margin-left:6%;"><b>tnftp</b> uses the following
+environment variables.</p>
+
+<p style="margin-top: 1em">FTPANONPASS</p>
+
+<p style="margin-left:26%; margin-top: 1em">Password to
+send in an anonymous FTP transfer. Defaults to
+&ldquo;`whoami`@&rdquo;.</p>
+
+<p style="margin-top: 1em">FTPMODE</p>
+
+<p style="margin-left:26%; margin-top: 1em">Overrides the
+default operation mode. Support values are:</p>
+
+<p style="margin-top: 1em"><b>active</b></p>
+
+<p style="margin-left:37%; margin-top: 1em">active mode FTP
+only</p>
+
+<p style="margin-top: 1em"><b>auto</b></p>
+
+<p style="margin-left:37%; margin-top: 1em">automatic
+determination of passive or active (this is the default)</p>
+
+<p style="margin-top: 1em"><b>gate</b></p>
+
+<p style="margin-left:37%; margin-top: 1em">gate-ftp
+mode</p>
+
+<p style="margin-top: 1em"><b>passive</b></p>
+
+<p style="margin-left:37%; margin-top: 1em">passive mode
+FTP only</p>
+
+<p style="margin-top: 1em">FTPPROMPT</p>
+
+<p style="margin-left:26%; margin-top: 1em">Command-line
+prompt to use. Defaults to &rsquo;ftp&gt;&nbsp;&rsquo;.
+Refer to <i>COMMAND LINE PROMPT</i> for more
+information.</p>
+
+<p style="margin-top: 1em">FTPRPROMPT</p>
+
+<p style="margin-left:26%; margin-top: 1em">Command-line
+right side prompt to use. Defaults to empty string. Refer to
+<i>COMMAND LINE PROMPT</i> for more information.</p>
+
+<p style="margin-top: 1em">FTPSERVER</p>
+
+<p style="margin-left:26%; margin-top: 1em">Host to use as
+gate-ftp server when <b>gate</b> is enabled.</p>
+
+<p style="margin-top: 1em">FTPSERVERPORT</p>
+
+<p style="margin-left:26%; margin-top: 1em">Port to use
+when connecting to gate-ftp server when <b>gate</b> is
+enabled. Default is port returned by a getservbyname(3)
+lookup of &ldquo;ftpgate/tcp&rdquo;.</p>
+
+<p style="margin-top: 1em">FTPUSERAGENT</p>
+
+<p style="margin-left:26%; margin-top: 1em">The value to
+send for the HTTP User-Agent header.</p>
+
+<p style="margin-top: 1em">HOME</p>
+
+<p style="margin-left:26%; margin-top: 1em">For default
+location of a <i>.netrc</i> file, if one exists.</p>
+
+<p style="margin-top: 1em">NETRC</p>
+
+<p style="margin-left:26%; margin-top: 1em">An alternate
+location of the <i>.netrc</i> file.</p>
+
+<p style="margin-top: 1em">PAGER</p>
+
+<p style="margin-left:26%; margin-top: 1em">Used by various
+commands to display files. Defaults to more(1) if empty or
+not set.</p>
+
+<p style="margin-top: 1em">SHELL</p>
+
+<p style="margin-left:26%; margin-top: 1em">For default
+shell.</p>
+
+<p style="margin-top: 1em">ftp_proxy</p>
+
+<p style="margin-left:26%; margin-top: 1em">URL of FTP
+proxy to use when making FTP URL requests (if not defined,
+use the standard FTP protocol).</p>
+
+<p style="margin-left:26%; margin-top: 1em">See http_proxy
+for further notes about proxy use.</p>
+
+<p style="margin-top: 1em">http_proxy</p>
+
+<p style="margin-left:26%; margin-top: 1em">URL of HTTP
+proxy to use when making HTTP URL requests. If proxy
+authentication is required and there is a username and
+password in this URL, they will automatically be used in the
+first attempt to authenticate to the proxy.</p>
+
+<p style="margin-left:26%; margin-top: 1em">If
+&ldquo;unsafe&rdquo; URL characters are required in the
+username or password (for example &rsquo;@&rsquo; or
+&rsquo;/&rsquo;), encode them with RFC 3986
+&rsquo;%<i>XX</i>&rsquo; encoding.</p>
+
+<p style="margin-left:26%; margin-top: 1em">Note that the
+use of a username and password in ftp_proxy and http_proxy
+may be incompatible with other programs that use it (such as
+lynx(1)).</p>
+
+<p style="margin-left:26%; margin-top: 1em"><i>NOTE</i>:
+this is not used for interactive sessions, only for
+command-line fetches.</p>
+
+<p style="margin-top: 1em">https_proxy</p>
+
+<p style="margin-left:26%; margin-top: 1em">URL of HTTPS
+proxy to use when making HTTPS URL requests.</p>
+
+<p style="margin-left:26%; margin-top: 1em">See http_proxy
+for further notes about proxy use.</p>
+
+<p style="margin-top: 1em">no_proxy</p>
+
+<p style="margin-left:26%; margin-top: 1em">A space or
+comma separated list of hosts (or domains) for which
+proxying is not to be used. Each entry may have an optional
+trailing &rsquo;:<i>port</i>&rsquo;, which restricts the
+matching to connections to that port.</p>
+
+<p style="margin-top: 1em"><b>EXTENDED PASSIVE MODE AND
+FIREWALLS</b></p>
+
+<p style="margin-left:6%;">Some firewall configurations do
+not allow <b>tnftp</b> to use extended passive mode. If you
+find that even a simple <b>ls</b> appears to hang after
+printing a message such as this:</p>
+
+<p style="margin-left:14%; margin-top: 1em">229 Entering
+Extended Passive Mode (|||58551|)</p>
+
+<p style="margin-left:6%; margin-top: 1em">then you will
+need to disable extended passive mode with <b>epsv4 off</b>.
+See the above section <i>The .netrc File</i> for an example
+of how to make this automatic.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">getservbyname(3), editrc(5),
+services(5), ftpd(8)</p>
+
+<p style="margin-top: 1em"><b>STANDARDS</b></p>
+
+<p style="margin-left:6%;"><b>tnftp</b> attempts to be
+compliant with:</p>
+
+<p style="margin-top: 1em">RFC 959</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>File
+Transfer Protocol</i></p>
+
+<p style="margin-top: 1em">RFC 1123</p>
+
+
+<p style="margin-left:27%; margin-top: 1em"><i>Requirements
+for Internet Hosts - Application and Support</i></p>
+
+<p style="margin-top: 1em">RFC 1635</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>How to Use
+Anonymous FTP</i></p>
+
+<p style="margin-top: 1em">RFC 2389</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>Feature
+negotiation mechanism for the File Transfer Protocol</i></p>
+
+<p style="margin-top: 1em">RFC 2428</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>FTP
+Extensions for IPv6 and NATs</i></p>
+
+<p style="margin-top: 1em">RFC 2616</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>Hypertext
+Transfer Protocol -- HTTP/1.1</i></p>
+
+<p style="margin-top: 1em">RFC 2822</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>Internet
+Message Format</i></p>
+
+<p style="margin-top: 1em">RFC 3659</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>Extensions
+to FTP</i></p>
+
+<p style="margin-top: 1em">RFC 3986</p>
+
+<p style="margin-left:27%; margin-top: 1em"><i>Uniform
+Resource Identifier (URI)</i></p>
+
+<p style="margin-top: 1em"><b>HISTORY</b></p>
+
+<p style="margin-left:6%;">The <b>tnftp</b> command
+appeared in 4.2BSD.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Various features
+such as command line editing, context sensitive command and
+file completion, dynamic progress bar, automatic fetching of
+files and URLs, modification time preservation, transfer
+rate throttling, configurable command line prompt, and other
+enhancements over the standard BSD <b>tnftp</b> were
+implemented in NetBSD&nbsp;1.3 and later releases by Luke
+Mewburn &lang; lukem@NetBSD.org&rang; .</p>
+
+<p style="margin-left:6%; margin-top: 1em">IPv6 support was
+added by the WIDE/KAME project (but may not be present in
+all non-NetBSD versions of this program, depending if the
+operating system supports IPv6 in a similar manner to
+KAME).</p>
+
+<p style="margin-top: 1em"><b>BUGS</b></p>
+
+<p style="margin-left:6%;">Correct execution of many
+commands depends upon proper behavior by the remote
+server.</p>
+
+<p style="margin-left:6%; margin-top: 1em">An error in the
+treatment of carriage returns in the 4.2BSD ascii-mode
+transfer code has been corrected. This correction may result
+in incorrect transfers of binary files to and from 4.2BSD
+servers using the ascii type. Avoid this problem by using
+the binary image type.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>tnftp</b>
+assumes that all IPv4 mapped addresses (</p>
+
+<p>IPv6 addresses with a form like ::ffff:10.1.1.1 )
+indicate IPv4 destinations which can be handled by AF_INET
+sockets. However, in certain IPv6 network configurations,
+this assumption is not true. In such an environment, IPv4
+mapped addresses must be passed to AF_INET6 sockets
+directly. For example, if your site uses a SIIT translator
+for IPv6-to-IPv4 translation, <b>tnftp</b> is unable to
+support your configuration.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+April&nbsp;25, 2021 BSD</p>
+<hr>
+</body>
+</html>

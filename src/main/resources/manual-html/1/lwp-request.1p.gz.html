@@ -1,0 +1,368 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:10 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LWP-REQUEST</title>
+
+</head>
+<body>
+
+<h1 align="center">LWP-REQUEST</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lwp-request -
+Simple command line user agent</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lwp-request</b>
+[<b>-afPuUsSedvhx</b>] [<b>-m</b> <i>method</i>] [<b>-b</b>
+<i>base <small>URL</small></i> ] [<b>-t</b> <i>timeout</i>]
+<br>
+[<b>-i</b> <i>if-modified-since</i>] [<b>-c</b>
+<i>content-type</i>] <br>
+[<b>-C</b> <i>credentials</i>] [<b>-p</b> <i>proxy-url</i>]
+[<b>-o</b> <i>format</i>] <i>url</i>...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+can be used to send requests to <small>WWW</small> servers
+and your local file system. The request content for
+<small>POST</small> and <small>PUT</small> methods is read
+from stdin. The content of the response is printed on
+stdout. Error messages are printed on stderr. The program
+returns a status value indicating the number of URLs that
+failed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+are: <br>
+-m &lt;method&gt;</p>
+
+<p style="margin-left:17%;">Set which method to use for the
+request. If this option is not used, then the method is
+derived from the name of the program.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-f</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Force request through, even if the program believes that
+the method is illegal. The server might reject the request
+eventually.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">-b &lt;uri&gt;</p>
+
+<p style="margin-left:17%;">This <small>URI</small> will be
+used as the base <small>URI</small> for resolving all
+relative URIs given as argument.</p>
+
+<p style="margin-left:11%;">-t &lt;timeout&gt;</p>
+
+<p style="margin-left:17%;">Set the timeout value for the
+requests. The timeout is the amount of time that the program
+will wait for a response from the remote server before it
+fails. The default unit for the timeout value is seconds.
+You might append &quot;m&quot; or &quot;h&quot; to the
+timeout value to make it minutes or hours, respectively. The
+default timeout is &rsquo;3m&rsquo;, i.e. 3 minutes.</p>
+
+<p style="margin-left:11%;">-i &lt;time&gt;</p>
+
+<p style="margin-left:17%;">Set the If-Modified-Since
+header in the request. If <i>time</i> is the name of a file,
+use the modification timestamp for this file. If <i>time</i>
+is not a file, it is parsed as a literal date. Take a look
+at HTTP::Date for recognized formats.</p>
+
+<p style="margin-left:11%;">-c &lt;content-type&gt;</p>
+
+<p style="margin-left:17%;">Set the Content-Type for the
+request. This option is only allowed for requests that take
+a content, i.e. <small>POST</small> and <small>PUT.</small>
+You can force methods to take content by using the
+&quot;-f&quot; option together with &quot;-c&quot;. The
+default Content-Type for <small>POST</small> is
+&quot;application/x-www-form-urlencoded&quot;. The default
+Content-type for the others is &quot;text/plain&quot;.</p>
+
+<p style="margin-left:11%;">-p &lt;proxy-url&gt;</p>
+
+<p style="margin-left:17%;">Set the proxy to be used for
+the requests. The program also loads proxy settings from the
+environment. You can disable this with the &quot;-P&quot;
+option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-P</p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>Don&rsquo;t load proxy settings from environment.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">-H &lt;header&gt;</p>
+
+<p style="margin-left:17%;">Send this <small>HTTP</small>
+header with each request. You can specify several, e.g.:</p>
+
+<p style="margin-left:17%; margin-top: 1em">lwp-request \
+<br>
+-H 'Referer: http://other.url/' \ <br>
+-H 'Host: somehost' \ <br>
+http://this.url/</p>
+
+<p style="margin-left:11%;">-C
+&lt;username&gt;:&lt;password&gt;</p>
+
+<p style="margin-left:17%;">Provide credentials for
+documents that are protected by Basic Authentication. If the
+document is protected and you did not specify the username
+and password with this option, then you will be prompted to
+provide these values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options controls what is displayed by the program:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-u</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print request method and absolute <small>URL</small> as
+requests are made.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-U</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print request headers in addition to request method and
+absolute <small>URL.</small></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-s</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print response status code. This option is always on for
+<small>HEAD</small> requests.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-S</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print response status chain. This shows redirect and
+authorization requests that are handled by the library.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-e</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print response headers. This option is always on for
+<small>HEAD</small> requests.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-E</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print response status chain with full response
+headers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-d</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Do <b>not</b> print the content of the response.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">-o &lt;format&gt;</p>
+
+<p style="margin-left:17%;">Process <small>HTML</small>
+content in various ways before printing it. If the content
+type of the response is not <small>HTML,</small> then this
+option has no effect. The legal format values are;
+&quot;text&quot;, &quot;ps&quot;, &quot;links&quot;,
+&quot;html&quot; and &quot;dump&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you specify
+the &quot;text&quot; format then the <small>HTML</small>
+will be formatted as plain &quot;latin1&quot; text. If you
+specify the &quot;ps&quot; format then it will be formatted
+as Postscript.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&quot;links&quot; format will output all links found in the
+<small>HTML</small> document. Relative links will be
+expanded to absolute ones.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&quot;html&quot; format will reformat the
+<small>HTML</small> code and the &quot;dump&quot; format
+will just dump the <small>HTML</small> syntax tree.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+&quot;HTML-Tree&quot; distribution needs to be installed for
+this option to work. In addition the &quot;HTML-Format&quot;
+distribution needs to be installed for &quot;-o text&quot;
+or &quot;-o ps&quot; to work.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-v</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print the version number of the program and quit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-h</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print usage message and quit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-a</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Set text(ascii) mode for content input and output. If
+this option is not used, content input and output is done in
+binary mode.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Because this
+program is implemented using the <small>LWP</small> library,
+it will only support the protocols that <small>LWP</small>
+supports.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lwp-mirror,
+<small>LWP</small></p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1995-1999 Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gisle Aas
+&lt;gisle@aas.no&gt;</p>
+<hr>
+</body>
+</html>

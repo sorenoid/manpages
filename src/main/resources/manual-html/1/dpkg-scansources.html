@@ -1,0 +1,175 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:49 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-scansources</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-scansources</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-scansources
+- create Sources index files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-scansources</b>
+[<i>option</i>...] <i>binary-dir</i> [<i>override-file</i>
+[<i>path-prefix</i>]] <b>&gt;</b> <i>Sources</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>dpkg-scansources</b></i>
+scans the given <i>binary-dir</i> for <i>.dsc</i> files.
+These are used to create a Debian source index, which is
+output to stdout.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>override-file</i>, if given, is used to set priorities in
+the resulting index records and to override the maintainer
+field given in the <i>.dsc</i> files. The file can be
+compressed (since dpkg 1.15.5). See <b>deb-override</b>(5)
+for the format of this file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note:</b>
+Since the override file is indexed by binary, not source
+packages, there&rsquo;s a bit of a problem here. The current
+implementation uses the highest priority of all the binary
+packages produced by a <i>.dsc</i> file for the priority of
+the source package, and the override entry for the first
+binary package listed in the <i>.dsc</i> file to modify
+maintainer information. This might change.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>path-prefix</i>, if given, is prepended to the directory
+field in the generated source index. You generally use this
+to make the directory fields contain the path from the top
+of the Debian archive hierarchy.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note:</b> If
+you want to access the generated Sources file with
+<b>apt</b>(8) you will probably need to compress the file
+with <b>gzip</b>(1) (generating a Sources.gz file).
+<b>apt</b>(8) ignores uncompressed Sources files except on
+local access (i.e. <b>file://</b> sources).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--no-sort</b></p>
+
+<p style="margin-left:17%;">Don&rsquo;t sort the index
+records. Normally they are sorted by source package
+name.</p>
+
+<p style="margin-left:11%;"><b>-e</b>,
+<b>--extra-override</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Scan <i>file</i> to find
+supplementary overrides (since dpkg 1.15.4; the file can be
+compressed since dpkg 1.15.5). See
+<b>deb-extra-override</b>(5) for more information on its
+format.</p>
+
+<p style="margin-left:11%;"><b>-s</b>,
+<b>--source-override</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Use <i>file</i> as the source
+override file (the file can be compressed since dpkg
+1.15.5). The default is the name of the override file you
+specified with <i>.src</i> appended.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The source
+override file is in a different format from the binary
+override file. It contains only two whitespace separated
+fields, the first is the source package name and the second
+is the section. Blank lines and comment lines are ignored in
+the normal manner. If a package appears in both files the
+source override takes precedence for setting the
+section.</p>
+
+<p style="margin-left:11%;"><b>--debug</b></p>
+
+<p style="margin-left:17%;">Turn debugging on.</p>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_NLS</small></b></p>
+
+<p style="margin-left:17%;">If set, it will be used to
+decide whether to activate Native Language Support, also
+known as internationalization (or i18n) support (since dpkg
+1.19.0). The accepted values are: <b>0</b> and <b>1</b>
+(default).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb-override</b>(5),
+<b>deb-extra-override</b>(5),
+<b>dpkg-scanpackages</b>(1).</p>
+<hr>
+</body>
+</html>

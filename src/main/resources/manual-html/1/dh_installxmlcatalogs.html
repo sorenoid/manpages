@@ -1,0 +1,198 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:48 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DH_INSTALLXMLCATALOGS</title>
+
+</head>
+<body>
+
+<h1 align="center">DH_INSTALLXMLCATALOGS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dh_installxmlcatalogs
+- install and register XML catalog files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dh_installxmlcatalogs</b>
+[<i>debhelper&nbsp;options</i>] [<b>-n</b>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dh_installxmlcatalogs</b>
+is a debhelper program that installs and registers
+<small>XML</small> catalog files. It complies with the
+Debian <small>XML/SGML</small> policy.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file
+<i>debian/package.xmlcatalogs</i> lists the local
+<small>XML</small> catalog files to be installed per package
+as well as the <small>XML</small> entities in those local
+<small>XML</small> catalog files that are to be registered
+in the <small>XML</small> catalog system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The local
+<small>XML</small> catalog file entries in that file should
+be of the form &quot;local;source;dest&quot;, where the
+verbatim &quot;local&quot; indicates this is an entry for a
+local <small>XML</small> catalog file, &quot;source&quot;
+indicates where the local <small>XML</small> catalog resides
+in the source tree, and &quot;dest&quot; indicates the
+destination location for the local <small>XML</small>
+catalog under the package build area. &quot;dest&quot;
+should start with <i>/usr/share/xml/</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The entries for
+the <small>XML</small> entities to be registered in the
+package <small>XML</small> catalog file should be of the
+form &quot;package;type;id;catalog&quot;, where the verbatim
+&quot;package&quot; indicates this is an entry for an
+<small>XML</small> entity to be registered in the package
+<small>XML</small> catalog file, &quot;type&quot; indicates
+the <small>XML</small> entity type (public, system, uri),
+&quot;id&quot; indicates the <small>XML</small> entity id,
+and &quot;catalog&quot; indicates the local
+<small>XML</small> catalog file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The entries for
+the <small>XML</small> entities to be registered in the root
+<small>XML</small> catalog file should be of the form
+&quot;root;type;id&quot;, where the verbatim
+&quot;root&quot; indicates this is an entry for an
+<small>XML</small> entity to be registered in the root
+<small>XML</small> catalog file, &quot;type&quot; indicates
+the <small>XML</small> entity type (public, system, uri),
+and &quot;id&quot; indicates the <small>XML</small> entity
+id.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an entry for
+is to be registered identically in the root catalog and the
+package catalog file, you can use the form
+&quot;root-and-package;type;id;catalog&quot;, where the
+verbatim &quot;root-and-package&quot; indicates this is an
+entry for an <small>XML</small> entity to be registered in
+both the root and package <small>XML</small> catalog files,
+&quot;type&quot; indicates the <small>XML</small> entity
+type (public, system, uri), &quot;id&quot; indicates the
+<small>XML</small> entity id, and &quot;catalog&quot;
+indicates the local <small>XML</small> catalog file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>XML</small>
+entity types are described in <b>update-xmlcatalog</b>(8).
+Using the &quot;root&quot; or &quot;package&quot; commands,
+a type of &quot;public&quot; will general
+&quot;delegatePublic&quot; statements in the applicable
+catalog file. Generally you will want to use the types
+&quot;public&quot; for any formal public identifiers, and
+&quot;system&quot; for any files on the local filesystem or
+URLs. &quot;uri&quot; is only used for non-local files which
+are not part of the external document subset, e.g., they are
+not used for entities or DTDs.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%">
+
+
+<p><b>dh_installxmlcatalogs</b> automatically adds
+maintainer script snippets for the registration and
+unregistration of the listed <small>XML</small> entities in
+the <small>XML</small> catalog system (unless <b>-n</b> is
+used).</p> </td>
+<td width="61%"></td>
+<td width="8%"></td>
+<td width="23%">
+
+
+<p>A dependency on the <b>xml-core</b> package will be
+added to &quot;${misc:Depends}&quot;, so be sure to use that
+variable in the file <i>debian/control</i>. See
+<b>dh_installdeb</b>(1) for an explanation of Debhelper
+maintainer script snippets.</p></td></tr>
+</table>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--noscripts</b></p>
+
+<p style="margin-left:17%;">Do not modify
+<i>postinst</i>/<i>postrm</i>/<i>prerm</i> scripts.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+command is not idempotent. &quot;dh_clean -k&quot; should be
+called between invocations of this command. Otherwise, it
+may cause multiple instances of the same text to be added to
+maintainer scripts.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debhelper</b>(7)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/doc/xml-core/</i></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>Ardo van
+Rangelrooij</b></i> &lt;ardo@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Adam Di
+Carlo</b> &lt;aph@debian.org&gt;</p>
+<hr>
+</body>
+</html>

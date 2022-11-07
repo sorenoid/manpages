@@ -1,0 +1,116 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:42 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TRACKER-XDG-PORTAL</title>
+
+</head>
+<body>
+
+<h1 align="center">TRACKER-XDG-PORTAL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">tracker-xdg-portal-3
+- Portal to Tracker endpoints</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">tracker-xdg-portal-3
+[--version | -v]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This daemon
+allows access to Tracker endpoints in a controlled manner.
+By default access to every service is disallowed, services
+may be whitelisted through additional policy in the
+<i>.flatpak-info</i> file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+whitelisting services, the policy may define specific graph
+names to allow access to, the <i>default</i> keyword to
+allow access to the default unnamed graph, or <i>*</i>
+keyword to allow access to all graphs.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When
+interacting with sandboxed clients, the service expects the
+following format in the <i>.flatpak-info</i> file:</p>
+
+<p style="margin-left:17%; margin-top: 1em">[Policy
+Tracker3] <br>
+dbus:org.example.SparqlEndpoint1=graphA;graphB;default <br>
+dbus:org.example.SparqlEndpoint2=*</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will allow
+access to the endpoints behind the
+<b>org.example.SparqlEndpoint1</b> and
+<b>org.example.SparqlEndpoint2</b> bus names. Only to the
+<b>graphA</b> and <b>graphB</b> graph IRIs and the default
+unnamed graph on the first endpoint, and to all graphs in
+the second.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This policy can
+be set when building or running the sandboxed application
+through the --add-policy option. This can be set via
+<b>finish-args</b> in the flatpak manifest, specified along
+the build chain in <b>flatpak-build-finish</b>(1), or
+modified at start time with <b>flatpak-run</b>(1). For
+example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ flatpak run \
+<br>
+
+--add-policy=Tracker3.dbus:org.example.SparqlEndpoint1=graphA;graphB;default
+\ <br>
+--add-policy=Tracker3.dbus:org.example.SparqlEndpoint2=* \
+<br>
+org.freedesktop.TrackerSandbox</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flatpak-build-finish</b>(1),
+<b>flatpak-override</b>(1), <b>flatpak-run</b>(1)</p>
+<hr>
+</body>
+</html>

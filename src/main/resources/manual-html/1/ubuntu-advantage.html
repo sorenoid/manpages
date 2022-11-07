@@ -1,0 +1,514 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:14 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UBUNTU-ADVANTAGE</title>
+
+</head>
+<body>
+
+<h1 align="center">UBUNTU-ADVANTAGE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#PRO UPGRADE DAEMON">PRO UPGRADE DAEMON</a><br>
+<a href="#TIMER JOBS">TIMER JOBS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#SERVICES">SERVICES</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">ubuntu-advantage
+- Manage Ubuntu Advantage services from Canonical</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ua</b>
+&lt;command&gt; [&lt;args&gt;] <b><br>
+ubuntu-advantage</b> &lt;command&gt; [&lt;args&gt;]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Ubuntu
+Advantage is a collection of services offered by Canonical
+to Ubuntu users. The Ubuntu Advantage command line tool is
+used to attach a system to an Ubuntu Advantage contract to
+then enable and disable services from Canonical. The
+available commands and services are described in more detail
+below.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>attach</b>
+[--no-auto-enable] [--attach-config=/path/to/file.yaml]
+&lt;token&gt;</p>
+
+<p style="margin-left:22%;">Connect an Ubuntu Advantage
+support contract to this machine.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>token</i> parameter can be obtained from
+https://auth.contracts.canonical.com/.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>--attach-config</i> option can be used to provide a file
+with the token and optionally, a list of services to enable
+after attaching. The <i>token</i> parameter should not be
+used if this option is provided. An attach config file looks
+like the following: <br>
+token: YOUR_TOKEN_HERE # required <br>
+enable_services: # optional list of service names to
+auto-enable <br>
+- esm-infra <br>
+- esm-apps <br>
+- cis</p>
+
+<p style="margin-left:22%; margin-top: 1em">The optional
+<i>--no-auto-enable</i> flag will disable the automatic
+enablement of recommended entitlements which usually happens
+immediately after a successful attach.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The exit code
+can be: <br>
+0: on successful attach <br>
+1: in case of any error while trying to attach <br>
+2: if the machine is already attached</p>
+
+<p style="margin-left:11%;"><b>collect-logs [-o
+&lt;file&gt;| --output &lt;file&gt;]</b></p>
+
+<p style="margin-left:22%;">Create a tarball with all
+relevant UA logs and debug data.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>--output</i> parameter defines the path to the tarball.
+If not provided, the file is saved as <b>ua_logs.tar.gz</b>
+in the current directory.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>detach</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Remove the Ubuntu Advantage support contract from this
+machine. This also disables all enabled services that can
+be.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>disable</b>
+[cc-eal|cis|esm|fips|fips-updates|livepatch|ros|ros-updates]</p>
+
+<p style="margin-left:22%;">Disable this machine&rsquo;s
+access to an Ubuntu Advantage service.</p>
+
+<p style="margin-left:11%;"><b>enable</b>
+[cc-eal|cis|esm|fips|fips-updates|livepatch|ros|ros-updates]</p>
+
+<p style="margin-left:22%;">Activate and configure this
+machine&rsquo;s access to an Ubuntu Advantage service.</p>
+
+<p style="margin-left:11%;"><b>fix</b>
+&lt;security_issue&gt;</p>
+
+<p style="margin-left:22%;">Fix a CVE or USN on the system
+by upgrading the appropriate package(s).</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">&lt;security_issue&gt;
+can be any of the following formats: CVE-yyyy-nnnn,
+CVE-yyyy-nnnnnnn, or USN-nnnn-dd.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The exit code
+can be 0, 1, or 2. <br>
+0: the fix was successfully applied <br>
+1: the fix cannot be applied <br>
+2: the fix was applied but requires a reboot before it takes
+effect</p>
+
+<p style="margin-left:11%;"><b>refresh</b></p>
+
+<p style="margin-left:22%;">Refresh contract and service
+details from Canonical.</p>
+
+<p style="margin-left:11%;"><b>security-status</b></p>
+
+<p style="margin-left:22%;">Show security updates for
+packages in the system, including all available ESM related
+content.</p>
+
+<p style="margin-left:11%;"><b>status</b>
+[--format=tabular|json|yaml] [--simulate-with-token TOKEN]
+<br>
+[--all]</p>
+
+<p style="margin-left:22%;">Report current status of Ubuntu
+Advantage services on system.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This shows
+whether this machine is attached to an Ubuntu Advantage
+support contract. When attached, the report includes the
+specific support contract details including contract name,
+expiry dates, and the status of each service on this
+system.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The attached
+status output has four columns:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>SERVICE</b>:
+name of the service</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>ENTITLED</b>:
+whether the contract to which this machine is attached
+entitles use of this service. Possible values are:
+<i>yes</i> or <i>no</i></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>STATUS</b>:
+whether the service is enabled on this machine. Possible
+values are: <i>enabled</i>, <i>disabled</i>, <i>n/a</i> (if
+your contract entitles you to the service, but it
+isn&rsquo;t available for this machine) or <i>&acirc;</i>
+(if you aren&rsquo;t entitled to this service)</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>DESCRIPTION</b>:
+a brief description of the service</p>
+
+<p style="margin-left:22%; margin-top: 1em">The unattached
+status output instead has three columns. <b>SERVICE</b> and
+<b>DESCRIPTION</b> are the same as above, and there is the
+addition of:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>AVAILABLE</b>:
+whether this service would be available if this machine were
+attached. The possible values are <i>yes</i> or
+<i>no</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+--simulate-with-token is used, then the output has five
+columns. <b>SERVICE</b>, <b>AVAILABLE</b>, <b>ENTITLED</b>
+and <b>DESCRIPTION</b> are the same as mentioned above, and
+<b>AUTO_ENABLED</b> shows whether the service is set to be
+enabled when that token is attached.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the --all
+flag is set, beta and unavailable services are also listed
+in the output.</p>
+
+<p style="margin-left:11%;"><b>version</b></p>
+
+<p style="margin-left:22%;">Show version of the Ubuntu
+Advantage package.</p>
+
+<h2>PRO UPGRADE DAEMON
+<a name="PRO UPGRADE DAEMON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">UA client sets
+up a daemon on supported platforms (currently GCP only) to
+detect if an Ubuntu Pro license is purchased for the
+machine. If a Pro license is detected, then the machine is
+automatically attached. If you are uninterested in UA
+services, you can safely stop and disable the daemon using
+systemctl:</p>
+
+<p style="margin-left:11%; margin-top: 1em">sudo systemctl
+stop ubuntu-advantage.service sudo systemctl disable
+ubuntu-advantage.service</p>
+
+<h2>TIMER JOBS
+<a name="TIMER JOBS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">UA client sets
+up a systemd timer to run jobs that need to be executed
+recurrently. The timer itself ticks every 5 minutes on
+average, and decides which jobs need to be executed based on
+their intervals.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Jobs are
+executed by the timer script if the script has not yet run
+successfully, or their interval since last successful run is
+already exceeded. There is a random delay applied to the
+timer, to desynchronize job execution time on machines
+spinned at the same time, avoiding multiple synchronized
+calls to the same service.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Current jobs
+being checked and executed are: <b><br>
+update_messaging</b></p>
+
+<p style="margin-left:22%;">Makes sure that the MOTD and
+APT messages match the available/enabled services on the
+system, showing information about available packages or
+security updates.</p>
+
+<p style="margin-left:11%;"><b>update_status</b></p>
+
+<p style="margin-left:22%;">Makes sure the &rsquo;ua
+status&rsquo; command will have the latest information even
+when executed by a non-root user, updating the
+<b>/var/lib/ubuntu-advantage/status.json</b> file.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+Ubuntu Advantage client configuration options are read from
+<b>/etc/ubuntu-advantage/uaclient.conf.</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+following configuration options are available: <br>
+contract_url</b></p>
+
+<p style="margin-left:22%;">The ubuntu advantage contract
+server URL</p>
+
+<p style="margin-left:11%;"><b>security_url</b></p>
+
+<p style="margin-left:22%;">The ubuntu advantage security
+server URL</p>
+
+<p style="margin-left:11%;"><b>data_dir</b></p>
+
+<p style="margin-left:22%;">Where Ubuntu Advantage client
+stores its data files</p>
+
+<p style="margin-left:11%;"><b>log_level</b></p>
+
+<p style="margin-left:22%;">The logging level used when
+writing to <b>log_file</b></p>
+
+<p style="margin-left:11%;"><b>log_file</b></p>
+
+<p style="margin-left:22%;">The log file for the Ubuntu
+Advantage client</p>
+
+<p style="margin-left:11%;"><b>timer_log_file</b></p>
+
+<p style="margin-left:22%;">The log file for the Ubuntu
+Advantage timer and timer jobs</p>
+
+<p style="margin-left:11%;"><b>daemon_log_file</b></p>
+
+<p style="margin-left:22%;">The log file for the Ubuntu
+Advantage daemon</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+following options must be nested under the
+&quot;ua_config&quot; key: <br>
+http_proxy</b></p>
+
+<p style="margin-left:22%;">If set, ua will use the
+specified http proxy when making any http requests</p>
+
+<p style="margin-left:11%;"><b>https_proxy</b></p>
+
+<p style="margin-left:22%;">If set, ua will use the
+specified https proxy when making any https requests</p>
+
+<p style="margin-left:11%;"><b>apt_http_proxy</b></p>
+
+<p style="margin-left:22%;">If set, ua will configure apt
+to use the specified http proxy by writing a apt config file
+to /etc/apt/apt.conf.d/90ubuntu-advantage-aptproxy</p>
+
+<p style="margin-left:11%;"><b>apt_https_proxy</b></p>
+
+<p style="margin-left:22%;">If set, ua will configure apt
+to use the specified https proxy by writing a apt config
+file to /etc/apt/apt.conf.d/90ubuntu-advantage-aptproxy</p>
+
+
+<p style="margin-left:11%;"><b>&lt;job_name&gt;_timer</b></p>
+
+<p style="margin-left:22%;">Sets the timer running interval
+for a specific job. Those intervals are checked every time
+the systemd timer runs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If needed,
+authentication to the proxy server can be performed by
+setting username and password in the URL itself, as in:</p>
+
+<p style="margin-left:11%; margin-top: 1em">http_proxy:
+http://&lt;username&gt;:&lt;password&gt;@&lt;fqdn&gt;:&lt;port&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additionally,
+some configuration options can be overridden in the
+environment by setting an environment variable prefaced by
+<b>UA_&lt;option_name&gt;</b>. Both uppercase and lowercase
+environment variables are allowed. The configuration options
+that support this are: data_dir, log_file, timer_log_file,
+daemon_log_file, log_level, and security_url.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+the following overrides the log_level found in
+uaclient.conf:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">UA_LOG_LEVEL=info
+ua attach</p>
+
+<h2>SERVICES
+<a name="SERVICES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+Criteria EAL2 Provisioning (cc-eal)</b></p>
+
+<p style="margin-left:22%;">Enables and install the Common
+Criteria artifacts.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The artifacts
+include a configure script, a tarball with additional
+packages, and post install scripts. The artifacts will be
+installed in /usr/lib/common-criteria directory and the
+README and configuration guide are available in
+/usr/share/doc/ubuntu-commoncriteria directory.</p>
+
+<p style="margin-left:11%;"><b>CIS Audit (cis)</b></p>
+
+<p style="margin-left:22%;">Enables and installs the CIS
+Audit artifacts.</p>
+
+<p style="margin-left:11%;"><b>Extended Security
+Maintenance (esm)</b></p>
+
+<p style="margin-left:22%;">Extended Security Maintenance
+ensures the ongoing security and integrity of systems
+running Ubuntu Long Term Support (LTS) releases through
+Ubuntu Advantage for Infrastructure.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+https://ubuntu.com/esm for more information.</p>
+
+<p style="margin-left:11%;"><b>FIPS 140-2 certified modules
+(fips)</b></p>
+
+<p style="margin-left:22%;">Install, configure, and enable
+FIPS 140-2 certified modules.</p>
+
+<p style="margin-left:22%; margin-top: 1em">After
+successfully enabling FIPS, the system MUST be rebooted.
+Failing to reboot will result in the system not running the
+updated FIPS kernel.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Disabling FIPS
+is not currently supported.</p>
+
+<p style="margin-left:11%;"><b>FIPS 140-2 certified modules
+with updates (fips-updates)</b></p>
+
+<p style="margin-left:22%;">Install, configure, and enable
+FIPS 140-2 certified modules with updates. Enabling FIPS
+with updates will take the system out of FIPS compliance as
+the updated modules are not FIPS certified.</p>
+
+<p style="margin-left:22%; margin-top: 1em">After
+successfully enabling FIPS with updates, the system MUST be
+rebooted. Failing to reboot will result in the system not
+running the updated FIPS kernel.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Disabling FIPS
+with updates is not currently supported.</p>
+
+<p style="margin-left:11%;"><b>Livepatch Service
+(livepatch)</b></p>
+
+<p style="margin-left:22%;">Automatically apply critical
+kernel patches without rebooting. Reduces downtime, keeping
+your Ubuntu LTS systems secure and compliant.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+https://ubuntu.com/livepatch for more information.</p>
+
+<p style="margin-left:11%;"><b>ROS ESM Security Updates
+(ros)</b></p>
+
+<p style="margin-left:22%;">Robot Operating System Extended
+Security Maintenance Security Updates provides security
+fixes for ROS packages to ensure the ongoing integrity of
+ROS based applications.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+https://ubuntu.com/robotics/ros-esm for more
+information.</p>
+
+<p style="margin-left:11%;"><b>ROS ESM All Updates
+(ros-updates)</b></p>
+
+<p style="margin-left:22%;">Robot Operating System Extended
+Security Maintenance All Updates provides additional bug
+fixes in addition to security fixes for ROS packages to
+ensure the ongoing integrity of ROS based applications.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+https://ubuntu.com/robotics/ros-esm for more
+information.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please report
+bugs either by running &rsquo;ubuntu-bug
+ubuntu-advantage-tools&rsquo; or login to Launchpad and
+navigate to
+https://bugs.launchpad.net/ubuntu/+source/ubuntu-advantage-tools/+filebug</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2019-2020 Canonical Ltd.</p>
+<hr>
+</body>
+</html>

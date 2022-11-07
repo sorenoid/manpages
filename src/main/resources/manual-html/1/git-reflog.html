@@ -1,0 +1,218 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-REFLOG</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-REFLOG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-reflog -
+Manage reflog information</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+reflog</i> &lt;subcommand&gt; &lt;options&gt;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The command
+takes various subcommands, and different options depending
+on the subcommand:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>git
+reflog</i> [<i>show</i>] [log-options] [&lt;ref&gt;] <i><br>
+git reflog expire</i> [--expire=&lt;time&gt;]
+[--expire-unreachable=&lt;time&gt;] <br>
+[--rewrite] [--updateref] [--stale-fix] <br>
+[--dry-run | -n] [--verbose] [--all [--single-worktree] |
+&lt;refs&gt;...] <i><br>
+git reflog delete</i> [--rewrite] [--updateref] <br>
+[--dry-run | -n] [--verbose] ref@{specifier}... <i><br>
+git reflog exists</i> &lt;ref&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Reference logs,
+or &quot;reflogs&quot;, record when the tips of branches and
+other references were updated in the local repository.
+Reflogs are useful in various Git commands, to specify the
+old value of a reference. For example, <b>HEAD@{2}</b> means
+&quot;where HEAD used to be two moves ago&quot;,
+<b>master@{one.week.ago}</b> means &quot;where master used
+to point to one week ago in this local repository&quot;, and
+so on. See <b>gitrevisions</b>(7) for more details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+manages the information recorded in the reflogs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;show&quot; subcommand (which is also the default, in
+the absence of any subcommands) shows the log of the
+reference provided in the command-line (or <b>HEAD</b>, by
+default). The reflog covers all recent actions, and in
+addition the <b>HEAD</b> reflog records branch switching.
+<b>git reflog show</b> is an alias for <b>git log -g
+--abbrev-commit --pretty=oneline</b>; see <b>git-log</b>(1)
+for more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;expire&quot; subcommand prunes older reflog entries.
+Entries older than <b>expire</b> time, or entries older than
+<b>expire-unreachable</b> time and not reachable from the
+current tip, are removed from the reflog. This is typically
+not used directly by end users &mdash; instead, see
+<b>git-gc</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;delete&quot; subcommand deletes single entries from
+the reflog. Its argument must be an <i>exact</i> entry (e.g.
+&quot;<b>git reflog delete master@{2}</b>&quot;). This
+subcommand is also typically not used directly by end
+users.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;exists&quot; subcommand checks whether a ref has a
+reflog. It exits with zero status if the reflog exists, and
+non-zero status if it does not.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options for
+show <br>
+git reflog show</b> accepts any of the options accepted by
+<b>git log</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options for
+expire</b> <br>
+--all</p>
+
+<p style="margin-left:17%;">Process the reflogs of all
+references.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--single-worktree</p>
+
+<p style="margin-left:17%;">By default when <b>--all</b> is
+specified, reflogs from all working trees are processed.
+This option limits the processing to reflogs from the
+current working tree only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--expire=&lt;time&gt;</p>
+
+<p style="margin-left:17%;">Prune entries older than the
+specified time. If this option is not specified, the
+expiration time is taken from the configuration setting
+<b>gc.reflogExpire</b>, which in turn defaults to 90 days.
+<b>--expire=all</b> prunes entries regardless of their age;
+<b>--expire=never</b> turns off pruning of reachable entries
+(but see <b>--expire-unreachable</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--expire-unreachable=&lt;time&gt;</p>
+
+<p style="margin-left:17%;">Prune entries older than
+<b>&lt;time&gt;</b> that are not reachable from the current
+tip of the branch. If this option is not specified, the
+expiration time is taken from the configuration setting
+<b>gc.reflogExpireUnreachable</b>, which in turn defaults to
+30 days. <b>--expire-unreachable=all</b> prunes unreachable
+entries regardless of their age;
+<b>--expire-unreachable=never</b> turns off early pruning of
+unreachable entries (but see <b>--expire</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--updateref</p>
+
+<p style="margin-left:17%;">Update the reference to the
+value of the top reflog entry (i.e. &lt;ref&gt;@{0}) if the
+previous top entry was pruned. (This option is ignored for
+symbolic references.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">--rewrite</p>
+
+<p style="margin-left:17%;">If a reflog entry&rsquo;s
+predecessor is pruned, adjust its &quot;old&quot; SHA-1 to
+be equal to the &quot;new&quot; SHA-1 field of the entry
+that now precedes it.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--stale-fix</p>
+
+<p style="margin-left:17%;">Prune any reflog entries that
+point to &quot;broken commits&quot;. A broken commit is a
+commit that is not reachable from any of the reference tips
+and that refers, directly or indirectly, to a missing
+commit, tree, or blob object.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This
+computation involves traversing all the reachable objects,
+i.e. it has the same cost as <i>git prune</i>. It is
+primarily intended to fix corruption caused by garbage
+collecting using older versions of Git, which didn&rsquo;t
+protect objects referred to by reflogs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-n,
+--dry-run</p>
+
+<p style="margin-left:17%;">Do not actually prune any
+entries; just show what would have been pruned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--verbose</p>
+
+<p style="margin-left:17%;">Print extra information on
+screen.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options for
+delete <br>
+git reflog delete</b> accepts options <b>--updateref</b>,
+<b>--rewrite</b>, <b>-n</b>, <b>--dry-run</b>, and
+<b>--verbose</b>, with the same meanings as when they are
+used with <b>expire</b>.</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ppmtowinicon</title>
+
+</head>
+<body>
+
+<h1 align="center">ppmtowinicon</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtowinicon -
+convert 1 or more portable pixmaps into a Windows .ico
+file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtowinicon</b>
+[<i>-andpgms</i>] [<i>-output&nbsp;output.ico</i>]
+[<i>ppmfiles</i>...<i>]</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads one or
+more portable pixmaps as input. Produces a Microsoft Windows
+.ico file as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A Windows icon
+contains 1 or more images, at different resolutions and
+color depths.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Microsoft
+recommends including at least the following formats in each
+icon (size and bits-per-pixel):</p>
+
+<p style="margin-left:11%; margin-top: 1em">16 x 16 - 4
+bpp</p>
+
+<p style="margin-left:11%; margin-top: 1em">32 x 32 - 4
+bpp</p>
+
+<p style="margin-left:11%; margin-top: 1em">48 x 48 - 8
+bpp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Default I/O is
+STDIN/STDOUT.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-andpgms</b></p>
+
+<p style="margin-left:22%;">If this option is given, every
+second file is read as an &quot;and mask&quot; to be used by
+windows for transparency data for the previous image. (These
+are set to fully opaque by default). The and mask is a PGM
+image, where any pixel with maxval intensity means opaque
+and any other pixel means not opaque. Note that as with all
+Netpbm programs, you may use a PBM file here and it will be
+used as if it were the equivalent PGM.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The and mask is
+like an alpha mask, except for what it signifies in the
+&quot;not opaque&quot; areas. In the usual case, the
+foreground image is black in those areas, and in that case
+the areas are fully transparent -- the background shows
+through the icon. But in general, a not opaque pixel
+signifies that the background and foreground should be
+merged as follows: The intensities of the color components
+in the forgeground and background are represented as binary
+numbers, then corresponding bits of the background and
+foreground intensities are exlusive-or&rsquo;ed together. So
+there is a sort of reverse video effect.</p>
+
+<p style="margin-left:11%;"><b>-output output.ico</b></p>
+
+<p style="margin-left:22%;">File to write. By default, the
+icon is written to stdout.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>winicontoppm</b>(1),
+<b>ppm</b>(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2000 by Lee Benfield.</p>
+<hr>
+</body>
+</html>

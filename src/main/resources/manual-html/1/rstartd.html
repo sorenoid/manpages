@@ -1,0 +1,441 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:08 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RSTARTD</title>
+
+</head>
+<body>
+
+<h1 align="center">RSTARTD</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#INSTALLATION">INSTALLATION</a><br>
+<a href="#CONFIGURATION AND OPERATION">CONFIGURATION AND OPERATION</a><br>
+<a href="#CONFIGURATION KEYWORDS">CONFIGURATION KEYWORDS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rstartd - a
+sample implementation of a Remote Start rsh helper</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rstartd</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rstartd.real</b>
+[-c <i>configfilename</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+is an implementation of a Remote Start &quot;helper&quot; as
+defined in &quot;A Flexible Remote Execution Protocol Based
+on <b>rsh</b>&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This document
+describes the peculiarities of <i>rstartd</i> and how it is
+configured.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>
+<i>configfilename</i></p>
+
+<p style="margin-left:23%;">This option specifies the
+&quot;global&quot; configuration file that <i>rstartd</i> is
+to read. Normally, <i>rstartd</i> is a shell script that
+invokes <i>rstartd.real</i> with the <b>-c</b> switch,
+allowing local configuration of the location of the
+configuration file. If <i>rstartd.real</i> is started
+without the -c option, it reads
+<i>/X11/rstart/config</i>.</p>
+
+<h2>INSTALLATION
+<a name="INSTALLATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is critical
+to successful interoperation of the Remote Start protocol
+that <i>rstartd</i> be installed in a directory which is in
+the &quot;default&quot; search path, so that default rsh
+requests and the ilk will be able to find it.</p>
+
+<h2>CONFIGURATION AND OPERATION
+<a name="CONFIGURATION AND OPERATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+is by design highly configurable. One would like things like
+configuration file locations to be fixed, so that users and
+administrators can find them without searching, but reality
+is that no two vendors will agree on where things should go,
+and nobody thinks the original location is
+&quot;right&quot;. Thus, <i>rstartd</i> allows one to
+relocate <b>all</b> of its files and directories.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+has a hierarchy of configuration files which are executed in
+order when a request is made. They are: <br>
+global config <br>
+per-user (&quot;local&quot;) config <br>
+global per-context config <br>
+per-user (&quot;local&quot;) per-context config <br>
+config from request <br>
+As you might guess from the presence of &quot;config from
+request&quot;, all of the config files are in the format of
+an <i>rstart</i> request. <i>Rstartd</i> defines a few
+additional keywords with the INTERNAL- prefix for specifying
+its configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+starts by reading and executing the global config file. This
+file will normally specify the locations of the other
+configuration files and any systemwide defaults.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+will then read the user&rsquo;s local config file, default
+name $HOME/.rstart.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+will then start interpreting the request.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Presumably one
+of the first lines in the request will be a CONTEXT line.
+The context name is converted to lower case.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+will read the global config file for that context, default
+name /usr/lib/X11/rstart/contexts/&lt;name&gt;, if any.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It will then
+read the user&rsquo;s config file for that context, default
+name $HOME/.rstart.contexts/&lt;name&gt;, if any.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(If neither of
+these exists, <i>rstartd</i> aborts with a Failure
+message.)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Rstartd</i>
+will finish interpreting the request, and execute the
+program specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This allows the
+system administrator and the user a large degree of control
+over the operation of <i>rstartd</i>. The administrator has
+final say, because the global config file doesn&rsquo;t need
+to specify a per-user config file. If it does, however, the
+user can override anything from the global file, and can
+even completely replace the global context config files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The config
+files have a somewhat more flexible format than requests do;
+they are allowed to contain blank lines and lines beginning
+with &quot;#&quot; are comments and ignored. (#s in the
+middle of lines are data, not comment markers.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any commands
+run are provided a few useful pieces of information in
+environment variables. The exact names are configurable, but
+the supplied defaults are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="31%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="31%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="31%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="31%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="31%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-1429911.png" alt="Image grohtml-1429911.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$RSTART_{GLOBAL,LOCAL}_CONTEXTS
+should contain one special file, @List, which contains a
+list of the contexts in that directory in the format
+specified for ListContexts. The supplied version of
+ListContexts will cat both the global and local copies of
+@List.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Generic
+commands are searched for in several places: (defaults) <br>
+per-user per-context directory
+($HOME/.rstart.commands/&lt;context&gt;) <br>
+global per-context directory
+(/usr/lib/X11/rstart/commands/&lt;context&gt;) <br>
+per-user all-contexts directory ($HOME/.rstart.commands)
+<br>
+global all-contexts directory (/usr/lib/X11/rstart/commands)
+<br>
+(Yes, this means you can&rsquo;t have an all-contexts
+generic command with the same name as a context. It
+didn&rsquo;t seem like a big deal.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each of these
+directories should have a file called @List that gives the
+names and descriptions of the commands in that directory in
+the format specified for ListGenericCommands.</p>
+
+<h2>CONFIGURATION KEYWORDS
+<a name="CONFIGURATION KEYWORDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+several &quot;special&quot; <i>rstart</i> keywords defined
+for <i>rstartd</i> configuration. Unless otherwise
+specified, there are no defaults; related features are
+disabled in this case. <b><br>
+INTERNAL-REGISTRIES name ...</b></p>
+
+<p style="margin-left:23%;">Gives a space-separated list of
+&quot;MISC&quot; registries that this system understands.
+(Registries other than this are accepted but generate a
+Warning.)</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-LOCAL-DEFAULT
+relative_filename</b></p>
+
+<p style="margin-left:23%;">Gives the name ($HOME relative)
+of the per-user config file.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-GLOBAL-CONTEXTS
+absolute_directory_name</b></p>
+
+<p style="margin-left:23%;">Gives the name of the
+system-wide contexts directory.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-LOCAL-CONTEXTS
+relative_directory_name</b></p>
+
+<p style="margin-left:23%;">Gives the name ($HOME relative)
+of the per-user contexts directory.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-GLOBAL-COMMANDS
+absolute_directory_name</b></p>
+
+<p style="margin-left:23%;">Gives the name of the
+system-wide generic commands directory.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-LOCAL-COMMANDS
+relative_directory_name</b></p>
+
+<p style="margin-left:23%;">Gives the name ($HOME relative)
+of the per-user generic commands directory.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-VARIABLE-PREFIX
+prefix</b></p>
+
+<p style="margin-left:23%;">Gives the prefix for the
+configuration environment variables <i>rstartd</i> passes to
+its kids.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-AUTH-PROGRAM
+authscheme program argv[0] argv[1] ...</b></p>
+
+<p style="margin-left:23%;">Specifies the program to run to
+set up authentication for the specified authentication
+scheme. &quot;program argv[0] ...&quot; gives the program to
+run and its arguments, in the same form as the EXEC
+keyword.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-AUTH-INPUT
+authscheme</b></p>
+
+<p style="margin-left:23%;">Specifies the data to be given
+to the authorization program as its standard input. Each
+argument is passed as a single line. $n, where n is a
+number, is replaced by the n&rsquo;th argument to the
+&quot;AUTH authscheme arg1 arg2 ...&quot; line.</p>
+
+<p style="margin-left:11%;"><b>INTERNAL-PRINT arbitrary
+text</b></p>
+
+<p style="margin-left:23%;">Prints its arguments as a Debug
+message. Mostly for <i>rstartd</i> debugging, but could be
+used to debug config files.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When using the
+C shell, or any other shell which runs a script every time
+the shell is started, the script may get run several times.
+In the worst case, the script may get run <b>three</b>
+times: <br>
+By rsh, to run <i>rstartd</i> <br>
+By <i>rstartd</i>, to run the specified command <br>
+By the command, eg <i>xterm <br>
+rstartd</i> currently limits lines, both from config files
+and requests, to BUFSIZ bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">DETACH is
+implemented by redirecting file descriptors 0,1, and 2 to
+/dev/null and forking before executing the program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">CMD is
+implemented by invoking $SHELL (default /bin/sh) with
+&quot;-c&quot; and the specified command as arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX-UMASK is
+implemented in the obvious way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+authorization programs are run in the same context as the
+target program - same environment variables, path, etc. Long
+term this might be a problem.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the X
+context, GENERIC-CMD Terminal runs xterm. In the OpenWindows
+context, GENERIC-CMD Terminal runs cmdtool.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the X
+context, GENERIC-CMD LoadMonitor runs xload. In the
+OpenWindows context, GENERIC-CMD LoadMonitor runs
+perfmeter.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>GENERIC-CMD
+ListContexts</b> lists the contents of @List in both the
+system-wide and per-user contexts directories. It is
+available in all contexts.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>GENERIC-CMD
+ListGenericCommands</b> lists the contents of @List in the
+system-wide and per-user commands directories, including the
+per-context subdirectories for the current context. It is
+available in all contexts.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CONTEXT
+None</b> is not implemented.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CONTEXT
+Default</b> is really dull.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+installation ease, the &quot;contexts&quot; directory in the
+distribution contains a file &quot;@Aliases&quot; which
+lists a context name and aliases for that context. This file
+is used to make symlinks in the contexts and commands
+directories.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All <b>MISC</b>
+values are passed unmodified as environment variables.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One can
+mistreat <i>rstartd</i> in any number of ways, resulting in
+anything from stupid behavior to core dumps. Other than by
+explicitly running programs I don&rsquo;t think it can write
+or delete any files, but there&rsquo;s no guarantee of that.
+The important thing is that (a) it probably won&rsquo;t do
+anything REALLY stupid and (b) it runs with the user&rsquo;s
+permissions, so it can&rsquo;t do anything catastrophic.</p>
+
+<p style="margin-left:11%; margin-top: 1em">@List files
+need not be complete; contexts or commands which are dull or
+which need not or should not be advertised need not be
+listed. In particular, per-user @List files should not list
+things which are in the system-wide @List files. In the
+future, perhaps ListContexts and ListGenericCommands will
+automatically suppress lines from the system-wide files when
+there are per-user replacements for those lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Error handling
+is OK to weak. In particular, no attempt is made to properly
+report errors on the exec itself. (Perversely, exec errors
+could be reliably reported when detaching, but not when
+passing the stdin/out socket to the app.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">If compiled
+with -DODT1_DISPLAY_HACK, <i>rstartd</i> will work around a
+bug in SCO ODT version 1. (1.1?) (The bug is that the X
+clients are all compiled with a bad library that
+doesn&rsquo;t know how to look host names up using DNS. The
+fix is to look up a host name in $DISPLAY and substitute an
+IP address.) This is a trivial example of an incompatibility
+that <i>rstart</i> can hide.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rstart(1),
+rsh(1), A Flexible Remote Execution Protocol Based on
+<b>rsh</b></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Jordan Brown,
+Quarterdeck Office Systems</p>
+<hr>
+</body>
+</html>

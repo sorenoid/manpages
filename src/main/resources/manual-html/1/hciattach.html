@@ -1,0 +1,309 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:47 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HCIATTACH</title>
+
+</head>
+<body>
+
+<h1 align="center">HCIATTACH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#RESOURCES">RESOURCES</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hciattach -
+attach serial devices via UART HCI to BlueZ stack</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hciattach</b>
+[<i>OPTIONS</i>] &lt;<i>tty</i>&gt; &lt;<i>type|id</i>&gt;
+[<i>speed</i>] [<i>flow</i>] [<i>sleep</i>]
+[<i>bdaddr</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hciattach</b>
+-1</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hciattach(1)</b>
+is used to attach a serial UART to the Bluetooth stack as
+HCI transport interface.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-i</b></p></td>
+<td width="8%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em">Send break</p></td>
+<td width="18%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="8%"></td>
+<td width="60%">
+
+
+<p>Don't detach from controlling terminal.</p></td>
+<td width="18%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="8%"></td>
+<td width="60%">
+
+
+<p>Print the PID when detaching.</p></td>
+<td width="18%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-t&nbsp;</b><i>timeout</i></p>
+
+<p style="margin-left:22%;">Specify an initialization
+timeout. Default is 5 seconds.</p>
+
+
+<p style="margin-left:11%;"><b>-s&nbsp;</b><i>speed</i></p>
+
+<p style="margin-left:22%;">Specify an initial speed
+instead of the hardware default.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-l</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>List all available configurations.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Set the HCI device into raw mode. The kernel and
+bluetooth daemon will ignore it.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-h</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Show help options</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>show</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This specifies the serial device
+to attach. A leading /dev can be omitted.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Examples:
+<b>/dev/ttyS1 ttyS2</b></p>
+
+<p style="margin-left:11%;"><i>type|id</i></p>
+
+<p style="margin-left:22%;">The <i>type</i> or <i>id</i> of
+the Bluetooth device that is to be attached, i.e. vendor or
+other device specific identifier. Currently supported types
+are</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-1390271.png" alt="Image grohtml-1390271.png"></p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-1390272.png" alt="Image grohtml-1390272.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>speed</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The <i>speed</i> specifies the UART speed to use.
+Baudrates higher than 115200bps require vendor specific
+initializations that are not implemented for all types of
+devices. In general the following speeds are supported:</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Supported
+vendor devices are automatically initialised to their
+respective best settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-1390273.png" alt="Image grohtml-1390273.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>flow</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If the <i>flow</i> is appended
+to the list of options then hardware flow control is forced
+on the serial link (<b>CRTSCTS</b>). All above mentioned
+device types have flow set by default. To force no flow
+control use <i>noflow</i> instead.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>sleep|nosleep</i></p>
+
+<p style="margin-left:22%;">Enables hardware specific power
+management feature. If <i>sleep</i> is appended to the list
+of options then this feature is enabled. To disable this
+feature use <i>nosleep</i> instead. All above mentioned
+device types have <i>nosleep</i> set by default.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note: This
+option will only be valid for hardware which support
+hardware specific power management enable option from
+host.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>bdaddr</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The bdaddr specifies the Bluetooth Address to use. Some
+devices (like the STLC2500) do not store the Bluetooth
+address in hardware memory. Instead it must be uploaded
+during the initialization process. If this argument is
+specified, then the address will be used to initialize the
+device. Otherwise, a default address will be used.</p></td></tr>
+</table>
+
+<h2>RESOURCES
+<a name="RESOURCES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>http://www.bluez.org</i></p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>linux-bluetooth@vger.kernel.org</i></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Maxim
+Krasnyansky &lt;maxk@qualcomm.com&gt;, Nils Faerber
+&lt;nils@kernelconcepts.de&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Free use of
+this software is granted under ther terms of the GNU Lesser
+General Public Licenses (LGPL).</p>
+<hr>
+</body>
+</html>

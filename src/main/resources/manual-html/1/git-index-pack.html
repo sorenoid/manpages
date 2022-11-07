@@ -1,0 +1,240 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:44 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-INDEX-PACK</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-INDEX-PACK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-index-pack
+- Build pack index file for an existing packed archive</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+index-pack</i> [-v] [-o &lt;index-file&gt;]
+[--[no-]rev-index] &lt;pack-file&gt; <i><br>
+git index-pack</i> --stdin [--fix-thin] [--keep] [-v] [-o
+&lt;index-file&gt;] <br>
+[--[no-]rev-index] [&lt;pack-file&gt;]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a packed
+archive (.pack) from the specified file, and builds a pack
+index file (.idx) for it. Optionally writes a reverse-index
+(.rev) for the specified pack. The packed archive together
+with the pack index can then be placed in the objects/pack/
+directory of a Git repository.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-v</p>
+
+<p style="margin-left:17%;">Be verbose about what is going
+on, including progress status.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-o
+&lt;index-file&gt;</p>
+
+<p style="margin-left:17%;">Write the generated pack index
+into the specified file. Without this option the name of
+pack index file is constructed from the name of packed
+archive file by replacing .pack with .idx (and the program
+fails if the name of packed archive does not end with
+.pack).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--[no-]rev-index</p>
+
+<p style="margin-left:17%;">When this flag is provided,
+generate a reverse index (a <b>.rev</b> file) corresponding
+to the given pack. If <b>--verify</b> is given, ensure that
+the existing reverse index is correct. Takes precedence over
+<b>pack.writeReverseIndex</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--stdin</p>
+
+<p style="margin-left:17%;">When this flag is provided, the
+pack is read from stdin instead and a copy is then written
+to &lt;pack-file&gt;. If &lt;pack-file&gt; is not specified,
+the pack is written to objects/pack/ directory of the
+current Git repository with a default name determined from
+the pack content. If &lt;pack-file&gt; is not specified
+consider using --keep to prevent a race condition between
+this process and <i>git repack</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--fix-thin</p>
+
+<p style="margin-left:17%;">Fix a &quot;thin&quot; pack
+produced by <b>git pack-objects --thin</b> (see
+<b>git-pack-objects</b>(1) for details) by adding the
+excluded objects the deltified objects are based on to the
+pack. This option only makes sense in conjunction with
+--stdin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--keep</p>
+
+<p style="margin-left:17%;">Before moving the index into
+its final destination create an empty .keep file for the
+associated pack file. This option is usually necessary with
+--stdin to prevent a simultaneous <i>git repack</i> process
+from deleting the newly constructed pack and index before
+refs can be updated to use objects contained in the
+pack.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--keep=&lt;msg&gt;</p>
+
+<p style="margin-left:17%;">Like --keep create a .keep file
+before moving the index into its final destination, but
+rather than creating an empty file place <i>&lt;msg&gt;</i>
+followed by an LF into the .keep file. The
+<i>&lt;msg&gt;</i> message can later be searched for within
+all .keep files to locate any which have outlived their
+usefulness.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--index-version=&lt;version&gt;[,&lt;offset&gt;]</p>
+
+<p style="margin-left:17%;">This is intended to be used by
+the test suite only. It allows to force the version for the
+generated pack index, and to force 64-bit index entries on
+objects located above the given offset.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--strict</p>
+
+<p style="margin-left:17%;">Die, if the pack contains
+broken objects or links.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--progress-title</p>
+
+<p style="margin-left:17%;">For internal use only.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Set the title
+of the progress bar. The title is &quot;Receiving
+objects&quot; by default and &quot;Indexing objects&quot;
+when <b>--stdin</b> is specified.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--check-self-contained-and-connected</p>
+
+<p style="margin-left:17%;">Die if the pack contains broken
+links. For internal use only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--fsck-objects</p>
+
+<p style="margin-left:17%;">For internal use only.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Die if the pack
+contains broken objects. If the pack contains a tree
+pointing to a .gitmodules blob that does not exist, prints
+the hash of that blob (for the caller to check) after the
+hash that goes into the name of the pack/idx file (see
+&quot;Notes&quot;).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--threads=&lt;n&gt;</p>
+
+<p style="margin-left:17%;">Specifies the number of threads
+to spawn when resolving deltas. This requires that
+index-pack be compiled with pthreads otherwise this option
+is ignored with a warning. This is meant to reduce packing
+time on multiprocessor machines. The required amount of
+memory for the delta search window is however multiplied by
+the number of threads. Specifying 0 will cause Git to
+auto-detect the number of CPU&rsquo;s and use maximum 3
+threads.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--max-input-size=&lt;size&gt;</p>
+
+<p style="margin-left:17%;">Die, if the pack is larger than
+&lt;size&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--object-format=&lt;hash-algorithm&gt;</p>
+
+<p style="margin-left:17%;">Specify the given object format
+(hash algorithm) for the pack. The valid values are
+<i>sha1</i> and (if enabled) <i>sha256</i>. The default is
+the algorithm for the current repository (set by
+<b>extensions.objectFormat</b>), or <i>sha1</i> if no value
+is set or outside a repository.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+cannot be used with --stdin.</p>
+
+<p style="margin-left:17%; margin-top: 1em">THIS OPTION IS
+EXPERIMENTAL! SHA-256 support is experimental and still in
+an early stage. A SHA-256 repository will in general not be
+able to share work with &quot;regular&quot; SHA-1
+repositories. It should be assumed that, e.g., Git internal
+file formats in relation to SHA-256 repositories may change
+in backwards-incompatible ways. Only use
+<b>--object-format=sha256</b> for testing purposes.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Once the index
+has been created, the hash that goes into the name of the
+pack/idx file is printed to stdout. If --stdin was also used
+then this is prefixed by either &quot;pack\t&quot;, or
+&quot;keep\t&quot; if a new .keep file was successfully
+created. This is useful to remove a .keep file used as a
+lock to prevent the race with <i>git repack</i> mentioned
+above.</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

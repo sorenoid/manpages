@@ -1,0 +1,416 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:21 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PSTREE</title>
+
+</head>
+<body>
+
+<h1 align="center">PSTREE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pstree -
+display a tree of processes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstree</b>
+[<b>-a</b>,&nbsp;<b>--arguments</b>]
+[<b>-c</b>,&nbsp;<b>--compact-not</b>]
+[<b>-C</b>,&nbsp;<b>--color&nbsp;</b><i>attr</i>]
+[<b>-g</b>,&nbsp;<b>--show-pgids</b>]
+[<b>-h</b>,&nbsp;<b>--highlight-all</b>,&nbsp;<b>-H&nbsp;</b><i>pid</i>,&nbsp;<b>--highlight-pid&nbsp;</b><i>pid</i>]
+[<b>-l</b>,&nbsp;<b>--long</b>]
+[<b>-n</b>,&nbsp;<b>--numeric-sort</b>]
+[<b>-N</b>,&nbsp;<b>--ns-sort&nbsp;</b><i>ns</i>]
+[<b>-p</b>,&nbsp;<b>--show-pids</b>]
+[<b>-s</b>,&nbsp;<b>--show-parents</b>]
+[<b>-S</b>,&nbsp;<b>--ns-changes</b>]
+[<b>-t</b>,&nbsp;<b>--thread-names</b>]
+[<b>-T</b>,&nbsp;<b>--hide-threads</b>]
+[<b>-u</b>,&nbsp;<b>--uid-changes</b>]
+[<b>-Z</b>,&nbsp;<b>--security-context</b>]
+[<b>-A</b>,&nbsp;<b>--ascii</b>,&nbsp;<b>-G</b>,&nbsp;<b>--vt100</b>,&nbsp;<b>-U</b>,&nbsp;<b>--unicode</b>]
+[<i>pid</i>,&nbsp;<i>user</i>] <b><br>
+pstree -V</b>,&nbsp;<b>--version</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstree</b>
+shows running processes as a tree. The tree is rooted at
+either <i>pid</i> or <b>init</b> if <i>pid</i> is omitted.
+If a user name is specified, all process trees rooted at
+processes owned by that user are shown.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstree</b>
+visually merges identical branches by putting them in square
+brackets and prefixing them with the repetition count,
+e.g.</p>
+
+<p style="margin-left:11%; margin-top: 1em">init-+-getty
+<br>
+|-getty <br>
+|-getty <br>
+&rsquo;-getty</p>
+
+<p style="margin-left:11%; margin-top: 1em">becomes</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">init---4*[getty]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Child threads
+of a process are found under the parent process and are
+shown with the process name in curly braces, e.g.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">icecast2---13*[{icecast2}]</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>pstree</b> is called as <b>pstree.x11</b> then it will
+prompt the user at the end of the line to press return and
+will not return until that has happened. This is useful for
+when <b>pstree</b> is run in a xterminal.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Certain kernel
+or mount parameters, such as the <i>hidepid</i> option for
+procfs, will hide information for some processes. In these
+situations <b>pstree</b> will attempt to build the tree
+without this information, showing process names as question
+marks.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-a</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Show command line arguments. If
+the command line of a process is swapped out, that process
+is shown in parentheses. <b>-a</b> implicitly disables
+compaction for processes but not threads.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-A</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Use ASCII characters to draw the tree.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Disable compaction of identical subtrees. By default,
+subtrees are compacted whenever possible.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-C</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Color the process name by given attribute. Currently
+<b>pstree</b> only accepts the value <b>age</b> which colors
+by process age. Processes newer than 60 seconds are green,
+newer than an hour yellow and the remaining red.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-g</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show PGIDs. Process Group IDs are shown as decimal
+numbers in parentheses after each process name. <b>-g</b>
+implicitly disables compaction. If both PIDs and PGIDs are
+displayed then PIDs are shown first.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-G</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Use VT100 line drawing characters.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Highlight the current process and its ancestors. This is
+a no-op if the terminal doesn&rsquo;t support highlighting
+or if neither the current process nor any of its ancestors
+are in the subtree being shown.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-H</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Like <b>-h</b>, but highlight the specified process
+instead. Unlike with <b>-h</b>, <b>pstree</b> fails when
+using <b>-H</b> if highlighting is not available.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-l</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display long lines. By default, lines are truncated to
+either the COLUMNS environment variable or the display
+width. If neither of these methods work, the default of 132
+columns is used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Sort processes with the same parent by PID instead of by
+name. (Numeric sort.)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-N</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show individual trees for each namespace of the type
+specified. The available types are: <i>ipc</i>, <i>mnt</i>,
+<i>net</i>, <i>pid</i>, <i>time</i>, <i>user</i>,
+<i>uts</i>. Regular users don&rsquo;t have access to other
+users&rsquo; processes information, so the output will be
+limited.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show PIDs. PIDs are shown as decimal numbers in
+parentheses after each process name. <b>-p</b> implicitly
+disables compaction.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show parent processes of the specified process.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show namespaces transitions. Like <b>-N</b>, the output
+is limited when running as a regular user.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show full names for threads when available.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-T</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Hide threads and only show processes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-u</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show uid transitions. Whenever the uid of a process
+differs from the uid of its parent, the new uid is shown in
+parentheses after the process name.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-U</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Use UTF-8 (Unicode) line drawing characters. Under Linux
+1.1-54 and above, UTF-8 mode is entered on the console with
+<b>echo -e &rsquo; 33%8&rsquo;</b> and left with <b>echo -e
+&rsquo; 33%@&rsquo;</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display version information.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-Z</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show the current security attributes of the process. For
+SELinux systems this will be the security context.</p></td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">/proc</p></td>
+<td width="4%"></td>
+<td width="49%">
+
+
+<p style="margin-top: 1em">location of the proc file
+system</p> </td>
+<td width="29%">
+</td></tr>
+</table>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some character
+sets may be incompatible with the VT100 characters.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps</b>(1),
+<b>top</b>(1), <b>proc</b>(5).</p>
+<hr>
+</body>
+</html>

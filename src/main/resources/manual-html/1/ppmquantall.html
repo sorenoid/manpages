@@ -1,0 +1,102 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ppmquantall</title>
+
+</head>
+<body>
+
+<h1 align="center">ppmquantall</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmquantall -
+run ppmquant on a bunch of files all at once, so they share
+a common colormap</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmquantall</b>
+[<b>-ext</b> <i>extension</i>] <i>ncolors ppmfile</i>
+...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Takes a bunch
+of portable pixmap as input. Chooses <i>ncolors</i> colors
+to best represent all of the images, maps the existing
+colors to the new ones, and <b>overwrites the input
+files</b> with the new quantized versions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t want to overwrite your input files, use the
+<b>-ext</b> option. The output files are then named the same
+as the input files, plus a period and the extension text you
+specify.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Verbose
+explanation: Let&rsquo;s say you&rsquo;ve got a dozen
+pixmaps that you want to display on the screen all at the
+same time. Your screen can only display 256 different
+colors, but the pixmaps have a total of a thousand or so
+different colors. For a single pixmap you solve this problem
+with <i>ppmquant</i>; this script solves it for multiple
+pixmaps. All it does is concatenate them together into one
+big pixmap, run <i>ppmquant</i> on that, and then split it
+up into little pixmaps again.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(Note that
+another way to solve this problem is to pre-select a set of
+colors and then use <i>ppmquant</i>&rsquo;s <b>-map</b>
+option to separately quantize each pixmap to that set.)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmquant</b>(1),
+<b>ppm(5)</b></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1991 by Jef Poskanzer.</p>
+<hr>
+</body>
+</html>

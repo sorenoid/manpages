@@ -1,0 +1,757 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:38 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GREP-DCTRL</title>
+
+</head>
+<body>
+
+<h1 align="center">GREP-DCTRL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep-dctrl,
+grep-status, grep-available, grep-aptavail, grep-debtags -
+grep Debian control files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>command</i>
+<b>--copying</b>|<b>-C</b> | <b>--help</b>|<b>-h</b> |
+<b>--version</b>|<b>-V</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>command</i>
+[<i>options</i>] <i>filter</i> [ <i>file</i>... ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">where
+<i>command</i> is one of <b>grep-dctrl</b>,
+<b>grep-status</b>, <b>grep-available</b>,
+<b>grep-aptavail</b> and <b>grep-debtags</b>.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>grep-dctrl</b> program can answer such questions as
+<i>What is the Debian package foo?</i>, <i>Which version of
+the Debian package bar is now current?</i>, <i>Which Debian
+packages does John Doe maintain?</i>, <i>Which Debian
+packages are somehow related to the Scheme programming
+language?</i>, and with some help, <i>Who maintain the
+essential packages of a Debian system?</i>, given a useful
+input file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The programs
+<b>grep-available</b>, <b>grep-status</b>,
+<b>grep-aptavail</b> and <b>grep-debtags</b> are aliases of
+(actually, symbolic links to) <b>grep-dctrl</b>. These
+aliases use as their default input the <b>dpkg</b>(1)
+<i>available</i> and <i>status</i> files, the <b>apt-cache
+dumpavail</b> output and the <b>debtags dumpavail</b>
+output, respectively.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grep-dctrl</b>
+is a specialised <b>grep</b> program that is meant for
+processing any file which has the general format of a Debian
+package <i>control</i> file, as described in the Debian
+Policy. These include the <b>dpkg</b> <i>available</i> file,
+the <b>dpkg</b> <i>status</i> file, and the <i>Packages</i>
+files on a distribution medium (such as a Debian CD-ROM or
+an FTP site carrying Debian).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You must give a
+<i>filter</i> expression on the command line. The
+<i>filter</i> defines which kind of paragraphs (aka package
+records) are output. A simple <i>filter</i> is a search
+pattern along with any options that modify it. Possible
+modifiers are <b>--eregex</b>, <b>--field</b>,
+<b>--ignore-case</b>, <b>--regex</b> and
+<b>--exact-match</b>, along with their single-letter
+equivalents. By default, the search is a case-sensitive
+fixed substring match on each paragraph (in other words,
+package record) in the input. With suitable modifiers, this
+can be changed: the search can be case-insensitive and the
+pattern can be seen as an extended POSIX regular
+expression.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Filter</i>s
+can be combined to form more complex <i>filter</i>s using
+the connectives <b>--and</b>, <b>--or</b> and <b>--not</b>.
+Parentheses (which usually need to be escaped for the shell)
+can be used for grouping.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+full matching paragraphs are printed on the standard output;
+specific fields can be selected for output with the
+<b>-s</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After the
+<i>filter</i> expression comes zero or more <i>file</i>
+names. The <i>file</i> name <b>-</b> is taken to mean the
+standard input stream. The <i>file</i>s are searched in
+order but separately; they are <b>not</b> concatenated
+together. In other words, the end of a <i>file</i> always
+implies the end of the current paragraph.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<i>file</i> names are specified, the program name is used to
+identify a default input file. The program names are matched
+with the base form of the name of the current program (the
+0&rsquo;th command line argument, if you will).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Specifying
+the search pattern <br>
+--pattern=</b><i>pattern</i></p>
+
+<p style="margin-left:22%;">Specify a <i>pattern</i> to be
+searched. This switch is not generally needed, as the
+<i>pattern</i> can be given by itself. However,
+<i>pattern</i>s that start with a dash (<b>-</b>) must be
+given using this switch, so that they wouldn&rsquo;t be
+mistaken for switches.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Modifiers of
+simple filters <br>
+-F</b> <i>field</i>,<i>field</i>, ... |
+<b>--field=</b><i>field</i>,<i>field</i>, ...</p>
+
+<p style="margin-left:22%;">Restrict pattern matching to
+the <i>field</i>s given. Multiple <i>field</i> names in one
+<b>-F</b> option and multiple <b>-F</b> options in one
+simple <i>filter</i> are allowed. The search named by the
+filter will be performed among all the <i>field</i>s named,
+and as soon as any one of them matches, the whole simple
+<i>filter</i> is considered matching.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A <i>field</i>
+specification can contain a colon (<b>:</b>). In such a
+case, the part up to the colon is taken as the name of the
+field to be searched in, and the part after the colon is
+taken as the name of the field whose content is to be used
+if the field to search in is empty.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-P</b></p></td>
+<td width="8%"></td>
+<td width="47%">
+
+
+<p>Shorthand for <b>-FPackage</b>.</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="8%"></td>
+<td width="47%">
+
+
+<p>Shorthand for <b>-FSource:Package</b>.</p></td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-e</b>, <b>--eregex</b></p>
+
+<p style="margin-left:22%;">Regard the pattern of the
+current simple filter as an extended POSIX regular
+expression</p>
+
+<p style="margin-left:11%;"><b>-r</b>, <b>--regex</b></p>
+
+<p style="margin-left:22%;">Regard the pattern of the
+current simple filter as a standard POSIX regular
+expression.</p>
+
+<p style="margin-left:11%;"><b>-i</b>,
+<b>--ignore-case</b></p>
+
+<p style="margin-left:22%;">Ignore case when looking for a
+match in the current simple filter.</p>
+
+<p style="margin-left:11%;"><b>-X</b>,
+<b>--exact-match</b></p>
+
+<p style="margin-left:22%;">Do an exact match (as opposed
+to a substring match) in the current simple filter.</p>
+
+<p style="margin-left:11%;"><b>-w</b>,
+<b>--whole-pkg</b></p>
+
+<p style="margin-left:22%;">Do an extended regular
+expression match on whole package names, assuming the syntax
+of inter-package relationship fields such as
+<b>Depends</b>,<b>Recommends</b>, ... When this flag is
+given you should not worry about sub-package names such as
+&quot;libpcre3&quot; also matching &quot;libpcre3-dev&quot;.
+This flag implies (and is incompatible with) <b>-e</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--eq</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Do an equality comparison under the Debian version
+number system. If the pattern or the field to be searched in
+is not a valid Debian version number, the paragraph is
+regarded as not matching. As a special case, this is capable
+of comparing simple nonnegative integers for equality.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--lt</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Do an strictly-less-than comparison under the Debian
+version number system. If the pattern or the field to be
+searched in is not a valid Debian version number, the
+paragraph is regarded as not matching. As a special case,
+this is capable of comparing simple nonnegative
+integers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--le</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Do an less-than-or-equal comparison under the Debian
+version number system. If the pattern or the field to be
+searched in is not a valid Debian version number, the
+paragraph is regarded as not matching. As a special case,
+this is capable of comparing simple nonnegative
+integers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--gt</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Do an strictly-greater-than comparison under the Debian
+version number system. If the pattern or the field to be
+searched in is not a valid Debian version number, the
+paragraph is regarded as not matching. As a special case,
+this is capable of comparing simple nonnegative
+integers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--ge</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Do an greater-than-or-equal comparison under the Debian
+version number system. If the pattern or the field to be
+searched in is not a valid Debian version number, the
+paragraph is regarded as not matching. As a special case,
+this is capable of comparing simple nonnegative
+integers.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Combining
+filters <br>
+-!</b>, <b>--not</b>, <b>!</b></p>
+
+<p style="margin-left:22%;">Match if the following filter
+does <b>not</b> match.</p>
+
+<p style="margin-left:11%;"><b>-o</b>, <b>--or</b></p>
+
+<p style="margin-left:22%;">Match if either one or both of
+the preceding and following filters matches.</p>
+
+<p style="margin-left:11%;"><b>-a</b>, <b>--and</b></p>
+
+<p style="margin-left:22%;">Match if both the preceding and
+the following filter match.</p>
+
+<p style="margin-left:11%;"><b>(</b> ... <b>)</b></p>
+
+<p style="margin-left:22%;">Parentheses can be used for
+grouping. Note that they need to be escaped for most shells.
+Filter modifiers can be given before the opening
+parentheses; they will be treated as if they had been
+repeated for each simple filter inside the parentheses.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output
+format modifiers <br>
+-l</b>, <b>--files-with-matches</b></p>
+
+<p style="margin-left:22%;">Output only the file names,
+each on its own line, of those files that contain at least
+one matching paragraph. This is incompatible with the
+<b>-v</b> and <b>-L</b> options, and all other output format
+modifiers will be ignored.</p>
+
+<p style="margin-left:11%;"><b>-L</b>,
+<b>--files-without-matches</b></p>
+
+<p style="margin-left:22%;">Output only the file names,
+each on its own line, of those files that do not contain any
+matching paragraphs. This is incompatible with the <b>-v</b>
+and <b>-l</b> options, and all other output format modifiers
+will be ignored.</p>
+
+<p style="margin-left:11%;"><b>-s</b>
+<i>field</i>,<i>field</i>, ... |
+<b>--show-field=</b><i>field</i>,<i>field</i>, ...</p>
+
+<p style="margin-left:22%;">Show only the body of these
+<i>field</i>s from the matching paragraphs. The <i>field</i>
+names must not include any colons or commas. Commas are used
+to delimit <i>field</i> names in the argument to this
+option. The <i>field</i>s are shown in the order given here.
+See also the option <b>-I</b>. Note that in the absence of
+the <b>--ensure--dctrl</b> option, if only one field is
+selected, no paragraph separator is output.</p>
+
+<p style="margin-left:11%;"><b>-I</b>,
+<b>--invert-show</b></p>
+
+<p style="margin-left:22%;">Invert the meaning of option
+<b>-s</b>: show only the fields that have <b>not</b> been
+named using a <b>-s</b> option. As an artefact of the
+implementation, the order of the fields in the original
+paragraph is not preserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A <i>field</i>
+specification can contain a colon. In such a case, the part
+up to the colon is taken as the name of the field to be
+shown, and the part after the colon is taken as the name of
+the field whose content is to be used if the field to be
+shown is empty.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show only the first line of the <b>Description</b> field
+from the matching paragraphs. If no <b>-s</b> option is
+specified, this option also effects <b>-s Description</b>;
+if there is a <b>-s</b> option but it does not include the
+<b>Description</b> field name, one is appended to the
+option. Thus the <b>Description</b> field&rsquo;s location
+in the output is determined by the <b>-s</b> option, if any,
+the last field being the default.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-n</b>,
+<b>--no-field-names</b></p>
+
+<p style="margin-left:22%;">Suppress field names when
+showing specified fields, only their bodies are shown. Each
+field is printed in its original form without the field
+name, the colon after it and any whitespace preceding the
+start of the body.</p>
+
+<p style="margin-left:11%;"><b>-v</b>,
+<b>--invert-match</b></p>
+
+<p style="margin-left:22%;">Instead of showing all the
+paragraphs that match, show those paragraphs that do
+<b>not</b> match.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--count</b></p>
+
+<p style="margin-left:22%;">Instead of showing the
+paragraphs that match (or, with <b>-v</b>, that don&rsquo;t
+match), show the count of those paragraphs.</p>
+
+<p style="margin-left:11%;"><b>-q</b>, <b>--quiet</b>,
+<b>--silent</b></p>
+
+<p style="margin-left:22%;">Output nothing to the standard
+output stream. Instead, exit immediately after finding the
+first match.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous
+<br>
+--ensure-dctrl</b></p>
+
+<p style="margin-left:22%;">Ensure that the output is in
+dctrl format, specifically that there always is an empty
+line separating paragraphs. This option is not honored if
+the <b>-n</b> option has been selected, as that option
+deliberately requests a non-dctrl format for the output. In
+a future version, this option may be made the default
+behaviour.</p>
+
+<p style="margin-left:11%;"><b>--compat</b></p>
+
+<p style="margin-left:22%;">Override any
+<b>--ensure-dctrl</b> option given earlier on the command
+line.</p>
+
+
+<p style="margin-left:11%;"><b>--ignore-parse-errors</b></p>
+
+<p style="margin-left:22%;">Ignore errors in parsing input.
+A paragraph which cannot be parsed is ignored in its
+entirety, and the next paragraph is assumed to start after
+the first newline since the location of the error.</p>
+
+<p style="margin-left:11%;"><b>--debug-optparse</b></p>
+
+<p style="margin-left:22%;">Show how the current command
+line has been parsed.</p>
+
+
+<p style="margin-left:11%;"><b>--errorlevel=</b><i>level</i></p>
+
+<p style="margin-left:22%;">Set log level to <i>level</i>.
+<i>level</i> is one of <b>fatal</b>, <b>important</b>,
+<b>informational</b> and <b>debug</b>, but the last may not
+be available, depending on the compile-time options. These
+categories are given here in order; every message that is
+emitted when <b>fatal</b> is in effect, will be emitted in
+the <b>important</b> error level, and so on. The default is
+<b>important</b>.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Print out version
+information.</p>
+
+<p style="margin-left:11%;"><b>-C</b>, <b>--copying</b></p>
+
+<p style="margin-left:22%;">Print out the copyright
+license. This produces much output; be sure to redirect or
+pipe it somewhere (such as your favourite pager).</p>
+
+<p style="margin-left:11%;"><b>-h</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Print out a help summary.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The almost
+simplest use of this program is to print out the status or
+available record of a package. In this respect,
+<b>grep-dctrl</b> is like <b>dpkg -s</b> or <b>dpkg
+--print-avail</b>. To print out the status record of the
+package &quot;mixal&quot;, do <br>
+% grep-status -PX mixal <br>
+and to get its available record, use <br>
+% grep-available -PX mixal <br>
+In fact, you can ask for the record of the &quot;mixal&quot;
+package from any Debian control file. Say, you have the
+Debian 6.0 CD-ROM&rsquo;s <i>Packages</i> file in the
+current directory; now you can do a <br>
+% grep-dctrl -PX mixal Packages</p>
+
+<p style="margin-left:11%; margin-top: 1em">But
+<b>grep-dctrl</b> can do more than just emulate <b>dpkg</b>.
+It can more-or-less emulate <b>apt-cache</b>! That program
+has a search feature that searches package descriptions. But
+we can do that too: <br>
+% grep-available -F Description foo <br>
+searches for the string &quot;foo&quot; case-sensitively in
+the descriptions of all available packages. If you want
+case-insensitivity, use <br>
+% grep-available -F Description -i foo <br>
+Truth to be told, <b>apt-cache</b> searches package names,
+too. We can separately search in the names; to do so, do
+<br>
+% grep-available -F Package foo <br>
+or <br>
+% grep-available -P foo <br>
+which is pretty much the same thing. We can also search in
+both descriptions and names; if match is found in either,
+the package record is printed: <br>
+% grep-available -P -F Description foo <br>
+or <br>
+% grep-available -F Package -F Description foo <br>
+This kind of search is the exactly same that
+<b>apt-cache</b> does.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here&rsquo;s
+one thing neither <b>dpkg</b> nor <b>apt-cache</b> do.
+Search for a string in the whole <i>status</i> or
+<i>available</i> file (or any Debian control file, for that
+matter) and print out all package records where we have a
+match. Try <br>
+% grep-available dpkg <br>
+sometime and watch how thoroughly <b>dpkg</b> has
+infiltrated Debian.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All the above
+queries were based on simple substring searches. But
+<b>grep-dctrl</b> can handle regular expressions in the
+search pattern. For example, to see the status records of
+all packages with either &quot;apt&quot; or &quot;dpkg&quot;
+in their names, use <br>
+% grep-status -P -e &rsquo;apt|dpkg&rsquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Now that we
+have seen all these fine and dandy queries, you might begin
+to wonder whether it is necessary to always see the whole
+paragraph. You may be, for example, interest only in the
+dependency information of the packages involved. Fine. To
+show the depends lines of all packages maintained by me, do
+a <br>
+% grep-available -F Maintainer -s Depends
+&rsquo;ajk@debian.org&rsquo; <br>
+If you want to see the packages&rsquo; names, too, use <br>
+% grep-available -F Maintainer -s Package,Depends \ <br>
+&rsquo;ajk@debian.org&rsquo; <br>
+Note that there must be no spaces in the argument to the
+<b>-s</b> switch.</p>
+
+<p style="margin-left:11%; margin-top: 1em">More complex
+queries are also possible. For example, to see the list of
+packages maintained by me and depending on libc6, do <br>
+% grep-available -F Maintainer &rsquo;ajk@debian.org&rsquo;
+\ <br>
+-a -F Depends libc6 -s Package,Depends <br>
+Remember that you can use other UNIX filters to help you,
+too. Ever wondered, who&rsquo;s the most active Debian
+developer based on the number of source packages being
+maintained? Easy. You just need to have a copy of the most
+recent <i>Sources</i> file from any Debian mirror. <br>
+% grep-dctrl -n -s Maintainer &rsquo;&rsquo; Sources | sort
+| \ <br>
+uniq -c | sort -nr <br>
+This example shows a neat trick: if you want to selectively
+show only some field of <i>all</i> packages, just supply an
+empty pattern.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The term
+&quot;bogopackage&quot; means the count of the packages that
+a Debian developer maintains. To get the bogopackage count
+for the maintainer of <b>dctrl-tools</b>, say <br>
+% grep-available -c -FMaintainer \ <br>
+&quot;&rsquo;grep-available -sMaintainer -n -PX
+dctrl-tools&rsquo;&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Sometimes it is
+useful to output the data of several fields on the same
+line. For example, the following command outputs the list of
+installed packages, sorted by their <b>Installed-Size</b>.
+<br>
+% grep-status -FStatus -sInstalled-Size,Package -n \ <br>
+&quot;install ok installed&quot; -a -FInstalled-Size --gt 0
+\ <br>
+| paste -sd &quot; \n&quot; | sort -n <br>
+Note that there should be exactly 2 spaces in the &quot;
+\n&quot; string.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another usual
+use-case is looking for packages that have another one as
+build dependency: <br>
+% grep-dctrl -s Package -F Build-Depends,Build-Depends-Indep
+\ <br>
+quilt /var/lib/apt/lists/*Sources</p>
+
+<p style="margin-left:11%; margin-top: 1em">These examples
+cover a lot of typical uses of this utility, but not all
+possible uses. Use your imagination! The building blocks are
+there, and if something&rsquo;s missing, let me know.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the absence
+of errors, the exit code <b>0</b> is used if at least one
+match was found, and the exit code <b>1</b> is used if no
+matches were found. If there were errors, the exit code is
+<b>2</b>, with one exception. If the <b>-q</b>,
+<b>--quiet</b> or <b>--silent</b> options are used, the exit
+code <b>0</b> is used when a match is found regardless of
+whether there have been non-fatal errors.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These messages
+are emitted in log levels <b>fatal</b> and <b>important</b>.
+Additional messages may be provided by the system libraries.
+<b>This list is incomplete. <br>
+A pattern is mandatory</b></p>
+
+<p style="margin-left:22%;">You must specify a pattern to
+be searched for.</p>
+
+<p style="margin-left:11%;"><b>malformed filter</b></p>
+
+<p style="margin-left:22%;">No filter was specified, but
+one is required.</p>
+
+<p style="margin-left:11%;"><b>cannot find enough
+memory</b></p>
+
+<p style="margin-left:22%;">More memory was needed than was
+available. This error may be transient, that is, if you try
+again, all may go well.</p>
+
+<p style="margin-left:11%;"><b>cannot suppress field names
+when showing whole paragraphs</b></p>
+
+<p style="margin-left:22%;">When you do not use the
+<b>-s</b> switch, <b>grep-dctrl</b> just passes the matching
+paragraphs through, not touching them any way. This means,
+for example, that you can only use <b>-n</b> when you use
+<b>-s</b>.</p>
+
+<p style="margin-left:11%;"><b>inconsistent modifiers of
+simple filters</b></p>
+
+<p style="margin-left:22%;">Conflicting modifiers of simple
+filters were used; for example, perhaps both <b>-X</b> and
+<b>-e</b> were specified for the same simple filter.</p>
+
+<p style="margin-left:11%;"><b>missing &rsquo;)&rsquo; in
+command line</b></p>
+
+<p style="margin-left:22%;">There were more opening than
+closing parentheses in the given filter.</p>
+
+<p style="margin-left:11%;"><b>no such log level</b></p>
+
+<p style="margin-left:22%;">The argument to
+<b>--errorlevel</b> was invalid.</p>
+
+<p style="margin-left:11%;"><b>too many file names</b></p>
+
+<p style="margin-left:22%;">The number of file names
+specified in the command line exceeded a compile-time
+limit.</p>
+
+<p style="margin-left:11%;"><b>too many output
+fields</b></p>
+
+<p style="margin-left:22%;">The argument to <b>-s</b> had
+too many field names in it. This number is limited to
+256.</p>
+
+<p style="margin-left:11%;"><b>unexpected &rsquo;)&rsquo;
+in command line</b></p>
+
+<p style="margin-left:22%;">There was no opening
+parenthesis that would match some closing parenthesis in the
+command line.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/var/lib/dpkg/available</i></p>
+
+<p style="margin-left:22%;">The default input file of
+<b>grep-available</b>.</p>
+
+
+<p style="margin-left:11%;"><i>/var/lib/dpkg/status</i></p>
+
+<p style="margin-left:22%;">The default input file of
+<b>grep-status</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program and
+this manual page were written by Antti-Juhani Kaijanaho
+&lt;<i>gaia@iki.fi</i>&gt;. Bill Allombert
+&lt;<i>ballombe@debian.org</i>&gt; provided one of the
+examples in the manual page.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Debian Policy
+Manual. Published as the Debian package
+<b>debian-policy</b>. Also available in the Debian
+website.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-cache</b>(1),
+<b>ara</b>(1), <b>dpkg-awk</b>(1), <b>sgrep</b>(1),
+<b>dpkg</b>(8)</p>
+<hr>
+</body>
+</html>

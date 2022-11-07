@@ -1,0 +1,111 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pgmkernel</title>
+
+</head>
+<body>
+
+<h1 align="center">pgmkernel</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pgmkernel -
+generate a convolution kernel</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmkernel</b>
+[ <b>-weight</b> <i>w</i> ] <i>width</i> [ <i>height</i>
+]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Generates a
+portable graymap array of size <i>width</i> x <i>height</i>
+(or <i>width</i> x <i>width</i> if <i>height</i> is not
+specified) to be used as a convolution file by
+<b>pnmconvol</b>. The data in the convolution array K are
+computed according to the formula:</p>
+
+<p style="margin-left:11%; margin-top: 1em">K(i,j) = 1 / (
+1 + w * sqrt((i-width/2)^2 + (j-height/2)^2))</p>
+
+<p style="margin-left:11%; margin-top: 1em">where <i>w</i>
+is a coefficient specified via the <i>-weight</i> flag, and
+<i>width</i> and <i>height</i> are the X and Y filter
+sizes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output PGM
+file is always written out in ASCII format.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The optional
+<i>-weight</i> flag should be a real number greater than -1.
+The default value is 6.0.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The computation
+time is proportional to <i>width</i> * <i>height</i>. This
+increases rapidly with the increase of the kernel size. A
+better approach could be using a FFT in these cases.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmconvol(1),
+pnmsmooth(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Alberto
+Accomazzi (alberto@cfa.harvard.edu).</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>JPGICC</title>
+
+</head>
+<body>
+
+<h1 align="center">JPGICC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUILT-IN PROFILES">BUILT-IN PROFILES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">jpgicc - little
+cms ICC profile applier for JPEG.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpgicc</b>
+[<i>options</i>] <i>input.jpg output.jpg</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lcms is a
+standalone CMM engine, which deals with the color
+management. It implements a fast transformation between ICC
+profiles. <b>jpgicc</b> is a little cms ICC profile applier
+for JPEG.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-b</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Black point compensation.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-c&nbsp;</b><i>NUM</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Precalculates transform (0=Off, 1=Normal, 2=Hi-res,
+3=LoRes) [defaults to 1].</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-d&nbsp;</b><i>NUM</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Observer adaptation state (abs.col. only), (0..1.0,
+float value) [defaults to 0.0].</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-e</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Embed destination profile.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-g</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Marks out-of-gamut colors on softproof.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-h&nbsp;</b><i>NUM</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Show summary of options and examples (0=help,
+1=Examples, 2=Built-in profiles, 3=Contact information)</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-i&nbsp;</b><i>profile</i></p>
+
+<p style="margin-left:22%;">Input profile (defaults to
+sRGB).</p>
+
+<p style="margin-left:11%;"><b>-l&nbsp;</b><i>link</i></p>
+
+<p style="margin-left:22%;">TODO: explain this option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-m&nbsp;</b><i>NUM</i></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>SoftProof intent (0,1,2,3) [defaults to 0].</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-n</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>Ignore embedded profile.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-o&nbsp;</b><i>profile</i></p>
+
+<p style="margin-left:22%;">Output profile (defaults to
+sRGB).</p>
+
+
+<p style="margin-left:11%;"><b>-p&nbsp;</b><i>profile</i></p>
+
+<p style="margin-left:22%;">Soft proof profile.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-q&nbsp;</b><i>NUM</i></p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>Output JPEG quality, (0..100) [defaults to 75].</p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-s&nbsp;</b><i>newprofile</i></p>
+
+<p style="margin-left:22%;">Save embedded profile as
+<i>newprofile</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-t&nbsp;NUM</b></p></td>
+<td width="2%"></td>
+<td width="24%">
+
+
+<p>Rendering intent</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">0=Perceptual [default] <br>
+1=Relative colorimetric <br>
+2=Saturation <br>
+3=Absolute colorimetric <br>
+10=Perceptual preserving black ink <br>
+11=Relative colorimetric preserving black ink <br>
+12=Saturation preserving black ink <br>
+13=Perceptual preserving black plane <br>
+14=Relative colorimetric preserving black plane <br>
+15=Saturation preserving black plane</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em">Verbose.</p></td>
+<td width="66%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-!&nbsp;</b><i>NUM,NUM,NUM</i></p>
+
+<p style="margin-left:22%;">Out-of-gamut marker channel
+values (r,g,b) [defaults: 128,128,128].</p>
+
+<h2>BUILT-IN PROFILES
+<a name="BUILT-IN PROFILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">*Lab2 --
+D50-based v2 CIEL*a*b</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*Lab4 -- D50-based v4 CIEL*a*b</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*Lab -- D50-based v4 CIEL*a*b</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*XYZ -- CIE XYZ (PCS)</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*sRGB -- sRGB color space</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*Gray22 - Monochrome of Gamma 2.2</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*Gray30 - Monochrome of Gamma 3.0</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*null - Monochrome black for all input</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>*Lin2222- CMYK linearization of gamma 2.2 on each
+channel</p> </td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To color
+correct from scanner to sRGB:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>jpgicc -iscanner.icm in.jpg out.jpg</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">To convert from
+monitor1 to monitor2:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>jpgicc -imon1.icm -omon2.icm in.jpg out.jpg</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">To make a CMYK
+separation:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>jpgicc -oprinter.icm inrgb.jpg outcmyk.jpg</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">To recover sRGB
+from a CMYK separation:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>jpgicc -iprinter.icm incmyk.jpg outrgb.jpg</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">To convert from
+CIELab ITU/Fax JPEG to sRGB</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>jpgicc -iitufax.icm in.jpg out.jpg</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">To convert from
+CIELab ITU/Fax JPEG to sRGB</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>jpgicc in.jpg out.jpg</p></td></tr>
+</table>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For
+suggestions, comments, bug reports etc. send mail to
+info@littlecms.com.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>linkicc</b>(1),
+<b>psicc</b>(1), <b>tificc</b>(1), <b>transicc</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Shiju p. Nair &lt;shiju.p@gmail.com&gt;,
+for the Debian project.</p>
+<hr>
+</body>
+</html>

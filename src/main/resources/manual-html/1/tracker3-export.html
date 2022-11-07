@@ -1,0 +1,122 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:26 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TRACKER3-EXPORT</title>
+
+</head>
+<body>
+
+<h1 align="center">TRACKER3-EXPORT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">tracker3-export
+- Export all data from a Tracker database.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3
+export</b> [<i>options</i>...] [<b>IRI</b>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3
+export</b> exports data stored in a Tracker database, in
+Turtle format. By default all data is exported, if any
+<b>IRI</b>, only those resources will be printed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is
+intended to be machine-readable, not human readable. Use a
+tool such as rapper(1) to convert the data to different
+formats.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-g,
+--show-graphs</b></p>
+
+<p style="margin-left:17%;">Tracker can separate data into
+multiple graphs. This feature is used by the filesystem
+miner to separate different types of content. This flag
+causes the relevant GRAPH statements to be output along with
+the data.</p>
+
+<p style="margin-left:23%; margin-top: 1em">In this mode
+the output is TriG syntax rather than Turtle, due to <br>
+the extra GRAPH statements. Some tools which understand
+Turtle do not <br>
+understand TriG.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--2to3</b></p>
+
+<p style="margin-left:17%;">Helper for migrating data from
+Tracker 2.x databases. This option takes an argument
+specifying the scope. Only the &ldquo;files-starred&rdquo;
+argument is available so far.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--keyfile</b></p>
+
+<p style="margin-left:17%;">Outputs the data in a key file
+format. Only may be used with --2to3</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Export all data
+from Tracker Index and prettify the output using
+rapper(1).::</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+export -b org.freedesktop.Tracker3.Miner.Files | rapper - -I
+. -i turtle -o turtle</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3-import</b>(1),
+<b>tracker3-sparql</b>(1).</p>
+<hr>
+</body>
+</html>

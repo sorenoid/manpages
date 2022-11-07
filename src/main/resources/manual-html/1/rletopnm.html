@@ -1,0 +1,179 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:48 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RLETOPNM</title>
+
+</head>
+<body>
+
+<h1 align="center">RLETOPNM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rletopnm -
+convert a Utah Raster Tools RLE image file into a PNM image
+file.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rletopnm</b>
+[<b>--alphaout=</b>{<i>alpha-filename</i>,<b>-</b>}]
+[<b>--headerdump</b>|<b>-h</b>] [<b>--verbose</b>|<b>-v</b>]
+[<b>--plain</b>|<b>-p</b>] [<i>rlefile</i>|<b>-</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options may
+be abbreviated to their minimum unique abbreviation and
+options and arguments may be in any order.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+converts Utah Raster Toolkit RLE image files into PNM image
+files. <b>rletopnm</b> handles four types of RLE files:
+Grayscale (8 bit data, no color map), Pseudocolor (8 bit
+data with a color map), Truecolor (24 bit data with color
+map), and Directcolor (24 bit data, no color map).
+<b>rletopnm</b> generates a PPM file for all these cases
+except for the Grayscale file, for which <b>rletopnm</b>
+generates a PGM file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>rlefile</i>
+is the RLE input file. If it is absent or <b>-</b>, the
+input comes from Standard Input.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--alphaout=</b><i>alpha-filename</i></p>
+
+<p style="margin-left:22%;"><b>rletopnm</b> creates a PGM
+(portable graymap) file containing the alpha channel values
+in the input image. If the input image doesn&rsquo;t contain
+an alpha channel, the <i>alpha-filename</i> file contains
+all zero (transparent) alpha values. If you don&rsquo;t
+specify <b>--alphaout</b>, <b>rletopnm</b> does not generate
+an alpha file, and if the input image has an alpha channel,
+<b>rletopnm</b> simply discards it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-</b> as the filename, <b>rletopnm</b> writes the alpha
+output to Standard Output and discards the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<b>pnmcomp</b>(1) for one way to use the alpha output
+file.</p>
+
+<p style="margin-left:11%;"><b>--verbose</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>rletopnm</b> to operate in verbose mode. It prints
+messages about what it&rsquo;s doing, including the contents
+of the RLE image header, to Standard Error.</p>
+
+<p style="margin-left:11%;"><b>--headerdump</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>rletopnm</b> to operate in header dump mode. It prints
+the contents of the RLE image header to Standard Error, but
+does not produce any other output.</p>
+
+<p style="margin-left:11%;"><b>--plain</b></p>
+
+<p style="margin-left:22%;">This option causes the PNM
+output file to be in the &quot;plain&quot; (text) format,
+instead of the default &quot;raw&quot; (binary) format. See
+<b>ppm</b>(5) and <b>pgm</b>(5) for details on the
+difference.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rletopnm
+--verbose lenna.rle &gt;lenna.ppm</b></p>
+
+<p style="margin-left:22%;">While running in verbose mode,
+convert lenna.rle to PPM format and store the resulting
+image as lenna.ppm.</p>
+
+<p style="margin-left:11%;"><b>rletopnm --headerdump
+file.rle</b></p>
+
+<p style="margin-left:22%;">Dump the header information of
+the RLE file called file.rle.</p>
+
+<p style="margin-left:11%;"><b>rletopnm
+--alphaout=dartalpha.pgm dart.rle &gt;dart.ppm</b></p>
+
+<p style="margin-left:22%;">Convert RLE file dart.rle to
+PPM format as dart.ppm. Store the alpha channel of dart.rle
+as dartalpha.pgm (if dart.rle doesn&rsquo;t have an alpha
+channel, store a fully transparent alpha mask as
+dartalpha.pgm).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtorle</b>(1),
+<b>pnmconvol</b>(1), <b>pnm</b>(5), <b>ppm</b>(5),
+<b>pgm</b>(5), <b>urt</b>(1), <b>RLE</b>(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Wes Barris <br>
+Army High Performance Computing Research Center (AHPCRC)
+<br>
+Minnesota Supercomputer Center, Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Modifications
+by Eric Haines to support raw and plain formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Modifications
+by Bryan Henderson to create alpha files and use mnemonic
+options.</p>
+<hr>
+</body>
+</html>

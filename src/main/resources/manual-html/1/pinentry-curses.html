@@ -1,0 +1,182 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:14 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PINENTRY-CURSES</title>
+
+</head>
+<body>
+
+<h1 align="center">PINENTRY-CURSES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">pinentry-curses
+- PIN or pass-phrase entry dialog for GnuPG</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pinentry-curses
+[</b><i>OPTION</i>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pinentry-curses</b>
+is a program that allows for secure entry of PINs or pass
+phrases. That means it tries to take care that the entered
+information is not swapped to disk or temporarily stored
+anywhere. This functionality is particularly useful for
+entering pass phrases when using encryption software such as
+GnuPG or e-mail clients using the same. It uses an open
+protocol and is therefore not tied to particular
+software.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pinentry-curses</b>
+implements a PIN entry dialog using the curses tool kit,
+meaning that it is useful for users working in text mode
+without the X Window System. There are other flavors that
+implement PIN entry dialogs that use an X tool kit. If you
+have installed any of the latter programs then this program
+is not necessary because the X flavors automatically fall
+back to text mode if X is not active.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pinentry-curses</b>
+is typically used internally by <b>gpg-agent</b>. Users
+don&rsquo;t normally have a reason to call it directly.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print the program version and
+licensing information.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Print a usage message summarizing the most useful
+command-line options.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--debug</b>, <b>-d</b></p>
+
+<p style="margin-left:22%;">Turn on some debugging. Mostly
+useful for the maintainers. Note that this may reveal
+sensitive information like the entered pass phrase.</p>
+
+<p style="margin-left:11%;"><b>--enhanced</b>,
+<b>-e</b></p>
+
+<p style="margin-left:22%;">Ask for timeouts and insurance,
+too. Note that this is currently not fully supported.</p>
+
+<p style="margin-left:11%;"><b>--no-global-grab</b>,
+<b>-g</b></p>
+
+<p style="margin-left:22%;">Grab the keyboard only when the
+window is focused. Use this option if you are debugging
+software using <b>pinentry-curses</b>; otherwise you may not
+be able to to access your X session anymore (unless you have
+other means to connect to the machine to kill
+<b>pinentry-curses</b>).</p>
+
+<p style="margin-left:11%;"><b>--parent-wid</b>
+<i>N</i></p>
+
+<p style="margin-left:22%;">Use window ID <i>N</i> as the
+parent window for positioning the window. Note, that this is
+not fully supported by all flavors of <b>pinentry</b>.</p>
+
+<p style="margin-left:11%;"><b>--display</b> <i>STRING</i>,
+<b>--ttyname</b> <i>STRING</i>, <b>--ttytype</b>
+<i>STRING</i>, <b>--lc-type</b> <i>STRING</i>, <b><br>
+--lc-messages</b> <i>STRING</i></p>
+
+<p style="margin-left:22%;">These options are used to pass
+localization information to <b>pinentry-curses</b>. They are
+required because <b>pinentry-curses</b> is usually called by
+some background process which does not have any information
+on the locale and terminal to use. Assuan protocol options
+are an alternative way to pass these information.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pinentry-gtk-2</b>(1),
+<b>pinentry-qt</b>(1), <b>pinentry-fltk</b>(1),
+<b>pinentry-gnome3</b>(1), <b>pinentry-tty</b>(1),
+<b>gpg</b>(1), <b>gpg-agent</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The full
+documentation for <b>pinentry-curses</b> is maintained as a
+Texinfo manual. If the <b>pinentry-doc</b> package is
+installed, the command</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>info
+pinentry</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Peter Eisentraut for the Debian
+project.</p>
+<hr>
+</body>
+</html>

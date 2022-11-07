@@ -1,0 +1,147 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>palmtopnm</title>
+
+</head>
+<body>
+
+<h1 align="center">palmtopnm</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">palmtopnm -
+convert a Palm pixmap into a portable anymap</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>palmtopnm</b>
+[<b>-verbose</b>] [<b>-rendition</b> <i>N</i>]
+[<b>-showhist</b>] <br>
+[<b>-forceplain</b>] [<i>pnmfile</i>] <b><br>
+palmtopnm -transparent</b> [<b>-verbose</b>]
+[<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a Palm
+pixmap as input, from stdin or <i>pnmfile</i>. Produces
+either a portable pixmap as output, or writes the value of
+the transparent color in the Palm pixmap to stdout.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Display various interesting
+information about the input file and process.</p>
+
+<p style="margin-left:11%;"><b>-transparent</b></p>
+
+<p style="margin-left:22%;">If the Palm pixmap has a
+transparent color set, the RGB value for that color will be
+written to stdout as in the form <tt>#RRGGBB</tt>, where
+<tt>RR</tt>, <tt>GG</tt>, and <tt>BB</tt> are two-digit
+hexadecimal numbers indicating a value between 0 and 255. If
+no transparent color is set in the bitmap, nothing will be
+output. No additional output will be generated; no anymap
+will be output.</p>
+
+<p style="margin-left:11%;"><b>-rendition N</b></p>
+
+<p style="margin-left:22%;">Palm pixmaps may contain
+several different renditions of the same pixmap, with
+different depths. By default, <b>palmtopnm</b> operates on
+the first rendition (rendition number 1) in the pixmap. This
+switch allows you to operate on a different rendition. The
+value must be between 1 and the number of renditions in the
+pixmap, inclusive.</p>
+
+<p style="margin-left:11%;"><b>-showhist</b></p>
+
+<p style="margin-left:22%;">Writes a histogram of colors in
+the input file to stderr.</p>
+
+<p style="margin-left:11%;"><b>-forceplain</b></p>
+
+<p style="margin-left:22%;">Force the output anymap to be
+in ASCII &rsquo;plain&rsquo; netpbm format.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopalm</b>(1),
+<b>pnm(5)</b></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">An additional
+compression format, &quot;packbits,&quot; has been added
+with PalmOS 4.0. This package should be updated to handle
+it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You currently
+cannot generate an alpha mask if the Palm pixmap has a
+transparent color. However, you can still do this with
+<b>ppmcolormask</b> with a Netpbm pipe similar to:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>palmtopnm
+pixmap.palm | ppmcolormask &rsquo;palmtopnm -transparent
+pixmap.palm&rsquo;</b></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was originally written as Tbmptopnm.c, by Ian Goldberg. It
+was heavily modified by Bill Janssen to add color,
+compression, and transparency function. <br>
+Copyright 1995-2001 by Ian Goldberg and Bill Janssen.</p>
+<hr>
+</body>
+</html>

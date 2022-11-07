@@ -1,0 +1,1332 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CPP</title>
+
+</head>
+<body>
+
+<h1 align="center">CPP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cpp - The C
+Preprocessor</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cpp
+[<b>-D</b><i>macro</i>[=<i>defn</i>]...]
+[<b>-U</b><i>macro</i>] <br>
+[<b>-I</b><i>dir</i>...] [<b>-iquote</b><i>dir</i>...] <br>
+[<b>-M</b>|<b>-MM</b>] [<b>-MG</b>] [<b>-MF</b>
+<i>filename</i>] <br>
+[<b>-MP</b>] [<b>-MQ</b> <i>target</i>...] <br>
+[<b>-MT</b> <i>target</i>...] <i><br>
+infile</i> [[<b>-o</b>] <i>outfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Only the most
+useful options are given above; see below for a more
+complete list of preprocessor-specific options. In addition,
+<b>cpp</b> accepts most <b>gcc</b> driver options, which are
+not listed here. Refer to the <small>GCC</small>
+documentation for details.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The C
+preprocessor, often known as <i>cpp</i>, is a <i>macro
+processor</i> that is used automatically by the C compiler
+to transform your program before compilation. It is called a
+macro processor because it allows you to define
+<i>macros</i>, which are brief abbreviations for longer
+constructs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The C
+preprocessor is intended to be used only with C, C
+<small>++</small> , and Objective-C source code. In the
+past, it has been abused as a general text processor. It
+will choke on input which does not obey C&rsquo;s lexical
+rules. For example, apostrophes will be interpreted as the
+beginning of character constants, and cause errors. Also,
+you cannot rely on it preserving characteristics of the
+input which are not significant to C-family languages. If a
+Makefile is preprocessed, all the hard tabs will be removed,
+and the Makefile will not work.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Having said
+that, you can often get away with using cpp on things which
+are not C. Other Algol-ish programming languages are often
+safe (Ada, etc.) So is assembly, with caution.
+<b>-traditional-cpp</b> mode preserves more white space, and
+is otherwise more permissive. Many of the problems can be
+avoided by writing C or C <small>++</small> style comments
+instead of native language comments, and keeping macros
+simple.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Wherever
+possible, you should use a preprocessor geared to the
+language you are writing in. Modern versions of the
+<small>GNU</small> assembler have macro facilities. Most
+high level programming languages have their own conditional
+compilation and inclusion mechanism. If all else fails, try
+a true general text processor, such as <small>GNU
+M4.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">C preprocessors
+vary in some details. This manual discusses the <small>GNU
+C</small> preprocessor, which provides a small superset of
+the features of <small>ISO</small> Standard C. In its
+default mode, the <small>GNU C</small> preprocessor does not
+do a few things required by the standard. These are features
+which are rarely, if ever, used, and may cause surprising
+changes to the meaning of a program which does not expect
+them. To get strict <small>ISO</small> Standard C, you
+should use the <b>-std=c90</b>, <b>-std=c99</b>,
+<b>-std=c11</b> or <b>-std=c17</b> options, depending on
+which version of the standard you want. To get all the
+mandatory diagnostics, you must also use
+<b>-pedantic</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+describes the behavior of the <small>ISO</small>
+preprocessor. To minimize gratuitous differences, where the
+<small>ISO</small> preprocessor&rsquo;s behavior does not
+conflict with traditional semantics, the traditional
+preprocessor should behave the same way. The various
+differences that do exist are detailed in the section
+<b>Traditional Mode</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For clarity,
+unless noted otherwise, references to
+<b><small>CPP</small></b> in this manual refer to <small>GNU
+CPP.</small></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>cpp</b>
+command expects two file names as arguments, <i>infile</i>
+and <i>outfile</i>. The preprocessor reads <i>infile</i>
+together with any other files it specifies with
+<b>#include</b>. All the output generated by the combined
+input files is written in <i>outfile</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Either
+<i>infile</i> or <i>outfile</i> may be <b>-</b>, which as
+<i>infile</i> means to read from standard input and as
+<i>outfile</i> means to write to standard output. If either
+file is omitted, it means the same as if <b>-</b> had been
+specified for that file. You can also use the <b>-o</b>
+<i>outfile</i> option to specify the output file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unless
+otherwise noted, or the option ends in <b>=</b>, all options
+which take an argument may have that argument appear either
+immediately after the option, or with a space between option
+and argument: <b>-Ifoo</b> and <b>-I foo</b> have the same
+effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many options
+have multi-letter names; therefore multiple single-letter
+options may <i>not</i> be grouped: <b>-dM</b> is very
+different from <b>-d&nbsp;-M</b>. <b><br>
+-D</b> <i>name</i></p>
+
+<p style="margin-left:17%;">Predefine <i>name</i> as a
+macro, with definition 1.</p>
+
+<p style="margin-left:11%;"><b>-D</b>
+<i>name</i><b>=</b><i>definition</i></p>
+
+<p style="margin-left:17%;">The contents of
+<i>definition</i> are tokenized and processed as if they
+appeared during translation phase three in a <b>#define</b>
+directive. In particular, the definition is truncated by
+embedded newline characters.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you are
+invoking the preprocessor from a shell or shell-like program
+you may need to use the shell&rsquo;s quoting syntax to
+protect characters such as spaces that have a meaning in the
+shell syntax.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you wish to
+define a function-like macro on the command line, write its
+argument list with surrounding parentheses before the equals
+sign (if any). Parentheses are meaningful to most shells, so
+you should quote the option. With <b>sh</b> and <b>csh</b>,
+<b>-D&rsquo;</b><i>name</i><b>(</b><i>args...</i><b>)=</b><i>definition</i><b>&rsquo;</b>
+works.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>-D</b> and
+<b>-U</b> options are processed in the order they are given
+on the command line. All <b>-imacros</b> <i>file</i> and
+<b>-include</b> <i>file</i> options are processed after all
+<b>-D</b> and <b>-U</b> options.</p>
+
+<p style="margin-left:11%;"><b>-U</b> <i>name</i></p>
+
+<p style="margin-left:17%;">Cancel any previous definition
+of <i>name</i>, either built in or provided with a <b>-D</b>
+option.</p>
+
+<p style="margin-left:11%;"><b>-include</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Process <i>file</i> as if
+&quot;#include &quot;file&quot;&quot; appeared as the first
+line of the primary source file. However, the first
+directory searched for <i>file</i> is the
+preprocessor&rsquo;s working directory <i>instead of</i> the
+directory containing the main source file. If not found
+there, it is searched for in the remainder of the
+&quot;#include &quot;...&quot;&quot; search chain as
+normal.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If multiple
+<b>-include</b> options are given, the files are included in
+the order they appear on the command line.</p>
+
+<p style="margin-left:11%;"><b>-imacros</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Exactly like <b>-include</b>,
+except that any output produced by scanning <i>file</i> is
+thrown away. Macros it defines remain defined. This allows
+you to acquire all the macros from a header without also
+processing its declarations.</p>
+
+<p style="margin-left:17%; margin-top: 1em">All files
+specified by <b>-imacros</b> are processed before all files
+specified by <b>-include</b>.</p>
+
+<p style="margin-left:11%;"><b>-undef</b></p>
+
+<p style="margin-left:17%;">Do not predefine any
+system-specific or GCC-specific macros. The standard
+predefined macros remain defined.</p>
+
+<p style="margin-left:11%;"><b>-pthread</b></p>
+
+<p style="margin-left:17%;">Define additional macros
+required for using the <small>POSIX</small> threads library.
+You should use this option consistently for both compilation
+and linking. This option is supported on GNU/Linux targets,
+most other Unix derivatives, and also on x86 Cygwin and
+MinGW targets.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-M</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Instead of outputting the result of preprocessing,
+output a rule suitable for <b>make</b> describing the
+dependencies of the main source file. The preprocessor
+outputs one <b>make</b> rule containing the object file name
+for that source file, a colon, and the names of all the
+included files, including those coming from <b>-include</b>
+or <b>-imacros</b> command-line options.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Unless
+specified explicitly (with <b>-MT</b> or <b>-MQ</b>), the
+object file name consists of the name of the source file
+with any suffix replaced with object file suffix and with
+any leading directory parts removed. If there are many
+included files then the rule is split into several lines
+using <b>\</b>-newline. The rule has no commands.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+does not suppress the preprocessor&rsquo;s debug output,
+such as <b>-dM</b>. To avoid mixing such debug output with
+the dependency rules you should explicitly specify the
+dependency output file with <b>-MF</b>, or use an
+environment variable like
+<b><small>DEPENDENCIES_OUTPUT</small></b> . Debug output is
+still sent to the regular output stream as normal.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Passing
+<b>-M</b> to the driver implies <b>-E</b>, and suppresses
+warnings with an implicit <b>-w</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-MM</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Like <b>-M</b> but do not
+mention header files that are found in system header
+directories, nor header files that are included, directly or
+indirectly, from such a header.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This implies
+that the choice of angle brackets or double quotes in an
+<b>#include</b> directive does not in itself determine
+whether that header appears in <b>-MM</b> dependency
+output.</p>
+
+<p style="margin-left:11%;"><b>-MF</b> <i>file</i></p>
+
+<p style="margin-left:17%;">When used with <b>-M</b> or
+<b>-MM</b>, specifies a file to write the dependencies to.
+If no <b>-MF</b> switch is given the preprocessor sends the
+rules to the same place it would send preprocessed
+output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When used with
+the driver options <b>-MD</b> or <b>-MMD</b>, <b>-MF</b>
+overrides the default dependency output file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If <i>file</i>
+is <i>-</i>, then the dependencies are written to
+<i>stdout</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-MG</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>In conjunction with an option such as <b>-M</b>
+requesting dependency generation, <b>-MG</b> assumes missing
+header files are generated files and adds them to the
+dependency list without raising an error. The dependency
+filename is taken directly from the &quot;#include&quot;
+directive without prepending any path. <b>-MG</b> also
+suppresses preprocessed output, as a missing header file
+renders this useless.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This feature is
+used in automatic updating of makefiles.</p>
+
+<p style="margin-left:11%;"><b>-Mno-modules</b></p>
+
+<p style="margin-left:17%;">Disable dependency generation
+for compiled module interfaces.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-MP</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>This option instructs <small>CPP</small> to add a phony
+target for each dependency other than the main file, causing
+each to depend on nothing. These dummy rules work around
+errors <b>make</b> gives if you remove header files without
+updating the <i>Makefile</i> to match.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This is typical
+output:</p>
+
+<p style="margin-left:17%; margin-top: 1em">test.o: test.c
+test.h <br>
+test.h:</p>
+
+<p style="margin-left:11%;"><b>-MT</b> <i>target</i></p>
+
+<p style="margin-left:17%;">Change the target of the rule
+emitted by dependency generation. By default
+<small>CPP</small> takes the name of the main input file,
+deletes any directory components and any file suffix such as
+<b>.c</b>, and appends the platform&rsquo;s usual object
+suffix. The result is the target.</p>
+
+<p style="margin-left:17%; margin-top: 1em">An <b>-MT</b>
+option sets the target to be exactly the string you specify.
+If you want multiple targets, you can specify them as a
+single argument to <b>-MT</b>, or use multiple <b>-MT</b>
+options.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example,
+<b>-MT&nbsp;&rsquo;$(objpfx)foo.o&rsquo;</b> might give</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$(objpfx)foo.o:
+foo.c</p>
+
+<p style="margin-left:11%;"><b>-MQ</b> <i>target</i></p>
+
+<p style="margin-left:17%;">Same as <b>-MT</b>, but it
+quotes any characters which are special to Make.
+<b>-MQ&nbsp;&rsquo;$(objpfx)foo.o&rsquo;</b> gives</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$$(objpfx)foo.o:
+foo.c</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+target is automatically quoted, as if it were given with
+<b>-MQ</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-MD</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p><b>-MD</b> is equivalent to <b>-M -MF</b> <i>file</i>,
+except that <b>-E</b> is not implied. The driver determines
+<i>file</i> based on whether an <b>-o</b> option is given.
+If it is, the driver uses its argument but with a suffix of
+<i>.d</i>, otherwise it takes the name of the input file,
+removes any directory components and suffix, and applies a
+<i>.d</i> suffix.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">If <b>-MD</b>
+is used in conjunction with <b>-E</b>, any <b>-o</b> switch
+is understood to specify the dependency output file, but if
+used without <b>-E</b>, each <b>-o</b> is understood to
+specify a target object file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Since <b>-E</b>
+is not implied, <b>-MD</b> can be used to generate a
+dependency output file as a side effect of the compilation
+process.</p>
+
+<p style="margin-left:11%;"><b>-MMD</b></p>
+
+<p style="margin-left:17%;">Like <b>-MD</b> except mention
+only user header files, not system header files.</p>
+
+<p style="margin-left:11%;"><b>-fpreprocessed</b></p>
+
+<p style="margin-left:17%;">Indicate to the preprocessor
+that the input file has already been preprocessed. This
+suppresses things like macro expansion, trigraph conversion,
+escaped newline splicing, and processing of most directives.
+The preprocessor still recognizes and removes comments, so
+that you can pass a file preprocessed with <b>-C</b> to the
+compiler without problems. In this mode the integrated
+preprocessor is little more than a tokenizer for the front
+ends.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>-fpreprocessed</b>
+is implicit if the input file has one of the extensions
+<b>.i</b>, <b>.ii</b> or <b>.mi</b>. These are the
+extensions that <small>GCC</small> uses for preprocessed
+files created by <b>-save-temps</b>.</p>
+
+<p style="margin-left:11%;"><b>-fdirectives-only</b></p>
+
+<p style="margin-left:17%;">When preprocessing, handle
+directives, but do not expand macros.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+option&rsquo;s behavior depends on the <b>-E</b> and
+<b>-fpreprocessed</b> options.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With <b>-E</b>,
+preprocessing is limited to the handling of directives such
+as &quot;#define&quot;, &quot;#ifdef&quot;, and
+&quot;#error&quot;. Other preprocessor operations, such as
+macro expansion and trigraph conversion are not performed.
+In addition, the <b>-dD</b> option is implicitly
+enabled.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>-fpreprocessed</b>, predefinition of command line and
+most builtin macros is disabled. Macros such as
+&quot;__LINE__&quot;, which are contextually dependent, are
+handled normally. This enables compilation of files
+previously preprocessed with &quot;-E
+-fdirectives-only&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With both
+<b>-E</b> and <b>-fpreprocessed</b>, the rules for
+<b>-fpreprocessed</b> take precedence. This enables full
+preprocessing of files previously preprocessed with &quot;-E
+-fdirectives-only&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>-fdollars-in-identifiers</b></p>
+
+<p style="margin-left:17%;">Accept <b>$</b> in
+identifiers.</p>
+
+
+<p style="margin-left:11%;"><b>-fextended-identifiers</b></p>
+
+<p style="margin-left:17%;">Accept universal character
+names and extended characters in identifiers. This option is
+enabled by default for C99 (and later C standard versions)
+and C <small>++</small> .</p>
+
+
+<p style="margin-left:11%;"><b>-fno-canonical-system-headers</b></p>
+
+<p style="margin-left:17%;">When preprocessing, do not
+shorten system header paths with canonicalization.</p>
+
+
+<p style="margin-left:11%;"><b>-fmax-include-depth=</b><i>depth</i></p>
+
+<p style="margin-left:17%;">Set the maximum depth of the
+nested #include. The default is 200.</p>
+
+
+<p style="margin-left:11%;"><b>-ftabstop=</b><i>width</i></p>
+
+<p style="margin-left:17%;">Set the distance between tab
+stops. This helps the preprocessor report correct column
+numbers in warnings or errors, even if tabs appear on the
+line. If the value is less than 1 or greater than 100, the
+option is ignored. The default is 8.</p>
+
+
+<p style="margin-left:11%;"><b>-ftrack-macro-expansion</b>[<b>=</b><i>level</i>]</p>
+
+<p style="margin-left:17%;">Track locations of tokens
+across macro expansions. This allows the compiler to emit
+diagnostic about the current macro expansion stack when a
+compilation error occurs in a macro expansion. Using this
+option makes the preprocessor and the compiler consume more
+memory. The <i>level</i> parameter can be used to choose the
+level of precision of token location tracking thus
+decreasing the memory consumption if necessary. Value
+<b>0</b> of <i>level</i> de-activates this option. Value
+<b>1</b> tracks tokens locations in a degraded mode for the
+sake of minimal memory overhead. In this mode all tokens
+resulting from the expansion of an argument of a
+function-like macro have the same location. Value <b>2</b>
+tracks tokens locations completely. This value is the most
+memory hungry. When this option is given no argument, the
+default parameter value is <b>2</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that
+&quot;-ftrack-macro-expansion=2&quot; is activated by
+default.</p>
+
+
+<p style="margin-left:11%;"><b>-fmacro-prefix-map=</b><i>old</i><b>=</b><i>new</i></p>
+
+<p style="margin-left:17%;">When preprocessing files
+residing in directory <i>old</i>, expand the
+&quot;__FILE__&quot; and &quot;__BASE_FILE__&quot; macros as
+if the files resided in directory <i>new</i> instead. This
+can be used to change an absolute path to a relative path by
+using <i>.</i> for <i>new</i> which can result in more
+reproducible builds that are location independent. This
+option also affects &quot;__builtin_FILE()&quot; during
+compilation. See also <b>-ffile-prefix-map</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-fexec-charset=</b><i>charset</i></p>
+
+<p style="margin-left:17%;">Set the execution character
+set, used for string and character constants. The default is
+<small>UTF-8.</small> <i>charset</i> can be any encoding
+supported by the system&rsquo;s &quot;iconv&quot; library
+routine.</p>
+
+
+<p style="margin-left:11%;"><b>-fwide-exec-charset=</b><i>charset</i></p>
+
+<p style="margin-left:17%;">Set the wide execution
+character set, used for wide string and character constants.
+The default is <small>UTF-32</small> or
+<small>UTF-16,</small> whichever corresponds to the width of
+&quot;wchar_t&quot;. As with <b>-fexec-charset</b>,
+<i>charset</i> can be any encoding supported by the
+system&rsquo;s &quot;iconv&quot; library routine; however,
+you will have problems with encodings that do not fit
+exactly in &quot;wchar_t&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>-finput-charset=</b><i>charset</i></p>
+
+<p style="margin-left:17%;">Set the input character set,
+used for translation from the character set of the input
+file to the source character set used by <small>GCC.</small>
+If the locale does not specify, or <small>GCC</small> cannot
+get this information from the locale, the default is
+<small>UTF-8.</small> This can be overridden by either the
+locale or this command-line option. Currently the
+command-line option takes precedence if there&rsquo;s a
+conflict. <i>charset</i> can be any encoding supported by
+the system&rsquo;s &quot;iconv&quot; library routine.</p>
+
+<p style="margin-left:11%;"><b>-fworking-directory</b></p>
+
+<p style="margin-left:17%;">Enable generation of
+linemarkers in the preprocessor output that let the compiler
+know the current working directory at the time of
+preprocessing. When this option is enabled, the preprocessor
+emits, after the initial linemarker, a second linemarker
+with the current working directory followed by two slashes.
+<small>GCC</small> uses this directory, when it&rsquo;s
+present in the preprocessed input, as the directory emitted
+as the current working directory in some debugging
+information formats. This option is implicitly enabled if
+debugging information is enabled, but this can be inhibited
+with the negated form <b>-fno-working-directory</b>. If the
+<b>-P</b> flag is present in the command line, this option
+has no effect, since no &quot;#line&quot; directives are
+emitted whatsoever.</p>
+
+<p style="margin-left:11%;"><b>-A</b>
+<i>predicate</i><b>=</b><i>answer</i></p>
+
+<p style="margin-left:17%;">Make an assertion with the
+predicate <i>predicate</i> and answer <i>answer</i>. This
+form is preferred to the older form <b>-A</b>
+<i>predicate</i><b>(</b><i>answer</i><b>)</b>, which is
+still supported, because it does not use shell special
+characters.</p>
+
+<p style="margin-left:11%;"><b>-A
+-</b><i>predicate</i><b>=</b><i>answer</i></p>
+
+<p style="margin-left:17%;">Cancel an assertion with the
+predicate <i>predicate</i> and answer <i>answer</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-C</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Do not discard comments. All comments are passed through
+to the output file, except for comments in processed
+directives, which are deleted along with the directive.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">You should be
+prepared for side effects when using <b>-C</b>; it causes
+the preprocessor to treat comments as tokens in their own
+right. For example, comments appearing at the start of what
+would be a directive line have the effect of turning that
+line into an ordinary source line, since the first token on
+the line is no longer a <b>#</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-CC</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Do not discard comments,
+including during macro expansion. This is like <b>-C</b>,
+except that comments contained within macros are also passed
+through to the output file where the macro is expanded.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">In addition to
+the side effects of the <b>-C</b> option, the <b>-CC</b>
+option causes all C <small>++</small> -style comments inside
+a macro to be converted to C-style comments. This is to
+prevent later use of that macro from inadvertently
+commenting out the remainder of the source line.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The <b>-CC</b>
+option is generally used to support lint comments.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-P</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Inhibit generation of
+linemarkers in the output from the preprocessor. This might
+be useful when running the preprocessor on something that is
+not C code, and will be sent to a program which might be
+confused by the linemarkers.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-traditional <br>
+-traditional-cpp</b></p>
+
+<p style="margin-left:17%;">Try to imitate the behavior of
+pre-standard C preprocessors, as opposed to <small>ISO
+C</small> preprocessors.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that
+<small>GCC</small> does not otherwise attempt to emulate a
+pre-standard C compiler, and these options are only
+supported with the <b>-E</b> switch, or when invoking
+<small>CPP</small> explicitly.</p>
+
+<p style="margin-left:11%;"><b>-trigraphs</b></p>
+
+<p style="margin-left:17%;">Support <small>ISO C</small>
+trigraphs. These are three-character sequences, all starting
+with <b>??</b>, that are defined by <small>ISO C</small> to
+stand for single characters. For example, <b>??/</b> stands
+for <b>\</b>, so <b>&rsquo;??/n&rsquo;</b> is a character
+constant for a newline.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default,
+<small>GCC</small> ignores trigraphs, but in
+standard-conforming modes it converts them. See the
+<b>-std</b> and <b>-ansi</b> options.</p>
+
+<p style="margin-left:11%;"><b>-remap</b></p>
+
+<p style="margin-left:17%;">Enable special code to work
+around file systems which only permit very short file names,
+such as MS-DOS.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-H</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Print the name of each header file used, in addition to
+other normal activities. Each name is indented to show how
+deep in the <b>#include</b> stack it is. Precompiled header
+files are also printed, even if they are found to be
+invalid; an invalid precompiled header file is printed with
+<b>...x</b> and a valid one with <b>...!</b> .</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-d</b><i>letters</i></p>
+
+<p style="margin-left:17%;">Says to make debugging dumps
+during compilation as specified by <i>letters</i>. The flags
+documented here are those relevant to the preprocessor.
+Other <i>letters</i> are interpreted by the compiler proper,
+or reserved for future versions of <small>GCC,</small> and
+so are silently ignored. If you specify <i>letters</i> whose
+behavior conflicts, the result is undefined.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p><b>-dM</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>Instead of the normal output, generate a list of
+<b>#define</b> directives for all the macros defined during
+the execution of the preprocessor, including predefined
+macros. This gives you a way of finding out what is
+predefined in your version of the preprocessor. Assuming you
+have no file <i>foo.h</i>, the command</p></td></tr>
+</table>
+
+<p style="margin-left:23%; margin-top: 1em">touch foo.h;
+cpp -dM foo.h</p>
+
+<p style="margin-left:23%; margin-top: 1em">shows all the
+predefined macros.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p style="margin-top: 1em"><b>-dD</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">Like <b>-dM</b> except in two
+respects: it does <i>not</i> include the predefined macros,
+and it outputs <i>both</i> the <b>#define</b> directives and
+the result of preprocessing. Both kinds of output go to the
+standard output file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p><b>-dN</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>Like <b>-dD</b>, but emit only the macro names, not
+their expansions.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p><b>-dI</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>Output <b>#include</b> directives in addition to the
+result of preprocessing.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p><b>-dU</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>Like <b>-dD</b> except that only macros that are
+expanded, or whose definedness is tested in preprocessor
+directives, are output; the output is delayed until the use
+or test of the macro; and <b>#undef</b> directives are also
+output for macros tested but undefined at the time.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-fdebug-cpp</b></p>
+
+<p style="margin-left:17%;">This option is only useful for
+debugging <small>GCC.</small> When used from
+<small>CPP</small> or with <b>-E</b>, it dumps debugging
+information about location maps. Every token in the output
+is preceded by the dump of the map its location belongs
+to.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When used from
+<small>GCC</small> without <b>-E</b>, this option has no
+effect.</p>
+
+<p style="margin-left:11%;"><b>-I</b> <i>dir</i> <b><br>
+-iquote</b> <i>dir</i> <b><br>
+-isystem</b> <i>dir</i> <b><br>
+-idirafter</b> <i>dir</i></p>
+
+<p style="margin-left:17%;">Add the directory <i>dir</i> to
+the list of directories to be searched for header files
+during preprocessing.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If <i>dir</i>
+begins with <b>=</b> or $SYSROOT, then the <b>=</b> or
+$SYSROOT is replaced by the sysroot prefix; see
+<b>--sysroot</b> and <b>-isysroot</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Directories
+specified with <b>-iquote</b> apply only to the quote form
+of the directive,
+&quot;#include&nbsp;&quot;<i>file</i>&quot;&quot;.
+Directories specified with <b>-I</b>, <b>-isystem</b>, or
+<b>-idirafter</b> apply to lookup for both the
+&quot;#include&nbsp;&quot;<i>file</i>&quot;&quot; and
+&quot;#include&nbsp;&lt;<i>file</i>&gt;&quot;
+directives.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You can specify
+any number or combination of these options on the command
+line to search for header files in several directories. The
+lookup order is as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>For the quote form of the include directive, the
+directory of the current file is searched first.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>For the quote form of the include directive, the
+directories specified by <b>-iquote</b> options are searched
+in left-to-right order, as they appear on the command
+line.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Directories specified with <b>-I</b> options are scanned
+in left-to-right order.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p>4.</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Directories specified with <b>-isystem</b> options are
+scanned in left-to-right order.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p>5.</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Standard system directories are scanned.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p>6.</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Directories specified with <b>-idirafter</b> options are
+scanned in left-to-right order.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">You can use
+<b>-I</b> to override a system header file, substituting
+your own version, since these directories are searched
+before the standard system header file directories. However,
+you should not use this option to add directories that
+contain vendor-supplied system header files; use
+<b>-isystem</b> for that.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>-isystem</b> and <b>-idirafter</b> options also mark the
+directory as a system directory, so that it gets the same
+special treatment that is applied to the standard system
+directories.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If a standard
+system include directory, or a directory specified with
+<b>-isystem</b>, is also specified with <b>-I</b>, the
+<b>-I</b> option is ignored. The directory is still searched
+but as a system directory at its normal position in the
+system include chain. This is to ensure that
+<small>GCC</small> &rsquo;s procedure to fix buggy system
+headers and the ordering for the &quot;#include_next&quot;
+directive are not inadvertently changed. If you really need
+to change the search order for system directories, use the
+<b>-nostdinc</b> and/or <b>-isystem</b> options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-I-</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Split the include path. This
+option has been deprecated. Please use <b>-iquote</b>
+instead for <b>-I</b> directories before the <b>-I-</b> and
+remove the <b>-I-</b> option.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Any directories
+specified with <b>-I</b> options before <b>-I-</b> are
+searched only for headers requested with
+&quot;#include&nbsp;&quot;<i>file</i>&quot;&quot;; they are
+not searched for
+&quot;#include&nbsp;&lt;<i>file</i>&gt;&quot;. If additional
+directories are specified with <b>-I</b> options after the
+<b>-I-</b>, those directories are searched for all
+<b>#include</b> directives.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In addition,
+<b>-I-</b> inhibits the use of the directory of the current
+file directory as the first search directory for
+&quot;#include&nbsp;&quot;<i>file</i>&quot;&quot;. There is
+no way to override this effect of <b>-I-</b>.</p>
+
+<p style="margin-left:11%;"><b>-iprefix</b>
+<i>prefix</i></p>
+
+<p style="margin-left:17%;">Specify <i>prefix</i> as the
+prefix for subsequent <b>-iwithprefix</b> options. If the
+prefix represents a directory, you should include the final
+<b>/</b>.</p>
+
+<p style="margin-left:11%;"><b>-iwithprefix</b> <i>dir</i>
+<b><br>
+-iwithprefixbefore</b> <i>dir</i></p>
+
+<p style="margin-left:17%;">Append <i>dir</i> to the prefix
+specified previously with <b>-iprefix</b>, and add the
+resulting directory to the include search path.
+<b>-iwithprefixbefore</b> puts it in the same place
+<b>-I</b> would; <b>-iwithprefix</b> puts it where
+<b>-idirafter</b> would.</p>
+
+<p style="margin-left:11%;"><b>-isysroot</b> <i>dir</i></p>
+
+<p style="margin-left:17%;">This option is like the
+<b>--sysroot</b> option, but applies only to header files
+(except for Darwin targets, where it applies to both header
+files and libraries). See the <b>--sysroot</b> option for
+more information.</p>
+
+<p style="margin-left:11%;"><b>-imultilib</b>
+<i>dir</i></p>
+
+<p style="margin-left:17%;">Use <i>dir</i> as a
+subdirectory of the directory containing target-specific C
+<small>++</small> headers.</p>
+
+<p style="margin-left:11%;"><b>-nostdinc</b></p>
+
+<p style="margin-left:17%;">Do not search the standard
+system directories for header files. Only the directories
+explicitly specified with <b>-I</b>, <b>-iquote</b>,
+<b>-isystem</b>, and/or <b>-idirafter</b> options (and the
+directory of the current file, if appropriate) are
+searched.</p>
+
+<p style="margin-left:11%;"><b>-nostdinc++</b></p>
+
+<p style="margin-left:17%;">Do not search for header files
+in the C <small>++</small> -specific standard directories,
+but do still search the other standard directories. (This
+option is used when building the C <small>++</small>
+library.)</p>
+
+<p style="margin-left:11%;"><b>-Wcomment <br>
+-Wcomments</b></p>
+
+<p style="margin-left:17%;">Warn whenever a comment-start
+sequence <b>/*</b> appears in a <b>/*</b> comment, or
+whenever a backslash-newline appears in a <b>//</b> comment.
+This warning is enabled by <b>-Wall</b>.</p>
+
+<p style="margin-left:11%;"><b>-Wtrigraphs</b></p>
+
+<p style="margin-left:17%;">Warn if any trigraphs are
+encountered that might change the meaning of the program.
+Trigraphs within comments are not warned about, except those
+that would form escaped newlines.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+implied by <b>-Wall</b>. If <b>-Wall</b> is not given, this
+option is still enabled unless trigraphs are enabled. To get
+trigraph conversion without warnings, but get the other
+<b>-Wall</b> warnings, use <b>-trigraphs -Wall
+-Wno-trigraphs</b>.</p>
+
+<p style="margin-left:11%;"><b>-Wundef</b></p>
+
+<p style="margin-left:17%;">Warn if an undefined identifier
+is evaluated in an &quot;#if&quot; directive. Such
+identifiers are replaced with zero.</p>
+
+
+<p style="margin-left:11%;"><b>-Wexpansion-to-defined</b></p>
+
+<p style="margin-left:17%;">Warn whenever <b>defined</b> is
+encountered in the expansion of a macro (including the case
+where the macro is expanded by an <b>#if</b> directive).
+Such usage is not portable. This warning is also enabled by
+<b>-Wpedantic</b> and <b>-Wextra</b>.</p>
+
+<p style="margin-left:11%;"><b>-Wunused-macros</b></p>
+
+<p style="margin-left:17%;">Warn about macros defined in
+the main file that are unused. A macro is <i>used</i> if it
+is expanded or tested for existence at least once. The
+preprocessor also warns if the macro has not been used at
+the time it is redefined or undefined.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Built-in
+macros, macros defined on the command line, and macros
+defined in include files are not warned about.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>Note:</i> If
+a macro is actually used, but only used in skipped
+conditional blocks, then the preprocessor reports it as
+unused. To avoid the warning in such a case, you might
+improve the scope of the macro&rsquo;s definition by, for
+example, moving it into the first skipped block.
+Alternatively, you could provide a dummy use with something
+like:</p>
+
+<p style="margin-left:17%; margin-top: 1em">#if defined
+the_macro_causing_the_warning <br>
+#endif</p>
+
+<p style="margin-left:11%;"><b>-Wno-endif-labels</b></p>
+
+<p style="margin-left:17%;">Do not warn whenever an
+&quot;#else&quot; or an &quot;#endif&quot; are followed by
+text. This sometimes happens in older programs with code of
+the form</p>
+
+<p style="margin-left:17%; margin-top: 1em">#if FOO <br>
+... <br>
+#else FOO <br>
+... <br>
+#endif FOO</p>
+
+<p style="margin-left:17%; margin-top: 1em">The second and
+third &quot;FOO&quot; should be in comments. This warning is
+on by default.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This section
+describes the environment variables that affect how
+<small>CPP</small> operates. You can use them to specify
+directories or prefixes to use when searching for include
+files, or to control dependency output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that you
+can also specify places to search using options such as
+<b>-I</b>, and control dependency output with options like
+<b>-M</b>. These take precedence over environment variables,
+which in turn take precedence over the configuration of
+<small>GCC. <b><br>
+CPATH</b></small> <b><br>
+C_INCLUDE_PATH <small><br>
+CPLUS_INCLUDE_PATH <br>
+OBJC_INCLUDE_PATH</small></b></p>
+
+<p style="margin-left:17%;">Each variable&rsquo;s value is
+a list of directories separated by a special character, much
+like <b><small>PATH</small></b> , in which to look for
+header files. The special character,
+&quot;PATH_SEPARATOR&quot;, is target-dependent and
+determined at <small>GCC</small> build time. For Microsoft
+Windows-based targets it is a semicolon, and for almost all
+other targets it is a colon.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b><small>CPATH</small></b>
+specifies a list of directories to be searched as if
+specified with <b>-I</b>, but after any paths given with
+<b>-I</b> options on the command line. This environment
+variable is used regardless of which language is being
+preprocessed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The remaining
+environment variables apply only when preprocessing the
+particular language indicated. Each specifies a list of
+directories to be searched as if specified with
+<b>-isystem</b>, but after any paths given with
+<b>-isystem</b> options on the command line.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In all these
+variables, an empty element instructs the compiler to search
+its current working directory. Empty elements can appear at
+the beginning or end of a path. For instance, if the value
+of <b><small>CPATH</small></b> is
+&quot;:/special/include&quot;, that has the same effect as
+<b>-I.&nbsp;-I/special/include</b>.</p>
+
+
+<p style="margin-left:11%;"><b><small>DEPENDENCIES_OUTPUT</small></b></p>
+
+<p style="margin-left:17%;">If this variable is set, its
+value specifies how to output dependencies for Make based on
+the non-system header files processed by the compiler.
+System header files are ignored in the dependency
+output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value of
+<b><small>DEPENDENCIES_OUTPUT</small></b> can be just a file
+name, in which case the Make rules are written to that file,
+guessing the target name from the source file name. Or the
+value can have the form <i>file target</i>, in which case
+the rules are written to file <i>file</i> using
+<i>target</i> as the target name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In other words,
+this environment variable is equivalent to combining the
+options <b>-MM</b> and <b>-MF</b>, with an optional
+<b>-MT</b> switch too.</p>
+
+
+<p style="margin-left:11%;"><b><small>SUNPRO_DEPENDENCIES</small></b></p>
+
+<p style="margin-left:17%;">This variable is the same as
+<b><small>DEPENDENCIES_OUTPUT</small></b> (see above),
+except that system header files are not ignored, so it
+implies <b>-M</b> rather than <b>-MM</b>. However, the
+dependence on the main input file is omitted.</p>
+
+
+<p style="margin-left:11%;"><b><small>SOURCE_DATE_EPOCH</small></b></p>
+
+<p style="margin-left:17%;">If this variable is set, its
+value specifies a <small>UNIX</small> timestamp to be used
+in replacement of the current date and time in the
+&quot;__DATE__&quot; and &quot;__TIME__&quot; macros, so
+that the embedded timestamps become reproducible.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value of
+<b><small>SOURCE_DATE_EPOCH</small></b> must be a
+<small>UNIX</small> timestamp, defined as the number of
+seconds (excluding leap seconds) since 01 Jan 1970 00:00:00
+represented in <small>ASCII</small> ; identical to the
+output of &quot;date +%s&quot; on GNU/Linux and other
+systems that support the %s extension in the
+&quot;date&quot; command.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value
+should be a known timestamp such as the last modification
+time of the source or package and it should be set by the
+build process.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpl</b>(7),
+<b>gfdl</b>(7), <b>fsf-funding</b>(7), <b>gcc</b>(1), and
+the Info entries for <i>cpp</i> and <i>gcc</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1987-2021 Free Software Foundation, Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy, distribute and/or modify this document
+under the terms of the <small>GNU</small> Free Documentation
+License, Version 1.3 or any later version published by the
+Free Software Foundation. A copy of the license is included
+in the man page <b>gfdl</b>(7). This manual contains no
+Invariant Sections. The Front-Cover Texts are (a) (see
+below), and the Back-Cover Texts are (b) (see below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">(a) The
+<small>FSF</small> &rsquo;s Front-Cover Text is:</p>
+
+<p style="margin-left:11%; margin-top: 1em">A GNU
+Manual</p>
+
+<p style="margin-left:11%; margin-top: 1em">(b) The
+<small>FSF</small> &rsquo;s Back-Cover Text is:</p>
+
+<p style="margin-left:11%; margin-top: 1em">You have
+freedom to copy and modify this GNU Manual, like GNU <br>
+software. Copies published by the Free Software Foundation
+raise <br>
+funds for GNU development.</p>
+<hr>
+</body>
+</html>

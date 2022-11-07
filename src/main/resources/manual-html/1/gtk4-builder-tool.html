@@ -1,0 +1,146 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:26 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GTK4-BUILDER-TOOL</title>
+
+</head>
+<body>
+
+<h1 align="center">GTK4-BUILDER-TOOL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">gtk4-builder-tool
+- GtkBuilder File Utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gtk4-builder-tool</b>
+&lt;COMMAND&gt; [OPTIONS...] &lt;FILE&gt;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gtk4-builder-tool</b>
+validate &lt;FILE&gt; <b><br>
+gtk4-builder-tool</b> enumerate &lt;FILE&gt; <b><br>
+gtk4-builder-tool</b> simplify [OPTIONS...] &lt;FILE&gt;
+<b><br>
+gtk4-builder-tool</b> preview [OPTIONS...] &lt;FILE&gt;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gtk4-builder-tool</b>
+can perform various operations on GtkBuilder UI definition
+files.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Validation</b>
+<br>
+The <b>validate</b> command validates the given UI
+definition file and reports errors to <b>stderr</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Enumeration</b>
+<br>
+The <b>enumerate</b> command lists all the named objects
+that are present in the UI definition file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Preview</b>
+<br>
+The <b>preview</b> command displays the UI dfinition
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+accepts options to specify the ID of the toplevel object and
+a CSS file to use.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--id=ID</b></p>
+
+<p style="margin-left:15%;">The ID of the object to
+preview. If not specified, gtk4-builder-tool will choose a
+suitable object on its own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--css=FILE</b></p>
+
+<p style="margin-left:15%;">Load style information from the
+given CSS file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Simplification</b>
+<br>
+The <b>simplify</b> command simplifies the UI definition
+file by removing properties that are set to their default
+values and writes the resulting XML to the standard output,
+or back to the input file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the
+<b>--3to4</b> option is specified, the <b>simplify</b>
+command interprets the input as a GTK 3 UI definuition file
+and attempts to convert it to GTK 4 equivalents. It performs
+various conversions, such as renaming properties,
+translating child properties to layout properties, rewriting
+the setup for GtkNotebook, GtkStack, GtkAssistant or
+changing toolbars into boxes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You should
+always test the modified UI definition files produced by
+gtk4-builder-tool before using them in production.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note in
+particular that the conversion done with <b>--3to4</b> is
+meant as a starting point for a port from GTK 3 to GTK 4. It
+is expected that you will have to do manual fixups after the
+initial conversion.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--replace</b></p>
+
+<p style="margin-left:15%;">Write the content back to the
+UI definition file instead of using the standard output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--3to4</b></p>
+
+<p style="margin-left:15%;">Transform a GTK 3 UI definition
+file to the equivalent GTK 4 definitions.</p>
+<hr>
+</body>
+</html>

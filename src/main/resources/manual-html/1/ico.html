@@ -1,0 +1,241 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ICO</title>
+
+</head>
+<body>
+
+<h1 align="center">ICO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#PROGRAM TERMINATION">PROGRAM TERMINATION</a><br>
+<a href="#ADDING POLYHEDRA">ADDING POLYHEDRA</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ico - animate
+an icosahedron or other polyhedron</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ico</b>
+[-display display] [-geometry geometry] [-r] [-d pattern]
+[-i] [-dbl] [-faces] [-noedges] [-sleep n] [-obj object]
+[-colors color-list]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ico</b>
+-objhelp</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ico</b>
+-version</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Ico</i>
+displays a wire-frame rotating polyhedron, with hidden lines
+removed, or a solid-fill polyhedron with hidden faces
+removed. There are a number of different polyhedra
+available; adding a new polyhedron to the program is quite
+simple.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Display on the root window
+instead of creating a new window.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-d pattern</b></p>
+
+<p style="margin-left:22%;">Specify a bit pattern for
+drawing dashed lines for wire frames.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-i</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Use inverted colors for wire frames.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-dbl</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Use double buffering on the display. This works for
+either wire frame or solid fill drawings. For solid fill
+drawings, using this switch results in substantially
+smoother movement. Note that this requires twice as many bit
+planes as without double buffering. Since some colors are
+typically allocated by other programs, most eight-bit-plane
+displays will probably be limited to eight colors when using
+double buffering.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-faces</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Draw filled faces instead of wire frames.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-noedges</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t draw the wire
+frames. Typically used only when -faces is used.</p>
+
+<p style="margin-left:11%;"><b>-sleep</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Sleep n seconds between each
+move of the object.</p>
+
+<p style="margin-left:11%;"><b>-obj</b> <i>object</i></p>
+
+<p style="margin-left:22%;">Specify what object to draw. If
+no object is specified, an icosahedron is drawn.</p>
+
+<p style="margin-left:11%;"><b>-objhelp</b></p>
+
+<p style="margin-left:22%;">Print out a list of the
+available objects, along with information about each
+object.</p>
+
+<p style="margin-left:11%;"><b>-colors</b> <i>color color
+...</i></p>
+
+<p style="margin-left:22%;">Specify what colors should be
+used to draw the filled faces of the object. If less colors
+than faces are given, the colors are reused.</p>
+
+<p style="margin-left:11%;"><b>-version</b></p>
+
+<p style="margin-left:22%;">Print program version
+information and exit.</p>
+
+<h2>PROGRAM TERMINATION
+<a name="PROGRAM TERMINATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Pressing
+&quot;q&quot; will close a window. If compiled with threads
+support, the program will stop only when all threads
+terminate. You can also close an animation window using the
+ICCCM <i>delete</i> message (depending on your window
+manager, you will have a decoration button or menu to send
+such message).</p>
+
+<h2>ADDING POLYHEDRA
+<a name="ADDING POLYHEDRA"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you have the
+source to ico, it is very easy to add more polyhedra. Each
+polyhedron is defined in an include file by the name of
+objXXX.h, where XXX is something related to the name of the
+polyhedron. The format of the include file is defined in the
+file polyinfo.h. Look at the file objcube.h to see what the
+exact format of an objXXX.h file should be, then create your
+objXXX.h file in that format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After making
+the new objXXX.h file (or copying in a new one from
+elsewhere), simply do a &rsquo;make depend&rsquo;. This will
+recreate the file allobjs.h, which lists all of the objXXX.h
+files. Doing a &rsquo;make&rsquo; after this will rebuild
+ico with the new object information.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X(7)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Pyramids and
+tetrahedrons with filled faces do not display correctly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A separate
+color cell is allocated for each name in the -colors list,
+even when the same name may be specified twice. Color
+allocation fails in TrueColor displays and option
+<i>-faces</i> does not work well.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 1994
+X Consortium <br>
+See <i>X(7)</i> for a full statement of rights and
+permissions.</p>
+<hr>
+</body>
+</html>

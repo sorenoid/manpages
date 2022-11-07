@@ -1,0 +1,976 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:46 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PPMTOMPEG</title>
+
+</head>
+<body>
+
+<h1 align="center">PPMTOMPEG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#PARAMETER FILE">PARAMETER FILE</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#PARALLEL OPERATION">PARALLEL OPERATION</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtompeg -
+encodes MPEG-1 bitstreams</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtompeg</b>
+[ <i>options</i> ] <i>parameter-file</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>ppmtompeg</b></i>
+produces an MPEG-1 video stream. param_file is a parameter
+file which includes a list of input files and other
+parameters. The file is described in detail below. The -gop,
+-combine_gops, -frames, and -combine_frames options are all
+exclusive. This man page is probably incomplete. For
+complete usage, see the User&rsquo;s Guide.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="24%">
+
+
+<p style="margin-top: 1em"><b>-stat stat_file</b></p></td>
+<td width="3%"></td>
+<td width="62%">
+
+
+<p style="margin-top: 1em">: causes the encoder to append
+the statistics to the</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">file <i>stat_file</i>. In any
+case, the statistics are output to stdout. The statistics
+use the following abbreviations: bits per block (bpb), bits
+per frame (bpf), seconds per frame (spf), and bits per
+second (bps).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="29%">
+
+
+<p style="margin-top: 1em"><b>-quiet num_seconds</b></p></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em">: causes the program to not
+report remaining time</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">for at least num_seconds
+seconds. A negative values tells the program not to report
+at all. 0 is the default (reports once after each frame).
+Note that the time remaining is an estimate and does not
+take into account time to read in frames.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em"><b>-realquiet</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em">: causes the encoder to run
+silently, with the only screen</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">output being errors.
+Particularly useful when reading input from stdin.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>-no_frame_summary</b></p></td>
+<td width="3%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em">: prevents the program from
+printing a summary line</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">for each frame</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em"><b>-float_dct</b></p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em">: forces the encoder to use a
+more accurate, yet more</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">computationally expensive
+version of the DCT.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>-gop gop_num</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">: causes the encoder to only
+encode the numbered GOP</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">(first GOP is 0). The parameter
+file is the same as for normal usage. The output file will
+be the normal output file with the suffix
+&quot;.gop.&lt;gop_num&gt;&quot; No sequence info is
+output.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>-combine_gops</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">: causes the encoder to simply
+combine some GOP files</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">into a single MPEG stream. A
+sequence header/ender are inserted. In this case, the
+parameter file need only contain the YUV_SIZE value, an
+output file, and perhaps a list of input GOP files (see
+below).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="46%">
+
+
+<p style="margin-top: 1em"><b>-frames first_frame
+last_frame</b></p> </td>
+<td width="1%"></td>
+<td width="42%">
+
+
+<p style="margin-top: 1em">: causes the encoder to only
+encode the</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">frames from first_frame to
+last_frame, inclusive. The parameter file is the same as for
+normal usage. The output will be placed in separate files,
+one per frame, with the file names being the normal output
+file with the suffix &quot;.frame.&lt;frame num&gt;&quot; No
+GOP header information is output. (Thus, the parameter file
+need not include the GOP_SIZE value)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>-combine_frames</b></p></td>
+<td width="1%"></td>
+<td width="65%">
+
+
+<p style="margin-top: 1em">: causes the encoder to simply
+combine some frames into</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">a single MPEG stream. Sequence
+and GOP headers are inserted appropriately. In this case,
+the parameter file need only contain the YUV_SIZE value, the
+GOP_SIZE value, an output file, and perhaps a list of frame
+files (see below).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-nice</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em">: causes the program to run any
+remote processes &rsquo;nicely.&rsquo; This is only relevant
+if the program is using parallel encoding. (see &rsquo;man
+nice.&rsquo;)</p> </td></tr>
+</table>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-max_machines
+num_machines</b></p> </td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">: causes the program to use no
+more than num_machines machines as slaves for use in
+parallel encoding.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-snr</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">: print the signal-to-noise
+ratio. Prints SNR (Y U V) and peak SNR (Y U V) for each
+frame. In summary, prints averages of luminance only (Y).
+SNR is defined as 10*log(variance of original/variance of
+error). Peak SNR is defined as 20*log(255/RMSE). Note that
+the encoder will run a little slower if you want it to print
+the SNR.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-mse</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">: computes the mean squared
+error per block. Also automatically computes the quality of
+the images when set, so there is no need to specify -snr
+then.</p> </td></tr>
+</table>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+
+
+<p style="margin-top: 1em"><b>-bit_rate_info
+rate_file</b></p> <td width="22%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">: prints bit rate information
+into the file rate_file. Bit rate info is bits per frame,
+and also bits per I-frame-to-I-frame.</p></td></tr>
+</table>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+
+
+<p style="margin-top: 1em"><b>-mv-histogram</b></p><td width="22%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">: prints histogram of motion
+vectors as part of statistics. There are three histograms --
+one for P, forward B, and backward B vectors. Each histogram
+is a 2-dimensional array, and there is one entry for each
+vector in the search window.</p></td></tr>
+</table>
+
+<h2>PARAMETER FILE
+<a name="PARAMETER FILE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The parameter
+file MUST contain the following lines (except when using the
+-combine_gops or -combine_frames options):</p></table>
+
+<p style="margin-left:22%; margin-top: 1em">PATTERN
+&lt;pattern&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em">OUTPUT &lt;output file&gt;</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em">INPUT_DIR &lt;directory&gt;</p></td>
+<td width="46%">
+</td></tr>
+</table>
+
+<p style="margin-left:32%;">all input files must reside in
+this directory. If you want to refer to the current
+directory, use &rsquo;.&rsquo; (an empty INPUT_DIR value
+would refer to the root directory). If input files will be
+coming in from standard input, use &rsquo;stdin&rsquo;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">INPUT</p></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:32%;">This line must be followed by a
+list of the input files (in display order) and then the
+line</p>
+
+<p style="margin-left:43%;">END_INPUT</p>
+
+<p style="margin-left:32%;">There are three types of lines
+between INPUT and END_INPUT. First, a line may simply be the
+name of an input file. Secondly, the line may be of the
+form</p>
+
+<p style="margin-left:43%;">&lt;single_star_expr&gt;
+[x-y]</p>
+
+<p style="margin-left:32%;">single_star_expr can have a
+single &rsquo;*&rsquo; in it. It is replaced by all the
+numbers between x and y inclusive. So, for example, the
+line</p>
+
+<p style="margin-left:43%;">tennis*.ppm [12-15]</p>
+
+<p style="margin-left:32%;">is replaced by tennis12.ppm,
+tennis13.ppm, tennis14.ppm, tennis15.ppm. Uniform
+zero-padding occurs, as well. For example, the line</p>
+
+<p style="margin-left:43%;">football.*.ppm [001-130]</p>
+
+<p style="margin-left:32%;">is replaced by
+football.001.ppm, football.002.ppm, ..., football.009.ppm,
+football.010.ppm, ..., football.130.ppm. The third type of
+line is:</p>
+
+<p style="margin-left:43%;">&lt;single_star_expr&gt;
+[x-y+s]</p>
+
+<p style="margin-left:32%;">Where the line is treated
+exactly as above, except that we skip by s. Thus, the
+line</p>
+
+<p style="margin-left:43%;">football.*.ppm [001-130+4]</p>
+
+<p style="margin-left:32%;">is replaced by
+football.001.ppm, football.005.ppm, football.009.ppm,
+football.013.ppm, etc.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">BASE_FILE_FORMAT &lt;YUV or PPM
+or PNM or JPEG or JMOVIE&gt;</p></td></tr>
+</table>
+
+<p style="margin-left:32%;">All the input files must be
+converted to YUV, JPEG(v4), JMOVIE, PNM, or PPM format. This
+line specifies which of the three formats (actually PPM is a
+subset of PNM). The reason for having a separate PPM option
+is for simplicity. If your files are RAWBITS ppm files, then
+use the PPM option rather than the PNM. Also, depending on
+the system, file reads will go much faster with the PPM
+option (as opposed to PNM).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="52%">
+
+
+<p style="margin-top: 1em">INPUT_CONVERT &lt;conversion
+command&gt;</p> </td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:32%;">You must specify how to convert
+a file to the base file format. In the conversion command,
+each &rsquo;*&rsquo; is replaced by the filename (the items
+listed between INPUT and END_INPUT). If no conversion is
+necessary, then you would just say:</p>
+
+<p style="margin-left:43%;">INPUT_CONVERT *</p>
+
+<p style="margin-left:32%;">If you had a bunch of gif
+files, you might say:</p>
+
+<p style="margin-left:43%;">INPUT_CONVERT giftoppm *</p>
+
+<p style="margin-left:32%;">If you have a bunch of separate
+a.Y, a.U, and a.V files, then you might say:</p>
+
+<p style="margin-left:43%;">INPUT_CONVERT cat *.Y *.U *.V
+<br>
+Input conversion is not allowed with input from stdin.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="19%">
+
+
+<p style="margin-top: 1em">GOP_SIZE &lt;n&gt;</p></td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">n is roughly the number of
+frames in a Group of Pictures (roughly because a GOP must
+begin with an I-frame)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="31%">
+
+
+<p style="margin-top: 1em">SLICES_PER_FRAME &lt;n&gt;</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">n is roughly the number of
+slices per frame. Note, at least one MPEG player may
+complain if slices do not start at the left side of an
+image. To ensure this does not happen, make sure the number
+of rows is divisible by SLICES_PER_FRAME.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="31%">
+
+
+<p style="margin-top: 1em">PIXEL &lt;FULL or HALF&gt;</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">use half-pixel motion vectors,
+or only full-pixel ones</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em">RANGE &lt;n&gt;</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">use a search range of +/- n
+pixels</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="36%">
+
+
+<p style="margin-top: 1em">PSEARCH_ALG
+&lt;algorithm&gt;</p> </td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">algorithm must be one of
+{EXHAUSTIVE, TWOLEVEL, SUBSAMPLE, LOGARITHMIC}. Tells what
+kind of search procedure should be used for P-frames.
+Exhaustive gives the best compression, but logarithmic is
+the fastest. You select the desired combination of speed and
+compression. TWOLEVEL is an exhaustive full-pixel search,
+followed by a local half- pixel search around the best
+full-pixel vector (the PIXEL option is ignored for this
+search algorithm).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="36%">
+
+
+<p style="margin-top: 1em">BSEARCH_ALG
+&lt;algorithm&gt;</p> </td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">algorithm must be one of
+{SIMPLE, CROSS2, EXHAUSTIVE}. Tells what kind of search
+procedure should be used for B-frames. Simple means find
+best forward and backward vectors, then interpolate. Cross2
+means find those two vectors, then see what backward vector
+best matches the best forward vector, and vice versa.
+Exhaustive does an n-squared search and is EXTREMELY slow in
+relation to the others (Cross2 is about twice as slow as
+Simple).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em">IQSCALE &lt;n&gt;</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">use n as the qscale for
+I-frames</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em">PQSCALE &lt;n&gt;</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">use n as the qscale for
+P-frames</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em">BQSCALE &lt;n&gt;</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">use n as the qscale for
+B-frames</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em">REFERENCE_FRAME &lt;ORIGINAL or
+DECODED&gt;</p> </td>
+<td width="11%">
+</td></tr>
+</table>
+
+<p style="margin-left:43%;">If ORIGINAL is specified, then
+the original images are used when computing motion vectors.
+To be more accurate, use DECODED, in which the decoded
+images are used. This should increase the quality of the
+image, but will take a bit longer to encode.</p>
+
+<p style="margin-left:32%;">The following lines are
+optional:</p>
+
+
+<p style="margin-left:43%; margin-top: 1em">FORCE_I_ALIGN</p>
+
+<p style="margin-left:54%;">This option is only relevant
+for parallel execution (see below). It forces each processor
+to encode a block of N frames, where N must be a multiple of
+the pattern length. Since the first frame in any pattern is
+an I-frame, this forces each block encoded by a processor to
+begin with an I-frame.</p>
+
+<p style="margin-left:43%;">foo</p></table>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the
+BASE_FILE_FORMAT is YUV, then the parameter file must
+contain:</p>
+
+<p style="margin-left:22%;">YUV_SIZE
+&lt;w&gt;x&lt;h&gt;</p>
+
+<p style="margin-left:11%;">where w = width, h = height (in
+pixels) of image, and</p>
+
+<p style="margin-left:22%;">YUV_FORMAT &lt;ABEKAS or
+PHILLIPS or UCB or EYUV or pattern&gt;.</p>
+
+<p style="margin-left:11%;">See the file doc/INPUT.FORMAT
+for more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+-combine-gops option is used, then only the YUV_SIZE and
+OUTPUT values need be specified in the parameter file. In
+addition, the parameter file may specify input GOP files in
+the same manner as normal input files -- except instead of
+using INPUT_DIR, INPUT, and END_INPUT, use GOP_INPUT_DIR,
+GOP_INPUT, and GOP_END_INPUT. If no input GOP files are
+specified, then the default is to use the output file name
+with suffix &quot;.gop.&lt;gop_num&gt;&quot; starting from 0
+as the input files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+-combine-frames option is used, then only the YUV_SIZE,
+GOP_SIZE, and OUTPUT values need be specified in the
+parameter file. In addition, the parameter file may specify
+input frame files in the same manner as normal input files
+-- except instead of using INPUT_DIR, INPUT, and END_INPUT,
+use FRAME_INPUT_DIR, FRAME_INPUT, and FRAME_END_INPUT. If no
+input frame files are specified, then the default is to use
+the output file name with suffix
+&quot;.frame.&lt;frame_num&gt;&quot; starting from 0 as the
+input files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any number of
+spaces and tabs may come between each option and value.
+Lines beginning with &rsquo;#&rsquo; are ignored. Any other
+lines are ignored except for those between INPUT and
+END_INPUT. This allows you to use the same parameter file
+for normal usage and for -combine_gops and
+-combine_frames.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The encoder is
+case-sensitive so, except for file names and directories,
+everything should be in upper case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The lines may
+appear in any order, except the following exceptions. INPUT
+must appear before END_INPUT (also, GOP_INPUT before
+GOP_END_INPUT and FRAME_INPUT before FRAME_END_INPUT). All
+lines between INPUT and END_INPUT must be the frames in play
+order.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The encoder is
+prepared to handle up to 16 B frames between reference
+frames when encoding with input from stdin. To increase this
+amount, change the constant B_FRAME_RUN in frame.c and
+recompile.</p> </table>
+
+<h2>PARALLEL OPERATION
+<a name="PARALLEL OPERATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The encoder may
+be run on multiple machines at once. To do so, add a line
+&quot;PARALLEL&quot; in the parameter file, followed by a
+listing, one machine per line, then
+&quot;END_PARALLEL&quot;. Each of the lines should be in one
+of two forms. If the machine has access to the file server,
+then the line should be:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>&lt;machine&gt; &lt;user&gt; &lt;executable&gt;</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The executable
+is normally ppmtompeg (you may need to give the complete
+path if you&rsquo;ve built for different architectures). If
+the machine is a remote machine, then the line should
+be:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>REMOTE &lt;machine&gt; &lt;user&gt; &lt;executable&gt;
+&lt;parameter file&gt;</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Full paths
+should generally be used when describing executables and
+parameter files. This INCLUDES the parameter file given as
+an argument to the original call to ppmtompeg. Also, .rhosts
+files on the appropriate machines should have the
+appropriate information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The encoder
+will use the original machine for the master and I/O server
+processes, and uses the listed machines as slaves to do the
+computation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Optional lines
+are</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="40%">
+
+
+<p style="margin-top: 1em">RSH &lt;remote shell
+command&gt;</p> </td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">The encoder uses the remote
+shell command to start processes on other machines. The
+default command is &rsquo;rsh.&rsquo; If your machine
+supports a different command, specify it here.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="37%">
+
+
+<p style="margin-top: 1em">PARALLEL_TEST_FRAMES
+&lt;n&gt;</p> </td>
+<td width="52%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">n is the number of frames to
+encode initially on each processor</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="37%">
+
+
+<p style="margin-top: 1em">PARALLEL_TIME_CHUNKS
+&lt;t&gt;</p> </td>
+<td width="52%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">subsequently, each slave
+processor will be asked to encode for approximately t
+seconds. Smaller values of &lt;t&gt; increase communication,
+but improve load balancing.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em">The default values for these two
+options are n = 3 frames and t = 30 seconds.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em">PARALLEL_PERFECT</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">If this line is present, then
+scheduling is done on the assumption that work distribution
+will be perfectly even -- meaning that each machine is about
+the same speed. The frames will simply be divided up evenly
+between the processors. This has the advantage of very
+minimal scheduling overhead, but is obviously wrong if
+machines have varying speeds, or if the network load makes
+performance uneven.</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is version
+1.5 it contins new features and bug fixes from version
+1.3.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not really a
+bug, but at least a limitation: If writing to an output
+file, ppmtompeg sometimes uses &lt;filename&gt;.* as
+temporary files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">No known bugs,
+but if you find any, report them to
+mpeg-bugs@plateau.cs.berkeley.edu.</p> </table>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+<td width="11%"></td>
+<td width="89%">
+
+
+<p>Kevin Gong - University of California, Berkeley,
+keving@cs.berkeley.edu</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p>Ketan Patel - University of California, Berkeley,
+kpatel@cs.berkeley.edu</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p>Dan Wallach - University of California, Berkeley,
+dwallach@cs.berkeley.edu</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p>Darryl Brown - University of California, Berkeley,
+darryl@cs.berkeley.edu</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p>Eugene Hung - University of California, Berkeley,
+eyhung@cs.berkeley.edu</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p>Steve Smoot - University of California, Berkeley,
+smoot@cs.berkeley.edu</p> </td></tr>
+ </table>
+<hr>
+</body>
+</html>

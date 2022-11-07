@@ -1,0 +1,358 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MIMETYPE</title>
+
+</head>
+<body>
+
+<h1 align="center">MIMETYPE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#TODO">TODO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mimetype -
+Determine file type</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mimetype
+[options] [-] files</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This script
+tries to determine the mime type of a file using the Shared
+MIME-info database. It is intended as a kind of
+<b><i>file</i></b><i>(1)</i> work-alike, but uses mimetypes
+instead of descriptions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If one symlinks
+the <i>file</i> command to <i>mimetype</i> it will behave a
+little more compatible, see &quot;--file-compat&quot;.
+Commandline options to specify alternative magic files are
+not implemented the same because of the conflicting data
+formats. Also the wording of the descriptions will
+differ.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For naming
+switches I followed the manpage of <b>file</b>(1) version
+4.02 when possible. They seem to differ completely from the
+spec in the &rsquo;utilities&rsquo; chapter of
+<small>IEEE</small> Std 1003.1-2001 ( <small>POSIX</small>
+).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all</b></p>
+
+<p style="margin-left:17%;">Show output of all rules that
+match the file.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>TODO:</small>
+this method now just returns one match for each method
+(globs, magic, etc.).</p>
+
+<p style="margin-left:11%;"><b>-b</b>, <b>--brief</b></p>
+
+<p style="margin-left:17%;">Do not prepend filenames to
+output lines (brief mode).</p>
+
+
+<p style="margin-left:11%;"><b>--database</b>=<i>mimedir</i>:<i>mimedir</i>:...</p>
+
+<p style="margin-left:17%;">Force the program to look in
+these directories for the shared mime-info database. The
+directories specified by the basedir specification are
+ignored.</p>
+
+<p style="margin-left:11%;"><b>-d</b>,
+<b>--describe</b></p>
+
+<p style="margin-left:17%;">Print file descriptions instead
+of mime types, this is the default when using
+&quot;--file-compat&quot;.</p>
+
+<p style="margin-left:11%;"><b>-D</b>, <b>--debug</b></p>
+
+<p style="margin-left:17%;">Print debug information about
+how the mimetype was determined.</p>
+
+<p style="margin-left:11%;"><b>-f</b> <i>namefile</i>,
+<b>--namefile</b>=<i>namefile</i></p>
+
+<p style="margin-left:17%;">Read the names of the files to
+be examined from the file &rsquo;namefile&rsquo; (one per
+line) before the argument list.</p>
+
+<p style="margin-left:11%;"><b>--file-compat</b></p>
+
+<p style="margin-left:17%;">Make mimetype behave a little
+more <b>file</b>(1) compatible. This is turned on
+automatically when you call mimetype by a link called
+&rsquo;file&rsquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A single
+&rsquo;-&rsquo; won&rsquo;t be considered a separator
+between options and filenames anymore, but becomes identical
+to &quot;--stdin&quot;. ( You can still use &rsquo;--&rsquo;
+as separator, but that is not backward compatible with the
+original file command. ) Also the default becomes to print
+descriptions instead of mimetypes.</p>
+
+<p style="margin-left:11%;"><b>-F</b> <i>string</i>,
+<b>--separator</b>=<i>string</i></p>
+
+<p style="margin-left:17%;">Use string as custom separator
+between the file name and its mimetype or description,
+defaults to &rsquo;:&rsquo; .</p>
+
+<p style="margin-left:11%;"><b>-h</b>, <b>--help <br>
+-u</b>, <b>--usage</b></p>
+
+<p style="margin-left:17%;">Print a help message and
+exits.</p>
+
+<p style="margin-left:11%;"><b>-i</b>,
+<b>--mimetype</b></p>
+
+<p style="margin-left:17%;">Use mime types, opposite to
+&quot;--describe&quot;, this is the default when _not_ using
+&quot;--file-compat&quot;.</p>
+
+<p style="margin-left:11%;"><b>-L</b>,
+<b>--dereference</b></p>
+
+<p style="margin-left:17%;">Follow symbolic links.</p>
+
+<p style="margin-left:11%;"><b>-l</b> <i>code</i>,
+<b>--language</b>=<i>code</i></p>
+
+<p style="margin-left:17%;">The language attribute
+specifies a two letter language code, this makes
+descriptions being outputted in the specified language.</p>
+
+<p style="margin-left:11%;"><b>-M</b>,
+<b>--magic-only</b></p>
+
+<p style="margin-left:17%;">Do not check for extensions,
+globs or inode type, only look at the content of the file.
+This is particularly useful if for some reason you
+don&rsquo;t trust the name or the extension a file has.</p>
+
+<p style="margin-left:11%;"><b>-N</b>, <b>--noalign</b></p>
+
+<p style="margin-left:17%;">Do not align output fields.</p>
+
+<p style="margin-left:11%;"><b>--output-format</b></p>
+
+<p style="margin-left:17%;">If you want an alternative
+output format, you can specify a format string containing
+the following escapes:</p>
+
+<p style="margin-left:17%; margin-top: 1em">%f for the
+filename <br>
+%d description <br>
+%m mime type</p>
+
+<p style="margin-left:17%; margin-top: 1em">Alignment is
+not available when using this, you need to post-process the
+output to do that.</p>
+
+<p style="margin-left:11%;"><b>--stdin</b></p>
+
+<p style="margin-left:17%;">Determine type of content from
+<small>STDIN,</small> less powerful then normal file
+checking because it only uses magic typing. This will happen
+also if the <small>STDIN</small> filehandle is a pipe.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To use this
+option IO::Scalar needs to be installed.</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--version</b></p>
+
+<p style="margin-left:17%;">Print the version of the
+program and exit.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>XDG_DATA_HOME
+<br>
+XDG_DATA_DIRS</small></p>
+
+<p style="margin-left:17%;">These variables can list base
+directories to search for data files. The shared mime-info
+will be expected in the &quot;mime&quot; sub directory of
+one of these directories. If these are not set, there will
+be searched for the following directories:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$HOME/.local/share/mime
+<br>
+/usr/local/share/mime <br>
+/usr/share/mime</p>
+
+<p style="margin-left:17%; margin-top: 1em">See also the
+&quot; <small>XDG</small> Base Directory Specification&quot;
+&lt;http://freedesktop.org/Standards/basedir-spec&gt;</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The base dir
+for all data files is determined by two environment
+variables, see &quot; <small>ENVIRONMENT&quot;</small> .
+<i><br>
+BASE/mime/packages/SOURCE.xml</i></p>
+
+<p style="margin-left:17%;">All other files are compiled
+from these source files. To re-compile them use
+<b>update-mime-database(1)</b>.</p>
+
+<p style="margin-left:11%;"><i>BASE/mime/globs</i></p>
+
+<p style="margin-left:17%;">Compiled information about
+globs.</p>
+
+<p style="margin-left:11%;"><i>BASE/mime/magic</i></p>
+
+<p style="margin-left:17%;">Compiled information about
+magic numbers.</p>
+
+
+<p style="margin-left:11%;"><i>BASE/mime/MEDIA/SUBTYPE.xml</i></p>
+
+<p style="margin-left:17%;">Descriptions of a mimetype in
+multiple languages, used for the &quot;--describe&quot;
+switch.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If a file has
+an empty mimetype or an empty description, most probably the
+file doesn&rsquo;t exist and the given name doesn&rsquo;t
+match any globs. An empty description can also mean that
+there is no description available in the language you
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+exits with a non-zero exit value if either the commandline
+arguments failed, a module it depends on wasn&rsquo;t found
+or the shared mime-info database wasn&rsquo;t accessible.
+See File::MimeInfo for more details.</p>
+
+<h2>TODO
+<a name="TODO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&rsquo;--all&rsquo; switch doesn&rsquo;t really show all
+matches, but only one per mime-typing method. This needs to
+be implemented in the modules first.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you find
+bugs, please file them in our Github issue tracker at
+&lt;https://github.com/mbeijen/File-MimeInfo/issues&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mimetype</b>
+doesn&rsquo;t provide a switch for looking inside compressed
+files because it seems to me that this can only be done by
+un-compressing the file, something that defeats the purpose.
+On the other hand the option should exist for strict
+compatibility with <b>file</b>(1). Possibly a subclass
+should be made for this one day.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Jaap
+Karssenberg &lt;pardus@cpan.org&gt; Maintained by Michiel
+Beijen &lt;mb@x14.nl&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2003, 2012 Jaap G Karssenberg. All rights reserved. This
+program is free software; you can redistribute it and/or
+modify it under the same terms as Perl.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+distributed in the hope that it will be useful, but
+<small>WITHOUT ANY WARRANTY</small> ; without even the
+implied warranty of <small>MERCHANTABILITY</small> or
+<small>FITNESS FOR A PARTICULAR PURPOSE.</small></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>file</b>(1),
+<b>update-mime-database</b>(1), <b>File::MimeInfo</b>(3),
+&lt;http://freedesktop.org/Software/shared-mime-info&gt;</p>
+<hr>
+</body>
+</html>

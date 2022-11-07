@@ -1,0 +1,918 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pdftocairo</title>
+
+</head>
+<body>
+
+<h1 align="center">pdftocairo</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT CODES">EXIT CODES</a><br>
+<a href="#JPEG OPTIONS">JPEG OPTIONS</a><br>
+<a href="#WINDOWS PRINTER OPTIONS">WINDOWS PRINTER OPTIONS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pdftocairo -
+Portable Document Format (PDF) to
+PNG/JPEG/TIFF/PDF/PS/EPS/SVG using cairo</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pdftocairo</b>
+[options] <i>PDF-file</i> [<i>output-file</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pdftocairo</b>
+converts Portable Document Format (PDF) files, using the
+cairo output device of the poppler PDF library, to any of
+the following output formats:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Portable Network Graphics (PNG)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>JPEG Interchange Format (JPEG)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Tagged Image File Format (TIFF)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Portable Document Format (PDF)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>PostScript (PS)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Encapsulated PostScript (EPS)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Scalable Vector Graphics (SVG)</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Windows Printer</p></td>
+<td width="31%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pdftocairo</b>
+reads the PDF file, <i>PDF-file</i>, and writes to
+<i>output-file</i>. The image formats (PNG, JPEG, and TIFF)
+generate one file per page with the page number and file
+type appended to <i>output-file</i>. When -singlefile is
+used with the image formats, the file type is appended to
+<i>output-file</i>. When the output format is a vector
+format (PDF, PS, EPS, and SVG), <i>output-file</i> is the
+full filename.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>PDF-file</i> is &ldquo;-&rdquo; , the PDF is read from
+stdin. If the <i>output-file</i> is &ldquo;-&rdquo; , the
+output file will be written to stdout. Using stdout is not
+valid with image formats unless -singlefile is used. If
+<i>output-file</i> is not used, the output filename will be
+derived from the <i>PDF-file</i> filename.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Not all options
+are valid with all output formats. One (and only one) of the
+output format options (-png, -jpeg, -tiff, -pdf, -print,
+-ps, -eps, or -svg) must be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The resolution
+options (-r, -rx, -ry) set the resolution of the image
+output formats. The image dimensions will depend on the PDF
+page size and the resolution. For the vector outputs,
+regions of the page that can not be represented natively in
+the output format (eg translucency in PS) will be rasterized
+at the resolution specified by the resolution options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The -scale-to
+options may be used to set a fixed image size. The image
+resolution will vary with the page size.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The cropping
+options (-x, -y, -W, and -H) use units of pixels with the
+image formats and PostScript points (1/72 inch) with the
+vector formats. When cropping is used with vector output the
+cropped region is centered unless -nocenter is used in which
+case the cropped region is at the top left (SVG) or bottom
+left (PDF, PS, EPS).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-png</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Generates a PNG file(s)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-jpeg</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generates a JPEG file(s). See also -jpegopt.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-tiff</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generates a TIFF file(s)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-pdf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generates a PDF file</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-ps</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generate a PS file</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-eps</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generate an EPS file. An EPS file contains a single
+image, so if you use this option with a multi-page PDF file,
+you must use -f and -l to specify a single page. The page
+size options (-origpagesizes, -paper, -paperw, -paperh) can
+not be used with this option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-svg</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generate a SVG (Scalable Vector Graphics) file</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-print</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(Windows only) Prints to a system printer. See also
+-printer and -printeropt.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">If an output file is not
+specified, the output will be sent to the printer. <br>
+The output file &rsquo;-&rsquo; can not be used with this
+option.</p>
+
+<p style="margin-left:11%;"><b>-printdlg</b></p>
+
+<p style="margin-left:22%;">(Windows only) Prints to a
+system printer. Displays the print dialog to allow the print
+options to be modified before printing.</p>
+
+<p style="margin-left:11%;"><b>-f</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the first page to
+convert.</p>
+
+<p style="margin-left:11%;"><b>-l</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the last page to
+convert.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-o</b></p></td>
+<td width="8%"></td>
+<td width="60%">
+
+
+<p>Generates only the odd numbered pages.</p></td>
+<td width="18%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-e</b></p></td>
+<td width="8%"></td>
+<td width="60%">
+
+
+<p>Generates only the even numbered pages.</p></td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-singlefile</b></p>
+
+<p style="margin-left:22%;">Writes only the first page and
+does not add digits.</p>
+
+<p style="margin-left:11%;"><b>-r</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the X and Y
+resolution, in pixels per inch of image files (or rasterized
+regions in vector output). The default is 150 PPI.</p>
+
+<p style="margin-left:11%;"><b>-rx</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the X resolution, in
+pixels per inch of image files (or rasterized regions in
+vector output). The default is 150 PPI.</p>
+
+<p style="margin-left:11%;"><b>-ry</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the Y resolution, in
+pixels per inch of image files (or rasterized regions in
+vector output). The default is 150 PPI.</p>
+
+<p style="margin-left:11%;"><b>-scale-to</b>
+<i>number</i></p>
+
+<p style="margin-left:22%;">Scales the long side of each
+page (width for landscape pages, height for portrait pages)
+to fit in scale-to pixels. The size of the short side will
+be determined by the aspect ratio of the page (PNG/JPEG/TIFF
+only).</p>
+
+<p style="margin-left:11%;"><b>-scale-to-x</b>
+<i>number</i></p>
+
+<p style="margin-left:22%;">Scales each page horizontally
+to fit in scale-to-x pixels. If scale-to-y is set to -1, the
+vertical size will determined by the aspect ratio of the
+page (PNG/JPEG/TIFF only).</p>
+
+<p style="margin-left:11%;"><b>-scale-to-y</b>
+<i>number</i></p>
+
+<p style="margin-left:22%;">Scales each page vertically to
+fit in scale-to-y pixels. If scale-to-x is set to -1, the
+horizontal size will determined by the aspect ratio of the
+page (PNG/JPEG/TIFF only).</p>
+
+<p style="margin-left:11%;"><b>-x</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the x-coordinate of
+the crop area top left corner in pixels (image output) or
+points (vector output)</p>
+
+<p style="margin-left:11%;"><b>-y</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the y-coordinate of
+the crop area top left corner in pixels (image output) or
+points (vector output)</p>
+
+<p style="margin-left:11%;"><b>-W</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the width of crop
+area in pixels (image output) or points (vector output)
+(default is 0)</p>
+
+<p style="margin-left:11%;"><b>-H</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the height of crop
+area in pixels (image output) or points (vector output)
+(default is 0)</p>
+
+<p style="margin-left:11%;"><b>-sz</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specifies the size of crop
+square in pixels (image output) or points (vector output)
+(sets -W and -H)</p>
+
+<p style="margin-left:11%;"><b>-cropbox</b></p>
+
+<p style="margin-left:22%;">Uses the crop box rather than
+media box when generating the files (PNG/JPEG/TIFF only)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-mono</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Generate a monochrome file (PNG and TIFF only).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-gray</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Generate a grayscale file (PNG, JPEG, and TIFF
+only).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-antialias</b></p>
+
+<p style="margin-left:22%;">Set the cairo antialias option
+used for text and drawing in image files (or rasterized
+regions in vector output). The options are: <b><br>
+default</b></p>
+
+<p style="margin-left:32%;">Use the default antialiasing
+for the target device. This is the default setting if
+-antialias is not used.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>none</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Antialiasing is disabled.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>gray</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Perform single-color antialiasing using shades of
+gray.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>subpixel</b></p>
+
+<p style="margin-left:32%;">Perform antialiasing by taking
+advantage of the order of subpixel elements on devices such
+as LCD.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>fast</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Hint that the backend should perform some antialiasing
+but prefer speed over quality.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>good</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>The backend should balance quality against
+performance.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>best</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Hint that the backend should render at the highest
+quality, sacrificing speed if necessary.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-transp</b></p>
+
+<p style="margin-left:22%;">Use a transparent page color
+instead of white (PNG and TIFF only).</p>
+
+<p style="margin-left:11%;"><b>-icc</b> <i>icc-file</i></p>
+
+<p style="margin-left:22%;">Use the specified ICC file as
+the output profile (PNG only). The profile will be embedded
+in the PNG file.</p>
+
+<p style="margin-left:11%;"><b>-jpegopt</b>
+<i>jpeg-options</i></p>
+
+<p style="margin-left:22%;">When used with -jpeg, takes a
+list of options to control the jpeg compression. See <b>JPEG
+OPTIONS</b> for the available options.</p>
+
+<p style="margin-left:11%;"><b>-level2</b></p>
+
+<p style="margin-left:22%;">Generate Level 2 PostScript (PS
+only).</p>
+
+<p style="margin-left:11%;"><b>-level3</b></p>
+
+<p style="margin-left:22%;">Generate Level 3 PostScript (PS
+only). This enables all Level 2 features plus shading
+patterns and masked images. This is the default setting.</p>
+
+<p style="margin-left:11%;"><b>-origpagesizes</b></p>
+
+<p style="margin-left:22%;">This option is the same as
+&quot;-paper match&quot;.</p>
+
+<p style="margin-left:11%;"><b>-paper</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Set the paper size to one of
+&quot;letter&quot;, &quot;legal&quot;, &quot;A4&quot;, or
+&quot;A3&quot; (PS,PDF,SVG only). This can also be set to
+&quot;match&quot;, which will set the paper size of each
+page to match the size specified in the PDF file. If none
+the -paper, -paperw, or -paperh options are specified the
+default is to match the paper size.</p>
+
+<p style="margin-left:11%;"><b>-paperw</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Set the paper width, in points
+(PS,PDF,SVG only).</p>
+
+<p style="margin-left:11%;"><b>-paperh</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Set the paper height, in points
+(PS,PDF,SVG only).</p>
+
+<p style="margin-left:11%;"><b>-nocrop</b></p>
+
+<p style="margin-left:22%;">By default, printing output is
+cropped to the CropBox specified in the PDF file. This
+option disables cropping (PS,PDF,SVG only).</p>
+
+<p style="margin-left:11%;"><b>-expand</b></p>
+
+<p style="margin-left:22%;">Expand PDF pages smaller than
+the paper to fill the paper (PS,PDF,SVG only). By default,
+these pages are not scaled.</p>
+
+<p style="margin-left:11%;"><b>-noshrink</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t scale PDF pages
+which are larger than the paper (PS,PDF,SVG only). By
+default, pages larger than the paper are shrunk to fit.</p>
+
+<p style="margin-left:11%;"><b>-nocenter</b></p>
+
+<p style="margin-left:22%;">By default, PDF pages smaller
+than the paper (after any scaling) are centered on the
+paper. This option causes them to be aligned to the
+lower-left corner of the paper instead (PS,PDF,SVG
+only).</p>
+
+<p style="margin-left:11%;"><b>-duplex</b></p>
+
+<p style="margin-left:22%;">Adds the %%IncludeFeature:
+*Duplex DuplexNoTumble DSC comment to the PostScript file
+(PS only). This tells the print manager to enable
+duplexing.</p>
+
+<p style="margin-left:11%;"><b>-printer</b>
+<i>printer-name</i></p>
+
+<p style="margin-left:22%;">(Windows only). When used with
+-print, specifies the name of the printer to be used,
+instead of the system default.</p>
+
+<p style="margin-left:11%;"><b>-printopt</b>
+<i>printer-options</i></p>
+
+<p style="margin-left:22%;">(Windows only). When used with
+-print, takes a list of options to be used to configure the
+printer. See <b>WINDOWS PRINTER OPTIONS</b> for the
+available options.</p>
+
+<p style="margin-left:11%;"><b>-setupdlg</b></p>
+
+<p style="margin-left:22%;">(Windows only). When used with
+-print, the printer properties dialog is displayed allowing
+the print settings to be modified before printing. The paper
+size selected in the print properties dialog will be used
+except when -origpagesizes is specified.</p>
+
+<p style="margin-left:11%;"><b>-opw</b> <i>password</i></p>
+
+<p style="margin-left:22%;">Specify the owner password for
+the PDF file. Providing this will bypass all security
+restrictions.</p>
+
+<p style="margin-left:11%;"><b>-upw</b> <i>password</i></p>
+
+<p style="margin-left:22%;">Specify the user password for
+the PDF file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t print any messages or errors.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print copyright and version information.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print usage information. (<b>-help</b> and <b>--help</b>
+are equivalent.)</p></td></tr>
+</table>
+
+<h2>EXIT CODES
+<a name="EXIT CODES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The poppler
+tools use the following exit codes:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">0</p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p style="margin-top: 1em">No error.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1</p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Error opening a PDF file.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2</p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Error opening an output file.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3</p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Error related to PDF permissions.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4</p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Error related to ICC profile.</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>99</p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Other error.</p></td>
+<td width="28%">
+</td></tr>
+</table>
+
+<h2>JPEG OPTIONS
+<a name="JPEG OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When JPEG
+output is specified, the -jpegopt option can be used to
+control the JPEG compression parameters. It takes a string
+of the form
+&quot;&lt;opt&gt;=&lt;val&gt;[,&lt;opt&gt;=&lt;val&gt;]&quot;.
+Currently the available options are: <b><br>
+quality</b></p>
+
+<p style="margin-left:22%;">Selects the JPEG quality value.
+The value must be an integer between 0 and 100.</p>
+
+<p style="margin-left:11%;"><b>progressive</b></p>
+
+<p style="margin-left:22%;">Select progressive JPEG output.
+The possible values are &quot;y&quot;, &quot;n&quot;,
+indicating progressive (yes) or non-progressive (no),
+respectively.</p>
+
+<p style="margin-left:11%;"><b>optimize</b></p>
+
+<p style="margin-left:22%;">Sets whether to compute optimal
+Huffman coding tables for the JPEG output, which will create
+smaller files but make an extra pass over the data. The
+value must be &quot;y&quot; or &quot;n&quot;, with
+&quot;y&quot; performing optimization, otherwise the default
+Huffman tables are used.</p>
+
+<h2>WINDOWS PRINTER OPTIONS
+<a name="WINDOWS PRINTER OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In Windows, you
+can use the -print option to print directly to a system
+printer. Additionally, you can use the -printopt option to
+configure the printer. It takes a string of the form
+&quot;&lt;opt&gt;=&lt;val&gt;[,&lt;opt&gt;=&lt;val&gt;]&quot;.
+Currently the available options are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>source</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Selects the source paper tray to be used (bin). The
+possible values are &quot;upper&quot;, &quot;onlyone&quot;,
+&quot;lower&quot;, &quot;middle&quot;, &quot;manual&quot;,
+&quot;envelope&quot;, &quot;envmanual&quot;,
+&quot;auto&quot;, &quot;tractor&quot;, &quot;smallfmt&quot;,
+&quot;largefmt&quot;, &quot;largecapacity&quot;,
+&quot;formsource&quot;, or a numeric value to choose a
+driver specific source.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>duplex</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Sets the duplex mode of the printer. The possible values
+are &quot;off&quot;, &quot;short&quot; or &quot;long&quot;,
+indicating no duplexing, short-edge binding, or long-edge
+binding, respectively. General option -duplex is a synonym
+of &quot;duplex=long&quot;. If both options are specified,
+-printopt has priority.</p></td></tr>
+</table>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The pdftocairo
+software and documentation are copyright 1996-2004 Glyph
+&amp; Cog, LLC and copyright 2005-2011 The Poppler
+Developers.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pdfdetach</b>(1),
+<b>pdffonts</b>(1), <b>pdfimages</b>(1), <b>pdfinfo</b>(1),
+<b>pdftohtml</b>(1), <b>pdftoppm</b>(1), <b>pdftops</b>(1),
+<b>pdftotext</b>(1) <b>pdfseparate</b>(1), <b>pdfsig</b>(1),
+<b>pdfunite</b>(1)</p>
+<hr>
+</body>
+</html>

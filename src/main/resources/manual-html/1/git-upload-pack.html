@@ -1,0 +1,200 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-UPLOAD-PACK</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-UPLOAD-PACK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">git-upload-pack
+- Send objects packed back to git-fetch-pack</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git-upload-pack</i>
+[--[no-]strict] [--timeout=&lt;n&gt;] [--stateless-rpc] <br>
+[--advertise-refs] &lt;directory&gt;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Invoked by
+<i>git fetch-pack</i>, learns what objects the other side is
+missing, and sends them after packing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command is
+usually not invoked directly by the end user. The UI for the
+protocol is on the <i>git fetch-pack</i> side, and the
+program pair is meant to be used to pull updates from a
+remote repository. For push operations, see <i>git
+send-pack</i>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">--[no-]strict</p>
+
+<p style="margin-left:17%;">Do not try
+&lt;directory&gt;/.git/ if &lt;directory&gt; is no Git
+directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--timeout=&lt;n&gt;</p>
+
+<p style="margin-left:17%;">Interrupt transfer after
+&lt;n&gt; seconds of inactivity.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--stateless-rpc</p>
+
+<p style="margin-left:17%;">Perform only a single
+read-write cycle with stdin and stdout. This fits with the
+HTTP POST request processing model where a program may read
+the request, write a response, and must exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--http-backend-info-refs</p>
+
+<p style="margin-left:17%;">Used by
+<b>git-http-backend</b>(1) to serve up
+<b>$GIT_URL/info/refs?service=git-upload-pack</b> requests.
+See &quot;Smart Clients&quot; in
+<b><font color="#0000FF">the HTTP transfer
+protocols</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">documentation and &quot;HTTP
+Transport&quot; in</font> <b><font color="#0000FF">the Git
+Wire Protocol, Version 2</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">documentation. Also understood by
+<b>git-receive-pack</b>(1).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;directory&gt;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+repository to sync from.</font></p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>GIT_PROTOCOL</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Internal
+variable used for handshaking the wire protocol. Server
+admins may need to configure some transports to allow this
+variable to be passed. See the discussion in
+<b>git</b>(1).</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>gitnamespaces</b>(7)</font></p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Part
+of the <b>git</b>(1) suite</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em"><font color="#000000">the HTTP
+transfer protocols</font></p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">file:///usr/share/doc/git/html/technical/http-protocol.html</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="49%">
+
+
+<p style="margin-top: 1em"><font color="#000000">the Git
+Wire Protocol, Version 2</font></p></td>
+<td width="34%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">file:///usr/share/doc/git/html/technical/protocol-v2.html</font></p>
+<hr>
+</body>
+</html>

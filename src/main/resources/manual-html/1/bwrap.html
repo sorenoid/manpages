@@ -1,0 +1,561 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:26 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BWRAP</title>
+
+</head>
+<body>
+
+<h1 align="center">BWRAP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bwrap -
+container setup utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em"><b>bwrap</b> [<i>OPTION</i>...]
+[<i>COMMAND</i>]</p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bwrap</b> is
+a privileged helper for container setup. You are unlikely to
+use it directly from the commandline, although that is
+possible.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It works by
+creating a new, completely empty, filesystem namespace where
+the root is on a tmpfs that is invisible from the host, and
+which will be automatically cleaned up when the last process
+exits. You can then use commandline options to construct the
+root filesystem and process environment for the command to
+run in the namespace.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>bwrap</b> creates a new mount namespace for the sandbox.
+Optionally it also sets up new user, ipc, pid, network and
+uts namespaces (but note the user namespace is required if
+bwrap is not installed setuid root). The application in the
+sandbox can be made to run with a different UID and GID.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If needed (e.g.
+when using a PID namespace) <b>bwrap</b> is running a
+minimal pid 1 process in the sandbox that is responsible for
+reaping zombies. It also detects when the initial
+application process (pid 2) dies and reports its exit status
+back to the original spawner. The pid 1 process exits to
+clean up the sandbox when there are no other processes in
+the sandbox left.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When options
+are used multiple times, the last option wins, unless
+otherwise specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">General
+options:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--help</b></p>
+
+<p style="margin-left:17%;">Print help and exit</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print version</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--args
+FD</b></p>
+
+<p style="margin-left:17%;">Parse nul-separated arguments
+from the given file descriptor. This option can be used
+multiple times to parse options from multiple sources.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options related
+to kernel namespaces:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-user</b></p>
+
+<p style="margin-left:17%;">Create a new user namespace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-user-try</b></p>
+
+<p style="margin-left:17%;">Create a new user namespace if
+possible else skip it</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-ipc</b></p>
+
+<p style="margin-left:17%;">Create a new ipc namespace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-pid</b></p>
+
+<p style="margin-left:17%;">Create a new pid namespace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-net</b></p>
+
+<p style="margin-left:17%;">Create a new network
+namespace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-uts</b></p>
+
+<p style="margin-left:17%;">Create a new uts namespace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-cgroup</b></p>
+
+<p style="margin-left:17%;">Create a new cgroup
+namespace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-cgroup-try</b></p>
+
+<p style="margin-left:17%;">Create a new cgroup namespace
+if possible else skip it</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unshare-all</b></p>
+
+<p style="margin-left:17%;">Unshare all possible
+namespaces. Currently equivalent with: <b>--unshare-user-try
+--unshare-ipc --unshare-pid --unshare-net --unshare-uts
+--unshare-cgroup-try</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--userns
+FD</b></p>
+
+<p style="margin-left:17%;">Use an existing user namespace
+instead of creating a new one. The namespace must fulfil the
+permission requirements for setns(), which generally means
+that it must be a descendant of the currently active user
+namespace, owned by the same user.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is
+incompatible with --unshare-user, and doesn't work in the
+setuid version of bubblewrap.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--userns2
+FD</b></p>
+
+<p style="margin-left:17%;">After setting up the new
+namespace, switch into the specified namespace. For this to
+work the specified namespace must be a descendant of the
+user namespace used for the setup, so this is only useful in
+combination with --userns.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is useful
+because sometimes bubblewrap itself creates nested user
+namespaces (to work around some kernel issues) and --userns2
+can be used to enter these.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--pidns
+FD</b></p>
+
+<p style="margin-left:17%;">Use an existing pid namespace
+instead of creating one. This is often used with --userns,
+because the pid namespace must be owned by the same user
+namespace that bwrap uses.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that this
+can be combined with --unshare-pid, and in that case it
+means that the sandbox will be in its own pid namespace,
+which is a child of the passed in one.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--uid
+UID</b></p>
+
+<p style="margin-left:17%;">Use a custom user id in the
+sandbox (requires <b>--unshare-user</b>)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--gid
+GID</b></p>
+
+<p style="margin-left:17%;">Use a custom group id in the
+sandbox (requires <b>--unshare-user</b>)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--hostname
+HOSTNAME</b></p>
+
+<p style="margin-left:17%;">Use a custom hostname in the
+sandbox (requires <b>--unshare-uts</b>)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options about
+environment setup:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--chdir
+DIR</b></p>
+
+<p style="margin-left:17%;">Change directory to DIR</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--setenv VAR
+VALUE</b></p>
+
+<p style="margin-left:17%;">Set an environment variable</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unsetenv
+VAR</b></p>
+
+<p style="margin-left:17%;">Unset an environment
+variable</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--clearenv</b></p>
+
+<p style="margin-left:17%;">Unset all environment
+variables, except for <b>PWD</b> and any that are
+subsequently set by <b>--setenv</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Options for
+monitoring the sandbox from the outside:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--lock-file
+DEST</b></p>
+
+<p style="margin-left:17%;">Take a lock on DEST while the
+sandbox is running. This option can be used multiple times
+to take locks on multiple files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--sync-fd
+FD</b></p>
+
+<p style="margin-left:17%;">Keep this file descriptor open
+while the sandbox is running</p>
+
+<p style="margin-left:11%; margin-top: 1em">Filesystem
+related options. These are all operations that modify the
+filesystem directly, or mounts stuff in the filesystem.
+These are applied in the order they are given as
+arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any missing
+parent directories that are required to create a specified
+destination are automatically created as needed. Their
+permissions are normally set to 0755 (rwxr-xr-x). However,
+if a <b>--perms</b> option is in effect, and it sets the
+permissions for group or other to zero, then newly-created
+parent directories will also have their corresponding
+permission set to zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--perms
+OCTAL</b></p>
+
+<p style="margin-left:17%;">This option does nothing on its
+own, and must be followed by one of the options that it
+affects. It sets the permissions for the next operation to
+OCTAL. Subsequent operations are not affected: for example,
+--perms 0700 --tmpfs /a --tmpfs /b will mount /a with
+permissions 0700, then return to the default permissions for
+/b.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--bind SRC
+DEST</b></p>
+
+<p style="margin-left:17%;">Bind mount the host path SRC on
+DEST</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--bind-try
+SRC DEST</b></p>
+
+<p style="margin-left:17%;">Equal to <b>--bind</b> but
+ignores non-existent SRC</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dev-bind
+SRC DEST</b></p>
+
+<p style="margin-left:17%;">Bind mount the host path SRC on
+DEST, allowing device access</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dev-bind-try
+SRC DEST</b></p>
+
+<p style="margin-left:17%;">Equal to <b>--dev-bind</b> but
+ignores non-existent SRC</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--ro-bind
+SRC DEST</b></p>
+
+<p style="margin-left:17%;">Bind mount the host path SRC
+readonly on DEST</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--ro-bind-try
+SRC DEST</b></p>
+
+<p style="margin-left:17%;">Equal to <b>--ro-bind</b> but
+ignores non-existent SRC</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--remount-ro
+DEST</b></p>
+
+<p style="margin-left:17%;">Remount the path DEST as
+readonly. It works only on the specified mount point,
+without changing any other mount point under the specified
+path</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--proc
+DEST</b></p>
+
+<p style="margin-left:17%;">Mount procfs on DEST</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dev
+DEST</b></p>
+
+<p style="margin-left:17%;">Mount new devtmpfs on DEST</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--tmpfs
+DEST</b></p>
+
+<p style="margin-left:17%;">Mount new tmpfs on DEST. If the
+previous option was <b>--perms</b>, it sets the mode of the
+tmpfs. Otherwise, the tmpfs has mode 0755.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mqueue
+DEST</b></p>
+
+<p style="margin-left:17%;">Mount new mqueue on DEST</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dir
+DEST</b></p>
+
+<p style="margin-left:17%;">Create a directory at DEST. If
+the directory already exists, its permissions are
+unmodified, ignoring <b>--perms</b> (use <b>--chmod</b> if
+the permissions of an existing directory need to be
+changed). If the directory is newly created and the previous
+option was <b>--perms</b>, it sets the mode of the
+directory. Otherwise, newly-created directories have mode
+0755.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--file FD
+DEST</b></p>
+
+<p style="margin-left:17%;">Copy from the file descriptor
+FD to DEST. If the previous option was <b>--perms</b>, it
+sets the mode of the new file. Otherwise, the file has mode
+0666 (note that this is not the same as
+<b>--bind-data</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--bind-data
+FD DEST</b></p>
+
+<p style="margin-left:17%;">Copy from the file descriptor
+FD to a file which is bind-mounted on DEST. If the previous
+option was <b>--perms</b>, it sets the mode of the new file.
+Otherwise, the file has mode 0600 (note that this is not the
+same as <b>--file</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--ro-bind-data
+FD DEST</b></p>
+
+<p style="margin-left:17%;">Copy from the file descriptor
+FD to a file which is bind-mounted read-only on DEST. If the
+previous option was <b>--perms</b>, it sets the mode of the
+new file. Otherwise, the file has mode 0600 (note that this
+is not the same as <b>--file</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--symlink
+SRC DEST</b></p>
+
+<p style="margin-left:17%;">Create a symlink at DEST with
+target SRC</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--chmod
+OCTAL PATH</b></p>
+
+<p style="margin-left:17%;">Set the permissions of PATH,
+which must already exist, to OCTAL.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lockdown
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--seccomp
+FD</b></p>
+
+<p style="margin-left:17%;">Load and use seccomp rules from
+FD. The rules need to be in the form of a compiled cBPF
+program, as generated by seccomp_export_bpf. If this option
+is given more than once, only the last one is used. Use
+<b>--add-seccomp-fd</b> if multiple seccomp programs are
+needed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--add-seccomp-fd
+FD</b></p>
+
+<p style="margin-left:17%;">Load and use seccomp rules from
+FD. The rules need to be in the form of a compiled cBPF
+program, as generated by seccomp_export_bpf. This option can
+be repeated, in which case all the seccomp programs will be
+loaded in the order given (note that the kernel will
+evaluate them in reverse order, so the last program on the
+bwrap command-line is evaluated first). All of them, except
+possibly the last, must allow use of the PR_SET_SECCOMP
+prctl. This option cannot be combined with
+<b>--seccomp</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--exec-label
+LABEL</b></p>
+
+<p style="margin-left:17%;">Exec Label from the sandbox. On
+an SELinux system you can specify the SELinux context for
+the sandbox process(s).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--file-label
+LABEL</b></p>
+
+<p style="margin-left:17%;">File label for temporary
+sandbox content. On an SELinux system you can specify the
+SELinux context for the sandbox content.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--block-fd
+FD</b></p>
+
+<p style="margin-left:17%;">Block the sandbox on reading
+from FD until some data is available.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--userns-block-fd
+FD</b></p>
+
+<p style="margin-left:17%;">Do not initialize the user
+namespace but wait on FD until it is ready. This allow
+external processes (like newuidmap/newgidmap) to setup the
+user namespace before it is used by the sandbox process.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--info-fd
+FD</b></p>
+
+<p style="margin-left:17%;">Write information in JSON
+format about the sandbox to FD.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--new-session</b></p>
+
+<p style="margin-left:17%;">Create a new terminal session
+for the sandbox (calls setsid()). This disconnects the
+sandbox from the controlling terminal which means the
+sandbox can't for instance inject input into the
+terminal.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: In a
+general sandbox, if you don't use --new-session, it is
+recommended to use seccomp to disallow the TIOCSTI ioctl,
+otherwise the application can feed keyboard input to the
+terminal.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--die-with-parent</b></p>
+
+<p style="margin-left:17%;">Ensures child process (COMMAND)
+dies when bwrap's parent dies. Kills (SIGKILL) all bwrap
+sandbox processes in sequence from parent to child including
+COMMAND process when bwrap or bwrap's parent dies. See
+prctl, PR_SET_PDEATHSIG.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--as-pid-1</b></p>
+
+<p style="margin-left:17%;">Do not create a process with
+PID=1 in the sandbox to reap child processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--cap-add
+CAP</b></p>
+
+<p style="margin-left:17%;">Add the specified capability
+when running as privileged user. It accepts the special
+value ALL to add all the permitted caps.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--cap-drop
+CAP</b></p>
+
+<p style="margin-left:17%;">Drop the specified capability
+when running as privileged user. It accepts the special
+value ALL to drop all the caps. By default no caps are left
+in the sandboxed process. The <b>--cap-add</b> and
+<b>--cap-drop</b> options are processed in the order they
+are specified on the command line. Please be careful to the
+order they are specified.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>HOME</b></p>
+
+<p style="margin-left:17%;">Used as the cwd in the sandbox
+if <b>--chdir</b> has not been explicitly specified and the
+current cwd is not present inside the sandbox. The
+<b>--setenv</b> option can be used to override the value
+that is used here.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>bwrap</b> command returns the exit status of the initial
+application process (pid 2 in the sandbox).</p>
+<hr>
+</body>
+</html>

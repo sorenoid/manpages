@@ -1,0 +1,563 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-GREP</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-GREP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#NOTES ON THREADS">NOTES ON THREADS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-grep -
+Print lines matching a pattern</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git grep</i>
+[-a | --text] [-I] [--textconv] [-i | --ignore-case] [-w |
+--word-regexp] <br>
+[-v | --invert-match] [-h|-H] [--full-name] <br>
+[-E | --extended-regexp] [-G | --basic-regexp] <br>
+[-P | --perl-regexp] <br>
+[-F | --fixed-strings] [-n | --line-number] [--column] <br>
+[-l | --files-with-matches] [-L | --files-without-match]
+<br>
+[(-O | --open-files-in-pager) [&lt;pager&gt;]] <br>
+[-z | --null] <br>
+[ -o | --only-matching ] [-c | --count] [--all-match] [-q |
+--quiet] <br>
+[--max-depth &lt;depth&gt;] [--[no-]recursive] <br>
+[--color[=&lt;when&gt;] | --no-color] <br>
+[--break] [--heading] [-p | --show-function] <br>
+[-A &lt;post-context&gt;] [-B &lt;pre-context&gt;] [-C
+&lt;context&gt;] <br>
+[-W | --function-context] <br>
+[--threads &lt;num&gt;] <br>
+[-f &lt;file&gt;] [-e] &lt;pattern&gt; <br>
+[--and|--or|--not|(|)|-e &lt;pattern&gt;...] <br>
+[--recurse-submodules] [--parent-basename &lt;basename&gt;]
+<br>
+[ [--[no-]exclude-standard] [--cached | --no-index |
+--untracked] | &lt;tree&gt;...] <br>
+[--] [&lt;pathspec&gt;...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Look for
+specified patterns in the tracked files in the work tree,
+blobs registered in the index file, or blobs in given tree
+objects. Patterns are lists of one or more search
+expressions separated by newline characters. An empty string
+as search expression matches all lines.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">--cached</p>
+
+<p style="margin-left:17%;">Instead of searching tracked
+files in the working tree, search blobs registered in the
+index file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--no-index</p>
+
+<p style="margin-left:17%;">Search files in the current
+directory that is not managed by Git.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--untracked</p>
+
+<p style="margin-left:17%;">In addition to searching in the
+tracked files in the working tree, search also in untracked
+files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-exclude-standard</p>
+
+<p style="margin-left:17%;">Also search in ignored files by
+not honoring the <b>.gitignore</b> mechanism. Only useful
+with <b>--untracked</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--exclude-standard</p>
+
+<p style="margin-left:17%;">Do not pay attention to ignored
+files specified via the <b>.gitignore</b> mechanism. Only
+useful when searching files in the current directory with
+<b>--no-index</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--recurse-submodules</p>
+
+<p style="margin-left:17%;">Recursively search in each
+submodule that is active and checked out in the repository.
+When used in combination with the &lt;tree&gt; option the
+prefix of all submodule output will be the name of the
+parent project&rsquo;s &lt;tree&gt; object. This option has
+no effect if <b>--no-index</b> is given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-a, --text</p>
+
+<p style="margin-left:17%;">Process binary files as if they
+were text.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--textconv</p>
+
+<p style="margin-left:17%;">Honor textconv filter
+settings.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-textconv</p>
+
+<p style="margin-left:17%;">Do not honor textconv filter
+settings. This is the default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-i,
+--ignore-case</p>
+
+<p style="margin-left:17%;">Ignore case differences between
+the patterns and the files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-I</p>
+
+<p style="margin-left:17%;">Don&rsquo;t match the pattern
+in binary files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--max-depth
+&lt;depth&gt;</p>
+
+<p style="margin-left:17%;">For each &lt;pathspec&gt; given
+on command line, descend at most &lt;depth&gt; levels of
+directories. A value of -1 means no limit. This option is
+ignored if &lt;pathspec&gt; contains active wildcards. In
+other words if &quot;a*&quot; matches a directory named
+&quot;a*&quot;, &quot;*&quot; is matched literally so
+--max-depth is still effective.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-r,
+--recursive</p>
+
+<p style="margin-left:17%;">Same as <b>--max-depth=-1</b>;
+this is the default.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-recursive</p>
+
+<p style="margin-left:17%;">Same as
+<b>--max-depth=0</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-w,
+--word-regexp</p>
+
+<p style="margin-left:17%;">Match the pattern only at word
+boundary (either begin at the beginning of a line, or
+preceded by a non-word character; end at the end of a line
+or followed by a non-word character).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-v,
+--invert-match</p>
+
+<p style="margin-left:17%;">Select non-matching lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-h, -H</p>
+
+<p style="margin-left:17%;">By default, the command shows
+the filename for each match. <b>-h</b> option is used to
+suppress this output. <b>-H</b> is there for completeness
+and does not do anything except it overrides <b>-h</b> given
+earlier on the command line.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--full-name</p>
+
+<p style="margin-left:17%;">When run from a subdirectory,
+the command usually outputs paths relative to the current
+directory. This option forces paths to be output relative to
+the project top directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-E,
+--extended-regexp, -G, --basic-regexp</p>
+
+<p style="margin-left:17%;">Use POSIX extended/basic regexp
+for patterns. Default is to use basic regexp.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-P,
+--perl-regexp</p>
+
+<p style="margin-left:17%;">Use Perl-compatible regular
+expressions for patterns.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Support for
+these types of regular expressions is an optional
+compile-time dependency. If Git wasn&rsquo;t compiled with
+support for them providing this option will cause it to
+die.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-F,
+--fixed-strings</p>
+
+<p style="margin-left:17%;">Use fixed strings for patterns
+(don&rsquo;t interpret pattern as a regex).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-n,
+--line-number</p>
+
+<p style="margin-left:17%;">Prefix the line number to
+matching lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--column</p>
+
+<p style="margin-left:17%;">Prefix the 1-indexed
+byte-offset of the first match from the start of the
+matching line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-l,
+--files-with-matches, --name-only, -L,
+--files-without-match</p>
+
+<p style="margin-left:17%;">Instead of showing every
+matched line, show only the names of files that contain (or
+do not contain) matches. For better compatibility with
+<i>git diff</i>, <b>--name-only</b> is a synonym for
+<b>--files-with-matches</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">-O[&lt;pager&gt;],
+--open-files-in-pager[=&lt;pager&gt;]</p>
+
+<p style="margin-left:17%;">Open the matching files in the
+pager (not the output of <i>grep</i>). If the pager happens
+to be &quot;less&quot; or &quot;vi&quot;, and the user
+specified only one pattern, the first file is positioned at
+the first match automatically. The <b>pager</b> argument is
+optional; if specified, it must be stuck to the option
+without a space. If <b>pager</b> is unspecified, the default
+pager will be used (see <b>core.pager</b> in
+<b>git-config</b>(1)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-z, --null</p>
+
+<p style="margin-left:17%;">Use \0 as the delimiter for
+pathnames in the output, and print them verbatim. Without
+this option, pathnames with &quot;unusual&quot; characters
+are quoted as explained for the configuration variable
+core.quotePath (see <b>git-config</b>(1)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-o,
+--only-matching</p>
+
+<p style="margin-left:17%;">Print only the matched
+(non-empty) parts of a matching line, with each such part on
+a separate output line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-c, --count</p>
+
+<p style="margin-left:17%;">Instead of showing every
+matched line, show the number of lines that match.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--color[=&lt;when&gt;]</p>
+
+<p style="margin-left:17%;">Show colored matches. The value
+must be always (the default), never, or auto.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--no-color</p>
+
+<p style="margin-left:17%;">Turn off match highlighting,
+even when the configuration file gives the default to color
+output. Same as <b>--color=never</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--break</p>
+
+<p style="margin-left:17%;">Print an empty line between
+matches from different files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--heading</p>
+
+<p style="margin-left:17%;">Show the filename above the
+matches in that file instead of at the start of each shown
+line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-p,
+--show-function</p>
+
+<p style="margin-left:17%;">Show the preceding line that
+contains the function name of the match, unless the matching
+line is a function name itself. The name is determined in
+the same way as <b>git diff</b> works out patch hunk headers
+(see <i>Defining a custom hunk-header</i> in
+<b>gitattributes</b>(5)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-&lt;num&gt;,
+-C &lt;num&gt;, --context &lt;num&gt;</p>
+
+<p style="margin-left:17%;">Show &lt;num&gt; leading and
+trailing lines, and place a line containing <b>--</b>
+between contiguous groups of matches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-A &lt;num&gt;,
+--after-context &lt;num&gt;</p>
+
+<p style="margin-left:17%;">Show &lt;num&gt; trailing
+lines, and place a line containing <b>--</b> between
+contiguous groups of matches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-B &lt;num&gt;,
+--before-context &lt;num&gt;</p>
+
+<p style="margin-left:17%;">Show &lt;num&gt; leading lines,
+and place a line containing <b>--</b> between contiguous
+groups of matches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-W,
+--function-context</p>
+
+<p style="margin-left:17%;">Show the surrounding text from
+the previous line containing a function name up to the one
+before the next function name, effectively showing the whole
+function in which the match was found. The function names
+are determined in the same way as <b>git diff</b> works out
+patch hunk headers (see <i>Defining a custom hunk-header</i>
+in <b>gitattributes</b>(5)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">--threads
+&lt;num&gt;</p>
+
+<p style="margin-left:17%;">Number of grep worker threads
+to use. See <b>grep.threads</b> in <i>CONFIGURATION</i> for
+more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-f
+&lt;file&gt;</p>
+
+<p style="margin-left:17%;">Read patterns from
+&lt;file&gt;, one per line.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Passing the
+pattern via &lt;file&gt; allows for providing a search
+pattern containing a \0.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Not all pattern
+types support patterns containing \0. Git will error out if
+a given pattern type can&rsquo;t support such a pattern. The
+<b>--perl-regexp</b> pattern type when compiled against the
+PCRE v2 backend has the widest support for these types of
+patterns.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In versions of
+Git before 2.23.0 patterns containing \0 would be silently
+considered fixed. This was never documented, there were also
+odd and undocumented interactions between e.g. non-ASCII
+patterns containing \0 and <b>--ignore-case</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In future
+versions we may learn to support patterns containing \0 for
+more search backends, until then we&rsquo;ll die when the
+pattern type in question doesn&rsquo;t support them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-e</p>
+
+<p style="margin-left:17%;">The next parameter is the
+pattern. This option has to be used for patterns starting
+with <b>-</b> and should be used in scripts passing user
+input to grep. Multiple patterns are combined by
+<i>or</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--and, --or,
+--not, ( ... )</p>
+
+<p style="margin-left:17%;">Specify how multiple patterns
+are combined using Boolean expressions. <b>--or</b> is the
+default operator. <b>--and</b> has higher precedence than
+<b>--or</b>. <b>-e</b> has to be used for all patterns.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--all-match</p>
+
+<p style="margin-left:17%;">When giving multiple pattern
+expressions combined with <b>--or</b>, this flag is
+specified to limit the match to files that have lines to
+match all of them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-q, --quiet</p>
+
+<p style="margin-left:17%;">Do not output matched lines;
+instead, exit with status 0 when there is a match and with
+non-zero status when there isn&rsquo;t.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;tree&gt;...</p>
+
+<p style="margin-left:17%;">Instead of searching tracked
+files in the working tree, search blobs in the given
+trees.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--</p>
+
+<p style="margin-left:17%;">Signals the end of options; the
+rest of the parameters are &lt;pathspec&gt; limiters.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;pathspec&gt;...</p>
+
+<p style="margin-left:17%;">If given, limit the search to
+paths matching at least one pattern. Both leading paths
+match and glob(7) patterns are supported.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For more
+details about the &lt;pathspec&gt; syntax, see the
+<i>pathspec</i> entry in <b>gitglossary</b>(7).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git grep
+'time_t' -- '*.[ch]'</b></p>
+
+<p style="margin-left:17%;">Looks for <b>time_t</b> in all
+tracked .c and .h files in the working directory and its
+subdirectories.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>git grep -e
+'#define' --and \( -e MAX_PATH -e PATH_MAX \)</b></p>
+
+<p style="margin-left:17%;">Looks for a line that has
+<b>#define</b> and either <b>MAX_PATH</b> or
+<b>PATH_MAX</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>git grep
+--all-match -e NODE -e Unexpected</b></p>
+
+<p style="margin-left:17%;">Looks for a line that has
+<b>NODE</b> or <b>Unexpected</b> in files that have lines
+that match both.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>git grep
+solution -- :^Documentation</b></p>
+
+<p style="margin-left:17%;">Looks for <b>solution</b>,
+excluding files in <b>Documentation</b>.</p>
+
+<h2>NOTES ON THREADS
+<a name="NOTES ON THREADS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>--threads</b> option (and the grep.threads configuration)
+will be ignored when <b>--open-files-in-pager</b> is used,
+forcing a single-threaded execution.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When grepping
+the object store (with <b>--cached</b> or giving tree
+objects), running with multiple threads might perform slower
+than single threaded if <b>--textconv</b> is given and
+there&rsquo;re too many text conversions. So if you
+experience low performance in this case, it might be
+desirable to use <b>--threads=1</b>.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.lineNumber</p>
+
+<p style="margin-left:17%;">If set to true, enable
+<b>-n</b> option by default.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.column</p>
+
+<p style="margin-left:17%;">If set to true, enable the
+<b>--column</b> option by default.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.patternType</p>
+
+<p style="margin-left:17%;">Set the default matching
+behavior. Using a value of <i>basic</i>, <i>extended</i>,
+<i>fixed</i>, or <i>perl</i> will enable the
+<b>--basic-regexp</b>, <b>--extended-regexp</b>,
+<b>--fixed-strings</b>, or <b>--perl-regexp</b> option
+accordingly, while the value <i>default</i> will return to
+the default matching behavior.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.extendedRegexp</p>
+
+<p style="margin-left:17%;">If set to true, enable
+<b>--extended-regexp</b> option by default. This option is
+ignored when the <b>grep.patternType</b> option is set to a
+value other than <i>default</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.threads</p>
+
+<p style="margin-left:17%;">Number of grep worker threads
+to use. If unset (or set to 0), Git will use as many threads
+as the number of logical cores available.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.fullName</p>
+
+<p style="margin-left:17%;">If set to true, enable
+<b>--full-name</b> option by default.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep.fallbackToNoIndex</p>
+
+<p style="margin-left:17%;">If set to true, fall back to
+git grep --no-index if git grep is executed outside of a git
+repository. Defaults to false.</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

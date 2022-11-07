@@ -1,0 +1,189 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:09 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ppmtoicr</title>
+
+</head>
+<body>
+
+<h1 align="center">ppmtoicr</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtoicr -
+convert a portable pixmap into NCSA ICR format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoicr</b>
+[<b>-windowname</b> <i>name</i>] [<b>-expand</b>
+<i>expand</i>] [<b>-display</b> <i>display</i>]
+[<b>-rle</b>] [<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a
+portable pixmap file as input. Produces an NCSA Telnet
+Interactive Color Raster graphic file as output. If
+<i>ppmfile</i> is not supplied, <i>ppmtoicr</i> will read
+from standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Interactive
+Color Raster (ICR) is a protocol for displaying raster
+graphics on workstation screens. The protocol is implemented
+in NCSA Telnet for the Macintosh version 2.3. The ICR
+protocol shares characteristics of the Tektronix graphics
+terminal emulation protocol. For example, escape sequences
+are used to control the display.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>ppmtoicr</i>
+will output the appropriate sequences to create a window of
+the dimensions of the input pixmap, create a colormap of up
+to 256 colors on the display, then load the picture data
+into the window.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+is no icrtoppm tool - this transformation is one way.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-windowname</b><i>name</i></p>
+
+<p style="margin-left:32%;">Output will be displayed in
+<i>name</i> (Default is to use <i>ppmfile</i> or
+&quot;untitled&quot; if standard input is read.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>-expand</b><i>expand</i></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Output will be expanded on display by factor
+<i>expand</i> (For example, a value of 2 will cause four
+pixels to be displayed for every input pixel.)</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-display</b><i>display</i></p>
+
+<p style="margin-left:32%;">Output will be displayed on
+screen numbered <i>display</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-rle</b></p></td>
+<td width="15%"></td>
+<td width="68%">
+
+
+<p>Use run-length encoded format for display. (This will
+nearly always result in a quicker display, but may skew the
+colormap.)</p> </td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To display a
+<i>ppm</i> file using the protocol: <br>
+ppmtoicr ppmfile <br>
+This will create a window named <i>ppmfile</i> on the
+display with the correct dimensions for <i>ppmfile,</i>
+create and download a colormap of up to 256 colors, and
+download the picture into the window. The same effect may be
+achieved by the following sequence: <br>
+ppmtoicr ppmfile &gt; filename <br>
+cat filename <br>
+To display a GIF file using the protocol in a window titled
+after the input file, zoom the displayed image by a factor
+of 2, and run-length encode the data: <br>
+giftopnm giffile | ppmtoicr -w giffile -r -e 2</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The protocol
+uses frequent <i>fflush</i> calls to speed up display. If
+the output is saved to a file for later display via
+<i>cat,</i> drawing will be much slower. In either case,
+increasing the Blocksize limit on the display will speed up
+transmission substantially.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm(5)</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>NCSA Telnet
+for the Macintosh</i>, University of Illinois at
+Urbana-Champaign (1989)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1990 by Kanthan Pillay (svpillay@Princeton.EDU), Princeton
+University Computing and Information Technology.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:38 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UUIDGEN</title>
+
+</head>
+<body>
+
+<h1 align="center">UUIDGEN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">uuidgen -
+create a new UUID value</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>uuidgen</b>
+[options]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>uuidgen</b> program creates (and prints) a new
+universally unique identifier (UUID) using the
+<b>libuuid</b>(3) library. The new UUID can reasonably be
+considered unique among all UUIDs created on the local
+system, and among UUIDs created on other systems in the past
+and in the future.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are three
+types of UUIDs which <b>uuidgen</b> can generate: time-based
+UUIDs, random-based UUIDs, and hash-based UUIDs. By default
+<b>uuidgen</b> will generate a random-based UUID if a
+high-quality random number generator is present. Otherwise,
+it will choose a time-based UUID. It is possible to force
+the generation of one of these first two UUID types by using
+the <b>--random</b> or <b>--time</b> options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The third type
+of UUID is generated with the <b>--md5</b> or <b>--sha1</b>
+options, followed by <b>--namespace</b> <i>namespace</i> and
+<b>--name</b> <i>name</i>. The <i>namespace</i> may either
+be a well-known UUID, or else an alias to one of the
+well-known UUIDs defined in RFC 4122, that is <b>@dns</b>,
+<b>@url</b>, <b>@oid</b>, or <b>@x500</b>. The <i>name</i>
+is an arbitrary string value. The generated UUID is the
+digest of the concatenation of the namespace UUID and the
+name value, hashed with the MD5 or SHA1 algorithms. It is,
+therefore, a predictable value which may be useful when
+UUIDs are being used as handles or nonces for more complex
+values or values which shouldn&rsquo;t be disclosed
+directly. See the RFC for more information.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--random</b></p>
+
+<p style="margin-left:17%;">Generate a random-based UUID.
+This method creates a UUID consisting mostly of random bits.
+It requires that the operating system has a high quality
+random number generator, such as <i>/dev/random</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--time</b></p>
+
+<p style="margin-left:17%;">Generate a time-based UUID.
+This method creates a UUID based on the system clock plus
+the system&rsquo;s ethernet hardware address, if
+present.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Display version information and
+exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>--md5</b></p>
+
+<p style="margin-left:17%;">Use MD5 as the hash
+algorithm.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--sha1</b></p>
+
+<p style="margin-left:17%;">Use SHA1 as the hash
+algorithm.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--namespace</b> <i>namespace</i></p>
+
+<p style="margin-left:17%;">Generate the hash with the
+<i>namespace</i> prefix. The <i>namespace</i> is UUID, or
+'@ns' where &quot;ns&quot; is well-known predefined UUID
+addressed by namespace name (see above).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-N</b>,
+<b>--name</b> <i>name</i></p>
+
+<p style="margin-left:17%;">Generate the hash of the
+<i>name</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--hex</b></p>
+
+<p style="margin-left:17%;">Interpret name <i>name</i> as a
+hexadecimal string.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">OSF DCE 1.1</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">uuidgen --sha1
+--namespace @dns --name &quot;www.example.com&quot;</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>uuidgen</b>
+was written by Andreas Dilger for <b>libuuid</b>(3).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>libuuid</b>(3),
+<i>RFC 4122</i>
+&lt;https://tools.ietf.org/html/rfc4122&gt;</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/karelzak/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>uuidgen</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

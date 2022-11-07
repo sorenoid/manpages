@@ -1,0 +1,1533 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>OBJCOPY</title>
+
+</head>
+<body>
+
+<h1 align="center">OBJCOPY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">objcopy - copy
+and translate object files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">objcopy
+[<b>-F</b> <i>bfdname</i>|<b>--target=</b><i>bfdname</i>]
+<br>
+[<b>-I</b>
+<i>bfdname</i>|<b>--input-target=</b><i>bfdname</i>] <br>
+[<b>-O</b>
+<i>bfdname</i>|<b>--output-target=</b><i>bfdname</i>] <br>
+[<b>-B</b>
+<i>bfdarch</i>|<b>--binary-architecture=</b><i>bfdarch</i>]
+<br>
+[<b>-S</b>|<b>--strip-all</b>] <br>
+[<b>-g</b>|<b>--strip-debug</b>] <br>
+[<b>--strip-unneeded</b>] <br>
+[<b>-K</b>
+<i>symbolname</i>|<b>--keep-symbol=</b><i>symbolname</i>]
+<br>
+[<b>--keep-file-symbols</b>] <br>
+[<b>--keep-section-symbols</b>] <br>
+[<b>-N</b>
+<i>symbolname</i>|<b>--strip-symbol=</b><i>symbolname</i>]
+<br>
+[<b>--strip-unneeded-symbol=</b><i>symbolname</i>] <br>
+[<b>-G</b>
+<i>symbolname</i>|<b>--keep-global-symbol=</b><i>symbolname</i>]
+<br>
+[<b>--localize-hidden</b>] <br>
+[<b>-L</b>
+<i>symbolname</i>|<b>--localize-symbol=</b><i>symbolname</i>]
+<br>
+[<b>--globalize-symbol=</b><i>symbolname</i>] <br>
+[<b>--globalize-symbols=</b><i>filename</i>] <br>
+[<b>-W</b>
+<i>symbolname</i>|<b>--weaken-symbol=</b><i>symbolname</i>]
+<br>
+[<b>-w</b>|<b>--wildcard</b>] <br>
+[<b>-x</b>|<b>--discard-all</b>] <br>
+[<b>-X</b>|<b>--discard-locals</b>] <br>
+[<b>-b</b> <i>byte</i>|<b>--byte=</b><i>byte</i>] <br>
+[<b>-i</b>
+[<i>breadth</i>]|<b>--interleave</b>[=<i>breadth</i>]] <br>
+[<b>--interleave-width=</b><i>width</i>] <br>
+[<b>-j</b>
+<i>sectionpattern</i>|<b>--only-section=</b><i>sectionpattern</i>]
+<br>
+[<b>-R</b>
+<i>sectionpattern</i>|<b>--remove-section=</b><i>sectionpattern</i>]
+<br>
+[<b>--keep-section=</b><i>sectionpattern</i>] <br>
+[<b>--remove-relocations=</b><i>sectionpattern</i>] <br>
+[<b>-p</b>|<b>--preserve-dates</b>] <br>
+[<b>-D</b>|<b>--enable-deterministic-archives</b>] <br>
+[<b>-U</b>|<b>--disable-deterministic-archives</b>] <br>
+[<b>--debugging</b>] <br>
+[<b>--gap-fill=</b><i>val</i>] <br>
+[<b>--pad-to=</b><i>address</i>] <br>
+[<b>--set-start=</b><i>val</i>] <br>
+[<b>--adjust-start=</b><i>incr</i>] <br>
+[<b>--change-addresses=</b><i>incr</i>] <br>
+[<b>--change-section-address</b>
+<i>sectionpattern</i>{=,+,-}<i>val</i>] <br>
+[<b>--change-section-lma</b>
+<i>sectionpattern</i>{=,+,-}<i>val</i>] <br>
+[<b>--change-section-vma</b>
+<i>sectionpattern</i>{=,+,-}<i>val</i>] <br>
+[<b>--change-warnings</b>] [<b>--no-change-warnings</b>]
+<br>
+[<b>--set-section-flags</b>
+<i>sectionpattern</i>=<i>flags</i>] <br>
+[<b>--set-section-alignment</b>
+<i>sectionpattern</i>=<i>align</i>] <br>
+[<b>--add-section</b> <i>sectionname</i>=<i>filename</i>]
+<br>
+[<b>--dump-section</b> <i>sectionname</i>=<i>filename</i>]
+<br>
+[<b>--update-section</b> <i>sectionname</i>=<i>filename</i>]
+<br>
+[<b>--rename-section</b>
+<i>oldname</i>=<i>newname</i>[,<i>flags</i>]] <br>
+[<b>--long-section-names</b> {enable,disable,keep}] <br>
+[<b>--change-leading-char</b>]
+[<b>--remove-leading-char</b>] <br>
+[<b>--reverse-bytes=</b><i>num</i>] <br>
+[<b>--srec-len=</b><i>ival</i>] [<b>--srec-forceS3</b>] <br>
+[<b>--redefine-sym</b> <i>old</i>=<i>new</i>] <br>
+[<b>--redefine-syms=</b><i>filename</i>] <br>
+[<b>--weaken</b>] <br>
+[<b>--keep-symbols=</b><i>filename</i>] <br>
+[<b>--strip-symbols=</b><i>filename</i>] <br>
+[<b>--strip-unneeded-symbols=</b><i>filename</i>] <br>
+[<b>--keep-global-symbols=</b><i>filename</i>] <br>
+[<b>--localize-symbols=</b><i>filename</i>] <br>
+[<b>--weaken-symbols=</b><i>filename</i>] <br>
+[<b>--add-symbol</b>
+<i>name</i>=[<i>section</i>:]<i>value</i>[,<i>flags</i>]]
+<br>
+[<b>--alt-machine-code=</b><i>index</i>] <br>
+[<b>--prefix-symbols=</b><i>string</i>] <br>
+[<b>--prefix-sections=</b><i>string</i>] <br>
+[<b>--prefix-alloc-sections=</b><i>string</i>] <br>
+[<b>--add-gnu-debuglink=</b><i>path-to-file</i>] <br>
+[<b>--only-keep-debug</b>] <br>
+[<b>--strip-dwo</b>] <br>
+[<b>--extract-dwo</b>] <br>
+[<b>--extract-symbol</b>] <br>
+[<b>--writable-text</b>] <br>
+[<b>--readonly-text</b>] <br>
+[<b>--pure</b>] <br>
+[<b>--impure</b>] <br>
+[<b>--file-alignment=</b><i>num</i>] <br>
+[<b>--heap=</b><i>size</i>] <br>
+[<b>--image-base=</b><i>address</i>] <br>
+[<b>--section-alignment=</b><i>num</i>] <br>
+[<b>--stack=</b><i>size</i>] <br>
+[<b>--subsystem=</b><i>which</i>:<i>major</i>.<i>minor</i>]
+<br>
+[<b>--compress-debug-sections</b>] <br>
+[<b>--decompress-debug-sections</b>] <br>
+[<b>--elf-stt-common=</b><i>val</i>] <br>
+[<b>--merge-notes</b>] <br>
+[<b>--no-merge-notes</b>] <br>
+[<b>--verilog-data-width=</b><i>val</i>] <br>
+[<b>-v</b>|<b>--verbose</b>] <br>
+[<b>-V</b>|<b>--version</b>] <br>
+[<b>--help</b>] [<b>--info</b>] <i><br>
+infile</i> [<i>outfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>GNU</small> <b>objcopy</b> utility copies the
+contents of an object file to another. <b>objcopy</b> uses
+the <small>GNU BFD</small> Library to read and write the
+object files. It can write the destination object file in a
+format different from that of the source object file. The
+exact behavior of <b>objcopy</b> is controlled by
+command-line options. Note that <b>objcopy</b> should be
+able to copy a fully linked file between any two formats.
+However, copying a relocatable object file between any two
+formats may not work as expected.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>objcopy</b>
+creates temporary files to do its translations and deletes
+them afterward. <b>objcopy</b> uses <small>BFD</small> to do
+all its translation work; it has access to all the formats
+described in <small>BFD</small> and thus is able to
+recognize most formats without being told explicitly.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>objcopy</b>
+can be used to generate S-records by using an output target
+of <b>srec</b> (e.g., use <b>-O srec</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>objcopy</b>
+can be used to generate a raw binary file by using an output
+target of <b>binary</b> (e.g., use <b>-O binary</b>). When
+<b>objcopy</b> generates a raw binary file, it will
+essentially produce a memory dump of the contents of the
+input object file. All symbols and relocation information
+will be discarded. The memory dump will start at the load
+address of the lowest section copied into the output
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When generating
+an S-record or a raw binary file, it may be helpful to use
+<b>-S</b> to remove sections containing debugging
+information. In some cases <b>-R</b> will be useful to
+remove sections which contain information that is not needed
+by the binary file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note---<b>objcopy</b>
+is not able to change the endianness of its input files. If
+the input format has an endianness (some formats do not),
+<b>objcopy</b> can only copy the inputs into file formats
+that have the same endianness or which have no endianness
+(e.g., <b>srec</b>). (However, see the
+<b>--reverse-bytes</b> option.)</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>infile <br>
+outfile</i></p>
+
+<p style="margin-left:17%;">The input and output files,
+respectively. If you do not specify <i>outfile</i>,
+<b>objcopy</b> creates a temporary file and destructively
+renames the result with the name of <i>infile</i>.</p>
+
+<p style="margin-left:11%;"><b>-I</b> <i>bfdname</i>
+<b><br>
+--input-target=</b><i>bfdname</i></p>
+
+<p style="margin-left:17%;">Consider the source
+file&rsquo;s object format to be <i>bfdname</i>, rather than
+attempting to deduce it.</p>
+
+<p style="margin-left:11%;"><b>-O</b> <i>bfdname</i>
+<b><br>
+--output-target=</b><i>bfdname</i></p>
+
+<p style="margin-left:17%;">Write the output file using the
+object format <i>bfdname</i>.</p>
+
+<p style="margin-left:11%;"><b>-F</b> <i>bfdname</i>
+<b><br>
+--target=</b><i>bfdname</i></p>
+
+<p style="margin-left:17%;">Use <i>bfdname</i> as the
+object format for both the input and the output file; i.e.,
+simply transfer data from source to destination with no
+translation.</p>
+
+<p style="margin-left:11%;"><b>-B</b> <i>bfdarch</i>
+<b><br>
+--binary-architecture=</b><i>bfdarch</i></p>
+
+<p style="margin-left:17%;">Useful when transforming a
+architecture-less input file into an object file. In this
+case the output architecture can be set to <i>bfdarch</i>.
+This option will be ignored if the input file has a known
+<i>bfdarch</i>. You can access this binary data inside a
+program by referencing the special symbols that are created
+by the conversion process. These symbols are called
+_binary_<i>objfile</i>_start, _binary_<i>objfile</i>_end and
+_binary_<i>objfile</i>_size. e.g. you can transform a
+picture file into an object file and then access it in your
+code using these symbols.</p>
+
+<p style="margin-left:11%;"><b>-j</b> <i>sectionpattern</i>
+<b><br>
+--only-section=</b><i>sectionpattern</i></p>
+
+<p style="margin-left:17%;">Copy only the indicated
+sections from the input file to the output file. This option
+may be given more than once. Note that using this option
+inappropriately may make the output file unusable. Wildcard
+characters are accepted in <i>sectionpattern</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the first
+character of <i>sectionpattern</i> is the exclamation point
+(!) then matching sections will not be copied, even if
+earlier use of <b>--only-section</b> on the same command
+line would otherwise copy it. For example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">--only-section=.text.*
+--only-section=!.text.foo</p>
+
+<p style="margin-left:17%; margin-top: 1em">will copy all
+sectinos matching &rsquo;.text.*&rsquo; but not the section
+&rsquo;.text.foo&rsquo;.</p>
+
+<p style="margin-left:11%;"><b>-R</b> <i>sectionpattern</i>
+<b><br>
+--remove-section=</b><i>sectionpattern</i></p>
+
+<p style="margin-left:17%;">Remove any section matching
+<i>sectionpattern</i> from the output file. This option may
+be given more than once. Note that using this option
+inappropriately may make the output file unusable. Wildcard
+characters are accepted in <i>sectionpattern</i>. Using both
+the <b>-j</b> and <b>-R</b> options together results in
+undefined behaviour.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the first
+character of <i>sectionpattern</i> is the exclamation point
+(!) then matching sections will not be removed even if an
+earlier use of <b>--remove-section</b> on the same command
+line would otherwise remove it. For example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">--remove-section=.text.*
+--remove-section=!.text.foo</p>
+
+<p style="margin-left:17%; margin-top: 1em">will remove all
+sections matching the pattern &rsquo;.text.*&rsquo;, but
+will not remove the section &rsquo;.text.foo&rsquo;.</p>
+
+
+<p style="margin-left:11%;"><b>--keep-section=</b><i>sectionpattern</i></p>
+
+<p style="margin-left:17%;">When removing sections from the
+output file, keep sections that match
+<i>sectionpattern</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--remove-relocations=</b><i>sectionpattern</i></p>
+
+<p style="margin-left:17%;">Remove non-dynamic relocations
+from the output file for any section matching
+<i>sectionpattern</i>. This option may be given more than
+once. Note that using this option inappropriately may make
+the output file unusable, and attempting to remove a dynamic
+relocation section such as <b>.rela.plt</b> from an
+executable or shared library with
+<b>--remove-relocations=.plt</b> will not work. Wildcard
+characters are accepted in <i>sectionpattern</i>. For
+example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">--remove-relocations=.text.*</p>
+
+<p style="margin-left:17%; margin-top: 1em">will remove the
+relocations for all sections matching the pattern
+&rsquo;.text.*&rsquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the first
+character of <i>sectionpattern</i> is the exclamation point
+(!) then matching sections will not have their relocation
+removed even if an earlier use of
+<b>--remove-relocations</b> on the same command line would
+otherwise cause the relocations to be removed. For
+example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">--remove-relocations=.text.*
+--remove-relocations=!.text.foo</p>
+
+<p style="margin-left:17%; margin-top: 1em">will remove all
+relocations for sections matching the pattern
+&rsquo;.text.*&rsquo;, but will not remove relocations for
+the section &rsquo;.text.foo&rsquo;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--strip-all</b></p>
+
+<p style="margin-left:17%;">Do not copy relocation and
+symbol information from the source file. Also deletes debug
+sections.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-g</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--strip-debug</b></p>
+
+<p style="margin-left:17%;">Do not copy debugging symbols
+or sections from the source file.</p>
+
+<p style="margin-left:11%;"><b>--strip-unneeded</b></p>
+
+<p style="margin-left:17%;">Remove all symbols that are not
+needed for relocation processing in addition to debugging
+symbols and sections stripped by <b>--strip-debug</b>.</p>
+
+<p style="margin-left:11%;"><b>-K</b> <i>symbolname</i>
+<b><br>
+--keep-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">When stripping symbols, keep
+symbol <i>symbolname</i> even if it would normally be
+stripped. This option may be given more than once.</p>
+
+<p style="margin-left:11%;"><b>-N</b> <i>symbolname</i>
+<b><br>
+--strip-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">Do not copy symbol
+<i>symbolname</i> from the source file. This option may be
+given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--strip-unneeded-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">Do not copy symbol
+<i>symbolname</i> from the source file unless it is needed
+by a relocation. This option may be given more than
+once.</p>
+
+<p style="margin-left:11%;"><b>-G</b> <i>symbolname</i>
+<b><br>
+--keep-global-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">Keep only symbol
+<i>symbolname</i> global. Make all other symbols local to
+the file, so that they are not visible externally. This
+option may be given more than once. Note: this option cannot
+be used in conjunction with the <b>--globalize-symbol</b> or
+<b>--globalize-symbols</b> options.</p>
+
+<p style="margin-left:11%;"><b>--localize-hidden</b></p>
+
+<p style="margin-left:17%;">In an <small>ELF</small>
+object, mark all symbols that have hidden or internal
+visibility as local. This option applies on top of
+symbol-specific localization options such as <b>-L</b>.</p>
+
+<p style="margin-left:11%;"><b>-L</b> <i>symbolname</i>
+<b><br>
+--localize-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">Convert a global or weak symbol
+called <i>symbolname</i> into a local symbol, so that it is
+not visible externally. This option may be given more than
+once. Note - unique symbols are not converted.</p>
+
+<p style="margin-left:11%;"><b>-W</b> <i>symbolname</i>
+<b><br>
+--weaken-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">Make symbol <i>symbolname</i>
+weak. This option may be given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--globalize-symbol=</b><i>symbolname</i></p>
+
+<p style="margin-left:17%;">Give symbol <i>symbolname</i>
+global scoping so that it is visible outside of the file in
+which it is defined. This option may be given more than
+once. Note: this option cannot be used in conjunction with
+the <b>-G</b> or <b>--keep-global-symbol</b> options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-w</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--wildcard</b></p>
+
+<p style="margin-left:17%;">Permit regular expressions in
+<i>symbolname</i>s used in other command line options. The
+question mark (?), asterisk (*), backslash (\) and square
+brackets ([]) operators can be used anywhere in the symbol
+name. If the first character of the symbol name is the
+exclamation point (!) then the sense of the switch is
+reversed for that symbol. For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">-w -W !foo -W
+fo*</p>
+
+<p style="margin-left:17%; margin-top: 1em">would cause
+objcopy to weaken all symbols that start with &quot;fo&quot;
+except for the symbol &quot;foo&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-x</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--discard-all</b></p>
+
+<p style="margin-left:17%;">Do not copy non-global symbols
+from the source file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-X</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--discard-locals</b></p>
+
+<p style="margin-left:17%;">Do not copy compiler-generated
+local symbols. (These usually start with <b>L</b> or
+<b>.</b>.)</p>
+
+<p style="margin-left:11%;"><b>-b</b> <i>byte</i> <b><br>
+--byte=</b><i>byte</i></p>
+
+<p style="margin-left:17%;">If interleaving has been
+enabled via the <b>--interleave</b> option then start the
+range of bytes to keep at the <i>byte</i>th byte.
+<i>byte</i> can be in the range from 0 to <i>breadth</i>-1,
+where <i>breadth</i> is the value given by the
+<b>--interleave</b> option.</p>
+
+<p style="margin-left:11%;"><b>-i [</b><i>breadth</i><b>]
+<br>
+--interleave[=</b><i>breadth</i><b>]</b></p>
+
+<p style="margin-left:17%;">Only copy a range out of every
+<i>breadth</i> bytes. (Header data is not affected). Select
+which byte in the range begins the copy with the
+<b>--byte</b> option. Select the width of the range with the
+<b>--interleave-width</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+useful for creating files to program <small>ROM.</small> It
+is typically used with an &quot;srec&quot; output target.
+Note that <b>objcopy</b> will complain if you do not specify
+the <b>--byte</b> option as well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+interleave breadth is 4, so with <b>--byte</b> set to 0,
+<b>objcopy</b> would copy the first byte out of every four
+bytes from the input to the output.</p>
+
+
+<p style="margin-left:11%;"><b>--interleave-width=</b><i>width</i></p>
+
+<p style="margin-left:17%;">When used with the
+<b>--interleave</b> option, copy <i>width</i> bytes at a
+time. The start of the range of bytes to be copied is set by
+the <b>--byte</b> option, and the extent of the range is set
+with the <b>--interleave</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+value for this option is 1. The value of <i>width</i> plus
+the <i>byte</i> value set by the <b>--byte</b> option must
+not exceed the interleave breadth set by the
+<b>--interleave</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option can
+be used to create images for two 16-bit flashes interleaved
+in a 32-bit bus by passing <b>-b 0 -i 4
+--interleave-width=2</b> and <b>-b 2 -i 4
+--interleave-width=2</b> to two <b>objcopy</b> commands. If
+the input was &rsquo;12345678&rsquo; then the outputs would
+be &rsquo;1256&rsquo; and &rsquo;3478&rsquo;
+respectively.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--preserve-dates</b></p>
+
+<p style="margin-left:17%;">Set the access and modification
+dates of the output file to be the same as those of the
+input file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-D</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--enable-deterministic-archives</b></p>
+
+<p style="margin-left:17%;">Operate in <i>deterministic</i>
+mode. When copying archive members and writing the archive
+index, use zero for UIDs, GIDs, timestamps, and use
+consistent file modes for all files.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<i>binutils</i> was configured with
+<b>--enable-deterministic-archives</b>, then this mode is on
+by default. It can be disabled with the <b>-U</b> option,
+below.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-U</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--disable-deterministic-archives</b></p>
+
+<p style="margin-left:17%;">Do <i>not</i> operate in
+<i>deterministic</i> mode. This is the inverse of the
+<b>-D</b> option, above: when copying archive members and
+writing the archive index, use their actual <small>UID,
+GID,</small> timestamp, and file mode values.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is the
+default unless <i>binutils</i> was configured with
+<b>--enable-deterministic-archives</b>.</p>
+
+<p style="margin-left:11%;"><b>--debugging</b></p>
+
+<p style="margin-left:17%;">Convert debugging information,
+if possible. This is not the default because only certain
+debugging formats are supported, and the conversion process
+can be time consuming.</p>
+
+<p style="margin-left:11%;"><b>--gap-fill</b>
+<i>val</i></p>
+
+<p style="margin-left:17%;">Fill gaps between sections with
+<i>val</i>. This operation applies to the <i>load
+address</i> ( <small>LMA</small> ) of the sections. It is
+done by increasing the size of the section with the lower
+address, and filling in the extra space created with
+<i>val</i>.</p>
+
+<p style="margin-left:11%;"><b>--pad-to</b>
+<i>address</i></p>
+
+<p style="margin-left:17%;">Pad the output file up to the
+load address <i>address</i>. This is done by increasing the
+size of the last section. The extra space is filled in with
+the value specified by <b>--gap-fill</b> (default zero).</p>
+
+<p style="margin-left:11%;"><b>--set-start</b>
+<i>val</i></p>
+
+<p style="margin-left:17%;">Set the start address (also
+known as the entry address) of the new file to <i>val</i>.
+Not all object file formats support setting the start
+address.</p>
+
+<p style="margin-left:11%;"><b>--change-start</b>
+<i>incr</i> <b><br>
+--adjust-start</b> <i>incr</i></p>
+
+<p style="margin-left:17%;">Change the start address (also
+known as the entry address) by adding <i>incr</i>. Not all
+object file formats support setting the start address.</p>
+
+<p style="margin-left:11%;"><b>--change-addresses</b>
+<i>incr</i> <b><br>
+--adjust-vma</b> <i>incr</i></p>
+
+<p style="margin-left:17%;">Change the <small>VMA</small>
+and <small>LMA</small> addresses of all sections, as well as
+the start address, by adding <i>incr</i>. Some object file
+formats do not permit section addresses to be changed
+arbitrarily. Note that this does not relocate the sections;
+if the program expects sections to be loaded at a certain
+address, and this option is used to change the sections such
+that they are loaded at a different address, the program may
+fail.</p>
+
+
+<p style="margin-left:11%;"><b>--change-section-address</b>
+<i>sectionpattern</i><b>{=,+,-}</b><i>val</i> <b><br>
+--adjust-section-vma</b>
+<i>sectionpattern</i><b>{=,+,-}</b><i>val</i></p>
+
+<p style="margin-left:17%;">Set or change both the
+<small>VMA</small> address and the <small>LMA</small>
+address of any section matching <i>sectionpattern</i>. If
+<b>=</b> is used, the section address is set to <i>val</i>.
+Otherwise, <i>val</i> is added to or subtracted from the
+section address. See the comments under
+<b>--change-addresses</b>, above. If <i>sectionpattern</i>
+does not match any sections in the input file, a warning
+will be issued, unless <b>--no-change-warnings</b> is
+used.</p>
+
+<p style="margin-left:11%;"><b>--change-section-lma</b>
+<i>sectionpattern</i><b>{=,+,-}</b><i>val</i></p>
+
+<p style="margin-left:17%;">Set or change the
+<small>LMA</small> address of any sections matching
+<i>sectionpattern</i>. The <small>LMA</small> address is the
+address where the section will be loaded into memory at
+program load time. Normally this is the same as the
+<small>VMA</small> address, which is the address of the
+section at program run time, but on some systems, especially
+those where a program is held in <small>ROM,</small> the two
+can be different. If <b>=</b> is used, the section address
+is set to <i>val</i>. Otherwise, <i>val</i> is added to or
+subtracted from the section address. See the comments under
+<b>--change-addresses</b>, above. If <i>sectionpattern</i>
+does not match any sections in the input file, a warning
+will be issued, unless <b>--no-change-warnings</b> is
+used.</p>
+
+<p style="margin-left:11%;"><b>--change-section-vma</b>
+<i>sectionpattern</i><b>{=,+,-}</b><i>val</i></p>
+
+<p style="margin-left:17%;">Set or change the
+<small>VMA</small> address of any section matching
+<i>sectionpattern</i>. The <small>VMA</small> address is the
+address where the section will be located once the program
+has started executing. Normally this is the same as the
+<small>LMA</small> address, which is the address where the
+section will be loaded into memory, but on some systems,
+especially those where a program is held in
+<small>ROM,</small> the two can be different. If <b>=</b> is
+used, the section address is set to <i>val</i>. Otherwise,
+<i>val</i> is added to or subtracted from the section
+address. See the comments under <b>--change-addresses</b>,
+above. If <i>sectionpattern</i> does not match any sections
+in the input file, a warning will be issued, unless
+<b>--no-change-warnings</b> is used.</p>
+
+<p style="margin-left:11%;"><b>--change-warnings <br>
+--adjust-warnings</b></p>
+
+<p style="margin-left:17%;">If
+<b>--change-section-address</b> or
+<b>--change-section-lma</b> or <b>--change-section-vma</b>
+is used, and the section pattern does not match any
+sections, issue a warning. This is the default.</p>
+
+<p style="margin-left:11%;"><b>--no-change-warnings <br>
+--no-adjust-warnings</b></p>
+
+<p style="margin-left:17%;">Do not issue a warning if
+<b>--change-section-address</b> or
+<b>--adjust-section-lma</b> or <b>--adjust-section-vma</b>
+is used, even if the section pattern does not match any
+sections.</p>
+
+<p style="margin-left:11%;"><b>--set-section-flags</b>
+<i>sectionpattern</i><b>=</b><i>flags</i></p>
+
+<p style="margin-left:17%;">Set the flags for any sections
+matching <i>sectionpattern</i>. The <i>flags</i> argument is
+a comma separated string of flag names. The recognized names
+are <b>alloc</b>, <b>contents</b>, <b>load</b>,
+<b>noload</b>, <b>readonly</b>, <b>code</b>, <b>data</b>,
+<b>rom</b>, <b>exclude</b>, <b>share</b>, and <b>debug</b>.
+You can set the <b>contents</b> flag for a section which
+does not have contents, but it is not meaningful to clear
+the <b>contents</b> flag of a section which does have
+contents--just remove the section instead. Not all flags are
+meaningful for all object file formats. In particular the
+<b>share</b> flag is only meaningful for <small>COFF</small>
+format files and not for <small>ELF</small> format
+files.</p>
+
+<p style="margin-left:11%;"><b>--set-section-alignment</b>
+<i>sectionpattern</i><b>=</b><i>align</i></p>
+
+<p style="margin-left:17%;">Set the alignment for any
+sections matching <i>sectionpattern</i>. <i>align</i>
+specifies the alignment in bytes and must be a power of two,
+i.e. 1, 2, 4, 8....</p>
+
+<p style="margin-left:11%;"><b>--add-section</b>
+<i>sectionname</i><b>=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Add a new section named
+<i>sectionname</i> while copying the file. The contents of
+the new section are taken from the file <i>filename</i>. The
+size of the section will be the size of the file. This
+option only works on file formats which can support sections
+with arbitrary names. Note - it may be necessary to use the
+<b>--set-section-flags</b> option to set the attributes of
+the newly created section.</p>
+
+<p style="margin-left:11%;"><b>--dump-section</b>
+<i>sectionname</i><b>=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Place the contents of section
+named <i>sectionname</i> into the file <i>filename</i>,
+overwriting any contents that may have been there
+previously. This option is the inverse of
+<b>--add-section</b>. This option is similar to the
+<b>--only-section</b> option except that it does not create
+a formatted file, it just dumps the contents as raw binary
+data, without applying any relocations. The option can be
+specified more than once.</p>
+
+<p style="margin-left:11%;"><b>--update-section</b>
+<i>sectionname</i><b>=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Replace the existing contents
+of a section named <i>sectionname</i> with the contents of
+file <i>filename</i>. The size of the section will be
+adjusted to the size of the file. The section flags for
+<i>sectionname</i> will be unchanged. For <small>ELF</small>
+format files the section to segment mapping will also remain
+unchanged, something which is not possible using
+<b>--remove-section</b> followed by <b>--add-section</b>.
+The option can be specified more than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note - it is
+possible to use <b>--rename-section</b> and
+<b>--update-section</b> to both update and rename a section
+from one command line. In this case, pass the original
+section name to <b>--update-section</b>, and the original
+and new section names to <b>--rename-section</b>.</p>
+
+<p style="margin-left:11%;"><b>--add-symbol</b>
+<i>name</i><b>=[</b><i>section</i><b>:]</b><i>value</i><b>[,</b><i>flags</i><b>]</b></p>
+
+<p style="margin-left:17%;">Add a new symbol named
+<i>name</i> while copying the file. This option may be
+specified multiple times. If the <i>section</i> is given,
+the symbol will be associated with and relative to that
+section, otherwise it will be an <small>ABS</small> symbol.
+Specifying an undefined section will result in a fatal
+error. There is no check for the value, it will be taken as
+specified. Symbol flags can be specified and not all flags
+will be meaningful for all object file formats. By default,
+the symbol will be global. The special flag
+&rsquo;before=<i>othersym</i>&rsquo; will insert the new
+symbol in front of the specified <i>othersym</i>, otherwise
+the symbol(s) will be added at the end of the symbol table
+in the order they appear.</p>
+
+<p style="margin-left:11%;"><b>--rename-section</b>
+<i>oldname</i><b>=</b><i>newname</i><b>[,</b><i>flags</i><b>]</b></p>
+
+<p style="margin-left:17%;">Rename a section from
+<i>oldname</i> to <i>newname</i>, optionally changing the
+section&rsquo;s flags to <i>flags</i> in the process. This
+has the advantage over using a linker script to perform the
+rename in that the output stays as an object file and does
+not become a linked executable. This option accepts the same
+set of flags as the <b>--sect-section-flags</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+particularly helpful when the input format is binary, since
+this will always create a section called .data. If for
+example, you wanted instead to create a section called
+.rodata containing binary data you could use the following
+command line to achieve it:</p>
+
+<p style="margin-left:17%; margin-top: 1em">objcopy -I
+binary -O &lt;output_format&gt; -B &lt;architecture&gt; \
+<br>
+--rename-section
+.data=.rodata,alloc,load,readonly,data,contents \ <br>
+&lt;input_binary_file&gt; &lt;output_object_file&gt;</p>
+
+<p style="margin-left:11%;"><b>--long-section-names
+{enable,disable,keep}</b></p>
+
+<p style="margin-left:17%;">Controls the handling of long
+section names when processing &quot;COFF&quot; and
+&quot;PE-COFF&quot; object formats. The default behaviour,
+<b>keep</b>, is to preserve long section names if any are
+present in the input file. The <b>enable</b> and
+<b>disable</b> options forcibly enable or disable the use of
+long section names in the output object; when <b>disable</b>
+is in effect, any long section names in the input object
+will be truncated. The <b>enable</b> option will only emit
+long section names if any are present in the inputs; this is
+mostly the same as <b>keep</b>, but it is left undefined
+whether the <b>enable</b> option might force the creation of
+an empty string table in the output file.</p>
+
+
+<p style="margin-left:11%;"><b>--change-leading-char</b></p>
+
+<p style="margin-left:17%;">Some object file formats use
+special characters at the start of symbols. The most common
+such character is underscore, which compilers often add
+before every symbol. This option tells <b>objcopy</b> to
+change the leading character of every symbol when it
+converts between object file formats. If the object file
+formats use the same leading character, this option has no
+effect. Otherwise, it will add a character, or remove a
+character, or change a character, as appropriate.</p>
+
+
+<p style="margin-left:11%;"><b>--remove-leading-char</b></p>
+
+<p style="margin-left:17%;">If the first character of a
+global symbol is a special symbol leading character used by
+the object file format, remove the character. The most
+common symbol leading character is underscore. This option
+will remove a leading underscore from all global symbols.
+This can be useful if you want to link together objects of
+different file formats with different conventions for symbol
+names. This is different from <b>--change-leading-char</b>
+because it always changes the symbol name when appropriate,
+regardless of the object file format of the output file.</p>
+
+
+<p style="margin-left:11%;"><b>--reverse-bytes=</b><i>num</i></p>
+
+<p style="margin-left:17%;">Reverse the bytes in a section
+with output contents. A section length must be evenly
+divisible by the value given in order for the swap to be
+able to take place. Reversing takes place before the
+interleaving is performed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+used typically in generating <small>ROM</small> images for
+problematic target systems. For example, on some target
+boards, the 32-bit words fetched from 8-bit ROMs are
+re-assembled in little-endian byte order regardless of the
+<small>CPU</small> byte order. Depending on the programming
+model, the endianness of the <small>ROM</small> may need to
+be modified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Consider a
+simple file with a section containing the following eight
+bytes: 12345678.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Using
+<b>--reverse-bytes=2</b> for the above example, the bytes in
+the output file would be ordered 21436587.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Using
+<b>--reverse-bytes=4</b> for the above example, the bytes in
+the output file would be ordered 43218765.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By using
+<b>--reverse-bytes=2</b> for the above example, followed by
+<b>--reverse-bytes=4</b> on the output file, the bytes in
+the second output file would be ordered 34127856.</p>
+
+
+<p style="margin-left:11%;"><b>--srec-len=</b><i>ival</i></p>
+
+<p style="margin-left:17%;">Meaningful only for srec
+output. Set the maximum length of the Srecords being
+produced to <i>ival</i>. This length covers both address,
+data and crc fields.</p>
+
+<p style="margin-left:11%;"><b>--srec-forceS3</b></p>
+
+<p style="margin-left:17%;">Meaningful only for srec
+output. Avoid generation of S1/S2 records, creating S3-only
+record format.</p>
+
+<p style="margin-left:11%;"><b>--redefine-sym</b>
+<i>old</i><b>=</b><i>new</i></p>
+
+<p style="margin-left:17%;">Change the name of a symbol
+<i>old</i>, to <i>new</i>. This can be useful when one is
+trying link two things together for which you have no
+source, and there are name collisions.</p>
+
+
+<p style="margin-left:11%;"><b>--redefine-syms=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply <b>--redefine-sym</b> to
+each symbol pair &quot;<i>old new</i>&quot; listed in the
+file <i>filename</i>. <i>filename</i> is simply a flat file,
+with one symbol pair per line. Line comments may be
+introduced by the hash character. This option may be given
+more than once.</p>
+
+<p style="margin-left:11%;"><b>--weaken</b></p>
+
+<p style="margin-left:17%;">Change all global symbols in
+the file to be weak. This can be useful when building an
+object which will be linked against other objects using the
+<b>-R</b> option to the linker. This option is only
+effective when using an object file format which supports
+weak symbols.</p>
+
+
+<p style="margin-left:11%;"><b>--keep-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply <b>--keep-symbol</b>
+option to each symbol listed in the file <i>filename</i>.
+<i>filename</i> is simply a flat file, with one symbol name
+per line. Line comments may be introduced by the hash
+character. This option may be given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--strip-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply <b>--strip-symbol</b>
+option to each symbol listed in the file <i>filename</i>.
+<i>filename</i> is simply a flat file, with one symbol name
+per line. Line comments may be introduced by the hash
+character. This option may be given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--strip-unneeded-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply
+<b>--strip-unneeded-symbol</b> option to each symbol listed
+in the file <i>filename</i>. <i>filename</i> is simply a
+flat file, with one symbol name per line. Line comments may
+be introduced by the hash character. This option may be
+given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--keep-global-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply
+<b>--keep-global-symbol</b> option to each symbol listed in
+the file <i>filename</i>. <i>filename</i> is simply a flat
+file, with one symbol name per line. Line comments may be
+introduced by the hash character. This option may be given
+more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--localize-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply <b>--localize-symbol</b>
+option to each symbol listed in the file <i>filename</i>.
+<i>filename</i> is simply a flat file, with one symbol name
+per line. Line comments may be introduced by the hash
+character. This option may be given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--globalize-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply <b>--globalize-symbol</b>
+option to each symbol listed in the file <i>filename</i>.
+<i>filename</i> is simply a flat file, with one symbol name
+per line. Line comments may be introduced by the hash
+character. This option may be given more than once. Note:
+this option cannot be used in conjunction with the <b>-G</b>
+or <b>--keep-global-symbol</b> options.</p>
+
+
+<p style="margin-left:11%;"><b>--weaken-symbols=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Apply <b>--weaken-symbol</b>
+option to each symbol listed in the file <i>filename</i>.
+<i>filename</i> is simply a flat file, with one symbol name
+per line. Line comments may be introduced by the hash
+character. This option may be given more than once.</p>
+
+
+<p style="margin-left:11%;"><b>--alt-machine-code=</b><i>index</i></p>
+
+<p style="margin-left:17%;">If the output architecture has
+alternate machine codes, use the <i>index</i>th code instead
+of the default one. This is useful in case a machine is
+assigned an official code and the tool-chain adopts the new
+code, but other applications still depend on the original
+code being used. For <small>ELF</small> based architectures
+if the <i>index</i> alternative does not exist then the
+value is treated as an absolute number to be stored in the
+e_machine field of the <small>ELF</small> header.</p>
+
+<p style="margin-left:11%;"><b>--writable-text</b></p>
+
+<p style="margin-left:17%;">Mark the output text as
+writable. This option isn&rsquo;t meaningful for all object
+file formats.</p>
+
+<p style="margin-left:11%;"><b>--readonly-text</b></p>
+
+<p style="margin-left:17%;">Make the output text write
+protected. This option isn&rsquo;t meaningful for all object
+file formats.</p>
+
+<p style="margin-left:11%;"><b>--pure</b></p>
+
+<p style="margin-left:17%;">Mark the output file as demand
+paged. This option isn&rsquo;t meaningful for all object
+file formats.</p>
+
+<p style="margin-left:11%;"><b>--impure</b></p>
+
+<p style="margin-left:17%;">Mark the output file as impure.
+This option isn&rsquo;t meaningful for all object file
+formats.</p>
+
+
+<p style="margin-left:11%;"><b>--prefix-symbols=</b><i>string</i></p>
+
+<p style="margin-left:17%;">Prefix all symbols in the
+output file with <i>string</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--prefix-sections=</b><i>string</i></p>
+
+<p style="margin-left:17%;">Prefix all section names in the
+output file with <i>string</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--prefix-alloc-sections=</b><i>string</i></p>
+
+<p style="margin-left:17%;">Prefix all the names of all
+allocated sections in the output file with
+<i>string</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--add-gnu-debuglink=</b><i>path-to-file</i></p>
+
+<p style="margin-left:17%;">Creates a .gnu_debuglink
+section which contains a reference to <i>path-to-file</i>
+and adds it to the output file. Note: the file at
+<i>path-to-file</i> must exist. Part of the process of
+adding the .gnu_debuglink section involves embedding a
+checksum of the contents of the debug info file into the
+section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the debug
+info file is built in one location but it is going to be
+installed at a later time into a different location then do
+not use the path to the installed location. The
+<b>--add-gnu-debuglink</b> option will fail because the
+installed file does not exist yet. Instead put the debug
+info file in the current directory and use the
+<b>--add-gnu-debuglink</b> option without any directory
+components, like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">objcopy
+--add-gnu-debuglink=foo.debug</p>
+
+<p style="margin-left:17%; margin-top: 1em">At debug time
+the debugger will attempt to look for the separate debug
+info file in a set of known locations. The exact set of
+these locations varies depending upon the distribution being
+used, but it typically includes: <br>
+&quot;* The same directory as the executable.&quot; <br>
+&quot;* A sub-directory of the directory containing the
+executable&quot;</p>
+
+<p style="margin-left:23%;">called .debug</p>
+
+<p style="margin-left:17%;">&quot;* A global debug
+directory such as /usr/lib/debug.&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">As long as the
+debug info file has been installed into one of these
+locations before the debugger is run everything should work
+correctly.</p>
+
+
+<p style="margin-left:11%;"><b>--keep-section-symbils</b></p>
+
+<p style="margin-left:17%;">When stripping a file, perhaps
+with <b>--strip-debug</b> or <b>--strip-unneeded</b>, retain
+any symbols specifying section names, which would otherwise
+get stripped.</p>
+
+<p style="margin-left:11%;"><b>--keep-file-symbols</b></p>
+
+<p style="margin-left:17%;">When stripping a file, perhaps
+with <b>--strip-debug</b> or <b>--strip-unneeded</b>, retain
+any symbols specifying source file names, which would
+otherwise get stripped.</p>
+
+<p style="margin-left:11%;"><b>--only-keep-debug</b></p>
+
+<p style="margin-left:17%;">Strip a file, removing contents
+of any sections that would not be stripped by
+<b>--strip-debug</b> and leaving the debugging sections
+intact. In <small>ELF</small> files, this preserves all note
+sections in the output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note - the
+section headers of the stripped sections are preserved,
+including their sizes, but the contents of the section are
+discarded. The section headers are preserved so that other
+tools can match up the debuginfo file with the real
+executable, even if that executable has been relocated to a
+different address space.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The intention
+is that this option will be used in conjunction with
+<b>--add-gnu-debuglink</b> to create a two part executable.
+One a stripped binary which will occupy less space in
+<small>RAM</small> and in a distribution and the second a
+debugging information file which is only needed if debugging
+abilities are required. The suggested procedure to create
+these files is as follows: <br>
+1.&lt;Link the executable as normal. Assuming that it is
+called&gt;</p>
+
+<p style="margin-left:23%;">&quot;foo&quot; then...</p>
+
+<p style="margin-left:17%;">1.&lt;Run &quot;objcopy
+--only-keep-debug foo foo.dbg&quot; to&gt;</p>
+
+<p style="margin-left:23%;">create a file containing the
+debugging info.</p>
+
+<p style="margin-left:17%;">1.&lt;Run &quot;objcopy
+--strip-debug foo&quot; to create a&gt;</p>
+
+<p style="margin-left:23%;">stripped executable.</p>
+
+<p style="margin-left:17%;">1.&lt;Run &quot;objcopy
+--add-gnu-debuglink=foo.dbg foo&quot;&gt;</p>
+
+<p style="margin-left:23%;">to add a link to the debugging
+info into the stripped executable.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note---the
+choice of &quot;.dbg&quot; as an extension for the debug
+info file is arbitrary. Also the
+&quot;--only-keep-debug&quot; step is optional. You could
+instead do this: <br>
+1.&lt;Link the executable as normal.&gt; <br>
+1.&lt;Copy &quot;foo&quot; to &quot;foo.full&quot;&gt; <br>
+1.&lt;Run &quot;objcopy --strip-debug foo&quot;&gt; <br>
+1.&lt;Run &quot;objcopy --add-gnu-debuglink=foo.full
+foo&quot;&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">i.e., the file
+pointed to by the <b>--add-gnu-debuglink</b> can be the full
+executable. It does not have to be a file created by the
+<b>--only-keep-debug</b> switch.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note---this
+switch is only intended for use on fully linked files. It
+does not make sense to use it on object files where the
+debugging information may be incomplete. Besides the
+gnu_debuglink feature currently only supports the presence
+of one filename containing debugging information, not
+multiple filenames on a one-per-object-file basis.</p>
+
+<p style="margin-left:11%;"><b>--strip-dwo</b></p>
+
+<p style="margin-left:17%;">Remove the contents of all
+<small>DWARF</small> .dwo sections, leaving the remaining
+debugging sections and all symbols intact. This option is
+intended for use by the compiler as part of the
+<b>-gsplit-dwarf</b> option, which splits debug information
+between the .o file and a separate .dwo file. The compiler
+generates all debug information in the same file, then uses
+the <b>--extract-dwo</b> option to copy the .dwo sections to
+the .dwo file, then the <b>--strip-dwo</b> option to remove
+those sections from the original .o file.</p>
+
+<p style="margin-left:11%;"><b>--extract-dwo</b></p>
+
+<p style="margin-left:17%;">Extract the contents of all
+<small>DWARF</small> .dwo sections. See the
+<b>--strip-dwo</b> option for more information.</p>
+
+<p style="margin-left:11%;"><b>--file-alignment</b>
+<i>num</i></p>
+
+<p style="margin-left:17%;">Specify the file alignment.
+Sections in the file will always begin at file offsets which
+are multiples of this number. This defaults to 512. [This
+option is specific to <small>PE</small> targets.]</p>
+
+<p style="margin-left:11%;"><b>--heap</b> <i>reserve</i>
+<b><br>
+--heap</b> <i>reserve</i><b>,</b><i>commit</i></p>
+
+<p style="margin-left:17%;">Specify the number of bytes of
+memory to reserve (and optionally commit) to be used as heap
+for this program. [This option is specific to
+<small>PE</small> targets.]</p>
+
+<p style="margin-left:11%;"><b>--image-base</b>
+<i>value</i></p>
+
+<p style="margin-left:17%;">Use <i>value</i> as the base
+address of your program or dll. This is the lowest memory
+location that will be used when your program or dll is
+loaded. To reduce the need to relocate and improve
+performance of your dlls, each should have a unique base
+address and not overlap any other dlls. The default is
+0x400000 for executables, and 0x10000000 for dlls. [This
+option is specific to <small>PE</small> targets.]</p>
+
+<p style="margin-left:11%;"><b>--section-alignment</b>
+<i>num</i></p>
+
+<p style="margin-left:17%;">Sets the section alignment
+field in the <small>PE</small> header. Sections in memory
+will always begin at addresses which are a multiple of this
+number. Defaults to 0x1000. [This option is specific to
+<small>PE</small> targets.]</p>
+
+<p style="margin-left:11%;"><b>--stack</b> <i>reserve</i>
+<b><br>
+--stack</b> <i>reserve</i><b>,</b><i>commit</i></p>
+
+<p style="margin-left:17%;">Specify the number of bytes of
+memory to reserve (and optionally commit) to be used as
+stack for this program. [This option is specific to
+<small>PE</small> targets.]</p>
+
+<p style="margin-left:11%;"><b>--subsystem</b> <i>which</i>
+<b><br>
+--subsystem</b> <i>which</i><b>:</b><i>major</i> <b><br>
+--subsystem</b>
+<i>which</i><b>:</b><i>major</i><b>.</b><i>minor</i></p>
+
+<p style="margin-left:17%;">Specifies the subsystem under
+which your program will execute. The legal values for
+<i>which</i> are &quot;native&quot;, &quot;windows&quot;,
+&quot;console&quot;, &quot;posix&quot;, &quot;efi-app&quot;,
+&quot;efi-bsd&quot;, &quot;efi-rtd&quot;,
+&quot;sal-rtd&quot;, and &quot;xbox&quot;. You may
+optionally set the subsystem version also. Numeric values
+are also accepted for <i>which</i>. [This option is specific
+to <small>PE</small> targets.]</p>
+
+<p style="margin-left:11%;"><b>--extract-symbol</b></p>
+
+<p style="margin-left:17%;">Keep the file&rsquo;s section
+flags and symbols but remove all section data. Specifically,
+the option: <br>
+*&lt;removes the contents of all sections;&gt; <br>
+*&lt;sets the size of every section to zero; and&gt; <br>
+*&lt;sets the file&rsquo;s start address to zero.&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+used to build a <i>.sym</i> file for a VxWorks kernel. It
+can also be a useful way of reducing the size of a
+<b>--just-symbols</b> linker input file.</p>
+
+
+<p style="margin-left:11%;"><b>--compress-debug-sections</b></p>
+
+<p style="margin-left:17%;">Compress <small>DWARF</small>
+debug sections using zlib with <small>SHF_COMPRESSED</small>
+from the <small>ELF ABI.</small> Note - if compression would
+actually make a section <i>larger</i>, then it is not
+compressed.</p>
+
+
+<p style="margin-left:11%;"><b>--compress-debug-sections=none
+<br>
+--compress-debug-sections=zlib <br>
+--compress-debug-sections=zlib-gnu <br>
+--compress-debug-sections=zlib-gabi</b></p>
+
+<p style="margin-left:17%;">For <small>ELF</small> files,
+these options control how <small>DWARF</small> debug
+sections are compressed.
+<b>--compress-debug-sections=none</b> is equivalent to
+<b>--decompress-debug-sections</b>.
+<b>--compress-debug-sections=zlib</b> and
+<b>--compress-debug-sections=zlib-gabi</b> are equivalent to
+<b>--compress-debug-sections</b>.
+<b>--compress-debug-sections=zlib-gnu</b> compresses
+<small>DWARF</small> debug sections using zlib. The debug
+sections are renamed to begin with <b>.zdebug</b> instead of
+<b>.debug</b>. Note - if compression would actually make a
+section <i>larger</i>, then it is not compressed nor
+renamed.</p>
+
+
+<p style="margin-left:11%;"><b>--decompress-debug-sections</b></p>
+
+<p style="margin-left:17%;">Decompress <small>DWARF</small>
+debug sections using zlib. The original section names of the
+compressed sections are restored.</p>
+
+<p style="margin-left:11%;"><b>--elf-stt-common=yes <br>
+--elf-stt-common=no</b></p>
+
+<p style="margin-left:17%;">For <small>ELF</small> files,
+these options control whether common symbols should be
+converted to the &quot;STT_COMMON&quot; or
+&quot;STT_OBJECT&quot; type. <b>--elf-stt-common=yes</b>
+converts common symbol type to &quot;STT_COMMON&quot;.
+<b>--elf-stt-common=no</b> converts common symbol type to
+&quot;STT_OBJECT&quot;.</p>
+
+<p style="margin-left:11%;"><b>--merge-notes <br>
+--no-merge-notes</b></p>
+
+<p style="margin-left:17%;">For <small>ELF</small> files,
+attempt (or do not attempt) to reduce the size of any
+<small>SHT_NOTE</small> type sections by removing duplicate
+notes.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version number of
+<b>objcopy</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--verilog-data-width=</b><i>bytes</i></p>
+
+<p style="margin-left:17%;">For Verilog output, this
+options controls the number of bytes converted for each
+output data element. The input target controls the
+endianness of the conversion.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--verbose</b></p>
+
+<p style="margin-left:17%;">Verbose output: list all object
+files modified. In the case of archives, <b>objcopy -V</b>
+lists all members of the archive.</p>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Show a summary of the options
+to <b>objcopy</b>.</p>
+
+<p style="margin-left:11%;"><b>--info</b></p>
+
+<p style="margin-left:17%;">Display a list showing all
+architectures and object formats available.</p>
+
+<p style="margin-left:11%;"><b>@</b><i>file</i></p>
+
+<p style="margin-left:17%;">Read command-line options from
+<i>file</i>. The options read are inserted in place of the
+original @<i>file</i> option. If <i>file</i> does not exist,
+or cannot be read, then the option will be treated
+literally, and not removed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Options in
+<i>file</i> are separated by whitespace. A whitespace
+character may be included in an option by surrounding the
+entire option in either single or double quotes. Any
+character (including a backslash) may be included by
+prefixing the character to be included with a backslash. The
+<i>file</i> may itself contain additional @<i>file</i>
+options; any such options will be processed recursively.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ld</b>(1),
+<b>objdump</b>(1), and the Info entries for
+<i>binutils</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1991-2022 Free Software Foundation, Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy, distribute and/or modify this document
+under the terms of the <small>GNU</small> Free Documentation
+License, Version 1.3 or any later version published by the
+Free Software Foundation; with no Invariant Sections, with
+no Front-Cover Texts, and with no Back-Cover Texts. A copy
+of the license is included in the section entitled &quot;
+<small>GNU</small> Free Documentation License&quot;.</p>
+<hr>
+</body>
+</html>

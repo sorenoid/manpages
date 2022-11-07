@@ -1,0 +1,111 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:20 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ppmshift</title>
+
+</head>
+<body>
+
+<h1 align="center">ppmshift</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmshift -
+shift lines of a portable pixmap left or right by a random
+amount</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmshift
+<i>shift</i> [<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a
+portable pixmap as input. Shifts every row of image data to
+the left or right by a certain amount. The
+&rsquo;shift&rsquo; parameter determines by how many pixels
+a row is to be shifted at most.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another one of
+those effects I intended to use for MPEG tests.
+Unfortunately, this program will not help me here - it
+creates too random patterns to be used for animations.
+Still, it might give interesting results on still
+images.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Check this out:
+Save your favourite model&rsquo;s picture from something
+like alt.binaries.pictures.supermodels (ok, or from any
+other picture source), convert it to ppm, and process it
+e.g. like this, assuming the picture is 800x600 pixels: <br>
+# take the upper half, and leave it like it is <br>
+pnmcut 0 0 800 300 cs.ppm &gt;upper.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em"># take the
+lower half, flip it upside down, dim it and distort it a
+little <br>
+pnmcut 0 300 800 300 cs.ppm | pnmflip -tb | ppmdim 0.7 |
+<br>
+ppmshift 10 &gt;lower.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em"># and
+concatenate the two pieces <br>
+pnmcat -tb upper.ppm lower.ppm &gt;newpic.ppm <br>
+The resulting picture looks like the image being reflected
+on a water surface with slight ripples.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppm(5),
+pnmcut(1), pnmflip(1), ppmdim(1), pnmcat(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1993 by Frank Neumann</p>
+<hr>
+</body>
+</html>

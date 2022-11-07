@@ -1,0 +1,1068 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:32 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NM</title>
+
+</head>
+<body>
+
+<h1 align="center">NM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">nm - list
+symbols from object files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">nm
+[<b>-A</b>|<b>-o</b>|<b>--print-file-name</b>] <br>
+[<b>-a</b>|<b>--debug-syms</b>] <br>
+[<b>-B</b>|<b>--format=bsd</b>] <br>
+[<b>-C</b>|<b>--demangle</b>[=<i>style</i>]] <br>
+[<b>-D</b>|<b>--dynamic</b>] <br>
+[<b>-f</b><i>format</i>|<b>--format=</b><i>format</i>] <br>
+[<b>-g</b>|<b>--extern-only</b>] <br>
+[<b>-h</b>|<b>--help</b>] <br>
+[<b>--ifunc-chars=</b> <i><small>CHARS</small></i> ] <br>
+[<b>-j</b>|<b>--format=just-symbols</b>] <br>
+[<b>-l</b>|<b>--line-numbers</b>] [<b>--inlines</b>] <br>
+[<b>-n</b>|<b>-v</b>|<b>--numeric-sort</b>] <br>
+[<b>-P</b>|<b>--portability</b>] <br>
+[<b>-p</b>|<b>--no-sort</b>] <br>
+[<b>-r</b>|<b>--reverse-sort</b>] <br>
+[<b>-S</b>|<b>--print-size</b>] <br>
+[<b>-s</b>|<b>--print-armap</b>] <br>
+[<b>-t</b> <i>radix</i>|<b>--radix=</b><i>radix</i>] <br>
+[<b>-u</b>|<b>--undefined-only</b>] <br>
+[<b>-U</b> <i>method</i>] [<b>--unicode=</b><i>method</i>]
+<br>
+[<b>-V</b>|<b>--version</b>] <br>
+[<b>-X 32_64</b>] <br>
+[<b>--defined-only</b>] <br>
+[<b>--no-demangle</b>] <br>
+[<b>--no-recurse-limit</b>|<b>--recurse-limit</b>]] <br>
+[<b>--plugin</b> <i>name</i>] <br>
+[<b>--size-sort</b>] <br>
+[<b>--special-syms</b>] <br>
+[<b>--synthetic</b>] <br>
+[<b>--target=</b><i>bfdname</i>] <br>
+[<b>--with-symbol-versions</b>] <br>
+[<b>--without-symbol-versions</b>] <br>
+[<i>objfile</i>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>GNU</small>
+<b>nm</b> lists the symbols from object files
+<i>objfile</i>.... If no object files are listed as
+arguments, <b>nm</b> assumes the file <i>a.out</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each
+symbol, <b>nm</b> shows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The symbol value, in the radix selected by options (see
+below), or hexadecimal by default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The symbol type. At least the following types are used;
+others are, as well, depending on the object file format. If
+lowercase, the symbol is usually local; if uppercase, the
+symbol is global (external). There are however a few
+lowercase symbols that are shown for special global symbols
+(&quot;u&quot;, &quot;v&quot; and &quot;w&quot;).</p></td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;A&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%"></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">The symbol&rsquo;s value is
+absolute, and will not be changed by further linking.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;B&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;b&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in the <small>BSS</small> data section.
+This section typically contains zero-initialized or
+uninitialized data, although the exact behavior is system
+dependent.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;C&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;c&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is common. Common symbols are uninitialized
+data. When linking, multiple common symbols may appear with
+the same name. If the symbol is defined anywhere, the common
+symbols are treated as undefined references. The lower case
+<i>c</i> character is used when the symbol is in a special
+section for small commons.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;D&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;d&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in the initialized data section.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;G&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;g&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in an initialized data section for small
+objects. Some object file formats permit more efficient
+access to small data objects, such as a global int variable
+as opposed to a large global array.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="5%">
+
+
+<p>&quot;i&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>For <small>PE</small> format files this indicates that
+the symbol is in a section specific to the implementation of
+DLLs.</p> </td></tr>
+</table>
+
+<p style="margin-left:23%; margin-top: 1em">For
+<small>ELF</small> format files this indicates that the
+symbol is an indirect function. This is a <small>GNU</small>
+extension to the standard set of <small>ELF</small> symbol
+types. It indicates a symbol which if referenced by a
+relocation does not evaluate to its address, but instead
+must be invoked at runtime. The runtime execution will then
+return the value to be used in the relocation.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Note - the
+actual symbols display for <small>GNU</small> indirect
+symbols is controlled by the <b>--ifunc-chars</b> command
+line option. If this option has been provided then the first
+character in the string will be used for global indirect
+function symbols. If the string contains a second character
+then that will be used for local indirect function
+symbols.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em">&quot;I&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">The symbol is an indirect
+reference to another symbol.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;N&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a debugging symbol.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;n&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in the read-only data section.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;p&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in a stack unwind section.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;R&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;r&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in a read only data section.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;S&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;s&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in an uninitialized or zero-initialized
+data section for small objects.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;T&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;t&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is in the text (code) section.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;U&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is undefined.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;u&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a unique global symbol. This is a
+<small>GNU</small> extension to the standard set of
+<small>ELF</small> symbol bindings. For such a symbol the
+dynamic linker will make sure that in the entire process
+there is just one symbol with this name and type in use.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;V&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;v&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a weak object. When a weak defined symbol
+is linked with a normal defined symbol, the normal defined
+symbol is used with no error. When a weak undefined symbol
+is linked and the symbol is not defined, the value of the
+weak symbol becomes zero with no error. On some systems,
+uppercase indicates that a default value has been
+specified.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;W&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;w&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a weak symbol that has not been
+specifically tagged as a weak object symbol. When a weak
+defined symbol is linked with a normal defined symbol, the
+normal defined symbol is used with no error. When a weak
+undefined symbol is linked and the symbol is not defined,
+the value of the symbol is determined in a system-specific
+manner without error. On some systems, uppercase indicates
+that a default value has been specified.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;-&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol is a stabs symbol in an a.out object file. In
+this case, the next values printed are the stabs other
+field, the stabs desc field, and the stab type. Stabs
+symbols are used to hold debugging information.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&quot;?&quot;</p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p>The symbol type is unknown, or object file format
+specific.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p>&bull;</p></td>
+<td width="1%"></td>
+<td width="77%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The symbol
+name. If a symbol has version information associated with
+it, then the version information is displayed as well. If
+the versioned symbol is undefined or hidden from linker, the
+version string is displayed as a suffix to the symbol name,
+preceded by an @ character. For example <b>foo@VER_1</b>. If
+the version is the default version to be used when resolving
+unversioned references to the symbol, then it is displayed
+as a suffix preceded by two @ characters. For example
+<b>foo@@VER_2</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The long and
+short forms of options, shown here as alternatives, are
+equivalent.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-A</b></p></td>
+<td width="86%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-o</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--print-file-name</b></p>
+
+<p style="margin-left:17%;">Precede each symbol by the name
+of the input file (or archive member) in which it was found,
+rather than identifying the input file once only, before all
+of its symbols.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--debug-syms</b></p>
+
+<p style="margin-left:17%;">Display all symbols, even
+debugger-only symbols; normally these are not listed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-B</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>The same as <b>--format=bsd</b> (for compatibility with
+the <small>MIPS</small> <b>nm</b>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-C</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--demangle[=</b><i>style</i><b>]</b></p>
+
+<p style="margin-left:17%;">Decode (<i>demangle</i>)
+low-level symbol names into user-level names. Besides
+removing any initial underscore prepended by the system,
+this makes C <small>++</small> function names readable.
+Different compilers have different mangling styles. The
+optional demangling style argument can be used to choose an
+appropriate demangling style for your compiler.</p>
+
+<p style="margin-left:11%;"><b>--no-demangle</b></p>
+
+<p style="margin-left:17%;">Do not demangle low-level
+symbol names. This is the default.</p>
+
+<p style="margin-left:11%;"><b>--recurse-limit <br>
+--no-recurse-limit <br>
+--recursion-limit <br>
+--no-recursion-limit</b></p>
+
+<p style="margin-left:17%;">Enables or disables a limit on
+the amount of recursion performed whilst demangling strings.
+Since the name mangling formats allow for an infinite level
+of recursion it is possible to create strings whose decoding
+will exhaust the amount of stack space available on the host
+machine, triggering a memory fault. The limit tries to
+prevent this from happening by restricting recursion to 2048
+levels of nesting.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+for this limit to be enabled, but disabling it may be
+necessary in order to demangle truly complicated names. Note
+however that if the recursion limit is disabled then stack
+exhaustion is possible and any bug reports about such an
+event will be rejected.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-D</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--dynamic</b></p>
+
+<p style="margin-left:17%;">Display the dynamic symbols
+rather than the normal symbols. This is only meaningful for
+dynamic objects, such as certain types of shared
+libraries.</p>
+
+<p style="margin-left:11%;"><b>-f</b> <i>format</i> <b><br>
+--format=</b><i>format</i></p>
+
+<p style="margin-left:17%;">Use the output format
+<i>format</i>, which can be &quot;bsd&quot;,
+&quot;sysv&quot;, &quot;posix&quot; or
+&quot;just-symbols&quot;. The default is &quot;bsd&quot;.
+Only the first character of <i>format</i> is significant; it
+can be either upper or lower case.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-g</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--extern-only</b></p>
+
+<p style="margin-left:17%;">Display only external
+symbols.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Show a summary of the options
+to <b>nm</b> and exit.</p>
+
+<p style="margin-left:11%;"><b>--ifunc-chars=</b>
+<i><small>CHARS</small></i></p>
+
+<p style="margin-left:17%;">When display <small>GNU</small>
+indirect function symbols <b>nm</b> will default to using
+the &quot;i&quot; character for both local indirect
+functions and global indirect functions. The
+<b>--ifunc-chars</b> option allows the user to specify a
+string containing one or two characters. The first character
+will be used for global indirect function symbols and the
+second character, if present, will be used for local
+indirect function symbols.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>j</b></p></td>
+<td width="3%"></td>
+<td width="52%">
+
+
+<p>The same as <b>--format=just-symbols</b>.</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-l</b></p></td>
+<td width="3%"></td>
+<td width="52%"></td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--line-numbers</b></p>
+
+<p style="margin-left:17%;">For each symbol, use debugging
+information to try to find a filename and line number. For a
+defined symbol, look for the line number of the address of
+the symbol. For an undefined symbol, look for the line
+number of a relocation entry which refers to the symbol. If
+line number information can be found, print it after the
+other symbol information.</p>
+
+<p style="margin-left:11%;"><b>--inlines</b></p>
+
+<p style="margin-left:17%;">When option <b>-l</b> is
+active, if the address belongs to a function that was
+inlined, then this option causes the source information for
+all enclosing scopes back to the first non-inlined function
+to be printed as well. For example, if &quot;main&quot;
+inlines &quot;callee1&quot; which inlines
+&quot;callee2&quot;, and address is from
+&quot;callee2&quot;, the source information for
+&quot;callee1&quot; and &quot;main&quot; will also be
+printed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="86%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--numeric-sort</b></p>
+
+<p style="margin-left:17%;">Sort symbols numerically by
+their addresses, rather than alphabetically by their
+names.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--no-sort</b></p>
+
+<p style="margin-left:17%;">Do not bother to sort the
+symbols in any order; print them in the order
+encountered.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-P</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--portability</b></p>
+
+<p style="margin-left:17%;">Use the <small>POSIX.2</small>
+standard output format instead of the default format.
+Equivalent to <b>-f posix</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--reverse-sort</b></p>
+
+<p style="margin-left:17%;">Reverse the order of the sort
+(whether numeric or alphabetic); let the last come
+first.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--print-size</b></p>
+
+<p style="margin-left:17%;">Print both value and size of
+defined symbols for the &quot;bsd&quot; output style. This
+option has no effect for object formats that do not record
+symbol sizes, unless <b>--size-sort</b> is also used in
+which case a calculated size is displayed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--print-armap</b></p>
+
+<p style="margin-left:17%;">When listing symbols from
+archive members, include the index: a mapping (stored in the
+archive by <b>ar</b> or <b>ranlib</b>) of which modules
+contain definitions for which names.</p>
+
+<p style="margin-left:11%;"><b>-t</b> <i>radix</i> <b><br>
+--radix=</b><i>radix</i></p>
+
+<p style="margin-left:17%;">Use <i>radix</i> as the radix
+for printing the symbol values. It must be <b>d</b> for
+decimal, <b>o</b> for octal, or <b>x</b> for
+hexadecimal.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-u</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--undefined-only</b></p>
+
+<p style="margin-left:17%;">Display only undefined symbols
+(those external to each object file).</p>
+
+<p style="margin-left:11%;"><b>-U</b> <i>[d|i|l|e|x|h]</i>
+<b><br>
+
+--unicode=</b><i>[default|invalid|locale|escape|hex|highlight]</i></p>
+
+<p style="margin-left:17%;">Controls the display of
+<small>UTF-8</small> encoded multibyte characters in
+strings. The default (<b>--unicode=default</b>) is to give
+them no special treatment. The <b>--unicode=locale</b>
+option displays the sequence in the current locale, which
+may or may not support them. The options
+<b>--unicode=hex</b> and <b>--unicode=invalid</b> display
+them as hex byte sequences enclosed by either angle brackets
+or curly braces.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>--unicode=escape</b> option displays them as escape
+sequences (<i>\uxxxx</i>) and the <b>--unicode=highlight</b>
+option displays them as escape sequences highlighted in red
+(if supported by the output device). The colouring is
+intended to draw attention to the presence of unicode
+sequences where they might not be expected.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version number of
+<b>nm</b> and exit.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-X</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>This option is ignored for compatibility with the
+<small>AIX</small> version of <b>nm</b>. It takes one
+parameter which must be the string <b>32_64</b>. The default
+mode of <small>AIX</small> <b>nm</b> corresponds to <b>-X
+32</b>, which is not supported by <small>GNU</small>
+<b>nm</b>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--defined-only</b></p>
+
+<p style="margin-left:17%;">Display only defined symbols
+for each object file.</p>
+
+<p style="margin-left:11%;"><b>--plugin</b> <i>name</i></p>
+
+<p style="margin-left:17%;">Load the plugin called
+<i>name</i> to add support for extra target types. This
+option is only available if the toolchain has been built
+with plugin support enabled.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<b>--plugin</b> is not provided, but plugin support has been
+enabled then <b>nm</b> iterates over the files in
+<i>${libdir}/bfd-plugins</i> in alphabetic order and the
+first plugin that claims the object in question is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that this plugin search directory is <i>not</i> the one used
+by <b>ld</b>&rsquo;s <b>-plugin</b> option. In order to make
+<b>nm</b> use the linker plugin it must be copied into the
+<i>${libdir}/bfd-plugins</i> directory. For
+<small>GCC</small> based compilations the linker plugin is
+called <i>liblto_plugin.so.0.0.0</i>. For Clang based
+compilations it is called <i>LLVMgold.so</i>. The
+<small>GCC</small> plugin is always backwards compatible
+with earlier versions, so it is sufficient to just copy the
+newest one.</p>
+
+<p style="margin-left:11%;"><b>--size-sort</b></p>
+
+<p style="margin-left:17%;">Sort symbols by size. For
+<small>ELF</small> objects symbol sizes are read from the
+<small>ELF,</small> for other object types the symbol sizes
+are computed as the difference between the value of the
+symbol and the value of the symbol with the next higher
+value. If the &quot;bsd&quot; output format is used the size
+of the symbol is printed, rather than the value, and
+<b>-S</b> must be used in order both size and value to be
+printed.</p>
+
+<p style="margin-left:11%;"><b>--special-syms</b></p>
+
+<p style="margin-left:17%;">Display symbols which have a
+target-specific special meaning. These symbols are usually
+used by the target for some special processing and are not
+normally helpful when included in the normal symbol lists.
+For example for <small>ARM</small> targets this option would
+skip the mapping symbols used to mark transitions between
+<small>ARM</small> code, <small>THUMB</small> code and
+data.</p>
+
+<p style="margin-left:11%;"><b>--synthetic</b></p>
+
+<p style="margin-left:17%;">Include synthetic symbols in
+the output. These are special symbols created by the linker
+for various purposes. They are not shown by default since
+they are not part of the binary&rsquo;s original source
+code.</p>
+
+<p style="margin-left:11%;"><b>--with-symbol-versions <br>
+--without-symbol-versions</b></p>
+
+<p style="margin-left:17%;">Enables or disables the display
+of symbol version information. The version string is
+displayed as a suffix to the symbol name, preceded by an @
+character. For example <b>foo@VER_1</b>. If the version is
+the default version to be used when resolving unversioned
+references to the symbol then it is displayed as a suffix
+preceded by two @ characters. For example <b>foo@@VER_2</b>.
+By default, symbol version information is displayed.</p>
+
+
+<p style="margin-left:11%;"><b>--target=</b><i>bfdname</i></p>
+
+<p style="margin-left:17%;">Specify an object code format
+other than your system&rsquo;s default format.</p>
+
+<p style="margin-left:11%;"><b>@</b><i>file</i></p>
+
+<p style="margin-left:17%;">Read command-line options from
+<i>file</i>. The options read are inserted in place of the
+original @<i>file</i> option. If <i>file</i> does not exist,
+or cannot be read, then the option will be treated
+literally, and not removed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Options in
+<i>file</i> are separated by whitespace. A whitespace
+character may be included in an option by surrounding the
+entire option in either single or double quotes. Any
+character (including a backslash) may be included by
+prefixing the character to be included with a backslash. The
+<i>file</i> may itself contain additional @<i>file</i>
+options; any such options will be processed recursively.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ar</b>(1),
+<b>objdump</b>(1), <b>ranlib</b>(1), and the Info entries
+for <i>binutils</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1991-2022 Free Software Foundation, Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy, distribute and/or modify this document
+under the terms of the <small>GNU</small> Free Documentation
+License, Version 1.3 or any later version published by the
+Free Software Foundation; with no Invariant Sections, with
+no Front-Cover Texts, and with no Back-Cover Texts. A copy
+of the license is included in the section entitled &quot;
+<small>GNU</small> Free Documentation License&quot;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:19 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-CHECK-ATTR</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-CHECK-ATTR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#OUTPUT">OUTPUT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-check-attr
+- Display gitattributes information</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+check-attr</i> [-a | --all | &lt;attr&gt;...] [--]
+&lt;pathname&gt;... <i><br>
+git check-attr</i> --stdin [-z] [-a | --all |
+&lt;attr&gt;...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For every
+pathname, this command will list if each attribute is
+<i>unspecified</i>, <i>set</i>, or <i>unset</i> as a
+gitattribute on that pathname.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-a, --all</p>
+
+<p style="margin-left:17%;">List all attributes that are
+associated with the specified paths. If this option is used,
+then <i>unspecified</i> attributes will not be included in
+the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--cached</p>
+
+<p style="margin-left:17%;">Consider <b>.gitattributes</b>
+in the index only, ignoring the working tree.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--stdin</p>
+
+<p style="margin-left:17%;">Read pathnames from the
+standard input, one per line, instead of from the
+command-line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-z</p>
+
+<p style="margin-left:17%;">The output format is modified
+to be machine-parsable. If <b>--stdin</b> is also given,
+input paths are separated with a NUL character instead of a
+linefeed character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--</p>
+
+<p style="margin-left:17%;">Interpret all preceding
+arguments as attributes and all following arguments as path
+names.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If none of
+<b>--stdin</b>, <b>--all</b>, or <b>--</b> is used, the
+first argument will be treated as an attribute and the rest
+of the arguments as pathnames.</p>
+
+<h2>OUTPUT
+<a name="OUTPUT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The output is
+of the form: &lt;path&gt; COLON SP &lt;attribute&gt; COLON
+SP &lt;info&gt; LF</p>
+
+<p style="margin-left:11%; margin-top: 1em">unless
+<b>-z</b> is in effect, in which case NUL is used as
+delimiter: &lt;path&gt; NUL &lt;attribute&gt; NUL
+&lt;info&gt; NUL</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;path&gt; is
+the path of a file being queried, &lt;attribute&gt; is an
+attribute being queried and &lt;info&gt; can be either:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>unspecified</i></p>
+
+<p style="margin-left:17%;">when the attribute is not
+defined for the path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>unset</i></p>
+
+<p style="margin-left:17%;">when the attribute is defined
+as false.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>set</i></p>
+
+<p style="margin-left:17%;">when the attribute is defined
+as true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;value&gt;</p>
+
+<p style="margin-left:17%;">when a value has been assigned
+to the attribute.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Buffering
+happens as documented under the <b>GIT_FLUSH</b> option in
+<b>git</b>(1). The caller is responsible for avoiding
+deadlocks caused by overfilling an input buffer or reading
+from an empty output buffer.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the
+examples, the following <i>.gitattributes</i> file is
+used:</p>
+
+<p style="margin-left:17%; margin-top: 1em">*.java
+diff=java -crlf myAttr <br>
+NoMyAttr.java !myAttr <br>
+README caveat=unspecified</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Listing
+a single attribute:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+check-attr diff org/example/MyClass.java <br>
+org/example/MyClass.java: diff: java</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Listing
+multiple attributes for a file:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+check-attr crlf diff myAttr -- org/example/MyClass.java <br>
+org/example/MyClass.java: crlf: unset <br>
+org/example/MyClass.java: diff: java <br>
+org/example/MyClass.java: myAttr: set</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Listing
+all attributes for a file:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+check-attr --all -- org/example/MyClass.java <br>
+org/example/MyClass.java: diff: java <br>
+org/example/MyClass.java: myAttr: set</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Listing
+an attribute for multiple files:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+check-attr myAttr -- org/example/MyClass.java
+org/example/NoMyAttr.java <br>
+org/example/MyClass.java: myAttr: set <br>
+org/example/NoMyAttr.java: myAttr: unspecified</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Not all
+values are equally unambiguous:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ git
+check-attr caveat README <br>
+README: caveat: unspecified</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gitattributes</b>(5).</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

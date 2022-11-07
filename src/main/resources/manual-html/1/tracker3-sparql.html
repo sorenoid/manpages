@@ -1,0 +1,445 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:48 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TRACKER3-SPARQL</title>
+
+</head>
+<body>
+
+<h1 align="center">TRACKER3-SPARQL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">tracker3-sparql
+- Use SparQL to query the Tracker databases.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">tracker3 sparql
+-q &lt;sparql&gt; [-u] | -f &lt;file&gt; <br>
+tracker3 sparql -t [class] [-s &lt;needle&gt;] [-p] <br>
+tracker3 sparql [-c] [-p] [-x] [-n [class]] [-i [property]]
+[-s &lt;needle&gt;] <br>
+tracker3 sparql [--get-longhand &lt;class&gt;]
+[--get-shorthand &lt;class&gt;]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This command
+allows probing of the current database schema (also known as
+ontology) and running low level queries or updates on the
+data set. In terms of the database ontology, it&rsquo;s easy
+to find out what properties are indexed for speed, or
+notified on changes, what classes are available and the
+properties belonging to those classes. There are also visual
+tools to display an ascii tree layout of the classes and
+their relationships to each other.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the caller
+runs a query, the query is in RDF and SPARQL. This can be
+done two ways. Either by providing a <i>file</i> with the
+query or by providing a string with the <i>sparql</i>
+query.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>file</i>
+argument can be either a local path or a URI. It also does
+not have to be an absolute path.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f,
+--file=&lt;</b><i>file</i><b>&gt;</b></p>
+
+<p style="margin-left:17%;">Use a <i>file</i> with SPARQL
+content to query or update.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q,
+--query=&lt;</b><i>sparql</i><b>&gt;</b></p>
+
+<p style="margin-left:17%;">Use a <i>sparql</i> string to
+query the database with.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u,
+--update</b></p>
+
+<p style="margin-left:17%;">This has to be used with
+<b>--query</b>. This tells &quot;tracker3 sparql&quot; to
+use the SPARQL update extensions so it knows it isn&rsquo;t
+a regular data lookup request. So if your query is intended
+to change data in the database, this option is needed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c,
+--list-classes</b></p>
+
+<p style="margin-left:17%;">Returns a list of classes which
+describe the ontology used for storing data. These classes
+are also used in queries. For example,
+<i>http://www.w3.org/2000/01/rdf-schema#Resource</i> is one
+of many classes which should be returned here.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x,
+--list-class-prefixes</b></p>
+
+<p style="margin-left:17%;">Returns a list of classes and
+their related prefixes. Prefixes are used to make querying a
+lot simpler and are much like an alias. For example,
+<i>http://www.w3.org/2000/01/rdf-schema#Resource</i> has the
+prefix <i>rdfs</i> so queries can be cut down to:</p>
+
+<p style="margin-left:11%; margin-top: 1em">&quot;SELECT ?u
+WHERE \{ ?u a rdfs:Resource }&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p,
+--list-properties=[</b><i>class</i><b>]</b></p>
+
+<p style="margin-left:17%;">Returns a list of properties
+which pertain to a <i>class</i>. You can use both formats
+here for the <i>class</i>, either the full name
+<i>http://tracker.api.gnome.org/ontology/v3/nfo#Video</i> or
+the shortened prefix name <i>nfo:Video</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This gives the
+following result:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+sparql -p nfo:Video</p>
+
+<p style="margin-left:17%; margin-top: 1em">Properties: 2
+<br>
+http://tracker.api.gnome.org/ontology/v3/nfo#frameRate <br>
+http://tracker.api.gnome.org/ontology/v3/nfo#frameCount</p>
+
+<p style="margin-left:11%; margin-top: 1em">These
+properties <i>nfo:frameRate</i> and <i>nfo:frameCount</i>
+can then be used in queries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+<b>--tree</b> and <b>--query</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n,
+--list-notifies=[</b><i>class</i><b>]</b></p>
+
+<p style="margin-left:17%;">Returns a list of classes which
+are notified over D-Bus about any changes that occur in the
+database. The <i>class</i> does not have to be supplied
+here. This is optional and filters the results according to
+any argument supplied. With no <i>class</i>, all classes are
+listed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i,
+--list-indexes=[</b><i>property</i><b>]</b></p>
+
+<p style="margin-left:17%;">Returns a list of properties
+which are indexed in the database. Indexes improves query
+speed but also add an indexing penalty. The <i>property</i>
+does not have to be supplied here. This is optional and
+filters the results according to any argument supplied. With
+no <i>property</i>, all properties are listed.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; -g,
+--list-graphs:: List all the named graphs in the database.
+These are used by the filesystem miner to separate metadata
+so that apps can only see the information relevant to
+them.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t,
+--tree=[</b><i>class</i><b>]</b></p>
+
+<p style="margin-left:17%;">Prints a tree showing all
+parent classes of <i>class</i> in the ontology. The
+<i>class</i> can be provided in shorthand or longhand (see
+<b>--get-shorthand</b> and <b>--get-longhand</b> for
+details). For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+sparql -t nmo:MMSMessage <br>
+ROOT <br>
++-- rdfs:Resource (C) <br>
+| +-- nie:InformationElement (C) <br>
+| | +-- nfo:Document (C) <br>
+| | | +-- nfo:TextDocument (C) <br>
+| | | | &rsquo;-- nmo:Message (C) <br>
+| | | | | +-- nmo:PhoneMessage (C) <br>
+| | | | | | &rsquo;-- nmo:MMSMessage (C)</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<i>class</i> is given, the entire tree is shown.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>--search</b> command line option can be used to highlight
+parts of the tree you&rsquo;re looking for. The search is
+case insensitive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>--properties</b> command line option can be used to show
+properties for each class displayed, for example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+sparql -t nfo:FileDataObject -p <br>
+ROOT <br>
++-- rdfs:Resource (C) <br>
+| --&gt; http://purl.org/dc/elements/1.1/contributor (P)
+<br>
+| --&gt; http://purl.org/dc/elements/1.1/coverage (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/creator (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/date (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/description (P)
+<br>
+| --&gt; http://purl.org/dc/elements/1.1/format (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/identifier (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/language (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/publisher (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/relation (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/rights (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/source (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/subject (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/title (P) <br>
+| --&gt; http://purl.org/dc/elements/1.1/type (P) <br>
+| --&gt; nao:deprecated (P) <br>
+| --&gt; nao:hasTag (P) <br>
+| --&gt; nao:identifier (P) <br>
+| --&gt; nao:isRelated (P) <br>
+| --&gt; nao:lastModified (P) <br>
+| --&gt; nao:numericRating (P) <br>
+| --&gt; rdf:type (P) <br>
+| --&gt; rdfs:comment (P) <br>
+| --&gt; rdfs:label (P) <br>
+| --&gt; nrl:added (P) <br>
+| --&gt; nrl:damaged (P) <br>
+| --&gt; nrl:modified (P) <br>
+| +-- nie:DataObject (C) <br>
+| | --&gt; nfo:belongsToContainer (P) <br>
+| | --&gt; nie:byteSize (P) <br>
+| | --&gt; nie:created (P) <br>
+| | --&gt; nie:dataSource (P) <br>
+| | --&gt; nie:interpretedAs (P) <br>
+| | --&gt; nie:isPartOf (P) <br>
+| | --&gt; nie:lastRefreshed (P) <br>
+| | --&gt; nie:url (P) <br>
+| | --&gt; tracker:available (P) <br>
+| | +-- nfo:FileDataObject (C) <br>
+| | | --&gt; nfo:fileCreated (P) <br>
+| | | --&gt; nfo:fileLastAccessed (P) <br>
+| | | --&gt; nfo:fileLastModified (P) <br>
+| | | --&gt; nfo:fileName (P) <br>
+| | | --&gt; nfo:fileOwner (P) <br>
+| | | --&gt; nfo:fileSize (P) <br>
+| | | --&gt; nfo:hasHash (P) <br>
+| | | --&gt; nfo:permissions (P)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s,
+--search=&lt;</b><i>needle</i><b>&gt;</b></p>
+
+<p style="margin-left:17%;">Returns a list of classes and
+properties which partially match <i>needle</i> in the
+ontology. This is a case insensitive match, for example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+sparql -s text</p>
+
+<p style="margin-left:17%; margin-top: 1em">Classes: 4 <br>
+http://tracker.api.gnome.org/ontology/v3/nfo#TextDocument
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/nfo#PlainTextDocument
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/nfo#PaginatedTextDocument
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/nmm#SynchronizedText</p>
+
+<p style="margin-left:17%; margin-top: 1em">Properties: 4
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/tracker#fulltextIndexed
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/nie#plainTextContent
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/nmo#plainTextMessageContent
+<br>
+
+http://tracker.api.gnome.org/ontology/v3/scal#textLocation</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+<b>--tree</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--get-shorthand=&lt;</b><i>class</i><b>&gt;</b></p>
+
+<p style="margin-left:17%;">Returns the shorthand for a
+class given by a URL. For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+sparql --get-shorthand
+http://tracker.api.gnome.org/ontology/v3/nmo#plainTextMessageContent
+<br>
+nmo:plainTextMessageContent</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--get-longhand=&lt;</b><i>class</i><b>&gt;</b></p>
+
+<p style="margin-left:17%;">Returns the longhand for a
+class given in the form of CLASS:PROPERTY. For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tracker3
+sparql --get-longhand nmm:MusicPiece <br>
+http://tracker.api.gnome.org/ontology/v3/nmm#MusicPiece</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">List all
+classes</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?cl WHERE { ?cl a rdfs:Class
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all
+properties for the Resources class (see
+--list-properties)</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?prop WHERE { <br>
+?prop a rdf:Property ; <br>
+rdfs:domain
+&lt;http://www.w3.org/2000/01/rdf-schema#Resource&gt; <br>
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all class
+namespace prefixes</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?prefix ?ns WHERE { <br>
+?ns a nrl:Namespace ; <br>
+nrl:prefix ?prefix <br>
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all music
+files</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?song WHERE { ?song a nmm:MusicPiece
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all music
+albums, showing title, track count, and length in
+seconds.</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?title COUNT(?song) <br>
+AS songs <br>
+SUM(?length) AS totallength <br>
+WHERE { <br>
+?album a nmm:MusicAlbum ; <br>
+nie:title ?title . <br>
+?song nmm:musicAlbum ?album ; <br>
+nfo:duration ?length <br>
+} GROUP BY ?album&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all music
+from a particular artist</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?song ?title WHERE { <br>
+?song nmm:performer [ nmm:artistName 'Artist Name' ] ; <br>
+nie:title ?title <br>
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Set the played
+count for a song</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -u -q &quot;DELETE { <br>
+&lt;file:///home/user/Music/song.mp3&gt; nie:usageCounter
+?count <br>
+} WHERE { <br>
+&lt;file:///home/user/Music/song.mp3&gt; nie:usageCounter
+?count <br>
+} INSERT { <br>
+&lt;file:///home/user/Music/song.mp3&gt; nie:usageCounter 42
+<br>
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all image
+files</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?image WHERE { ?image a nfo:Image
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all image
+files with a specific tag</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?image WHERE { <br>
+?image a nfo:Image ; <br>
+nao:hasTag [ nao:prefLabel 'tag' ] <br>
+}&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">List all image
+files created on a specific month and order by date</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ tracker3
+sparql -q &quot;SELECT ?image ?date WHERE { <br>
+?image a nfo:Image ; <br>
+nie:contentCreated ?date . <br>
+FILTER (?date &gt;= '2008-07-01T00:00:00' &amp;&amp; <br>
+?date &lt; '2008-08-01T00:00:00') <br>
+} ORDER BY ?date&quot;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tracker3-sql</b>(1),
+<b>tracker3-info</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>http://nepomuk.semanticdesktop.org/
+http://www.w3.org/TR/rdf-sparql-query/</b></p>
+<hr>
+</body>
+</html>

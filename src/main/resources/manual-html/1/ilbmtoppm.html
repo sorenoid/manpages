@@ -1,0 +1,159 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ilbmtoppm</title>
+
+</head>
+<body>
+
+<h1 align="center">ilbmtoppm</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ilbmtoppm -
+convert an ILBM file into a portable pixmap</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ilbmtoppm</b>
+[<b>-verbose</b>] [<b>-ignore</b>&lt;chunkID&gt;<b>]</b>
+[<b>-isham</b>|<b>-isehb</b>] [<b>-adjustcolors</b>]
+[<i>ILBMfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads an IFF
+ILBM file as input. Produces a portable pixmap as output.
+Supported ILBM types are: <br>
+Normal ILBMs with 1-16 planes. <br>
+Amiga Extra_Halfbrite (EHB) <br>
+Amiga HAM with 3-16 planes. <br>
+24 bit. <br>
+Multiplatte (normal or HAM) pictures. <br>
+Color map (BMHD + CMAP chunk only, nPlanes = 0). <br>
+Unofficial direct color.</p>
+
+<p style="margin-left:22%;">1-16 planes for each color
+component.</p>
+
+<p style="margin-left:11%;">Chunks used:</p>
+
+<p style="margin-left:22%;">BMHD, CMAP, CAMG (only HAM
+&amp; EHB flags used), PCHG, BODY unofficial DCOL chunk to
+identify direct color ILBM</p>
+
+<p style="margin-left:11%;">Chunks ignored:</p>
+
+<p style="margin-left:22%;">GRAB, DEST, SPRT, CRNG, CCRT,
+CLUT, DPPV, DRNG, EPSF</p>
+
+<p style="margin-left:11%;">Other chunks (ignored but
+displayed in verbose mode):</p>
+
+<p style="margin-left:22%;">NAME, AUTH, (c), ANNO, DPI</p>
+
+<p style="margin-left:11%;">Unknown chunks are skipped.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Give some information about the
+ILBM file.</p>
+
+<p style="margin-left:11%;"><b>-ignore
+&lt;chunkID&gt;</b></p>
+
+<p style="margin-left:22%;">Skip a chunk. &lt;chunkID&gt;
+is the 4-letter IFF chunk identifier of the chunk to be
+skipped.</p>
+
+<p style="margin-left:11%;"><b>-isham | -isehb</b></p>
+
+<p style="margin-left:22%;">Treat the input file as a HAM
+or Extra_Halfbrite picture, even if these flags or not set
+in the CAMG chunk (or if there is no CAMG chunk).</p>
+
+<p style="margin-left:11%;"><b>-adjustcolors</b></p>
+
+<p style="margin-left:22%;">If all colors in the CMAP have
+a value of less then 16, ilbmtoppm assumes a 4-bit colormap
+and gives a warning. With this option the colormap is scaled
+to 8 bits.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+multipalette PCHG BigLineChanges and Huffman decompression
+code is untested.</p>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Amiga ROM
+Kernel Reference Manual - Devices (3rd Ed.) <br>
+Addison Wesley, ISBN 0-201-56775-X</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppm(5),
+ppmtoilbm(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer. <br>
+Modified October 1993 by Ingo Wilken
+(Ingo.Wilken@informatik.uni-oldenburg.de)</p>
+<hr>
+</body>
+</html>

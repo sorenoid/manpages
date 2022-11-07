@@ -1,0 +1,286 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-INIT</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-INIT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#TEMPLATE DIRECTORY">TEMPLATE DIRECTORY</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-init -
+Create an empty Git repository or reinitialize an existing
+one</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git init</i>
+[-q | --quiet] [--bare]
+[--template=&lt;template_directory&gt;] <br>
+[--separate-git-dir &lt;git dir&gt;]
+[--object-format=&lt;format&gt;] <br>
+[-b &lt;branch-name&gt; |
+--initial-branch=&lt;branch-name&gt;] <br>
+[--shared[=&lt;permissions&gt;]] [directory]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This command
+creates an empty Git repository - basically a <b>.git</b>
+directory with subdirectories for <b>objects</b>,
+<b>refs/heads</b>, <b>refs/tags</b>, and template files. An
+initial branch without any commits will be created (see the
+<b>--initial-branch</b> option below for its name).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>$GIT_DIR</b> environment variable is set then it
+specifies a path to use instead of <b>./.git</b> for the
+base of the repository.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the object
+storage directory is specified via the
+<b>$GIT_OBJECT_DIRECTORY</b> environment variable then the
+sha1 directories are created underneath - otherwise the
+default <b>$GIT_DIR/objects</b> directory is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Running <i>git
+init</i> in an existing repository is safe. It will not
+overwrite things that are already there. The primary reason
+for rerunning <i>git init</i> is to pick up newly added
+templates (or to move the repository to another place if
+--separate-git-dir is given).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-q, --quiet</p>
+
+<p style="margin-left:17%;">Only print error and warning
+messages; all other output will be suppressed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--bare</p>
+
+<p style="margin-left:17%;">Create a bare repository. If
+<b>GIT_DIR</b> environment is not set, it is set to the
+current working directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--object-format=&lt;format&gt;</p>
+
+<p style="margin-left:17%;">Specify the given object format
+(hash algorithm) for the repository. The valid values are
+<i>sha1</i> and (if enabled) <i>sha256</i>. <i>sha1</i> is
+the default.</p>
+
+<p style="margin-left:17%; margin-top: 1em">THIS OPTION IS
+EXPERIMENTAL! SHA-256 support is experimental and still in
+an early stage. A SHA-256 repository will in general not be
+able to share work with &quot;regular&quot; SHA-1
+repositories. It should be assumed that, e.g., Git internal
+file formats in relation to SHA-256 repositories may change
+in backwards-incompatible ways. Only use
+<b>--object-format=sha256</b> for testing purposes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--template=&lt;template_directory&gt;</p>
+
+<p style="margin-left:17%;">Specify the directory from
+which templates will be used. (See the &quot;TEMPLATE
+DIRECTORY&quot; section below.)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--separate-git-dir=&lt;git
+dir&gt;</p>
+
+<p style="margin-left:17%;">Instead of initializing the
+repository as a directory to either <b>$GIT_DIR</b> or
+<b>./.git/</b>, create a text file there containing the path
+to the actual repository. This file acts as
+filesystem-agnostic Git symbolic link to the repository.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If this is
+reinitialization, the repository will be moved to the
+specified path.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-b
+&lt;branch-name&gt;,
+--initial-branch=&lt;branch-name&gt;</p>
+
+<p style="margin-left:17%;">Use the specified name for the
+initial branch in the newly created repository. If not
+specified, fall back to the default name (currently
+<b>master</b>, but this is subject to change in the future;
+the name can be customized via the <b>init.defaultBranch</b>
+configuration variable).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--shared[=(false|true|umask|group|all|world|everybody|0xxx)]</p>
+
+<p style="margin-left:17%;">Specify that the Git repository
+is to be shared amongst several users. This allows users
+belonging to the same group to push into that repository.
+When specified, the config variable
+&quot;core.sharedRepository&quot; is set so that files and
+directories under <b>$GIT_DIR</b> are created with the
+requested permissions. When not specified, Git will use
+permissions reported by umask(2).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The option can
+have the following values, defaulting to <i>group</i> if no
+value is given:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>umask</i>
+(or <i>false</i>)</p>
+
+<p style="margin-left:23%;">Use permissions reported by
+umask(2). The default, when <b>--shared</b> is not
+specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>group</i>
+(or <i>true</i>)</p>
+
+<p style="margin-left:23%;">Make the repository
+group-writable, (and g+sx, since the git group may be not
+the primary group of all users). This is used to loosen the
+permissions of an otherwise safe umask(2) value. Note that
+the umask still applies to the other permission bits (e.g.
+if umask is <i>0022</i>, using <i>group</i> will not remove
+read privileges from other (non-group) users). See
+<i>0xxx</i> for how to exactly specify the repository
+permissions.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>all</i> (or
+<i>world</i> or <i>everybody</i>)</p>
+
+<p style="margin-left:23%;">Same as <i>group</i>, but make
+the repository readable by all users.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>0xxx</i></p>
+
+<p style="margin-left:23%;"><i>0xxx</i> is an octal number
+and each file will have mode <i>0xxx</i>. <i>0xxx</i> will
+override users' umask(2) value (and not only loosen
+permissions as <i>group</i> and <i>all</i> does).
+<i>0640</i> will create a repository which is
+group-readable, but not group-writable or accessible to
+others. <i>0660</i> will create a repo that is readable and
+writable to the current user and group, but inaccessible to
+others.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+configuration flag <b>receive.denyNonFastForwards</b> is
+enabled in shared repositories, so that you cannot force a
+non fast-forwarding push into it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you provide
+a <i>directory</i>, the command is run inside it. If this
+directory does not exist, it will be created.</p>
+
+<h2>TEMPLATE DIRECTORY
+<a name="TEMPLATE DIRECTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Files and
+directories in the template directory whose name do not
+start with a dot will be copied to the <b>$GIT_DIR</b> after
+it is created.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The template
+directory will be one of the following (in order):</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+argument given with the <b>--template</b> option;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+contents of the <b>$GIT_TEMPLATE_DIR</b> environment
+variable;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+<b>init.templateDir</b> configuration variable; or</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+default template directory:
+<b>/usr/share/git-core/templates</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+template directory includes some directory structure,
+suggested &quot;exclude patterns&quot; (see
+<b>gitignore</b>(5)), and sample hook files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The sample
+hooks are all disabled by default. To enable one of the
+sample hooks rename it by removing its <b>.sample</b>
+suffix.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>githooks</b>(5) for more general info on hook
+execution.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Start a new Git
+repository for an existing code base</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ cd
+/path/to/my/codebase <br>
+$ git init <b>(1)</b> <br>
+$ git add . <b>(2)</b> <br>
+$ git commit <b>(3)</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>1.</b>
+Create a /path/to/my/codebase/.git directory. <b><br>
+2.</b> Add all existing files to the index. <b><br>
+3.</b> Record the pristine state as the first commit in the
+history.</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

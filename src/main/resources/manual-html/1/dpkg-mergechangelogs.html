@@ -1,0 +1,176 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:29 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-mergechangelogs</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-mergechangelogs</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#INTEGRATION WITH GIT">INTEGRATION WITH GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-mergechangelogs
+- 3-way merge of debian/changelog files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-mergechangelogs</b>
+[<i>option</i>...] <i>old new-a new-b</i> [<i>out</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+will use the 3 provided versions of the Debian changelog to
+generate a merged changelog file. The resulting changelog is
+stored in the file <i>out</i> or output to the standard
+output if that parameter is not given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each entry is
+identified by its version number and they are assumed to be
+not conflicting, they are simply merged in the right order
+(by decreasing version number). When
+<b>--merge-prereleases</b> is used, the part of the version
+number after the last tilde is dropped so that 1.0-1~exp1
+and 1.0-1~exp5 are considered to be the same entry. When the
+same version is available in both <i>new-a</i> and
+<i>new-b</i>, a standard line-based 3-way merge is attempted
+(provided that the module Algorithm::Merge is available
+&mdash; it&rsquo;s part of the package
+libalgorithm-merge-perl &mdash; otherwise you get a global
+conflict on the content of the entry).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--merge-unreleased</b></p>
+
+<p style="margin-left:17%;">Ignore the version number when
+the entries are marked as <b><small>UNRELEASED</small></b>
+(since dpkg 1.21.0).</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is useful
+when you have diverging development for versions that have
+not yet been released. For instance 2.1-1 is released, then
+development happens for the new 2.2-1 and then for 2.3-1,
+where it makes sense to just end with a coalesced entry for
+2.3-1 including all the development done in 2.2-1.</p>
+
+<p style="margin-left:11%;"><b>-m</b>,
+<b>--merge-prereleases</b></p>
+
+<p style="margin-left:17%;">Drop the part after the last
+tilde in the version number when doing version comparison to
+identify if two entries are supposed to be the same or
+not.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is useful
+when you keep using the same changelog entry but you
+increase its version number regularly. For instance, you
+might have 2.3-1~exp1, 2.3-1~exp2, ... until the official
+release 2.3-1 and they are all the same changelog entry that
+has evolved over time.</p>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_NLS</small></b></p>
+
+<p style="margin-left:17%;">If set, it will be used to
+decide whether to activate Native Language Support, also
+known as internationalization (or i18n) support (since dpkg
+1.19.0). The accepted values are: <b>0</b> and <b>1</b>
+(default).</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Anything that
+is not parsed by Dpkg::Changelog is lost during the merge.
+This might include stuff like comments which were not
+supposed to be there, etc.</p>
+
+<h2>INTEGRATION WITH GIT
+<a name="INTEGRATION WITH GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+use this program to merge Debian changelog files in a git
+repository, you have first to register a new merge driver in
+<b>.git/config</b> or <b>~/.gitconfig</b>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[merge
+&quot;dpkg-mergechangelogs&quot;] <br>
+name = debian/changelog merge driver <br>
+driver = dpkg-mergechangelogs -m %O %A %B %A</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then you have
+to setup the merge attribute for the debian/changelog file
+either in <b>.gitattributes</b> in the repository itself, or
+in <b>.git/info/attributes</b>:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">debian/changelog
+merge=dpkg-mergechangelogs</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:38 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ALSALOOP</title>
+
+</head>
+<body>
+
+<h1 align="center">ALSALOOP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">alsaloop -
+command-line PCM loopback</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>alsaloop</b>
+[<i>-option</i>] [<i>cmd</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>alsaloop</b>
+allows create a PCM loopback between a PCM capture device
+and a PCM playback device.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>alsaloop</b>
+supports multiple soundcards, adaptive clock
+synchronization, adaptive rate resampling using the
+samplerate library (if available in the system). Also, mixer
+controls can be redirected from one card to another (for
+example Master and PCM).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>-h</i> |
+<i>--help</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Prints the help
+information.</p>
+
+<p style="margin-left:11%;"><i>-g &lt;file&gt;</i> |
+<i>--config=&lt;file&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use given
+configuration file. The syntax of this file is simple: one
+line contains the command line options for one job. The
+&rsquo;#&rsquo; means comment and rest of line is ignored.
+Example:</p>
+
+<p style="margin-left:22%; margin-top: 1em"># First line -
+comment, second line - first job <br>
+-C hw:1,0 -P hw:0,0 -t 50000 -T 1 <br>
+# Third line - comment, fourth line - second job <br>
+-C hw:1,1 -P hw:0,1 -t 40000 -T 2</p>
+
+<p style="margin-left:11%;"><i>-d</i> |
+<i>--daemonize</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Daemonize the
+main process and use syslog for messages.</p>
+
+<p style="margin-left:11%;"><i>-P &lt;device&gt;</i> |
+<i>--pdevice=&lt;device&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use given
+playback device.</p>
+
+<p style="margin-left:11%;"><i>-C &lt;device&gt;</i> |
+<i>--cdevice=&lt;device&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use given
+capture device.</p>
+
+<p style="margin-left:11%;"><i>-X &lt;device&gt;</i> |
+<i>--pctl=&lt;device&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use given CTL
+device for playback.</p>
+
+<p style="margin-left:11%;"><i>-Y &lt;device&gt;</i> |
+<i>--cctl=&lt;device&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use given CTL
+device for capture.</p>
+
+<p style="margin-left:11%;"><i>-x
+&lt;ctl_ascii_name&gt;</i> |
+<i>--prateshift=&lt;ctl_ascii_name&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify ctl
+ascii name for playshift sync mode (see the Examples
+section).</p>
+
+<p style="margin-left:11%;"><i>-l &lt;latency&gt;</i> |
+<i>--latency=&lt;frames&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Requested
+latency in frames.</p>
+
+<p style="margin-left:11%;"><i>-t &lt;usec&gt;</i> |
+<i>--tlatency=&lt;usec&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Requested
+latency in usec (1/1000000sec).</p>
+
+<p style="margin-left:11%;"><i>-f &lt;format&gt;</i> |
+<i>--format=&lt;format&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Format
+specification (usually S16_LE S32_LE). Use -h to list all
+formats. Default format is S16_LE.</p>
+
+<p style="margin-left:11%;"><i>-c &lt;channels&gt;</i> |
+<i>--channels=&lt;channels&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Channel count
+specification. Default value is 2.</p>
+
+<p style="margin-left:11%;"><i>-r &lt;rate&gt;</i> |
+<i>--rate=&lt;rate&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Rate
+specification. Default value is 48000 (Hz).</p>
+
+<p style="margin-left:11%;"><i>-n</i> |
+<i>--resample</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Allow rate
+resampling using alsa-lib.</p>
+
+<p style="margin-left:11%;"><i>-A &lt;converter&gt;</i> |
+<i>--samplerate=&lt;converter&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use
+libsamplerate and choose a converter:</p>
+
+<p style="margin-left:22%; margin-top: 1em">0 or sincbest -
+best quality <br>
+1 or sincmedium - medium quality <br>
+2 or sincfastest - lowest quality <br>
+3 or zerohold - hold zero samples <br>
+4 or linear - worst quality - linear resampling <br>
+5 or auto - choose best method</p>
+
+<p style="margin-left:11%;"><i>-B &lt;size&gt;</i> |
+<i>--buffer=&lt;size&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Buffer size in
+frames.</p>
+
+<p style="margin-left:11%;"><i>-E &lt;size&gt;</i> |
+<i>--period=&lt;size&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Period size in
+frames.</p>
+
+<p style="margin-left:11%;"><i>-s &lt;secs&gt;</i> |
+<i>--seconds=&lt;secs&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Duration of
+loop in seconds.</p>
+
+<p style="margin-left:11%;"><i>-b</i> | <i>--nblock</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Non-block mode
+(very early process wakeup). Eats more CPU.</p>
+
+<p style="margin-left:11%;"><i>-S &lt;mode&gt;</i> |
+<i>--sync=&lt;mode&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Sync mode
+specification for capture to playback stream: <br>
+0 or none - do not touch the stream <br>
+1 or simple - add or remove samples to keep <br>
+both streams synchronized <br>
+2 or captshift - use driver for the capture device <br>
+(if supported) to compensate <br>
+the rate shift <br>
+3 or playshift - use driver for the playback device <br>
+(if supported) to compensate <br>
+the rate shift <br>
+4 or samplerate - use samplerate library to do rate
+resampling <br>
+5 or auto - automatically selects the best method <br>
+in this order: captshift, playshift, <br>
+samplerate, simple</p>
+
+<p style="margin-left:11%;"><i>-T &lt;num&gt;</i> |
+<i>--thread=&lt;num&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Thread number
+(-1 means create a unique thread). All jobs with same thread
+numbers are run within one thread.</p>
+
+<p style="margin-left:11%;"><i>-m &lt;mixid&gt;</i> |
+<i>--mixer=&lt;midid&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Redirect mixer
+control from the playback card to the capture card. Format
+of <i>mixid</i> is SRCID(PLAYBACK)[@DSTID(PLAYBACK)]:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">&quot;name=&rsquo;Master
+Playback Switch&rsquo;@name=&rsquo;Another
+Switch&rsquo;&quot; <br>
+&quot;name=&rsquo;PCM Playback Volume&rsquo;&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">Known
+attributes:</p>
+
+<p style="margin-left:22%; margin-top: 1em">name - control
+ID name <br>
+index - control ID index <br>
+device - control ID device <br>
+subdevice - control ID subdevice <br>
+iface - control ID interface <br>
+numid - control ID numid</p>
+
+<p style="margin-left:11%;"><i>-O &lt;ossmixid&gt;</i> |
+<i>--ossmixer=&lt;midid&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Redirect mixer
+control from the OSS Mixer emulation layer (capture card) to
+the ALSA layer (capture card). Format of <i>ossmixid</i> is
+ALSAID[,INDEX]@OSSID:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">&quot;Master@VOLUME&quot;
+<br>
+&quot;PCM,1@ALTPCM&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">Known OSS
+attributes:</p>
+
+<p style="margin-left:22%; margin-top: 1em">VOLUME, BASS,
+TREBLE, SYNTH, PCM, SPEAKER, LINE, MIC, CD, IMIX, ALTPCM,
+<br>
+RECLEV, IGAIN, OGAIN, LINE1, LINE2, LINE3, DIGITAL1,
+DIGITAL2, DIGITAL3, <br>
+PHONEIN, PHONEOUT, VIDEO, RADIO, MONITOR</p>
+
+<p style="margin-left:11%;"><i>-v</i> |
+<i>--verbose</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Verbose mode.
+Use multiple times to increase verbosity.</p>
+
+<p style="margin-left:11%;"><i>-U</i> | <i>--xrun</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Verbose xrun
+profiling.</p>
+
+<p style="margin-left:11%;"><i>-W &lt;timeout&gt;</i> |
+<i>--wake=&lt;timeout&gt;</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Set process
+wake timeout.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>alsaloop -C
+hw:0,0 -P hw:1,0 -t 50000</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>alsaloop -C
+hw:soundcard,0 -P hw:Loopback,0 -t 50000 -S playshift \ <br>
+-x iface=PCM,name=&rsquo;PCM Rate Shift
+100000&rsquo;,device=1</b></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None known.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>alsaloop</b>
+is by Jaroslav Kysela &lt;perex@perex.cz&gt;. This document
+is by Jaroslav Kysela &lt;perex@perex.cz&gt;.</p>
+<hr>
+</body>
+</html>

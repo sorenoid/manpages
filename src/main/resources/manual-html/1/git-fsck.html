@@ -1,0 +1,387 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-FSCK</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-FSCK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#DISCUSSION">DISCUSSION</a><br>
+<a href="#EXTRACTED DIAGNOSTICS">EXTRACTED DIAGNOSTICS</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-fsck -
+Verifies the connectivity and validity of the objects in the
+database</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git fsck</i>
+[--tags] [--root] [--unreachable] [--cache] [--no-reflogs]
+<br>
+[--[no-]full] [--strict] [--verbose] [--lost-found] <br>
+[--[no-]dangling] [--[no-]progress] [--connectivity-only]
+<br>
+[--[no-]name-objects] [&lt;object&gt;*]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Verifies the
+connectivity and validity of the objects in the
+database.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;object&gt;</p>
+
+<p style="margin-left:17%;">An object to treat as the head
+of an unreachability trace.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no objects
+are given, <i>git fsck</i> defaults to using the index file,
+all SHA-1 references in <b>refs</b> namespace, and all
+reflogs (unless --no-reflogs is given) as heads.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--unreachable</p>
+
+<p style="margin-left:17%;">Print out objects that exist
+but that aren&rsquo;t reachable from any of the reference
+nodes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--[no-]dangling</p>
+
+<p style="margin-left:17%;">Print objects that exist but
+that are never <i>directly</i> used (default).
+<b>--no-dangling</b> can be used to omit this information
+from the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--root</p>
+
+<p style="margin-left:17%;">Report root nodes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--tags</p>
+
+<p style="margin-left:17%;">Report tags.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--cache</p>
+
+<p style="margin-left:17%;">Consider any object recorded in
+the index also as a head node for an unreachability
+trace.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-reflogs</p>
+
+<p style="margin-left:17%;">Do not consider commits that
+are referenced only by an entry in a reflog to be reachable.
+This option is meant only to search for commits that used to
+be in a ref, but now aren&rsquo;t, but are still in that
+corresponding reflog.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--full</p>
+
+<p style="margin-left:17%;">Check not just objects in
+GIT_OBJECT_DIRECTORY ($GIT_DIR/objects), but also the ones
+found in alternate object pools listed in
+GIT_ALTERNATE_OBJECT_DIRECTORIES or
+$GIT_DIR/objects/info/alternates, and in packed Git archives
+found in $GIT_DIR/objects/pack and corresponding pack
+subdirectories in alternate object pools. This is now
+default; you can turn it off with --no-full.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--connectivity-only</p>
+
+<p style="margin-left:17%;">Check only the connectivity of
+reachable objects, making sure that any objects referenced
+by a reachable tag, commit, or tree is present. This speeds
+up the operation by avoiding reading blobs entirely (though
+it does still check that referenced blobs exist). This will
+detect corruption in commits and trees, but not do any
+semantic checks (e.g., for format errors). Corruption in
+blob objects will not be detected at all.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unreachable
+tags, commits, and trees will also be accessed to find the
+tips of dangling segments of history. Use
+<b>--no-dangling</b> if you don&rsquo;t care about this
+output and want to speed it up further.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--strict</p>
+
+<p style="margin-left:17%;">Enable more strict checking,
+namely to catch a file mode recorded with g+w bit set, which
+was created by older versions of Git. Existing repositories,
+including the Linux kernel, Git itself, and sparse
+repository have old objects that triggers this check, but it
+is recommended to check new projects with this flag.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--verbose</p>
+
+<p style="margin-left:17%;">Be chatty.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--lost-found</p>
+
+<p style="margin-left:17%;">Write dangling objects into
+.git/lost-found/commit/ or .git/lost-found/other/, depending
+on type. If the object is a blob, the contents are written
+into the file, rather than its object name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--name-objects</p>
+
+<p style="margin-left:17%;">When displaying names of
+reachable objects, in addition to the SHA-1 also display a
+name that describes <b>how</b> they are reachable,
+compatible with <b>git-rev-parse</b>(1), e.g.
+<b>HEAD@{1234567890}~25^2:src/</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--[no-]progress</p>
+
+<p style="margin-left:17%;">Progress status is reported on
+the standard error stream by default when it is attached to
+a terminal, unless --no-progress or --verbose is specified.
+--progress forces progress status even if the standard error
+stream is not directed to a terminal.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">fsck.&lt;msg-id&gt;</p>
+
+<p style="margin-left:17%;">During fsck git may find issues
+with legacy data which wouldn&rsquo;t be generated by
+current versions of git, and which wouldn&rsquo;t be sent
+over the wire if <b>transfer.fsckObjects</b> was set. This
+feature is intended to support working with legacy
+repositories containing such data.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Setting
+<b>fsck.&lt;msg-id&gt;</b> will be picked up by
+<b>git-fsck</b>(1), but to accept pushes of such data set
+<b>receive.fsck.&lt;msg-id&gt;</b> instead, or to clone or
+fetch it set <b>fetch.fsck.&lt;msg-id&gt;</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The rest of the
+documentation discusses <b>fsck.*</b> for brevity, but the
+same applies for the corresponding <b>receive.fsck.*</b> and
+<b>fetch.&lt;msg-id&gt;.*</b>. variables.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unlike
+variables like <b>color.ui</b> and <b>core.editor</b> the
+<b>receive.fsck.&lt;msg-id&gt;</b> and
+<b>fetch.fsck.&lt;msg-id&gt;</b> variables will not fall
+back on the <b>fsck.&lt;msg-id&gt;</b> configuration if they
+aren&rsquo;t set. To uniformly configure the same fsck
+settings in different circumstances all three of them they
+must all set to the same values.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When
+<b>fsck.&lt;msg-id&gt;</b> is set, errors can be switched to
+warnings and vice versa by configuring the
+<b>fsck.&lt;msg-id&gt;</b> setting where the
+<b>&lt;msg-id&gt;</b> is the fsck message ID and the value
+is one of <b>error</b>, <b>warn</b> or <b>ignore</b>. For
+convenience, fsck prefixes the error/warning with the
+message ID, e.g. &quot;missingEmail: invalid
+author/committer line - missing email&quot; means that
+setting <b>fsck.missingEmail = ignore</b> will hide that
+issue.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In general, it
+is better to enumerate existing objects with problems with
+<b>fsck.skipList</b>, instead of listing the kind of
+breakages these problematic objects share to be ignored, as
+doing the latter will allow new instances of the same
+breakages go unnoticed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Setting an
+unknown <b>fsck.&lt;msg-id&gt;</b> value will cause fsck to
+die, but doing the same for
+<b>receive.fsck.&lt;msg-id&gt;</b> and
+<b>fetch.fsck.&lt;msg-id&gt;</b> will only cause git to
+warn.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">fsck.skipList</p>
+
+<p style="margin-left:17%;">The path to a list of object
+names (i.e. one unabbreviated SHA-1 per line) that are known
+to be broken in a non-fatal way and should be ignored. On
+versions of Git 2.20 and later comments (<i>#</i>), empty
+lines, and any leading and trailing whitespace is ignored.
+Everything but a SHA-1 per line will error out on older
+versions.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This feature is
+useful when an established project should be accepted
+despite early commits containing errors that can be safely
+ignored such as invalid committer email addresses. Note:
+corrupt objects cannot be skipped with this setting.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Like
+<b>fsck.&lt;msg-id&gt;</b> this variable has corresponding
+<b>receive.fsck.skipList</b> and <b>fetch.fsck.skipList</b>
+variants.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unlike
+variables like <b>color.ui</b> and <b>core.editor</b> the
+<b>receive.fsck.skipList</b> and <b>fetch.fsck.skipList</b>
+variables will not fall back on the <b>fsck.skipList</b>
+configuration if they aren&rsquo;t set. To uniformly
+configure the same fsck settings in different circumstances
+all three of them they must all set to the same values.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Older versions
+of Git (before 2.20) documented that the object names list
+should be sorted. This was never a requirement, the object
+names could appear in any order, but when reading the list
+we tracked whether the list was sorted for the purposes of
+an internal binary search implementation, which could save
+itself some work with an already sorted list. Unless you had
+a humongous list there was no reason to go out of your way
+to pre-sort the list. After Git version 2.20 a hash
+implementation is used instead, so there&rsquo;s now no
+reason to pre-sort the list.</p>
+
+<h2>DISCUSSION
+<a name="DISCUSSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-fsck tests
+SHA-1 and general object sanity, and it does full tracking
+of the resulting reachability and everything else. It prints
+out any corruption it finds (missing or bad objects), and if
+you use the <b>--unreachable</b> flag it will also print out
+objects that exist but that aren&rsquo;t reachable from any
+of the specified head nodes (or the default set, as
+mentioned above).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any corrupt
+objects you will have to find in backups or other archives
+(i.e., you can just remove them and do an <i>rsync</i> with
+some other site in the hopes that somebody else has the
+object you have corrupted).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+core.commitGraph is true, the commit-graph file will also be
+inspected using <i>git commit-graph verify</i>. See
+<b>git-commit-graph</b>(1).</p>
+
+<h2>EXTRACTED DIAGNOSTICS
+<a name="EXTRACTED DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">unreachable
+&lt;type&gt; &lt;object&gt;</p>
+
+<p style="margin-left:17%;">The &lt;type&gt; object
+&lt;object&gt;, isn&rsquo;t actually referred to directly or
+indirectly in any of the trees or commits seen. This can
+mean that there&rsquo;s another root node that you&rsquo;re
+not specifying or that the tree is corrupt. If you
+haven&rsquo;t missed a root node then you might as well
+delete unreachable nodes since they can&rsquo;t be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">missing
+&lt;type&gt; &lt;object&gt;</p>
+
+<p style="margin-left:17%;">The &lt;type&gt; object
+&lt;object&gt;, is referred to but isn&rsquo;t present in
+the database.</p>
+
+<p style="margin-left:11%; margin-top: 1em">dangling
+&lt;type&gt; &lt;object&gt;</p>
+
+<p style="margin-left:17%;">The &lt;type&gt; object
+&lt;object&gt;, is present in the database but never
+<i>directly</i> used. A dangling commit could be a root
+node.</p>
+
+<p style="margin-left:11%; margin-top: 1em">hash mismatch
+&lt;object&gt;</p>
+
+<p style="margin-left:17%;">The database has an object
+whose hash doesn&rsquo;t match the object database value.
+This indicates a serious data integrity problem.</p>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">GIT_OBJECT_DIRECTORY</p>
+
+<p style="margin-left:17%;">used to specify the object
+database root (usually $GIT_DIR/objects)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">GIT_INDEX_FILE</p>
+
+<p style="margin-left:17%;">used to specify the index file
+of the index</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">GIT_ALTERNATE_OBJECT_DIRECTORIES</p>
+
+<p style="margin-left:17%;">used to specify additional
+object database roots (usually unset)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

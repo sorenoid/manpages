@@ -1,0 +1,673 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ASPELL</title>
+
+</head>
+<body>
+
+<h1 align="center">ASPELL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#DICTIONARY OPTIONS">DICTIONARY OPTIONS</a><br>
+<a href="#CHECKER OPTIONS">CHECKER OPTIONS</a><br>
+<a href="#FILTER OPTIONS">FILTER OPTIONS</a><br>
+<a href="#RUN-TOGETHER WORD OPTIONS">RUN-TOGETHER WORD OPTIONS</a><br>
+<a href="#MISC OPTIONS">MISC OPTIONS</a><br>
+<a href="#ASPELL UTILITY OPTIONS">ASPELL UTILITY OPTIONS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#SUPPORT">SUPPORT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">aspell -
+interactive spell checker</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aspell</b>
+<i>[options] &lt;command&gt;</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>aspell</b></i>
+is a utility program that connects to the Aspell library so
+that it can function as an <b>ispell -a</b> replacement, as
+an independent spell checker, as a test utility to test out
+Aspell library features, and as a utility for managing
+dictionaries used by the library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Aspell
+library contains an interface allowing other programs direct
+access to its functions and therefore reducing the complex
+task of spell checking to simple library calls. The default
+library does not contain dictionary word lists. To add
+language dictionaries, please check your distro first for
+modified dictionaries, otherwise look here for base language
+dictionaries &lt;http://aspell.net&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+information describes the commands and options used by the
+Aspell Utility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page is maintained separately from the official
+documentation so it may be out of date or incomplete. The
+official documentation is maintained as a Texinfo manual.
+See the &rsquo;<b>aspell</b>&rsquo; entry in <b>info</b> for
+more complete documentation.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>&lt;command&gt;</i>
+is one of: <b><br>
+usage</b>, <b>-?</b></p>
+
+<p style="margin-left:22%;">Send a brief Aspell Utility
+usage message to standard output. This is a short summary
+listing more common spell-check commands and options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>help</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Send a detailed Aspell Utility help message to standard
+output. This is a complete list showing all commands,
+options, filters and dictionaries.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>version</b>, <b>-v</b></p>
+
+<p style="margin-left:22%;">Print version number of Aspell
+Library and Utility to standard output.</p>
+
+<p style="margin-left:11%;"><b>check</b>
+<i>&lt;file&gt;</i>, <b>-c</b> <i>&lt;file&gt;</i></p>
+
+<p style="margin-left:22%;">Spell-check a single file.</p>
+
+<p style="margin-left:11%;"><b>pipe</b>, <b>-a</b></p>
+
+<p style="margin-left:22%;">Run Aspell in <i>ispell -a</i>
+compatibility mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>list</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Produce a list of misspelled words from standard
+input.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">[<b>dump</b>] <b>config</b></p>
+
+<p style="margin-left:22%;">Dump all current configuration
+options to standard output.</p>
+
+<p style="margin-left:11%;"><b>config</b>
+<i>&lt;key&gt;</i></p>
+
+<p style="margin-left:22%;">Send the current value of
+<i>&lt;key&gt;</i> to standard output.</p>
+
+<p style="margin-left:11%;"><b>soundslike</b></p>
+
+<p style="margin-left:22%;">Output the soundslike
+equivalent of each word entered.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>munch</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Generate possible root words and affixes from an input
+list of words.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>expand</b> [<b>1-4</b>]</p>
+
+<p style="margin-left:22%;">Expands the affix flags of each
+affix compressed word entered.</p>
+
+<p style="margin-left:11%;"><b>clean</b>
+[<b>strict</b>]</p>
+
+<p style="margin-left:22%;">Cleans an input word list so
+that every line is a valid word.</p>
+
+<p style="margin-left:11%;"><b>munch-list</b>
+[<b>simple</b>] [<b>single</b>|<b>multi</b>]
+[<b>keep</b>]</p>
+
+<p style="margin-left:22%;">Reduce the size of a word list
+via affix compression.</p>
+
+<p style="margin-left:11%;"><b>conv</b> <i>&lt;from&gt;
+&lt;to&gt;</i> [<i>&lt;norm-form&gt;</i>]</p>
+
+<p style="margin-left:22%;">Converts <i>&lt;from&gt;</i>
+one encoding <i>&lt;to&gt;</i> another.</p>
+
+<p style="margin-left:11%;"><b>norm</b>
+(<i>&lt;norm-map&gt;</i>|<i>&lt;from&gt; &lt;norm-map&gt;
+&lt;to&gt;</i>) [<i>&lt;norm-form&gt;</i>]</p>
+
+<p style="margin-left:22%;">Perform Unicode
+normalization.</p>
+
+<p style="margin-left:11%;">[<b>dump</b>]
+<b>dicts</b>|<b>filters</b>|<b>modes</b></p>
+
+<p style="margin-left:22%;">Lists available dictionaries,
+filters, or modes.</p>
+
+
+<p style="margin-left:11%;"><b>dump</b>|<b>create</b>|<b>merge
+master</b>|<b>personal</b>|<b>repl</b>
+<i>&lt;wordlist&gt;</i></p>
+
+<p style="margin-left:22%;">dump, create, or merge a
+master, personal, or replacement word list.</p>
+
+<h2>DICTIONARY OPTIONS
+<a name="DICTIONARY OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options may be used to control which dictionaries to use and
+how they behave. <b><br>
+--master=</b><i>&lt;name&gt;</i>, <b>-d</b>
+<i>&lt;name&gt;</i></p>
+
+<p style="margin-left:22%;">Base name of the dictionary to
+use. If this option is specified then Aspell will either use
+this dictionary or die.</p>
+
+
+<p style="margin-left:11%;"><b>--dict-dir=</b><i>&lt;directory&gt;</i></p>
+
+<p style="margin-left:22%;">Location of the main dictionary
+word list.</p>
+
+
+<p style="margin-left:11%;"><b>--lang=</b><i>&lt;string&gt;</i>,
+<b>-l</b> <i>&lt;string&gt;</i></p>
+
+<p style="margin-left:22%;">Language to use. It follows the
+same format of the LANG environmental variable on most
+systems. It consists of the two letter ISO 639 language code
+and an optional two letter ISO 3166 country code after a
+dash or underscore. The default value is based on the value
+of the LC_MESSAGES locale.</p>
+
+
+<p style="margin-left:11%;"><b>--size=</b><i>&lt;string&gt;</i></p>
+
+<p style="margin-left:22%;">The preferred size of the
+dictionary word list. This consists of a two char digit code
+describing the size of the list, with typical values of:
+10=tiny, 20=really small, 30=small, 40=med-small, 50=med,
+60=med-large, 70=large, 80=huge, 90=insane.</p>
+
+
+<p style="margin-left:11%;"><b>--variety=</b><i>&lt;string&gt;</i></p>
+
+<p style="margin-left:22%;">Any extra information to
+distinguish this variety of dictionary from other
+dictionaries which may have the same <i>lang</i> and
+<i>size</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--jargon=</b><i>&lt;string&gt;</i></p>
+
+<p style="margin-left:22%;">Please use the <i>variety</i>
+option since it replaces <i>jargon</i> as a better choice.
+<i>jargon</i> will be removed in the future.</p>
+
+
+<p style="margin-left:11%;"><b>--word-list-path=</b><i>&lt;list
+of directories&gt;</i></p>
+
+<p style="margin-left:22%;">Search path for word list
+information files.</p>
+
+
+<p style="margin-left:11%;"><b>--personal=</b><i>&lt;file&gt;</i>,
+<b>-p</b> <i>&lt;file&gt;</i></p>
+
+<p style="margin-left:22%;">Personal word list file
+name.</p>
+
+
+<p style="margin-left:11%;"><b>--repl=</b><i>&lt;file&gt;</i></p>
+
+<p style="margin-left:22%;">Replacements list file
+name.</p>
+
+
+<p style="margin-left:11%;"><b>--extra-dicts=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Extra dictionaries to use.</p>
+
+<p style="margin-left:11%;"><b>--ignore-accents</b></p>
+
+<p style="margin-left:22%;">This option is not yet
+implemented.</p>
+
+<h2>CHECKER OPTIONS
+<a name="CHECKER OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These options
+control the behavior of Aspell when checking documents.
+<b><br>
+--ignore=</b><i>&lt;integer&gt;</i>, <b>-W</b>
+<i>&lt;integer&gt;</i></p>
+
+<p style="margin-left:22%;">Ignore words &lt;=
+<i>&lt;integer&gt;</i> characters in length.</p>
+
+<p style="margin-left:11%;"><b>--ignore-case</b>,
+<b>--dont-ignore-case</b></p>
+
+<p style="margin-left:22%;">Ignore case when checking
+words.</p>
+
+<p style="margin-left:11%;"><b>--ignore-repl</b>,
+<b>--dont-ignore-repl</b></p>
+
+<p style="margin-left:22%;">Ignore commands to store
+replacement pairs.</p>
+
+<p style="margin-left:11%;"><b>--save-repl</b>,
+<b>--dont-save-repl</b></p>
+
+<p style="margin-left:22%;">Save the replacement word list
+on save all.</p>
+
+
+<p style="margin-left:11%;"><b>--sug-mode=</b><i>&lt;mode&gt;</i></p>
+
+<p style="margin-left:22%;">Suggestion <i>&lt;mode&gt;</i>
+=
+<b>ultra</b>|<b>fast</b>|<b>normal</b>|<b>bad-spellers</b></p>
+
+<h2>FILTER OPTIONS
+<a name="FILTER OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These options
+modify the behavior of the various filters. <b><br>
+--add-filter=</b><i>&lt;list&gt;</i>,
+<b>--rem-filter=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or remove a filter.</p>
+
+
+<p style="margin-left:11%;"><b>--add-filter-path=</b><i>&lt;paths&gt;</i>,
+<b>--rem-filter-path=</b><i>&lt;paths&gt;</i></p>
+
+<p style="margin-left:22%;">Add or remove paths searched
+for filters.</p>
+
+
+<p style="margin-left:11%;"><b>--mode=</b><i>&lt;string&gt;</i>,
+<b>-e</b>, <b>-H</b>, <b>-t</b>, <b>-n</b></p>
+
+<p style="margin-left:22%;">Sets the filter mode.
+<i>Mode</i> is one of none, url, email, html, tex or nroff.
+The alternative shortcut options are &rsquo;-e&rsquo; for
+email, &rsquo;-H&rsquo; for Html/Sgml, &rsquo;-t&rsquo; for
+Tex or &rsquo;-n&rsquo; for Nroff.</p>
+
+
+<p style="margin-left:11%;"><b>--encoding=</b><i>&lt;string&gt;</i></p>
+
+<p style="margin-left:22%;">encoding the document is
+expected to be in. The default depends on the current
+locale.</p>
+
+
+<p style="margin-left:11%;"><b>--add-email-quote=</b><i>&lt;list&gt;</i>,
+<b>--rem-email-quote=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or Remove a list of email
+quote characters.</p>
+
+
+<p style="margin-left:11%;"><b>--email-margin=</b><i>&lt;integer&gt;</i></p>
+
+<p style="margin-left:22%;">Number of chars that can appear
+before the quote char.</p>
+
+
+<p style="margin-left:11%;"><b>--add-html-check=</b><i>&lt;list&gt;</i>,
+<b>--rem-html-check=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or remove a list of HTML
+attributes to always check. For example, look inside alt=
+tags.</p>
+
+
+<p style="margin-left:11%;"><b>--add-html-skip=</b><i>&lt;list&gt;</i>,
+<b>--rem-html-skip=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or remove a list of HTML
+attributes to always skip while spell checking.</p>
+
+
+<p style="margin-left:11%;"><b>--add-sgml-check=</b><i>&lt;list&gt;</i>,
+<b>--rem-sgml-check=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or remove a list of SGML
+attributes to always check for spelling.</p>
+
+
+<p style="margin-left:11%;"><b>--add-sgml-skip=</b><i>&lt;list&gt;</i>,
+<b>--rem-sgml-skip=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or remove a list of SGML
+attributes to always skip while spell checking.</p>
+
+
+<p style="margin-left:11%;"><b>--sgml-extension=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">SGML file extensions.</p>
+
+<p style="margin-left:11%;"><b>--tex-check-comments</b>,
+<b>--dont-tex-check-comments</b></p>
+
+<p style="margin-left:22%;">Check TeX comments.</p>
+
+
+<p style="margin-left:11%;"><b>--add-tex-command=</b><i>&lt;list&gt;</i>,
+<b>--rem-tex-command=</b><i>&lt;list&gt;</i></p>
+
+<p style="margin-left:22%;">Add or Remove a list of TeX
+commands.</p>
+
+<h2>RUN-TOGETHER WORD OPTIONS
+<a name="RUN-TOGETHER WORD OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These may be
+used to control the behavior of run-together words. <b><br>
+--run-together</b>, <b>--dont-run-together</b>, <b>-C</b>,
+<b>-B</b></p>
+
+<p style="margin-left:22%;">Consider run-together words
+valid.</p>
+
+
+<p style="margin-left:11%;"><b>--run-together-limit=</b><i>&lt;integer&gt;</i></p>
+
+<p style="margin-left:22%;">Maximum number of words that
+can be strung together.</p>
+
+
+<p style="margin-left:11%;"><b>--run-together-min=</b><i>&lt;integer&gt;</i></p>
+
+<p style="margin-left:22%;">Minimal length of interior
+words.</p>
+
+<h2>MISC OPTIONS
+<a name="MISC OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Miscellaneous
+options that don&rsquo;t fall under any other category.
+<b><br>
+--conf=</b><i>&lt;file name&gt;</i></p>
+
+<p style="margin-left:22%;">Main configuration file. This
+file overrides Aspell&rsquo;s global defaults.</p>
+
+
+<p style="margin-left:11%;"><b>--conf-dir=</b><i>&lt;directory&gt;</i></p>
+
+<p style="margin-left:22%;">Location of main configuration
+file.</p>
+
+
+<p style="margin-left:11%;"><b>--data-dir=</b><i>&lt;directory&gt;</i></p>
+
+<p style="margin-left:22%;">Location of language data
+files.</p>
+
+
+<p style="margin-left:11%;"><b>--keyboard=</b><i>&lt;keyboard&gt;</i></p>
+
+<p style="margin-left:22%;">Use this keyboard layout for
+suggesting possible words. These spelling errors happen if a
+user accidentally presses a key next to the intended correct
+key.</p>
+
+
+<p style="margin-left:11%;"><b>--local-data-dir=</b><i>&lt;directory&gt;</i></p>
+
+<p style="margin-left:22%;">Alternative location of
+language data files. This directory is searched before
+data-dir.</p>
+
+
+<p style="margin-left:11%;"><b>--home-dir=</b><i>&lt;directory&gt;</i></p>
+
+<p style="margin-left:22%;">Directory Location for personal
+wordlist files.</p>
+
+<p style="margin-left:11%;"><b>--per-conf=</b><i>&lt;file
+name&gt;</i></p>
+
+<p style="margin-left:22%;">Personal configuration file.
+This file overrides options found in the global config
+file.</p>
+
+<h2>ASPELL UTILITY OPTIONS
+<a name="ASPELL UTILITY OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These options
+are part of the <i>aspell</i> Utility and work independently
+of the library. <b><br>
+--backup</b>, <b>--dont-backup</b>, <b>-b</b>, <b>-x</b></p>
+
+<p style="margin-left:22%;">The aspell utility creates a
+backup file by making a copy and appending <i>.bak</i> to
+file name. This only applies when the command is <i>check
+&lt;file&gt;</i> and the backup file is only created if any
+spelling modifications take place.</p>
+
+<p style="margin-left:11%;"><b>--byte-offsets</b>,
+<b>--dont-byte-offsets</b></p>
+
+<p style="margin-left:22%;">Use byte offsets instead of
+character offsets.</p>
+
+<p style="margin-left:11%;"><b>--guess</b>,
+<b>--dont-guess</b>, <b>-m</b>, <b>-P</b></p>
+
+<p style="margin-left:22%;">Create missing root/affix
+combinations not in the dictionary in <b>pipe</b> mode.</p>
+
+<p style="margin-left:11%;"><b>--keymapping=aspell</b>,
+<b>--keymapping=ispell</b></p>
+
+<p style="margin-left:22%;">The keymapping to use, either
+<i>aspell</i> for the default mapping or <i>ispell</i> to
+use the same mapping that the Ispell utility uses.</p>
+
+<p style="margin-left:11%;"><b>--reverse</b>,
+<b>--dont-reverse</b></p>
+
+<p style="margin-left:22%;">Reverse the order of the
+suggestions list in pipe mode.</p>
+
+<p style="margin-left:11%;"><b>--suggest</b>,
+<b>--dont-suggest</b></p>
+
+<p style="margin-left:22%;">Suggest possible replacements
+in pipe mode. If false, Aspell will simply report the
+misspelling and make no attempt at suggestions or possible
+corrections.</p>
+
+<p style="margin-left:11%;"><b>--time</b>,
+<b>--dont-time</b></p>
+
+<p style="margin-left:22%;">Time the load time and suggest
+a time in pipe mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition
+Aspell will try to make sense out of Ispell&rsquo;s command
+line options so that it can function as a drop in
+replacement for Ispell. If Aspell is run without any command
+line options it will display a brief help screen and
+quit.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Aspell can
+accept options via global or personal configuration files so
+that you do not need to specify them each time at the
+command line. The default global configuration file is
+<i>/etc/aspell.conf</i> or another file specified by option
+<i>--conf</i> and is checked first. The default per user
+configuration file <i>~/.aspell.conf</i> located in the
+<b>$HOME</b> directory (or another file specified by option
+<i>--per-conf</i>) is checked next and overrides options set
+in the global config file. Options specified at either the
+command line or via an environmental variable override those
+specified by either configuration file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each line of
+the configuration file has the format:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>option</b>
+<i>[value]</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">where
+<b>option</b> is any one of the standard library options
+above without the leading dashes. For example the following
+line will set the default language to Swiss German:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>lang
+de_CH</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">There may be
+any number of spaces between the option and the value,
+however it can only be spaces, i.e. there is no
+&rsquo;=&rsquo; between the option name and the value.
+Comments may also be included by preceding them with a
+&rsquo;#&rsquo; as anything from a &rsquo;#&rsquo; to a
+newline is ignored. Blank lines are also allowed. The
+<i>/etc/aspell.conf</i> file is a good example of how to set
+these options and the Aspell Manual has more detailed
+info.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aspell-import</b>(1),
+<b>prezip-bin</b>(1), <b>run-with-aspell</b>(1),
+<b>word-list-compress</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Aspell is fully
+documented in its Texinfo manual. See the
+&rsquo;<b>aspell</b>&rsquo; entry in <b>info</b> for more
+complete documentation.</p>
+
+<h2>SUPPORT
+<a name="SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Support for
+Aspell can be found on the Aspell mailing lists.
+Instructions for joining the various mailing lists (and an
+archive of them) can be found off the Aspell home page at
+&lt;http://aspell.net&gt;. Bug reports should be submitted
+via GitHub Issues rather than being posted to the mailing
+lists.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Brian Nelson &lt;pyro@debian.org&gt;
+based on the Aspell User&rsquo;s Manual, Copyright &copy;
+2002 Kevin Atkinson. Updated Nov 2006 by Jose Da Silva
+&lt;digital@joescat.com&gt;, and Dec 2006 by Kevin Atkinson
+&lt;kevina@gnu.org&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ippfind</title>
+
+</head>
+<body>
+
+<h1 align="center">ippfind</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ippfind - find
+internet printing protocol printers</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ippfind</b>
+[ <i>options</i> ]
+<i>regtype</i>[<b>,</b><i>subtype</i>][<b>.</b><i>domain</i><b>.</b>]
+... [ <i>expression</i> <br>
+... ] <b><br>
+ippfind</b> [ <i>options</i> ]
+<i>name</i>[<b>.</b><i>regtype</i>[<b>.</b><i>domain</i><b>.</b>]]
+... [ <i>expression</i> <br>
+... ] <b><br>
+ippfind --help <br>
+ippfind --version</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ippfind</b>
+finds services registered with a DNS server or available
+through local devices. Its primary purpose is to find IPP
+printers and show their URIs, show their current status, or
+run commands.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>REGISTRATION
+TYPES <br>
+ippfind</b> supports the following registration types: <br>
+_http._tcp</p>
+
+<p style="margin-left:18%;">HyperText Transport Protocol
+(HTTP, RFC 2616)</p>
+
+<p style="margin-left:11%;">_https._tcp</p>
+
+<p style="margin-left:18%;">Secure HyperText Transport
+Protocol (HTTPS, RFC 2818)</p>
+
+<p style="margin-left:11%;">_ipp._tcp</p>
+
+<p style="margin-left:18%;">Internet Printing Protocol
+(IPP, RFC 2911)</p>
+
+<p style="margin-left:11%;">_ipps._tcp</p>
+
+<p style="margin-left:18%;">Secure Internet Printing
+Protocol (IPPS, draft)</p>
+
+<p style="margin-left:11%;">_printer._tcp</p>
+
+<p style="margin-left:18%;">Line Printer Daemon (LPD, RFC
+1179)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>EXPRESSIONS
+<br>
+ippfind</b> supports expressions much like the
+<b>find</b>(1) utility. However, unlike <b>find</b>(1),
+<b>ippfind</b> uses POSIX regular expressions instead of
+shell filename matching patterns. If <i>--exec</i>,
+<i>-l</i>, <i>--ls</i>, <i>-p</i>, <i>--print</i>,
+<i>--print-name</i>, <i>-q</i>, <i>--quiet</i>, <i>-s</i>,
+or <i>-x</i> is not specified, <b>ippfind</b> adds
+<i>--print</i> to print the service URI of anything it
+finds. The following expressions are supported: <b><br>
+-d</b> <i>regex</i> <b><br>
+--domain</b> <i>regex</i></p>
+
+<p style="margin-left:18%;">True if the domain matches the
+given regular expression.</p>
+
+<p style="margin-left:11%;"><b>--false</b></p>
+
+<p style="margin-left:18%;">Always false.</p>
+
+<p style="margin-left:11%;"><b>-h</b> <i>regex</i> <b><br>
+--host</b> <i>regex</i></p>
+
+<p style="margin-left:18%;">True is the hostname matches
+the given regular expression.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-l</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--ls</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Lists attributes returned by Get-Printer-Attributes for
+IPP printers and traditional <i>find</i> &quot;-ls&quot;
+output for HTTP URLs. The result is true if the URI is
+accessible, false otherwise.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--local</b></p>
+
+<p style="margin-left:18%;">True if the service is local to
+this computer.</p>
+
+<p style="margin-left:11%;"><b>-N</b> <i>name</i> <b><br>
+--literal-name</b> <i>name</i></p>
+
+<p style="margin-left:18%;">True if the service instance
+name matches the given name.</p>
+
+<p style="margin-left:11%;"><b>-n</b> <i>regex</i> <b><br>
+--name</b> <i>regex</i></p>
+
+<p style="margin-left:18%;">True if the service instance
+name matches the given regular expression.</p>
+
+<p style="margin-left:11%;"><b>--path</b> <i>regex</i></p>
+
+<p style="margin-left:18%;">True if the URI resource path
+matches the given regular expression.</p>
+
+<p style="margin-left:11%;"><b>-P</b>
+<i>number</i>[<b>-</b><i>number</i>] <b><br>
+--port</b> <i>number</i>[<b>-</b><i>number</i>]</p>
+
+<p style="margin-left:18%;">True if the port matches the
+given number or range.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--print</b></p>
+
+<p style="margin-left:18%;">Prints the URI if the result of
+previous expressions is true. The result is always true.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:18%;">Quiet mode - just returns the
+exit codes below.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--remote</b></p>
+
+<p style="margin-left:18%;">True if the service is not
+local to this computer.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--print-name</b></p>
+
+<p style="margin-left:18%;">Prints the service instance
+name if the result of previous expressions is true. The
+result is always true.</p>
+
+<p style="margin-left:11%;"><b>--true</b></p>
+
+<p style="margin-left:18%;">Always true.</p>
+
+<p style="margin-left:11%;"><b>-t</b> <i>key</i> <b><br>
+--txt</b> <i>key</i></p>
+
+<p style="margin-left:18%;">True if the TXT record contains
+the named key.</p>
+
+<p style="margin-left:11%;"><b>--txt-</b><i>key
+regex</i></p>
+
+<p style="margin-left:18%;">True if the TXT record contains
+the named key and matches the given regular expression.</p>
+
+<p style="margin-left:11%;"><b>-u</b> <i>regex</i> <b><br>
+--uri</b> <i>regex</i></p>
+
+<p style="margin-left:18%;">True if the URI matches the
+given regular expression.</p>
+
+<p style="margin-left:11%;"><b>-x</b> <i>utility</i> [
+<i>argument</i> ... ] <b>; <br>
+--exec</b> <i>utility</i> [ <i>argument</i> ... ]
+<b>;</b></p>
+
+<p style="margin-left:18%;">Executes the specified program
+if the current result is true. &quot;{foo}&quot; arguments
+are replaced with the corresponding value - see
+SUBSTITUTIONS below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Expressions may
+also contain modifiers: <b><br>
+(</b> <i>expression</i> <b>)</b></p>
+
+<p style="margin-left:18%;">Group the result of
+expressions.</p>
+
+<p style="margin-left:11%;"><b>!</b> <i>expression</i>
+<b><br>
+--not</b> <i>expression</i></p>
+
+<p style="margin-left:18%;">Unary NOT of the
+expression.</p>
+
+<p style="margin-left:11%;"><i>expression expression <br>
+expression</i> <b>--and</b> <i>expression</i></p>
+
+<p style="margin-left:18%;">Logical AND of expressions.</p>
+
+<p style="margin-left:11%;"><i>expression</i> <b>--or</b>
+<i>expression</i></p>
+
+<p style="margin-left:18%;">Logical OR of expressions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SUBSTITUTIONS</b>
+<br>
+The substitutions for &quot;{foo}&quot; in <i>-e</i> and
+<i>--exec</i> are: <b><br>
+{service_domain}</b></p>
+
+<p style="margin-left:18%;">Domain name, e.g.,
+&quot;example.com.&quot;, &quot;local.&quot;, etc.</p>
+
+<p style="margin-left:11%;"><b>{service_hostname}</b></p>
+
+<p style="margin-left:18%;">Fully-qualified domain name,
+e.g., &quot;printer.example.com.&quot;,
+&quot;printer.local.&quot;, etc.</p>
+
+<p style="margin-left:11%;"><b>{service_name}</b></p>
+
+<p style="margin-left:18%;">Service instance name, e.g.,
+&quot;My Fine Printer&quot;.</p>
+
+<p style="margin-left:11%;"><b>{service_port}</b></p>
+
+<p style="margin-left:18%;">Port number for server,
+typically 631 for IPP and 80 for HTTP.</p>
+
+<p style="margin-left:11%;"><b>{service_regtype}</b></p>
+
+<p style="margin-left:18%;">DNS-SD registration type, e.g.,
+&quot;_ipp._tcp&quot;, &quot;_http._tcp&quot;, etc.</p>
+
+<p style="margin-left:11%;"><b>{service_scheme}</b></p>
+
+<p style="margin-left:18%;">URI scheme for DNS-SD
+registration type, e.g., &quot;ipp&quot;, &quot;http&quot;,
+etc.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>{}</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>{service_uri}</b></p>
+
+<p style="margin-left:18%;">URI for service, e.g.,
+&quot;ipp://printer.local./ipp/print&quot;,
+&quot;http://printer.local./&quot;, etc.</p>
+
+
+<p style="margin-left:11%;"><b>{txt_</b><i>key</i><b>}</b></p>
+
+<p style="margin-left:18%;">Value of TXT record <i>key</i>
+(lowercase).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ippfind</b>
+supports the following options: <b><br>
+--help</b></p>
+
+<p style="margin-left:18%;">Show program help.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:18%;">Show program version.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-4</b></p></td>
+<td width="4%"></td>
+<td width="34%">
+
+
+<p>Use IPv4 when listing.</p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-6</b></p></td>
+<td width="4%"></td>
+<td width="34%">
+
+
+<p>Use IPv6 when listing.</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-T</b> <i>seconds</i></p>
+
+<p style="margin-left:18%;">Specify find timeout in
+seconds. If 1 or less, <b>ippfind</b> stops as soon as it
+thinks it has found everything. The default timeout is 1
+second.</p>
+
+<p style="margin-left:11%;"><b>-V</b> <i>version</i></p>
+
+<p style="margin-left:18%;">Specifies the IPP version when
+listing. Supported values are &quot;1.1&quot;,
+&quot;2.0&quot;, &quot;2.1&quot;, and &quot;2.2&quot;.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ippfind</b>
+returns 0 if the result for all processed expressions is
+true, 1 if the result of any processed expression is false,
+2 if browsing or any query or resolution failed, 3 if an
+undefined option or invalid expression was specified, and 4
+if it ran out of memory.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When executing
+a program, <b>ippfind</b> sets the following environment
+variables for the matching service registration: <b><br>
+IPPFIND_SERVICE_DOMAIN</b></p>
+
+<p style="margin-left:18%;">Domain name, e.g.,
+&quot;example.com.&quot;, &quot;local.&quot;, etc.</p>
+
+
+<p style="margin-left:11%;"><b>IPPFIND_SERVICE_HOSTNAME</b></p>
+
+<p style="margin-left:18%;">Fully-qualified domain name,
+e.g., &quot;printer.example.com.&quot;,
+&quot;printer.local.&quot;, etc.</p>
+
+
+<p style="margin-left:11%;"><b>IPPFIND_SERVICE_NAME</b></p>
+
+<p style="margin-left:18%;">Service instance name, e.g.,
+&quot;My Fine Printer&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>IPPFIND_SERVICE_PORT</b></p>
+
+<p style="margin-left:18%;">Port number for server,
+typically 631 for IPP and 80 for HTTP.</p>
+
+
+<p style="margin-left:11%;"><b>IPPFIND_SERVICE_REGTYPE</b></p>
+
+<p style="margin-left:18%;">DNS-SD registration type, e.g.,
+&quot;_ipp._tcp&quot;, &quot;_http._tcp&quot;, etc.</p>
+
+
+<p style="margin-left:11%;"><b>IPPFIND_SERVICE_SCHEME</b></p>
+
+<p style="margin-left:18%;">URI scheme for DNS-SD
+registration type, e.g., &quot;ipp&quot;, &quot;http&quot;,
+etc.</p>
+
+<p style="margin-left:11%;"><b>IPPFIND_SERVICE_URI</b></p>
+
+<p style="margin-left:18%;">URI for service, e.g.,
+&quot;ipp://printer.local./ipp/print&quot;,
+&quot;http://printer.local./&quot;, etc.</p>
+
+
+<p style="margin-left:11%;"><b>IPPFIND_TXT_</b><i>KEY</i></p>
+
+<p style="margin-left:18%;">Values of TXT record <i>KEY</i>
+(uppercase).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To show the
+status of all registered IPP printers on your network,
+run:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ippfind
+--ls</p>
+
+<p style="margin-left:11%; margin-top: 1em">Similarly, to
+send a PostScript test page to every PostScript printer,
+run:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ippfind
+--txt-pdl application/postscript --exec ipptool <br>
+-f onepage-letter.ps &rsquo;{}&rsquo; print-job.test \;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipptool</b>(1)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2021-2022 by OpenPrinting.</p>
+<hr>
+</body>
+</html>

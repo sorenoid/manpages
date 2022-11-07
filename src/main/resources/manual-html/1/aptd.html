@@ -1,0 +1,179 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:19 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>APTD</title>
+
+</head>
+<body>
+
+<h1 align="center">APTD</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#HOMEPAGE">HOMEPAGE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">aptd - package
+managing daemon proving a D-Bus interface</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aptd</b>
+[<i>OPTIONS</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aptd</b>
+allows to perform package management tasks, e.g. installing
+or removing software, using a D-Bus interface. The
+privileges are handled by PolicyKit so the client
+application doesn&rsquo;t need to run as root. Furthermore
+aptd is started by D-Bus activation only when an user calls
+a method.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-d, --debug</p>
+
+<p style="margin-left:22%;">Show additional information on
+the command line.</p>
+
+<p style="margin-left:11%;">-h, --help</p>
+
+<p style="margin-left:22%;">Show information about the
+usage of the command.</p>
+
+<p style="margin-left:11%;">-r, --replace</p>
+
+<p style="margin-left:22%;">Replace another aptd instance
+if it is running.</p>
+
+<p style="margin-left:11%;">-p PROFILE_FILE</p>
+
+<p style="margin-left:22%;">Write profiling data to
+<i>PROFILE_FILE</i> using Python&rsquo;s profiler. This is
+only of use to developers.</p>
+
+<p style="margin-left:11%;">-t, --disable-timeout</p>
+
+<p style="margin-left:22%;">Do not shutdown the daemon
+after an idle time.</p>
+
+<p style="margin-left:11%;">--dummy</p>
+
+<p style="margin-left:22%;">Instead of applying the changes
+to the system only show a progress. This option is only
+usable for developers to locate problems in client
+applications.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/apt/apt.conf.d/20dbus</i></p>
+
+<p style="margin-left:22%;">Adds a small post update hook
+which will emit the org.debian.apt.CacheChanged signal on
+the system D-Bus to indicate that the cache has been changed
+and a possible running aptd instance should reloade its
+internal cache.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/polkit-1/actions/org.debian.apt.policy</i></p>
+
+<p style="margin-left:22%;">The PolicyKit definitions of
+the privileges used by aptdaemon, e.g. to install packages.
+To change the privileges please have a look at
+<b>PolicyKit.conf</b>(1).</p>
+
+
+<p style="margin-left:11%;"><i>/etc/dbus-1/system.d/org.debian.apt.conf</i></p>
+
+<p style="margin-left:22%;">The D-Bus configuration of the
+org.debian.apt name space.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default
+aptdaemon logs to the syslog facility AptDaemon. Furthermore
+you can use the -d option to get additional information on
+the command line.</p>
+
+<h2>HOMEPAGE
+<a name="HOMEPAGE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">https://launchpad.net/aptdaemon</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can report
+bugs at the Launchpad site of aptdaemon:
+https://bugs.launchpad.net/aptdaemon/+filebug</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Sebastian
+Heinlein &lt;devel at glatzor dot de&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aptdcon</b>(1),
+<b>org.debian.apt</b>(7),
+<b>org.debian.apt.transaction</b>(7),
+<b>PolicyKit.conf</b>(7)</p>
+<hr>
+</body>
+</html>

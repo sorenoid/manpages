@@ -1,0 +1,600 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:49 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>NC(1) BSD General Commands Manual NC(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>nc</b> &mdash; arbitrary TCP
+and UDP connections and listens</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:10%;"><b>nc</b>
+[<b>-46bCDdFhklNnrStUuvZz</b>]
+[<b>-I&nbsp;</b><i>length</i>]
+[<b>-i&nbsp;</b><i>interval</i>] [<b>-M&nbsp;</b><i>ttl</i>]
+[<b>-m&nbsp;</b><i>minttl</i>]
+[<b>-O&nbsp;</b><i>length</i>]
+[<b>-P&nbsp;</b><i>proxy_username</i>]
+[<b>-p&nbsp;</b><i>source_port</i>]
+[<b>-q&nbsp;</b><i>seconds</i>]
+[<b>-s&nbsp;</b><i>sourceaddr</i>]
+[<b>-T&nbsp;</b><i>keyword</i>]
+[<b>-V&nbsp;</b><i>rtable</i>]
+[<b>-W&nbsp;</b><i>recvlimit</i>]
+[<b>-w&nbsp;</b><i>timeout</i>]
+[<b>-X&nbsp;</b><i>proxy_protocol</i>]
+[<b>-x&nbsp;</b><i>proxy_address</i>[:<i>port</i>]]
+[<i>destination</i>] [<i>port</i>]</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The <b>nc</b> (or <b>netcat</b>)
+utility is used for just about anything under the sun
+involving TCP, UDP, or UNIX-domain sockets. It can open TCP
+connections, send UDP packets, listen on arbitrary TCP and
+UDP ports, do port scanning, and deal with both IPv4 and
+IPv6. Unlike telnet(1), <b>nc</b> scripts nicely, and
+separates error messages onto standard error instead of
+sending them to standard output, as telnet(1) does with
+some.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Common uses
+include:</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:19%;">simple TCP proxies</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:19%;">shell-script based HTTP clients
+and servers</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:19%;">network daemon testing</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:19%;">a SOCKS or HTTP ProxyCommand
+for ssh(1)</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:19%;">and much, much more</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-4</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Use IPv4
+addresses only.</p>
+
+<p style="margin-top: 1em"><b>-6</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Use IPv6
+addresses only.</p>
+
+<p style="margin-top: 1em"><b>-b</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Allow
+broadcast.</p>
+
+<p style="margin-top: 1em"><b>-C</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send CRLF as
+line-ending. Each line feed (LF) character from the input
+data is translated into CR+LF before being written to the
+socket. Line feed characters that are already preceded with
+a carriage return (CR) are not translated. Received data is
+not affected.</p>
+
+<p style="margin-top: 1em"><b>-D</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Enable
+debugging on the socket.</p>
+
+<p style="margin-top: 1em"><b>-d</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Do not attempt
+to read from stdin.</p>
+
+<p style="margin-top: 1em"><b>-F</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Pass the first
+connected socket using sendmsg(2) to stdout and exit. This
+is useful in conjunction with <b>-X</b> to have <b>nc</b>
+perform connection setup with a proxy but then leave the
+rest of the connection to another program (e.g. ssh(1) using
+the ssh_config(5) <b>ProxyUseFdpass</b> option). Cannot be
+used with <b>-U</b>.</p>
+
+<p style="margin-top: 1em"><b>-h</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Print out the
+<b>nc</b> help text and exit.</p>
+
+<p style="margin-top: 1em"><b>-I</b> <i>length</i></p>
+
+<p style="margin-left:17%;">Specify the size of the TCP
+receive buffer.</p>
+
+<p style="margin-top: 1em"><b>-i</b> <i>interval</i></p>
+
+<p style="margin-left:17%;">Sleep for <i>interval</i>
+seconds between lines of text sent and received. Also causes
+a delay time between connections to multiple ports.</p>
+
+<p style="margin-top: 1em"><b>-k</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">When a
+connection is completed, listen for another one. Requires
+<b>-l</b>. When used together with the <b>-u</b> option, the
+server socket is not connected and it can receive UDP
+datagrams from multiple hosts.</p>
+
+<p style="margin-top: 1em"><b>-l</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Listen for an
+incoming connection rather than initiating a connection to a
+remote host. The <i>destination</i> and <i>port</i> to
+listen on can be specified either as non-optional arguments,
+or with options <b>-s</b> and <b>-p</b> respectively. Cannot
+be used together with <b>-x</b> or <b>-z</b>. Additionally,
+any timeouts specified with the <b>-w</b> option are
+ignored.</p>
+
+<p style="margin-top: 1em"><b>-M</b> <i>ttl</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">Set the TTL /
+hop limit of outgoing packets.</p>
+
+<p style="margin-top: 1em"><b>-m</b> <i>minttl</i></p>
+
+<p style="margin-left:17%;">Ask the kernel to drop incoming
+packets whose TTL / hop limit is under <i>minttl</i>.</p>
+
+<p style="margin-top: 1em"><b>-N</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">shutdown(2) the
+network socket after EOF on the input. Some servers require
+this to finish their work.</p>
+
+<p style="margin-top: 1em"><b>-n</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Do not perform
+domain name resolution. If a name cannot be resolved without
+DNS, an error will be reported.</p>
+
+<p style="margin-top: 1em"><b>-O</b> <i>length</i></p>
+
+<p style="margin-left:17%;">Specify the size of the TCP
+send buffer.</p>
+
+<p style="margin-top: 1em"><b>-P</b>
+<i>proxy_username</i></p>
+
+<p style="margin-left:17%;">Specifies a username to present
+to a proxy server that requires authentication. If no
+username is specified then authentication will not be
+attempted. Proxy authentication is only supported for HTTP
+CONNECT proxies at present.</p>
+
+<p style="margin-top: 1em"><b>-p</b> <i>source_port</i></p>
+
+<p style="margin-left:17%;">Specify the source port
+<b>nc</b> should use, subject to privilege restrictions and
+availability.</p>
+
+<p style="margin-top: 1em"><b>-q</b> <i>seconds</i></p>
+
+<p style="margin-left:17%;">after EOF on stdin, wait the
+specified number of <i>seconds</i> and then quit. If
+<i>seconds</i> is negative, wait forever (default).
+Specifying a non-negative <i>seconds</i> implies
+<b>-N</b>.</p>
+
+<p style="margin-top: 1em"><b>-r</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Choose source
+and/or destination ports randomly instead of sequentially
+within a range or in the order that the system assigns
+them.</p>
+
+<p style="margin-top: 1em"><b>-S</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Enable the RFC
+2385 TCP MD5 signature option.</p>
+
+<p style="margin-top: 1em"><b>-s</b> <i>sourceaddr</i></p>
+
+<p style="margin-left:17%;">Set the source address to send
+packets from, which is useful on machines with multiple
+interfaces. For UNIX-domain datagram sockets, specifies the
+local temporary socket file to create and use so that
+datagrams can be received. Cannot be used together with
+<b>-x</b>.</p>
+
+<p style="margin-top: 1em"><b>-T</b> <i>keyword</i></p>
+
+<p style="margin-left:17%;">Change the IPv4 TOS/IPv6
+traffic class value. <i>keyword</i> may be one of
+<b>critical</b>, <b>inetcontrol</b>, <b>lowcost</b>,
+<b>lowdelay</b>, <b>netcontrol</b>, <b>throughput</b>,
+<b>reliability</b>, or one of the DiffServ Code Points:
+<b>ef</b>, <b>af11</b> ... <b>af43</b>, <b>cs0</b> ...
+<b>cs7</b>; or a number in either hex or decimal.</p>
+
+<p style="margin-top: 1em"><b>-t</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send RFC 854
+DON&rsquo;T and WON&rsquo;T responses to RFC 854 DO and WILL
+requests. This makes it possible to use <b>nc</b> to script
+telnet sessions.</p>
+
+<p style="margin-top: 1em"><b>-U</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Use UNIX-domain
+sockets. Cannot be used together with <b>-F</b> or
+<b>-x</b>.</p>
+
+<p style="margin-top: 1em"><b>-u</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Use UDP instead
+of TCP. Cannot be used together with <b>-x</b>. For
+UNIX-domain sockets, use a datagram socket instead of a
+stream socket. If a UNIX-domain socket is used, a temporary
+receiving socket is created in <i>/tmp</i> unless the
+<b>-s</b> flag is given.</p>
+
+<p style="margin-top: 1em"><b>-V</b> <i>rtable</i></p>
+
+<p style="margin-left:17%;">Set the routing table to be
+used.</p>
+
+<p style="margin-top: 1em"><b>-v</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Produce more
+verbose output.</p>
+
+<p style="margin-top: 1em"><b>-W</b> <i>recvlimit</i></p>
+
+<p style="margin-left:17%;">Terminate after receiving
+<i>recvlimit</i> packets from the network.</p>
+
+<p style="margin-top: 1em"><b>-w</b> <i>timeout</i></p>
+
+<p style="margin-left:17%;">Connections which cannot be
+established or are idle timeout after <i>timeout</i>
+seconds. The <b>-w</b> flag has no effect on the <b>-l</b>
+option, i.e. <b>nc</b> will listen forever for a connection,
+with or without the <b>-w</b> flag. The default is no
+timeout.</p>
+
+<p style="margin-top: 1em"><b>-X</b>
+<i>proxy_protocol</i></p>
+
+<p style="margin-left:17%;">Use <i>proxy_protocol</i> when
+talking to the proxy server. Supported protocols are
+<b>4</b> (SOCKS v.4), <b>5</b> (SOCKS v.5) and
+<b>connect</b> (HTTPS proxy). If the protocol is not
+specified, SOCKS version 5 is used.</p>
+
+<p style="margin-top: 1em"><b>-x</b>
+<i>proxy_address</i>[:<i>port</i>]</p>
+
+<p style="margin-left:17%;">Connect to <i>destination</i>
+using a proxy at <i>proxy_address</i> and <i>port</i>. If
+<i>port</i> is not specified, the well-known port for the
+proxy protocol is used (1080 for SOCKS, 3128 for HTTPS). An
+IPv6 address can be specified unambiguously by enclosing
+<i>proxy_address</i> in square brackets. A proxy cannot be
+used with any of the options <b>-lsuU</b>.</p>
+
+<p style="margin-top: 1em"><b>-Z</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">DCCP mode.</p>
+
+<p style="margin-top: 1em"><b>-z</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Only scan for
+listening daemons, without sending any data to them. Cannot
+be used together with <b>-l</b>.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><i>destination</i>
+can be a numerical IP address or a symbolic hostname (unless
+the <b>-n</b> option is given). In general, a destination
+must be specified, unless the <b>-l</b> option is given (in
+which case the local host is used). For UNIX-domain sockets,
+a destination is required and is the socket path to connect
+to (or listen on if the <b>-l</b> option is given).</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>port</i> can
+be specified as a numeric port number or as a service name.
+Port ranges may be specified as numeric port numbers of the
+form <i>nn</i>-<i>mm</i>. In general, a destination port
+must be specified, unless the <b>-U</b> option is given.</p>
+
+<p style="margin-top: 1em"><b>CLIENT/SERVER MODEL</b></p>
+
+<p style="margin-left:6%;">It is quite simple to build a
+very basic client/server model using <b>nc</b>. On one
+console, start <b>nc</b> listening on a specific port for a
+connection. For example:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -l
+1234</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>nc</b> is now
+listening on port 1234 for a connection. On a second console
+(or a second machine), connect to the machine and port being
+listened on:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -N
+127.0.0.1 1234</p>
+
+<p style="margin-left:6%; margin-top: 1em">There should now
+be a connection between the ports. Anything typed at the
+second console will be concatenated to the first, and
+vice-versa. After the connection has been set up, <b>nc</b>
+does not really care which side is being used as a
+&rsquo;server&rsquo; and which side is being used as a
+&rsquo;client&rsquo;. The connection may be terminated using
+an EOF (&rsquo;^D&rsquo;), as the <b>-N</b> flag was
+given.</p>
+
+<p style="margin-left:6%; margin-top: 1em">There is no
+<b>-c</b> or <b>-e</b> option in this netcat, but you still
+can execute a command after connection being established by
+redirecting file descriptors. Be cautious here because
+opening a port and let anyone connected execute arbitrary
+command on your site is DANGEROUS. If you really need to do
+this, here is an example:</p>
+
+<p style="margin-left:6%; margin-top: 1em">On
+&rsquo;server&rsquo; side:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ rm -f /tmp/f;
+mkfifo /tmp/f <br>
+$ cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc -l 127.0.0.1 1234
+&gt; /tmp/f</p>
+
+<p style="margin-left:6%; margin-top: 1em">On
+&rsquo;client&rsquo; side:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc
+host.example.com 1234 <br>
+$ (shell prompt from host.example.com)</p>
+
+<p style="margin-left:6%; margin-top: 1em">By doing this,
+you create a fifo at /tmp/f and make nc listen at port 1234
+of address 127.0.0.1 on &rsquo;server&rsquo; side, when a
+&rsquo;client&rsquo; establishes a connection successfully
+to that port, /bin/sh gets executed on &rsquo;server&rsquo;
+side and the shell prompt is given to &rsquo;client&rsquo;
+side.</p>
+
+<p style="margin-left:6%; margin-top: 1em">When connection
+is terminated, <b>nc</b> quits as well. Use <b>-k</b> if you
+want it keep listening, but if the command quits this option
+won&rsquo;t restart it or keep <b>nc</b> running. Also
+don&rsquo;t forget to remove the file descriptor once you
+don&rsquo;t need it anymore:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ rm -f
+/tmp/f</p>
+
+<p style="margin-top: 1em"><b>DATA TRANSFER</b></p>
+
+<p style="margin-left:6%;">The example in the previous
+section can be expanded to build a basic data transfer
+model. Any information input into one end of the connection
+will be output to the other end, and input and output can be
+easily captured in order to emulate file transfer.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Start by using
+<b>nc</b> to listen on a specific port, with output captured
+into a file:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -l 1234
+&gt; filename.out</p>
+
+<p style="margin-left:6%; margin-top: 1em">Using a second
+machine, connect to the listening <b>nc</b> process, feeding
+it the file which is to be transferred:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -N
+host.example.com 1234 &lt; filename.in</p>
+
+<p style="margin-left:6%; margin-top: 1em">After the file
+has been transferred, the connection will close
+automatically.</p>
+
+<p style="margin-top: 1em"><b>TALKING TO SERVERS</b></p>
+
+<p style="margin-left:6%;">It is sometimes useful to talk
+to servers &ldquo;by hand&rdquo; rather than through a user
+interface. It can aid in troubleshooting, when it might be
+necessary to verify what data a server is sending in
+response to commands issued by the client. For example, to
+retrieve the home page of a web site:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ printf
+&quot;GET / HTTP/1.0\r\n\r\n&quot; | nc host.example.com
+80</p>
+
+<p style="margin-left:6%; margin-top: 1em">Note that this
+also displays the headers sent by the web server. They can
+be filtered, using a tool such as sed(1), if necessary.</p>
+
+<p style="margin-left:6%; margin-top: 1em">More complicated
+examples can be built up when the user knows the format of
+requests required by the server. As another example, an
+email may be submitted to an SMTP server using:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc [-C]
+localhost 25 &lt;&lt; EOF <br>
+HELO host.example.com <br>
+MAIL FROM:&lt;user@host.example.com&gt; <br>
+RCPT TO:&lt;user2@host.example.com&gt; <br>
+DATA <br>
+Body of email. <br>
+. <br>
+QUIT <br>
+EOF</p>
+
+<p style="margin-top: 1em"><b>PORT SCANNING</b></p>
+
+<p style="margin-left:6%;">It may be useful to know which
+ports are open and running services on a target machine. The
+<b>-z</b> flag can be used to tell <b>nc</b> to report open
+ports, rather than initiate a connection. Usually it&rsquo;s
+useful to turn on verbose output to stderr by use this
+option in conjunction with <b>-v</b> option.</p>
+
+<p style="margin-left:6%; margin-top: 1em">For example:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -zv
+host.example.com 20-30 <br>
+Connection to host.example.com 22 port [tcp/ssh] succeeded!
+<br>
+Connection to host.example.com 25 port [tcp/smtp]
+succeeded!</p>
+
+<p style="margin-left:6%; margin-top: 1em">The port range
+was specified to limit the search to ports 20 - 30, and is
+scanned by increasing order (unless the <b>-r</b> flag is
+set).</p>
+
+<p style="margin-left:6%; margin-top: 1em">You can also
+specify a list of ports to scan, for example:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -zv
+host.example.com http 20 22-23 <br>
+nc: connect to host.example.com 80 (tcp) failed: Connection
+refused <br>
+nc: connect to host.example.com 20 (tcp) failed: Connection
+refused <br>
+Connection to host.example.com port [tcp/ssh] succeeded!
+<br>
+nc: connect to host.example.com 23 (tcp) failed: Connection
+refused</p>
+
+<p style="margin-left:6%; margin-top: 1em">The ports are
+scanned by the order you given (unless the <b>-r</b> flag is
+set).</p>
+
+<p style="margin-left:6%; margin-top: 1em">Alternatively,
+it might be useful to know which server software is running,
+and which versions. This information is often contained
+within the greeting banners. In order to retrieve these, it
+is necessary to first make a connection, and then break the
+connection when the banner has been retrieved. This can be
+accomplished by specifying a small timeout with the
+<b>-w</b> flag, or perhaps by issuing a &quot;QUIT&quot;
+command to the server:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ echo
+&quot;QUIT&quot; | nc host.example.com 20-30 <br>
+SSH-1.99-OpenSSH_3.6.1p2 <br>
+Protocol mismatch. <br>
+220 host.example.com IMS SMTP Receiver Version 0.84
+Ready</p>
+
+<p style="margin-top: 1em"><b>EXAMPLES</b></p>
+
+<p style="margin-left:6%;">Open a TCP connection to port 42
+of host.example.com, using port 31337 as the source port,
+with a timeout of 5 seconds:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -p 31337
+-w 5 host.example.com 42</p>
+
+<p style="margin-left:6%; margin-top: 1em">Open a UDP
+connection to port 53 of host.example.com:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -u
+host.example.com 53</p>
+
+<p style="margin-left:6%; margin-top: 1em">Open a TCP
+connection to port 42 of host.example.com using 10.1.2.3 as
+the IP for the local end of the connection:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -s
+10.1.2.3 host.example.com 42</p>
+
+<p style="margin-left:6%; margin-top: 1em">Create and
+listen on a UNIX-domain stream socket:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc -lU
+/var/tmp/dsocket</p>
+
+<p style="margin-left:6%; margin-top: 1em">Connect to port
+42 of host.example.com via an HTTP proxy at 10.2.3.4, port
+8080. This example could also be used by ssh(1); see the
+<b>ProxyCommand</b> directive in ssh_config(5) for more
+information.</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc
+-x10.2.3.4:8080 -Xconnect host.example.com 42</p>
+
+<p style="margin-left:6%; margin-top: 1em">The same example
+again, this time enabling proxy authentication with username
+&ldquo;ruser&rdquo; if the proxy requires it:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ nc
+-x10.2.3.4:8080 -Xconnect -Pruser host.example.com 42</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">cat(1), ssh(1)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">Original implementation by
+*Hobbit* &lt;<i>hobbit@avian.org</i>&gt;. <br>
+Rewritten with IPv6 support by <br>
+Eric Jackson &lt;<i>ericj@monkey.org</i>&gt;. <br>
+Modified for Debian port by Aron Xu &lang;
+aron@debian.org&rang; .</p>
+
+<p style="margin-top: 1em"><b>CAVEATS</b></p>
+
+<p style="margin-left:6%;">UDP port scans using the
+<b>-uz</b> combination of flags will always report success
+irrespective of the target machine&rsquo;s state. However,
+in conjunction with a traffic sniffer either on the target
+machine or an intermediary device, the <b>-uz</b>
+combination could be useful for communications diagnostics.
+Note that the amount of UDP traffic generated may be limited
+either due to hardware resources and/or configuration
+settings.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+March&nbsp;31, 2021 BSD</p>
+<hr>
+</body>
+</html>

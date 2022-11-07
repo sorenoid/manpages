@@ -1,0 +1,362 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:00 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>VIEWRES</title>
+
+</head>
+<body>
+
+<h1 align="center">VIEWRES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#VIEW MENU">VIEW MENU</a><br>
+<a href="#SELECT MENU">SELECT MENU</a><br>
+<a href="#ACTIONS">ACTIONS</a><br>
+<a href="#WIDGET HIERARCHY">WIDGET HIERARCHY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">viewres -
+graphical class browser for Xt</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>viewres</b>
+[-option ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>viewres</i> program displays a tree showing the widget
+class hierarchy of the Athena Widget Set. Each node in the
+tree can be expanded to show the resources that the
+corresponding class adds (i.e. does not inherit from its
+parent) when a widget is created. This application allows
+the user to visually examine the structure and inherited
+resources for the Athena Widget Set.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Viewres</i>
+accepts all of the standard toolkit command line options as
+well as the following: <b><br>
+-top</b> <i>name</i></p>
+
+<p style="margin-left:23%;">This option specifies the name
+of the highest widget in the hierarchy to display. This is
+typically used to limit the display to a subset of the tree.
+The default is <i>Object</i>.</p>
+
+<p style="margin-left:11%;"><b>-variable</b></p>
+
+<p style="margin-left:23%;">This option indicates that the
+widget variable names (as declared in header files) should
+be displayed in the nodes rather than the widget class name.
+This is sometimes useful to distinguish widget classes that
+share the same name (such as <i>Text</i>).</p>
+
+<p style="margin-left:11%;"><b>-vertical</b></p>
+
+<p style="margin-left:23%;">This option indicates that the
+tree should be displayed top to bottom rather left to
+right.</p>
+
+<h2>VIEW MENU
+<a name="VIEW MENU"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The way in
+which the tree is displayed may be changed through the
+entries in the <b>View</b> menu: <b><br>
+Show Variable Names</b></p>
+
+<p style="margin-left:23%;">This entry causes the node
+labels to be set to the variable names used to declare the
+corresponding widget class. This operation may also be
+performed with the <b>SetLabelType(variable)</b>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Show Class Names</b></p>
+
+<p style="margin-left:23%;">This entry causes the node
+labels to be set to the class names used when specifying
+resources. This operation may also be performed with the
+<b>SetLabelType(class)</b> translation.</p>
+
+<p style="margin-left:11%;"><b>Layout Horizontal</b></p>
+
+<p style="margin-left:23%;">This entry causes the tree to
+be laid out from left to right. This operation may also be
+performed with the <i>SetOrientation(West)</i>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Layout Vertical</b></p>
+
+<p style="margin-left:23%;">This entry causes the tree to
+be laid out from top to bottom. This operation may also be
+performed with the <i>SetOrientation(North)</i>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Show Resource Boxes</b></p>
+
+<p style="margin-left:23%;">This entry expands the selected
+nodes (see next section) to show the new widget and
+constraint resources. This operation may also be performed
+with the <i>Resources(on)</i> translation.</p>
+
+<p style="margin-left:11%;"><b>Hide Resource Boxes</b></p>
+
+<p style="margin-left:23%;">This entry removes the resource
+displays from the selected nodes (usually to conserve
+space). This operation may also be performed with the
+<i>Resources(off)</i> translation.</p>
+
+<h2>SELECT MENU
+<a name="SELECT MENU"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Resources for a
+single widget class can be displayed by clicking
+<b>Button2</b> on the corresponding node, or by adding the
+node to the selection list with <b>Button1</b> and using the
+<b>Show Resource Boxes</b> entry in the <b>View</b> menu.
+Since <b>Button1</b> actually toggles the selection state of
+a node, clicking on a selected node will cause it to be
+removed from the selected list.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Collections of
+nodes may also be selected through the various entries in
+the <b>Select</b> menu: <b><br>
+Unselect All</b></p>
+
+<p style="margin-left:23%;">This entry removes all nodes
+from the selection list. This operation may also be
+performed with the <i>Select(nothing)</i> translation.</p>
+
+<p style="margin-left:11%;"><b>Select All</b></p>
+
+<p style="margin-left:23%;">This entry adds all nodes to
+the selection list. This operation may also be performed
+with the <i>Select(all)</i> translation.</p>
+
+<p style="margin-left:11%;"><b>Invert All</b></p>
+
+<p style="margin-left:23%;">This entry adds unselected
+nodes to, and removes selected nodes from, the selection
+list. This operation may also be performed with the
+<i>Select(invert)</i> translation.</p>
+
+<p style="margin-left:11%;"><b>Select Parent</b></p>
+
+<p style="margin-left:23%;">This entry selects the
+immediate parents of all selected nodes. This operation may
+also be performed with the <i>Select(parent)</i>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Select Ancestors</b></p>
+
+<p style="margin-left:23%;">This entry recursively selects
+all parents of all selected nodes. This operation may also
+be performed with the <i>Select(ancestors)</i>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Select Children</b></p>
+
+<p style="margin-left:23%;">This entry selects the
+immediate children of all selected nodes. This operation may
+also be performed with the <i>Select(children)</i>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Select Descendants</b></p>
+
+<p style="margin-left:23%;">This entry recursively selects
+all children of all selected nodes. This operation may also
+be performed with the <i>Select(descendants)</i>
+translation.</p>
+
+<p style="margin-left:11%;"><b>Select Has Resources</b></p>
+
+<p style="margin-left:23%;">This entry selects all nodes
+that add new resources (regular or constraint) to their
+corresponding widget classes. This operation may also be
+performed with the <i>Select(resources)</i> translation.</p>
+
+<p style="margin-left:11%;"><b>Select Shown Resource
+Boxes</b></p>
+
+<p style="margin-left:23%;">This entry selects all nodes
+whose resource boxes are currently expanded (usually so that
+they can be closed with <b>Hide Resource Boxes</b>). This
+operation may also be performed with the
+<i>Select(shown)</i> translation.</p>
+
+<h2>ACTIONS
+<a name="ACTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+application actions are provided:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Quit()</b></p></td>
+<td width="3%"></td>
+<td width="54%">
+
+
+<p>This action causes <i>viewres</i> to exit.</p></td>
+<td width="23%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>SetLabelType(</b><i>type</i><b>)</b></p>
+
+<p style="margin-left:23%;">This action sets the node
+labels to display the widget <i>variable</i> or <i>class</i>
+names, according to the argument <i>type</i>.</p>
+
+
+<p style="margin-left:11%;"><b>SetOrientation(</b><i>direction</i><b>)</b></p>
+
+<p style="margin-left:23%;">This action sets the root of
+the tree to be one of the following areas of the window:
+<i>West</i>, <i>North</i>, <i>East</i>, or <i>South</i>.</p>
+
+
+<p style="margin-left:11%;"><b>Select(</b><i>what</i><b>)</b></p>
+
+<p style="margin-left:23%;">This action selects the
+indicated nodes, as described in the <b>VIEW MENU</b>
+section: <i>nothing</i> (unselects all nodes),
+<i>invert</i>, <i>parent</i>, <i>ancestors</i>,
+<i>children</i>, <i>descendants</i>, <i>resources</i>,
+<i>shown</i>.</p>
+
+
+<p style="margin-left:11%;"><b>Resources(</b><i>op</i><b>)</b></p>
+
+<p style="margin-left:23%;">This action turns <i>on</i>,
+<i>off</i>, or <i>toggles</i> the resource boxes for the
+selected nodes. If invoked from within one of the nodes
+(through the keyboard or pointer), only that node is
+used.</p>
+
+<h2>WIDGET HIERARCHY
+<a name="WIDGET HIERARCHY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Resources may
+be specified for the following widgets:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Viewres viewres
+<br>
+Paned pane <br>
+Box buttonbox <br>
+Command quit <br>
+MenuButton view <br>
+SimpleMenu viewMenu <br>
+SmeBSB layoutHorizontal <br>
+SmeBSB layoutVertical <br>
+SmeLine line1 <br>
+SmeBSB namesVariable <br>
+SmeBSB namesClass <br>
+SmeLine line2 <br>
+SmeBSB viewResources <br>
+SmeBSB viewNoResources <br>
+MenuButton select <br>
+SimpleMenu selectMenu <br>
+SmeBSB unselect <br>
+SmeBSB selectAll <br>
+SmeBSB selectInvert <br>
+SmeLine line1 <br>
+SmeBSB selectParent <br>
+SmeBSB selectAncestors <br>
+SmeBSB selectChildren <br>
+SmeBSB selectDescendants <br>
+SmeLine line2 <br>
+SmeBSB selectHasResources <br>
+SmeBSB selectShownResources <br>
+Form treeform <br>
+Porthole porthole <br>
+Tree tree <br>
+Box <i>variable-name</i> <br>
+Toggle <i>variable-name</i> <br>
+List <i>variable-name</i> <br>
+Panner panner</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>where
+variable-name is the widget variable name of each
+node.</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X(7), xrdb(1),
+listres(1), editres(1), appres(1), appropriate widget
+documents</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 1994
+X Consortium <br>
+See <i>X(7)</i> for a full statement of rights and
+permissions.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Jim Fulton, MIT
+X Consortium</p>
+<hr>
+</body>
+</html>

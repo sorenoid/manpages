@@ -1,0 +1,317 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SIZE</title>
+
+</head>
+<body>
+
+<h1 align="center">SIZE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">size - list
+section sizes and total size of binary files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">size
+[<b>-A</b>|<b>-B</b>|<b>-G</b>|<b>--format=</b><i>compatibility</i>]
+<br>
+[<b>--help</b>] <br>
+
+[<b>-d</b>|<b>-o</b>|<b>-x</b>|<b>--radix=</b><i>number</i>]
+<br>
+[<b>--common</b>] <br>
+[<b>-t</b>|<b>--totals</b>] <br>
+[<b>--target=</b><i>bfdname</i>]
+[<b>-V</b>|<b>--version</b>] <br>
+[<i>objfile</i>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>GNU</small> <b>size</b> utility lists the section
+sizes and the total size for each of the binary files
+<i>objfile</i> on its argument list. By default, one line of
+output is generated for each file or each module if the file
+is an archive.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>objfile</i>...
+are the files to be examined. If none are specified, the
+file &quot;a.out&quot; will be used instead.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+command-line options have the following meanings:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-A</b></p></td>
+<td width="86%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-B</b></p></td>
+<td width="86%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-G</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--format=</b><i>compatibility</i></p>
+
+<p style="margin-left:17%;">Using one of these options, you
+can choose whether the output from <small>GNU</small>
+<b>size</b> resembles output from System V <b>size</b>
+(using <b>-A</b>, or <b>--format=sysv</b>), or Berkeley
+<b>size</b> (using <b>-B</b>, or <b>--format=berkeley</b>).
+The default is the one-line format similar to
+Berkeley&rsquo;s. Alternatively, you can choose the
+<small>GNU</small> format output (using <b>-G</b>, or
+<b>--format=gnu</b>), this is similar to Berkeley&rsquo;s
+output format, but sizes are counted differently.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Here is an
+example of the Berkeley (default) format of output from
+<b>size</b>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ size
+--format=Berkeley ranlib size <br>
+text data bss dec hex filename <br>
+294880 81920 11592 388392 5ed28 ranlib <br>
+294880 81920 11888 388688 5ee50 size</p>
+
+<p style="margin-left:17%; margin-top: 1em">The Berkeley
+style output counts read only data in the &quot;text&quot;
+column, not in the &quot;data&quot; column, the
+&quot;dec&quot; and &quot;hex&quot; columns both display the
+sum of the &quot;text&quot;, &quot;data&quot;, and
+&quot;bss&quot; columns in decimal and hexadecimal
+respectively.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>GNU</small> format counts read only data in the
+&quot;data&quot; column, not the &quot;text&quot; column,
+and only displays the sum of the &quot;text&quot;,
+&quot;data&quot;, and &quot;bss&quot; columns once, in the
+&quot;total&quot; column. The <b>--radix</b> option can be
+used to change the number base for all columns. Here is the
+same data displayed with <small>GNU</small> conventions:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ size
+--format=GNU ranlib size <br>
+text data bss total filename <br>
+279880 96920 11592 388392 ranlib <br>
+279880 96920 11888 388688 size</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is the
+same data, but displayed closer to System V conventions:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ size
+--format=SysV ranlib size <br>
+ranlib : <br>
+section size addr <br>
+.text 294880 8192 <br>
+.data 81920 303104 <br>
+.bss 11592 385024 <br>
+Total 388392 <br>
+size : <br>
+section size addr <br>
+.text 294880 8192 <br>
+.data 81920 303104 <br>
+.bss 11888 385024 <br>
+Total 388688</p>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Show a summary of acceptable
+arguments and options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="86%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-o</b></p></td>
+<td width="86%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-x</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--radix=</b><i>number</i></p>
+
+<p style="margin-left:17%;">Using one of these options, you
+can control whether the size of each section is given in
+decimal (<b>-d</b>, or <b>--radix=10</b>); octal (<b>-o</b>,
+or <b>--radix=8</b>); or hexadecimal (<b>-x</b>, or
+<b>--radix=16</b>). In <b>--radix=</b><i>number</i>, only
+the three values (8, 10, 16) are supported. The total size
+is always given in two radices; decimal and hexadecimal for
+<b>-d</b> or <b>-x</b> output, or octal and hexadecimal if
+you&rsquo;re using <b>-o</b>.</p>
+
+<p style="margin-left:11%;"><b>--common</b></p>
+
+<p style="margin-left:17%;">Print total size of common
+symbols in each file. When using Berkeley or
+<small>GNU</small> format these are included in the bss
+size.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--totals</b></p>
+
+<p style="margin-left:17%;">Show totals of all objects
+listed (Berkeley or <small>GNU</small> format mode
+only).</p>
+
+
+<p style="margin-left:11%;"><b>--target=</b><i>bfdname</i></p>
+
+<p style="margin-left:17%;">Specify that the object-code
+format for <i>objfile</i> is <i>bfdname</i>. This option may
+not be necessary; <b>size</b> can automatically recognize
+many formats.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Display the version number of
+<b>size</b>.</p>
+
+<p style="margin-left:11%;"><b>@</b><i>file</i></p>
+
+<p style="margin-left:17%;">Read command-line options from
+<i>file</i>. The options read are inserted in place of the
+original @<i>file</i> option. If <i>file</i> does not exist,
+or cannot be read, then the option will be treated
+literally, and not removed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Options in
+<i>file</i> are separated by whitespace. A whitespace
+character may be included in an option by surrounding the
+entire option in either single or double quotes. Any
+character (including a backslash) may be included by
+prefixing the character to be included with a backslash. The
+<i>file</i> may itself contain additional @<i>file</i>
+options; any such options will be processed recursively.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ar</b>(1),
+<b>objdump</b>(1), <b>readelf</b>(1), and the Info entries
+for <i>binutils</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1991-2022 Free Software Foundation, Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy, distribute and/or modify this document
+under the terms of the <small>GNU</small> Free Documentation
+License, Version 1.3 or any later version published by the
+Free Software Foundation; with no Invariant Sections, with
+no Front-Cover Texts, and with no Back-Cover Texts. A copy
+of the license is included in the section entitled &quot;
+<small>GNU</small> Free Documentation License&quot;.</p>
+<hr>
+</body>
+</html>

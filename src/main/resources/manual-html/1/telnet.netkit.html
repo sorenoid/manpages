@@ -1,0 +1,1078 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>TELNET(1) BSD General Commands Manual TELNET(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>telnet</b> &mdash; user
+interface to the TELNET protocol</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:15%;"><b>telnet</b>
+[<b>-468ELadr</b>] [<b>-S&nbsp;</b><i>tos</i>]
+[<b>-b&nbsp;</b><i>address</i>]
+[<b>-e&nbsp;</b><i>escapechar</i>]
+[<b>-l&nbsp;</b><i>user</i>]
+[<b>-n&nbsp;</b><i>tracefile</i>] [</p>
+
+<p><i>host</i> [<i>port</i>] ]</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The <b>telnet</b> command is
+used for interactive communication with another host using
+the TELNET protocol. It begins in command mode, where it
+prints a telnet prompt (&quot;telnet&gt; &quot;). If
+<b>telnet</b> is invoked with a <i>host</i> argument, it
+performs an <b>open</b> command implicitly; see the
+description below.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Options:</p>
+
+<p style="margin-top: 1em"><b>-4</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Force IPv4
+address resolution.</p>
+
+<p style="margin-top: 1em"><b>-6</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Force IPv6
+address resolution.</p>
+
+<p style="margin-top: 1em"><b>-8</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Request 8-bit
+operation. This causes an attempt to negotiate the TELNET
+BINARY option for both input and output. By default telnet
+is not 8-bit clean.</p>
+
+<p style="margin-top: 1em"><b>-E</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Disables the
+escape character functionality; that is, sets the escape
+character to &rsquo;&rsquo;no character&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>-L</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Specifies an
+8-bit data path on output. This causes the TELNET BINARY
+option to be negotiated on just output.</p>
+
+<p style="margin-top: 1em"><b>-a</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Attempt
+automatic login. Currently, this sends the user name via the
+USER variable of the NEW-ENVIRON option if supported by the
+remote system. The username is retrieved via
+getlogin(3).</p>
+
+<p style="margin-top: 1em"><b>-b</b> <i>address</i></p>
+
+<p style="margin-left:17%;">Use bind(2) on the local socket
+to bind it to a specific local address.</p>
+
+<p style="margin-top: 1em"><b>-d</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Sets the
+initial value of the <b>debug</b> toggle to TRUE.</p>
+
+<p style="margin-top: 1em"><b>-r</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Emulate
+rlogin(1). In this mode, the default escape character is a
+tilde. Also, the interpretation of the escape character is
+changed: an escape character followed by a dot causes
+<b>telnet</b> to disconnect from the remote host. A ^Z
+instead of a dot suspends <b>telnet</b>, and a ^] (the
+default <b>telnet</b> escape character) generates a normal
+telnet prompt. These codes are accepted only at the
+beginning of a line.</p>
+
+<p style="margin-top: 1em"><b>-S</b> <i>tos</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">Sets the IP
+type-of-service (TOS) option for the telnet connection to
+the value <i>tos</i>.</p>
+
+<p style="margin-top: 1em"><b>-e</b> <i>escapechar</i></p>
+
+<p style="margin-left:17%;">Sets the escape character to
+<i>escapechar.</i> If no character is supplied, no escape
+character will be used. Entering the escape character while
+connected causes telnet to drop to command mode.</p>
+
+<p style="margin-top: 1em"><b>-l</b> <i>user</i></p>
+
+<p style="margin-left:17%;">Specify <i>user</i> as the user
+to log in as on the remote system. This is accomplished by
+sending the specified name as the USER environment variable,
+so it requires that the remote system support the TELNET
+NEW-ENVIRON option. This option implies the <b>-a</b>
+option, and may also be used with the <b>open</b>
+command.</p>
+
+<p style="margin-top: 1em"><b>-n</b> <i>tracefile</i></p>
+
+<p style="margin-left:17%;">Opens <i>tracefile</i> for
+recording trace information. See the <b>set tracefile</b>
+command below.</p>
+
+<p style="margin-top: 1em"><i>host</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">Specifies a
+host to contact over the network.</p>
+
+<p style="margin-top: 1em"><i>port</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">Specifies a
+port number or service name to contact. If not specified,
+the <b>telnet</b> port (23) is used.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Protocol:</p>
+
+<p style="margin-left:6%; margin-top: 1em">Once a
+connection has been opened, <b>telnet</b> will attempt to
+enable the TELNET LINEMODE option. If this fails, then
+<b>telnet</b> will revert to one of two input modes: either
+&ldquo;character at a time&rdquo; or &ldquo;old line by
+line&rdquo; depending on what the remote system
+supports.</p>
+
+<p style="margin-left:6%; margin-top: 1em">When LINEMODE is
+enabled, character processing is done on the local system,
+under the control of the remote system. When input editing
+or character echoing is to be disabled, the remote system
+will relay that information. The remote system will also
+relay changes to any special characters that happen on the
+remote system, so that they can take effect on the local
+system.</p>
+
+<p style="margin-left:6%; margin-top: 1em">In
+&ldquo;character at a time&rdquo; mode, most text typed is
+immediately sent to the remote host for processing.</p>
+
+<p style="margin-left:6%; margin-top: 1em">In &ldquo;old
+line by line&rdquo; mode, all text is echoed locally, and
+(normally) only completed lines are sent to the remote host.
+The &ldquo;local echo character&rdquo; (initially
+&ldquo;^E&rdquo;) may be used to turn off and on the local
+echo (this would mostly be used to enter passwords without
+the password being echoed).</p>
+
+<p style="margin-left:6%; margin-top: 1em">If the LINEMODE
+option is enabled, or if the <b>localchars</b> toggle is
+TRUE (the default for &ldquo;old line by line&ldquo;; see
+below), the user&rsquo;s <b>quit</b>, <b>intr</b>, and
+<b>flush</b> characters are trapped locally, and sent as
+TELNET protocol sequences to the remote side. If LINEMODE
+has ever been enabled, then the user&rsquo;s <b>susp</b> and
+<b>eof</b> are also sent as TELNET protocol sequences, and
+<b>quit</b> is sent as a TELNET ABORT instead of BREAK There
+are options (see <b>toggle autoflush</b> and <b>toggle
+autosynch</b> below) which cause this action to flush
+subsequent output to the terminal (until the remote host
+acknowledges the TELNET sequence) and flush previous
+terminal input (in the case of <b>quit</b> and
+<b>intr</b>).</p>
+
+<p style="margin-left:6%; margin-top: 1em">Commands:</p>
+
+<p style="margin-left:6%; margin-top: 1em">The following
+<b>telnet</b> commands are available. Unique prefixes are
+understood as abbreviations.</p>
+
+<p style="margin-top: 1em"><b>auth</b> <i>argument
+...</i></p>
+
+<p style="margin-left:21%;">The <b>auth</b> command
+controls the TELNET AUTHENTICATE protocol option. If
+<b>telnet</b> was compiled without authentication, the
+<b>auth</b> command will not be supported. Valid arguments
+are as follows:</p>
+
+<p style="margin-top: 1em"><b>disable</b> <i>type</i></p>
+
+<p style="margin-left:38%; margin-top: 1em">Disable the
+specified type of authentication. To obtain a list of
+available types, use the <b>auth disable ?</b> command.</p>
+
+<p style="margin-top: 1em"><b>enable</b> <i>type</i></p>
+
+<p style="margin-left:38%; margin-top: 1em">Enable the
+specified type of authentication. To obtain a list of
+available types, use the <b>auth enable ?</b> command.</p>
+
+<p style="margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">List the
+current status of the various types of authentication.</p>
+
+<p style="margin-left:21%; margin-top: 1em">Note that the
+current version of <b>telnet</b> does not support
+authentication.</p>
+
+<p style="margin-top: 1em"><b>close</b></p>
+
+<p style="margin-left:21%; margin-top: 1em">Close the
+connection to the remote host, if any, and return to command
+mode.</p>
+
+<p style="margin-top: 1em"><b>display</b> <i>argument
+...</i></p>
+
+<p style="margin-left:21%;">Display all, or some, of the
+<b>set</b> and <b>toggle</b> values (see below).</p>
+
+<p style="margin-top: 1em"><b>encrypt</b> <i>argument
+...</i></p>
+
+<p style="margin-left:21%;">The encrypt command controls
+the TELNET ENCRYPT protocol option. If <b>telnet</b> was
+compiled without encryption, the <b>encrypt</b> command will
+not be supported.</p>
+
+<p style="margin-left:21%; margin-top: 1em">Valid arguments
+are as follows:</p>
+
+<p style="margin-top: 1em"><b>disable</b> <i>type</i>
+<b>[input|output]</b></p>
+
+<p style="margin-left:38%;">Disable the specified type of
+encryption. If you do not specify input or output,
+encryption of both is disabled. To obtain a list of
+available types, use &rsquo;&rsquo;encrypt disable
+?&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>enable</b> <i>type</i>
+<b>[input|output]</b></p>
+
+<p style="margin-left:38%;">Enable the specified type of
+encryption. If you do not specify input or output,
+encryption of both is enabled. To obtain a list of available
+types, use &rsquo;&rsquo;encrypt enable ?&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>input</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">This is the
+same as &rsquo;&rsquo;encrypt start input&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>-input</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">This is the
+same as &rsquo;&rsquo;encrypt stop input&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>output</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">This is the
+same as &rsquo;&rsquo;encrypt start
+output&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>-output</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">This is the
+same as &rsquo;&rsquo;encrypt stop output&rsquo;&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>start [input|output]</b></p>
+
+<p style="margin-left:38%;">Attempt to begin encrypting. If
+you do not specify input or output, encryption of both input
+and output is started.</p>
+
+<p style="margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Display the
+current status of the encryption module.</p>
+
+<p style="margin-top: 1em"><b>stop [input|output]</b></p>
+
+<p style="margin-left:38%;">Stop encrypting. If you do not
+specify input or output, encryption of both is stopped.</p>
+
+<p style="margin-top: 1em"><b>type</b> <i>type</i></p>
+
+<p style="margin-left:38%; margin-top: 1em">Sets the
+default type of encryption to be used with later
+&rsquo;&rsquo;encrypt start&rsquo;&rsquo; or
+&rsquo;&rsquo;encrypt stop&rsquo;&rsquo; commands.</p>
+
+<p style="margin-left:21%; margin-top: 1em">Note that the
+current version of <b>telnet</b> does not support
+encryption.</p>
+
+<p style="margin-top: 1em"><b>environ</b>
+<i>arguments...</i></p>
+
+<p style="margin-left:21%;">The <b>environ</b> command is
+used to propagate environment variables across the
+<b>telnet</b> link using the TELNET NEW-ENVIRON protocol
+option. All variables exported from the shell are defined,
+but only the DISPLAY and PRINTER variables are marked to be
+sent by default. The USER variable is marked to be sent if
+the <b>-a</b> or <b>-l</b> command-line options were
+used.</p>
+
+<p style="margin-left:21%; margin-top: 1em">Valid arguments
+for the <b>environ</b> command are:</p>
+
+<p style="margin-top: 1em"><b>define</b> <i>variable
+value</i></p>
+
+<p style="margin-left:36%;">Define the variable
+<i>variable</i> to have a value of <i>value.</i> Any
+variables defined by this command are automatically marked
+for propagation (&rsquo;&rsquo;exported&rsquo;&rsquo;). The
+<i>value</i> may be enclosed in single or double quotes so
+that tabs and spaces may be included.</p>
+
+<p style="margin-top: 1em"><b>undefine</b>
+<i>variable</i></p>
+
+<p style="margin-left:36%;">Remove any existing definition
+of <i>variable</i>.</p>
+
+<p style="margin-top: 1em"><b>export</b>
+<i>variable</i></p>
+
+<p style="margin-left:36%;">Mark the specified variable for
+propagation to the remote host.</p>
+
+<p style="margin-top: 1em"><b>unexport</b>
+<i>variable</i></p>
+
+<p style="margin-left:36%;">Do not mark the specified
+variable for propagation to the remote host. The remote host
+may still ask explicitly for variables that are not
+exported.</p>
+
+<p style="margin-top: 1em"><b>list</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">List the
+current set of environment variables. Those marked with a
+<b>*</b> will be propagated to the remote host. The remote
+host may still ask explicitly for the rest.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Prints out help
+information for the <b>environ</b> command.</p>
+
+<p style="margin-top: 1em"><b>logout</b></p>
+
+<p style="margin-left:21%; margin-top: 1em">Send the TELNET
+LOGOUT protocol option to the remote host. This command is
+similar to a <b>close</b> command. If the remote host does
+not support the LOGOUT option, nothing happens. But if it
+does, this command should cause it to close the connection.
+If the remote side also supports the concept of suspending a
+user&rsquo;s session for later reattachment, the logout
+command indicates that the session should be terminated
+immediately.</p>
+
+<p style="margin-top: 1em"><b>mode</b> <i>type</i></p>
+
+<p style="margin-left:21%; margin-top: 1em"><i>Type</i> is
+one of several options, depending on the state of the
+session. Telnet asks the remote host to go into the
+requested mode. If the remote host says it can, that mode
+takes effect.</p>
+
+<p style="margin-top: 1em"><b>character</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Disable the
+TELNET LINEMODE option, or, if the remote side does not
+understand the LINEMODE option, then enter &ldquo;character
+at a time&ldquo; mode.</p>
+
+<p style="margin-top: 1em"><b>line</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Enable the
+TELNET LINEMODE option, or, if the remote side does not
+understand the LINEMODE option, then attempt to enter
+&ldquo;old-line-by-line&ldquo; mode.</p>
+
+<p style="margin-top: 1em"><b>isig</b> (<b>-isig</b>)</p>
+
+<p style="margin-left:38%; margin-top: 1em">Attempt to
+enable (disable) the TRAPSIG mode of the LINEMODE option.
+This requires that the LINEMODE option be enabled.</p>
+
+<p style="margin-top: 1em"><b>edit</b> (<b>-edit</b>)</p>
+
+<p style="margin-left:38%; margin-top: 1em">Attempt to
+enable (disable) the EDIT mode of the LINEMODE option. This
+requires that the LINEMODE option be enabled.</p>
+
+<p style="margin-top: 1em"><b>softtabs</b>
+(<b>-softtabs</b>)</p>
+
+<p style="margin-left:38%;">Attempt to enable (disable) the
+SOFT_TAB mode of the LINEMODE option. This requires that the
+LINEMODE option be enabled.</p>
+
+<p style="margin-top: 1em"><b>litecho</b>
+(<b>-litecho</b>)</p>
+
+<p style="margin-left:38%;">Attempt to enable (disable) the
+LIT_ECHO mode of the LINEMODE option. This requires that the
+LINEMODE option be enabled.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Prints out help
+information for the <b>mode</b> command.</p>
+
+<p style="margin-top: 1em"><b>open</b> <i>host</i> [ <br>
+[<b>-l</b>] <i>user</i>][ <b><br>
+-</b> <i>port</i>]</p>
+
+<p style="margin-left:21%;">Open a connection to the named
+host. If no port number is specified, <b>telnet</b> will
+attempt to contact a telnet daemon at the standard port
+(23). The host specification may be a host name or IP
+address. The <b>-l</b> option may be used to specify a user
+name to be passed to the remote system, like the <b>-l</b>
+command-line option.</p>
+
+<p style="margin-left:21%; margin-top: 1em">When connecting
+to ports other than the <b>telnet</b> port, <b>telnet</b>
+does not attempt telnet protocol negotiations. This makes it
+possible to connect to services that do not support the
+telnet protocol without making a mess. Protocol negotiation
+can be forced by placing a dash before the port number.</p>
+
+<p style="margin-left:21%; margin-top: 1em">After
+establishing a connection, any commands associated with the
+remote host in <i>/etc/telnetrc</i> and the user&rsquo;s
+<i>.telnetrc</i> file are executed, in that order.</p>
+
+<p style="margin-left:21%; margin-top: 1em">The format of
+the telnetrc files is as follows: Lines beginning with a #,
+and blank lines, are ignored. The rest of the file should
+consist of hostnames and sequences of <b>telnet</b> commands
+to use with that host. Commands should be one per line,
+indented by whitespace; lines beginning without whitespace
+are interpreted as hostnames. Lines beginning with the
+special hostname &rsquo;DEFAULT&rsquo; will apply to all
+hosts. Hostnames including &rsquo;DEFAULT&rsquo; may be
+followed immediately by a colon and a port number or string.
+If a port is specified it must match exactly with what is
+specified on the command line. If no port was specified on
+the command line, then the value &rsquo;telnet&rsquo; is
+used. Upon connecting to a particular host, the commands
+associated with that host are executed.</p>
+
+<p style="margin-top: 1em"><b>quit</b></p>
+
+<p style="margin-left:21%; margin-top: 1em">Close any open
+session and exit <b>telnet</b>. An end of file condition on
+input, when in command mode, will trigger this operation as
+well.</p>
+
+<p style="margin-top: 1em"><b>send</b> <i>arguments</i></p>
+
+<p style="margin-left:21%;">Send one or more special telnet
+protocol character sequences to the remote host. The
+following are the codes which may be specified (more than
+one may be used in one command):</p>
+
+<p style="margin-top: 1em"><b>abort</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET ABORT (Abort Processes) sequence.</p>
+
+<p style="margin-top: 1em"><b>ao</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET AO (Abort Output) sequence, which should cause the
+remote system to flush all output <i>from</i> the remote
+system <i>to</i> the user&rsquo;s terminal.</p>
+
+<p style="margin-top: 1em"><b>ayt</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET AYT (Are You There?) sequence, to which the remote
+system may or may not choose to respond.</p>
+
+<p style="margin-top: 1em"><b>brk</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET BRK (Break) sequence, which may have significance to
+the remote system.</p>
+
+<p style="margin-top: 1em"><b>ec</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET EC (Erase Character) sequence, which should cause the
+remote system to erase the last character entered.</p>
+
+<p style="margin-top: 1em"><b>el</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET EL (Erase Line) sequence, which should cause the
+remote system to erase the line currently being entered.</p>
+
+<p style="margin-top: 1em"><b>eof</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET EOF (End Of File) sequence.</p>
+
+<p style="margin-top: 1em"><b>eor</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET EOR (End of Record) sequence.</p>
+
+<p style="margin-top: 1em"><b>escape</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+current <b>telnet</b> escape character.</p>
+
+<p style="margin-top: 1em"><b>ga</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET GA (Go Ahead) sequence, which likely has no
+significance to the remote system.</p>
+
+<p style="margin-top: 1em"><b>getstatus</b></p>
+
+<p style="margin-left:31%;">If the remote side supports the
+TELNET STATUS command, <b>getstatus</b> will send the
+subnegotiation to request that the server send its current
+option status.</p>
+
+<p style="margin-top: 1em"><b>ip</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET IP (Interrupt Process) sequence, which should cause
+the remote system to abort the currently running
+process.</p>
+
+<p style="margin-top: 1em"><b>nop</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET NOP (No Operation) sequence.</p>
+
+<p style="margin-top: 1em"><b>susp</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET SUSP (Suspend Process) sequence.</p>
+
+<p style="margin-top: 1em"><b>synch</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Sends the
+TELNET SYNCH sequence. This sequence causes the remote
+system to discard all previously typed (but not yet read)
+input. This sequence is sent as TCP urgent data (and may not
+work if the remote system is a 4.2BSD system -- if it
+doesn&rsquo;t work, a lower case &ldquo;r&rdquo; may be
+echoed on the terminal).</p>
+
+<p style="margin-top: 1em"><b>do</b> <i>cmd</i> <b><br>
+dont</b> <i>cmd</i></p>
+
+<p style="margin-top: 1em"><b>will</b> <i>cmd</i></p>
+
+<p style="margin-top: 1em"><b>wont</b> <i>cmd</i></p>
+
+<p style="margin-left:31%;">Sends the TELNET DO <i>cmd</i>
+sequence. <i>cmd</i> can be either a decimal number between
+0 and 255, or a symbolic name for a specific TELNET command.
+<i>cmd</i> can also be either <b>help</b> or <b>?</b> to
+print out help information, including a list of known
+symbolic names.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Prints out help
+information for the <b>send</b> command.</p>
+
+<p style="margin-top: 1em"><b>set</b> <i>argument
+value</i></p>
+
+<p style="margin-top: 1em"><b>unset</b> <i>argument
+value</i></p>
+
+<p style="margin-left:21%;">The <b>set</b> command will set
+any one of a number of <b>telnet</b> variables to a specific
+value or to TRUE. The special value <b>off</b> turns off the
+function associated with the variable. This is equivalent to
+using the <b>unset</b> command. The <b>unset</b> command
+will disable or set to FALSE any of the specified variables.
+The values of variables may be interrogated with the
+<b>display</b> command. The variables which may be set or
+unset, but not toggled, are listed here. In addition, any of
+the variables for the <b>toggle</b> command may be
+explicitly set or unset.</p>
+
+<p style="margin-top: 1em"><b>ayt</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If telnet is in
+localchars mode, or LINEMODE is enabled, and the status
+character is typed, a TELNET AYT sequence is sent to the
+remote host. The initial value for the &quot;Are You
+There&quot; character is the terminal&rsquo;s status
+character.</p>
+
+<p style="margin-top: 1em"><b>echo</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">This is the
+value (initially &ldquo;^E&rdquo;) which, when in
+&ldquo;line by line&rdquo; mode, toggles between doing local
+echoing of entered characters (for normal processing), and
+suppressing echoing of entered characters (for entering,
+say, a password).</p>
+
+<p style="margin-top: 1em"><b>eof</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If
+<b>telnet</b> is operating in LINEMODE or &ldquo;old line by
+line&rdquo; mode, entering this character as the first
+character on a line will cause this character to be sent to
+the remote system. The initial value of the eof character is
+taken to be the terminal&rsquo;s <b>eof</b> character.</p>
+
+<p style="margin-top: 1em"><b>erase</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If
+<b>telnet</b> is in <b>localchars</b> mode (see <b>toggle
+localchars</b> below), <b>and</b> if <b>telnet</b> is
+operating in &ldquo;character at a time&rdquo; mode, then
+when this character is typed, a TELNET EC sequence (see
+<b>send ec</b> above) is sent to the remote system. The
+initial value for the erase character is taken to be the
+terminal&rsquo;s <b>erase</b> character.</p>
+
+<p style="margin-top: 1em"><b>escape</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">This is the
+<b>telnet</b> escape character (initially &ldquo;^]&rdquo;)
+which causes entry into <b>telnet</b> command mode (when
+connected to a remote system).</p>
+
+<p style="margin-top: 1em"><b>flushoutput</b></p>
+
+<p style="margin-left:31%;">If <b>telnet</b> is in
+<b>localchars</b> mode (see <b>toggle localchars</b> below)
+and the <b>flushoutput</b> character is typed, a TELNET AO
+sequence (see <b>send ao</b> above) is sent to the remote
+host. The initial value for the flush character is taken to
+be the terminal&rsquo;s <b>flush</b> character.</p>
+
+<p style="margin-top: 1em"><b>forw1 <br>
+forw2</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If TELNET is
+operating in LINEMODE, these are the characters that, when
+typed, cause partial lines to be forwarded to the remote
+system. The initial value for the forwarding characters are
+taken from the terminal&rsquo;s eol and eol2 characters.</p>
+
+<p style="margin-top: 1em"><b>interrupt</b></p>
+
+<p style="margin-left:31%;">If <b>telnet</b> is in
+<b>localchars</b> mode (see <b>toggle localchars</b> below)
+and the <b>interrupt</b> character is typed, a TELNET IP
+sequence (see <b>send ip</b> above) is sent to the remote
+host. The initial value for the interrupt character is taken
+to be the terminal&rsquo;s <b>intr</b> character.</p>
+
+<p style="margin-top: 1em"><b>kill</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If
+<b>telnet</b> is in <b>localchars</b> mode (see <b>toggle
+localchars</b> below), <b>and</b> if <b>telnet</b> is
+operating in &ldquo;character at a time&rdquo; mode, then
+when this character is typed, a TELNET EL sequence (see
+<b>send el</b> above) is sent to the remote system. The
+initial value for the kill character is taken to be the
+terminal&rsquo;s <b>kill</b> character.</p>
+
+<p style="margin-top: 1em"><b>lnext</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If
+<b>telnet</b> is operating in LINEMODE or &ldquo;old line by
+line&ldquo; mode, then this character is taken to be the
+terminal&rsquo;s <b>lnext</b> character. The initial value
+for the lnext character is taken to be the terminal&rsquo;s
+<b>lnext</b> character.</p>
+
+<p style="margin-top: 1em"><b>quit</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If
+<b>telnet</b> is in <b>localchars</b> mode (see <b>toggle
+localchars</b> below) and the <b>quit</b> character is
+typed, a TELNET BRK sequence (see <b>send brk</b> above) is
+sent to the remote host. The initial value for the quit
+character is taken to be the terminal&rsquo;s <b>quit</b>
+character.</p>
+
+<p style="margin-top: 1em"><b>reprint</b></p>
+
+<p style="margin-left:31%;">If <b>telnet</b> is operating
+in LINEMODE or &ldquo;old line by line&ldquo; mode, then
+this character is taken to be the terminal&rsquo;s
+<b>reprint</b> character. The initial value for the reprint
+character is taken to be the terminal&rsquo;s <b>reprint</b>
+character.</p>
+
+<p style="margin-top: 1em"><b>rlogin</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">This is the
+rlogin mode escape character. Setting it enables rlogin
+mode, as with the <i>r</i> command-line option (q.v.)</p>
+
+<p style="margin-top: 1em"><b>start</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If the TELNET
+TOGGLE-FLOW-CONTROL option has been enabled, then this
+character is taken to be the terminal&rsquo;s <b>start</b>
+character. The initial value for the kill character is taken
+to be the terminal&rsquo;s <b>start</b> character.</p>
+
+<p style="margin-top: 1em"><b>stop</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If the TELNET
+TOGGLE-FLOW-CONTROL option has been enabled, then this
+character is taken to be the terminal&rsquo;s <b>stop</b>
+character. The initial value for the kill character is taken
+to be the terminal&rsquo;s <b>stop</b> character.</p>
+
+<p style="margin-top: 1em"><b>susp</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">If
+<b>telnet</b> is in <b>localchars</b> mode, or LINEMODE is
+enabled, and the <b>suspend</b> character is typed, a TELNET
+SUSP sequence (see <b>send susp</b> above) is sent to the
+remote host. The initial value for the suspend character is
+taken to be the terminal&rsquo;s <b>suspend</b>
+character.</p>
+
+<p style="margin-top: 1em"><b>tracefile</b></p>
+
+<p style="margin-left:31%;">This is the file to which the
+output, caused by <b>netdata</b> or <b>option</b> tracing
+being TRUE, will be written. If it is set to
+&ldquo;<b>-</b>&rdquo;, then tracing information will be
+written to standard output (the default).</p>
+
+<p style="margin-top: 1em"><b>worderase</b></p>
+
+<p style="margin-left:31%;">If <b>telnet</b> is operating
+in LINEMODE or &ldquo;old line by line&ldquo; mode, then
+this character is taken to be the terminal&rsquo;s
+<b>worderase</b> character. The initial value for the
+worderase character is taken to be the terminal&rsquo;s
+<b>worderase</b> character.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:31%; margin-top: 1em">Displays the
+legal <b>set</b> (<b>unset</b>) commands.</p>
+
+<p style="margin-top: 1em"><b>slc</b> <i>state</i></p>
+
+<p style="margin-left:21%; margin-top: 1em">The <b>slc</b>
+command (Set Local Characters) is used to set or change the
+state of the the special characters when the TELNET LINEMODE
+option has been enabled. Special characters are characters
+that get mapped to TELNET commands sequences (like <b>ip</b>
+or <b>quit</b>) or line editing characters (like
+<b>erase</b> and <b>kill</b>). By default, the local special
+characters are exported.</p>
+
+<p style="margin-top: 1em"><b>check</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Verify the
+current settings for the current special characters. The
+remote side is requested to send all the current special
+character settings, and if there are any discrepancies with
+the local side, the local side will switch to the remote
+value.</p>
+
+<p style="margin-top: 1em"><b>export</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Switch to the
+local defaults for the special characters. The local default
+characters are those of the local terminal at the time when
+<b>telnet</b> was started.</p>
+
+<p style="margin-top: 1em"><b>import</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Switch to the
+remote defaults for the special characters. The remote
+default characters are those of the remote system at the
+time when the TELNET connection was established.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:36%; margin-top: 1em">Prints out help
+information for the <b>slc</b> command.</p>
+
+<p style="margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:21%; margin-top: 1em">Show the
+current status of <b>telnet</b>. This includes the name of
+the remote host, if any, as well as the current mode.</p>
+
+<p style="margin-top: 1em"><b>toggle</b> <i>arguments
+...</i></p>
+
+<p style="margin-left:21%;">Toggle (between TRUE and FALSE)
+various flags that control how <b>telnet</b> responds to
+events. These flags may be set explicitly to TRUE or FALSE
+using the <b>set</b> and <b>unset</b> commands. More than
+one flag may be toggled at once. The state of these flags
+may be examined with the <b>display</b> command. Valid flags
+are:</p>
+
+<p style="margin-top: 1em"><b>authdebug</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Turns on
+debugging for the authentication code. This flag only exists
+if authentication support is enabled.</p>
+
+<p style="margin-top: 1em"><b>autoflush</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">If
+<b>autoflush</b> and <b>localchars</b> are both TRUE, then
+when the <b>ao</b>, or <b>quit</b> characters are recognized
+(and transformed into TELNET sequences; see <b>set</b> above
+for details), <b>telnet</b> refuses to display any data on
+the user&rsquo;s terminal until the remote system
+acknowledges (via a TELNET TIMING MARK option) that it has
+processed those TELNET sequences. The initial value for this
+toggle is TRUE if the terminal user had not done an
+&quot;stty noflsh&quot;, otherwise FALSE (see stty(1)).</p>
+
+<p style="margin-top: 1em"><b>autodecrypt</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">When the TELNET
+ENCRYPT option is negotiated, by default the actual
+encryption (decryption) of the data stream does not start
+automatically. The autoencrypt (autodecrypt) command states
+that encryption of the output (input) stream should be
+enabled as soon as possible.</p>
+
+<p style="margin-left:38%; margin-top: 1em">Note that this
+flag exists only if encryption support is enabled.</p>
+
+<p style="margin-top: 1em"><b>autologin</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">If the remote
+side supports the TELNET AUTHENTICATION option, telnet
+attempts to use it to perform automatic authentication. If
+the TELNET AUTHENTICATION option is not supported, the
+user&rsquo;s login name is propagated using the TELNET
+NEW-ENVIRON option. Setting this flag is the same as
+specifying the <i>a</i> option to the <b>open</b> command or
+on the command line.</p>
+
+<p style="margin-top: 1em"><b>autosynch</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">If
+<b>autosynch</b> and <b>localchars</b> are both TRUE, then
+when either the <b>intr</b> or <b>quit</b> characters is
+typed (see <b>set</b> above for descriptions of the
+<b>intr</b> and <b>quit</b> characters), the resulting
+telnet sequence sent is followed by the TELNET SYNCH
+sequence. This procedure <b>should</b> cause the remote
+system to begin throwing away all previously typed input
+until both of the telnet sequences have been read and acted
+upon. The initial value of this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>binary</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Enable or
+disable the TELNET BINARY option on both input and
+output.</p>
+
+<p style="margin-top: 1em"><b>inbinary</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Enable or
+disable the TELNET BINARY option on input.</p>
+
+<p style="margin-top: 1em"><b>outbinary</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Enable or
+disable the TELNET BINARY option on output.</p>
+
+<p style="margin-top: 1em"><b>crlf</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">If this is
+TRUE, then carriage returns will be sent as
+&lt;CR&gt;&lt;LF&gt;. If this is FALSE, then carriage
+returns will be send as &lt;CR&gt;&lt;NUL&gt;. The initial
+value for this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>crmod</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Toggle carriage
+return mode. When this mode is enabled, most carriage return
+characters received from the remote host will be mapped into
+a carriage return followed by a line feed. This mode does
+not affect those characters typed by the user, only those
+received from the remote host. This mode is not very useful
+unless the remote host only sends carriage return, but never
+line feed. The initial value for this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>debug</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Toggles socket
+level debugging (useful only to the <b>super user</b>). The
+initial value for this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>encdebug</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Turns on
+debugging information for the encryption code. Note that
+this flag only exists if encryption support is
+available.</p>
+
+<p style="margin-top: 1em"><b>localchars</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">If this is
+TRUE, then the <b>flush</b>, <b>interrupt</b>, <b>quit</b>,
+<b>erase</b>, and <b>kill</b> characters (see <b>set</b>
+above) are recognized locally, and transformed into
+(hopefully) appropriate TELNET control sequences
+(respectively <b>ao</b>, <b>ip</b>, <b>brk</b>, <b>ec</b>,
+and <b>el</b>; see <b>send</b> above). The initial value for
+this toggle is TRUE in &ldquo;old line by line&rdquo; mode,
+and FALSE in &ldquo;character at a time&rdquo; mode. When
+the LINEMODE option is enabled, the value of
+<b>localchars</b> is ignored, and assumed to always be TRUE.
+If LINEMODE has ever been enabled, then <b>quit</b> is sent
+as <b>abort</b>, and <b>eof</b> and <b>suspend</b> are sent
+as <b>eof</b> and <b>susp</b>, see <b>send</b> above).</p>
+
+<p style="margin-top: 1em"><b>netdata</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Toggles the
+display of all network data (in hexadecimal format). The
+initial value for this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>options</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Toggles the
+display of some internal <b>telnet</b> protocol processing
+(having to do with telnet options). The initial value for
+this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>prettydump</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">When the
+<b>netdata</b> toggle is enabled, if <b>prettydump</b> is
+enabled the output from the <b>netdata</b> command will be
+formatted in a more user-readable format. Spaces are put
+between each character in the output, and the beginning of
+telnet escape sequences are preceded by a &rsquo;*&rsquo; to
+aid in locating them.</p>
+
+<p style="margin-top: 1em"><b>skiprc</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">When the skiprc
+toggle is TRUE, telnet does not read the telnetrc files. The
+initial value for this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>termdata</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Toggles the
+display of all terminal data (in hexadecimal format). The
+initial value for this toggle is FALSE.</p>
+
+<p style="margin-top: 1em"><b>verbose_encrypt</b></p>
+
+<p style="margin-left:38%;">When the <b>verbose_encrypt</b>
+toggle is TRUE, TELNET prints out a message each time
+encryption is enabled or disabled. The initial value for
+this toggle is FALSE. This flag only exists if encryption
+support is available.</p>
+
+<p style="margin-top: 1em"><b>?</b></p>
+
+<p style="margin-left:38%; margin-top: 1em">Displays the
+legal <b>toggle</b> commands.</p>
+
+<p style="margin-top: 1em"><b>z</b></p>
+
+<p style="margin-left:21%; margin-top: 1em">Suspend
+<b>telnet</b>. This command only works when the user is
+using the csh(1).</p>
+
+<p style="margin-top: 1em"><b>!</b> [<i>command</i>]</p>
+
+<p style="margin-left:21%;">Execute a single command in a
+subshell on the local system. If <b>command</b> is omitted,
+then an interactive subshell is invoked.</p>
+
+<p style="margin-top: 1em"><b>?</b> [<i>command</i>]</p>
+
+<p style="margin-left:21%;">Get help. With no arguments,
+<b>telnet</b> prints a help summary. If a command is
+specified, <b>telnet</b> will print the help information for
+just that command.</p>
+
+<p style="margin-top: 1em"><b>ENVIRONMENT</b></p>
+
+<p style="margin-left:6%;"><b>Telnet</b> uses at least the
+HOME, SHELL, DISPLAY, and TERM environment variables. Other
+environment variables may be propagated to the other side
+via the TELNET NEW-ENVIRON option.</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+/etc/telnetrc</p>
+
+<p style="margin-left:26%; margin-top: 1em">global telnet
+startup values</p>
+
+<p>~/.telnetrc</p>
+
+<p style="margin-left:26%; margin-top: 1em">user customized
+telnet startup values</p>
+
+<p style="margin-top: 1em"><b>HISTORY</b></p>
+
+<p style="margin-left:6%;">The <b>Telnet</b> command
+appeared in 4.2BSD.</p>
+
+<p style="margin-top: 1em"><b>NOTES</b></p>
+
+<p style="margin-left:6%;">On some remote systems, echo has
+to be turned off manually when in &ldquo;old line by
+line&rdquo; mode.</p>
+
+<p style="margin-left:6%; margin-top: 1em">In &ldquo;old
+line by line&rdquo; mode or LINEMODE the terminal&rsquo;s
+<b>eof</b> character is only recognized (and sent to the
+remote system) when it is the first character on a line.</p>
+
+<p style="margin-top: 1em"><b>BUGS</b></p>
+
+<p style="margin-left:6%;">The source code is not
+comprehensible.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Linux NetKit
+(0.17) August&nbsp;15, 1999 Linux NetKit (0.17)</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:40 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GPG-WKS-SERVER</title>
+
+</head>
+<body>
+
+<h1 align="center">GPG-WKS-SERVER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg-wks-server</b>
+- Server providing the Web Key Service</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg-wks-server</b>
+[<i>options</i>] <b>--receive <br>
+gpg-wks-server</b> [<i>options</i>] <b>--cron <br>
+gpg-wks-server</b> [<i>options</i>] <b>--list-domains <br>
+gpg-wks-server</b> [<i>options</i>] <b>--check-key</b>
+<i>user-id</i> <b><br>
+gpg-wks-server</b> [<i>options</i>] <b>--install-key</b>
+<i>file user-id</i> <b><br>
+gpg-wks-server</b> [<i>options</i>] <b>--remove-key</b>
+<i>user-id</i> <b><br>
+gpg-wks-server</b> [<i>options</i>] <b>--revoke-key</b>
+<i>user-id</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>gpg-wks-server</b> is a server site implementation of the
+Web Key Service. It receives requests for publication, sends
+confirmation requests, receives confirmations, and published
+the key. It also has features to ease the setup and
+maintenance of a Web Key Directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When used with
+the command <b>--receive</b> a single Web Key Service mail
+is processed. Commonly this command is used with the option
+<b>--send</b> to directly send the crerated mails back. See
+below for an installation example.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+<b>--cron</b> is used for regualr cleanup tasks. For example
+non-confirmed requested should be removed after their expire
+time. It is best to run this command once a day from a
+cronjob.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+<b>--list-domains</b> prints all configured domains. Further
+it creates missing directories for the configuration and
+prints warnings pertaining to problems in the
+configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+<b>--check-key</b> (or just <b>--check</b>) checks whether a
+key with the given user-id is installed. The process returns
+success in this case; to also print a diagnostic use the
+option <b>-v</b>. If the key is not installed a diagnostic
+is printed and the process returns failure; to suppress the
+diagnostic, use option <b>-q</b>. More than one user-id can
+be given; see also option <b>with-file</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+<b>--install-key</b> manually installs a key into the WKD.
+The arguments are a file with the keyblock and the user-id
+to install. If the first argument resembles a fingerprint
+the key is taken from the current keyring; to force the use
+of a file, prefix the first argument with &quot;./&quot;. If
+no arguments are given the parameters are read from stdin;
+the expected format are lines with the fingerprint and the
+mailbox separated by a space.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+<b>--remove-key</b> uninstalls a key from the WKD. The
+process returns success in this case; to also print a
+diagnostic, use option <b>-v</b>. If the key is not
+installed a diagnostic is printed and the process returns
+failure; to suppress the diagnostic, use option
+<b>-q</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+<b>--revoke-key</b> is not yet functional.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg-wks-server</b>
+understands these options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-C</b> <i>dir</i></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--directory</b>
+<i>dir</i></p>
+
+<p style="margin-left:22%;">Use <i>dir</i> as top level
+directory for domains. The default is
+&rsquo;<i>/var/lib/gnupg/wks</i>&rsquo;.</p>
+
+<p style="margin-left:11%;"><b>--from</b>
+<i>mailaddr</i></p>
+
+<p style="margin-left:22%;">Use <i>mailaddr</i> as the
+default sender address.</p>
+
+<p style="margin-left:11%;"><b>--header</b>
+<i>name</i>=<i>value</i></p>
+
+<p style="margin-left:22%;">Add the mail header
+&quot;<i>name</i>: <i>value</i>&quot; to all outgoing
+mails.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--send</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Directly send created mails using the <b>sendmail</b>
+command. Requires installation of that command.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-o</b> <i>file</i> <b><br>
+--output</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Write the created mail also to
+<i>file</i>. Note that the value <b>-</b> for <i>file</i>
+would write it to stdout.</p>
+
+<p style="margin-left:11%;"><b>--with-dir</b></p>
+
+<p style="margin-left:22%;">When used with the command
+<b>--list-domains</b> print for each installed domain the
+domain name and its directory name.</p>
+
+<p style="margin-left:11%;"><b>--with-file</b></p>
+
+<p style="margin-left:22%;">When used with the command
+<b>--check-key</b> print for each user-id, the address,
+&rsquo;i&rsquo; for installed key or &rsquo;n&rsquo; for not
+installed key, and the filename.</p>
+
+<p style="margin-left:11%;"><b>--verbose</b></p>
+
+<p style="margin-left:22%;">Enable extra informational
+output.</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:22%;">Disable almost all
+informational output.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print version of the program
+and exit.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p>Display a brief help page and exit.</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Web Key
+Service requires a working directory to store keys pending
+for publication. As root create a working directory:</p>
+
+<p style="margin-left:14%; margin-top: 1em"># mkdir
+/var/lib/gnupg/wks <br>
+# chown webkey:webkey /var/lib/gnupg/wks <br>
+# chmod 2750 /var/lib/gnupg/wks</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then under your
+webkey account create directories for all your domains. Here
+we do it for &quot;example.net&quot;:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ mkdir
+/var/lib/gnupg/wks/example.net</p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally run</p>
+
+<p style="margin-left:14%; margin-top: 1em">$
+gpg-wks-server --list-domains</p>
+
+<p style="margin-left:11%; margin-top: 1em">to create the
+required sub-directories with the permissions set correctly.
+For each domain a submission address needs to be configured.
+All service mails are directed to that address. It can be
+the same address for all configured domains, for
+example:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ cd
+/var/lib/gnupg/wks/example.net <br>
+$ echo key-submission@example.net &gt;submission-address</p>
+
+<p style="margin-left:11%; margin-top: 1em">The protocol
+requires that the key to be published is send with an
+encrypted mail to the service. Thus you need to create a key
+for the submission address:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ gpg --batch
+--passphrase &rsquo;&rsquo; --quick-gen-key
+key-submission@example.net <br>
+$ gpg -K key-submission@example.net</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output of
+the last command looks similar to this:</p>
+
+<p style="margin-left:14%; margin-top: 1em">sec rsa3072
+2016-08-30 [SC] <br>
+C0FCF8642D830C53246211400346653590B3795B <br>
+uid [ultimate] key-submission@example.net <br>
+ssb rsa3072 2016-08-30 [E]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Take the
+fingerprint from that output and manually publish the
+key:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$
+gpg-wks-server --install-key
+C0FCF8642D830C53246211400346653590B3795B \ <br>
+&gt; key-submission@example.net</p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally that
+submission address needs to be redirected to a script
+running <b>gpg-wks-server</b>. The <b>procmail</b> command
+can be used for this: Redirect the submission address to the
+user &quot;webkey&quot; and put this into webkey&rsquo;s
+&rsquo;<i>.procmailrc</i>&rsquo;:</p>
+
+<p style="margin-left:14%; margin-top: 1em">:0 <br>
+* !^From: webkey@example.net <br>
+* !^X-WKS-Loop: webkey.example.net <br>
+|gpg-wks-server -v --receive \ <br>
+--header X-WKS-Loop=webkey.example.net \ <br>
+--from webkey@example.net --send</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg-wks-client</b>(1)</p>
+<hr>
+</body>
+</html>

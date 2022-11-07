@@ -1,0 +1,373 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-LAUNCH</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-LAUNCH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTOMATIC LAUNCHING">AUTOMATIC LAUNCHING</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-launch -
+Utility to start a message bus from a shell script</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-launch</b> [--version]
+[--help] [--sh-syntax] [--csh-syntax] [--auto-syntax]
+[--binary-syntax] [--close-stderr] [--exit-with-session]
+[--exit-with-x11] [--autolaunch=<i>MACHINEID</i>]
+[--config-file=<i>FILENAME</i>] [<i>PROGRAM</i>]
+[<i>ARGS</i>...]</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>dbus-launch</b> command is used to start a session bus
+instance of <i>dbus-daemon</i> from a shell script. It would
+normally be called from a user's login scripts. Unlike the
+daemon itself, <b>dbus-launch</b> exits, so backticks or the
+$() construct can be used to read information from
+<b>dbus-launch</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With no
+arguments, <b>dbus-launch</b> will launch a session bus
+instance and print the address and PID of that instance to
+standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may specify
+a program to be run; in this case, <b>dbus-launch</b> will
+launch a session bus instance, set the appropriate
+environment variables so the specified program can find the
+bus, and then execute the specified program, with the
+specified arguments. See below for examples.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you launch a
+program, <b>dbus-launch</b> will not print the information
+about the new bus to standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+<b>dbus-launch</b> prints bus information to standard
+output, by default it is in a simple key-value pairs format.
+However, you may request several alternate syntaxes using
+the --sh-syntax, --csh-syntax, --binary-syntax, or
+--auto-syntax options. Several of these cause
+<b>dbus-launch</b> to emit shell code to set up the
+environment.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the
+--auto-syntax option, <b>dbus-launch</b> looks at the value
+of the SHELL environment variable to determine which shell
+syntax should be used. If SHELL ends in &quot;csh&quot;,
+then csh-compatible code is emitted; otherwise Bourne shell
+code is emitted. Instead of passing --auto-syntax, you may
+explicitly specify a particular one by using --sh-syntax for
+Bourne syntax, or --csh-syntax for csh syntax. In scripts,
+it's more robust to avoid --auto-syntax and you hopefully
+know which shell your script is written in.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b>
+<font color="#000000">for more information about D-Bus. See
+also the man page for <i>dbus-daemon</i>.</font></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Distributions
+running <b>dbus-launch</b> as part of a standard X session
+should run <b>dbus-launch --exit-with-session</b> after the
+X server has started and become available, as a wrapper
+around the &quot;main&quot; X client (typically a session
+manager or window manager), as in these examples:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-launch
+--exit-with-session gnome-session</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-launch
+--exit-with-session openbox</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-launch
+--exit-with-session ~/.xsession</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+your distribution does not do this, you can achieve similar
+results by running your session or window manager in the
+same way in a script run by your X session, such as
+~/.xsession, ~/.xinitrc or ~/.Xclients.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">To
+start a D-Bus session within a text-mode session, do not use
+<b>dbus-launch</b>. Instead, see
+<b>dbus-run-session</b>(1).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">##
+test for an existing bus daemon, just to be safe <br>
+if test -z &quot;$DBUS_SESSION_BUS_ADDRESS&quot; ; then <br>
+## if not found, launch a new one <br>
+eval &rsquo;dbus-launch --sh-syntax&rsquo; <br>
+echo &quot;D-Bus per-session daemon address is:
+$DBUS_SESSION_BUS_ADDRESS&quot; <br>
+fi</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that in this case, dbus-launch will exit, and dbus-daemon
+will not be terminated automatically on logout.</font></p>
+
+<h2>AUTOMATIC LAUNCHING
+<a name="AUTOMATIC LAUNCHING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+DBUS_SESSION_BUS_ADDRESS is not set for a process that tries
+to use D-Bus, by default the process will attempt to invoke
+dbus-launch with the --autolaunch option to start up a new
+session bus or find the existing bus address on the X
+display or in a file in ~/.dbus/session-bus/</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Whenever
+an autolaunch occurs, the application that had to start a
+new bus will be in its own little world; it can effectively
+end up starting a whole new session if it tries to use a lot
+of bus services. This can be suboptimal or even totally
+broken, depending on the app and what it tries to
+do.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">There
+are two common reasons for autolaunch. One is ssh to a
+remote machine. The ideal fix for that would be forwarding
+of DBUS_SESSION_BUS_ADDRESS in the same way that DISPLAY is
+forwarded. In the meantime, you can edit the session.conf
+config file to have your session bus listen on TCP, and
+manually set DBUS_SESSION_BUS_ADDRESS, if you
+like.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+second common reason for autolaunch is an su to another
+user, and display of X applications running as the second
+user on the display belonging to the first user. Perhaps the
+ideal fix in this case would be to allow the second user to
+connect to the session bus of the first user, just as they
+can connect to the first user's display. However, a
+mechanism for that has not been coded.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">You
+can always avoid autolaunch by manually setting
+DBUS_SESSION_BUS_ADDRESS. Autolaunch happens because the
+default address if none is set is &quot;autolaunch:&quot;,
+so if any other address is set there will be no autolaunch.
+You can however include autolaunch in an explicit session
+bus address as a fallback, for example
+DBUS_SESSION_BUS_ADDRESS=&quot;something:,autolaunch:&quot;
+- in that case if the first address doesn't work, processes
+will autolaunch. (The bus address variable contains a
+comma-separated list of addresses to try.)</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+--autolaunch option is considered an internal implementation
+detail of libdbus, and in fact there are plans to change it.
+There's no real reason to use it outside of the libdbus
+implementation anyhow.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are supported:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--auto-syntax</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Choose
+--csh-syntax or --sh-syntax based on the SHELL environment
+variable.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--binary-syntax</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Write to
+stdout a nul-terminated bus address, then the bus PID as a
+binary integer of size sizeof(pid_t), then the bus X window
+ID as a binary integer of size sizeof(long). Integers are in
+the machine's byte order, not network byte order or any
+other canonical byte order.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--close-stderr</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Close the
+standard error output stream before starting the D-Bus
+daemon. This is useful if you want to capture dbus-launch
+error messages but you don't want dbus-daemon to keep the
+stream open to your application.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--config-file=FILENAME</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Pass
+--config-file=FILENAME to the bus daemon, instead of passing
+it the --session argument. See the man page for
+dbus-daemon</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--csh-syntax</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Emit csh
+compatible code to set up environment variables.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--exit-with-x11</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If this
+option is provided, a persistent &quot;babysitter&quot;
+process will be created, and will connect to the X server.
+If it cannot do so, launching fails. If the
+&quot;babysitter&quot; process loses its X connection, it
+kills the message bus daemon, disconnecting all of its
+clients (which should exit in response). This avoids having
+leftover daemon processes from a user X session, after the X
+session has ended.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--exit-with-session</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If this
+option is provided, a persistent &quot;babysitter&quot;
+process will be created, as if for --exit-with-x11. If it
+cannot connect to the X server, it will monitor the terminal
+from which dbus-launch was started instead, and if it gets a
+HUP on stdin, the message bus daemon will be killed. This
+option is not recommended, since it will consume input from
+the terminal where it was started; it is mainly provided for
+backwards compatibility.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--autolaunch=MACHINEID</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">This
+option implies that <b>dbus-launch</b> should scan for a
+previously-started session and reuse the values found there.
+If no session is found, it will start a new session. The
+--exit-with-session option is implied if --autolaunch is
+given. This option is for the exclusive use of libdbus, you
+do not want to use it manually. It may change in the
+future.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--sh-syntax</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Emit
+Bourne-shell compatible code to set up environment
+variables.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+version of dbus-launch</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+help info of dbus-launch</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you run <b>dbus-launch myapp</b> (with any other options),
+dbus-daemon will <i>not</i> exit when <b>myapp</b>
+terminates: this is because <b>myapp</b> is assumed to be
+part of a larger session, rather than a session in its own
+right.</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">See</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/doc/AUTHORS</font></b></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Please
+send bug reports to the D-Bus mailing list or bug tracker,
+see</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b></p>
+<hr>
+</body>
+</html>

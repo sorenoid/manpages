@@ -1,0 +1,271 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:06 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pnmtotiff</title>
+
+</head>
+<body>
+
+<h1 align="center">pnmtotiff</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtotiff -
+convert a portable anymap into a TIFF file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtotiff</b>
+[<b>-none</b>|<b>-packbits</b>|<b>-lzw</b>|<b>-g3</b>|<b>-g4</b>]
+[<b>-2d</b>] [<b>-fill</b>] [<b>-predictor</b> <i>n</i>]
+[<b>-msb2lsb</b>|<b>-lsb2msb</b>] [<b>-rowsperstrip</b>
+<i>n</i>] [<b>-minisblack</b>|<b>-miniswhite</b>]
+[<b>-truecolor</b>] [<b>-color</b>] [<b>-indexbits</b>
+<i>1|2|4|8</i>] [<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum
+unambiguous abbreviations of options are acceptable.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a PNM
+image as input. Produces a TIFF file as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output goes
+to Standard Output, which must be a seekable file. That
+means no pipes, but any regular file should work.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>pnmtotiff</b> creates a TIFF file with no compression.
+This is your best bet most of the time. If you want to try
+another compression scheme or tweak some of the other even
+more obscure output options, there are a number of flags to
+play with.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Actually, the
+best default would be to use LZW compression, which is what
+<b>pnmtotiff</b> used to do by default. However, the Tiff
+library no longer does LZW compression due to concerns with
+violating Unisys&rsquo;s patent on LZW compression.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-none</b>, <b>-packbits</b>, <b>-lzw</b>, <b>-g3</b>,
+<b>-g4</b>, <b>-flate</b>, and <b>-adobeflat</b> options are
+used to override the default and set the compression scheme
+used in creating the output file. The CCITT Group 3 and
+Group 4 compression algorithms can only be used with bilevel
+data. <b>-lzw</b> doesn&rsquo;t really work because the Tiff
+library doesn&rsquo;t do LZW compression. It used to, but
+its developers removed the function out of concern about
+violating Unisys&rsquo;s patent. This option remains in case
+you use a Tiff library that cooperates, now or in the
+future. The <b>-2d</b> and <b>-fill</b> options are
+meaningful only with Group 3 compression: <b>-2d</b>
+requests 2-dimensional encoding, while <b>-fill</b> requests
+that each encoded scanline be zero-filled to a byte boundry.
+The <b>-predictor</b> option is only meaningful with LZW
+compression: a predictor value of 2 causes each scanline of
+the output image to undergo horizontal differencing before
+it is encoded; a value of 1 forces each scanline to be
+encoded without differencing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>pnmtotiff</b> creates a TIFF file with msb-to-lsb fill
+order. The <b>-msb2lsb</b> and <b>-lsb2msb</b> options are
+used to override the default and set the fill order used in
+creating the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fill order
+is the order in which pixels are packed into a byte in the
+Tiff raster, in the case that there are multiple pixels per
+byte. msb-to-lsb means that the leftmost columns go into the
+most significant bits of the byte in the Tiff image.
+However, there is considerable confusion about the meaning
+of fill order. Some believe it means whether 16 bit sample
+values in the Tiff image are little-endian or big-endian.
+This is totally erroneous (The endianness of integers in a
+Tiff image is designated by the image&rsquo;s magic number).
+However, ImageMagick and older Netpbm both have been known
+to implement that interpretation. 2001.09.06.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the image
+does not have sub-byte pixels, these options have no effect
+other than to set the value of the FILLORDER tag in the Tiff
+image (which may be useful for those programs that
+misinterpret the tag with reference to 16 bit samples).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-rowsperstrip</b> option can be used to set the number of
+rows (scanlines) in each strip of data in the output file.
+By default, the output file has the number of rows per strip
+set to a value that will ensure each strip is no more than 8
+kilobytes long.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-minisblack</b> and <b>-miniswhite</b> option force the
+output image to have a &quot;minimum is black&quot; or
+&quot;minimum is white&quot; photometric, respectively. If
+you don&rsquo;t specify either, <b>pnmtotiff uses minimum is
+black except</b> when using Group 3 or Group 4 compression,
+in which case <b>pnmtotiff</b> follows CCITT fax standards
+and uses &quot;minimum is white.&quot; This usually results
+in better compression and is generally preferred for bilevel
+coding.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before February
+2001, <b>pnmtotiff</b> always produced &quot;minimum is
+black,&quot; due to a bug. In either case, <b>pnmtotiff</b>
+sets the photometric interpretation tag in the TIFF output
+according to which photometric is actually used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-truecolor</b>
+tells <b>pnmtotiff</b> to produce the 24-bit RGB form of
+TIFF output if it is producing a color TIFF image. Without
+this option, <b>pnmtotiff</b> produces a colormapped
+(paletted) 8-bit TIFF image unless there are more than 256
+colors (and in the latter case, issues a warning).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-truecolor</b> option can prevent <b>pnmtotiff</b> from
+making two passes through the input file, thus improving
+speed and memory usage. See the section MULTIPLE PASSES.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>pnmtotiff</b> produces a grayscale TIFF image, this
+option has no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-color</b>
+tells <b>pnmtotiff</b> to produce a color, as opposed to
+grayscale, TIFF image if the input is PPM, even if it
+contains only shades of gray. Without this option,
+<b>pnmtotiff</b> produces a grayscale TIFF image if the
+input is PPM and contains only shades of gray, and at most
+256 shades. Otherwise, it produces a color TIFF output. For
+PBM and PGM input, <b>pnmtotiff</b> always produces
+grayscale TIFF output and this option has no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-color</b> option can prevent <b>pnmtotiff</b> from
+making two passes through the input file, thus improving
+speed and memory usage. See the section MULTIPLE PASSES.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-indexbits</b> option is meaningful only for a
+colormapped (paletted) image. In this kind of image, the
+raster contains values which are indexes into a table of
+colors, with the indexes normally taking less space that the
+color description in the table. pnmtotiff can generate
+indexes of 1, 2, 4, or 8 bits. By default, it will use 8,
+because many programs that interpret TIFF images can&rsquo;t
+handle any other width.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+myriad variations of the TIFF format, and this program
+generates only a few of them. <b>pnmtotiff</b> creates a
+grayscale TIFF file if its input is a PBM (monochrome) or
+PGM (grayscale) file. <b>pnmtotiff</b> also creates a
+grayscale file if it input is PPM (color), but there is only
+one color in the image. If the input is a PPM (color) file
+and there are 256 colors or fewer, but more than 1,
+<b>pnmtotiff</b> generates a color palette TIFF file. If
+there are more colors than that, <b>pnmtotiff</b> generates
+an RGB (not RGBA) single plane TIFF file. Use
+<b>pnmtotiffcmyk</b> to generate the
+cyan-magenta-yellow-black ink color separation TIFF
+format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The number of
+bits per sample in the TIFF output is determined by the
+maxval of the PNM input. If the maxval is less than 256, the
+bits per sample in the output is the smallest number that
+can encode the maxval. If the maxval is greater than or
+equal to 256, there are 16 bits per sample in the
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Multiple
+Passes <br>
+pnmtotiff</b> reads the input image once if it can, and
+otherwise twice. It needs that second pass to analyze the
+colors in the image and generate a color map (pallette) and
+determine if the image is grayscale. So the second pass only
+happens when the input is PPM. And you can avoid it then by
+specifying both the <b>-truecolor</b> and <b>-color</b>
+options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input
+image is small enough to fit in your system&rsquo;s file
+cache, the second pass is very fast. If not, it requires
+reading from disk twice, which can be slow.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the input
+is from a file that cannot be rewound and reread,
+<b>pnmtotiff</b> reads the entire input image into a
+temporary file which can, and works from that. Even if it
+only needs one pass.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tifftopnm</b>(1),
+<b>pnmtotiffcmyk</b>(1), <b>pnmdepth</b>(1),
+<b>pnm</b>(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Derived by Jef
+Poskanzer from ras2tiff.c, which is Copyright (c) 1990 by
+Sun Microsystems, Inc. Author: Patrick J. Naughton
+(naughton@wind.sun.com).</p>
+<hr>
+</body>
+</html>

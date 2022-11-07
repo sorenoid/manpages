@@ -1,0 +1,226 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:46 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-CHECK-IGNORE</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-CHECK-IGNORE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#OUTPUT">OUTPUT</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">git-check-ignore
+- Debug gitignore / exclude files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+check-ignore</i> [&lt;options&gt;] &lt;pathname&gt;...
+<i><br>
+git check-ignore</i> [&lt;options&gt;] --stdin</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For each
+pathname given via the command-line or from a file via
+<b>--stdin</b>, check whether the file is excluded by
+.gitignore (or other input files to the exclude mechanism)
+and output the path if it is excluded.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+tracked files are not shown at all since they are not
+subject to exclude rules; but see
+&rsquo;--no-index&rsquo;.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-q, --quiet</p>
+
+<p style="margin-left:17%;">Don&rsquo;t output anything,
+just set exit status. This is only valid with a single
+pathname.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-v,
+--verbose</p>
+
+<p style="margin-left:17%;">Instead of printing the paths
+that are excluded, for each path that matches an exclude
+pattern, print the exclude pattern together with the path.
+(Matching an exclude pattern usually means the path is
+excluded, but if the pattern begins with <i>!</i> then it is
+a negated pattern and matching it means the path is NOT
+excluded.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">For precedence
+rules within and between exclude sources, see
+<b>gitignore</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">--stdin</p>
+
+<p style="margin-left:17%;">Read pathnames from the
+standard input, one per line, instead of from the
+command-line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-z</p>
+
+<p style="margin-left:17%;">The output format is modified
+to be machine-parsable (see below). If <b>--stdin</b> is
+also given, input paths are separated with a NUL character
+instead of a linefeed character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-n,
+--non-matching</p>
+
+<p style="margin-left:17%;">Show given paths which
+don&rsquo;t match any pattern. This only makes sense when
+<b>--verbose</b> is enabled, otherwise it would not be
+possible to distinguish between paths which match a pattern
+and those which don&rsquo;t.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--no-index</p>
+
+<p style="margin-left:17%;">Don&rsquo;t look in the index
+when undertaking the checks. This can be used to debug why a
+path became tracked by e.g. <b>git add .</b> and was not
+ignored by the rules as expected by the user or when
+developing patterns including negation to match a path
+previously added with <b>git add -f</b>.</p>
+
+<h2>OUTPUT
+<a name="OUTPUT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default, any
+of the given pathnames which match an ignore pattern will be
+output, one per line. If no pattern matches a given path,
+nothing will be output for that path; this means that path
+will not be ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>--verbose</b> is specified, the output is a series of
+lines of the form:</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;source&gt;
+&lt;COLON&gt; &lt;linenum&gt; &lt;COLON&gt; &lt;pattern&gt;
+&lt;HT&gt; &lt;pathname&gt;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;pathname&gt;
+is the path of a file being queried, &lt;pattern&gt; is the
+matching pattern, &lt;source&gt; is the pattern&rsquo;s
+source file, and &lt;linenum&gt; is the line number of the
+pattern within that source. If the pattern contained a
+<b>!</b> prefix or <b>/</b> suffix, it will be preserved in
+the output. &lt;source&gt; will be an absolute path when
+referring to the file configured by
+<b>core.excludesFile</b>, or relative to the repository root
+when referring to <b>.git/info/exclude</b> or a
+per-directory exclude file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>-z</b> is
+specified, the pathnames in the output are delimited by the
+null character; if <b>--verbose</b> is also specified then
+null characters are also used instead of colons and hard
+tabs:</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;source&gt;
+&lt;NULL&gt; &lt;linenum&gt; &lt;NULL&gt; &lt;pattern&gt;
+&lt;NULL&gt; &lt;pathname&gt; &lt;NULL&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>-n</b> or
+<b>--non-matching</b> are specified, non-matching pathnames
+will also be output, in which case all fields in each output
+record except for &lt;pathname&gt; will be empty. This can
+be useful when running non-interactively, so that files can
+be incrementally streamed to STDIN of a long-running
+check-ignore process, and for each of these files, STDOUT
+will indicate whether that file matched a pattern or not.
+(Without this option, it would be impossible to tell whether
+the absence of output for a given file meant that it
+didn&rsquo;t match any pattern, or that the output
+hadn&rsquo;t been generated yet.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Buffering
+happens as documented under the <b>GIT_FLUSH</b> option in
+<b>git</b>(1). The caller is responsible for avoiding
+deadlocks caused by overfilling an input buffer or reading
+from an empty output buffer.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">0</p>
+
+<p style="margin-left:17%;">One or more of the provided
+paths is ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">1</p>
+
+<p style="margin-left:17%;">None of the provided paths are
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">128</p>
+
+<p style="margin-left:17%;">A fatal error was
+encountered.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gitignore</b>(5)
+<b>git-config</b>(1) <b>git-ls-files</b>(1)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

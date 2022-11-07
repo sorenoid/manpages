@@ -1,0 +1,665 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:13 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-INTERPRET-TRAI</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-INTERPRET-TRAI</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFIGURATION VARIABLES">CONFIGURATION VARIABLES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">git-interpret-trailers
+- Add or parse structured information in commit messages</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+interpret-trailers</i> [&lt;options&gt;] [(--trailer
+&lt;token&gt;[(=|:)&lt;value&gt;])...] [&lt;file&gt;...]
+<i><br>
+git interpret-trailers</i> [&lt;options&gt;] [--parse]
+[&lt;file&gt;...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Help parsing or
+adding <i>trailers</i> lines, that look similar to RFC 822
+e-mail headers, at the end of the otherwise free-form part
+of a commit message.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+reads some patches or commit messages from either the
+&lt;file&gt; arguments or the standard input if no
+&lt;file&gt; is specified. If <b>--parse</b> is specified,
+the output consists of the parsed trailers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Otherwise, this
+command applies the arguments passed using the
+<b>--trailer</b> option, if any, to the commit message part
+of each input file. The result is emitted on the standard
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+configuration variables control the way the <b>--trailer</b>
+arguments are applied to each commit message and the way any
+existing trailer in the commit message is changed. They also
+make it possible to automatically add some trailers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default, a
+<i>&lt;token&gt;=&lt;value&gt;</i> or
+<i>&lt;token&gt;:&lt;value&gt;</i> argument given using
+<b>--trailer</b> will be appended after the existing
+trailers only if the last trailer has a different
+(&lt;token&gt;, &lt;value&gt;) pair (or if there is no
+existing trailer). The &lt;token&gt; and &lt;value&gt; parts
+will be trimmed to remove starting and trailing whitespace,
+and the resulting trimmed &lt;token&gt; and &lt;value&gt;
+will appear in the message like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">token:
+value</p>
+
+<p style="margin-left:11%; margin-top: 1em">This means that
+the trimmed &lt;token&gt; and &lt;value&gt; will be
+separated by <b>': '</b> (one colon followed by one
+space).</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default the
+new trailer will appear at the end of all the existing
+trailers. If there is no existing trailer, the new trailer
+will appear after the commit message part of the output,
+and, if there is no line with only spaces at the end of the
+commit message part, one blank line will be added before the
+new trailer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Existing
+trailers are extracted from the input message by looking for
+a group of one or more lines that (i) is all trailers, or
+(ii) contains at least one Git-generated or user-configured
+trailer and consists of at least 25% trailers. The group
+must be preceded by one or more empty (or whitespace-only)
+lines. The group must either be at the end of the message or
+be the last non-whitespace lines before a line that starts
+with <i>---</i> (followed by a space or the end of the
+line). Such three minus signs start the patch part of the
+message. See also <b>--no-divider</b> below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When reading
+trailers, there can be whitespaces after the token, the
+separator and the value. There can also be whitespaces
+inside the token and the value. The value may be split over
+multiple lines with each subsequent line starting with
+whitespace, like the &quot;folding&quot; in RFC 822.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+<i>trailers</i> do not follow and are not intended to follow
+many rules for RFC 822 headers. For example they do not
+follow the encoding rules and probably many other rules.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">--in-place</p>
+
+<p style="margin-left:17%;">Edit the files in place.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--trim-empty</p>
+
+<p style="margin-left:17%;">If the &lt;value&gt; part of
+any trailer contains only whitespace, the whole trailer will
+be removed from the resulting message. This applies to
+existing trailers as well as new trailers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--trailer
+&lt;token&gt;[(=|:)&lt;value&gt;]</p>
+
+<p style="margin-left:17%;">Specify a (&lt;token&gt;,
+&lt;value&gt;) pair that should be applied as a trailer to
+the input messages. See the description of this command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--where
+&lt;placement&gt;, --no-where</p>
+
+<p style="margin-left:17%;">Specify where all new trailers
+will be added. A setting provided with <i>--where</i>
+overrides all configuration variables and applies to all
+<i>--trailer</i> options until the next occurrence of
+<i>--where</i> or <i>--no-where</i>. Possible values are
+<b>after</b>, <b>before</b>, <b>end</b> or <b>start</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--if-exists
+&lt;action&gt;, --no-if-exists</p>
+
+<p style="margin-left:17%;">Specify what action will be
+performed when there is already at least one trailer with
+the same &lt;token&gt; in the message. A setting provided
+with <i>--if-exists</i> overrides all configuration
+variables and applies to all <i>--trailer</i> options until
+the next occurrence of <i>--if-exists</i> or
+<i>--no-if-exists</i>. Possible actions are
+<b>addIfDifferent</b>, <b>addIfDifferentNeighbor</b>,
+<b>add</b>, <b>replace</b> and <b>doNothing</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--if-missing
+&lt;action&gt;, --no-if-missing</p>
+
+<p style="margin-left:17%;">Specify what action will be
+performed when there is no other trailer with the same
+&lt;token&gt; in the message. A setting provided with
+<i>--if-missing</i> overrides all configuration variables
+and applies to all <i>--trailer</i> options until the next
+occurrence of <i>--if-missing</i> or <i>--no-if-missing</i>.
+Possible actions are <b>doNothing</b> or <b>add</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--only-trailers</p>
+
+<p style="margin-left:17%;">Output only the trailers, not
+any other parts of the input.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--only-input</p>
+
+<p style="margin-left:17%;">Output only trailers that exist
+in the input; do not add any from the command-line or by
+following configured <b>trailer.*</b> rules.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--unfold</p>
+
+<p style="margin-left:17%;">Remove any
+whitespace-continuation in trailers, so that each trailer
+appears on a line by itself with its full content.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--parse</p>
+
+<p style="margin-left:17%;">A convenience alias for
+<b>--only-trailers --only-input --unfold</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-divider</p>
+
+<p style="margin-left:17%;">Do not treat <b>---</b> as the
+end of the commit message. Use this when you know your input
+contains just the commit message itself (and not an email or
+the output of <b>git format-patch</b>).</p>
+
+<h2>CONFIGURATION VARIABLES
+<a name="CONFIGURATION VARIABLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.separators</p>
+
+<p style="margin-left:17%;">This option tells which
+characters are recognized as trailer separators. By default
+only <i>:</i> is recognized as a trailer separator, except
+that <i>=</i> is always accepted on the command line for
+compatibility with other git commands.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The first
+character given by this option will be the default character
+used when another separator is not specified in the config
+for this trailer.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example, if
+the value for this option is &quot;%=$&quot;, then only
+lines using the format
+<i>&lt;token&gt;&lt;sep&gt;&lt;value&gt;</i> with
+&lt;sep&gt; containing <i>%</i>, <i>=</i> or <i>$</i> and
+then spaces will be considered trailers. And <i>%</i> will
+be the default separator used, so by default trailers will
+appear like: <i>&lt;token&gt;% &lt;value&gt;</i> (one
+percent sign and one space will appear between the token and
+the value).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.where</p>
+
+<p style="margin-left:17%;">This option tells where a new
+trailer will be added.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This can be
+<b>end</b>, which is the default, <b>start</b>, <b>after</b>
+or <b>before</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If it is
+<b>end</b>, then each new trailer will appear at the end of
+the existing trailers.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If it is
+<b>start</b>, then each new trailer will appear at the
+start, instead of the end, of the existing trailers.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If it is
+<b>after</b>, then each new trailer will appear just after
+the last trailer with the same &lt;token&gt;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If it is
+<b>before</b>, then each new trailer will appear just before
+the first trailer with the same &lt;token&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.ifexists</p>
+
+<p style="margin-left:17%;">This option makes it possible
+to choose what action will be performed when there is
+already at least one trailer with the same &lt;token&gt; in
+the message.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The valid
+values for this option are: <b>addIfDifferentNeighbor</b>
+(this is the default), <b>addIfDifferent</b>, <b>add</b>,
+<b>replace</b> or <b>doNothing</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>addIfDifferentNeighbor</b>, a new trailer will be added
+only if no trailer with the same (&lt;token&gt;,
+&lt;value&gt;) pair is above or below the line where the new
+trailer will be added.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>addIfDifferent</b>, a new trailer will be added only if
+no trailer with the same (&lt;token&gt;, &lt;value&gt;) pair
+is already in the message.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>add</b>, a new trailer will be added, even if some
+trailers with the same (&lt;token&gt;, &lt;value&gt;) pair
+are already in the message.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>replace</b>, an existing trailer with the same
+&lt;token&gt; will be deleted and the new trailer will be
+added. The deleted trailer will be the closest one (with the
+same &lt;token&gt;) to the place where the new one will be
+added.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>doNothing</b>, nothing will be done; that is no new
+trailer will be added if there is already one with the same
+&lt;token&gt; in the message.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.ifmissing</p>
+
+<p style="margin-left:17%;">This option makes it possible
+to choose what action will be performed when there is not
+yet any trailer with the same &lt;token&gt; in the
+message.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The valid
+values for this option are: <b>add</b> (this is the default)
+and <b>doNothing</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>add</b>, a new trailer will be added.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>doNothing</b>, nothing will be done.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.&lt;token&gt;.key</p>
+
+<p style="margin-left:17%;">This <b>key</b> will be used
+instead of &lt;token&gt; in the trailer. At the end of this
+key, a separator can appear and then some space characters.
+By default the only valid separator is <i>:</i>, but this
+can be changed using the <b>trailer.separators</b> config
+variable.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If there is a
+separator, then the key will be used instead of both the
+&lt;token&gt; and the default separator when adding the
+trailer.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.&lt;token&gt;.where</p>
+
+<p style="margin-left:17%;">This option takes the same
+values as the <i>trailer.where</i> configuration variable
+and it overrides what is specified by that option for
+trailers with the specified &lt;token&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.&lt;token&gt;.ifexists</p>
+
+<p style="margin-left:17%;">This option takes the same
+values as the <i>trailer.ifexists</i> configuration variable
+and it overrides what is specified by that option for
+trailers with the specified &lt;token&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.&lt;token&gt;.ifmissing</p>
+
+<p style="margin-left:17%;">This option takes the same
+values as the <i>trailer.ifmissing</i> configuration
+variable and it overrides what is specified by that option
+for trailers with the specified &lt;token&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.&lt;token&gt;.command</p>
+
+<p style="margin-left:17%;">This option behaves in the same
+way as <i>trailer.&lt;token&gt;.cmd</i>, except that it
+doesn&rsquo;t pass anything as argument to the specified
+command. Instead the first occurrence of substring $ARG is
+replaced by the value that would be passed as argument.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>trailer.&lt;token&gt;.command</i> option has been
+deprecated in favor of <i>trailer.&lt;token&gt;.cmd</i> due
+to the fact that $ARG in the user&rsquo;s command is only
+replaced once and that the original way of replacing $ARG is
+not safe.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When both
+<i>trailer.&lt;token&gt;.cmd</i> and
+<i>trailer.&lt;token&gt;.command</i> are given for the same
+&lt;token&gt;, <i>trailer.&lt;token&gt;.cmd</i> is used and
+<i>trailer.&lt;token&gt;.command</i> is ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">trailer.&lt;token&gt;.cmd</p>
+
+<p style="margin-left:17%;">This option can be used to
+specify a shell command that will be called: once to
+automatically add a trailer with the specified
+&lt;token&gt;, and then each time a <i>--trailer
+&lt;token&gt;=&lt;value&gt;</i> argument to modify the
+&lt;value&gt; of the trailer that this option would
+produce.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When the
+specified command is first called to add a trailer with the
+specified &lt;token&gt;, the behavior is as if a special
+<i>--trailer &lt;token&gt;=&lt;value&gt;</i> argument was
+added at the beginning of the &quot;git
+interpret-trailers&quot; command, where &lt;value&gt; is
+taken to be the standard output of the command with any
+leading and trailing whitespace trimmed off.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If some
+<i>--trailer &lt;token&gt;=&lt;value&gt;</i> arguments are
+also passed on the command line, the command is called again
+once for each of these arguments with the same
+&lt;token&gt;. And the &lt;value&gt; part of these
+arguments, if any, will be passed to the command as its
+first argument. This way the command can produce a
+&lt;value&gt; computed from the &lt;value&gt; passed in the
+<i>--trailer &lt;token&gt;=&lt;value&gt;</i> argument.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a <i>sign</i> trailer with a <i>Signed-off-by</i>
+key, and then add two of these trailers to a message:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git config
+trailer.sign.key &quot;Signed-off-by&quot; <br>
+$ cat msg.txt <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message <br>
+$ cat msg.txt | git interpret-trailers --trailer 'sign:
+Alice &lt;alice@example.com&gt;' --trailer 'sign: Bob
+&lt;bob@example.com&gt;' <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message</p>
+
+<p style="margin-left:23%; margin-top: 1em">Signed-off-by:
+Alice &lt;alice@example.com&gt; <br>
+Signed-off-by: Bob &lt;bob@example.com&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Use the
+<b>--in-place</b> option to edit a message file in
+place:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ cat msg.txt
+<br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message</p>
+
+<p style="margin-left:23%; margin-top: 1em">Signed-off-by:
+Bob &lt;bob@example.com&gt; <br>
+$ git interpret-trailers --trailer 'Acked-by: Alice
+&lt;alice@example.com&gt;' --in-place msg.txt <br>
+$ cat msg.txt <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message</p>
+
+<p style="margin-left:23%; margin-top: 1em">Signed-off-by:
+Bob &lt;bob@example.com&gt; <br>
+Acked-by: Alice &lt;alice@example.com&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Extract
+the last commit as a patch, and add a <i>Cc</i> and a
+<i>Reviewed-by</i> trailer to it:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git
+format-patch -1 <br>
+0001-foo.patch <br>
+$ git interpret-trailers --trailer 'Cc: Alice
+&lt;alice@example.com&gt;' --trailer 'Reviewed-by: Bob
+&lt;bob@example.com&gt;' 0001-foo.patch
+&gt;0001-bar.patch</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a <i>sign</i> trailer with a command to
+automatically add a 'Signed-off-by: ' with the author
+information only if there is no 'Signed-off-by: ' already,
+and show how it works:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git config
+trailer.sign.key &quot;Signed-off-by: &quot; <br>
+$ git config trailer.sign.ifmissing add <br>
+$ git config trailer.sign.ifexists doNothing <br>
+$ git config trailer.sign.command 'echo &quot;$(git config
+user.name) &lt;$(git config user.email)&gt;&quot;' <br>
+$ git interpret-trailers &lt;&lt;EOF <br>
+&gt; EOF</p>
+
+<p style="margin-left:23%; margin-top: 1em">Signed-off-by:
+Bob &lt;bob@example.com&gt; <br>
+$ git interpret-trailers &lt;&lt;EOF <br>
+&gt; Signed-off-by: Alice &lt;alice@example.com&gt; <br>
+&gt; EOF</p>
+
+<p style="margin-left:23%; margin-top: 1em">Signed-off-by:
+Alice &lt;alice@example.com&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a <i>fix</i> trailer with a key that contains a
+<i>#</i> and no space after this character, and show how it
+works:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git config
+trailer.separators &quot;:#&quot; <br>
+$ git config trailer.fix.key &quot;Fix #&quot; <br>
+$ echo &quot;subject&quot; | git interpret-trailers
+--trailer fix=42 <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">Fix #42</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a <i>help</i> trailer with a cmd use a script
+<b>glog-find-author</b> which search specified author
+identity from git log in git repository and show how it
+works:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ cat
+~/bin/glog-find-author <br>
+#!/bin/sh <br>
+test -n &quot;$1&quot; &amp;&amp; git log
+--author=&quot;$1&quot; --pretty=&quot;%an &lt;%ae&gt;&quot;
+-1 || true <br>
+$ git config trailer.help.key &quot;Helped-by: &quot; <br>
+$ git config trailer.help.ifExists
+&quot;addIfDifferentNeighbor&quot; <br>
+$ git config trailer.help.cmd
+&quot;~/bin/glog-find-author&quot; <br>
+$ git interpret-trailers --trailer=&quot;help:Junio&quot;
+--trailer=&quot;help:Couder&quot; &lt;&lt;EOF <br>
+&gt; subject <br>
+&gt; <br>
+&gt; message <br>
+&gt; <br>
+&gt; EOF <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message</p>
+
+<p style="margin-left:23%; margin-top: 1em">Helped-by:
+Junio C Hamano &lt;gitster@pobox.com&gt; <br>
+Helped-by: Christian Couder
+&lt;christian.couder@gmail.com&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a <i>ref</i> trailer with a cmd use a script
+<b>glog-grep</b> to grep last relevant commit from git log
+in the git repository and show how it works:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ cat
+~/bin/glog-grep <br>
+#!/bin/sh <br>
+test -n &quot;$1&quot; &amp;&amp; git log --grep
+&quot;$1&quot; --pretty=reference -1 || true <br>
+$ git config trailer.ref.key &quot;Reference-to: &quot; <br>
+$ git config trailer.ref.ifExists &quot;replace&quot; <br>
+$ git config trailer.ref.cmd &quot;~/bin/glog-grep&quot;
+<br>
+$ git interpret-trailers --trailer=&quot;ref:Add copyright
+notices.&quot; &lt;&lt;EOF <br>
+&gt; subject <br>
+&gt; <br>
+&gt; message <br>
+&gt; <br>
+&gt; EOF <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message</p>
+
+<p style="margin-left:23%; margin-top: 1em">Reference-to:
+8bc9a0c769 (Add copyright notices., 2005-04-07)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a <i>see</i> trailer with a command to show the
+subject of a commit that is related, and show how it
+works:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ git config
+trailer.see.key &quot;See-also: &quot; <br>
+$ git config trailer.see.ifExists &quot;replace&quot; <br>
+$ git config trailer.see.ifMissing &quot;doNothing&quot;
+<br>
+$ git config trailer.see.command &quot;git log -1 --oneline
+--format=\&quot;%h (%s)\&quot; --abbrev-commit --abbrev=14
+\$ARG&quot; <br>
+$ git interpret-trailers &lt;&lt;EOF <br>
+&gt; subject <br>
+&gt; <br>
+&gt; message <br>
+&gt; <br>
+&gt; see: HEAD~2 <br>
+&gt; EOF <br>
+subject</p>
+
+<p style="margin-left:23%; margin-top: 1em">message</p>
+
+<p style="margin-left:23%; margin-top: 1em">See-also:
+fe3187489d69c4 (subject of related commit)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Configure a commit template with some trailers with empty
+values (using sed to show and keep the trailing spaces at
+the end of the trailers), then configure a commit-msg hook
+that uses <i>git interpret-trailers</i> to remove trailers
+with empty values and to add a <i>git-version</i>
+trailer:</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ sed -e 's/
+Z$/ /' &gt;commit_template.txt &lt;&lt;EOF <br>
+&gt; ***subject*** <br>
+&gt; <br>
+&gt; ***message*** <br>
+&gt; <br>
+&gt; Fixes: Z <br>
+&gt; Cc: Z <br>
+&gt; Reviewed-by: Z <br>
+&gt; Signed-off-by: Z <br>
+&gt; EOF <br>
+$ git config commit.template commit_template.txt <br>
+$ cat &gt;.git/hooks/commit-msg &lt;&lt;EOF <br>
+&gt; #!/bin/sh <br>
+&gt; git interpret-trailers --trim-empty --trailer
+&quot;git-version: \$(git describe)&quot; &quot;\$1&quot;
+&gt; &quot;\$1.new&quot; <br>
+&gt; mv &quot;\$1.new&quot; &quot;\$1&quot; <br>
+&gt; EOF <br>
+$ chmod +x .git/hooks/commit-msg</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git-commit</b>(1),
+<b>git-format-patch</b>(1), <b>git-config</b>(1)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

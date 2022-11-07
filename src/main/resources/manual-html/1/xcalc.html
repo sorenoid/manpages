@@ -1,0 +1,987 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>XCALC</title>
+
+</head>
+<body>
+
+<h1 align="center">XCALC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#OPERATION">OPERATION</a><br>
+<a href="#ACCELERATORS">ACCELERATORS</a><br>
+<a href="#CUSTOMIZATION">CUSTOMIZATION</a><br>
+<a href="#WIDGET HIERARCHY">WIDGET HIERARCHY</a><br>
+<a href="#APPLICATION RESOURCES">APPLICATION RESOURCES</a><br>
+<a href="#COLORS">COLORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xcalc -
+scientific calculator for X</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xcalc</b>
+[-stipple] [-rpn] [-<i>toolkitoption...</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>xcalc</i> is
+a scientific calculator desktop accessory that can emulate a
+TI-30 or an HP-10C.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>xcalc</i>
+accepts all of the standard toolkit command line options
+along with two additional options: <b><br>
+-stipple</b></p>
+
+<p style="margin-left:23%;">This option indicates that the
+background of the calculator should be drawn using a stipple
+of the foreground and background colors. On monochrome
+displays improves the appearance.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-rpn</b></p></td>
+<td width="6%"></td>
+<td width="77%">
+
+
+<p>This option indicates that Reverse Polish Notation
+should be used. In this mode the calculator will look and
+behave like an HP-10C. Without this flag, it will emulate a
+TI-30.</p> </td></tr>
+</table>
+
+<h2>OPERATION
+<a name="OPERATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Pointer
+Usage:</i> Operations may be performed with pointer button
+1, or in some cases, with the keyboard. Many common
+calculator operations have keyboard accelerators. To quit,
+press pointer button 3 on the AC key of the TI calculator,
+or the ON key of the HP calculator.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Calculator
+Key Usage (TI mode):</i> The numbered keys, the +/- key, and
+the +, -, *, /, and = keys all do exactly what you would
+expect them to. It should be noted that the operators obey
+the standard rules of precedence. Thus, entering
+&quot;3+4*5=&quot; results in &quot;23&quot;, not
+&quot;35&quot;. The parentheses can be used to override
+this. For example, &quot;(1+2+3)*(4+5+6)=&quot; results in
+&quot;6*15=90&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The entire
+number in the calculator display can be selected, in order
+to paste the result of a calculation into text.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The action
+procedures associated with each function are given below.
+These are useful if you are interested in defining a custom
+calculator. The action used for all digit keys is
+<b>digit(</b><i>n</i><b>)</b>, where <i>n</i> is the
+corresponding digit, 0..9.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>1/x</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">Replaces the number in the
+display with its reciprocal. The corresponding action
+procedure is <b>reciprocal()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>x^2</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Squares the number in the display. The corresponding
+action procedure is <b>square()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>SQRT</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Takes the square root of the number in the display. The
+corresponding action procedure is <b>squareRoot()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>CE/C</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>When pressed once, clears the number in the display
+without clearing the state of the machine. Allows you to
+re-enter a number if you make a mistake. Pressing it twice
+clears the state, also. The corresponding action procedure
+for TI mode is <b>clear()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>AC</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Clears the display, the state, and the memory. Pressing
+it with the third pointer button turns off the calculator,
+in that it exits the program. The action procedure to clear
+the state is <b>off()</b>; to quit, <b>quit()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>INV</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Invert function. See the individual function keys for
+details. The corresponding action procedure is
+<b>inverse()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>sin</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Computes the sine of the number in the display, as
+interpreted by the current DRG mode (see DRG, below). If
+inverted, it computes the arcsine. The corresponding action
+procedure is <b>sine()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>cos</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Computes the cosine, or arccosine when inverted. The
+corresponding action procedure is <b>cosine()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>tan</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Computes the tangent, or arctangent when inverted. The
+corresponding action procedure is <b>tangent()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>DRG</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Changes the DRG mode, as indicated by &rsquo;DEG&rsquo;,
+&rsquo;RAD&rsquo;, or &rsquo;GRAD&rsquo; at the bottom of
+the calculator &rsquo;&rsquo;liquid crystal&rsquo;&rsquo;
+display. When in &rsquo;DEG&rsquo; mode, numbers in the
+display are taken as being degrees. In &rsquo;RAD&rsquo;
+mode, numbers are in radians, and in &rsquo;GRAD&rsquo;
+mode, numbers are in grads. When inverted, the DRG key has a
+feature of converting degrees to radians to grads and
+vice-versa. Example: put the calculator into
+&rsquo;DEG&rsquo; mode, and enter &quot;45 INV DRG&quot;.
+The display should now show something along the lines of
+&quot;.785398&quot;, which is 45 degrees converted to
+radians. The corresponding action procedure is
+<b>degree()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>e</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>The constant &rsquo;e&rsquo;. (2.7182818...). The
+corresponding action procedure is <b>e()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EE</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Used for entering exponential numbers. For example, to
+get &quot;-2.3E-4&quot; you&rsquo;d enter &quot;2 . 3 +/- EE
+4 +/-&quot;. The corresponding action procedure is
+<b>scientific()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>log</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Calculates the log (base 10) of the number in the
+display. When inverted, it raises &quot;10.0&quot; to the
+number in the display. For example, entering &quot;3 INV
+log&quot; should result in &quot;1000&quot;. The
+corresponding action procedure is <b>logarithm()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>ln</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Calculates the log (base e) of the number in the
+display. When inverted, it raises &quot;e&quot; to the
+number in the display. For example, entering &quot;e
+ln&quot; should result in &quot;1&quot;. The corresponding
+action procedure is <b>naturalLog()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>y^x</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Raises the number on the left to the power of the number
+on the right. For example &quot;2 y^x 3 =&quot; results in
+&quot;8&quot;, which is 2^3. For a further example,
+&quot;(1+2+3) y^x (1+2) =&quot; equals &quot;6 y^x 3&quot;
+which equals &quot;216&quot;. The corresponding action
+procedure is <b>power()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>not</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs a bitwise not. The corresponding action
+procedure is <b>not()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>and</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs a bitwise and. The corresponding action
+procedure is <b>and()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>or</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs a bitwise or. The corresponding action
+procedure is <b>or()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>xor</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs a bitwise exclusive or. The corresponding
+action procedure is <b>xor()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>trunc</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Truncates the number in the display to an integer. The
+corresponding action procedure is <b>trunc()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>PI</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>The constant &rsquo;pi&rsquo;. (3.1415927....) The
+corresponding action procedure is <b>pi()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>x!</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Computes the factorial of the number in the display. The
+number in the display must be an integer in the range 0-500,
+though, depending on your math library, it might overflow
+long before that. The corresponding action procedure is
+<b>factorial()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>(</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Left parenthesis. The corresponding action procedure for
+TI calculators is <b>leftParen()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>)</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Right parenthesis. The corresponding action procedure
+for TI calculators is <b>rightParen()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>base</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Changes the number base, as indicated by
+&rsquo;DEC&rsquo;, &rsquo;HEX, or &rsquo;OCT&rsquo; at the
+bottom of the calculator display. When in &rsquo;DEC&rsquo;
+mode, numbers in the display are taken as being decimal
+(base 10). In &rsquo;HEX&rsquo; mode, numbers are in
+hexadecimal (base 16), and in &rsquo;OCT&rsquo; mode,
+numbers are in octal (base 8). The corresponding action
+procedure is <b>base()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>shl</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs an arithmetic bitwise shift left, For example,
+entering &quot;1 shl 2&quot; should result in &quot;4&quot;.
+The corresponding action procedure is <b>shl()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>shr</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs an arithmetic bitwise shift right, For example,
+entering &quot;8 shr 1&quot; should result in &quot;4&quot;.
+The corresponding action procedure is <b>shr()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>mod</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Performs the modulo operation, which calculates the
+remainder when dividing the first number by the second. For
+example, entering &quot;14 mod 8&quot; should result in
+&quot;6&quot;. The corresponding action procedure is
+<b>mod()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>/</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Division. The corresponding action procedure is
+<b>divide()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>*</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Multiplication. The corresponding action procedure is
+<b>multiply()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Subtraction. The corresponding action procedure is
+<b>subtract()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>+</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Addition. The corresponding action procedure is
+<b>add()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>=</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Perform calculation. The TI-specific action procedure is
+<b>equal()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>STO</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Copies the number in the display to the memory location.
+The corresponding action procedure is <b>store()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>RCL</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Copies the number from the memory location to the
+display. The corresponding action procedure is
+<b>recall()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>SUM</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Adds the number in the display to the number in the
+memory location. The corresponding action procedure is
+<b>sum()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EXC</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Swaps the number in the display with the number in the
+memory location. The corresponding action procedure for the
+TI calculator is <b>exchange()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>+/-</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Negate; change sign. The corresponding action procedure
+is <b>negate()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Decimal point. The action procedure is
+<b>decimal()</b>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Calculator
+Key Usage (RPN mode):</i> The number keys, CHS (change
+sign), +, -, *, /, and ENTR keys all do exactly what you
+would expect them to do. Many of the remaining keys are the
+same as in TI mode. The differences are detailed below. The
+action procedure for the ENTR key is <b>enter()</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>&lt;-</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">This is a backspace key that can
+be used if you make a mistake while entering a number. It
+will erase digits from the display. (See BUGS). Inverse
+backspace will clear the X register. The corresponding
+action procedure is <b>back()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>ON</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Clears the display, the state, and the memory. Pressing
+it with the third pointer button turns off the calculator,
+in that it exits the program. To clear state, the action
+procedure is <b>off</b>; to quit, <b>quit()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>INV</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Inverts the meaning of the function keys. This would be
+the <i>f</i> key on an HP calculator, but <i>xcalc</i> does
+not display multiple legends on each key. See the individual
+function keys for details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>10^x</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Raises &quot;10.0&quot; to the number in the top of the
+stack. When inverted, it calculates the log (base 10) of the
+number in the display. The corresponding action procedure is
+<b>tenpower()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>e^x</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Raises &quot;e&quot; to the number in the top of the
+stack. When inverted, it calculates the log (base e) of the
+number in the display. The action procedure is
+<b>epower()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>STO</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Copies the number in the top of the stack to a memory
+location. There are 10 memory locations. The desired memory
+is specified by following this key with a digit key.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>RCL</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Pushes the number from the specified memory location
+onto the stack.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>SUM</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Adds the number on top of the stack to the number in the
+specified memory location.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>x:y</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Exchanges the numbers in the top two stack positions,
+the X and Y registers. The corresponding action procedure is
+<b>XexchangeY()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>R v</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>Rolls the stack downward. When inverted, it rolls the
+stack upward. The corresponding action procedure is
+<b>roll()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>blank</i></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>These keys were used for programming functions on the
+HP-10C. Their functionality has not been duplicated in
+<i>xcalc</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Finally, there
+are two additional action procedures: <b>bell()</b>, which
+rings the bell; and <b>selection()</b>, which performs a cut
+on the entire number in the calculator&rsquo;s
+&rsquo;&rsquo;liquid crystal&rsquo;&rsquo; display.</p>
+
+<h2>ACCELERATORS
+<a name="ACCELERATORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Accelerators
+are shortcuts for entering commands. <i>xcalc</i> provides
+some sample keyboard accelerators; also users can customize
+accelerators. The numeric keypad accelerators provided by
+<i>xcalc</i> should be intuitively correct. The accelerators
+defined by <i>xcalc</i> on the main keyboard are given
+below:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-1315921.png" alt="Image grohtml-1315921.png"></p>
+
+<h2>CUSTOMIZATION
+<a name="CUSTOMIZATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The application
+class name is XCalc.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>xcalc</i>
+has an enormous application defaults file which specifies
+the position, label, and function of each key on the
+calculator. It also gives translations to serve as keyboard
+accelerators. Because these resources are not specified in
+the source code, you can create a customized calculator by
+writing a private application defaults file, using the
+Athena Command and Form widget resources to specify the size
+and position of buttons, the label for each button, and the
+function of each button.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The foreground
+and background colors of each calculator key can be
+individually specified. For the TI calculator, a classical
+color resource specification might be:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">XCalc.ti.Command.background:
+gray50 <br>
+XCalc.ti.Command.foreground: white</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each of
+buttons 20, 25, 30, 35, and 40, specify: <br>
+XCalc.ti.button20.background: black <br>
+XCalc.ti.button20.foreground: white</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each of
+buttons 22, 23, 24, 27, 28, 29, 32, 33, 34, 37, 38, and 39:
+<br>
+XCalc.ti.button22.background: white <br>
+XCalc.ti.button22.foreground: black</p>
+
+<h2>WIDGET HIERARCHY
+<a name="WIDGET HIERARCHY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In order to
+specify resources, it is useful to know the hierarchy of the
+widgets which compose <i>xcalc</i>. In the notation below,
+indentation indicates hierarchical structure. The widget
+class name is given first, followed by the widget instance
+name. <br>
+XCalc xcalc <br>
+Form ti <i>or</i> hp <i>(the name depends on the mode)</i>
+<br>
+Form bevel <br>
+Form screen <br>
+Label M <br>
+Toggle LCD <br>
+Label INV <br>
+Label DEG <br>
+Label RAD <br>
+Label GRAD <br>
+Label P <br>
+Command button1 <br>
+Command button2 <br>
+Command button3 <i><br>
+and so on, ...</i> <br>
+Command button38 <br>
+Command button39 <br>
+Command button40</p>
+
+<h2>APPLICATION RESOURCES
+<a name="APPLICATION RESOURCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rpn</b>
+(Class <b>Rpn</b>)</p>
+
+<p style="margin-left:23%;">Specifies that the rpn mode
+should be used. The default is TI mode.</p>
+
+<p style="margin-left:11%;"><b>stipple</b> (Class
+<b>Stipple</b>)</p>
+
+<p style="margin-left:23%;">Indicates that the background
+should be stippled. The default is
+&rsquo;&rsquo;on&rsquo;&rsquo; for monochrome displays, and
+&rsquo;&rsquo;off&rsquo;&rsquo; for color displays.</p>
+
+<p style="margin-left:11%;"><b>cursor</b> (Class
+<b>Cursor</b>)</p>
+
+<p style="margin-left:23%;">The name of the symbol used to
+represent the pointer. The default is
+&rsquo;&rsquo;hand2&rsquo;&rsquo;.</p>
+
+<h2>COLORS
+<a name="COLORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you would
+like xcalc to use its ti colors, include the following in
+the #ifdef COLOR section of the file you read with xrdb:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">*customization:
+-color</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will cause
+xcalc to pick up the colors in the app-defaults color
+customization file:
+<i>/etc/X11/app-defaults/XCalc-color</i>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X(7), xrdb(1),
+the Athena Widget Set</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HP mode is not
+completely debugged. In particular, the stack is not handled
+properly after errors.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 1994
+X Consortium <br>
+See <i>X(7)</i> for a full statement of rights and
+permissions.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">John Bradley,
+University of Pennsylvania <br>
+Mark Rosenstein, MIT Project Athena <br>
+Donna Converse, MIT X Consortium</p>
+<hr>
+</body>
+</html>

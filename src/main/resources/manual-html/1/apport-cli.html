@@ -1,0 +1,235 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:32 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>apport-cli</title>
+
+</head>
+<body>
+
+<h1 align="center">apport-cli</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">apport-cli,
+apport-gtk, apport-kde - Apport user interfaces for
+reporting problems</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport-cli</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport-cli</b>
+[ <b>--save</b> <i>file</i> ] <i>symptom</i> | <i>pid</i> |
+<i>package</i> | <i>program path</i> | <i>.apport/.crash
+file</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport-cli
+-f</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport-cli
+-f -p</b> <i>package</i> <b>-P</b> <i>pid</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport-cli
+-u</b> <i>report-number</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Same
+options/arguments for <b>apport-gtk</b> and
+<b>apport-kde</b>.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport</b>
+automatically collects data from crashed processes and
+compiles a problem report in <i>/var/crash/</i>. This is a
+command line frontend for reporting those crashes to the
+developers. It can also be used to report bugs about
+packages or running processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If symptom
+scripts are available, it can also be given the name of a
+symptom, or be called with just <b>-f</b> to display a list
+of known symptoms.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When being
+called without any options, it processes the pending crash
+reports and offers to report them one by one. You can also
+display the entire report to see what is sent to the
+software developers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When being
+called with exactly one argument and no option,
+<b>apport-cli</b> uses some heuristics to find out
+&quot;what you mean&quot; and reports a bug against the
+given symptom name, package name, program path, or PID. If
+the argument is a <b>.crash</b> or <b>.apport</b> file, it
+uploads the stored problem report to the bug tracking
+system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For desktop
+systems with a graphical user interface, you should consider
+installing the GTK or KDE user interface (apport-gtk or
+apport-kde). They accept the very same options and
+arguments. <b>apport-cli</b> is mainly intended to be used
+on servers.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f,
+--file-bug</b></p>
+
+<p style="margin-left:22%;">Report a (non-crash) problem.
+If neither <b>--package</b>, <b>--symptom</b>, or
+<b>--pid</b> are specified, then it displays a list of
+available symptoms. If none are available, it aborts with an
+error.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This will
+automatically attach information about your operating system
+and the package version etc. to the bug report, so that the
+developers have some important context.</p>
+
+<p style="margin-left:11%;"><b>-s</b> <i>symptom</i>,
+<b>--symptom</b>=<i>symptom</i></p>
+
+<p style="margin-left:22%;">When being used in
+<b>--file-bug</b> mode, specify the symptom to report the
+problem about.</p>
+
+<p style="margin-left:11%;"><b>-p</b> <i>package</i>,
+<b>--package</b>=<i>package</i></p>
+
+<p style="margin-left:22%;">When being used in
+<b>--file-bug</b> mode, specify the package to report the
+problem against.</p>
+
+<p style="margin-left:11%;"><b>-P</b> <i>pid</i>,
+<b>--pid</b>=<i>pid</i></p>
+
+<p style="margin-left:22%;">When being used in
+<b>--file-bug</b> mode, specify the PID (process ID) of a
+running program to report the problem against. This can be
+determined with e. g. <b>ps -ux</b>.</p>
+
+<p style="margin-left:11%;"><b>-c</b> <i>report</i>,
+<b>--crash-file</b>=<i>report</i></p>
+
+<p style="margin-left:22%;">Upload a previously processed
+stored report in an arbitrary file location. This is useful
+for copying a crash report to a machine with internet
+connection and reporting it from there. Files must end in
+<b>.crash</b> or <b>.apport</b>.</p>
+
+<p style="margin-left:11%;"><b>-u</b> <i>report-number</i>,
+<b>--update-report</b> <i>report-number</i></p>
+
+<p style="margin-left:22%;">Run apport information
+collection on an already existing problem report. The
+affected package is taken from the report by default, but
+you can explicitly specify one with --package to collect
+information for a different package (this is useful if the
+report is assigned to the wrong package).</p>
+
+<p style="margin-left:11%;"><b>--save</b>
+<i>filename</i></p>
+
+<p style="margin-left:22%;">In --file-bug mode, save the
+collected information into a file instead of reporting it.
+This file can then be reported with --crash-file later
+on.</p>
+
+<p style="margin-left:11%;"><b>-w, --window</b></p>
+
+<p style="margin-left:22%;">Point and click at the
+application window against which you wish to report the bug.
+Apport will automatically find the package name and generate
+a report for you. This option can be specially useful in
+situations when you do not know the name of the package, or
+if the application window has stopped responding and you
+cannot report the problem from the &quot;Help&quot; menu of
+the application.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+not supported on Wayland. Users running Wayland should use
+another option such as <b>-P</b> to specify the
+application.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>APPORT_IGNORE_OBSOLETE_PACKAGES</b></p>
+
+<p style="margin-left:22%;">Apport refuses to create bug
+reports if the package or any dependency is not current. If
+this environment variable is set, this check is waived.
+Experts who will thoroughly check the situation before
+filing a bug report can define this in their
+<b>~/.bashrc</b> or temporarily when calling the apport
+frontend (-cli, -gtk, or -kde).</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/usr/share/apport/symptoms/*.py</b></p>
+
+<p style="margin-left:22%;">Symptom scripts. These ask a
+set of interactive questions to determine the package which
+is responsible for a particular problem. (For some problems
+like sound or storage device related bugs there are many
+places where things can go wrong, and it&rsquo;s not
+immediately obvious for a bug reporter where the problem
+is.)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apport</b>
+and the accompanying tools are developed by Martin Pitt
+&lt;martin.pitt@ubuntu.com&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pnmhisteq</title>
+
+</head>
+<body>
+
+<h1 align="center">pnmhisteq</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmhisteq -
+histogram equalise a portable anymap</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b>
+[<b>-gray</b>] [<b>-rmap</b> <i>pgmfile</i>] [<b>-wmap</b>
+<i>pgmfile</i>] [<b>-verbose</b>] [<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b>
+increases the contrast of a portable graymap or pixmap
+through the technique of <i>histogram equalisation</i>[1]. A
+histogram of the luminance of pixels in the map is computed,
+from which a transfer function is calculated which spreads
+out intensity levels around histogram peaks and compresses
+them at troughs. This has the effect of using the available
+levels of intensity more efficiently and thereby increases
+the detail visible in the image.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mathematically,
+if <i>N[i]</i> is the number of pixels of luminosity
+<i>i</i> in the image and <i>T</i> is the total number of
+pixels, luminosity <i>j</i> is replaced by:</p>
+
+<p style="margin-left:11%; margin-top: 1em">j <br>
+--- <br>
+\ <br>
+&gt; N[i] / T <br>
+--- <br>
+i=0</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+processing a related set of images, for example frames of an
+animation, it&rsquo;s generally best to apply the same
+intensity map to every frame, since otherwise you&rsquo;ll
+get distracting frame-to-frame changes in the brightness of
+objects. <b>pnmhisteq</b>&rsquo;s <b>-wmap</b> option allows
+you to save, as a portable graymap, the luminosity map
+computed from an image (usually a composite of the images
+you intend to process created with <b>pnmcat</b>). Then, you
+can subsequently process each of the individual images using
+the luminosity map saved in the file, supplied with the
+<b>-rmap</b> option.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-gray</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">When processing a pixmap, only
+gray pixels (those with identical red, green, and blue
+values) are included in the histogram and modified in the
+output image. This is a special purpose option intended for
+images where the actual data are gray scale, with colour
+annotations you don&rsquo;t want modified. Weather satellite
+images that show continent outlines in colour are best
+processed using this option. The option has no effect when
+the input is a graymap.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-rmap</b> <i>mapfile</i></p>
+
+<p style="margin-left:26%;">Process the image using the
+luminosity map specified by the portable graymap
+<i>mapfile.</i> The graymap, usually created by an earlier
+run of <b>pnmhisteq</b> with the <b>-wmap</b> option,
+contains a single row with number of columns equal to the
+<i>maxval</i> (greatest intensity) of the image. Each pixel
+in the image is transformed by looking up its luminosity in
+the corresponding column in the map file and changing it to
+the value given by that column.</p>
+
+<p style="margin-left:11%;"><b>-wmap</b> <i>mapfile</i></p>
+
+<p style="margin-left:26%;">Creates a portable graymap,
+<i>mapfile,</i> containing the luminosity map computed from
+the histogram of the input image. This map file can be read
+on subsequent runs of <b>pnmhisteq</b> with the <b>-rmap</b>
+option, allowing a group of images to be processed with an
+identical map.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>-verbose</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Prints the histogram and luminosity map on standard
+error.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">All flags can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Histogram
+equalisation is effective for increasing the visible detail
+in scientific imagery and in some continuous-tone pictures.
+It is often too drastic, however, for scanned halftone
+images, where it does an excellent job of making halftone
+artifacts apparent. You might want to experiment with
+<b>pgnnorm</b>, <b>ppmnorm</b>, and <b>pnmgamma</b> for more
+subtle contrast enhancement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The luminosity
+map file supplied by the <b>-rmap</b> option must have the
+same <i>maxval</i> as the input image. This is always the
+case when the map file was created by the <b>-wmap</b>
+option of <b>pnmhisteq</b>. If this restriction causes a
+problem, simply adjust the <i>maxval</i> of the map with
+<b>pnmdepth</b> to agree with the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input is
+a PBM file (on which histogram equalisation is an identity
+operation), the only effect of passing the file through
+<b>pnmhisteq</b> will be the passage of time.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmnorm</b>(1),
+<b>pnm</b>(5), <b>pnmcat</b>(1), <b>pnmdepth</b>(1),
+<b>pnmgamma</b>(1), <b>pnmnorm</b>(1)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">[1]</p></td>
+<td width="3%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">Russ, John C. The Image
+Processing Handbook. Boca Raton: CRC Press, 1992. Pages
+105-110.</p> </td></tr>
+</table>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p align="center" style="margin-top: 1em">Copyright (C)
+1995 by John Walker (kelvin@fourmilab.ch). WWW home page:
+http://www.fourmilab.ch/</p>
+
+<p style="margin-top: 1em">Permission to use, copy, modify,
+and distribute this software and its documentation for any
+purpose and without fee is hereby granted, without any
+conditions or restrictions. This software is provided
+&rsquo;&rsquo;as is&rsquo;&rsquo; without express or implied
+warranty.</p>
+<hr>
+</body>
+</html>

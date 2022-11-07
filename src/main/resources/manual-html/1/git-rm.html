@@ -1,0 +1,323 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-RM</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-RM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REMOVING FILES THAT HAVE DISAPPEARED FROM THE FILESYSTEM">REMOVING FILES THAT HAVE DISAPPEARED FROM THE FILESYSTEM</a><br>
+<a href="#SUBMODULES">SUBMODULES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-rm - Remove
+files from the working tree and from the index</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git rm</i>
+[-f | --force] [-n] [-r] [--cached] [--ignore-unmatch] <br>
+[--quiet] [--pathspec-from-file=&lt;file&gt;
+[--pathspec-file-nul]] <br>
+[--] [&lt;pathspec&gt;...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Remove files
+matching pathspec from the index, or from the working tree
+and the index. <b>git rm</b> will not remove a file from
+just your working directory. (There is no option to remove a
+file only from the working tree and yet keep it in the
+index; use <b>/bin/rm</b> if you want to do that.) The files
+being removed have to be identical to the tip of the branch,
+and no updates to their contents can be staged in the index,
+though that default behavior can be overridden with the
+<b>-f</b> option. When <b>--cached</b> is given, the staged
+content has to match either the tip of the branch or the
+file on disk, allowing the file to be removed from just the
+index. When sparse-checkouts are in use (see
+<b>git-sparse-checkout</b>(1)), <b>git rm</b> will only
+remove paths within the sparse-checkout patterns.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;pathspec&gt;...</p>
+
+<p style="margin-left:17%;">Files to remove. A leading
+directory name (e.g. <b>dir</b> to remove <b>dir/file1</b>
+and <b>dir/file2</b>) can be given to remove all files in
+the directory, and recursively all sub-directories, but this
+requires the <b>-r</b> option to be explicitly given.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The command
+removes only the paths that are known to Git.</p>
+
+<p style="margin-left:17%; margin-top: 1em">File globbing
+matches across directory boundaries. Thus, given two
+directories <b>d</b> and <b>d2</b>, there is a difference
+between using <b>git rm 'd*'</b> and <b>git rm 'd/*'</b>, as
+the former will also remove all of directory <b>d2</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For more
+details, see the <i>pathspec</i> entry in
+<b>gitglossary</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">-f, --force</p>
+
+<p style="margin-left:17%;">Override the up-to-date
+check.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-n,
+--dry-run</p>
+
+<p style="margin-left:17%;">Don&rsquo;t actually remove any
+file(s). Instead, just show if they exist in the index and
+would otherwise be removed by the command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-r</p>
+
+<p style="margin-left:17%;">Allow recursive removal when a
+leading directory name is given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--</p>
+
+<p style="margin-left:17%;">This option can be used to
+separate command-line options from the list of files,
+(useful when filenames might be mistaken for command-line
+options).</p>
+
+<p style="margin-left:11%; margin-top: 1em">--cached</p>
+
+<p style="margin-left:17%;">Use this option to unstage and
+remove paths only from the index. Working tree files,
+whether modified or not, will be left alone.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--ignore-unmatch</p>
+
+<p style="margin-left:17%;">Exit with a zero status even if
+no files matched.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--sparse</p>
+
+<p style="margin-left:17%;">Allow updating index entries
+outside of the sparse-checkout cone. Normally, <b>git rm</b>
+refuses to update index entries whose paths do not fit
+within the sparse-checkout cone. See
+<b>git-sparse-checkout</b>(1) for more.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-q, --quiet</p>
+
+<p style="margin-left:17%;"><b>git rm</b> normally outputs
+one line (in the form of an <b>rm</b> command) for each file
+removed. This option suppresses that output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--pathspec-from-file=&lt;file&gt;</p>
+
+<p style="margin-left:17%;">Pathspec is passed in
+<b>&lt;file&gt;</b> instead of commandline args. If
+<b>&lt;file&gt;</b> is exactly <b>-</b> then standard input
+is used. Pathspec elements are separated by LF or CR/LF.
+Pathspec elements can be quoted as explained for the
+configuration variable <b>core.quotePath</b> (see
+<b>git-config</b>(1)). See also <b>--pathspec-file-nul</b>
+and global <b>--literal-pathspecs</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--pathspec-file-nul</p>
+
+<p style="margin-left:17%;">Only meaningful with
+<b>--pathspec-from-file</b>. Pathspec elements are separated
+with NUL character and all other characters are taken
+literally (including newlines and quotes).</p>
+
+<h2>REMOVING FILES THAT HAVE DISAPPEARED FROM THE FILESYSTEM
+<a name="REMOVING FILES THAT HAVE DISAPPEARED FROM THE FILESYSTEM"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+option for <b>git rm</b> to remove from the index only the
+paths that have disappeared from the filesystem. However,
+depending on the use case, there are several ways that can
+be done.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using
+&ldquo;git commit -a&rdquo;</b> <br>
+If you intend that your next commit should record all
+modifications of tracked files in the working tree and
+record all removals of files that have been removed from the
+working tree with <b>rm</b> (as opposed to <b>git rm</b>),
+use <b>git commit -a</b>, as it will automatically notice
+and record all removals. You can also have a similar effect
+without committing by using <b>git add -u</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using
+&ldquo;git add -A&rdquo;</b> <br>
+When accepting a new code drop for a vendor branch, you
+probably want to record both the removal of paths and
+additions of new paths as well as modifications of existing
+paths.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Typically you
+would first remove all tracked files from the working tree
+using this command:</p>
+
+<p style="margin-left:17%; margin-top: 1em">git ls-files -z
+| xargs -0 rm -f</p>
+
+<p style="margin-left:11%; margin-top: 1em">and then untar
+the new code in the working tree. Alternately you could
+<i>rsync</i> the changes into the working tree.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After that, the
+easiest way to record all removals, additions, and
+modifications in the working tree is:</p>
+
+<p style="margin-left:17%; margin-top: 1em">git add -A</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>git-add</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+ways</b> <br>
+If all you really want to do is to remove from the index the
+files that are no longer present in the working tree
+(perhaps because your working tree is dirty so that you
+cannot use <b>git commit -a</b>), use the following
+command:</p>
+
+<p style="margin-left:17%; margin-top: 1em">git diff
+--name-only --diff-filter=D -z | xargs -0 git rm
+--cached</p>
+
+<h2>SUBMODULES
+<a name="SUBMODULES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Only submodules
+using a gitfile (which means they were cloned with a Git
+version 1.7.8 or newer) will be removed from the work tree,
+as their repository lives inside the .git directory of the
+superproject. If a submodule (or one of those nested inside
+it) still uses a .git directory, <b>git rm</b> will move the
+submodules git directory into the superprojects git
+directory to protect the submodule&rsquo;s history. If it
+exists the submodule.&lt;name&gt; section in the
+<b>gitmodules</b>(5) file will also be removed and that file
+will be staged (unless --cached or -n are used).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A submodule is
+considered up to date when the HEAD is the same as recorded
+in the index, no tracked files are modified and no untracked
+files that aren&rsquo;t ignored are present in the
+submodules work tree. Ignored files are deemed expendable
+and won&rsquo;t stop a submodule&rsquo;s work tree from
+being removed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you only
+want to remove the local checkout of a submodule from your
+work tree without committing the removal, use
+<b>git-submodule</b>(1) <b>deinit</b> instead. Also see
+<b>gitsubmodules</b>(7) for details on submodule
+removal.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git rm
+Documentation/\*.txt</b></p>
+
+<p style="margin-left:17%;">Removes all <b>*.txt</b> files
+from the index that are under the <b>Documentation</b>
+directory and any of its subdirectories.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+asterisk <b>*</b> is quoted from the shell in this example;
+this lets Git, and not the shell, expand the pathnames of
+files and subdirectories under the <b>Documentation/</b>
+directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>git rm -f
+git-*.sh</b></p>
+
+<p style="margin-left:17%;">Because this example lets the
+shell expand the asterisk (i.e. you are listing the files
+explicitly), it does not remove
+<b>subdir/git-foo.sh</b>.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each time a
+superproject update removes a populated submodule (e.g. when
+switching between commits before and after the removal) a
+stale submodule checkout will remain in the old location.
+Removing the old directory is only safe when it uses a
+gitfile, as otherwise the history of the submodule will be
+deleted too. This step will be obsolete when recursive
+submodule update has been implemented.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git-add</b>(1)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

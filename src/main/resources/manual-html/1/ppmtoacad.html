@@ -1,0 +1,283 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:37 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ppmtoacad</title>
+
+</head>
+<body>
+
+<h1 align="center">ppmtoacad</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtoacad -
+convert portable pixmap to AutoCAD database or slide</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoacad</b>
+[<b>-dxb</b>] [<b>-poly</b>] [<b>-background</b>
+<i>colour</i>] [<b>-white</b>] [<b>-aspect</b> <i>ratio</i>]
+[<b>-8</b>] [<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a
+portable pixmap as input. Produces an AutoCAD&reg; slide
+file or binary database import (.dxb) file as output. If no
+<i>ppmfile</i> is specified, input is read from standard
+input.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-dxb</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">An AutoCAD binary database
+import (.dxb) file is written. This file is read with the
+DXBIN command and, once loaded, becomes part of the AutoCAD
+geometrical database and can be viewed and edited like any
+other object. Each sequence of identical pixels becomes a
+separate object in the database; this can result in very
+large AutoCAD drawing files. However, if you want to trace
+over a bitmap, it lets you zoom and pan around the bitmap as
+you wish.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-poly</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>If the <b>-dxb</b> option is not specified, the output
+of <b>ppmtoacad</b> is an AutoCAD slide file. Normally each
+row of pixels is represented by an AutoCAD line entity. If
+<b>-poly</b> is selected, the pixels are rendered as filled
+polygons. If the slide is viewed on a display with higher
+resolution than the source pixmap, this will cause the
+pixels to expand instead of appearing as discrete lines
+against the screen background colour. Regrettably, this
+representation yields slide files which occupy more disc
+space and take longer to display.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-background</b>
+<i>colour</i></p>
+
+<p style="margin-left:22%;">Most AutoCAD display drivers
+can be configured to use any available colour as the screen
+background. Some users perfer a black screen background,
+others white, while splinter groups advocate burnt ocher,
+tawny puce, and shocking grey. Discarding pixels whose
+closest AutoCAD colour representation is equal to the
+background colour can substantially reduce the size of the
+AutoCAD database or slide file needed to represent a bitmap.
+If no <b>-background</b> colour is specified, the screen
+background colour is assumed to be black. Any AutoCAD colour
+number may be specified as the screen background; colour
+numbers are assumed to specify the hues defined in the
+standard AutoCAD 256 colour palette.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-white</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Since many AutoCAD users choose a white screen
+background, this option is provided as a short-cut.
+Specifying <b>-white</b> is identical in effect to
+<b>-background 7</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-aspect</b> <i>ratio</i></p>
+
+<p style="margin-left:22%;">If the source pixmap had
+non-square pixels, the ratio of the pixel width to pixel
+height should be specified as <i>ratio</i>. The resulting
+slide or .dxb file will be corrected so that pixels on the
+AutoCAD screen will be square. For example, to correct an
+image made for a 320x200 VGA/MCGA screen, specify <b>-aspect
+0.8333</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-8</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Restricts the colours in the output file to the 8 RGB
+shades.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">All flags can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">AutoCAD has a
+fixed palette of 256 colours, distributed along the hue,
+lightness, and saturation axes. Pixmaps which contain many
+nearly-identical colours, or colours not closely
+approximated by AutoCAD&rsquo;s palette, may be poorly
+rendered.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoacad</b>
+works best if the system displaying its output supports the
+full 256 colour AutoCAD palette. Monochrome, 8 colour, and
+16 colour configurations will produce less than optimal
+results.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When creating a
+.dxb file or a slide file with the <b>-poly</b> option,
+<b>ppmtoacad</b> finds both vertical and horizontal runs of
+identical pixels and consolidates them into rectangular
+regions to reduce the size of the output file. This is
+effective for images with large areas of constant colour but
+it&rsquo;s no substitute for true raster to vector
+conversion. In particular, thin diagonal lines are not
+optimised at all by this process.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Output files
+can be huge.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">AutoCAD
+Reference Manual: <i>Slide File Format</i> and <i>Binary
+Drawing Interchange (DXB) Files</i>, <b>ppm</b>(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:18%; margin-top: 1em">John Walker
+<br>
+Autodesk SA <br>
+Avenue des Champs-Montants 14b <br>
+CH-2074 MARIN <br>
+Suisse/Schweiz/Svizzera/Svizra/Switzerland</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em">Usenet:</p></td>
+<td width="3%"></td>
+<td width="30%">
+
+
+<p style="margin-top: 1em">kelvin@Autodesk.com</p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p>Fax:</p></td>
+<td width="3%"></td>
+<td width="30%">
+
+
+<p>038/33 88 15</p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p>Voice:</p></td>
+<td width="3%"></td>
+<td width="30%">
+
+
+<p>038/33 76 33</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, without any conditions or restrictions. This
+software is provided &rsquo;&rsquo;as is&rsquo;&rsquo;
+without express or implied warranty.</p>
+
+<p style="margin-left:11%; margin-top: 1em">AutoCAD and
+Autodesk are registered trademarks of Autodesk, Inc.</p>
+<hr>
+</body>
+</html>

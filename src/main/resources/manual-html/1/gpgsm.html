@@ -1,0 +1,1446 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:42 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GPGSM</title>
+
+</head>
+<body>
+
+<h1 align="center">GPGSM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HOW TO SPECIFY A USER ID">HOW TO SPECIFY A USER ID</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgsm</b> -
+CMS encryption and signing tool</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgsm</b>
+[<b>--homedir</b> <i>dir</i>] [<b>--options</b> <i>file</i>]
+[<i>options</i>] <i>command</i> [<i>args</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgsm</b> is
+a tool similar to <b>gpg</b> to provide digital encryption
+and signing services on X.509 certificates and the CMS
+protocol. It is mainly used as a backend for S/MIME mail
+processing. <b>gpgsm</b> includes a full featured
+certificate management and complies with all rules defined
+for the German Sphinx project.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Commands are
+not distinguished from options except for the fact that only
+one command is allowed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Commands not
+specific to the function &nbsp; <br>
+--version</b></p>
+
+<p style="margin-left:22%;">Print the program version and
+licensing information. Note that you cannot abbreviate this
+command.</p>
+
+<p style="margin-left:11%;"><b>--help, -h</b></p>
+
+<p style="margin-left:22%;">Print a usage message
+summarizing the most useful command-line options. Note that
+you cannot abbreviate this command.</p>
+
+<p style="margin-left:11%;"><b>--warranty</b></p>
+
+<p style="margin-left:22%;">Print warranty information.
+Note that you cannot abbreviate this command.</p>
+
+<p style="margin-left:11%;"><b>--dump-options</b></p>
+
+<p style="margin-left:22%;">Print a list of all available
+options and commands. Note that you cannot abbreviate this
+command.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Commands to
+select the type of operation &nbsp; <br>
+--encrypt</b></p>
+
+<p style="margin-left:22%;">Perform an encryption. The keys
+the data is encrypted to must be set using the option
+<b>--recipient</b>.</p>
+
+<p style="margin-left:11%;"><b>--decrypt</b></p>
+
+<p style="margin-left:22%;">Perform a decryption; the type
+of input is automatically determined. It may either be in
+binary form or PEM encoded; automatic determination of
+base-64 encoding is not done.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--sign</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Create a digital signature. The key used is either the
+fist one found in the keybox or those set with the
+<b>--local-user</b> option.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--verify</b></p>
+
+<p style="margin-left:22%;">Check a signature file for
+validity. Depending on the arguments a detached signature
+may also be checked.</p>
+
+<p style="margin-left:11%;"><b>--server</b></p>
+
+<p style="margin-left:22%;">Run in server mode and wait for
+commands on the <b>stdin</b>.</p>
+
+<p style="margin-left:11%;"><b>--call-dirmngr</b>
+<i>command</i> [<i>args</i>]</p>
+
+<p style="margin-left:22%;">Behave as a Dirmngr client
+issuing the request <i>command</i> with the optional list of
+<i>args</i>. The output of the Dirmngr is printed stdout.
+Please note that file names given as arguments should have
+an absolute file name (i.e. commencing with <b>/</b>)
+because they are passed verbatim to the Dirmngr and the
+working directory of the Dirmngr might not be the same as
+the one of this client. Currently it is not possible to pass
+data via stdin to the Dirmngr. <i>command</i> should not
+contain spaces.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is command
+is required for certain maintaining tasks of the dirmngr
+where a dirmngr must be able to call back to <b>gpgsm</b>.
+See the Dirmngr manual for details.</p>
+
+<p style="margin-left:11%;"><b>--call-protect-tool</b>
+<i>arguments</i></p>
+
+<p style="margin-left:22%;">Certain maintenance operations
+are done by an external program call
+<b>gpg-protect-tool</b>; this is usually not installed in a
+directory listed in the PATH variable. This command provides
+a simple wrapper to access this tool. <i>arguments</i> are
+passed verbatim to this command; use &rsquo;--help&rsquo; to
+get a list of supported operations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How to
+manage the certificates and keys &nbsp; <br>
+--generate-key <br>
+--gen-key</b></p>
+
+<p style="margin-left:22%;">This command allows the
+creation of a certificate signing request or a self-signed
+certificate. It is commonly used along with the
+<b>--output</b> option to save the created CSR or
+certificate into a file. If used with the <b>--batch</b> a
+parameter file is used to create the CSR or certificate and
+it is further possible to create non-self-signed
+certificates.</p>
+
+<p style="margin-left:11%;"><b>--list-keys</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-k</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>List all available certificates stored in the local key
+database. Note that the displayed data might be reformatted
+for better human readability and illegal characters are
+replaced by safe substitutes.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--list-secret-keys</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-K</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>List all available certificates for which a
+corresponding a secret key is available.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--list-external-keys</b>
+<i>pattern</i></p>
+
+<p style="margin-left:22%;">List certificates matching
+<i>pattern</i> using an external server. This utilizes the
+<b>dirmngr</b> service.</p>
+
+<p style="margin-left:11%;"><b>--list-chain</b></p>
+
+<p style="margin-left:22%;">Same as <b>--list-keys</b> but
+also prints all keys making up the chain.</p>
+
+<p style="margin-left:11%;"><b>--dump-cert <br>
+--dump-keys</b></p>
+
+<p style="margin-left:22%;">List all available certificates
+stored in the local key database using a format useful
+mainly for debugging.</p>
+
+<p style="margin-left:11%;"><b>--dump-chain</b></p>
+
+<p style="margin-left:22%;">Same as <b>--dump-keys</b> but
+also prints all keys making up the chain.</p>
+
+<p style="margin-left:11%;"><b>--dump-secret-keys</b></p>
+
+<p style="margin-left:22%;">List all available certificates
+for which a corresponding a secret key is available using a
+format useful mainly for debugging.</p>
+
+<p style="margin-left:11%;"><b>--dump-external-keys</b>
+<i>pattern</i></p>
+
+<p style="margin-left:22%;">List certificates matching
+<i>pattern</i> using an external server. This utilizes the
+<b>dirmngr</b> service. It uses a format useful mainly for
+debugging.</p>
+
+
+<p style="margin-left:11%;"><b>--keydb-clear-some-cert-flags</b></p>
+
+<p style="margin-left:22%;">This is a debugging aid to
+reset certain flags in the key database which are used to
+cache certain certificate stati. It is especially useful if
+a bad CRL or a weird running OCSP responder did accidentally
+revoke certificate. There is no security issue with this
+command because <b>gpgsm</b> always make sure that the
+validity of a certificate is checked right before it is
+used.</p>
+
+<p style="margin-left:11%;"><b>--delete-keys</b>
+<i>pattern</i></p>
+
+<p style="margin-left:22%;">Delete the keys matching
+<i>pattern</i>. Note that there is no command to delete the
+secret part of the key directly. In case you need to do
+this, you should run the command <b>gpgsm --dump-secret-keys
+KEYID</b> before you delete the key, copy the string of
+hex-digits in the &rsquo;&rsquo;keygrip&rsquo;&rsquo; line
+and delete the file consisting of these hex-digits and the
+suffix <b>.key</b> from the
+&rsquo;<i>private-keys-v1.d</i>&rsquo; directory below our
+GnuPG home directory (usually
+&rsquo;<i>~/.gnupg</i>&rsquo;).</p>
+
+<p style="margin-left:11%;"><b>--export
+[</b><i>pattern</i>]</p>
+
+<p style="margin-left:22%;">Export all certificates stored
+in the Keybox or those specified by the optional
+<i>pattern</i>. Those pattern consist of a list of user ids
+(see: [how-to-specify-a-user-id]). When used along with the
+<b>--armor</b> option a few informational lines are
+prepended before each block. There is one limitation: As
+there is no commonly agreed upon way to pack more than one
+certificate into an ASN.1 structure, the binary export (i.e.
+without using <b>armor</b>) works only for the export of one
+certificate. Thus it is required to specify a <i>pattern</i>
+which yields exactly one certificate. Ephemeral certificate
+are only exported if all <i>pattern</i> are given as
+fingerprints or keygrips.</p>
+
+<p style="margin-left:11%;"><b>--export-secret-key-p12</b>
+<i>key-id</i></p>
+
+<p style="margin-left:22%;">Export the private key and the
+certificate identified by <i>key-id</i> using the PKCS#12
+format. When used with the <b>--armor</b> option a few
+informational lines are prepended to the output. Note, that
+the PKCS#12 format is not very secure and proper transport
+security should be used to convey the exported key. (See:
+[option --p12-charset].)</p>
+
+<p style="margin-left:11%;"><b>--export-secret-key-p8</b>
+<i>key-id</i> <b><br>
+--export-secret-key-raw</b> <i>key-id</i></p>
+
+<p style="margin-left:22%;">Export the private key of the
+certificate identified by <i>key-id</i> with any encryption
+stripped. The <b>...-raw</b> command exports in PKCS#1
+format; the <b>...-p8</b> command exports in PKCS#8 format.
+When used with the <b>--armor</b> option a few informational
+lines are prepended to the output. These commands are useful
+to prepare a key for use on a TLS server.</p>
+
+<p style="margin-left:11%;"><b>--import
+[</b><i>files</i>]</p>
+
+<p style="margin-left:22%;">Import the certificates from
+the PEM or binary encoded files as well as from signed-only
+messages. This command may also be used to import a secret
+key from a PKCS#12 file.</p>
+
+<p style="margin-left:11%;"><b>--learn-card</b></p>
+
+<p style="margin-left:22%;">Read information about the
+private keys from the smartcard and import the certificates
+from there. This command utilizes the <b>gpg-agent</b> and
+in turn the <b>scdaemon</b>.</p>
+
+<p style="margin-left:11%;"><b>--change-passphrase</b>
+<i>user_id</i> <b><br>
+--passwd</b> <i>user_id</i></p>
+
+<p style="margin-left:22%;">Change the passphrase of the
+private key belonging to the certificate specified as
+<i>user_id</i>. Note, that changing the passphrase/PIN of a
+smartcard is not yet supported.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>GPGSM</b>
+features a bunch of options to control the exact behaviour
+and to change the default configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How to
+change the configuration &nbsp;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">These options
+are used to change the configuration and are usually found
+in the option file. <b><br>
+--options</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Reads configuration from
+<i>file</i> instead of from the default per-user
+configuration file. The default configuration file is named
+&rsquo;<i>gpgsm.conf</i>&rsquo; and expected in the
+&rsquo;<i>.gnupg</i>&rsquo; directory directly below the
+home directory of the user.</p>
+
+<p style="margin-left:11%;"><b>--homedir</b> <i>dir</i></p>
+
+<p style="margin-left:22%;">Set the name of the home
+directory to <i>dir</i>. If this option is not used, the
+home directory defaults to &rsquo;<i>~/.gnupg</i>&rsquo;. It
+is only recognized when given on the command line. It also
+overrides any home directory stated through the environment
+variable &rsquo;<i>GNUPGHOME</i>&rsquo; or (on Windows
+systems) by means of the Registry entry
+<i>HKCU\Software\GNU\GnuPG:HomeDir</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">On Windows
+systems it is possible to install GnuPG as a portable
+application. In this case only this command line option is
+considered, all other ways to set a home directory are
+ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To install
+GnuPG as a portable application under Windows, create an
+empty file named &rsquo;<i>gpgconf.ctl</i>&rsquo; in the
+same directory as the tool &rsquo;<i>gpgconf.exe</i>&rsquo;.
+The root of the installation is then that directory; or, if
+&rsquo;<i>gpgconf.exe</i>&rsquo; has been installed directly
+below a directory named &rsquo;<i>bin</i>&rsquo;, its parent
+directory. You also need to make sure that the following
+directories exist and are writable:
+&rsquo;<i>ROOT/home</i>&rsquo; for the GnuPG home and
+&rsquo;<i>ROOT/var/cache/gnupg</i>&rsquo; for internal cache
+files.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="86%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--verbose</b></p>
+
+<p style="margin-left:22%;">Outputs additional information
+while running. You can increase the verbosity by giving
+several verbose commands to <b>gpgsm</b>, such as
+&rsquo;-vv&rsquo;.</p>
+
+<p style="margin-left:11%;"><b>--policy-file</b>
+<i>filename</i></p>
+
+<p style="margin-left:22%;">Change the default name of the
+policy file to <i>filename</i>.</p>
+
+<p style="margin-left:11%;"><b>--agent-program</b>
+<i>file</i></p>
+
+<p style="margin-left:22%;">Specify an agent program to be
+used for secret key operations. The default value is
+determined by running the command <b>gpgconf</b>. Note that
+the pipe symbol (<b>|</b>) is used for a regression test
+suite hack and may thus not be used in the file name.</p>
+
+<p style="margin-left:11%;"><b>--dirmngr-program</b>
+<i>file</i></p>
+
+<p style="margin-left:22%;">Specify a dirmngr program to be
+used for CRL checks. The default value is
+&rsquo;<i>/usr/bin/dirmngr</i>&rsquo;.</p>
+
+
+<p style="margin-left:11%;"><b>--prefer-system-dirmngr</b></p>
+
+<p style="margin-left:22%;">This option is obsolete and
+ignored.</p>
+
+<p style="margin-left:11%;"><b>--disable-dirmngr</b></p>
+
+<p style="margin-left:22%;">Entirely disable the use of the
+Dirmngr.</p>
+
+<p style="margin-left:11%;"><b>--no-autostart</b></p>
+
+<p style="margin-left:22%;">Do not start the gpg-agent or
+the dirmngr if it has not yet been started and its service
+is required. This option is mostly useful on machines where
+the connection to gpg-agent has been redirected to another
+machines. If dirmngr is required on the remote machine, it
+may be started manually using <b>gpgconf --launch
+dirmngr</b>.</p>
+
+<p style="margin-left:11%;"><b>--no-secmem-warning</b></p>
+
+<p style="margin-left:22%;">Do not print a warning when the
+so called &quot;secure memory&quot; cannot be used.</p>
+
+<p style="margin-left:11%;"><b>--log-file</b>
+<i>file</i></p>
+
+<p style="margin-left:22%;">When running in server mode,
+append all logging output to <i>file</i>. Use
+&rsquo;<i>socket://</i>&rsquo; to log to socket.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Certificate
+related options &nbsp; <br>
+--enable-policy-checks <br>
+--disable-policy-checks</b></p>
+
+<p style="margin-left:22%;">By default policy checks are
+enabled. These options may be used to change it.</p>
+
+<p style="margin-left:11%;"><b>--enable-crl-checks <br>
+--disable-crl-checks</b></p>
+
+<p style="margin-left:22%;">By default the CRL checks are
+enabled and the DirMngr is used to check for revoked
+certificates. The disable option is most useful with an
+off-line network connection to suppress this check and also
+to avoid that new certificates introduce a web bug by
+including a certificate specific CRL DP. The disable option
+also disables an issuer certificate lookup via the
+authorityInfoAccess property of the certificate; the
+<b>--enable-issuer-key-retrieve</b> can be used to make use
+of that property anyway.</p>
+
+
+<p style="margin-left:11%;"><b>--enable-trusted-cert-crl-check
+<br>
+--disable-trusted-cert-crl-check</b></p>
+
+<p style="margin-left:22%;">By default the CRL for trusted
+root certificates are checked like for any other
+certificates. This allows a CA to revoke its own
+certificates voluntary without the need of putting all ever
+issued certificates into a CRL. The disable option may be
+used to switch this extra check off. Due to the caching done
+by the Dirmngr, there will not be any noticeable performance
+gain. Note, that this also disables possible OCSP checks for
+trusted root certificates. A more specific way of disabling
+this check is by adding the
+&rsquo;&rsquo;relax&rsquo;&rsquo; keyword to the root CA
+line of the &rsquo;<i>trustlist.txt</i>&rsquo;</p>
+
+<p style="margin-left:11%;"><b>--force-crl-refresh</b></p>
+
+<p style="margin-left:22%;">Tell the dirmngr to reload the
+CRL for each request. For better performance, the dirmngr
+will actually optimize this by suppressing the loading for
+short time intervals (e.g. 30 minutes). This option is
+useful to make sure that a fresh CRL is available for
+certificates hold in the keybox. The suggested way of doing
+this is by using it along with the option
+<b>--with-validation</b> for a key listing command. This
+option should not be used in a configuration file.</p>
+
+
+<p style="margin-left:11%;"><b>--enable-issuer-based-crl-check</b></p>
+
+<p style="margin-left:22%;">Run a CRL check even for
+certificates which do not have any CRL distribution point.
+This requires that a suitable LDAP server has been
+configured in Dirmngr and that the CRL can be found using
+the issuer. This option reverts to what GnuPG did up to
+version 2.2.20. This option is in general not useful.</p>
+
+<p style="margin-left:11%;"><b>--enable-ocsp <br>
+--disable-ocsp</b></p>
+
+<p style="margin-left:22%;">By default OCSP checks are
+disabled. The enable option may be used to enable OCSP
+checks via Dirmngr. If CRL checks are also enabled, CRLs
+will be used as a fallback if for some reason an OCSP
+request will not succeed. Note, that you have to allow OCSP
+requests in Dirmngr&rsquo;s configuration too (option
+<b>--allow-ocsp</b>) and configure Dirmngr properly. If you
+do not do so you will get the error code &rsquo;Not
+supported&rsquo;.</p>
+
+
+<p style="margin-left:11%;"><b>--auto-issuer-key-retrieve</b></p>
+
+<p style="margin-left:22%;">If a required certificate is
+missing while validating the chain of certificates, try to
+load that certificate from an external location. This
+usually means that Dirmngr is employed to search for the
+certificate. Note that this option makes a &quot;web
+bug&quot; like behavior possible. LDAP server operators can
+see which keys you request, so by sending you a message
+signed by a brand new key (which you naturally will not have
+on your local keybox), the operator can tell both your IP
+address and the time when you verified the signature.</p>
+
+<p style="margin-left:11%;"><b>--validation-model</b>
+<i>name</i></p>
+
+<p style="margin-left:22%;">This option changes the default
+validation model. The only possible values are
+&quot;shell&quot; (which is the default), &quot;chain&quot;
+which forces the use of the chain model and
+&quot;steed&quot; for a new simplified model. The chain
+model is also used if an option in the
+&rsquo;<i>trustlist.txt</i>&rsquo; or an attribute of the
+certificate requests it. However the standard model (shell)
+is in that case always tried first.</p>
+
+<p style="margin-left:11%;"><b>--ignore-cert-extension</b>
+<i>oid</i></p>
+
+<p style="margin-left:22%;">Add <i>oid</i> to the list of
+ignored certificate extensions. The <i>oid</i> is expected
+to be in dotted decimal form, like <b>2.5.29.3</b>. This
+option may be used more than once. Critical flagged
+certificate extensions matching one of the OIDs in the list
+are treated as if they are actually handled and thus the
+certificate will not be rejected due to an unknown critical
+extension. Use this option with care because extensions are
+usually flagged as critical for a reason.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Input and
+Output &nbsp; <br>
+--armor</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Create PEM encoded output. Default is binary output.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--base64</b></p>
+
+<p style="margin-left:22%;">Create Base-64 encoded output;
+i.e. PEM without the header lines.</p>
+
+<p style="margin-left:11%;"><b>--assume-armor</b></p>
+
+<p style="margin-left:22%;">Assume the input data is PEM
+encoded. Default is to autodetect the encoding but this is
+may fail.</p>
+
+<p style="margin-left:11%;"><b>--assume-base64</b></p>
+
+<p style="margin-left:22%;">Assume the input data is plain
+base-64 encoded.</p>
+
+<p style="margin-left:11%;"><b>--assume-binary</b></p>
+
+<p style="margin-left:22%;">Assume the input data is binary
+encoded.</p>
+
+<p style="margin-left:11%;"><b>--p12-charset</b>
+<i>name</i></p>
+
+<p style="margin-left:22%;"><b>gpgsm</b> uses the UTF-8
+encoding when encoding passphrases for PKCS#12 files. This
+option may be used to force the passphrase to be encoded in
+the specified encoding <i>name</i>. This is useful if the
+application used to import the key uses a different encoding
+and thus will not be able to import a file generated by
+<b>gpgsm</b>. Commonly used values for <i>name</i> are
+<b>Latin1</b> and <b>CP850</b>. Note that <b>gpgsm</b>
+itself automagically imports any file with a passphrase
+encoded to the most commonly used encodings.</p>
+
+<p style="margin-left:11%;"><b>--default-key</b>
+<i>user_id</i></p>
+
+<p style="margin-left:22%;">Use <i>user_id</i> as the
+standard key for signing. This key is used if no other key
+has been defined as a signing key. Note, that the first
+<b>--local-users</b> option also sets this key if it has not
+yet been set; however <b>--default-key</b> always overrides
+this.</p>
+
+<p style="margin-left:11%;"><b>--local-user</b>
+<i>user_id</i> <b><br>
+-u</b> <i>user_id</i></p>
+
+<p style="margin-left:22%;">Set the user(s) to be used for
+signing. The default is the first secret key found in the
+database.</p>
+
+<p style="margin-left:11%;"><b>--recipient</b>
+<i>name</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Encrypt to the user id <i>name</i>. There are several
+ways a user id may be given (see:
+[how-to-specify-a-user-id]).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--output</b> <i>file</i>
+<b><br>
+-o</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Write output to <i>file</i>.
+The default is to write it to stdout.</p>
+
+<p style="margin-left:11%;"><b>--with-key-data</b></p>
+
+<p style="margin-left:22%;">Displays extra information with
+the <b>--list-keys</b> commands. Especially a line tagged
+<b>grp</b> is printed which tells you the keygrip of a key.
+This string is for example used as the file name of the
+secret key. Implies <b>--with-colons</b>.</p>
+
+<p style="margin-left:11%;"><b>--with-validation</b></p>
+
+<p style="margin-left:22%;">When doing a key listing, do a
+full validation check for each key and print the result.
+This is usually a slow operation because it requires a CRL
+lookup and other operations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When used along
+with <b>--import</b>, a validation of the certificate to
+import is done and only imported if it succeeds the test.
+Note that this does not affect an already available
+certificate in the DB. This option is therefore useful to
+simply verify a certificate.</p>
+
+
+<p style="margin-left:11%;"><b>--with-md5-fingerprint</b></p>
+
+<p style="margin-left:22%;">For standard key listings, also
+print the MD5 fingerprint of the certificate.</p>
+
+<p style="margin-left:11%;"><b>--with-keygrip</b></p>
+
+<p style="margin-left:22%;">Include the keygrip in standard
+key listings. Note that the keygrip is always listed in
+<b>--with-colons</b> mode.</p>
+
+<p style="margin-left:11%;"><b>--with-secret</b></p>
+
+<p style="margin-left:22%;">Include info about the presence
+of a secret key in public key listings done with
+<b>--with-colons</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How to
+change how the CMS is created &nbsp; <br>
+--include-certs</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Using <i>n</i> of -2 includes
+all certificate except for the root cert, -1 includes all
+certs, 0 does not include any certs, 1 includes only the
+signers cert and all other positive values include up to
+<i>n</i> certificates starting with the signer cert. The
+default is -2.</p>
+
+<p style="margin-left:11%;"><b>--cipher-algo</b>
+<i>oid</i></p>
+
+<p style="margin-left:22%;">Use the cipher algorithm with
+the ASN.1 object identifier <i>oid</i> for encryption. For
+convenience the strings <b>3DES</b>, <b>AES</b> and
+<b>AES256</b> may be used instead of their OIDs. The default
+is <b>AES</b> (2.16.840.1.101.3.4.1.2).</p>
+
+<p style="margin-left:11%;"><b>--digest-algo name</b></p>
+
+<p style="margin-left:22%;">Use <b>name</b> as the message
+digest algorithm. Usually this algorithm is deduced from the
+respective signing certificate. This option forces the use
+of the given algorithm and may lead to severe
+interoperability problems.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Doing things
+one usually do not want to do &nbsp; <br>
+--extra-digest-algo</b> <i>name</i></p>
+
+<p style="margin-left:22%;">Sometimes signatures are broken
+in that they announce a different digest algorithm than
+actually used. <b>gpgsm</b> uses a one-pass data processing
+model and thus needs to rely on the announced digest
+algorithms to properly hash the data. As a workaround this
+option may be used to tell <b>gpgsm</b> to also hash the
+data using the algorithm <i>name</i>; this slows processing
+down a little bit but allows verification of such broken
+signatures. If <b>gpgsm</b> prints an error like
+&rsquo;&rsquo;digest algo 8 has not been
+enabled&rsquo;&rsquo; you may want to try this option, with
+&rsquo;SHA256&rsquo; for <i>name</i>.</p>
+
+<p style="margin-left:11%;"><b>--faked-system-time</b>
+<i>epoch</i></p>
+
+<p style="margin-left:22%;">This option is only useful for
+testing; it sets the system time back or forth to
+<i>epoch</i> which is the number of seconds elapsed since
+the year 1970. Alternatively <i>epoch</i> may be given as a
+full ISO time string (e.g. &quot;20070924T154812&quot;).</p>
+
+
+<p style="margin-left:11%;"><b>--with-ephemeral-keys</b></p>
+
+<p style="margin-left:22%;">Include ephemeral flagged keys
+in the output of key listings. Note that they are included
+anyway if the key specification for a listing is given as
+fingerprint or keygrip.</p>
+
+<p style="margin-left:11%;"><b>--debug-level</b>
+<i>level</i></p>
+
+<p style="margin-left:22%;">Select the debug level for
+investigating problems. <i>level</i> may be a numeric value
+or by a keyword:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>none</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>No debugging at all. A value of less than 1 may be used
+instead of the keyword.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>basic</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Some basic debug messages. A value between 1 and 2 may
+be used instead of the keyword.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>advanced</b></p>
+
+<p style="margin-left:32%;">More verbose debug messages. A
+value between 3 and 5 may be used instead of the
+keyword.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>expert</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Even more detailed messages. A value between 6 and 8 may
+be used instead of the keyword.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>guru</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>All of the debug messages you can get. A value greater
+than 8 may be used instead of the keyword. The creation of
+hash tracing files is only enabled if the keyword is
+used.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">How these
+messages are mapped to the actual debugging flags is not
+specified and may change with newer releases of this
+program. They are however carefully selected to best aid in
+debugging. <b><br>
+--debug</b> <i>flags</i></p>
+
+<p style="margin-left:22%;">This option is only useful for
+debugging and the behaviour may change at any time without
+notice; using <b>--debug-levels</b> is the preferred method
+to select the debug verbosity. FLAGS are bit encoded and may
+be given in usual C-Syntax. The currently defined bits
+are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>0 (1)</b></p></td>
+<td width="1%"></td>
+<td width="59%">
+
+
+<p>X.509 or OpenPGP protocol related data</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>1 (2)</b></p></td>
+<td width="1%"></td>
+<td width="59%">
+
+
+<p>values of big number integers</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>2 (4)</b></p></td>
+<td width="1%"></td>
+<td width="59%">
+
+
+<p>low level crypto operations</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>5 (32)</b></p></td>
+<td width="1%"></td>
+<td width="59%">
+
+
+<p>memory allocation</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>6 (64)</b></p></td>
+<td width="1%"></td>
+<td width="59%">
+
+
+<p>caching</p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>7 (128)</b></p>
+
+<p style="margin-left:32%;">show memory statistics</p>
+
+<p style="margin-left:22%;"><b>9 (512)</b></p>
+
+<p style="margin-left:32%;">write hashed data to files
+named <b>dbgmd-000*</b></p>
+
+<p style="margin-left:22%;"><b>10 (1024)</b></p>
+
+<p style="margin-left:32%;">trace Assuan protocol</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note, that all
+flags set using this option may get overridden by
+<b>--debug-level</b>. <b><br>
+--debug-all</b></p>
+
+<p style="margin-left:22%;">Same as
+<b>--debug=0xffffffff</b></p>
+
+
+<p style="margin-left:11%;"><b>--debug-allow-core-dump</b></p>
+
+<p style="margin-left:22%;">Usually <b>gpgsm</b> tries to
+avoid dumping core by well written code and by disabling
+core dumps for security reasons. However, bugs are pretty
+durable beasts and to squash them it is sometimes useful to
+have a core dump. This option enables core dumps unless the
+Bad Thing happened before the option parsing.</p>
+
+
+<p style="margin-left:11%;"><b>--debug-no-chain-validation</b></p>
+
+<p style="margin-left:22%;">This is actually not a
+debugging option but only useful as such. It lets
+<b>gpgsm</b> bypass all certificate chain validation
+checks.</p>
+
+
+<p style="margin-left:11%;"><b>--debug-ignore-expiration</b></p>
+
+<p style="margin-left:22%;">This is actually not a
+debugging option but only useful as such. It lets
+<b>gpgsm</b> ignore all notAfter dates, this is used by the
+regression tests.</p>
+
+<p style="margin-left:11%;"><b>--passphrase-fd n</b></p>
+
+<p style="margin-left:22%;">Read the passphrase from file
+descriptor <b>n</b>. Only the first line will be read from
+file descriptor <b>n</b>. If you use 0 for <b>n</b>, the
+passphrase will be read from STDIN. This can only be used if
+only one passphrase is supplied.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that this
+passphrase is only used if the option <b>--batch</b> has
+also been given.</p>
+
+<p style="margin-left:11%;"><b>--pinentry-mode mode</b></p>
+
+<p style="margin-left:22%;">Set the pinentry mode to
+<b>mode</b>. Allowed values for <b>mode</b> are: <b><br>
+default</b></p>
+
+<p style="margin-left:32%;">Use the default of the agent,
+which is <b>ask</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>ask</b></p></td>
+<td width="1%"></td>
+<td width="65%">
+
+
+<p>Force the use of the Pinentry.</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>cancel</b></p></td>
+<td width="1%"></td>
+<td width="65%">
+
+
+<p>Emulate use of Pinentry&rsquo;s cancel button.</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>error</b></p></td>
+<td width="1%"></td>
+<td width="65%">
+
+
+<p>Return a Pinentry error (&rsquo;&rsquo;No
+Pinentry&rsquo;&rsquo;).</p> </td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>loopback</b></p>
+
+<p style="margin-left:32%;">Redirect Pinentry queries to
+the caller. Note that in contrast to Pinentry the user is
+not prompted again if he enters a bad password.</p>
+
+<p style="margin-left:11%;"><b>--request-origin</b>
+<i>origin</i></p>
+
+<p style="margin-left:22%;">Tell gpgsm to assume that the
+operation ultimately originated at <i>origin</i>. Depending
+on the origin certain restrictions are applied and the
+Pinentry may include an extra note on the origin. Supported
+values for <i>origin</i> are: <b>local</b> which is the
+default, <b>remote</b> to indicate a remote origin or
+<b>browser</b> for an operation requested by a web
+browser.</p>
+
+
+<p style="margin-left:11%;"><b>--no-common-certs-import</b></p>
+
+<p style="margin-left:22%;">Suppress the import of common
+certificates on keybox creation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All the long
+options may also be given in the configuration file after
+stripping off the two leading dashes.</p>
+
+<h2>HOW TO SPECIFY A USER ID
+<a name="HOW TO SPECIFY A USER ID"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+different ways to specify a user ID to GnuPG. Some of them
+are only valid for <b>gpg</b> others are only good for
+<b>gpgsm</b>. Here is the entire list of ways to specify a
+key: <b><br>
+By key Id.</b></p>
+
+<p style="margin-left:22%;">This format is deduced from the
+length of the string and its content or <b>0x</b> prefix.
+The key Id of an X.509 certificate are the low 64 bits of
+its SHA-1 fingerprint. The use of key Ids is just a
+shortcut, for all automated processing the fingerprint
+should be used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When using
+<b>gpg</b> an exclamation mark (!) may be appended to force
+using the specified primary or secondary key and not to try
+and calculate which primary or secondary key to use.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The last four
+lines of the example give the key ID in their long form as
+internally used by the OpenPGP protocol. You can see the
+long key ID using the option <b>--with-colons</b>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">234567C4 <br>
+0F34E556E <br>
+01347A56A <br>
+0xAB123456</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">234AABBCC34567C4
+<br>
+0F323456784E56EAB <br>
+01AB3FED1347A5612 <br>
+0x234AABBCC34567C4</p>
+
+<p style="margin-left:11%;"><b>By fingerprint.</b></p>
+
+<p style="margin-left:22%;">This format is deduced from the
+length of the string and its content or the <b>0x</b>
+prefix. Note, that only the 20 byte version fingerprint is
+available with <b>gpgsm</b> (i.e. the SHA-1 hash of the
+certificate).</p>
+
+<p style="margin-left:22%; margin-top: 1em">When using
+<b>gpg</b> an exclamation mark (!) may be appended to force
+using the specified primary or secondary key and not to try
+and calculate which primary or secondary key to use.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The best way to
+specify a key Id is by using the fingerprint. This avoids
+any ambiguities in case that there are duplicated key
+IDs.</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">1234343434343434C434343434343434
+<br>
+123434343434343C3434343434343734349A3434 <br>
+0E12343434343434343434EAB3484343434343434 <br>
+0xE12343434343434343434EAB3484343434343434</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgsm</b>
+also accepts colons between each pair of hexadecimal digits
+because this is the de-facto standard on how to present
+X.509 fingerprints. <b>gpg</b> also allows the use of the
+space separated SHA-1 fingerprint as printed by the key
+listing commands. <b><br>
+By exact match on OpenPGP user ID.</b></p>
+
+<p style="margin-left:22%;">This is denoted by a leading
+equal sign. It does not make sense for X.509
+certificates.</p>
+
+<p style="margin-left:14%; margin-top: 1em">=Heinrich Heine
+&lt;heinrichh@uni-duesseldorf.de&gt;</p>
+
+<p style="margin-left:11%;"><b>By exact match on an email
+address.</b></p>
+
+<p style="margin-left:22%;">This is indicated by enclosing
+the email address in the usual way with left and right
+angles.</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&lt;heinrichh@uni-duesseldorf.de&gt;</p>
+
+<p style="margin-left:11%;"><b>By partial match on an email
+address.</b></p>
+
+<p style="margin-left:22%;">This is indicated by prefixing
+the search string with an <b>@</b>. This uses a substring
+search but considers only the mail address (i.e. inside the
+angle brackets).</p>
+
+<p style="margin-left:14%; margin-top: 1em">@heinrichh</p>
+
+<p style="margin-left:11%;"><b>By exact match on the
+subject&rsquo;s DN.</b></p>
+
+<p style="margin-left:22%;">This is indicated by a leading
+slash, directly followed by the RFC-2253 encoded DN of the
+subject. Note that you can&rsquo;t use the string printed by
+<b>gpgsm --list-keys</b> because that one has been reordered
+and modified for better readability; use
+<b>--with-colons</b> to print the raw (but standard escaped)
+RFC-2253 string.</p>
+
+<p style="margin-left:14%; margin-top: 1em">/CN=Heinrich
+Heine,O=Poets,L=Paris,C=FR</p>
+
+<p style="margin-left:11%;"><b>By exact match on the
+issuer&rsquo;s DN.</b></p>
+
+<p style="margin-left:22%;">This is indicated by a leading
+hash mark, directly followed by a slash and then directly
+followed by the RFC-2253 encoded DN of the issuer. This
+should return the Root cert of the issuer. See note
+above.</p>
+
+<p style="margin-left:14%; margin-top: 1em">#/CN=Root
+Cert,O=Poets,L=Paris,C=FR</p>
+
+<p style="margin-left:11%;"><b>By exact match on serial
+number and issuer&rsquo;s DN.</b></p>
+
+<p style="margin-left:22%;">This is indicated by a hash
+mark, followed by the hexadecimal representation of the
+serial number, then followed by a slash and the RFC-2253
+encoded DN of the issuer. See note above.</p>
+
+<p style="margin-left:14%; margin-top: 1em">#4F03/CN=Root
+Cert,O=Poets,L=Paris,C=FR</p>
+
+<p style="margin-left:11%;"><b>By keygrip.</b></p>
+
+<p style="margin-left:22%;">This is indicated by an
+ampersand followed by the 40 hex digits of a keygrip.
+<b>gpgsm</b> prints the keygrip when using the command
+<b>--dump-cert</b>.</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&amp;D75F22C3F86E355877348498CDC92BD21010A480</p>
+
+<p style="margin-left:11%;"><b>By substring match.</b></p>
+
+<p style="margin-left:22%;">This is the default mode but
+applications may want to explicitly indicate this by putting
+the asterisk in front. Match is not case sensitive.</p>
+
+<p style="margin-left:14%; margin-top: 1em">Heine <br>
+*Heine</p>
+
+<p style="margin-left:11%;"><b>. and + prefixes</b></p>
+
+<p style="margin-left:22%;">These prefixes are reserved for
+looking up mails anchored at the end and for a word search
+mode. They are not yet implemented and using them is
+undefined.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Please note
+that we have reused the hash mark identifier which was used
+in old GnuPG versions to indicate the so called local-id. It
+is not anymore used and there should be no conflict when
+used with X.509 stuff.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Using the
+RFC-2253 format of DNs has the drawback that it is not
+possible to map them back to the original encoding, however
+we don&rsquo;t have to do this because our key database
+stores this encoding as meta data.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:14%; margin-top: 1em">$ gpgsm -er
+goo@bar.net &lt;plaintext &gt;ciphertext</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are a few
+configuration files to control certain aspects of
+<b>gpgsm</b>&rsquo;s operation. Unless noted, they are
+expected in the current home directory (see: [option
+--homedir]). <b><br>
+gpgsm.conf</b></p>
+
+<p style="margin-left:22%;">This is the standard
+configuration file read by <b>gpgsm</b> on startup. It may
+contain any valid long option; the leading two dashes may
+not be entered and the option may not be abbreviated. This
+default name may be changed on the command line (see:
+[gpgsm-option --options]). You should backup this file.</p>
+
+<p style="margin-left:11%;"><b>policies.txt</b></p>
+
+<p style="margin-left:22%;">This is a list of allowed CA
+policies. This file should list the object identifiers of
+the policies line by line. Empty lines and lines starting
+with a hash mark are ignored. Policies missing in this file
+and not marked as critical in the certificate will print
+only a warning; certificates with policies marked as
+critical and not listed in this file will fail the signature
+verification. You should backup this file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For example, to
+allow only the policy 2.289.9.9, the file should look like
+this:</p>
+
+<p style="margin-left:25%; margin-top: 1em"># Allowed
+policies <br>
+2.289.9.9</p>
+
+<p style="margin-left:11%;"><b>qualified.txt</b></p>
+
+<p style="margin-left:22%;">This is the list of root
+certificates used for qualified certificates. They are
+defined as certificates capable of creating legally binding
+signatures in the same way as handwritten signatures are.
+Comments start with a hash mark and empty lines are ignored.
+Lines do have a length limit but this is not a serious
+limitation as the format of the entries is fixed and checked
+by <b>gpgsm</b>: A non-comment line starts with optional
+whitespace, followed by exactly 40 hex characters, white
+space and a lowercased 2 letter country code. Additional
+data delimited with by a white space is current ignored but
+might late be used for other purposes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that even
+if a certificate is listed in this file, this does not mean
+that the certificate is trusted; in general the certificates
+listed in this file need to be listed also in
+&rsquo;<i>trustlist.txt</i>&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is a
+global file an installed in the data directory (e.g.
+&rsquo;<i>/usr/share/gnupg/qualified.txt</i>&rsquo;). GnuPG
+installs a suitable file with root certificates as used in
+Germany. As new Root-CA certificates may be issued over
+time, these entries may need to be updated; new
+distributions of this software should come with an updated
+list but it is still the responsibility of the Administrator
+to check that this list is correct.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Every time
+<b>gpgsm</b> uses a certificate for signing or verification
+this file will be consulted to check whether the certificate
+under question has ultimately been issued by one of these
+CAs. If this is the case the user will be informed that the
+verified signature represents a legally binding
+(&rsquo;&rsquo;qualified&rsquo;&rsquo;) signature. When
+creating a signature using such a certificate an extra
+prompt will be issued to let the user confirm that such a
+legally binding signature shall really be created.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Because this
+software has not yet been approved for use with such
+certificates, appropriate notices will be shown to indicate
+this fact.</p>
+
+<p style="margin-left:11%;"><b>help.txt</b></p>
+
+<p style="margin-left:22%;">This is plain text file with a
+few help entries used with <b>pinentry</b> as well as a
+large list of help items for <b>gpg</b> and <b>gpgsm</b>.
+The standard file has English help texts; to install
+localized versions use filenames like
+&rsquo;<i>help.LL.txt</i>&rsquo; with LL denoting the
+locale. GnuPG comes with a set of predefined help files in
+the data directory (e.g.
+&rsquo;<i>/usr/share/gnupg/gnupg/help.de.txt</i>&rsquo;) and
+allows overriding of any help item by help files stored in
+the system configuration directory (e.g.
+&rsquo;<i>/etc/gnupg/help.de.txt</i>&rsquo;). For a
+reference of the help file&rsquo;s syntax, please see the
+installed &rsquo;<i>help.txt</i>&rsquo; file.</p>
+
+<p style="margin-left:11%;"><b>com-certs.pem</b></p>
+
+<p style="margin-left:22%;">This file is a collection of
+common certificates used to populated a newly created
+&rsquo;<i>pubring.kbx</i>&rsquo;. An administrator may
+replace this file with a custom one. The format is a
+concatenation of PEM encoded X.509 certificates. This global
+file is installed in the data directory (e.g.
+&rsquo;<i>/usr/share/gnupg/com-certs.pem</i>&rsquo;).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that on
+larger installations, it is useful to put predefined files
+into the directory &rsquo;<i>/etc/skel/.gnupg/</i>&rsquo; so
+that newly created users start up with a working
+configuration. For existing users a small helper script is
+provided to create these files (see: [addgnupghome]).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For internal
+purposes <b>gpgsm</b> creates and maintains a few other
+files; they all live in the current home directory (see:
+[option --homedir]). Only <b>gpgsm</b> may modify these
+files. <b><br>
+pubring.kbx</b></p>
+
+<p style="margin-left:22%;">This a database file storing
+the certificates as well as meta information. For debugging
+purposes the tool <b>kbxutil</b> may be used to show the
+internal structure of this file. You should backup this
+file.</p>
+
+<p style="margin-left:11%;"><b>random_seed</b></p>
+
+<p style="margin-left:22%;">This content of this file is
+used to maintain the internal state of the random number
+generator across invocations. The same file is used by other
+programs of this software too.</p>
+
+<p style="margin-left:11%;"><b>S.gpg-agent</b></p>
+
+<p style="margin-left:22%;">If this file exists
+<b>gpgsm</b> will first try to connect to this socket for
+accessing <b>gpg-agent</b> before starting a new
+<b>gpg-agent</b> instance. Under Windows this socket (which
+in reality be a plain file describing a regular TCP
+listening port) is the standard way of connecting the
+<b>gpg-agent</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg2</b>(1),
+<b>gpg-agent</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The full
+documentation for this tool is maintained as a Texinfo
+manual. If GnuPG and the info program are properly installed
+at your site, the command</p>
+
+<p style="margin-left:14%; margin-top: 1em">info gnupg</p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual including a menu structure and
+an index.</p>
+<hr>
+</body>
+</html>

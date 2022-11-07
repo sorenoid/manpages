@@ -1,0 +1,235 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:39 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>qpdldecode</title>
+
+</head>
+<body>
+
+<h1 align="center">qpdldecode</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMAND LINE OPTIONS">COMMAND LINE OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">qpdldecode -
+Decode a QPDL stream into human readable form.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>qpdldecode</b>
+[<i>options</i>] &lt;<i>qpdl-file</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>qpdldecode</b></i>
+decodes a QPDL stream into human readable form. Only the
+JBIG compression format (0x13) is handled.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An QPDL stream
+is the printer language used by the Samsung CLP-300,
+CLP-600, CLX-3160 and the Xerox Phaser 6110 printers.</p>
+
+<h2>COMMAND LINE OPTIONS
+<a name="COMMAND LINE OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These are the
+options that can appear on the command line. <b><br>
+-d</b> <i>basename</i></p>
+
+<p style="margin-left:22%;">Basename of .pbm file for
+saving decompressed planes.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="8%"></td>
+<td width="35%">
+
+
+<p>Print hex file offsets.</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-o</b></p></td>
+<td width="8%"></td>
+<td width="35%">
+
+
+<p>Print file offsets.</p></td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-D</b> <i>level</i></p>
+
+<p style="margin-left:22%;">Set Debug level [0].</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Decode an QPDL
+stream file created by foo2qpdl.</p>
+
+<p style="margin-left:11%; margin-top: 1em">0:
+\033%-12345X@PJL DEFAULT SERVICEDATE=20070212 <br>
+2c: @PJL SET USERNAME=&quot;Unknown&quot; <br>
+49: @PJL SET JOBNAME=&quot;testpage.pdf&quot; <br>
+6a: @PJL SET COLORMODE=COLOR <br>
+84: @PJL SET PAPERTYPE = NORMAL <br>
+a1: @PJL ENTER LANGUAGE = QPDL <br>
+bd: RECTYPE 0x0 len=17 <br>
+res=600, copies=1, papersize=letter(0), w=2550, h=3300 <br>
+papersource=auto, unk=0, duplex=0:0, unk=0,2, unk=268(0x10c)
+<br>
+ce: RECTYPE 0xc len=68(0x44) <br>
+stripe=0, WB=1248(0x4e0), H=128(0x80), plane=4, comp=0x13,
+<br>
+len=56(0x38) <br>
+magic=0x39abcdef, len=20(0x14), unk=0,0,0,0,0,0, <br>
+checksum=0x356 <br>
+DL = 0, D = 0, P = 1, - = 0, XY = 9984 x 6400 <br>
+L0 = 6400, MX = 0, MY = 0 <br>
+Order = 0 <br>
+Options = 72 LRLTWO TPBON <br>
+1 stripes, 0 layers, 1 planes <br>
+112: RECTYPE 0xc len=68(0x44) <br>
+stripe=0, WB=1248(0x4e0), H=128(0x80), plane=1, comp=0x13,
+<br>
+len=56(0x38) <br>
+magic=0x39abcdef, len=20(0x14), unk=0,0,0,0,0,0, <br>
+checksum=0x356 <br>
+DL = 0, D = 0, P = 1, - = 0, XY = 9984 x 6400 <br>
+L0 = 6400, MX = 0, MY = 0 <br>
+Order = 0 <br>
+Options = 72 LRLTWO TPBON <br>
+1 stripes, 0 layers, 1 planes <br>
+156: RECTYPE 0xc len=68(0x44) <br>
+stripe=0, WB=1248(0x4e0), H=128(0x80), plane=2, comp=0x13,
+<br>
+len=56(0x38) <br>
+magic=0x39abcdef, len=20(0x14), unk=0,0,0,0,0,0, <br>
+checksum=0x356 <br>
+DL = 0, D = 0, P = 1, - = 0, XY = 9984 x 6400 <br>
+L0 = 6400, MX = 0, MY = 0 <br>
+Order = 0 <br>
+Options = 72 LRLTWO TPBON <br>
+1 stripes, 0 layers, 1 planes <br>
+19a: RECTYPE 0xc len=68(0x44) <br>
+stripe=0, WB=1248(0x4e0), H=128(0x80), plane=3, comp=0x13,
+<br>
+len=56(0x38) <br>
+magic=0x39abcdef, len=20(0x14), unk=0,0,0,0,0,0, <br>
+checksum=0x356 <br>
+DL = 0, D = 0, P = 1, - = 0, XY = 9984 x 6400 <br>
+L0 = 6400, MX = 0, MY = 0 <br>
+Order = 0 <br>
+Options = 72 LRLTWO TPBON <br>
+1 stripes, 0 layers, 1 planes <br>
+1de: RECTYPE 0xc len=77488(0x12eb0) <br>
+stripe=1, WB=1248(0x4e0), H=128(0x80), plane=1, comp=0x13,
+<br>
+len=77476(0x12ea4) <br>
+magic=0x39abcdef, len=77440(0x12e80), unk=2000000,0,0,0,0,0,
+<br>
+checksum=0x9326d7 <br>
+1308e: RECTYPE 0xc len=77680(0x12f70) <br>
+stripe=1, WB=1248(0x4e0), H=128(0x80), plane=2, comp=0x13,
+<br>
+len=77668(0x12f64) <br>
+magic=0x39abcdef, len=77632(0x12f40), unk=2000000,0,0,0,0,0,
+<br>
+checksum=0x9367e5 <br>
+25ffe: RECTYPE 0xc len=69232(0x10e70) <br>
+stripe=1, WB=1248(0x4e0), H=128(0x80), plane=3, comp=0x13,
+<br>
+len=69220(0x10e64) <br>
+magic=0x39abcdef, len=69184(0x10e40), unk=2000000,0,0,0,0,0,
+<br>
+checksum=0x83938a <br>
+36e6e: RECTYPE 0xc len=45616(0xb230) <br>
+stripe=1, WB=1248(0x4e0), H=128(0x80), plane=4, comp=0x13,
+<br>
+len=45604(0xb224) <br>
+magic=0x39abcdef, len=45568(0xb200), unk=2000000,0,0,0,0,0,
+<br>
+checksum=0x58015d <br>
+4209e: RECTYPE 0x1 len=3 <br>
+copies=1 <br>
+420a1: RECTYPE 0x9 len=0 <br>
+420a2: \033%-12345X</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/usr/bin/qpdldecode</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>foo2qpdl-wrapper</b>(1),
+<b>foo2qpdl</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Rick Richardson
+&lt;rick.richardson@comcast.net&gt; <br>
+ http://foo2qpdl.rkkda.com/</p>
+<hr>
+</body>
+</html>

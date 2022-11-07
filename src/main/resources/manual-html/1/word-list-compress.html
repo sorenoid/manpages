@@ -1,0 +1,210 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>WORD-LIST-COMPRESS</title>
+
+</head>
+<body>
+
+<h1 align="center">WORD-LIST-COMPRESS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#TIPS">TIPS</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">word-list-compress
+- word list compressor/decompressor for GNU Aspell</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>word-list-compress
+c</b>[<b>ompress</b>] | <b>d</b>[<b>ecompress</b>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>word-list-compress</b>
+compresses or decompresses sorted word lists for use with
+the GNU Aspell spell checker.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>c</b>, <b>compress</b></p>
+
+<p style="margin-left:22%;">compress the plain text word
+list read from standard input.</p>
+
+<p style="margin-left:11%;"><b>-d</b>, <b>d</b>,
+<b>decompress</b></p>
+
+<p style="margin-left:22%;">decompress the compressed word
+list read from standard input.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here are a few
+examples of how you can use <i>word-list-compress</i> <br>
+word-list-compress <b>d</b> &lt;wordlist.cwl
+&gt;wordlist.txt</p>
+
+<p style="margin-left:22%;">Decompress file wordlist.cwl to
+text file wordlist.txt</p>
+
+<p style="margin-left:11%;">word-list-compress <b>c</b>
+&lt;wordlist.wl &gt;wordlist.cwl 2&gt;errors.txt</p>
+
+<p style="margin-left:22%;">Compress wordlist.wl to
+wordlist.cwl and send any error messages to a text file
+named errors.txt</p>
+
+<p style="margin-left:11%;">LC_COLLATE=C sort -u
+&lt;wordlist.txt <b>|</b> word-list-compress c
+&gt;wordlist.cwl</p>
+
+<p style="margin-left:22%;">Sort a word list, then pipe it
+to <i>word-list-compress</i> to create a compressed binary
+wordlist.cwl file.</p>
+
+<p style="margin-left:11%;">word-list-compress d
+&lt;words.cwl <b>|</b> aspell create master ./words.rws</p>
+
+<p style="margin-left:22%;">Decompress a wordlist, then
+pipe it to <i>aspell(1)</i> to create a spelling list.
+Please check the <i>aspell(1)</i> info manual for proper
+usage and options.</p>
+
+<h2>TIPS
+<a name="TIPS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Word-list-compress</i>
+is best used with sorted word list type files. It is not a
+general purpose compression program since the resulting
+files may actually increase in size.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Word-list-compress</i>
+accepts up to 255 text characters in the range of
+{0x21...0xFF}. If your word list requires a larger character
+set for certain languages or longer length for multi-word,
+scientific, medical, technical or other use, then it is
+recommended that you compress your word list using
+<i>prezip-bin(1)</i></p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Word-list-compress</i>
+normally exits with a return code of 0. If it encounters an
+error, a message is sent to standard error output (stderr),
+and <i>word-list-compress</i> exits with a non-zero return
+value. Error messages are listed below: <b><br>
+(display help/usage message)</b></p>
+
+<p style="margin-left:22%;">Unknown command given on the
+command line so <i>word-list-compress</i> displays a usage
+message to standard error output.</p>
+
+<p style="margin-left:11%;"><b>Corrupt Input</b></p>
+
+<p style="margin-left:22%;">This is only for the
+decompression command <b>d</b>. The input file is of an
+unknown format or the input file/stream is corrupted. You
+may have some valid output, but <i>word-list-compress</i>
+could not complete the process. If the input file is a
+compressed wordlist but you have no output file, then it may
+be a newer <i>prezip-bin(1)</i> version of compressed file,
+if so, try decompressing the file with <i>prezip-bin(1)</i>
+instead.</p>
+
+<p style="margin-left:11%;"><b>Output Data Error</b></p>
+
+<p style="margin-left:22%;">The output is full, write
+protected, or has an error and can no longer be written
+to.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aspell</b>(1),
+<b>aspell-import</b>(1), <b>prezip-bin</b>(1),
+<b>run-with-aspell</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Aspell is fully
+documented in its Texinfo manual. See the
+&rsquo;<b>aspell</b>&rsquo; entry in <b>info</b> for more
+complete documentation.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For help, see
+the Aspell homepage at &lt;http://aspell.net&gt; and send
+bug reports/comments to the Aspell user list at the above
+address.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Aaron Lehmann
+&lt;aaronl@vitelus.com&gt;, Brian Nelson
+&lt;pyro@debian.org&gt; and Jose Da Silva
+&lt;digital@joescat.com&gt;.</p>
+<hr>
+</body>
+</html>

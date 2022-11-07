@@ -1,0 +1,238 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:36 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pamcut</title>
+
+</head>
+<body>
+
+<h1 align="center">pamcut</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamcut - cut a
+rectangle out of a PAM, PBM, PGM, or PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcut</b>
+[<b>-left</b> <i>leftcol</i>] [<b>-right</b>
+<i>rightcol</i>] [<b>-top</b> <i>toprow</i>] [<b>-bottom</b>
+<i>bottomrow</i>] [<b>-width</b> <i>width</i>]
+[<b>-height</b> <i>height</i>] [<b>-pad</b>]
+[<b>-verbose</b>] [ <i>left right width height</i> ]
+[<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options may
+be abbreviated to the shortest unique prefix.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reads a PAM,
+PBM, PGM, or PPM image as input. Extracts the specified
+rectangle, and produces the same kind of image as
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+ways to specify the rectangle to cut: arguments and options.
+Options are easier to remember and read, more expressive,
+and allow you to use defaults. Arguments were the only way
+available before July 2000.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you use both
+options and arguments, the two specifications get mixed in
+an unspecified way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To use options,
+just code any mixture of the <b>-left</b>, <b>-right</b>,
+<b>-top</b>, <b>-bottom</b>, <b>-width</b>, and
+<b>-height</b> options. What you don&rsquo;t specify
+defaults. It is an error to overspecify, i.e. to specify all
+three of <b>-left</b>, <b>-right</b>, and <b>-width</b> or
+<b>-top</b>, <b>-bottom</b>, and <b>-height</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To use
+arguments, specify all four of the <i>left</i>,
+<i>right</i>, <i>width</i>, and <i>height</i> arguments.
+<i>left</i> and <i>top</i> have the same effect as
+specifying them as the argument of a <b>-left</b> or
+<b>-top</b> option, respectively. <i>width</i> and
+<i>height</i> have the same effect as specifying them as the
+argument of a <b>-width</b> or <b>-height</b> option,
+respectively, where they are positive. Where they are not
+positive, they have the same effect as specifying one less
+than the value as the argument to a <b>-right</b> or
+<b>-bottom</b> option, respectively. (E.g. <i>width</i> = 0
+makes the cut go all the way to the right edge). Before July
+2000, negative numbers were not allowed for <i>width</i> and
+<i>height</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Input is from
+Standard Input if you don&rsquo;t specify the input file
+<i>pnmfile</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Output is to
+Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you are
+splitting a single image into multiple same-size images,
+<b>pamdice</b> is faster than running <b>pamcut</b> multiple
+times.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-left</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The column number of the
+leftmost column to be in the output. If a nonnegative
+number, it refers to columns numbered from 0 at the left,
+increasing to the right. If negative, it refers to columns
+numbered -1 at the right, decreasing to the left.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-right</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The column number of the rightmost column to be in the
+output, numbered the same as for <b>-left.</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-top</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The row number of the topmost row to be in the output.
+If a nonnegative number it refers to rows numbered from 0 at
+the top, increasing downward. If negative, it refers to
+columns numbered -1 at the bottom, decreasing upward.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-bottom</b></p>
+
+<p style="margin-left:22%;">The row number of the
+bottom-most row to be in the output, numbered the same as
+for <b>-top</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-width</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The number of columns to be in the output. Must be
+positive.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-height</b></p>
+
+<p style="margin-left:22%;">The number of rows to be in the
+output. Must be positive.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-pad</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>If the rectangle you specify is not entirely within the
+input image, <b>pamcut</b> fails unless you also specify
+<b>-pad</b>. In that case, it pads the output with black up
+to the edges you specify. You can use this option if you
+need to have an image of certain dimensions and have an
+image of arbitrary dimensions.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em"><b>pnmpad</b>
+also adds borders to an image, but you specify their width
+directly.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print information about the
+processing to Standard Error.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcrop</b>(1),
+<b>pnmpad</b>(1), <b>pnmcat</b>(1), <b>pgmslice</b>(1),
+<b>pnm</b>(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+<hr>
+</body>
+</html>

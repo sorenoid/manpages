@@ -1,0 +1,296 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MOKUTIL</title>
+
+</head>
+<body>
+
+<h1 align="center">MOKUTIL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mokutil -
+utility to manipulate machine owner keys</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mokutil</b>
+[--list-enrolled | -l] <br>
+([--mokx | -X]) <b><br>
+mokutil</b> [--list-new | -N] <br>
+([--mokx | -X]) <b><br>
+mokutil</b> [--list-delete | -D] <br>
+([--mokx | -X]) <b><br>
+mokutil</b> [--import <i>keylist</i>| -i <i>keylist</i>]
+<br>
+([--hash-file <i>hashfile</i> | -f <i>hashfile</i>] |
+[--root-pw | -P] | <br>
+[--simple-hash | -s] | [--mokx | -X]) <b><br>
+mokutil</b> [--delete <i>keylist</i> | -d <i>keylist</i>]
+<br>
+([--hash-file <i>hashfile</i> | -f <i>hashfile</i>] |
+[--root-pw | -P] | <br>
+[--simple-hash | -s] | [--mokx |- X]) <b><br>
+mokutil</b> [--revoke-import] <br>
+([--mokx | -X]) <b><br>
+mokutil</b> [--revoke-delete] <br>
+([--mokx | -X]) <b><br>
+mokutil</b> [--export | -x] <b><br>
+mokutil</b> [--password | -p] <br>
+([--hash-file <i>hashfile</i> | -f <i>hashfile</i>] |
+[--root-pw | -P] | <br>
+[--simple-hash | -s]) <b><br>
+mokutil</b> [--clear-password | -c] <br>
+([--simple-hash | -s]) <b><br>
+mokutil</b> [--disable-validation] <b><br>
+mokutil</b> [--enable-validation] <b><br>
+mokutil</b> [--sb-state] <b><br>
+mokutil</b> [--test-key <i>keyfile</i> | -t <i>keyfile</i>]
+<br>
+([--mokx | -X]) <b><br>
+mokutil</b> [--reset] <br>
+([--hash-file <i>hashfile</i> | -f <i>hashfile</i>] |
+[--root-pw | -P] | <br>
+[--simple-hash | -s] | [--mok | -X]) <b><br>
+mokutil</b> [--generate-hash=<i>password</i> |
+-g<i>password</i>] <b><br>
+mokutil</b> [--ignore-db] <b><br>
+mokutil</b> [--use-db] <b><br>
+mokutil</b> [--import-hash <i>hash</i>] <br>
+([--hash-file <i>hashfile</i> | -f <i>hashfile</i>] |
+[--root-pw | -P] | <br>
+[--simple-hash | -s] | [--mokx | -X]) <b><br>
+mokutil</b> [--delete-hash <i>hash</i>] <br>
+([--hash-file <i>hashfile</i> | -f <i>hashfile</i>] |
+[--root-pw | -P] | <br>
+[--simple-hash | -s] | [--mokx | -X]) <b><br>
+mokutil</b> [--set-verbosity (<i>true</i> | <i>false</i>)]
+<b><br>
+mokutil</b> [--pk] <b><br>
+mokutil</b> [--kek] <b><br>
+mokutil</b> [--db] <b><br>
+mokutil</b> [--dbx]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mokutil</b>
+is a tool to import or delete the machines owner keys (MOK)
+stored in the database of shim.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l,
+--list-enrolled</b></p>
+
+<p style="margin-left:22%;">List the keys the already
+stored in the database</p>
+
+<p style="margin-left:11%;"><b>-N, --list-new</b></p>
+
+<p style="margin-left:22%;">List the keys to be
+enrolled</p>
+
+<p style="margin-left:11%;"><b>-D, --list-delete</b></p>
+
+<p style="margin-left:22%;">List the keys to be deleted</p>
+
+<p style="margin-left:11%;"><b>-i, --import</b></p>
+
+<p style="margin-left:22%;">Collect the followed files and
+form a enrolling request to shim. The files must be in DER
+format.</p>
+
+<p style="margin-left:11%;"><b>-d, --delete</b></p>
+
+<p style="margin-left:22%;">Collect the followed files and
+form a deleting request to shim. The files must be in DER
+format.</p>
+
+<p style="margin-left:11%;"><b>--revoke-import</b></p>
+
+<p style="margin-left:22%;">Revoke the current import
+request (MokNew)</p>
+
+<p style="margin-left:11%;"><b>--revoke-delete</b></p>
+
+<p style="margin-left:22%;">Revoke the current delete
+request (MokDel)</p>
+
+<p style="margin-left:11%;"><b>-x, --export</b></p>
+
+<p style="margin-left:22%;">Export the keys stored in
+MokListRT</p>
+
+<p style="margin-left:11%;"><b>-p, --password</b></p>
+
+<p style="margin-left:22%;">Setup the password for
+MokManager (MokPW)</p>
+
+<p style="margin-left:11%;"><b>-c, --clear-password</b></p>
+
+<p style="margin-left:22%;">Clear the password for
+MokManager (MokPW)</p>
+
+
+<p style="margin-left:11%;"><b>--disable-validation</b></p>
+
+<p style="margin-left:22%;">Disable the validation process
+in shim</p>
+
+
+<p style="margin-left:11%;"><b>--enrolled-validation</b></p>
+
+<p style="margin-left:22%;">Enable the validation process
+in shim</p>
+
+<p style="margin-left:11%;"><b>--sb-state</b></p>
+
+<p style="margin-left:22%;">Show SecureBoot State</p>
+
+<p style="margin-left:11%;"><b>-t, --test-key</b></p>
+
+<p style="margin-left:22%;">Test if the key is enrolled or
+not</p>
+
+<p style="margin-left:11%;"><b>--reset</b></p>
+
+<p style="margin-left:22%;">Reset MOK list</p>
+
+<p style="margin-left:11%;"><b>--generate-hash</b></p>
+
+<p style="margin-left:22%;">Generate the password hash</p>
+
+<p style="margin-left:11%;"><b>--hash-file</b></p>
+
+<p style="margin-left:22%;">Use the password hash from a
+specific file</p>
+
+<p style="margin-left:11%;"><b>-P, --root-pw</b></p>
+
+<p style="margin-left:22%;">Use the root password hash from
+/etc/shadow</p>
+
+<p style="margin-left:11%;"><b>-s, --simple-hash</b></p>
+
+<p style="margin-left:22%;">Use the old SHA256 password
+hash method to hash the password <br>
+Note: --root-pw invalidates --simple-hash</p>
+
+<p style="margin-left:11%;"><b>--ignore-db</b></p>
+
+<p style="margin-left:22%;">Tell shim to not use the keys
+in db to verify EFI images</p>
+
+<p style="margin-left:11%;"><b>--use-db</b></p>
+
+<p style="margin-left:22%;">Tell shim to use the keys in db
+to verify EFI images (default)</p>
+
+<p style="margin-left:11%;"><b>-X, --mokx</b></p>
+
+<p style="margin-left:22%;">Manipulate the MOK blacklist
+(MOKX) instead of the MOK list</p>
+
+<p style="margin-left:11%;"><b>-i, --import-hash</b></p>
+
+<p style="margin-left:22%;">Create an enrolling request for
+the hash of a key in DER format. Note that this is not the
+password hash.</p>
+
+<p style="margin-left:11%;"><b>-d, --delete-hash</b></p>
+
+<p style="margin-left:22%;">Create an deleting request for
+the hash of a key in DER format. Note that this is not the
+password hash.</p>
+
+<p style="margin-left:11%;"><b>--set-verbosity</b></p>
+
+<p style="margin-left:22%;">Set the SHIM_VERBOSE to make
+shim more or less verbose</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--pk</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>List the keys in the public Platform Key (PK)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--kek</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>List the keys in the Key Exchange Key Signature database
+(KEK)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--db</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>List the keys in the secure boot signature store
+(db)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--dbx</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>List the keys in the secure boot blacklist signature
+store (dbx)</p></td></tr>
+ </table>
+<hr>
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:21 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>XDITVIEW</title>
+
+</head>
+<body>
+
+<h1 align="center">XDITVIEW</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#X DEFAULTS">X DEFAULTS</a><br>
+<a href="#USING XDITVIEW WITH DITROFF">USING XDITVIEW WITH DITROFF</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#ORIGIN">ORIGIN</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xditview -
+display ditroff output</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xditview</b>
+[ -<i>toolkitoption</i> ... ] [ -<i>option</i> ... ] [
+<i>filename</i> ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>xditview</i> program displays <i>ditroff</i> output on an
+X display. It uses no special metrics and automatically
+converts the printer coordinates into screen coordinates;
+using the user-specified screen resolution, rather than the
+actual resolution so that the appropriate fonts can be
+found. If &rsquo;&rsquo;<b>-</b>&rsquo;&rsquo; is given as
+the <i>filename, xditview</i> reads from standard input. If
+&rsquo;&rsquo;<b>|</b>&rsquo;&rsquo; is the first character
+of <i>filename, xditview</i> forks <i>sh</i> to run the rest
+of the &rsquo;&rsquo;file name&rsquo;&rsquo; and uses the
+standard output of that command.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Xditview</i>
+accepts all of the standard X Toolkit command line options
+along with the additional options listed below: <b><br>
+-page</b> <i>page-number</i></p>
+
+<p style="margin-left:23%;">This option specifies the page
+number of the document to be displayed at start up time.</p>
+
+<p style="margin-left:11%;"><b>-resolution</b>
+<i>screen-resolution</i></p>
+
+<p style="margin-left:23%;">This specifies the desired
+screen resolution to use; fonts will be opened by requesting
+this resolution field in the XLFD names.</p>
+
+<p style="margin-left:11%;"><b>-noPolyText</b></p>
+
+<p style="margin-left:23%;">Some X servers incorrectly
+implement PolyText with multiple strings per request. This
+option suppresses the use of this feature in
+<i>xditview.</i></p>
+
+<p style="margin-left:11%;"><b>-backingStore</b>
+<i>backing-store-type</i></p>
+
+<p style="margin-left:23%;">Redisplay can take up to a
+second or so; this option causes the server to save the
+window contents so that when it is scrolled around the
+viewport, the window is painted from contents saved in
+backing store. <i>backing-store-type</i> can be one of
+<b>Always</b>, <b>WhenMapped</b> or <b>NotUseful</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+standard X Toolkit command line arguments are commonly used
+with <i>xditview:</i> <b><br>
+-bg</b> <i>color</i></p>
+
+<p style="margin-left:23%;">This option specifies the color
+to use for the background of the window. The default is
+<i>white</i>.</p>
+
+<p style="margin-left:11%;"><b>-bd</b> <i>color</i></p>
+
+<p style="margin-left:23%;">This option specifies the color
+to use for the border of the window. The default is
+<i>black</i>.</p>
+
+<p style="margin-left:11%;"><b>-bw</b> <i>number</i></p>
+
+<p style="margin-left:23%;">This option specifies the width
+in pixels of the border surrounding the window.</p>
+
+<p style="margin-left:11%;"><b>-fg</b> <i>color</i></p>
+
+<p style="margin-left:23%;">This option specifies the color
+to use for displaying text. The default is <i>black</i>.</p>
+
+<p style="margin-left:11%;"><b>-fn</b> <i>font</i></p>
+
+<p style="margin-left:23%;">This option specifies the font
+to be used for displaying widget text. The default is
+<i>fixed</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-rv</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>This option indicates that reverse video should be
+simulated by swapping the foreground and background
+colors.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-geometry</b>
+<i>geometry</i></p>
+
+<p style="margin-left:23%;">This option specifies the
+preferred size and position of the window.</p>
+
+<p style="margin-left:11%;"><b>-display</b>
+<i>host</i><b>:</b><i>display</i></p>
+
+<p style="margin-left:23%;">This option specifies the X
+server to contact.</p>
+
+<p style="margin-left:11%;"><b>-xrm</b>
+<i>resourcestring</i></p>
+
+<p style="margin-left:23%;">This option specifies a
+resource string to be used.</p>
+
+<h2>X DEFAULTS
+<a name="X DEFAULTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+uses a <i>Dvi</i> widget. It understands all of the core
+resource names and classes as well as: <b><br>
+width (</b>class <b>Width)</b></p>
+
+<p style="margin-left:23%;">Specifies the width of the
+window.</p>
+
+<p style="margin-left:11%;"><b>height (</b>class
+<b>Height)</b></p>
+
+<p style="margin-left:23%;">Specifies the height of the
+window.</p>
+
+<p style="margin-left:11%;"><b>foreground (</b>class
+<b>Foreground)</b></p>
+
+<p style="margin-left:23%;">Specifies the default
+foreground color.</p>
+
+<p style="margin-left:11%;"><b>font (</b>class
+<b>Font)</b></p>
+
+<p style="margin-left:23%;">Specifies the font to be used
+for error messages.</p>
+
+<p style="margin-left:11%;"><b>FontMap (class
+FontMap)</b></p>
+
+<p style="margin-left:23%;">To associate the <i>ditroff</i>
+fonts with appropriate X fonts, this string resource
+contains a set of new-line separated specifications, each of
+which consists of a ditroff name, some white space and an
+XLFD pattern with * characters in appropriate places to
+allow all sizes to be listed. The default fontMap is:</p>
+
+<p style="margin-left:23%; margin-top: 1em">R
+-*-times-medium-r-normal--*-*-*-*-*-*-iso8859-1\n\</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>I</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-times-medium-i-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>B</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-times-bold-r-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>F</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-times-bold-i-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>BI</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-times-bold-i-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>C</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-courier-medium-r-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>CO</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-courier-medium-o-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>CB</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-courier-bold-r-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>CF</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-courier-bold-o-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>H</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-helvetica-medium-r-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>HO</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-helvetica-medium-o-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>HB</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-helvetica-bold-r-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>HF</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-helvetica-bold-o-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>N</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-new century
+schoolbook-medium-r-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>NI</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-new century
+schoolbook-medium-i-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>NB</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-new century
+schoolbook-bold-r-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>NF</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-new century
+schoolbook-bold-i-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>A</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-charter-medium-r-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>AI</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-charter-medium-i-normal--*-*-*-*-*-*-iso8859-1\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>AB</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-charter-bold-r-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>AF</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>-*-charter-bold-i-normal--*-*-*-*-*-*-iso8859-1\n\</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>S</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-symbol-medium-r-normal--*-*-*-*-*-*-adobe-fontspecific\n\</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>S2</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="-15%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+
+<p>-*-symbol-medium-r-normal--*-*-*-*-*-*-adobe-fontspecific\n</p> </td></tr>
+</table>
+
+<h2>USING XDITVIEW WITH DITROFF
+<a name="USING XDITVIEW WITH DITROFF"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can use any
+ditroff output file with <i>xditview,</i> although files
+which use the fonts appropriate to the fontMap will look
+more accurate on the screen. On servers which support scaled
+fonts, all requested font sizes will be accurately reflected
+on the screen; for servers which do not support scaled
+<i>xditview</i> will use the closest font from the same
+family.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>X</i>(7),
+<i>xrdb</i>(1), <i>ditroff</i>(1), <i>X Logical Font
+Description Conventions</i></p>
+
+<h2>ORIGIN
+<a name="ORIGIN"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Portions of
+this program originated in <i>xtroff which was derived</i>
+from <i>suntroff.</i></p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 1994
+X Consortium <br>
+See <i>X</i>(7) for a full statement of rights and
+permissions.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Keith Packard
+(MIT X Consortium) <br>
+Richard L. Hyde (Purdue) <br>
+David Slattengren (Berkeley) <br>
+Malcom Slaney (Schlumberger Palo Alto Research) <br>
+Mark Moraes (University of Toronto)</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:33 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>faked</title>
+
+</head>
+<body>
+
+<h1 align="center">faked</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#COPYING">COPYING</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#MANUAL PAGE">MANUAL PAGE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">faked - daemon
+that remembers fake ownership/permissions of files
+manipulated by fakeroot processes.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>faked
+[--debug] [--foreground] [--cleanup] [--key</b>
+<i>msg-key</i><b>] [--load] [--save-file</b>
+<i>save-file</i><b>] [--port</b> <i>TCP-port</i><b>]</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If a fakeroot
+process wants to change the ownership of a file, then
+<b>faked</b> is the process that remembers that new owner.
+If later the same fakeroot process does a stat() for that
+filename, then the libfakeroot wrapped stat() call will
+first ask faked for the fake ownership etc of that file, and
+then report it.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--debug</b></p>
+
+<p style="margin-left:22%;">Print debugging information on
+stderr.</p>
+
+<p style="margin-left:11%;"><b>--foreground</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t fork into the
+background.</p>
+
+<p style="margin-left:11%;"><b>--cleanup
+&nbsp;number</b></p>
+
+<p style="margin-left:22%;">Cleanup the semaphores.</p>
+
+<p style="margin-left:11%;"><b>--key
+&nbsp;key-number</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t allocate a new
+communication channel, but use channel specified by key. (If
+the specified channel doesn&rsquo;t exist, it&rsquo;s
+created).</p>
+
+<p style="margin-left:11%;"><b>--save-file
+&nbsp;save-file</b></p>
+
+<p style="margin-left:22%;">Save the environment to
+save-file on exit.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--load</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Load a previously saved environment from the standard
+input.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--unknown-is-real</b></p>
+
+<p style="margin-left:22%;">Use real ownership of
+previously-unknown files instead of setting them to
+root:root.</p>
+
+<p style="margin-left:11%;"><b>--port
+&nbsp;tcp-port</b></p>
+
+<p style="margin-left:22%;">Use TCP port tcp-port.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None so far. Be
+warned, though: although I&rsquo;ve written quite a few much
+larger (and smaller) programs, I&rsquo;ve never written
+anything that was as tiny as <b>fakeroot</b>, had as many
+bugs as <b>fakeroot</b>, and still was as usable as, say,
+<b>fakeroot</b> version 0.0_3, the first version that could
+be used to build itself.</p>
+
+<h2>COPYING
+<a name="COPYING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fakeroot</b>
+is distributed under the GNU General Public License. (GPL
+2.0 or greater).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">joost
+witteveen</p>
+
+
+<p style="margin-left:22%;">&lt;<i>joostje@debian.org</i>&gt;</p>
+
+<p style="margin-left:11%;">Clint Adams</p>
+
+
+<p style="margin-left:22%;">&lt;<i>clint@debian.org</i>&gt;</p>
+
+<p style="margin-left:11%;">Timo Savola</p>
+
+<h2>MANUAL PAGE
+<a name="MANUAL PAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mostly by
+J.H.M. Dassen &lt;jdassen@debian.org&gt; mods/additions by
+joost and Clint.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fakeroot</b>(1),
+<b>dpkg-buildpackage</b>(1), <b>debuild</b>(1)
+<b>/usr/share/doc/fakeroot/DEBUG</b></p>
+<hr>
+</body>
+</html>

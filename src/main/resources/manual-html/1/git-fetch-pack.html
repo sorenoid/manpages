@@ -1,0 +1,230 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIT-FETCH-PACK</title>
+
+</head>
+<body>
+
+<h1 align="center">GIT-FETCH-PACK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#GIT">GIT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">git-fetch-pack
+- Receive missing objects from another repository</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>git
+fetch-pack</i> [--all] [--quiet|-q] [--keep|-k] [--thin]
+[--include-tag] <br>
+[--upload-pack=&lt;git-upload-pack&gt;] <br>
+[--depth=&lt;n&gt;] [--no-progress] <br>
+[-v] &lt;repository&gt; [&lt;refs&gt;...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Usually you
+would want to use <i>git fetch</i>, which is a higher level
+wrapper of this command, instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Invokes
+<i>git-upload-pack</i> on a possibly remote repository and
+asks it to send objects missing from this repository, to
+update the named heads. The list of commits available
+locally is found out by scanning the local refs/ hierarchy
+and sent to <i>git-upload-pack</i> running on the other
+end.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+degenerates to download everything to complete the asked
+refs from the remote side when the local side does not have
+a common ancestor commit.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">--all</p>
+
+<p style="margin-left:17%;">Fetch all remote refs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--stdin</p>
+
+<p style="margin-left:17%;">Take the list of refs from
+stdin, one per line. If there are refs specified on the
+command line in addition to this option, then the refs from
+stdin are processed after those on the command line.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<b>--stateless-rpc</b> is specified together with this
+option then the list of refs must be in packet format
+(pkt-line). Each ref must be in a separate packet, and the
+list must end with a flush packet.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-q, --quiet</p>
+
+<p style="margin-left:17%;">Pass <b>-q</b> flag to <i>git
+unpack-objects</i>; this makes the cloning process less
+verbose.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-k, --keep</p>
+
+<p style="margin-left:17%;">Do not invoke <i>git
+unpack-objects</i> on received data, but create a single
+packfile out of it instead, and store it in the object
+database. If provided twice then the pack is locked against
+repacking.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--thin</p>
+
+<p style="margin-left:17%;">Fetch a &quot;thin&quot; pack,
+which records objects in deltified form based on objects not
+included in the pack to reduce network traffic.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--include-tag</p>
+
+<p style="margin-left:17%;">If the remote side supports it,
+annotated tags objects will be downloaded on the same
+connection as the other objects if the object the tag
+references is downloaded. The caller must otherwise
+determine the tags this option made available.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--upload-pack=&lt;git-upload-pack&gt;</p>
+
+<p style="margin-left:17%;">Use this to specify the path to
+<i>git-upload-pack</i> on the remote side, if is not found
+on your $PATH. Installations of sshd ignores the
+user&rsquo;s environment setup scripts for login shells
+(e.g. .bash_profile) and your privately installed git may
+not be found on the system default $PATH. Another workaround
+suggested is to set up your $PATH in &quot;.bashrc&quot;,
+but this flag is for people who do not want to pay the
+overhead for non-interactive shells by having a lean .bashrc
+file (they set most of the things up in .bash_profile).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--exec=&lt;git-upload-pack&gt;</p>
+
+<p style="margin-left:17%;">Same as
+--upload-pack=&lt;git-upload-pack&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--depth=&lt;n&gt;</p>
+
+<p style="margin-left:17%;">Limit fetching to
+ancestor-chains not longer than n. <i>git-upload-pack</i>
+treats the special depth 2147483647 as infinite even if
+there is an ancestor-chain that long.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--shallow-since=&lt;date&gt;</p>
+
+<p style="margin-left:17%;">Deepen or shorten the history
+of a shallow repository to include all reachable commits
+after &lt;date&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--shallow-exclude=&lt;revision&gt;</p>
+
+<p style="margin-left:17%;">Deepen or shorten the history
+of a shallow repository to exclude commits reachable from a
+specified remote branch or tag. This option can be specified
+multiple times.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--deepen-relative</p>
+
+<p style="margin-left:17%;">Argument --depth specifies the
+number of commits from the current shallow boundary instead
+of from the tip of each remote branch history.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--no-progress</p>
+
+<p style="margin-left:17%;">Do not show the progress.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">--check-self-contained-and-connected</p>
+
+<p style="margin-left:17%;">Output
+&quot;connectivity-ok&quot; if the received pack is
+self-contained and connected.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-v</p>
+
+<p style="margin-left:17%;">Run verbosely.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;repository&gt;</p>
+
+<p style="margin-left:17%;">The URL to the remote
+repository.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;refs&gt;...</p>
+
+<p style="margin-left:17%;">The remote heads to update
+from. This is relative to $GIT_DIR (e.g. &quot;HEAD&quot;,
+&quot;refs/heads/master&quot;). When unspecified, update
+from all heads the remote side has.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the remote
+has enabled the options
+<b>uploadpack.allowTipSHA1InWant</b>,
+<b>uploadpack.allowReachableSHA1InWant</b>, or
+<b>uploadpack.allowAnySHA1InWant</b>, they may alternatively
+be 40-hex sha1s present on the remote.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>git-fetch</b>(1)</p>
+
+<h2>GIT
+<a name="GIT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Part of the
+<b>git</b>(1) suite</p>
+<hr>
+</body>
+</html>

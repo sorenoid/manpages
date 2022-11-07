@@ -1,0 +1,241 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:39:11 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>rsync-ssl</title>
+
+</head>
+<body>
+
+<h1 align="center">rsync-ssl</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#CREDITS">CREDITS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rsync-ssl - a
+helper script for connecting to an ssl rsync daemon</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rsync-ssl
+[--type=SSL_TYPE] RSYNC_ARGS</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The rsync-ssl
+script helps you to run an rsync copy to/from an rsync
+daemon that requires ssl connections.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The script
+requires that you specify an rsync-daemon arg in the style
+of either <b>hostname::</b> (with 2 colons) or
+<b>rsync://hostname/</b>. The default port used for
+connecting is 874 (one higher than the normal 873) unless
+overridden in the environment. You can specify an overriding
+port via <b>--port</b> or by including it in the normal spot
+in the URL format, though both of those require your rsync
+version to be at least 3.2.0.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>first</b> arg is a <b>--type=SSL_TYPE</b> option, the
+script will only use that particular program to open an ssl
+connection instead of trying to find an openssl or stunnel
+executable via a simple heuristic (assuming that the
+<b>RSYNC_SSL_TYPE</b> environment variable is not set as
+well&nbsp;-- see below). This option must specify one of
+<b>openssl</b> or <b>stunnel</b>. The equal sign is required
+for this particular option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All the other
+options are passed through to the rsync command, so consult
+the <b>rsync</b>(1) manpage for more information on how it
+works.</p>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The ssl helper
+scripts are affected by the following environment variables:
+<b><br>
+RSYNC_SSL_TYPE</b></p>
+
+<p style="margin-left:22%;">Specifies the program type that
+should be used to open the ssl connection. It must be one of
+<b>openssl</b> or <b>stunnel</b>. The <b>--type=SSL_TYPE</b>
+option overrides this, when specified.</p>
+
+<p style="margin-left:11%;"><b>RSYNC_SSL_PORT</b></p>
+
+<p style="margin-left:22%;">If specified, the value is the
+port number that is used as the default when the user does
+not specify a port in their rsync command. When not
+specified, the default port number is 874. (Note that older
+rsync versions (prior to 3.2.0) did not communicate an
+overriding port number value to the helper script.)</p>
+
+<p style="margin-left:11%;"><b>RSYNC_SSL_CERT</b></p>
+
+<p style="margin-left:22%;">If specified, the value is a
+filename that contains a certificate to use for the
+connection.</p>
+
+<p style="margin-left:11%;"><b>RSYNC_SSL_CA_CERT</b></p>
+
+<p style="margin-left:22%;">If specified, the value is a
+filename that contains a certificate authority certificate
+that is used to validate the connection.</p>
+
+<p style="margin-left:11%;"><b>RSYNC_SSL_OPENSSL</b></p>
+
+<p style="margin-left:22%;">Specifies the openssl
+executable to run when the connection type is set to
+openssl. If unspecified, the $PATH is searched for
+&quot;openssl&quot;.</p>
+
+<p style="margin-left:11%;"><b>RSYNC_SSL_GNUTLS</b></p>
+
+<p style="margin-left:22%;">Specifies the gnutls-cli
+executable to run when the connection type is set to gnutls.
+If unspecified, the $PATH is searched for
+&quot;gnutls-cli&quot;.</p>
+
+<p style="margin-left:11%;"><b>RSYNC_SSL_STUNNEL</b></p>
+
+<p style="margin-left:22%;">Specifies the stunnel
+executable to run when the connection type is set to
+stunnel. If unspecified, the $PATH is searched first for
+&quot;stunnel4&quot; and then for &quot;stunnel&quot;.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em">rsync-ssl -aiv
+example.com::mod/ dest</p>
+
+<p style="margin-left:17%; margin-top: 1em">rsync-ssl
+--type=openssl -aiv example.com::mod/ dest</p>
+
+<p style="margin-left:17%; margin-top: 1em">rsync-ssl -aiv
+--port 9874 example.com::mod/ dest</p>
+
+<p style="margin-left:17%; margin-top: 1em">rsync-ssl -aiv
+rsync://example.com:9874/mod/ dest</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rsync</b>(1),
+<b>rsyncd.conf</b>(5)</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that using
+an stunnel connection requires at least version 4 of
+stunnel, which should be the case on modern systems. Also,
+it does not verify a connection against the CA certificate
+collection, so it only encrypts the connection without any
+cert validation unless you have specified the certificate
+environment options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This script
+also supports a <b>--type=gnutls</b> option, but at the time
+of this release the gnutls-cli command was dropping output,
+making it unusable. If that bug has been fixed in your
+version, feel free to put gnutls into an exported
+RSYNC_SSL_TYPE environment variable to make its use the
+default.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please report
+bugs! See the web site at https://rsync.samba.org/.</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This man page
+is current for version 3.2.3 of rsync.</p>
+
+<h2>CREDITS
+<a name="CREDITS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rsync is
+distributed under the GNU General Public License. See the
+file COPYING for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A web site is
+available at https://rsync.samba.org/. The site includes an
+FAQ-O-Matic which may cover questions unanswered by this
+manual page.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manpage
+was written by Wayne Davison.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mailing lists
+for support and development are available at
+https://lists.samba.org/.</p>
+<hr>
+</body>
+</html>

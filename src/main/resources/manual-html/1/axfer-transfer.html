@@ -1,0 +1,1006 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:16 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>AXFER-TRANSFER</title>
+
+</head>
+<body>
+
+<h1 align="center">AXFER-TRANSFER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#POSIX SIGNALS">POSIX SIGNALS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SCHEDULING MODEL">SCHEDULING MODEL</a><br>
+<a href="#COMPATIBILITY TO APLAY">COMPATIBILITY TO APLAY</a><br>
+<a href="#DESIGN">DESIGN</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">axfer-transfer
+- transferrer of audio data frame for sound devices and
+nodes.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>axfer
+transfer</b> <i>direction</i> [ <i>common-options</i> ] [
+<i>backend-options</i> ] [ <i>filepath</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>axfer
+transfer</b> <i>direction</i> [ <i>common-options</i> ] [
+<i>backend-options</i> ] <i>-I</i> | <i>--separate-channels
+filepath ...</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">direction =
+<b>capture</b> | <b>playback</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">common-options
+= ( read <i>OPTIONS</i> section )</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">backend-options
+= ( read <i>OPTIONS</i> section )</p>
+
+<p style="margin-left:11%; margin-top: 1em">filepaths = (
+read <i>OPTIONS</i> section )</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>transfer</b> subcommand of <b>axfer</b> performs
+transmission of audio data frames for devices available in
+supported backends. This program is essentially designed to
+use alsa-lib APIs (libasound backend) to handle sound
+devices supported by Linux sound subsystem (ALSA).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Direction
+<br>
+capture</b></p>
+
+<p style="margin-left:22%;">Operates for capture
+transmission.</p>
+
+<p style="margin-left:11%;"><b>playback</b></p>
+
+<p style="margin-left:22%;">Operates for playback
+transmission.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Filepath</b>
+<br>
+Filepath is handled as a path relative to current working
+directory of run time if it's not full path from root
+directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The standard
+input or output is used if filepath is not specified or
+given as <i>'-'</i> .</p>
+
+<p style="margin-left:11%; margin-top: 1em">For playback
+transmission, container format of given <i>filepath</i> is
+detected automatically and metadata is used for parameters
+of sample format, channels, rate, duration. If nothing
+detected, content of given file path is handled as raw data.
+In this case, the parameters should be indicated as
+options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Multiple
+<i>filepaths</i> are allowed with <i>-I</i> |
+<i>--separate-channels</i> option. In this case, standard
+input and output is not available. The same <i>filepath</i>
+is not allowed except for paths listed below: <br>
+- /dev/null <br>
+- /dev/zero <br>
+- /dev/full <br>
+- /dev/random <br>
+- /dev/urandom</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+options <br>
+-h, --help</b></p>
+
+<p style="margin-left:22%;">Print help messages and finish
+run time.</p>
+
+<p style="margin-left:11%;"><b>-q, --quiet</b></p>
+
+<p style="margin-left:22%;">Quiet mode. Suppress messages
+(not sound :))</p>
+
+<p style="margin-left:11%;"><b>-v, --verbose</b></p>
+
+<p style="margin-left:22%;">Verbose mode. Runtime dumps
+supplemental information according to the number of this
+option given in command line.</p>
+
+<p style="margin-left:11%;"><b>-d, --duration=#</b></p>
+
+<p style="margin-left:22%;">Interrupt after # seconds. A
+value of zero means infinity. The default is zero, so if
+this option is omitted then the transmission process will
+run until it is killed. Either <i>-d</i> or <i>-s</i> option
+is available exclusively.</p>
+
+<p style="margin-left:11%;"><b>-s, --samples=#</b></p>
+
+<p style="margin-left:22%;">Interrupt after transmission of
+# number of data frames. A value of zero means infinity. The
+default is zero, so if this options is omitted then the
+transmission process will run until it is killed. Either
+<i>-d</i> or <i>-s</i> option is available exclusively.</p>
+
+<p style="margin-left:11%;"><b>-f, --format=FORMAT</b></p>
+
+<p style="margin-left:22%;">Indicate format of audio
+sample. This is required for capture transmission, or
+playback transmission with files including raw audio
+data.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Available
+sample format is listed below: <br>
+- [S8|U8|S16|U16|S32|U32][_LE|_BE] <br>
+- [S24|U24][_LE|_BE] <br>
+- FLOAT[_LE|_BE] <br>
+- FLOAT64[_LE|_BE] <br>
+- IEC958_SUBFRAME[_LE|_BE] <br>
+- MU_LAW <br>
+- A_LAW <br>
+- [S20|U20][_LE|_BE] <br>
+- [S24|U24][_3LE|_3BE] <br>
+- [S20|U20][_3LE|_3BE] <br>
+- [S18|U18][_3LE|_3BE] <br>
+- DSD_U8 <br>
+- DSD_[U16|U32][_LE|_BE]</p>
+
+<p style="margin-left:22%; margin-top: 1em">If endian-ness
+is omitted, host endian-ness is used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Some special
+formats are available: <br>
+- cd (16 bit little endian, 44100, stereo) [= -f S16_LE -c 2
+-r 44100] <br>
+- cdr (16 bit big endian, 44100, stereo) [= -f S16_BE -c 2
+-f 44100] <br>
+- dat (16 bit little endian, 48000, stereo) [= -f S16_LE -c
+2 -r 48000]</p>
+
+<p style="margin-left:22%; margin-top: 1em">If omitted,
+<i>U8</i> is used as a default. Actual available formats are
+restricted by each transmission backend.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Unavailable
+sample format is listed below. These format has size of data
+frame unaligned to byte unit.</p>
+
+<p style="margin-left:22%; margin-top: 1em">- IMA_ADPCM
+<br>
+- MPEG <br>
+- GSM <br>
+- SPECIAL <br>
+- G723_24 <br>
+- G723_24_1B <br>
+- G723_40 <br>
+- G723_40_1B</p>
+
+<p style="margin-left:11%;"><b>-c, --channels=#</b></p>
+
+<p style="margin-left:22%;">Indicate the number of audio
+data samples per frame. This is required for capture
+transmission, or playback transmission with files including
+raw audio data. The value should be between <i>1 to 256</i>
+. If omitted, <i>1</i> is used as a default.</p>
+
+<p style="margin-left:11%;"><b>-r, --rate=#</b></p>
+
+<p style="margin-left:22%;">Indicate the number of audio
+data frame per second. This is required for capture
+transmission, or playback transmission with files including
+raw audio data. If the value is less than <i>1000</i> , it's
+interpreted by <i>kHz</i> unit. The value should be between
+<i>2000</i> and <i>192000</i> . If omitted, <i>8000</i> is
+used as a default.</p>
+
+<p style="margin-left:11%;"><b>-t, --file-type=TYPE</b></p>
+
+<p style="margin-left:22%;">Indicate the type of file. This
+is required for capture transmission. Available types are
+listed below: <br>
+- wav: Microsoft/IBM RIFF/Wave format <br>
+- au, sparc: Sparc AU format <br>
+- voc: Creative Tech. voice format <br>
+- raw: raw data</p>
+
+<p style="margin-left:22%; margin-top: 1em">When nothing is
+indicated, for capture transmission, the type is decided
+according to suffix of <i>filepath</i> , and <i>raw</i> type
+is used for fallback.</p>
+
+<p style="margin-left:11%;"><b>-I,
+--separate-channels</b></p>
+
+<p style="margin-left:22%;">Indicate this option when
+several files are going to be handled. For capture
+transmission, if one filepath is given as <i>filepath</i> ,
+a list of <i>filepaths</i> is generated in a formula
+'&lt;filepath&gt;-&lt;sequential number&gt;[.suffix]'. The
+suffix is omitted when raw format of container is used.</p>
+
+<p style="margin-left:11%;"><b>--dump-hw-params</b></p>
+
+<p style="margin-left:22%;">Dump hardware parameters and
+finish run time if backend supports it.</p>
+
+
+<p style="margin-left:11%;"><b>--xfer-backend=BACKEND</b></p>
+
+<p style="margin-left:22%;">Select backend of transmission
+from a list below. The default is libasound. <br>
+- libasound <br>
+- libffado (optional if compiled)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Backend
+options for libasound <br>
+-D, --device=NODE</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+used to select PCM node in libasound configuration space.
+Available nodes are listed by <i>pcm</i> operation of
+<i>list</i> subcommand.</p>
+
+<p style="margin-left:11%;"><b>-N, --nonblock</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">With this
+option, PCM substream is opened in non-blocking mode. When
+audio data frame is not available in buffer of the PCM
+substream, I/O operation immediately returns without
+blocking process. This option implicitly uses
+<i>--waiter-type</i> option as well to prevent heavy
+consumption of CPU time.</p>
+
+<p style="margin-left:11%;"><b>-M, --mmap</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">With this
+option, audio data frame is processed directly in buffer of
+PCM substream if selected node supports this operation.
+Without the option, temporary buffers are used to copy audio
+data frame for buffer of PCM substream. This option
+implicitly uses <i>--waiter-type</i> option as well to
+prevent heavy consumption of CPU time.</p>
+
+<p style="margin-left:11%;"><b>-F, --period-size=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>period_size</i> hardware
+parameter of PCM substream. The parameter indicates the
+number of audio data frame per period in buffer of the PCM
+substream. Actual number is decided as a result of
+interaction between each implementation of PCM plugin
+chained from the selected PCM node, and in-kernel driver or
+PCM I/O plugins.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Ideally, the
+same amount of audio data frame as the value should be
+handled in one I/O operation. Actually, it is not, depending
+on implementation of the PCM plugins, in-kernel driver, PCM
+I/O plugins and scheduling model. For 'hw' PCM plugin in
+'irq' scheduling model, the value is used to decide
+intervals of hardware interrupt, thus the same amount of
+audio data frame as the value is expected to be available
+for one I/O operation.</p>
+
+<p style="margin-left:11%;"><b>--period-time=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>period_time</i> hardware
+parameter of PCM substream. This option is similar to
+<i>--period-size</i> option, however its unit is
+micro-second.</p>
+
+<p style="margin-left:11%;"><b>-B, --buffer-size=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>buffer_size</i> hardware
+parameter of PCM substream. The parameter indicates the
+number of audio data frame in buffer of PCM substream.
+Actual number is decided as a result of interaction between
+each implementation of PCM plugin chained from the selected
+PCM node, and in-kernel driver or PCM I/O plugins.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Ideally, this
+is multiples of the number of audio data frame per period,
+thus the size of period. Actually, it is not, depending on
+implementation of the PCM plugins, in-kernel driver and PCM
+I/O plugins.</p>
+
+<p style="margin-left:11%;"><b>--buffer-time=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>buffer_time</i> hardware
+parameter of PCM substream. This option is similar to
+<i>--buffer-size</i> option, however its unit is
+micro-second.</p>
+
+<p style="margin-left:11%;"><b>--waiter-type=TYPE</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+indicates the type of waiter for event notification. At
+present, four types are available; <i>default</i> ,
+<i>select</i> , <i>poll</i> and <i>epoll</i> . With
+<i>default</i> type, 'snd_pcm_wait()' is used. With
+<i>select</i> type, 'select(2)' system call is used. With
+<i>poll</i> type, 'poll(2)' system call is used. With
+<i>epoll</i> type, Linux-specific 'epoll(7)' system call is
+used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+should correspond to one of <i>--nonblock</i> or
+<i>--mmap</i> options, or <i>timer</i> value of
+<i>--sched-model</i> option. Neither this option nor
+<i>--test-nowait</i> is available at the same time.</p>
+
+<p style="margin-left:11%;"><b>--sched-model=MODEL</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+selects scheduling model for process of this program. One of
+<i>irq</i> or <i>timer</i> is available. In detail, please
+read 'SCHEDULING MODEL' section.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When nothing
+specified, <i>irq</i> model is used.</p>
+
+<p style="margin-left:11%;"><b>-A, --avail-min=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>avail-min</i> software
+parameter of PCM substream. In blocking mode, the value is
+used as threshold of the number of available audio data
+frames in buffer of PCM substream to wake up process blocked
+by I/O operation. In non-blocking mode, any I/O operation
+returns -EAGAIN until the available number of audio data
+frame reaches the threshold.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect in cases neither <i>--mmap</i> nor <i>timer</i>
+value of <i>--sched-model</i> option is used.</p>
+
+<p style="margin-left:11%;"><b>-R, --start-delay=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>start_threshold</i> software
+parameter of PCM substream. The value is used as threshold
+to start PCM substream automatically. At present, this
+option has an effect in cases neither <i>--mmap</i> nor
+<i>timer</i> value of <i>--sched-model</i> option is
+used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For playback
+transmission, when the number of accumulated audio data
+frame in buffer of PCM substream to which this program
+writes out reaches the threshold, the PCM substream starts
+automatically without an explicit call of
+<i>snd_pcm_start()</i> to the PCM substream.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For capture
+transmission, this option is useless. The number of
+accumulated audio data frame is not increased without an
+explicit call of <i>snd_pcm_start()</i> to the PCM
+substream.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect in cases neither <i>--mmap</i> nor <i>timer</i>
+value of <i>--sched-model</i> option is used.</p>
+
+<p style="margin-left:11%;"><b>-T, --stop-delay=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+configures given value to <i>stop_threshold</i> software
+parameter of PCM substream. The value is used as threshold
+to stop PCM substream automatically. At present, this option
+has an effect in cases neither <i>--mmap</i> nor
+<i>timer</i> value of <i>--sched-model</i> option is
+used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For capture
+transmission, when the number of accumulated audio data
+frame in buffer of PCM substream to which a driver or
+alsa-lib PCM plugins write reaches the threshold, the PCM
+substream stops automatically without an explicit call of
+<i>snd_pcm_stop()</i> to the PCM substream. This is a case
+that this program leaves the audio data frames without
+reading for a while.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For playback
+transmission, when the number available audio data frame in
+buffer of PCM substream from which a driver or alsa-lib PCM
+plugins read reaches the threshold, the PCM substream stops
+automatically without an explicit call of
+<i>snd_pcm_stop()</i> to the PCM substream. This is a case
+that this program leaves the audio data frames without
+writing for a while.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect in cases neither <i>--mmap</i> nor <i>timer</i>
+value of <i>--sched-model</i> option is used.</p>
+
+<p style="margin-left:11%;"><b>--disable-resample</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect for 'plug' plugin in alsa-lib to suppress
+conversion of sampling rate for audio data frame.</p>
+
+<p style="margin-left:11%;"><b>--disable-channels</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect for 'plug' plugin in alsa-lib to suppress
+conversion of channels for audio data frame.</p>
+
+<p style="margin-left:11%;"><b>--disable-format</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect for 'plug' plugin in alsa-lib to suppress
+conversion of sample format for audio data frame.</p>
+
+<p style="margin-left:11%;"><b>--disable-softvol</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+an effect for 'softvol' plugin in alsa-lib to suppress
+conversion of samples for audio data frame via additional
+control element.</p>
+
+<p style="margin-left:11%;"><b>--fatal-errors</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+suppresses recovery operation from XRUN state of running PCM
+substream, then process of this program is going to finish
+as usual.</p>
+
+<p style="margin-left:11%;"><b>--test-nowait</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+disables any waiter for I/O event notification. I/O
+operations are iterated till any of audio data frame is
+available. The option brings heavy load in consumption of
+CPU time.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Backend
+options for libffado</b> <br>
+This backend is automatically available when configure
+script detects <i>ffado_streaming_init()</i> symbol in
+libffado shared object. <b><br>
+-p, --port=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+uses given value to decide which 1394 OHCI controller is
+used to communicate. When Linux system has two 1394 OHCI
+controllers, <i>0</i> or <i>1</i> are available. Neither
+this option nor <i>-g</i> is available at the same time. If
+nothing specified, libffado performs to communicate to units
+on IEEE 1394 bus managed by all of 1394 OHCI controller
+available in Linux system.</p>
+
+<p style="margin-left:11%;"><b>-n, --node=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+uses given value to decide which unit is used to
+communicate. This option requires <i>-p</i> option to
+indicate which 1394 OHCI controller is used to communicate
+to the specified unit.</p>
+
+<p style="margin-left:11%;"><b>-g,
+--guid=HEXADECIMAL</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+uses given value to decide a target unit to communicate. The
+value should be prefixed with &rsquo;0x&rsquo; and consists
+of hexadecimal literal letters (0-9, a-f, A-F). Neither this
+option nor <i>-p</i> is available at the same time. If
+nothing specified, libffado performs to communicate to units
+on IEEE 1394 bus managed by all of 1394 OHCI controller
+available in Linux system.</p>
+
+
+<p style="margin-left:11%;"><b>--frames-per-period=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+uses given value to decide the number of audio data frame in
+one read/write operation. The operation is blocked till the
+number of available audio data frame exceeds the given
+value. As a default, 512 audio data frames is used.</p>
+
+
+<p style="margin-left:11%;"><b>--periods-per-buffer=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+uses given value to decide the size of intermediate buffer
+between this program and libffado. As a default, 2 periods
+per buffer is used.</p>
+
+<p style="margin-left:11%;"><b>--slave</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+allows this program to run slave mode. In this mode,
+libffado adds unit directory into configuration ROM of 1394
+OHCI controller where Linux system runs. The unit directory
+can be found by the other node on the same bus. Linux system
+running on the node can transfer isochronous packet with
+audio data frame to the unit. This program can receive the
+packet and demultiplex the audio data frame.</p>
+
+<p style="margin-left:11%;"><b>--snoop</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+allows this program to run snoop mode. In this mode,
+libffado listens isochronous channels to which device
+transfers isochronous packet. When isochronous communication
+starts by any unit on the same bus, the packets can be
+handled by this program.</p>
+
+<p style="margin-left:11%;"><b>--sched-priority=#</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+executes <i>pthread_setschedparam()</i> in a call of
+<i>ffado_streaming_init()</i> to configure scheduling policy
+and given value as its priority for threads related to
+isochronous communication. The given value should be within
+<i>RLIMIT_RTPRIO</i> parameter of process. Please read
+<i>getrlimit(2)</i> for details.</p>
+
+<h2>POSIX SIGNALS
+<a name="POSIX SIGNALS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">During
+transmission, <i>SIGINT</i> and <i>SIGTERM</i> will close
+handled files and PCM substream to be going to finish run
+time.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>SIGTSTP</i>
+will suspend PCM substream and <i>SIGCONT</i> will resume
+it. No XRUNs are expected. With libffado backend, the
+suspend/resume is not supported and runtime is aboeted
+immediately.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The other
+signals perform default behaviours.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>$ axfer
+transfer playback -d 1 something</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The above will
+transfer audio data frame in 'something' file for playback
+during 1 second. The sample format is detected automatically
+as a result to parse 'something' as long as it's compliant
+to one of Microsoft/IBM RIFF/Wave, Sparc AU, Creative Tech.
+voice formats. If nothing detected, <i>-r</i> , <i>-c</i>
+and <i>-f</i> should be given, or <i>-f</i> should be given
+with special format.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>$ axfer
+transfer playback -r 22050 -c 1 -f S16_LE -t raw
+something</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The above will
+transfer audio data frame in 'something' file including no
+information of sample format, as sample format of 22050 Hz,
+monaural, signed 16 bit little endian PCM for playback. The
+transmission continues till catching <i>SIGINT</i> from
+keyboard or <i>SIGTERM</i> by <i>kill(1)</i> .</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>$ axfer
+transfer capture -d 10 -f cd something.wav</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The above will
+transfer audio data frame to 'something.wav' file as sample
+format of 44.1 kHz, 2 channels, signed 16 bit little endian
+PCM, during 10 seconds. The file format is Microsoft/IBM
+RIFF/Wave according to suffix of the given <i>filepath</i>
+.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>$ axfer
+transfer capture -s 1024 -r 48000 -c 2 -f S32_BE -I -t au
+channels</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The above will
+transfer audio data frame as sample format of 48.0 kHz, 2
+channels, signed 32 bit big endian PCM for 1,024 number of
+data frames to files named 'channels-1.au' and
+'channels-2.au'.</p>
+
+<h2>SCHEDULING MODEL
+<a name="SCHEDULING MODEL"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In a design of
+ALSA PCM core, runtime of PCM substream supports two modes;
+<i>period-wakeup</i> and <i>no-period-wakeup.</i> These two
+modes are for different scheduling models.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>IRQ-based
+scheduling model</b> <br>
+As a default, <i>period-wakeup</i> mode is used. In this
+mode, in-kernel drivers should operate hardware to generate
+periodical notification for transmission of audio data
+frame. The interval of notification is equivalent to the
+same amount of audio data frame as one period of buffer,
+against actual time.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In a handler
+assigned to the notification, a helper function of ALSA PCM
+core is called to update a position to head of hardware
+transmission, then compare it with a position to head of
+application operation to judge overrun/underrun (XRUN) and
+to wake up blocked processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For this
+purpose, hardware IRQ of controller for serial audio bus
+such as Inter-IC sound is typically used. In this case, the
+controller generates the IRQ according to transmission on
+the serial audio bus. In the handler assigned to the IRQ,
+direct media access (DMA) transmission is requested between
+dedicated host memory and device memory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If target
+hardware doesn&rsquo;t support this kind of mechanism, the
+periodical notification should be emulated by any timer;
+e.g. hrtimer, kernel timer. External PCM plugins generated
+by PCM plugin SDK in alsa-lib should also emulate the above
+behaviour.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this mode,
+PCM applications are programmed according to typical way of
+I/O operations. They execute blocking system calls to
+read/write audio data frame in buffer of PCM substream, or
+blocking system calls to wait until any audio data frame is
+available. In <i>axfer</i> , this is called <i>IRQ-based</i>
+scheduling model and a default behaviour. Users can
+explicitly configure this mode by usage of
+<i>--sched-model</i> option with <i>irq</i> value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Timer-based
+scheduling model</b> <br>
+The <i>no-period-wakeup</i> mode is an optional mode of
+runtime of PCM substream. The mode assumes a specific
+feature of hardware and assist of in-kernel driver and PCM
+applications. In this mode, in-kernel drivers don&rsquo;t
+operate hardware to generate periodical notification for
+transmission of audio data frame. The hardware should
+automatically continue transmission of audio data frame
+without periodical operation of the drivers; e.g. according
+to auto-triggered DMA transmission, a chain of registered
+descriptors.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this mode,
+nothing wakes up blocked processes, therefore PCM
+applications should be programmed without any blocking
+operation. For this reason, this mode is enabled when the
+PCM applications explicitly configure hardware parameter to
+runtime of PCM substream, to prevent disorder of existing
+applications. Additionally, nothing maintains timing for
+transmission of audio data frame, therefore the PCM
+applications should voluntarily handle any timer to queue
+audio data frame in buffer of the PCM substream for lapse of
+time. Furthermore, instead of driver, the PCM application
+should call a helper function of ALSA PCM core to update a
+position to head of hardware transmission and to check
+XRUN.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In <i>axfer</i>
+, this is called <i>timer-based</i> scheduling model and
+available as long as hardware/driver assists
+<i>no-period-wakeup</i> runtime. Users should explicitly set
+this mode by usage of <i>--sched-model</i> option with
+<i>timer</i> value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+scheduling model, PCM applications need to care of available
+space on PCM buffer by lapse of time, typically by yielding
+CPU and wait for rescheduling. For the yielding, timeout is
+calculated for preferable amount of PCM frames to process.
+This is convenient to a kind of applications, like sound
+servers. when an I/O thread of the server wait for the
+timeout, the other threads can process audio data frames for
+server clients. Furthermore, with usage of
+rewinding/forwarding, applications can achieve low latency
+between transmission position and handling position even if
+they uses large size of PCM buffers.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Advantages
+and issues</b> <br>
+Ideally, timer-based scheduling model has some advantages
+than IRQ-based scheduling model. At first, no interrupt
+context runs for PCM substream. The PCM substream is handled
+in any process context only. No need to care of race
+conditions between IRQ and process contexts. This reduces
+some concerns for some developers of drivers and
+applications. Secondary, CPU time is not used for handlers
+on the interrupt context. The CPU time can be dedicated for
+the other tasks. This is good in a point of Time Sharing
+System. Thirdly, hardware is not configured to generate
+interrupts. This is good in a point of reduction of overall
+power consumption possibly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In either
+scheduling model, the hardware should allow drivers to read
+the number of audio data frame transferred between the
+dedicated memory and the device memory for audio serial bus.
+However, in timer-based scheduling model, fine granularity
+and accuracy of the value is important. Actually hardware
+performs transmission between dedicated memory and device
+memory for a small batch of audio data frames or bytes. In a
+view of PCM applications, the granularity in current
+transmission is required to decide correct timeout for each
+I/O operation. As of Linux kernel v4.21, ALSA PCM interface
+between kernel/userspace has no feature to report it.</p>
+
+<h2>COMPATIBILITY TO APLAY
+<a name="COMPATIBILITY TO APLAY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>transfer</b> subcommand of <b>axfer</b> is designed to
+keep compatibility to aplay(1). However some options below
+are not compatible due to several technical reasons. <i><br>
+-I, --separate-channels</i></p>
+
+<p style="margin-left:22%;">This option is supported just
+for files to store audio data frames corresponding to each
+channel. In aplay(1) implementation, this option has an
+additional effect to use PCM buffer aligned to
+non-interleaved order if a target device supports. As of
+2018, PCM buffer of non-interleaved order is hardly used by
+sound devices.</p>
+
+<p style="margin-left:11%;"><i>-A, --avail-min=#</i></p>
+
+<p style="margin-left:22%;">This option indicates threshold
+to wake up blocked process in a unit of audio data frame.
+Against aplay(1) implementation, this option has no effect
+with <i>--mmap</i> option as well as <i>timer</i> of
+<i>--sched-model</i> option.</p>
+
+<p style="margin-left:11%;"><i>-R, --start-delay=#</i></p>
+
+<p style="margin-left:22%;">This option indicates threshold
+to start prepared PCM substream in a unit of audio data
+frame. Against aplay(1) implementation, this option has no
+effect with <i>--mmap</i> option as well as <i>timer</i> of
+<i>--sched-model</i> option.</p>
+
+<p style="margin-left:11%;"><i>-T, --stop-delay=#</i></p>
+
+<p style="margin-left:22%;">This option indicates threshold
+to stop running PCM substream in a unit of audio data frame.
+Against aplay(1) implementation, this option has no effect
+with <i>--mmap</i> option as well as <i>timer</i> of
+<i>--sched-model</i> option.</p>
+
+<p style="margin-left:11%;"><i>--max-file-time=#</i></p>
+
+<p style="margin-left:22%;">This option is unsupported. In
+aplay(1) implementation, the option has an effect for
+capture transmission to save files up to the same number of
+data frames as the given value by second unit, or the
+maximum number of data frames supported by used file format.
+When reaching to the limitation, used file is closed, then
+new file is opened and audio data frames are written.
+However, this option requires extra handling of files and
+shall increase complexity of main loop of axfer.</p>
+
+
+<p style="margin-left:11%;"><i>--use-strftime=FORMAT</i></p>
+
+<p style="margin-left:22%;">This option is unsupported. In
+aplay(1) implementation, the option has an effect for
+capture transmission to generate file paths according to
+given format in which some extra formats are available as
+well as formats supported by strftime(3). However, this
+option requires extra string processing for file paths and
+it's bothersome if written in C language.</p>
+
+
+<p style="margin-left:11%;"><i>--process-id-file=FILEPATH</i></p>
+
+<p style="margin-left:22%;">This option is unsupported. In
+aplay(1) implementation, the option has an effect to create
+a file for given value and write out process ID to it. This
+file allows users to get process ID and send any POSIX
+signal to aplay process. However, this idea has some
+troubles for file locking when multiple aplay processes run
+with the same file.</p>
+
+<p style="margin-left:11%;"><i>-V, --vumeter=TYPE</i></p>
+
+<p style="margin-left:22%;">This option is not supported at
+present. In aplay(1) implementation, this option has an
+effect to occupy stdout with some terminal control
+characters and display vumeter for monaural and stereo
+channels. However, some problems lay; this feature is just
+for audio data frames with PCM format, this feature brings
+disorder of terminal after aborting, stdout is not available
+for pipeline.</p>
+
+<p style="margin-left:11%;"><i>-i, --interactive</i></p>
+
+<p style="margin-left:22%;">This option is not supported at
+present. In aplay(1) implementation, this option has an
+effect to occupy stdin for key input and suspend/resume PCM
+substream according to pushed enter key. However, this
+feature requires an additional input handling in main loop
+and leave bothersome operation to maintain PCM
+substream.</p>
+
+<p style="margin-left:11%;"><i>-m,
+--chmap=CH1,CH2,...</i></p>
+
+<p style="margin-left:22%;">ALSA PCM core and control core
+doesn&rsquo;t support this feature, therefore remapping
+should be done in userspace. This brings overhead to align
+audio data frames, especially for mmap operation.
+Furthermore, as of alsa-lib v1.1.8, some plugins don&rsquo;t
+support this feature expectedly, thus this option is a lack
+of transparent operation. At present, this option is not
+supported yet not to confuse users.</p>
+
+<p style="margin-left:11%;"><i>SIGTSTP, SIGCONT</i></p>
+
+<p style="margin-left:22%;">This performs suspend/resume of
+PCM substream. In aplay(1) implementation, these operations
+bring XRUN state to the substream, and suspend/resume is
+done in interactive mode in the above. Some developers use
+the signal for recovery test from XRUN. At present, no
+alternative is supported for the test.</p>
+
+<p style="margin-left:11%;"><i>SIGUSR1</i></p>
+
+<p style="margin-left:22%;">This is not supported. In
+aplay(1) implementation, this signal is assigned to a
+handler to close a current file to store audio data frame
+and open a new file to continue processing. However, as well
+as <i>--max-file-time</i> option, this option should
+increase complexity of main loop of axfer.</p>
+
+<h2>DESIGN
+<a name="DESIGN"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Modular
+structure</b> <br>
+This program consists of three modules; <i>xfer</i> ,
+<i>mapper</i> and <i>container</i> . Each module has an
+abstraction layer to enable actual implementation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">--------
+---------- ------------- <br>
+device &lt;-&gt; | xfer | &lt;-&gt; | mapper | &lt;-&gt; |
+container | &lt;-&gt; file <br>
+-------- ---------- ------------- <br>
+libasound single wav <br>
+libffado multiple au <br>
+voc <br>
+raw</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>xfer</i>
+module performs actual transmission to devices and nodes.
+The module can have several transmission backends. As a
+default backend, <i>libasound</i> backend is used to perform
+transmission via alsa-lib APIs. The module allows each
+backend to parse own command line options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>container</i> module performs to read/write audio data
+frame via descriptor for file/stream of multimedia container
+or raw data. The module automatically detect type of
+multimedia container and parse parameters in its metadata of
+data header. At present, three types of multimedia
+containers are supported; Microsoft/IBM RIFF/Wave (
+<i>wav</i> ), Sparc AU ( <i>au</i> ) and Creative Technology
+voice ( <i>voc</i> ). Additionally, a special container is
+prepared for raw audio data ( <i>raw</i> ).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>mapper</i> module handles buffer layout and alignment for
+transmission of audio data frame. The module has two
+implementations; <i>single</i> and <i>multiple</i> . The
+<i>single</i> backend uses one container to construct the
+buffer. The <i>multiple</i> backend uses several containers
+to construct it.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Care of
+copying audio data frame</b> <br>
+Between the <i>xfer</i> module and <i>mapper</i> module, a
+pointer to buffer including audio data frames is passed.
+This buffer has two shapes for interleaved and
+non-interleaved order. For the former, the pointer points to
+one buffer. For the latter, the pointer points to an array
+in which each element points to one buffer. Between the
+<i>mapper</i> module and <i>container</i> module, a pointer
+to one buffer is passed because supported media containers
+including raw type store audio data frames in interleaved
+order.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In passing
+audio data frame between the modules, axfer is programmed to
+avoid copying between a buffer to another buffer as much as
+possible. For example, in some scenarios below, no copying
+occurs between modules.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-
+xfer(mmap/interleaved), mapper(single), container(any) <br>
+- xfer(mmap/non-interleaved), mapper(multiple),
+containers(any)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Unit
+test</b> <br>
+For each of the <i>mapper</i> and <i>container</i> module,
+unit test is available. To run the tests, execute below
+command:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ make test</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each test
+iterates writing to file and reading to the file for many
+times and it takes long time to finish. Please take care of
+the execution time if running on any CI environment.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>axfer(1),
+axfer-list(1), alsamixer(1), amixer(1)</b></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Takashi
+Sakamoto &lt;o-takashi@sakamocchi.jp&gt;</p>
+<hr>
+</body>
+</html>

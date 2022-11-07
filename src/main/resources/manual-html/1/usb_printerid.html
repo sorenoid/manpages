@@ -1,0 +1,113 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:09 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>usb_printerid</title>
+
+</head>
+<body>
+
+<h1 align="center">usb_printerid</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">usb_printerid -
+prints the ID of the printer on a USB port</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>usb_printerid</b>
+[<i>options</i>] /dev/usb/lpNNN</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>usb_printerid</b>
+prints the identification of the printer on a USB port using
+the ioctl control <b>LPIOC_GET_DEVICE_ID</b>.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Print the USB
+info before and after downloading the firmware.</p>
+
+<p style="margin-left:11%; margin-top: 1em"># usb_printerid
+/dev/usb/lp0 <br>
+GET_DEVICE_ID string: <br>
+MFG:Hewlett-Packard;MDL:HP LaserJet
+1020;CMD:ACL;CLS:PRINTER;\ <br>
+DES:HP LaserJet 1020;</p>
+
+<p style="margin-left:11%; margin-top: 1em"># cp
+/lib/firmware/hp/sihp1020.dl /dev/usb/lp0</p>
+
+<p style="margin-left:11%; margin-top: 1em"># usb_printerid
+/dev/usb/lp0 <br>
+GET_DEVICE_ID string: <br>
+MFG:Hewlett-Packard;MDL:HP LaserJet
+1020;CMD:ACL;CLS:PRINTER;\ <br>
+DES:HP LaserJet 1020;FWVER:20050309;</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/usr/bin/usb_printerid,
+/lib/firmware/hp/*</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>arm2hpdl</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Rick Richardson
+&lt;rick.richardson@comcast.net&gt; <br>
+ http://foo2zjs.rkkda.com/</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon Nov  7 04:40:47 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ipptool</title>
+
+</head>
+<body>
+
+<h1 align="center">ipptool</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ipptool -
+perform internet printing protocol requests</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipptool</b>
+[ <b>--help</b> ] [ <b>--ippserver</b> <i>filename</i> ] [
+<b>--stop-after-include-error</b> ] [ <b>--version</b> ] [
+<b>-4</b> ] [ <b>-6</b> ] [ <b>-C</b> ] [ <b>-E</b> ] [
+<b>-I</b> ] [ <b>-L</b> ] [ <b>-P</b> <i>filename.plist</i>
+] [ <b>-S</b> ] [ <b>-T</b> <i>seconds</i> ] [ <b>-V</b>
+<i>version</i> ] [ <b>-X</b> ] [ <b>-c</b> ] [ <b>-d</b>
+<i>name=value</i> ] [ <b>-f</b> <i>filename</i> ] [
+<b>-h</b> ] [ <b>-i</b> <i>seconds</i> ] [ <b>-j</b> ] [
+<b>-n</b> <i>repeat-count</i> ] [ <b>-q</b> ] [ <b>-t</b> ]
+[ <b>-v ]</b> <i>printer-uri testfile</i> [ ...
+<i>testfile</i> ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipptool</b>
+sends IPP requests to the specified <i>printer-uri</i> and
+tests and/or displays the results. Each named
+<i>testfile</i> defines one or more requests, including the
+expected response status, attributes, and values. Output is
+either a plain text, formatted text, CSV, or XML report on
+the standard output, with a non-zero exit status indicating
+that one or more tests have failed. The <i>testfile</i>
+format is described in <b>ipptoolfile</b>(5).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are recognized by <b>ipptool: <br>
+--help</b></p>
+
+<p style="margin-left:18%;">Shows program help.</p>
+
+<p style="margin-left:11%;"><b>--ippserver</b>
+<i>filename</i></p>
+
+<p style="margin-left:18%;">Specifies that the test results
+should be written to the named <b>ippserver</b> attributes
+file.</p>
+
+
+<p style="margin-left:11%;"><b>--stop-after-include-error</b></p>
+
+<p style="margin-left:18%;">Tells <b>ipptool</b> to stop if
+an error occurs in an included file. Normally <b>ipptool</b>
+will continue with subsequent tests after the INCLUDE
+directive.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:18%;">Shows the version of
+<b>ipptool</b> being used.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-4</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that <b>ipptool</b> must connect to the
+printer or server using IPv4.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-6</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that <b>ipptool</b> must connect to the
+printer or server using IPv6.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-C</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that requests should be sent using the
+HTTP/1.1 &quot;Transfer-Encoding: chunked&quot; header,
+which is required for conformance by all versions of IPP.
+The default is to use &quot;Transfer-Encoding: chunked&quot;
+for requests with attached files and
+&quot;Content-Length:&quot; for requests without attached
+files.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-E</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Forces TLS encryption when connecting to the server
+using the HTTP &quot;Upgrade&quot; header.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-I</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that <b>ipptool</b> will continue past
+errors.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-L</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that requests should be sent using the
+HTTP/1.0 &quot;Content-Length:&quot; header, which is
+required for conformance by all versions of IPP. The default
+is to use &quot;Transfer-Encoding: chunked&quot; for
+requests with attached files and &quot;Content-Length:&quot;
+for requests without attached files.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-P&nbsp;</b><i>filename.plist</i></p>
+
+<p style="margin-left:18%;">Specifies that the test results
+should be written to the named XML (Apple plist) file in
+addition to the regular test report (<b>-t</b>). This option
+is incompatible with the <b>-i</b> (interval) and <b>-n</b>
+(repeat-count) options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Forces (dedicated) TLS encryption when connecting to the
+server.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-T&nbsp;</b><i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies a timeout for IPP
+requests in seconds.</p>
+
+
+<p style="margin-left:11%;"><b>-V&nbsp;</b><i>version</i></p>
+
+<p style="margin-left:18%;">Specifies the default IPP
+version to use: 1.0, 1.1, 2.0, 2.1, or 2.2. If not
+specified, version 1.1 is used.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-X</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that XML (Apple plist) output is desired
+instead of the plain text report. This option is
+incompatible with the <b>-i</b> (interval) and <b>-n</b>
+(repeat-count) options.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that CSV (comma-separated values) output is
+desired instead of the plain text output.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-d&nbsp;</b><i>name=value</i></p>
+
+<p style="margin-left:18%;">Defines the named variable.</p>
+
+
+<p style="margin-left:11%;"><b>-f&nbsp;</b><i>filename</i></p>
+
+<p style="margin-left:18%;">Defines the default request
+filename for tests.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="4%"></td>
+<td width="48%">
+
+
+<p>Validate HTTP response headers.</p></td>
+<td width="34%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-i&nbsp;</b><i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies that the (last)
+<i>testfile</i> should be repeated at the specified
+interval. This option is incompatible with the <b>-X</b>
+(XML plist output) option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-j</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>Specifies that <b>ipptool</b> will produce JSON
+output.</p> </td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-l</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>Specifies that plain text output is desired.</p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-n&nbsp;</b><i>repeat-count</i></p>
+
+<p style="margin-left:18%;">Specifies that the (last)
+<i>testfile</i> should be repeated the specified number of
+times. This option is incompatible with the <i>-X</i> (XML
+plist output) option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Be quiet and produce no output.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that CUPS test report output is desired
+instead of the plain text output.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Specifies that all request and response attributes
+should be output in CUPS test mode (<b>-t</b>). This is the
+default for XML output.</p></td></tr>
+</table>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ipptool</b> program returns 0 if all tests were
+successful and 1 otherwise.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+standard files are available:</p>
+
+<p style="margin-left:11%; margin-top: 1em">color.jpg <br>
+create-printer-subscription.test <br>
+document-a4.pdf <br>
+document-a4.ps <br>
+document-letter.pdf <br>
+document-letter.ps <br>
+get-completed-jobs.test <br>
+get-jobs.test <br>
+get-notifications.test <br>
+get-printer-attributes.test <br>
+get-subscriptions.test <br>
+gray.jpg <br>
+ipp-1.1.test <br>
+ipp-2.0.test <br>
+ipp-2.1.test <br>
+ipp-2.2.test <br>
+ipp-everywhere.test <br>
+onepage-a4.pdf <br>
+onepage-a4.ps <br>
+onepage-letter.pdf <br>
+onepage-letter.ps <br>
+print-job.test <br>
+print-job-deflate.test <br>
+print-job-gzip.test <br>
+testfile.jpg <br>
+testfile.pcl <br>
+testfile.pdf <br>
+testfile.ps <br>
+testfile.txt <br>
+validate-job.test</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ipptool</b> program is unique to CUPS and conforms to the
+Internet Printing Protocol up to version 2.2.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Get a list of
+completed jobs for &quot;myprinter&quot;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ipptool
+ipp://localhost/printers/myprinter
+get-completed-jobs.test</p>
+
+<p style="margin-left:11%; margin-top: 1em">Send email
+notifications to &quot;user@example.com&quot; when
+&quot;myprinter&quot; changes:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ipptool -d
+recipient=mailto:user@example.com \ <br>
+ipp://localhost/printers/myprinter
+create-printer-subscription.test</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipptoolfile</b>(5),
+IANA IPP Registry
+(https://www.iana.org/assignments/ipp-registrations), PWG
+Internet Printing Protocol Workgroup
+(https://www.pwg.org/ipp) RFC 8011
+(https://datatracker.ietf.org/doc/html/rfc8011),</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2021-2022 by OpenPrinting.</p>
+<hr>
+</body>
+</html>
