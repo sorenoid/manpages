@@ -18,12 +18,14 @@ fun Application.configureRouting() {
         get("/") {
             call.respondRedirect("manuals")
         }
+
         route("manuals") {
             get {
                 call.respond(FreeMarkerContent("index.ftl", mapOf("manuals" to Html2Json.manuals)))
             }
 
         }
+
         get("{level}/{name}") {
             val level = call.parameters.getOrFail<Int>("level").toInt()
             val name = call.parameters.getOrFail<String>("name").toString()
