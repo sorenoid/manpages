@@ -8,12 +8,14 @@
 </style>
     <head>
         <title>Man Pages</title>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076242142955733"
+             crossorigin="anonymous"></script>
     </head>
     <body>
     <h1>Linux Manual Pages </h1>
-    <p><i>Powered by Ktor & Freemarker!</i></p>
     <hr>
     <#nested>
+    <p><i>Powered by Ktor</i></p>
     <a href="/">Back to the main page</a>
     </body>
     </html>
