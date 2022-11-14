@@ -1,1 +1,1 @@
-rootProject.name = "com..bandor.manpages"
+rootProject.name = "com.bandor.manpages"
