@@ -7,7 +7,7 @@ import com.bandor.plugins.*
 import configureTemplating
 
 fun main() {
-    embeddedServer(Netty, port = (System.getenv("PORT")?:"5000").toInt(), module = Application::module)
+    embeddedServer(Netty, port = (System.getenv("PORT")?:"8080").toInt(), module = Application::module)
         .start(wait = true)
 }
 
