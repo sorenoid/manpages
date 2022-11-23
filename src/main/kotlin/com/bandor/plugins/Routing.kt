@@ -27,7 +27,7 @@ fun Application.configureRouting() {
         }
 
         get("{level}/{name}") {
-            val level = call.parameters.getOrFail<Int>("level").toInt()
+            val level = try { call.parameters.getOrFail<Int>("level").toInt() } catch (e: Exception) {}
             val name = call.parameters.getOrFail<String>("name").toString()
             call.respond(
                 FreeMarkerContent(
