@@ -16,25 +16,25 @@ fun Application.configureRouting() {
         }
 
         get("/") {
-            call.respondRedirect("manuals")
-        }
-
-        route("manuals") {
-            get {
-                call.respond(FreeMarkerContent("index.ftl", mapOf("manuals" to Html2Json.manuals)))
-            }
-
+            call.respond(FreeMarkerContent("index.ftl", mapOf("manuals" to Html2Json.manuals)))
         }
 
         get("{level}/{name}") {
-            val level = try { call.parameters.getOrFail<Int>("level").toInt() } catch (e: Exception) {}
-            val name = call.parameters.getOrFail<String>("name").toString()
-            call.respond(
-                FreeMarkerContent(
-                    "show.ftl",
-                    mapOf("manual" to Html2Json.manuals.find { it.level == level && it.name.lowercase() == name.lowercase() })
-                )
-            )
+            try {
+                val level = call.parameters.getOrFail<Int>("level").toInt()
+                val name = call.parameters.getOrFail<String>("name").toString()
+                Html2Json.manuals.find { it.level == level && it.name.lowercase() == name.lowercase() }?.let {
+                    call.respond(
+                        FreeMarkerContent(
+                            "show.ftl",
+                            mapOf("manual" to it)
+                        )
+                    )
+                } ?: call.respondRedirect("/")
+            } catch (e: Exception) {
+                call.respondRedirect("/")
+            }
         }
     }
 }
+
