@@ -12,11 +12,6 @@
              crossorigin="anonymous"></script>
     </head>
     <body>
-    <h1>Linux Manual Pages </h1>
-    <hr>
-    <script async src="https://cse.google.com/cse.js?cx=83a0261b6bc34463a">
-    </script>
-    <div class="gcse-search"></div>
     <#nested>
     <p><i>Powered by Ktor</i></p>
     <a href="/">Back to the main page</a>
