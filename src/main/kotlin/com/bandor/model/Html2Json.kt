@@ -34,7 +34,6 @@ object Html2Json {
                     val title = head.guts("<title>", "</title>")
                     // println("body: $body")
                     manuals.add(Manual(title, body))
-
                 }
             }
         }

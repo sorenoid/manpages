@@ -11,8 +11,10 @@ import io.ktor.server.util.*
 fun Application.configureRouting() {
 
     routing {
-        static("/static") {
-            resources("manual-html")
+        static {
+            staticBasePackage = "manual-html"
+            resource("robots.txt")
+            resource("sitemap.xml.gz")
         }
 
         get("/") {
