@@ -1,0 +1,215 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TOWLOWER</title>
+
+</head>
+<body>
+
+<h1 align="center">TOWLOWER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">towlower,
+towlower_l - convert a wide character to lowercase</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;wctype.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>wint_t
+towlower(wint_t</b> <i>wc</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>wint_t
+towlower_l(wint_t</b> <i>wc</i><b>, locale_t</b>
+<i>locale</i><b>);</b></p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>towlower_l</b>():</p>
+
+<p style="margin-left:17%;">Since glibc 2.10:</p>
+
+
+<p style="margin-left:28%;">_XOPEN_SOURCE&nbsp;&gt;=&nbsp;700</p>
+
+<p style="margin-left:17%;">Before glibc 2.10:</p>
+
+<p style="margin-left:28%;">_GNU_SOURCE</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>towlower</b>() function is the wide-character equivalent
+of the <b>tolower</b>(3) function. If <i>wc</i> is an
+uppercase wide character, and there exists a lowercase
+equivalent in the current locale, it returns the lowercase
+equivalent of <i>wc</i>. In all other cases, <i>wc</i> is
+returned unchanged.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>towlower_l</b>() function performs the same task, but
+performs the conversion based on the character type
+information in the locale specified by <i>locale</i>. The
+behavior of <b>towlower_l</b>() is undefined if
+<i>locale</i> is the special locale object
+<b>LC_GLOBAL_LOCALE</b> (see <b>duplocale</b>(3)) or is not
+a valid locale object handle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The argument
+<i>wc</i> must be representable as a <i>wchar_t</i> and be a
+valid character in the locale or be the value
+<b>WEOF</b>.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If <i>wc</i>
+was convertible to lowercase, <b>towlower</b>() returns its
+lowercase equivalent; otherwise it returns <i>wc</i>.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>towlower_l</b>() function first appeared in glibc
+2.3.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3284471.png" alt="Image grohtml-3284471.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>towlower</b>():
+C99, POSIX.1-2001 (XSI); present as an XSI extension in
+POSIX.1-2008, but marked obsolete.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>towlower_l</b>():
+POSIX.1-2008.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The behavior of
+these functions depends on the <b>LC_CTYPE</b> category of
+the locale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+are not very appropriate for dealing with Unicode
+characters, because Unicode knows about three cases: upper,
+lower and title case.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>iswlower</b>(3),
+<b>towctrans</b>(3), <b>towupper</b>(3),
+<b>locale</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

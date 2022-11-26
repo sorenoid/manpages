@@ -1,0 +1,124 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:37 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>VETH</title>
+
+</head>
+<body>
+
+<h1 align="center">VETH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">veth - Virtual
+Ethernet Device</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>veth</b>
+devices are virtual Ethernet devices. They can act as
+tunnels between network namespaces to create a bridge to a
+physical network device in another namespace, but can also
+be used as standalone network devices.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>veth</b>
+devices are always created in interconnected pairs. A pair
+can be created using the command:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># ip link add
+&lt;p1-name&gt; type veth peer name &lt;p2-name&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the above,
+<i>p1-name</i> and <i>p2-name</i> are the names assigned to
+the two connected end points.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Packets
+transmitted on one device in the pair are immediately
+received on the other device. When either devices is down
+the link state of the pair is down.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>veth</b>
+device pairs are useful for combining the network facilities
+of the kernel together in interesting ways. A particularly
+interesting use case is to place one end of a <b>veth</b>
+pair in one network namespace and the other end in another
+network namespace, thus allowing communication between
+network namespaces. To do this, one can provide the
+<b>netns</b> parameter when creating the interfaces:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># ip link add
+&lt;p1-name&gt; netns &lt;p1-ns&gt; type veth peer
+&lt;p2-name&gt; netns &lt;p2-ns&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">or, for an
+existing <b>veth</b> pair, move one side to the other
+namespace:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># ip link set
+&lt;p2-name&gt; netns &lt;p2-ns&gt;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ethtool</b>(8)
+can be used to find the peer of a <b>veth</b> network
+interface, using commands something like:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># <b>ip link
+add ve_A type veth peer name ve_B</b> # Create veth pair
+<br>
+# <b>ethtool -S ve_A</b> # Discover interface index of peer
+<br>
+NIC statistics: <br>
+peer_ifindex: 16 <br>
+# <b>ip link | grep '^16:'</b> # Look up interface <br>
+16: ve_B@ve_A: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500
+qdisc ...</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
+<b>network_namespaces</b>(7), <b>ip</b>(8),
+<b>ip-link</b>(8), <b>ip-netns</b>(8)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

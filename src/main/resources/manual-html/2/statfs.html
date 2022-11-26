@@ -1,0 +1,512 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:56 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>STATFS</title>
+
+</head>
+<body>
+
+<h1 align="center">STATFS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">statfs, fstatfs
+- get filesystem statistics</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/vfs.h&gt;</b> /* or &lt;sys/statfs.h&gt; */</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+statfs(const char *</b><i>path</i><b>, struct statfs
+*</b><i>buf</i><b>); <br>
+int fstatfs(int</b> <i>fd</i><b>, struct statfs
+*</b><i>buf</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>statfs</b>() system call returns information about a
+mounted filesystem. <i>path</i> is the pathname of any file
+within the mounted filesystem. <i>buf</i> is a pointer to a
+<i>statfs</i> structure defined approximately as
+follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct statfs {
+<br>
+__fsword_t f_type; /* Type of filesystem (see below) */ <br>
+__fsword_t f_bsize; /* Optimal transfer block size */ <br>
+fsblkcnt_t f_blocks; /* Total data blocks in filesystem */
+<br>
+fsblkcnt_t f_bfree; /* Free blocks in filesystem */ <br>
+fsblkcnt_t f_bavail; /* Free blocks available to <br>
+unprivileged user */ <br>
+fsfilcnt_t f_files; /* Total inodes in filesystem */ <br>
+fsfilcnt_t f_ffree; /* Free inodes in filesystem */ <br>
+fsid_t f_fsid; /* Filesystem ID */ <br>
+__fsword_t f_namelen; /* Maximum length of filenames */ <br>
+__fsword_t f_frsize; /* Fragment size (since Linux 2.6) */
+<br>
+__fsword_t f_flags; /* Mount flags of filesystem <br>
+(since Linux 2.6.36) */ <br>
+__fsword_t f_spare[xxx]; <br>
+/* Padding bytes reserved for future use */ <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+filesystem types may appear in <i>f_type</i>:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ADFS_SUPER_MAGIC
+0xadf5 <br>
+AFFS_SUPER_MAGIC 0xadff <br>
+AFS_SUPER_MAGIC 0x5346414f <br>
+ANON_INODE_FS_MAGIC 0x09041934 /* Anonymous inode FS (for
+<br>
+pseudofiles that have no name; <br>
+e.g., epoll, signalfd, bpf) */ <br>
+AUTOFS_SUPER_MAGIC 0x0187 <br>
+BDEVFS_MAGIC 0x62646576 <br>
+BEFS_SUPER_MAGIC 0x42465331 <br>
+BFS_MAGIC 0x1badface <br>
+BINFMTFS_MAGIC 0x42494e4d <br>
+BPF_FS_MAGIC 0xcafe4a11 <br>
+BTRFS_SUPER_MAGIC 0x9123683e <br>
+BTRFS_TEST_MAGIC 0x73727279 <br>
+CGROUP_SUPER_MAGIC 0x27e0eb /* Cgroup pseudo FS */ <br>
+CGROUP2_SUPER_MAGIC 0x63677270 /* Cgroup v2 pseudo FS */
+<br>
+CIFS_MAGIC_NUMBER 0xff534d42 <br>
+CODA_SUPER_MAGIC 0x73757245 <br>
+COH_SUPER_MAGIC 0x012ff7b7 <br>
+CRAMFS_MAGIC 0x28cd3d45 <br>
+DEBUGFS_MAGIC 0x64626720 <br>
+DEVFS_SUPER_MAGIC 0x1373 /* Linux 2.6.17 and earlier */ <br>
+DEVPTS_SUPER_MAGIC 0x1cd1 <br>
+ECRYPTFS_SUPER_MAGIC 0xf15f <br>
+EFIVARFS_MAGIC 0xde5e81e4 <br>
+EFS_SUPER_MAGIC 0x00414a53 <br>
+EXT_SUPER_MAGIC 0x137d /* Linux 2.0 and earlier */ <br>
+EXT2_OLD_SUPER_MAGIC 0xef51 <br>
+EXT2_SUPER_MAGIC 0xef53 <br>
+EXT3_SUPER_MAGIC 0xef53 <br>
+EXT4_SUPER_MAGIC 0xef53 <br>
+F2FS_SUPER_MAGIC 0xf2f52010 <br>
+FUSE_SUPER_MAGIC 0x65735546 <br>
+FUTEXFS_SUPER_MAGIC 0xbad1dea /* Unused */ <br>
+HFS_SUPER_MAGIC 0x4244 <br>
+HOSTFS_SUPER_MAGIC 0x00c0ffee <br>
+HPFS_SUPER_MAGIC 0xf995e849 <br>
+HUGETLBFS_MAGIC 0x958458f6 <br>
+ISOFS_SUPER_MAGIC 0x9660 <br>
+JFFS2_SUPER_MAGIC 0x72b6 <br>
+JFS_SUPER_MAGIC 0x3153464a <br>
+MINIX_SUPER_MAGIC 0x137f /* original minix FS */ <br>
+MINIX_SUPER_MAGIC2 0x138f /* 30 char minix FS */ <br>
+MINIX2_SUPER_MAGIC 0x2468 /* minix V2 FS */ <br>
+MINIX2_SUPER_MAGIC2 0x2478 /* minix V2 FS, 30 char names */
+<br>
+MINIX3_SUPER_MAGIC 0x4d5a /* minix V3 FS, 60 char names */
+<br>
+MQUEUE_MAGIC 0x19800202 /* POSIX message queue FS */ <br>
+MSDOS_SUPER_MAGIC 0x4d44 <br>
+MTD_INODE_FS_MAGIC 0x11307854 <br>
+NCP_SUPER_MAGIC 0x564c <br>
+NFS_SUPER_MAGIC 0x6969 <br>
+NILFS_SUPER_MAGIC 0x3434 <br>
+NSFS_MAGIC 0x6e736673 <br>
+NTFS_SB_MAGIC 0x5346544e <br>
+OCFS2_SUPER_MAGIC 0x7461636f <br>
+OPENPROM_SUPER_MAGIC 0x9fa1 <br>
+OVERLAYFS_SUPER_MAGIC 0x794c7630 <br>
+PIPEFS_MAGIC 0x50495045 <br>
+PROC_SUPER_MAGIC 0x9fa0 /* /proc FS */ <br>
+PSTOREFS_MAGIC 0x6165676c <br>
+QNX4_SUPER_MAGIC 0x002f <br>
+QNX6_SUPER_MAGIC 0x68191122 <br>
+RAMFS_MAGIC 0x858458f6 <br>
+REISERFS_SUPER_MAGIC 0x52654973 <br>
+ROMFS_MAGIC 0x7275 <br>
+SECURITYFS_MAGIC 0x73636673 <br>
+SELINUX_MAGIC 0xf97cff8c <br>
+SMACK_MAGIC 0x43415d53 <br>
+SMB_SUPER_MAGIC 0x517b <br>
+SMB2_MAGIC_NUMBER 0xfe534d42 <br>
+SOCKFS_MAGIC 0x534f434b <br>
+SQUASHFS_MAGIC 0x73717368 <br>
+SYSFS_MAGIC 0x62656572 <br>
+SYSV2_SUPER_MAGIC 0x012ff7b6 <br>
+SYSV4_SUPER_MAGIC 0x012ff7b5 <br>
+TMPFS_MAGIC 0x01021994 <br>
+TRACEFS_MAGIC 0x74726163 <br>
+UDF_SUPER_MAGIC 0x15013346 <br>
+UFS_MAGIC 0x00011954 <br>
+USBDEVICE_SUPER_MAGIC 0x9fa2 <br>
+V9FS_MAGIC 0x01021997 <br>
+VXFS_SUPER_MAGIC 0xa501fcf5 <br>
+XENFS_SUPER_MAGIC 0xabba1974 <br>
+XENIX_SUPER_MAGIC 0x012ff7b4 <br>
+XFS_SUPER_MAGIC 0x58465342 <br>
+_XIAFS_SUPER_MAGIC 0x012fd16d /* Linux 2.0 and earlier
+*/</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most of these
+MAGIC constants are defined in
+<i>/usr/include/linux/magic.h</i>, and some are hardcoded in
+kernel sources.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>f_flags</i> field is a bit mask indicating mount options
+for the filesystem. It contains zero or more of the
+following bits: <b><br>
+ST_MANDLOCK</b></p>
+
+<p style="margin-left:22%;">Mandatory locking is permitted
+on the filesystem (see <b>fcntl</b>(2)).</p>
+
+<p style="margin-left:11%;"><b>ST_NOATIME</b></p>
+
+<p style="margin-left:22%;">Do not update access times; see
+<b>mount</b>(2).</p>
+
+<p style="margin-left:11%;"><b>ST_NODEV</b></p>
+
+<p style="margin-left:22%;">Disallow access to device
+special files on this filesystem.</p>
+
+<p style="margin-left:11%;"><b>ST_NODIRATIME</b></p>
+
+<p style="margin-left:22%;">Do not update directory access
+times; see <b>mount</b>(2).</p>
+
+<p style="margin-left:11%;"><b>ST_NOEXEC</b></p>
+
+<p style="margin-left:22%;">Execution of programs is
+disallowed on this filesystem.</p>
+
+<p style="margin-left:11%;"><b>ST_NOSUID</b></p>
+
+<p style="margin-left:22%;">The set-user-ID and
+set-group-ID bits are ignored by <b>exec</b>(3) for
+executable files on this filesystem</p>
+
+<p style="margin-left:11%;"><b>ST_RDONLY</b></p>
+
+<p style="margin-left:22%;">This filesystem is mounted
+read-only.</p>
+
+<p style="margin-left:11%;"><b>ST_RELATIME</b></p>
+
+<p style="margin-left:22%;">Update atime relative to
+mtime/ctime; see <b>mount</b>(2).</p>
+
+<p style="margin-left:11%;"><b>ST_SYNCHRONOUS</b></p>
+
+<p style="margin-left:22%;">Writes are synched to the
+filesystem immediately (see the description of <b>O_SYNC</b>
+in <b>open</b>(2)).</p>
+
+<p style="margin-left:11%;"><b>ST_NOSYMFOLLOW</b> (since
+Linux 5.10)</p>
+
+<p style="margin-left:22%;">Symbolic links are not followed
+when resolving paths; see <b>mount</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Nobody knows
+what <i>f_fsid</i> is supposed to contain (but see
+below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Fields that are
+undefined for a particular filesystem are set to 0.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fstatfs</b>()
+returns the same information about an open file referenced
+by descriptor <i>fd</i>.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+zero is returned. On error, -1 is returned, and <i>errno</i>
+is set appropriately.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EACCES</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">(<b>statfs</b>()) Search
+permission is denied for a component of the path prefix of
+<i>path</i>. (See also <b>path_resolution</b>(7).)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EBADF</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>fstatfs</b>()) <i>fd</i> is not a valid open file
+descriptor.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>buf</i> or <i>path</i> points to an invalid
+address.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINTR</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The call was interrupted by a signal; see
+<b>signal</b>(7).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EIO</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>An I/O error occurred while reading from the
+filesystem.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ELOOP</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>statfs</b>()) Too many symbolic links were
+encountered in translating <i>path</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENAMETOOLONG</b></p>
+
+<p style="margin-left:22%;">(<b>statfs</b>()) <i>path</i>
+is too long.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOENT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>statfs</b>()) The file referred to by <i>path</i>
+does not exist.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Insufficient kernel memory was available.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOSYS</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The filesystem does not support this call.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENOTDIR</b></p>
+
+<p style="margin-left:22%;">(<b>statfs</b>()) A component
+of the path prefix of <i>path</i> is not a directory.</p>
+
+<p style="margin-left:11%;"><b>EOVERFLOW</b></p>
+
+<p style="margin-left:22%;">Some values were too large to
+be represented in the returned struct.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux-specific.
+The Linux <b>statfs</b>() was inspired by the 4.4BSD one
+(but they do not use the same structure).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>__fsword_t</i> type used for various fields in the
+<i>statfs</i> structure definition is a glibc internal type,
+not intended for public use. This leaves the programmer in a
+bit of a conundrum when trying to copy or compare these
+fields to local variables in a program. Using
+<i>unsigned&nbsp;int</i> for such variables suffices on most
+systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The original
+Linux <b>statfs</b>() and <b>fstatfs</b>() system calls were
+not designed with extremely large file sizes in mind.
+Subsequently, Linux 2.6 added new <b>statfs64</b>() and
+<b>fstatfs64</b>() system calls that employ a new structure,
+<i>statfs64</i>. The new structure contains the same fields
+as the original <i>statfs</i> structure, but the sizes of
+various fields are increased, to accommodate large file
+sizes. The glibc <b>statfs</b>() and <b>fstatfs</b>()
+wrapper functions transparently deal with the kernel
+differences.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some systems
+have only <i>&lt;sys/vfs.h&gt;</i>, other systems also have
+<i>&lt;sys/statfs.h&gt;</i>, where the former includes the
+latter. So it seems including the former is the best
+choice.</p>
+
+<p style="margin-left:11%; margin-top: 1em">LSB has
+deprecated the library calls <b>statfs</b>() and
+<b>fstatfs</b>() and tells us to use <b>statvfs</b>(2) and
+<b>fstatvfs</b>(2) instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The f_fsid
+field</b> <br>
+Solaris, Irix and POSIX have a system call <b>statvfs</b>(2)
+that returns a <i>struct statvfs</i> (defined in
+<i>&lt;sys/statvfs.h&gt;</i>) containing an <i>unsigned long
+f_fsid</i>. Linux, SunOS, HP-UX, 4.4BSD have a system call
+<b>statfs</b>() that returns a <i>struct statfs</i> (defined
+in <i>&lt;sys/vfs.h&gt;</i>) containing a <i>fsid_t
+f_fsid</i>, where <i>fsid_t</i> is defined as <i>struct {
+int val[2]; }</i>. The same holds for FreeBSD, except that
+it uses the include file <i>&lt;sys/mount.h&gt;</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The general
+idea is that <i>f_fsid</i> contains some random stuff such
+that the pair (<i>f_fsid</i>,<i>ino</i>) uniquely determines
+a file. Some operating systems use (a variation on) the
+device number, or the device number combined with the
+filesystem type. Several operating systems restrict giving
+out the <i>f_fsid</i> field to the superuser only (and zero
+it for unprivileged users), because this field is used in
+the filehandle of the filesystem when NFS-exported, and
+giving it out is a security concern.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Under some
+operating systems, the <i>fsid</i> can be used as the second
+argument to the <b>sysfs</b>(2) system call.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">From Linux
+2.6.38 up to and including Linux 3.1, <b>fstatfs</b>()
+failed with the error <b>ENOSYS</b> for file descriptors
+created by <b>pipe</b>(2).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stat</b>(2),
+<b>statvfs</b>(3), <b>path_resolution</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

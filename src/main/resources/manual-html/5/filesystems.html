@@ -1,0 +1,411 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>FILESYSTEMS</title>
+
+</head>
+<body>
+
+<h1 align="center">FILESYSTEMS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">filesystems -
+Linux filesystem types: ext, ext2, ext3, ext4, hpfs,
+iso9660, JFS, minix, msdos, ncpfs nfs, ntfs, proc, Reiserfs,
+smb, sysv, umsdos, vfat, XFS, xiafs</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When, as is
+customary, the <b>proc</b> filesystem is mounted on
+<i>/proc</i>, you can find in the file
+<i>/proc/filesystems</i> which filesystems your kernel
+currently supports; see <b>proc</b>(5) for more details.
+There is also a legacy <b>sysfs</b>(2) system call (whose
+availability is controlled by the
+<b>CONFIG_SYSFS_SYSCALL</b> kernel build configuration
+option since Linux 3.15) that enables enumeration of the
+currently available filesystem types regardless of
+<i>/proc</i> availability and/or sanity.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you need a
+currently unsupported filesystem, insert the corresponding
+kernel module or recompile the kernel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In order to use
+a filesystem, you have to <i>mount</i> it; see
+<b>mount</b>(2) and <b>mount</b>(8).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+list provides a short description of the available or
+historically available filesystems in the Linux kernel. See
+the kernel documentation for a comprehensive description of
+all options and limitations.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>ext</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>is an elaborate extension of the <b>minix</b>
+filesystem. It has been completely superseded by the second
+version of the extended filesystem (<b>ext2</b>) and has
+been removed from the kernel (in 2.1.21).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>ext2</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>is the high performance disk filesystem used by Linux
+for fixed disks as well as removable media. The second
+extended filesystem was designed as an extension of the
+extended filesystem (<b>ext</b>). See <b>ext2</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>ext3</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>is a journaling version of the <b>ext2</b> filesystem.
+It is easy to switch back and forth between <b>ext2</b> and
+<b>ext3</b>. See <b>ext3</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>ext4</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>is a set of upgrades to <b>ext3</b> including
+substantial performance and reliability enhancements, plus
+large increases in volume, file, and directory size limits.
+See <b>ext4</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>hpfs</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>is the High Performance Filesystem, used in OS/2. This
+filesystem is read-only under Linux due to the lack of
+available documentation.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>iso9660</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p>is a CD-ROM filesystem type conforming to the ISO 9660
+standard.</p> </td></tr>
+</table>
+
+<p style="margin-left:26%;"><b>High Sierra</b></p>
+
+<p style="margin-left:37%;">Linux supports High Sierra, the
+precursor to the ISO 9660 standard for CD-ROM filesystems.
+It is automatically recognized within the <b>iso9660</b>
+filesystem support under Linux.</p>
+
+<p style="margin-left:26%;"><b>Rock Ridge</b></p>
+
+<p style="margin-left:37%;">Linux also supports the System
+Use Sharing Protocol records specified by the Rock Ridge
+Interchange Protocol. They are used to further describe the
+files in the <b>iso9660</b> filesystem to a UNIX host, and
+provide information such as long filenames, UID/GID, POSIX
+permissions, and devices. It is automatically recognized
+within the <b>iso9660</b> filesystem support under
+Linux.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>JFS</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>is a journaling filesystem, developed by IBM, that was
+integrated into Linux in kernel 2.4.24.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>minix</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>is the filesystem used in the Minix operating system,
+the first to run under Linux. It has a number of
+shortcomings, including a 64&nbsp;MB partition size limit,
+short filenames, and a single timestamp. It remains useful
+for floppies and RAM disks.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>msdos</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>is the filesystem used by DOS, Windows, and some OS/2
+computers. <b>msdos</b> filenames can be no longer than 8
+characters, followed by an optional period and 3 character
+extension.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>ncpfs</b></p></td>
+<td width="8%"></td>
+<td width="74%">
+
+
+<p>is a network filesystem that supports the NCP protocol,
+used by Novell NetWare. It was was removed from the kernel
+in 4.17.</p></td></tr>
+</table>
+
+<p style="margin-left:26%; margin-top: 1em">To use
+<b>ncpfs</b>, you need special programs, which can be found
+at
+<a href="ftp://ftp.gwdg.de/pub/linux/misc/ncpfs">ftp://ftp.gwdg.de/pub/linux/misc/ncpfs</a>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>nfs</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">is the network filesystem used
+to access disks located on remote computers.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>ntfs</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is the filesystem native to Microsoft Windows NT,
+supporting features like ACLs, journaling, encryption, and
+so on.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>proc</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is a pseudo filesystem which is used as an interface to
+kernel data structures rather than reading and interpreting
+<i>/dev/kmem</i>. In particular, its files do not take disk
+space. See <b>proc</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>Reiserfs</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is a journaling filesystem, designed by Hans Reiser,
+that was integrated into Linux in kernel 2.4.1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>smb</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is a network filesystem that supports the SMB protocol,
+used by Windows for Workgroups, Windows NT, and Lan Manager.
+See
+<a href="https://www.samba.org/samba/smbfs/">https://www.samba.org/samba/smbfs/</a>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>sysv</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is an implementation of the System V/Coherent filesystem
+for Linux. It implements all of Xenix FS, System V/386 FS,
+and Coherent FS.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>umsdos</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is an extended DOS filesystem used by Linux. It adds
+capability for long filenames, UID/GID, POSIX permissions,
+and special files (devices, named pipes, etc.) under the DOS
+filesystem, without sacrificing compatibility with DOS.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>tmpfs</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is a filesystem whose contents reside in virtual memory.
+Since the files on such filesystems typically reside in RAM,
+file access is extremely fast. See <b>tmpfs</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>vfat</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is an extended FAT filesystem used by Microsoft
+Windows95 and Windows NT. <b>vfat</b> adds the capability to
+use long filenames under the MSDOS filesystem.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>XFS</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>is a journaling filesystem, developed by SGI, that was
+integrated into Linux in kernel 2.4.20.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>xiafs</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>was designed and implemented to be a stable, safe
+filesystem by extending the Minix filesystem code. It
+provides the basic most requested features without undue
+complexity. The <b>xiafs</b> filesystem is no longer
+actively developed or maintained. It was removed from the
+kernel in 2.1.21.</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fuse</b>(4),
+<b>btrfs</b>(5), <b>ext2</b>(5), <b>ext3</b>(5),
+<b>ext4</b>(5), <b>nfs</b>(5), <b>proc</b>(5),
+<b>sysfs</b>(5), <b>tmpfs</b>(5), <b>xfs</b>(5),
+<b>fsck</b>(8), <b>mkfs</b>(8), <b>mount</b>(8)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

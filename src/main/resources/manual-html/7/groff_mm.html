@@ -1,0 +1,3316 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:11 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GROFF_MM</title>
+
+</head>
+<body>
+
+<h1 align="center">GROFF_MM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#INTERNALS">INTERNALS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">groff_mm -
+memorandum macros for GNU roff</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>groff -mm</b></p></td>
+<td width="1%"></td>
+<td width="36%">
+
+
+<p style="margin-top: 1em">[<i>option</i> ...] [<i>file</i>
+...]</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+
+
+<p><b>groff -m</b></p></table>
+
+<p style="margin-left:11%;"><b>mm</b> [<i>option</i> ...]
+[<i>file</i> ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The groff mm
+macros are intended to be compatible with the DWB mm macros
+with the following limitations:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>&bull;</b></p></td>
+<td width="10%"></td>
+<td width="63%">
+
+
+<p>No Bell Labs localisms are implemented.</p></td>
+<td width="15%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>&bull;</b></p></td>
+<td width="10%"></td>
+<td width="63%">
+
+
+<p>The macros OK and PM are not implemented.</p></td>
+<td width="15%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>&bull;</b></p></td>
+<td width="10%"></td>
+<td width="63%">
+
+
+<p>groff mm does not support cut marks.</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mm</b> is
+intended to support easy localization. Use <b>mmse</b> as an
+example how to adapt the output format to a national
+standard. Localized strings are collected in the file
+<i>/usr/share/groff/1.22.4/tmac/</i>xx<i>.tmac</i>, where
+<i>xx</i> denotes the two-letter code for the
+<i>language</i>, as defined in the ISO 639 standard. For
+Swedish, this is &rsquo;sv.tmac&rsquo; &ndash; not
+&rsquo;se&rsquo;, which is the ISO 3166 two-letter code for
+the <i>country</i> (as used for the output format
+localization).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A file called
+<i>locale</i> or country<i>_locale</i> is read after the
+initialization of the global variables. It is therefore
+possible to localize the macros with a different company
+name and so on.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this manual,
+square brackets are used to show optional arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Number
+registers and strings</b> <br>
+Many macros can be controlled by number registers and
+strings. A number register is assigned with the <b>nr</b>
+command:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>.nr&nbsp;</b><i>XXX</i>
+[<b>&plusmn;</b>]<i>n</i> [<i>i</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>XXX</i> is
+the name of the register, <i>n&nbsp;</i>is the value to be
+assigned, and <i>i&nbsp;</i>is the increment value for
+auto-increment. <i>n&nbsp;</i>can have a plus or minus sign
+as a prefix if an increment or decrement of the current
+value is wanted. (Auto-increment or auto-decrement occurs if
+the number register is used with a plus or minus sign,
+<b>\n+[</b><i>XXX</i><b>]</b> or
+<b>\n-[</b><i>XXX</i><b>]</b>.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Strings are
+defined with <b>ds</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>.ds</b>
+<i>YYY string</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The string is
+assigned everything to the end of the line, even blanks.
+Initial blanks in <i>string</i> should be prefixed with a
+double-quote. (Strings are used in the text as
+<b>\*[</b><i>YYY</i><b>]</b>.)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Special
+formatting of number registers</b> <br>
+A number register is printed with normal digits if no format
+has been given. Set the format with <b>af</b>:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>.af&nbsp;</b><i>R
+c</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>R&nbsp;</i>is
+the name of the register, <i>c&nbsp;</i>is the format.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3537401.png" alt="Image grohtml-3537401.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Fonts</b>
+<br>
+In <b>mm</b>, the fonts (or rather, font styles)
+<b>R&nbsp;</b>(normal), <b>I&nbsp;</b>(italic), and
+<b>B&nbsp;</b>(bold) are hardwired to font positions
+<b>1</b>, <b>2</b>, and&nbsp;<b>3</b>, respectively.
+Internally, font positions are used for backwards
+compatibility. From a practical point of view it
+doesn&rsquo;t make a big difference &ndash; a different font
+family can still be selected with a call to the <b>.fam</b>
+request or using <b>groff</b>&rsquo;s <b>-f</b> command-line
+option. On the other hand, if you want to replace just, say,
+font <b>B</b>, you have to replace the font at
+position&nbsp;2 (with a call to
+&rsquo;.fp&nbsp;2&nbsp;...&rsquo;).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Macros <br>
+)E&nbsp;</b><i>level text</i></p>
+
+<p style="margin-left:22%;">Add heading text <i>text</i> to
+the table of contents with <i>level</i>, which is
+either&nbsp;0 or in the range 1 to&nbsp;7. See also
+<b>.H</b>. This macro is used for customized tables of
+contents.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>1C&nbsp;</b>[<b>1</b>]</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Begin one-column processing. A&nbsp;<b>1</b> as an
+argument disables the page break. Use wide footnotes, small
+footnotes may be overprinted.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>2C</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Begin two-column processing. Splits the page in two
+columns. It is a special case of <b>MC</b>. See also
+<b>1C</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>AE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Abstract end, see <b>AS</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>AF&nbsp;</b>[<i>name-of-firm</i>]</p>
+
+<p style="margin-left:22%;">Author&rsquo;s firm, should be
+called before <b>AU</b>, see also <b>COVER</b>.</p>
+
+
+<p style="margin-left:11%;"><b>AL&nbsp;</b>[<i>type&nbsp;</i>[<i>text-indent&nbsp;</i>[<b>1</b>]]]</p>
+
+<p style="margin-left:22%;">Start auto-increment list.
+Items are numbered beginning with one. The <i>type</i>
+argument controls the format of numbers.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3537402.png" alt="Image grohtml-3537402.png"></p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>text-indent</i>
+sets the indentation and overrides <b>Li</b>. A third
+argument prohibits printing of a blank line before each
+item.</p>
+
+<p style="margin-left:11%;"><b>APP&nbsp;</b><i>name
+text</i></p>
+
+<p style="margin-left:22%;">Begin an appendix with name
+<i>name</i>. Automatic naming occurs if <i>name</i> is
+<b>&quot;&quot;</b>. The appendices start with&nbsp;<b>A</b>
+if automatic naming is used. A new page is ejected, and a
+header is also produced if the number variable <b>Aph</b> is
+non-zero. This is the default. The appendix always appears
+in the &rsquo;List of contents&rsquo; with correct page
+numbers. The name &rsquo;APPENDIX&rsquo; can be changed by
+setting the string <b>App</b> to the desired text. The
+string <b>Apptxt</b> contains the current appendix text.</p>
+
+<p style="margin-left:11%;"><b>APPSK&nbsp;</b><i>name pages
+text</i></p>
+
+<p style="margin-left:22%;">Same as <b>.APP</b>, but the
+page number is incremented with <i>pages</i>. This is used
+when diagrams or other non-formatted documents are included
+as appendices.</p>
+
+<p style="margin-left:11%;"><b>AS&nbsp;</b>[<i>arg</i>
+[<i>indent</i>]]</p>
+
+<p style="margin-left:22%;">Abstract start. Indentation is
+specified in &rsquo;ens&rsquo;, but scaling is allowed.
+Argument <i>arg</i> controls where the abstract is
+printed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3537403.png" alt="Image grohtml-3537403.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">An abstract is
+not printed at all in external letters (<b>MT 5</b>). The
+<i>indent</i> parameter controls the indentation of both
+margins, otherwise normal text indentation is used.</p>
+
+
+<p style="margin-left:11%;"><b>AST&nbsp;</b>[<i>title</i>]</p>
+
+<p style="margin-left:22%;">Abstract title. Default is
+&rsquo;ABSTRACT&rsquo;. Sets the text above the abstract
+text.</p>
+
+<p style="margin-left:11%;"><b>AT&nbsp;</b><i>title1</i>
+[<i>title2</i> [...]]</p>
+
+<p style="margin-left:22%;">Author&rsquo;s title. <b>AT</b>
+must appear just after each <b>AU</b>. The title shows up
+after the name in the signature block.</p>
+
+<p style="margin-left:11%;"><b>AU&nbsp;</b>[<i>name</i>
+[<i>initials</i> [<i>loc</i> [<i>dept</i> [<i>ext</i>
+[<i>room</i> [<i>arg</i> [<i>arg</i>
+[<i>arg</i>]]]]]]]]]</p>
+
+<p style="margin-left:22%;">Author information. Specifies
+the author of the memo or paper, and is printed on the cover
+sheet and on other similar places. <b>AU</b> must not appear
+before <b>TL</b>. The author information can contain
+initials, location, department, telephone extension, room
+number or name and up to three extra arguments.</p>
+
+
+<p style="margin-left:11%;"><b>AV&nbsp;</b>[<i>name&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Approval signature. Generates
+an approval line with place for signature and date. The
+string &rsquo;APPROVED:&rsquo; can be changed with variable
+<b>Letapp</b>; it is replaced with an empty lin if there is
+a second argument. The string &rsquo;Date&rsquo; can be
+changed with variable <b>Letdate</b>.</p>
+
+
+<p style="margin-left:11%;"><b>AVL&nbsp;</b>[<i>name</i>]</p>
+
+<p style="margin-left:22%;">Letter signature. Generates a
+line with place for signature.</p>
+
+
+<p style="margin-left:11%;"><b>B&nbsp;</b>[<i>bold-text</i>
+[<i>prev-font-text</i> [<i>bold</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Begin boldface. No limit on the
+number of arguments. All arguments are concatenated to one
+word; the first, third and so on is printed in boldface.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>B1</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Begin box (as the ms macro). Draws a box around the
+text. The text is indented one character, and the right
+margin is one character shorter.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>B2</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>End box. Finishes the box started with <b>B1</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>BE</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>End bottom block, see <b>BS</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>BI&nbsp;</b>[<i>bold-text</i>
+[<i>italic-text</i> [<i>bold-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Bold-italic. No limit on the
+number of arguments, see&nbsp;<b>B</b>.</p>
+
+
+<p style="margin-left:11%;"><b>BL&nbsp;</b>[<i>text-indent&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Start bullet list. Initializes
+a list with a bullet and a space in the beginning of each
+list item (see <b>LI</b>). <i>text-indent</i> overrides the
+default indentation of the list items set by number register
+<b>Pi</b>. A third argument prohibits printing of a blank
+line before each item.</p>
+
+
+<p style="margin-left:11%;"><b>BR&nbsp;</b>[<i>bold-text</i>
+[<i>roman-text</i> [<i>bold-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Bold-roman. No limit on the
+number of arguments.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>BS</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Bottom block start. Begins the definition of a text
+block which is printed at the bottom of each page. The block
+ends with <b>BE</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>BVL&nbsp;</b><i>text-indent</i>
+[<i>mark-indent&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Start of broken variable-item
+list. Broken variable-item list has no fixed mark, it
+assumes that every <b>LI</b> has a mark instead. The text
+always begins at the next line after the mark.
+<i>text-indent</i> sets the indentation to the text, and
+<i>mark-indent</i> the distance from the current indentation
+to the mark. A third argument prohibits printing of a blank
+line before each item.</p>
+
+
+<p style="margin-left:11%;"><b>COVER&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Begin a coversheet definition.
+It is important that <b>.COVER</b> appears before any normal
+text. This macro uses <i>arg</i> to build the filename
+<i>/usr/share/groff/1.22.4/tmac/mm/</i>arg<i>.cov</i>.
+Therefore it is possible to create unlimited types of cover
+sheets. <i>ms.cov</i> is supposed to look like the ms cover
+sheet. <b>.COVER</b> requires a <b>.COVEND</b> at the end of
+the cover definition. Always use this order of the cover
+macros:</p>
+
+<p style="margin-left:32%; margin-top: 1em">.COVER <br>
+.TL <br>
+.AF <br>
+.AU <br>
+.AT <br>
+.AS <br>
+.AE <br>
+.COVEND</p>
+
+<p style="margin-left:22%; margin-top: 1em">However, only
+<b>.TL</b> and <b>.AU</b> are required.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>COVEND</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Finish the cover description and print the cover page.
+It is defined in the cover file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>DE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Display end. Ends a block of text or display that begins
+with <b>DS</b> or <b>DF</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>DF&nbsp;</b>[<i>format</i>
+[<i>fill</i> [<i>rindent</i>]]]</p>
+
+<p style="margin-left:22%;">Begin floating display (no
+nesting allowed). A floating display is saved in a queue and
+is printed in the order entered. <i>Format</i>, <i>fill</i>,
+and <i>rindent</i> are the same as in <b>DS</b>. Floating
+displays are controlled by the two number registers
+<b>De</b> and <b>Df</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>De
+register</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-3537404.png" alt="Image grohtml-3537404.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Df
+register</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-3537405.png" alt="Image grohtml-3537405.png"></b></p>
+
+
+<p style="margin-left:11%;"><b>DL&nbsp;</b>[<i>text-indent&nbsp;</i>[<b>1</b>
+[<b>1</b>]]]</p>
+
+<p style="margin-left:22%;">Dash list start. Begins a list
+where each item is printed after a dash. <i>text-indent</i>
+changes the default indentation of the list items set by
+number register <b>Pi</b>. A second argument prevents an
+empty line between each list item. See <b>LI</b>. A third
+argument prohibits printing of a blank line before each
+item.</p>
+
+<p style="margin-left:11%;"><b>DS&nbsp;</b>[<i>format</i>
+[<i>fill</i> [<i>rindent</i>]]]</p>
+
+<p style="margin-left:22%;">Static display start. Begins
+collection of text until <b>DE</b>. The text is printed
+together on the same page, unless it is longer than the
+height of the page. <b>DS</b> can be nested arbitrarily.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>format</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-3537406.png" alt="Image grohtml-3537406.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The values
+&rsquo;L&rsquo;, &rsquo;I&rsquo;, &rsquo;C&rsquo;, and
+&rsquo;CB&rsquo; can also be specified as &rsquo;0&rsquo;,
+&rsquo;1&rsquo;, &rsquo;2&rsquo;, and &rsquo;3&rsquo;,
+respectively, for compatibility reasons.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>fill</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-3537407.png" alt="Image grohtml-3537407.png"></b></p>
+
+
+<p style="margin-left:22%; margin-top: 1em">&rsquo;N&rsquo;
+and &rsquo;F&rsquo; can also be specified as &rsquo;0&rsquo;
+and &rsquo;1&rsquo;, respectively.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, an
+empty line is printed before and after the display. Setting
+number register <b>Ds</b> to&nbsp;0 prevents this.
+<i>rindent</i> shortens the line length by that amount.</p>
+
+<p style="margin-left:11%;"><b>EC&nbsp;</b>[<i>title</i>
+[<i>override</i> [<i>flag</i> [<i>refname</i>]]]]</p>
+
+<p style="margin-left:22%;">Equation title. Sets a title
+for an equation. The <i>override</i> argument changes the
+numbering.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>flag</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-3537408.png" alt="Image grohtml-3537408.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>EC</b> uses
+the number register <b>Ec</b> as a counter. It is possible
+to use <b>.af</b> to change the format of the number. If
+number register <b>Of</b> is&nbsp;1, the format of title
+uses a dash instead of a dot after the number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The string
+<b>Le</b> controls the title of the List of Equations;
+default is &rsquo;LIST OF EQUATIONS&rsquo;. The List of
+Equations is only printed if number register <b>Le</b>
+is&nbsp;1. The default is&nbsp;0. The string <b>Liec</b>
+contains the word &rsquo;Equation&rsquo;, which is printed
+before the number. If <i>refname</i> is used, then the
+equation number is saved with <b>.SETR</b>, and can be
+retrieved with &rsquo;<b>.GETST</b>
+<i>refname</i>&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Special
+handling of the title occurs if <b>EC</b> is used inside
+<b>DS</b>/<b>DE</b>; it is not affected by the format of
+<b>DS</b>.</p>
+
+
+<p style="margin-left:11%;"><b>EF&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Even-page footer, printed just
+above the normal page footer on even pages. See
+<b>PF</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This macro
+defines string <b>EOPef</b>.</p>
+
+
+<p style="margin-left:11%;"><b>EH&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Even-page header, printed just
+below the normal page header on even pages. See
+<b>PH</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This macro
+defines string <b>TPeh</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>EN</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Equation end, see <b>EQ</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>EOP</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>End-of-page user-defined macro. This macro is called
+instead of the normal printing of the footer. The macro is
+executed in a separate environment, without any trap active.
+See <b>TP</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Strings
+available to EOP</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-3537409.png" alt="Image grohtml-3537409.png"></b></p>
+
+<p style="margin-left:11%;"><b>EPIC&nbsp;</b>[<b>-L</b>]
+<i>width height</i> [<i>name</i>]</p>
+
+<p style="margin-left:22%;">Draw a box with the given
+<i>width</i> and <i>height</i>. It also prints the text
+<i>name</i> or a default string if <i>name</i> is not
+specified. This is used to include external pictures; just
+give the size of the picture. <b>-L</b> left-adjusts the
+picture; the default is to center. See <b>PIC</b>.</p>
+
+
+<p style="margin-left:11%;"><b>EQ&nbsp;</b>[<i>label</i>]</p>
+
+<p style="margin-left:22%;">Equation start.
+<b>EQ</b>/<b>EN</b> are the delimiters for equations written
+for <b>eqn</b>(1). <b>EQ</b>/<b>EN</b> must be inside of a
+<b>DS</b>/<b>DE</b> pair, except if <b>EQ</b> is used to set
+options for <b>eqn</b> only. The <i>label</i> argument
+appears at the right margin of the equation, centered
+vertically within the <b>DS</b>/<b>DE</b> block, unless
+number register <b>Eq</b> is&nbsp;1. Then the label appears
+at the left margin.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If there are
+multiple <b>EQ</b>/<b>EN</b> blocks within a single
+<b>DS</b>/<b>DE</b> pair, only the last equation label (if
+any) is printed.</p>
+
+<p style="margin-left:11%;"><b>EX&nbsp;</b>[<i>title</i>
+[<i>override</i> [<i>flag</i> [<i>refname</i>]]]]</p>
+
+<p style="margin-left:22%;">Exhibit title. The arguments
+are the same as for <b>EC</b>. <b>EX</b> uses the number
+register <b>Ex</b> as a counter. The string <b>Lx</b>
+controls the title of the List of Exhibits; default is
+&rsquo;LIST OF EXHIBITS&rsquo;. The List of Exhibits is only
+printed if number register <b>Lx</b> is&nbsp;1, which is the
+default. The string <b>Liex</b> contains the word
+&rsquo;Exhibit&rsquo;, which is printed before the number.
+If <i>refname</i> is used, the exhibit number is saved with
+<b>.SETR</b>, and can be retrieved with &rsquo;<b>.GETST</b>
+<i>refname</i>&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Special
+handling of the title occurs if <b>EX</b> is used inside
+<b>DS</b>/<b>DE</b>; it is not affected by the format of
+<b>DS</b>.</p>
+
+
+<p style="margin-left:11%;"><b>FC&nbsp;</b>[<i>closing</i>]</p>
+
+<p style="margin-left:22%;">Print
+&rsquo;Yours&nbsp;very&nbsp;truly,&rsquo; as a formal
+closing of a letter or memorandum. The argument replaces the
+default string. The default is stored in string variable
+<b>Letfc</b>.</p>
+
+
+<p style="margin-left:11%;"><b>FD&nbsp;</b>[<i>arg&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Footnote default format.
+Controls the hyphenation (hyphen), right margin
+justification (adjust), and indentation of footnote text
+(indent). It can also change the label justification
+(ljust).</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374010.png" alt="Image grohtml-35374010.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">An argument
+greater than or equal to 11 is considered as value&nbsp;0.
+Default for <b>mm</b> is 10.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>FE</b></p></td>
+<td width="8%"></td>
+<td width="20%">
+
+
+<p>Footnote end.</p></td>
+<td width="58%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>FG&nbsp;</b>[<i>title</i>
+[<i>override</i> [<i>flag</i> [<i>refname</i>]]]]</p>
+
+<p style="margin-left:22%;">Figure title. The arguments are
+the same as for <b>EC</b>. <b>FG</b> uses the number
+register <b>Fg</b> as a counter. The string <b>Lf</b>
+controls the title of the List of Figures; default is
+&rsquo;LIST OF FIGURES&rsquo;. The List of Figures is only
+printed if number register <b>Lf</b> is&nbsp;1, which is the
+default. The string <b>Lifg</b> contains the word
+&rsquo;Figure&rsquo;, which is printed before the number. If
+<i>refname</i> is used, then the figure number is saved with
+<b>.SETR</b>, and can be retrieved with &rsquo;<b>.GETST</b>
+<i>refname</i>&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Special
+handling of the title occurs if <b>FG</b> is used inside
+<b>DS</b>/<b>DE</b>, it is not affected by the format of
+<b>DS</b>.</p>
+
+
+<p style="margin-left:11%;"><b>FS&nbsp;</b>[<i>label</i>]</p>
+
+<p style="margin-left:22%;">Footnote start. The footnote is
+ended by <b>FE</b>. By default, footnotes are automatically
+numbered; the number is available in string&nbsp;<b>F</b>.
+Just add <b>\*F</b> in the text. By adding <i>label</i>, it
+is possible to have other number or names on the footnotes.
+Footnotes in displays are now possible. An empty line
+separates footnotes; the height of the line is controlled by
+number register <b>Fs</b>, default value is&nbsp;1.</p>
+
+
+<p style="margin-left:11%;"><b>GETHN&nbsp;</b><i>refname</i>
+[<i>varname</i>]</p>
+
+<p style="margin-left:22%;">Include the header number where
+the corresponding &rsquo;<b>SETR</b> <i>refname</i>&rsquo;
+was placed. This is displayed as &rsquo;X.X.X.&rsquo; in
+pass&nbsp;1. See <b>INITR</b>. If <i>varname</i> is used,
+<b>GETHN</b> sets the string variable <i>varname</i> to the
+header number.</p>
+
+
+<p style="margin-left:11%;"><b>GETPN&nbsp;</b><i>refname</i>
+[<i>varname</i>]</p>
+
+<p style="margin-left:22%;">Include the page number where
+the corresponding &rsquo;<b>SETR</b> <i>refname</i>&rsquo;
+was placed. This is displayed as &rsquo;9999&rsquo; in
+pass&nbsp;1. See <b>INITR</b>. If <i>varname</i> is used,
+<b>GETPN</b> sets the stringvariable <i>varname</i> to the
+page number.</p>
+
+
+<p style="margin-left:11%;"><b>GETR&nbsp;</b><i>refname</i></p>
+
+<p style="margin-left:22%;">Combine <b>GETHN</b> and
+<b>GETPN</b> with the text &rsquo;chapter&rsquo; and
+&rsquo;,&nbsp;page&rsquo;. The string <b>Qrf</b> contains
+the text for the cross reference:</p>
+
+<p style="margin-left:32%; margin-top: 1em">.ds Qrf See
+chapter \\*[Qrfh], page \\*[Qrfp].</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Qrf</b> may
+be changed to support other languages. Strings <b>Qrfh</b>
+and <b>Qrfp</b> are set by <b>GETR</b> and contain the page
+and header number, respectively.</p>
+
+
+<p style="margin-left:11%;"><b>GETST&nbsp;</b><i>refname</i>
+[<i>varname</i>]</p>
+
+<p style="margin-left:22%;">Include the string saved with
+the second argument to <b>.SETR</b>. This is a dummy string
+in pass&nbsp;1. If <i>varname</i> is used, <b>GETST</b> sets
+it to the saved string. See <b>INITR</b>.</p>
+
+<p style="margin-left:11%;"><b>H&nbsp;</b><i>level</i>
+[<i>heading-text</i> [<i>heading-suffix</i>]]</p>
+
+<p style="margin-left:22%;">Numbered section heading.
+Section headers can have a level between 1 and 14;
+level&nbsp;1 is the top level. The text is given in
+<i>heading-text</i>, and must be surrounded by double quotes
+if it contains spaces. <i>heading-suffix</i> is added to the
+header in the text but not in the table of contents. This is
+normally used for footnote marks and similar things.
+Don&rsquo;t use <b>\*F</b> in <i>heading-suffix</i>, it
+doesn&rsquo;t work. A manual label must be used, see
+<b>FS</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A call to the
+paragraph macro&nbsp;<b>P</b> directly after&nbsp;<b>H</b>
+is ignored. <b>H&nbsp;</b>takes care of spacing and
+indentation.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Page
+ejection before heading</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">Number register
+<b>Ej</b> controls page ejection before the heading. By
+default, a level-one heading gets two blank lines before it;
+higher levels only get one. A new page is ejected before
+each first-level heading if number register <b>Ej</b>
+is&nbsp;1. All levels below or equal the value of <b>Ej</b>
+get a new page. Default value for <b>Ej</b> is&nbsp;0.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Heading
+break level</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">A line break
+occurs after the heading if the heading level is less or
+equal to number register <b>Hb</b>. Default value
+is&nbsp;2.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Heading
+space level</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">A blank line is
+inserted after the heading if the heading level is less or
+equal to number register <b>Hs</b>. Default value
+is&nbsp;2.</p>
+
+<p style="margin-left:32%; margin-top: 1em">Text follows
+the heading on the same line if the level is greater than
+both <b>Hb</b> and <b>Hs</b>.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>Post-heading
+indent</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">Indentation of
+the text after the heading is controlled by number register
+<b>Hi</b>. Default value is&nbsp;0.</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>Hi</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374011.png" alt="Image grohtml-35374011.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Centered
+section headings</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">All headings
+whose level is equal or below number register <b>Hc</b> and
+also less than or equal to <b>Hb</b> or <b>Hs</b> are
+centered.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Font control
+of the heading</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">The font of
+each heading level is controlled by string <b>HF</b>. It
+contains a font number or font name for each level. Default
+value is</p>
+
+<p style="margin-left:43%; margin-top: 1em"><b>2 2 2 2 2 2
+2 2 2 2 2 2 2 2</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">(all headings
+in italic). This could also be written as</p>
+
+<p style="margin-left:43%; margin-top: 1em"><b>I I I I I I
+I I I I I I I I</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">Note that some
+other implementations use
+<b>3&nbsp;3&nbsp;2&nbsp;2&nbsp;2&nbsp;2&nbsp;2</b> as the
+default value. All omitted values are presumed to have
+value&nbsp;1.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Point size
+control</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">String
+<b>HP</b> controls the point size of each heading, in the
+same way as <b>HF</b> controls the font. A value of&nbsp;0
+selects the default point size. Default value is</p>
+
+<p style="margin-left:43%; margin-top: 1em"><b>0 0 0 0 0 0
+0 0 0 0 0 0 0 0</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">Beware that
+only the point size changes, not the vertical size. The
+latter can be controlled by the user-specified macros
+<b>HX</b> and/or <b>HZ</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Heading
+counters</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">Fourteen number
+registers named <b>H1</b> up to <b>H14</b> contain the
+counter for each heading level. The values are printed using
+Arabic numerals; this can be changed with the macro
+<b>HM</b> (see below). All marks are concatenated before
+printing. To avoid this, set number register <b>Ht</b>
+to&nbsp;1. This only prints the current heading counter at
+each heading.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Automatic
+table of contents</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">All headings
+whose level is equal or below number register <b>Cl</b> are
+saved to be printed in the table of contents. Default value
+is&nbsp;2.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Special
+control of the heading, user-defined macros</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">The following
+macros can be defined by the user to get a finer control of
+vertical spacing, fonts, or other features. Argument
+<i>level</i> is the level-argument to&nbsp;<b>H</b>,
+but&nbsp;0 for unnumbered headings (see <b>HU</b>). Argument
+<i>rlevel</i> is the real level; it is set to number
+register <b>Hu</b> for unnumbered headings. Argument
+<i>heading-text</i> is the text argument to <b>H</b> and
+<b>HU</b>. <b><br>
+HX&nbsp;</b><i>level rlevel heading-text</i></p>
+
+<p style="margin-left:43%;">This macro is called just
+before the printing of the heading. The following registers
+are available for <b>HX</b>. Note that <b>HX</b> may alter
+<b>}0</b>, <b>}2</b>, and <b>;3</b>. <b><br>
+}0&nbsp;</b>(string)</p>
+
+<p style="margin-left:54%;">Contains the heading mark plus
+two spaces if <i>rlevel</i> is non-zero, otherwise
+empty.</p>
+
+<p style="margin-left:43%;"><b>;0&nbsp;</b>(register)</p>
+
+<p style="margin-left:54%;">Contains the position of the
+text after the heading. 0&nbsp;means that the text should
+follow the heading on the same line, 1&nbsp;means that a
+line break should occur before the text, and 2&nbsp;means
+that a blank line should separate the heading and the
+text.</p>
+
+<p style="margin-left:43%;"><b>}2&nbsp;</b>(string)</p>
+
+<p style="margin-left:54%;">Contains two spaces if register
+<b>;0</b> is&nbsp;0. It is used to separate the heading from
+the text. The string is empty if <b>;0</b> is non-zero.</p>
+
+<p style="margin-left:43%;"><b>;3&nbsp;</b>(register)</p>
+
+<p style="margin-left:54%;">Contains the needed space in
+units after the heading. Default is 2v. Can be used to
+change things like numbering (<b>}0</b>), vertical spacing
+(<b>}2</b>), and the needed space after the heading.</p>
+
+<p style="margin-left:32%;"><b>HY&nbsp;</b><i>dlevel rlevel
+heading-text</i></p>
+
+<p style="margin-left:43%;">This macro is called after size
+and font calculations and might be used to change
+indentation.</p>
+
+<p style="margin-left:32%;"><b>HZ&nbsp;</b><i>dlevel rlevel
+heading-text</i></p>
+
+<p style="margin-left:43%;">This macro is called after the
+printing of the heading, just before <b>H</b> or <b>HU</b>
+exits. Can be used to change the page header according to
+the section heading.</p>
+
+
+<p style="margin-left:11%;"><b>HC&nbsp;</b>[<i>hyphenation-character</i>]</p>
+
+<p style="margin-left:22%;">Set hyphenation character.
+Default value is &rsquo;\%&rsquo;. Resets to the default if
+called without argument. Hyphenation can be turned off by
+setting number register <b>Hy</b> to&nbsp;0 at the beginning
+of the file.</p>
+
+<p style="margin-left:11%;"><b>HM&nbsp;</b>[<i>arg1</i>
+[<i>arg2</i> [... [<i>arg14</i>]]]]</p>
+
+<p style="margin-left:22%;">Heading mark style. Controls
+the type of marking for printing of the heading counters.
+Default is&nbsp;1 for all levels.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>Argument</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374012.png" alt="Image grohtml-35374012.png"></b></p>
+
+
+<p style="margin-left:11%;"><b>HU&nbsp;</b><i>heading-text</i></p>
+
+<p style="margin-left:22%;">Unnumbered section header.
+<b>HU</b> behaves like <b>H</b> at the level in number
+register <b>Hu</b>. See&nbsp;<b>H</b>.</p>
+
+<p style="margin-left:11%;"><b>HX&nbsp;</b><i>dlevel rlevel
+heading-text</i></p>
+
+<p style="margin-left:22%;">User-defined heading exit.
+Called just before printing the header.
+See&nbsp;<b>H</b>.</p>
+
+<p style="margin-left:11%;"><b>HY&nbsp;</b><i>dlevel rlevel
+heading-text</i></p>
+
+<p style="margin-left:22%;">User-defined heading exit.
+Called just before printing the header.
+See&nbsp;<b>H</b>.</p>
+
+<p style="margin-left:11%;"><b>HZ&nbsp;</b><i>dlevel rlevel
+heading-text</i></p>
+
+<p style="margin-left:22%;">User-defined heading exit.
+Called just after printing the header.
+See&nbsp;<b>H</b>.</p>
+
+
+<p style="margin-left:11%;"><b>I&nbsp;</b>[<i>italic-text</i>
+[<i>prev-font-text</i> [<i>italic-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Italic. Changes the font to
+italic if called without arguments. With one argument it
+sets the word in italic. With two arguments it concatenates
+them and sets the first word in italic and the second in the
+previous font. There is no limit on the number of argument;
+all are concatenated.</p>
+
+
+<p style="margin-left:11%;"><b>IA&nbsp;</b>[<i>addressee-name</i>
+[<i>title</i>]]</p>
+
+<p style="margin-left:22%;">Begin specification of the
+addressee and addressee&rsquo;s address in letter style.
+Several names can be specified with empty
+<b>IA</b>/<b>IE</b>-pairs, but only one address. See
+<b>LT</b>.</p>
+
+
+<p style="margin-left:11%;"><b>IB&nbsp;</b>[<i>italic-text</i>
+[<i>bold-text</i> [<i>italic-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Italic-bold. Even arguments are
+printed in italic, odd in boldface. See&nbsp;<b>I</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>IE</b></p></td>
+<td width="8%"></td>
+<td width="60%">
+
+
+<p>End the address specification after <b>IA</b>.</p></td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>INITI&nbsp;</b><i>type
+filename</i> [<i>macro</i>]</p>
+
+<p style="margin-left:22%;">Initialize the new index system
+and set the filename to collect index lines in with
+<b>IND</b>. Argument <i>type</i> selects the type of index:
+page number, header marks or both. The default is page
+numbers.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is also
+possible to create a macro that is responsible for
+formatting each row; just add the name of the macro as a
+third argument. The macro is then called with the index as
+argument(s).</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>type</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374013.png" alt="Image grohtml-35374013.png"></b></p>
+
+
+<p style="margin-left:11%;"><b>INITR&nbsp;</b><i>filename</i></p>
+
+<p style="margin-left:22%;">Initialize the cross reference
+macros. Cross references are written to stderr and are
+supposed to be redirected into file filename<i>.qrf</i>.
+Requires two passes with groff; this is handled by a
+separate program called <b>mmroff</b>(1). This program
+exists because <b>groff</b>(1) by default deactivates the
+unsafe operations that are required by <b>INITR</b>. The
+first pass looks for cross references, and the second one
+includes them. <b>INITR</b> can be used several times, but
+it is only the first occurrence of <b>INITR</b> that is
+active.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also
+<b>SETR</b>, <b>GETPN</b>, and <b>GETHN</b>.</p>
+
+<p style="margin-left:11%;"><b>IND&nbsp;</b><i>arg1</i>
+[<i>arg2</i> [...]]</p>
+
+<p style="margin-left:22%;">Write a line in the index file
+selected by <b>INITI</b> with all arguments and the page
+number or header mark separated by tabs.</p>
+
+
+<p style="margin-left:32%; margin-top: 1em"><b>Examples</b></p>
+
+<p style="margin-left:32%; margin-top: 1em">arg1\tpage
+number <br>
+arg1\targ2\tpage number <br>
+arg1\theader mark <br>
+arg1\tpage number\theader mark</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>INDP</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Print the index by running the command specified by
+string variable <b>Indcmd</b>, which has
+&rsquo;sort&nbsp;-t\t&rsquo; as the default value.
+<b>INDP</b> reads the output from the command to form the
+index, by default in two columns (this can be changed by
+defining <b>TYIND</b>). The index is printed with string
+variable <b>Index</b> as header, default is
+&rsquo;INDEX&rsquo;. One-column processing is reactivated
+after the list. <b>INDP</b> calls the user-defined macros
+<b>TXIND</b>, <b>TYIND</b>, and <b>TZIND</b> if defined.
+<b>TXIND</b> is called before printing the string
+&rsquo;INDEX&rsquo;, <b>TYIND</b> is called instead of
+printing &rsquo;INDEX&rsquo;, and <b>TZIND</b> is called
+after the printing and should take care of restoring to
+normal operation again.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ISODATE</b> [<b>0</b>]</p>
+
+<p style="margin-left:22%;">Change the predefined date
+string in <b>DT</b> to ISO-format, this is,
+&rsquo;YYYY-MM-DD&rsquo;. This can also be done by adding
+<b>-rIso=1</b> on the command line. Reverts to old date
+format if argument is&nbsp;<b>0</b>.</p>
+
+
+<p style="margin-left:11%;"><b>IR&nbsp;</b>[<i>italic-text</i>
+[<i>roman-text</i> [<i>italic-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Italic-roman. Even arguments
+are printed in italic, odd in roman. See&nbsp;<b>I</b>.</p>
+
+<p style="margin-left:11%;"><b>LB&nbsp;</b><i>text-indent
+mark-indent pad type</i> [<i>mark</i> [<i>LI-space</i>
+[<i>LB-space</i>]]]</p>
+
+<p style="margin-left:22%;">List-begin macro. This is the
+common macro used for all lists. <i>text-indent</i> is the
+number of spaces to indent the text from the current
+indentation.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>pad</i> and
+<i>mark-indent</i> control where to put the mark. The mark
+is placed within the mark area, and <i>mark-indent</i> sets
+the number of spaces before this area. By default it
+is&nbsp;0. The mark area ends where the text begins. The
+start of the text is still controlled by
+<i>text-indent</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The mark is
+left-justified within the mark area if <i>pad</i> is&nbsp;0.
+If <i>pad</i> is greater than&nbsp;0, <i>mark-indent</i> is
+ignored, and the mark is placed <i>pad</i> spaces before the
+text. This right-justifies the mark.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>type</i>
+is&nbsp;0 the list either has a hanging indentation or, if
+argument <i>mark</i> is given, the string <i>mark</i> as a
+mark.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>type</i>
+is greater than&nbsp;0 automatic numbering occurs, using
+arabic numbers if <i>mark</i> is empty. <i>mark</i> can then
+be any of &rsquo;1&rsquo;, &rsquo;A&rsquo;, &rsquo;a&rsquo;,
+&rsquo;I&rsquo;, or &rsquo;i&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>type</i>
+selects one of six possible ways to display the mark.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>type</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374014.png" alt="Image grohtml-35374014.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Every item in
+the list gets <i>LI-space</i> number of blank lines before
+them. Default is&nbsp;1.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>LB</b>
+itself prints <i>LB-space</i> blank lines. Default
+is&nbsp;0.</p>
+
+
+<p style="margin-left:11%;"><b>LC&nbsp;</b>[<i>list-level</i>]</p>
+
+<p style="margin-left:22%;">List-status clear. Terminates
+all current active lists down to <i>list-level</i>,
+or&nbsp;0 if no argument is given. This is used
+by&nbsp;<b>H</b> to clear any active list.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>LE</b> [<b>1</b>]</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>List end. Terminates the current list. <b>LE</b> outputs
+a blank line if an argument is given.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>LI&nbsp;</b>[<i>mark&nbsp;</i>[<b>1</b>|<b>2</b>]]</p>
+
+<p style="margin-left:22%;">List item preceding every item
+in a list. Without argument, <b>LI</b> prints the mark
+determined by the current list type. By giving <b>LI</b> one
+argument, it uses that as the mark instead. Two arguments to
+<b>LI</b> makes <i>mark</i> a prefix to the current mark.
+There is no separating space between the prefix and the mark
+if the second argument is &rsquo;2&rsquo; instead of
+&rsquo;1&rsquo;. This behaviour can also be achieved by
+setting number register <b>Limsp</b> to zero. A zero length
+<i>mark</i> makes a hanging indentation instead.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A blank line is
+printed before the list item by default. This behaviour can
+be controlled by number register <b>Ls</b>. Pre-spacing
+occurs for each list level less than or equal to <b>Ls</b>.
+Default value is 99. There is no nesting limit.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The indentation
+can be changed through number register <b>Li</b>. Default
+is&nbsp;6.</p>
+
+<p style="margin-left:22%; margin-top: 1em">All lists begin
+with a list initialization macro, <b>LB</b>. There are,
+however, seven predefined list types to make lists easier to
+use. They all call <b>LB</b> with different default
+values.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374015.png" alt="Image grohtml-35374015.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">These lists are
+described at other places in this manual. See also
+<b>LB</b>.</p>
+
+
+<p style="margin-left:11%;"><b>LT&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Format a letter in one of four
+different styles depending on the argument. Also see section
+&ldquo;Internals&rdquo; below.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374016.png" alt="Image grohtml-35374016.png"></p>
+
+<p style="margin-left:11%;"><b>LO&nbsp;</b><i>type</i>
+[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Specify options in letter (see
+<b>.LT</b>). This is a list of the standard options:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374017.png" alt="Image grohtml-35374017.png"></p>
+
+
+<p style="margin-left:11%;"><b>MC&nbsp;</b><i>column-size</i>
+[<i>column-separation</i>]</p>
+
+<p style="margin-left:22%;">Begin multiple columns. Return
+to normal with <b>1C</b>. <b>MC</b> creates as many columns
+as the current line length permits. <i>column-size</i> is
+the width of each column, and <i>column-separation</i> is
+the space between two columns. Default separation is
+<i>column-size</i>/15. See also <b>1C</b>.</p>
+
+<p style="margin-left:11%;"><b>ML&nbsp;</b><i>mark</i>
+[<i>text-indent&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Marked list start. The
+<i>mark</i> argument is printed before each list item.
+<i>text-indent</i> sets the indent and overrides <b>Li</b>.
+A third argument prohibits printing of a blank line before
+each item.</p>
+
+<p style="margin-left:11%;"><b>MT&nbsp;</b>[<i>arg</i>
+[<i>addressee</i>]]</p>
+
+<p style="margin-left:22%;">Memorandum type. The argument
+<i>arg</i> is part of a filename in
+<i>/usr/share/groff/1.22.4/tmac/mm/</i>*<i>.MT</i>.
+Memorandum types 0 to&nbsp;5 are supported, including type
+&rsquo;string&rsquo; (which gets internally mapped to
+type&nbsp;6). <i>addressee</i> just sets a variable, used in
+the AT&amp;T macros.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>arg</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374018.png" alt="Image grohtml-35374018.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em">See also
+<b>COVER</b>/<b>COVEND</b>, a more flexible type of front
+page.</p>
+
+<p style="margin-left:11%;"><b>MOVE&nbsp;</b><i>y-pos</i>
+[<i>x-pos</i> [<i>line-length</i>]]</p>
+
+<p style="margin-left:22%;">Move to a position, setting
+page offset to <i>x-pos</i>. If <i>line-length</i> is not
+given, the difference between current and new page offset is
+used. Use <b>PGFORM</b> without arguments to return to
+normal.</p>
+
+<p style="margin-left:11%;"><b>MULB&nbsp;</b><i>cw1
+space1</i> [<i>cw2 space2</i> [<i>cw3</i> ...]]</p>
+
+<p style="margin-left:22%;">Begin a special multi-column
+mode. All columns widths must be specified. The space
+between the columns must be specified also. The last column
+does not need any space definition. <b>MULB</b> starts a
+diversion, and <b>MULE</b> ends the diversion and prints the
+columns. The unit for the width and space arguments is
+&rsquo;n&rsquo;, but <b>MULB</b> accepts all normal unit
+specifications like &rsquo;c&rsquo; and &rsquo;i&rsquo;.
+<b>MULB</b> operates in a separate environment.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>MULN</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Begin the next column. This is the only way to switch
+the column.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>MULE</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>End the multi-column mode and print the columns.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>nP&nbsp;</b>[<i>type</i>]</p>
+
+<p style="margin-left:22%;">Print numbered paragraph with
+header level two. See <b>.P</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>NCOL</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Force printing to the next column. Don&rsquo;t use this
+together with the <b>MUL*</b> macros, see <b>2C</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>NS&nbsp;</b>[<i>arg&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Print different types of
+notations. The argument selects between the predefined type
+of notations. If the second argument is available, then the
+argument becomes the entire notation. If the argument
+doesn&rsquo;t select a predefined type, it is printed as
+&rsquo;Copy (<i>arg</i>) to&rsquo;. It is possible to add
+more standard notations, see the string variables
+<b>Letns</b> and <b>Letnsdef</b>.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374019.png" alt="Image grohtml-35374019.png"></p>
+
+
+<p style="margin-left:11%;"><b>ND&nbsp;</b><i>new-date</i></p>
+
+<p style="margin-left:22%;">New date. Overrides the current
+date. Date is not printed if <i>new-date</i> is an empty
+string.</p>
+
+
+<p style="margin-left:11%;"><b>OF&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Odd-page footer, a line printed
+just above the normal footer. See <b>EF</b> and
+<b>PF</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This macro
+defines string <b>EOPof</b>.</p>
+
+
+<p style="margin-left:11%;"><b>OH&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Odd-page header, a line printed
+just below the normal header. See <b>EH</b> and
+<b>PH</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This macro
+defines string <b>TPoh</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>OP</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Make sure that the following text is printed at the top
+of an odd-numbered page. Does not output an empty page if
+currently at the top of an odd page.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>P&nbsp;</b>[<i>type</i>]</p>
+
+<p style="margin-left:22%;">Begin new paragraph.
+<b>P&nbsp;</b>without argument produces left-justified text,
+even the first line of the paragraph. This is the same as
+setting <i>type</i> to&nbsp;0. If the argument is&nbsp;1,
+the first line of text following&nbsp;<b>P</b> is indented
+by the number of spaces in number register <b>Pi</b>, by
+default&nbsp;5.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Instead of
+giving an argument to&nbsp;<b>P</b> it is possible to set
+the paragraph type in number register <b>Pt</b>. Using 0
+and&nbsp;1 is the same as adding that value to <b>P</b>. A
+value of&nbsp;2 indents all paragraphs, except after
+headings, lists, and displays (this value can&rsquo;t be
+used as an argument to <b>P</b> itself).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The space
+between two paragraphs is controlled by number register
+<b>Ps</b>, and is&nbsp;1 by default (one blank line).</p>
+
+
+<p style="margin-left:11%;"><b>PGFORM&nbsp;</b>[<i>linelength</i>
+[<i>pagelength</i> [<i>pageoffset&nbsp;</i>[<b>1</b>]]]]</p>
+
+<p style="margin-left:22%;">Set line length, page length,
+and/or page offset. This macro can be used for special
+formatting, like letter heads and other. It is normally the
+first command in a file, though it is not necessary.
+<b>PGFORM</b> can be used without arguments to reset
+everything after a <b>MOVE</b> call. A line break is done
+unless the fourth argument is given. This can be used to
+avoid the page number on the first page while setting new
+width and length. (It seems as if this macro sometimes
+doesn&rsquo;t work too well. Use the command-line arguments
+to change line length, page length, and page offset
+instead.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>PGNH</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>No header is printed on the next page. Used to get rid
+of the header in letters or other special texts. This macro
+must be used before any text to inhibit the page header on
+the first page.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>PIC</b> [<b>-B</b>]
+[<b>-L</b>] [<b>-C</b>] [<b>-R</b>]
+[<b>-I&nbsp;</b><i>n</i>] <i>filename</i> [<i>width</i>
+[<i>height</i>]]</p>
+
+<p style="margin-left:22%;">Include a PostScript file in
+the document. The macro depends on <b>mmroff</b>(1) and
+<b>INITR</b>. The arguments <b>-L</b>, <b>-C</b>, <b>-R</b>,
+and <b>-I&nbsp;</b><i>n</i> adjust the picture or indent it.
+With no flag the picture is adjusted to the left. Adding
+<b>-B</b> draws a box around the picture. The optional
+<i>width</i> and <i>height</i> can also be given to resize
+the picture.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>PE</b></p></td>
+<td width="8%"></td>
+<td width="61%">
+
+
+<p>Picture end. Ends a picture for <b>pic</b>(1).</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>PF&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Page footer. <b>PF</b> sets the
+line to be printed at the bottom of each page. Empty by
+default. See <b>PH</b> for the argument specification.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This macro
+defines string <b>EOPf</b>.</p>
+
+
+<p style="margin-left:11%;"><b>PH&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Page header, a line printed at
+the top of each page. The argument should be specified
+as</p>
+
+
+<p style="margin-left:32%; margin-top: 1em">&quot;&rsquo;<i>left-part</i>&rsquo;<i>center-part</i>&rsquo;<i>right-part</i>&rsquo;&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">where
+<i>left-part</i>, <i>center-part</i>, and <i>right-part</i>
+are printed left-justified, centered, and right justified,
+respectively. Within the argument to <b>PH</b>, the
+character &rsquo;%&rsquo; is changed to the current page
+number. The default argument is</p>
+
+
+<p style="margin-left:32%; margin-top: 1em">&quot;&rsquo;&rsquo;-
+% -&rsquo;&rsquo;&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">which gives the
+page number between two dashes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This macro
+defines string <b>TPh</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>PS</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Picture start (from pic). Begins a picture for
+<b>pic</b>(1).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>PX</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Page header user-defined exit. This macro is called just
+after the printing of the page header in <i>no-space</i>
+mode.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>R</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Roman. Return to roman font, see also&nbsp;<b>I</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>RB&nbsp;</b>[<i>roman-text</i>
+[<i>bold-text</i> [<i>roman-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Roman-bold. Even arguments are
+printed in roman, odd in boldface. See&nbsp;<b>I</b>.</p>
+
+<p style="margin-left:11%;"><b>RD&nbsp;</b>[<i>prompt</i>
+[<i>diversion</i> [<i>string</i>]]]</p>
+
+<p style="margin-left:22%;">Read from standard input to
+diversion and/or string. The text is saved in a diversion
+named <i>diversion</i>. Recall the text by writing the name
+of the diversion after a dot on an empty line. A string is
+also defined if <i>string</i> is given. <i>Diversion</i>
+and/or <i>prompt</i> can be empty (&quot;&quot;).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>RF</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Reference end. Ends a reference definition and returns
+to normal processing. See <b>RS</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>RI&nbsp;</b>[<i>roman-text</i>
+[<i>italic-text</i> [<i>roman-text</i> [...]]]]</p>
+
+<p style="margin-left:22%;">Print even arguments in roman,
+odd in italic. See&nbsp;<b>I</b>.</p>
+
+
+<p style="margin-left:11%;"><b>RL&nbsp;</b>[<i>text-indent</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Reference list start. Begins a
+list where each item is preceded with an automatically
+incremented number between square brackets.
+<i>text-indent</i> changes the default indentation.</p>
+
+<p style="margin-left:11%;"><b>RP&nbsp;</b>[<i>arg1</i>
+[<i>arg2</i>]]</p>
+
+<p style="margin-left:22%;">Produce reference page. This
+macro can be used if a reference page is wanted somewhere in
+the document. It is not needed if <b>TC</b> is used to
+produce a table of contents. The reference page is then
+printed automatically.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The reference
+counter is not reset if <i>arg1</i> is&nbsp;1.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>arg2</i>
+tells <b>RP</b> whether to eject a page or not.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>arg2</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374020.png" alt="Image grohtml-35374020.png"></b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The reference
+items are separated by a blank line. Setting number register
+<b>Ls</b> to&nbsp;0 suppresses the line.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The string
+<b>Rp</b> contains the reference page title and is set to
+&rsquo;REFERENCES&rsquo; by default. The number register
+<b>Rpe</b> holds the default value for the second argument
+of <b>RP</b>; it is initially set to&nbsp;0.</p>
+
+
+<p style="margin-left:11%;"><b>RS&nbsp;</b>[<i>string-name</i>]</p>
+
+<p style="margin-left:22%;">Begin an automatically numbered
+reference definition. Put the string <b>\*(Rf</b> where the
+reference mark should be and write the reference between
+<b>RS</b>/<b>RF</b> at next new line after the reference
+mark. The reference number is stored in number register
+<b>:R</b>. If <i>string-name</i> is given, a string with
+that name is defined and contains the current reference
+mark. The string can be referenced as
+<b>\*[</b><i>string-name</i><b>]</b> later in the text.</p>
+
+<p style="margin-left:11%;"><b>S&nbsp;</b>[<i>size</i>
+[<i>spacing</i>]]</p>
+
+<p style="margin-left:22%;">Set point size and vertical
+spacing. If any argument is equal to &rsquo;P&rsquo;, the
+previous value is used. A &rsquo;C&rsquo; means current
+value, and &rsquo;D&rsquo; the default value. If
+&rsquo;+&rsquo; or &rsquo;-&rsquo; is used before the value,
+the current value is incremented or decremented,
+respectively.</p>
+
+
+<p style="margin-left:11%;"><b>SA&nbsp;</b>[<i>arg</i>]</p>
+
+<p style="margin-left:22%;">Set right-margin justification.
+Justification is turned on by default. No argument or value
+&rsquo;0&rsquo; turns off justification, and &rsquo;1&rsquo;
+turns on justification.</p>
+
+
+<p style="margin-left:11%;"><b>SETR&nbsp;</b><i>refname</i>
+[<i>string</i>]</p>
+
+<p style="margin-left:22%;">Remember the current header and
+page number as <i>refname</i>. Saves <i>string</i> if
+<i>string</i> is defined. <i>string</i> is retrieved with
+<b>.GETST</b>. See <b>INITR</b>.</p>
+
+
+<p style="margin-left:11%;"><b>SG&nbsp;</b>[<i>arg&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Signature line. Prints the
+authors name(s) after the formal closing. The argument is
+appended to the reference data, printed at either the first
+or last author. The reference data is the location,
+department, and initials specified with <b>.AU</b>. It is
+printed at the first author if the second argument is given,
+otherwise at the last. No reference data is printed if the
+author(s) is specified through <b>.WA</b>/<b>.WE</b>. See
+section &ldquo;Internals&rdquo; below.</p>
+
+
+<p style="margin-left:11%;"><b>SK&nbsp;</b>[<i>pages</i>]</p>
+
+<p style="margin-left:22%;">Skip pages. If <i>pages</i>
+is&nbsp;0 or omitted, a skip to the next page occurs unless
+it is already at the top of a page. Otherwise it skips
+<i>pages</i> pages.</p>
+
+<p style="margin-left:11%;"><b>SM&nbsp;</b><i>string1</i>
+[<i>string2</i> [<i>string3</i>]]</p>
+
+<p style="margin-left:22%;">Make a string smaller. If
+<i>string2</i> is given, <i>string1</i> is made smaller and
+<i>string2</i> stays at normal size, concatenated with
+<i>string1</i>. With three arguments, everything is
+concatenated, but only <i>string2</i> is made smaller.</p>
+
+
+<p style="margin-left:11%;"><b>SP&nbsp;</b>[<i>lines</i>]</p>
+
+<p style="margin-left:22%;">Space vertically. <i>lines</i>
+can have any scaling factor, like &rsquo;3i&rsquo; or
+&rsquo;8v&rsquo;. Several <b>SP</b> calls in a line only
+produces the maximum number of lines, not the sum. <b>SP</b>
+is ignored also until the first text line in a page. Add
+<b>\&amp;</b> before a call to <b>SP</b> to avoid this.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>TAB</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Reset tabs to every&nbsp;5n. Normally used to reset any
+previous tab positions.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>TB&nbsp;</b>[<i>title</i>
+[<i>override</i> [<i>flag</i> [<i>refname</i>]]]]</p>
+
+<p style="margin-left:22%;">Table title. The arguments are
+the same as for <b>EC</b>. <b>TB</b> uses the number
+register <b>Tb</b> as a counter. The string <b>Lt</b>
+controls the title of the List of Tables; default value is
+&rsquo;LIST OF TABLES&rsquo;. The List of Tables is only
+printed if number register <b>Lt</b> is&nbsp;1, which is the
+default. The string <b>Litb</b> contains the word
+&rsquo;TABLE&rsquo;, which is printed before the number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Special
+handling of the title occurs if <b>TB</b> is used inside
+<b>DS</b>/<b>DE</b>, it is not affected by the format of
+<b>DS</b>.</p>
+
+<p style="margin-left:11%;"><b>TC&nbsp;</b>[<i>slevel</i>
+[<i>spacing</i> [<i>tlevel</i> [<i>tab</i> [<i>h1</i>
+[<i>h2</i> [<i>h3</i> [<i>h4</i> [<i>h5</i>]]]]]]]]]</p>
+
+<p style="margin-left:22%;">Table of contents. This macro
+is normally used as the last line of the document. It
+generates a table of contents with headings up to the level
+controlled by number register <b>Cl</b>. Note that <b>Cl</b>
+controls the saving of headings, it has nothing to do with
+<b>TC</b>. Headings with a level less than or equal to
+<i>slevel</i> get <i>spacing</i> number of lines before
+them. Headings with a level less than or equal to
+<i>tlevel</i> have their page numbers right-justified with
+dots or spaces separating the text and the page number.
+Spaces are used if <i>tab</i> is greater than zero, dots
+otherwise. Other headings have the page number directly at
+the end of the heading text (<i>ragged-right</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The rest of the
+arguments is printed, centered, before the table of
+contents.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+user-defined macros <b>TX</b> and <b>TY</b> are used if
+<b>TC</b> is called with at most four arguments. <b>TX</b>
+is called before the printing of the string
+&rsquo;CONTENTS&rsquo;, and <b>TY</b> is called instead of
+printing &rsquo;CONTENTS&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Equivalent
+macros can be defined for list of figures, tables, equations
+and exhibits by defining <b>TX</b><i>xx</i> or
+<b>TY</b><i>xx</i>, where <i>xx</i> is &rsquo;Fg&rsquo;,
+&rsquo;TB&rsquo;, &rsquo;EC&rsquo;, or &rsquo;EX&rsquo;,
+respectively.</p>
+
+<p style="margin-left:22%; margin-top: 1em">String
+<b>Ci</b> can be set to control the indentations for each
+heading-level. It must be scaled, like</p>
+
+<p style="margin-left:32%; margin-top: 1em">.ds Ci .25i .5i
+.75i 1i 1i</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, the
+indentation is controlled by the maximum length of headings
+in each level.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The string
+variables <b>Lifg</b>, <b>Litb</b>, <b>Liex</b>,
+<b>Liec</b>, and <b>Licon</b> contain &rsquo;Figure&rsquo;,
+&rsquo;TABLE&rsquo;, &rsquo;Exhibit&rsquo;,
+&rsquo;Equation&rsquo;, and &rsquo;CONTENTS&rsquo;,
+respectively. These can be redefined to other languages.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>TE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Table end. See <b>TS</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>TH</b> [<b>N</b>]</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Table header. See <b>TS</b>. <b>TH</b> ends the header
+of the table. This header is printed again if a page break
+occurs. Argument &rsquo;N&rsquo; isn&rsquo;t implemented
+yet.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>TL&nbsp;</b>[<i>charging-case-number</i>
+[<i>filing-case-number</i>]]</p>
+
+<p style="margin-left:22%;">Begin title of memorandum. All
+text up to the next <b>AU</b> is included in the title.
+<i>charging-case-number</i> and <i>filing-case-number</i>
+are saved for use in the front page processing.</p>
+
+<p style="margin-left:11%;"><b>TM&nbsp;</b>[<i>num1</i>
+[<i>num2</i> [...]]]</p>
+
+<p style="margin-left:22%;">Technical memorandum numbers
+used in <b>.MT</b>. An unlimited number of arguments may be
+given.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>TP</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Top-of-page user-defined macro. This macro is called
+instead of the normal page header. It is possible to get
+complete control over the header. Note that the header and
+the footer are printed in a separate environment. Line
+length is preserved, though. See <b>EOP</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em"><b>strings
+available to TP</b></p>
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-35374021.png" alt="Image grohtml-35374021.png"></b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>TS</b> [<b>H</b>]</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Table start. This is the start
+of a table specification to <b>tbl</b>(1). <b>TS</b> ends
+with <b>TE</b>. Argument &rsquo;H&rsquo; tells <b>mm</b>
+that the table has a header. See <b>TH</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>TX</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>User-defined table of contents exit. This macro is
+called just before <b>TC</b> prints the word
+&rsquo;CONTENTS&rsquo;. See <b>TC</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>TY</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>User-defined table of contents exit. This macro is
+called instead of printing &rsquo;CONTENTS&rsquo;. See
+<b>TC</b>.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>VERBON&nbsp;</b>[<i>flag</i>
+[<i>point-size</i> [<i>font</i>]]]</p>
+
+<p style="margin-left:22%;">Begin verbatim output using
+Courier font. Usually for printing programs. All characters
+have equal width. The point size can be changed with the
+second argument. By specifying a third argument it is
+possible to use another font instead of Courier. <i>flag</i>
+controls several special features. Its value is the sum of
+all wanted features.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374022.png" alt="Image grohtml-35374022.png"></p>
+
+<p style="margin-left:11%;"><b>VERBOFF</b></p>
+
+<p style="margin-left:22%;">End verbatim output.</p>
+
+
+<p style="margin-left:11%;"><b>VL&nbsp;</b><i>text-indent</i>
+[<i>mark-indent&nbsp;</i>[<b>1</b>]]</p>
+
+<p style="margin-left:22%;">Variable-item list. It has no
+fixed mark, it assumes that every <b>LI</b> has a mark
+instead. <i>text-indent</i> sets the indent to the text, and
+<i>mark-indent</i> the distance from the current indentation
+to the mark. A third argument prohibits printing of a blank
+line before each item.</p>
+
+<p style="margin-left:11%;"><b>VM</b> [<b>-T</b>]
+[<i>top</i> [<i>bottom</i>]]</p>
+
+<p style="margin-left:22%;">Vertical margin. Increase the
+top and bottom margin by <i>top</i> and <i>bottom</i>,
+respectively. If option <b>-T</b> is specified, set those
+margins to <i>top</i> and <i>bottom</i>. If no argument is
+given, reset the margin to zero, or to the default
+(&rsquo;7v 5v&rsquo;) if <b>-T</b> is used. It is highly
+recommended that macros <b>TP</b> and/or <b>EOP</b> are
+defined if using <b>-T</b> and setting top and/or bottom
+margin to less than the default.</p>
+
+
+<p style="margin-left:11%;"><b>WA&nbsp;</b>[<i>writer-name</i>
+[<i>title</i>]]</p>
+
+<p style="margin-left:22%;">Begin specification of the
+writer and writer&rsquo;s address. Several names can be
+specified with empty <b>WA</b>/<b>WE</b> pairs, but only one
+address.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>WE</b></p></td>
+<td width="8%"></td>
+<td width="61%">
+
+
+<p>End the address specification after <b>.WA</b>.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>WC&nbsp;</b>[<i>format1</i>]
+[<i>format2</i>] [...]</p>
+
+<p style="margin-left:22%;">Footnote and display width
+control.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374023.png" alt="Image grohtml-35374023.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Strings used
+in mm</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>App</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>A string containing the word &rsquo;APPENDIX&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Apptxt</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The current appendix text.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Em dash string</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>H1txt</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Updated by <b>.H</b> and <b>.HU</b> to the current
+heading text. Also updated in table of contents &amp;
+friends.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>HF</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Font list for headings, &rsquo;2 2 2 2 2 2 2&rsquo; by
+default. Non-numeric font names may also be used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>HP</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Point size list for headings. By default, this is
+&rsquo;0 0 0 0 0 0 0&rsquo; which is the same as &rsquo;10
+10 10 10 10 10 10&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Index</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;INDEX&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Indcmd</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the index command. Default value is
+&rsquo;sort&nbsp;-t\t&rsquo;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Lifg</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>String containing &rsquo;Figure&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Litb</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>String containing &rsquo;TABLE&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Liex</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>String containing &rsquo;Exhibit&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Liec</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>String containing &rsquo;Equation&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Licon</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>String containing &rsquo;CONTENTS&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Lf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;LIST OF FIGURES&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Lt</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;LIST OF TABLES&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Lx</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;LIST OF EXHIBITS&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Le</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;LIST OF EQUATIONS&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Letfc</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;Yours very truly,&rsquo;,
+used in <b>.FC</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Letapp</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;APPROVED:&rsquo;, used in
+<b>.AV</b>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Letdate</b></p>
+
+<p style="margin-left:22%;">Contains the string
+&rsquo;Date&rsquo;, used in <b>.AV</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>LetCN</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;CONFIDENTIAL&rsquo;, used in
+<b>.LO CN</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>LetSA</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;To Whom It May
+Concern:&rsquo;, used in <b>.LO SA</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>LetAT</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;ATTENTION:&rsquo;, used in
+<b>.LO AT</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>LetSJ</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;SUBJECT:&rsquo;, used in
+<b>.LO SJ</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>LetRN</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;In reference to:&rsquo;, used
+in <b>.LO RN</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>Letns</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>is an array containing the different strings used in
+<b>.NS</b>. It is really a number of string variables
+prefixed with <b>Letns!</b>. If the argument doesn&rsquo;t
+exist, it is included between <b>()</b> with
+<b>Letns!copy</b> as a prefix and <b>Letns!to</b> as a
+suffix. Observe the space after &rsquo;Copy&rsquo; and
+before &rsquo;to&rsquo;.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374024.png" alt="Image grohtml-35374024.png"></p>
+
+<p style="margin-left:11%;"><b>Letnsdef</b></p>
+
+<p style="margin-left:22%;">Define the standard notation
+used when no argument is given to <b>.NS</b>. Default
+is&nbsp;0.</p>
+
+<p style="margin-left:11%;"><b>MO1 &ndash; MO12</b></p>
+
+<p style="margin-left:22%;">Strings containing the month
+names &rsquo;January&rsquo; through
+&rsquo;December&rsquo;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Qrf</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>String containing &rsquo;See chapter \\*[Qrfh], page
+\\n[Qrfp].&rsquo;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Rp</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Contains the string &rsquo;REFERENCES&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Tcst</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Contains the current status of the table of contents and
+list of figures, etc. Empty outside of <b>.TC</b>. Useful in
+user-defined macros like <b>.TP</b>.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374025.png" alt="Image grohtml-35374025.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>Tm</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Contains the string
+&rsquo;\(tm&rsquo;, the trade mark symbol.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Verbnm</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Argument to <b>.nm</b> in the <b>.VERBON</b> command.
+Default is&nbsp;1.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Number
+variables used in mm</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>Aph</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Print an appendix page for every
+new appendix if this number variable is non-zero. No output
+occurs if <b>Aph</b> is zero, but there is always an
+appendix entry in the &rsquo;List of contents&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Cl</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Contents level (in the range 0 to 14). The contents is
+saved if a heading level is lower than or equal to the value
+of <b>Cl</b>. Default is&nbsp;2.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Cp</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Eject page between list of table, list of figure, etc.,
+if the value of <b>Cp</b> is zero. Default is&nbsp;0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>D</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Debug flag. Values greater than zero produce debug
+information of increasing verbosity. A value of&nbsp;1 gives
+information about the progress of formatting. Default
+is&nbsp;0.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>De</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>If set to&nbsp;1, eject after floating display is
+output. Default is&nbsp;0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Dsp</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>If defined, it controls the space output before and
+after static displays. Otherwise the value of <b>Lsp</b> is
+used.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Df</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Control floating keep output. This is a number in the
+range 0 to 5, with a default value of&nbsp;5. See
+<b>.DF</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Ds</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>If set to&nbsp;1, use the amount of space stored in
+register <b>Lsp</b> before and after display. Default
+is&nbsp;1.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Ej</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>If set to&nbsp;1, eject page before each first-level
+heading. Default is&nbsp;0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Eq</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Equation labels are left-adjusted if set to&nbsp;0 and
+right-adjusted if set to&nbsp;1. Default is&nbsp;0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Fs</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Footnote spacing. Default is&nbsp;1.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>H1 &ndash; H7</b></p>
+
+<p style="margin-left:22%;">Heading counters</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>H1dot</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Append a dot after the level-one heading number if value
+is greater than zero. Default is&nbsp;1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>H1h</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>A copy of number register <b>H1</b>, but it is
+incremented just before the page break. Useful in
+user-defined header macros.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>Hb</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Heading break level. A number in the range 0 to 14, with
+a default value of&nbsp;2. See&nbsp;<b>.H</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>Hc</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Heading centering level. A number in the range 0 to 14,
+with a default value value of&nbsp;0.
+See&nbsp;<b>.H</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>Hi</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Heading temporary indent. A number in the range 0 to 2,
+with a default value of&nbsp;1.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374026.png" alt="Image grohtml-35374026.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>Hps</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Heading pre-space level. If the
+heading level is less than or equal to <b>Hps</b>, two lines
+precede the section heading instead of one. Default is first
+level only. The real amount of lines is controlled by the
+variables <b>Hps1</b> and <b>Hps2</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Hps1</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Number of lines preceding <b>.H</b> if the heading level
+is greater than <b>Hps</b>. Value is in units, default is
+0.5.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Hps2</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Number of lines preceding <b>.H</b> if the heading level
+is less than or equal to <b>Hps</b>. Value is in units,
+default is&nbsp;1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Hs</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Heading space level. A number in the range 0 to 14, with
+a default value of&nbsp;2. See&nbsp;<b>.H</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Hss</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Number of lines following <b>.H</b> if the heading level
+is less than or equal to <b>Hs</b>. Value is in units,
+default is&nbsp;1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Ht</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Heading numbering type.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374027.png" alt="Image grohtml-35374027.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">Default
+is&nbsp;0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>Hu</b></p></td>
+<td width="8%"></td>
+<td width="61%">
+
+
+<p style="margin-top: 1em">Unnumbered heading level.
+Default is&nbsp;2.</p></td>
+<td width="17%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>Hy</b></p></td>
+<td width="8%"></td>
+<td width="61%">
+
+
+<p>Hyphenation status of text body.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-35374028.png" alt="Image grohtml-35374028.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">Default
+is&nbsp;0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>Iso</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Set this variable to&nbsp;1 on
+the command line to get an ISO-formatted date string
+(<b>-rIso=1</b>). Useless inside of a document.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>L</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Page length, only for command-line settings.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Letwam</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Maximum lines in return-address, used in
+<b>.WA</b>/<b>.WE</b>. Default is&nbsp;14.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>Lf</b>,&nbsp;<b>Lt</b>,&nbsp;<b>Lx</b>,&nbsp;<b>Le</b></p>
+
+<p style="margin-left:22%;">Enable (1) or disable (0) the
+printing of List of figures, List of tables, List of
+exhibits and List of equations, respectively. Default values
+are Lf=1, Lt=1, Lx=1, and Le=0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>Li</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>List indentation, used by <b>.AL</b>. Default
+is&nbsp;6.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>Limsp</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>A flag controlling the insertion of space between prefix
+and mark in automatic lists (<b>.AL</b>).</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374029.png" alt="Image grohtml-35374029.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>Ls</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">List space threshold. If current
+list level is greater than <b>Ls</b> no spacing occurs
+around lists. Default is&nbsp;99.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>Lsp</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>The vertical space used by an empty line. The default is
+0.5v in troff mode and 1v in nroff mode.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>N</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Page numbering style.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374030.png" alt="Image grohtml-35374030.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">Default
+is&nbsp;0. See also the number registers <b>Sectf</b> and
+<b>Sectp</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>Np</b></p></td>
+<td width="8%"></td>
+<td width="76%">
+
+
+<p style="margin-top: 1em">A flag to control whether
+paragraphs are numbered.</p></td>
+<td width="2%">
+</td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374031.png" alt="Image grohtml-35374031.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">Default
+is&nbsp;0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>O</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Page offset, only for
+command-line settings.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>Of</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Format of figure, table, exhibit, and equation
+titles.</p> </td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374032.png" alt="Image grohtml-35374032.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">Default
+is&nbsp;0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>P</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Current page-number, normally
+the same as &rsquo;%&rsquo; unless
+&rsquo;section-page&rsquo; numbering style is enabled.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Pi</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Paragraph indentation. Default is&nbsp;5.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Pgps</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>A flag to control whether header and footer point size
+should follow the current settings or just change when the
+header and footer are defined.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374033.png" alt="Image grohtml-35374033.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>Ps</b></p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p style="margin-top: 1em">Paragraph spacing. Default
+is&nbsp;1.</p> </td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>Pt</b></p></td>
+<td width="8%"></td>
+<td width="50%">
+
+
+<p>Paragraph type.</p></td>
+<td width="28%">
+</td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-35374034.png" alt="Image grohtml-35374034.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">Default
+is&nbsp;0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>Rpe</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Set default value for second
+argument of <b>.RP</b>. Default is&nbsp;0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Sectf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>A flag controlling &rsquo;section-figures&rsquo;
+numbering style. A non-zero value enables this. See also
+register&nbsp;<b>N</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Sectp</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>A flag controlling &rsquo;section-page&rsquo; numbering
+style. A non-zero value enables this. See also
+register&nbsp;<b>N</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Si</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Display indentation. Default is&nbsp;5.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Verbin</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Indentation for <b>.VERBON</b>. Default is 5n.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>W</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Line length, only for command-line settings.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>.mgm</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Always&nbsp;1.</p></td></tr>
+</table>
+
+<h2>INTERNALS
+<a name="INTERNALS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The letter
+macros are using different submacros depending on the letter
+type. The name of the submacro has the letter type as
+suffix. It is therefore possible to define other letter
+types, either in the national macro-file, or as local
+additions. <b>.LT</b> sets the number variables <b>Pt</b>
+and <b>Pi</b> to 0 and&nbsp;5, respectively. The following
+strings and macros must be defined for a new letter type.
+<b><br>
+let@init_</b><i>type</i></p>
+
+<p style="margin-left:22%;">This macro is called directly
+by <b>.LT</b>. It is supposed to initialize variables and
+other stuff.</p>
+
+
+<p style="margin-left:11%;"><b>let@head_</b><i>type</i></p>
+
+<p style="margin-left:22%;">This macro prints the letter
+head, and is called instead of the normal page header. It is
+supposed to remove the alias <b>let@header</b>, otherwise it
+is called for all pages.</p>
+
+<p style="margin-left:11%;"><b>let@sg_</b><i>type name
+title n flag</i> [<i>arg1</i> [<i>arg2</i> [...]]]</p>
+
+<p style="margin-left:22%;"><b>.SG</b> is calling this
+macro only for letters; memorandums have its own processing.
+<i>name</i> and <i>title</i> are specified through
+<b>.WA</b>/<b>.WB</b>. <i>n&nbsp;</i>is the counter, 1-max,
+and <i>flag</i> is true for the last name. Any other
+argument to <b>.SG</b> is appended.</p>
+
+<p style="margin-left:11%;"><b>let@fc_</b><i>type
+closing</i></p>
+
+<p style="margin-left:22%;">This macro is called by
+<b>.FC</b>, and has the formal closing as the argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>.LO</b> is
+implemented as a general option-macro. It demands that a
+string named <b>Let</b><i>type</i> is defined, where
+<i>type</i> is the letter type. <b>.LO</b> then assigns the
+argument to the string variable
+<b>let*lo-</b><i>type</i>.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/tmac/m.tmac
+<br>
+/usr/share/groff/1.22.4/tmac/mm/</i>*<i>.cov <br>
+/usr/share/groff/1.22.4/tmac/mm/</i>*<i>.MT <br>
+/usr/share/groff/1.22.4/tmac/mm/locale</i></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The GNU version
+of the <i>mm</i> macro package was written by
+<a href="mailto:jh@axis.se">J&ouml;rgen H&auml;gg</a> of
+Lund, Sweden.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>troff</b>(1), <b>tbl</b>(1), <b>pic</b>(1), <b>eqn</b>(1)
+<b><br>
+groff_mmse</b>(7) (only in Swedish locales)</p>
+<hr>
+</body>
+</html>

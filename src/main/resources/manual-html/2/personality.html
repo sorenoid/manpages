@@ -1,0 +1,363 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:53 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PERSONALITY</title>
+
+</head>
+<body>
+
+<h1 align="center">PERSONALITY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">personality -
+set the process execution domain</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/personality.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+personality(unsigned long</b> <i>persona</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux supports
+different execution domains, or personalities, for each
+process. Among other things, execution domains tell Linux
+how to map signal numbers into signal actions. The execution
+domain system allows Linux to provide limited support for
+binaries compiled under other UNIX-like operating
+systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<i>persona</i> is not 0xffffffff, then <b>personality</b>()
+sets the caller&rsquo;s execution domain to the value
+specified by <i>persona</i>. Specifying <i>persona</i> as
+0xffffffff provides a way of retrieving the current persona
+without changing it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A list of the
+available execution domains can be found in
+<i>&lt;sys/personality.h&gt;</i>. The execution domain is a
+32-bit value in which the top three bytes are set aside for
+flags that cause the kernel to modify the behavior of
+certain system calls so as to emulate historical or
+architectural quirks. The least significant byte is a value
+defining the personality the kernel should assume. The flag
+values are as follows: <b><br>
+ADDR_COMPAT_LAYOUT</b> (since Linux 2.6.9)</p>
+
+<p style="margin-left:22%;">With this flag set, provide
+legacy virtual address space layout.</p>
+
+<p style="margin-left:11%;"><b>ADDR_NO_RANDOMIZE</b> (since
+Linux 2.6.12)</p>
+
+<p style="margin-left:22%;">With this flag set, disable
+address-space-layout randomization.</p>
+
+<p style="margin-left:11%;"><b>ADDR_LIMIT_32BIT</b> (since
+Linux 2.2)</p>
+
+<p style="margin-left:22%;">Limit the address space to 32
+bits.</p>
+
+<p style="margin-left:11%;"><b>ADDR_LIMIT_3GB</b> (since
+Linux 2.4.0)</p>
+
+<p style="margin-left:22%;">With this flag set, use
+0xc0000000 as the offset at which to search a virtual memory
+chunk on <b>mmap</b>(2); otherwise use 0xffffe000.</p>
+
+<p style="margin-left:11%;"><b>FDPIC_FUNCPTRS</b> (since
+Linux 2.6.11)</p>
+
+<p style="margin-left:22%;">User-space function pointers to
+signal handlers point (on certain architectures) to
+descriptors.</p>
+
+<p style="margin-left:11%;"><b>MMAP_PAGE_ZERO</b> (since
+Linux 2.4.0)</p>
+
+<p style="margin-left:22%;">Map page 0 as read-only (to
+support binaries that depend on this SVr4 behavior).</p>
+
+<p style="margin-left:11%;"><b>READ_IMPLIES_EXEC</b> (since
+Linux 2.6.8)</p>
+
+<p style="margin-left:22%;">With this flag set,
+<b>PROT_READ</b> implies <b>PROT_EXEC</b> for
+<b>mmap</b>(2).</p>
+
+<p style="margin-left:11%;"><b>SHORT_INODE</b> (since Linux
+2.4.0)</p>
+
+<p style="margin-left:22%;">No effects(?).</p>
+
+<p style="margin-left:11%;"><b>STICKY_TIMEOUTS</b> (since
+Linux 1.2.0)</p>
+
+<p style="margin-left:22%;">With this flag set,
+<b>select</b>(2), <b>pselect</b>(2), and <b>ppoll</b>(2) do
+not modify the returned timeout argument when interrupted by
+a signal handler.</p>
+
+<p style="margin-left:11%;"><b>UNAME26</b> (since Linux
+3.1)</p>
+
+<p style="margin-left:22%;">Have <b>uname</b>(2) report a
+2.6.40+ version number rather than a 3.x version number.
+Added as a stopgap measure to support broken applications
+that could not handle the kernel version-numbering switch
+from 2.6.x to 3.x.</p>
+
+<p style="margin-left:11%;"><b>WHOLE_SECONDS</b> (since
+Linux 1.2.0)</p>
+
+<p style="margin-left:22%;">No effects(?).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The available
+execution domains are: <b><br>
+PER_BSD</b> (since Linux 1.2.0)</p>
+
+<p style="margin-left:22%;">BSD. (No effects.)</p>
+
+<p style="margin-left:11%;"><b>PER_HPUX</b> (since Linux
+2.4)</p>
+
+<p style="margin-left:22%;">Support for 32-bit HP/UX. This
+support was never complete, and was dropped so that since
+Linux 4.0, this value has no effect.</p>
+
+<p style="margin-left:11%;"><b>PER_IRIX32</b> (since Linux
+2.2)</p>
+
+<p style="margin-left:22%;">IRIX 5 32-bit. Never fully
+functional; support dropped in Linux 2.6.27. Implies
+<b>STICKY_TIMEOUTS</b>.</p>
+
+<p style="margin-left:11%;"><b>PER_IRIX64</b> (since Linux
+2.2)</p>
+
+<p style="margin-left:22%;">IRIX 6 64-bit. Implies
+<b>STICKY_TIMEOUTS</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_IRIXN32</b> (since Linux
+2.2)</p>
+
+<p style="margin-left:22%;">IRIX 6 new 32-bit. Implies
+<b>STICKY_TIMEOUTS</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_ISCR4</b> (since Linux
+1.2.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>;
+otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_LINUX</b> (since Linux
+1.2.0)</p>
+
+<p style="margin-left:22%;">Linux.</p>
+
+<p style="margin-left:11%;"><b>PER_LINUX32</b> (since Linux
+2.2)</p>
+
+<p style="margin-left:22%;">[To be documented.]</p>
+
+<p style="margin-left:11%;"><b>PER_LINUX32_3GB</b> (since
+Linux 2.4)</p>
+
+<p style="margin-left:22%;">Implies
+<b>ADDR_LIMIT_3GB</b>.</p>
+
+<p style="margin-left:11%;"><b>PER_LINUX_32BIT</b> (since
+Linux 2.0)</p>
+
+<p style="margin-left:22%;">Implies
+<b>ADDR_LIMIT_32BIT</b>.</p>
+
+<p style="margin-left:11%;"><b>PER_LINUX_FDPIC</b> (since
+Linux 2.6.11)</p>
+
+<p style="margin-left:22%;">Implies
+<b>FDPIC_FUNCPTRS</b>.</p>
+
+<p style="margin-left:11%;"><b>PER_OSF4</b> (since Linux
+2.4)</p>
+
+<p style="margin-left:22%;">OSF/1 v4. On alpha, clear top
+32 bits of iov_len in the user&rsquo;s buffer for
+compatibility with old versions of OSF/1 where iov_len was
+defined as. <i>int</i>.</p>
+
+<p style="margin-left:11%;"><b>PER_OSR5</b> (since Linux
+2.4)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>
+and <b>WHOLE_SECONDS</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_RISCOS</b> (since Linux
+2.2)</p>
+
+<p style="margin-left:22%;">[To be documented.]</p>
+
+<p style="margin-left:11%;"><b>PER_SCOSVR3</b> (since Linux
+1.2.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>,
+<b>WHOLE_SECONDS</b>, and <b>SHORT_INODE</b>; otherwise no
+effects.</p>
+
+<p style="margin-left:11%;"><b>PER_SOLARIS</b> (since Linux
+2.4)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>;
+otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_SUNOS</b> (since Linux
+2.4.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>.
+Divert library and dynamic linker searches to
+<i>/usr/gnemul</i>. Buggy, largely unmaintained, and almost
+entirely unused; support was removed in Linux 2.6.26.</p>
+
+<p style="margin-left:11%;"><b>PER_SVR3</b> (since Linux
+1.2.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>
+and <b>SHORT_INODE</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_SVR4</b> (since Linux
+1.2.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>
+and <b>MMAP_PAGE_ZERO</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_UW7</b> (since Linux
+2.4)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>
+and <b>MMAP_PAGE_ZERO</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_WYSEV386</b> (since
+Linux 1.2.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>
+and <b>SHORT_INODE</b>; otherwise no effects.</p>
+
+<p style="margin-left:11%;"><b>PER_XENIX</b> (since Linux
+1.2.0)</p>
+
+<p style="margin-left:22%;">Implies <b>STICKY_TIMEOUTS</b>
+and <b>SHORT_INODE</b>; otherwise no effects.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, the
+previous <i>persona</i> is returned. On error, -1 is
+returned, and <i>errno</i> is set appropriately.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="73%">
+
+
+<p style="margin-top: 1em">The kernel was unable to change
+the personality.</p></td>
+<td width="5%">
+</td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This system
+call first appeared in Linux 1.1.20 (and thus first in a
+stable kernel release with Linux 1.2.0); library support was
+added in glibc 2.3.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>personality</b>()
+is Linux-specific and should not be used in programs
+intended to be portable.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setarch</b>(8)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:04 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CAPABILITY.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">CAPABILITY.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">capablity.conf
+- configuration file for the pam_cap module</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each line of
+the file consists of two fields; the fields define:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&lt;capability-list&gt;</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">One or more
+comma-separated capabilities, specified as either the
+textual capability name, or numeric capability value. Text
+name(s) and numeric value(s) may be intermixed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The special
+capability name <b>all</b> may be used to enable all
+capabilities known to the local system.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The special
+capability name <b>none</b> may be used to disable all
+current inheritable capabilities.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>NOTE:</b> No
+whitespace is pemitted between the values. The names all and
+none may not be combined with any other capabilities.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&lt;username&gt;</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">One or more
+whitespace-separated usernames, or the wildcard
+<b>*</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>NOTE:</b>
+The first matching entry is used. Thus, only a single
+matching username entry, and/or a single wildcard entry, may
+be used. A matching username entry must <i>precede</i> the
+wildcard entry in order to be effective.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>IMPORTANT:</b>
+&lt;capability-list&gt; <i>replaces</i> the current
+process&rsquo; inherited capabilities; i.e. there is no
+provision for adding/subtracting from the current set. In
+most environments, the inheritable set of the process
+performing user authentication is 0 (empty).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If any
+capability name or numeric value is invalid/unknown to the
+local system, the capabilities will be rejected, and the
+inheritable set will <b>not</b> be modified.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These are some
+example lines which might be specified in
+/etc/security/capability.conf.</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Simple <br>
+cap_sys_ptrace developer <br>
+cap_net_raw user1</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Multiple
+capablities <br>
+cap_net_admin,cap_net_raw jrnetadmin <br>
+# Identical, but with numeric values <br>
+12,13 jrnetadmin</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Combining
+names and numerics <br>
+cap_sys_admin,22,25 jrsysadmin</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Next line has
+no effect; user1 already matched above <br>
+5,12,13 user1</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Insure any
+potential capailities from calling process are dropped <br>
+none luser1 luser2</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Allow anyone
+to manipulate capabilities <br>
+# Will NOT apply to users matched above ! <br>
+cap_setpcap *</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pam_cap</b>(8),
+<b>pam.d</b>(5), <b>pam</b>(7), <b>capabilities</b>(7)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_cap was
+initially written by Andrew G. Morgan
+&lt;morgan@kernel.org&gt;</p>
+<hr>
+</body>
+</html>

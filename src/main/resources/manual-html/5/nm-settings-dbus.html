@@ -1,0 +1,656 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:56 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NM-SETTINGS-DBUS</title>
+
+</head>
+<body>
+
+<h1 align="center">NM-SETTINGS-DBUS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">nm-settings-dbus
+- Description of settings and properties of NetworkManager
+connection profiles on the D-Bus API</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">NetworkManager
+is based on a concept of connection profiles, sometimes
+referred to as connections only. These connection profiles
+contain a network configuration. When NetworkManager
+activates a connection profile on a network device the
+configuration will be applied and an active network
+connection will be established. Users are free to create as
+many connection profiles as they see fit. Thus they are
+flexible in having various network configurations for
+different networking needs. The connection profiles are
+handled by NetworkManager via <i>settings service</i> and
+are exported on D-Bus
+(<i>/org/freedesktop/NetworkManager/Settings/&lt;num&gt;</i>
+objects). The conceptual objects can be described as
+follows:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Connection
+(profile)</p>
+
+<p style="margin-left:17%;">A specific, encapsulated,
+independent group of settings describing all the
+configuration required to connect to a specific network. It
+is referred to by a unique identifier called the UUID. A
+connection is tied to a one specific device type, but not
+necessarily a specific hardware device. It is composed of
+one or more <i>Settings</i> objects.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Setting</p>
+
+<p style="margin-left:17%;">A group of related key/value
+pairs describing a specific piece of a <i>Connection
+(profile)</i>. Settings keys and allowed values are
+described in the tables below. Keys are also referred to as
+properties. Developers can find the setting objects and
+their properties in the libnm-core sources. Look for the
+<b>*_class_init</b> functions near the bottom of each
+setting source file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The settings
+and properties shown in tables below list all available
+connection configuration options. However, note that not all
+settings are applicable to all connection types.
+NetworkManager provides a command-line tool <i>nmcli</i>
+that allows direct configuration of the settings and
+properties according to a connection profile type.
+<i>nmcli</i> connection editor has also a built-in
+<i>describe</i> command that can display description of
+particular settings and properties of this page.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>connection
+setting</b> <br>
+General Connection Profile Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445771.png" alt="Image grohtml-3445771.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>6lowpan
+setting</b> <br>
+6LoWPAN Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445772.png" alt="Image grohtml-3445772.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>802-1x
+setting</b> <br>
+IEEE 802.1x Authentication Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445773.png" alt="Image grohtml-3445773.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>adsl
+setting</b> <br>
+ADSL Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445774.png" alt="Image grohtml-3445774.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bluetooth
+setting</b> <br>
+Bluetooth Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445775.png" alt="Image grohtml-3445775.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bond
+setting</b> <br>
+Bonding Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445776.png" alt="Image grohtml-3445776.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bridge
+setting</b> <br>
+Bridging Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445777.png" alt="Image grohtml-3445777.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bridge-port
+setting</b> <br>
+Bridge Port Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445778.png" alt="Image grohtml-3445778.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>cdma
+setting</b> <br>
+CDMA-based Mobile Broadband Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-3445779.png" alt="Image grohtml-3445779.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dcb
+setting</b> <br>
+Data Center Bridging Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457710.png" alt="Image grohtml-34457710.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dummy
+setting</b> <br>
+Dummy Link Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457711.png" alt="Image grohtml-34457711.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ethtool
+setting</b> <br>
+Ethtool Ethernet Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457712.png" alt="Image grohtml-34457712.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>generic
+setting</b> <br>
+Generic Link Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457713.png" alt="Image grohtml-34457713.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gsm
+setting</b> <br>
+GSM-based Mobile Broadband Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457714.png" alt="Image grohtml-34457714.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>infiniband
+setting</b> <br>
+Infiniband Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457715.png" alt="Image grohtml-34457715.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipv4
+setting</b> <br>
+IPv4 Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457716.png" alt="Image grohtml-34457716.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipv6
+setting</b> <br>
+IPv6 Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457717.png" alt="Image grohtml-34457717.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ip-tunnel
+setting</b> <br>
+IP Tunneling Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457718.png" alt="Image grohtml-34457718.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>macsec
+setting</b> <br>
+MACSec Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457719.png" alt="Image grohtml-34457719.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>macvlan
+setting</b> <br>
+MAC VLAN Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457720.png" alt="Image grohtml-34457720.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>match
+setting</b> <br>
+Match settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457721.png" alt="Image grohtml-34457721.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>802-11-olpc-mesh
+setting</b> <br>
+OLPC Wireless Mesh Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457722.png" alt="Image grohtml-34457722.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ovs-bridge
+setting</b> <br>
+OvsBridge Link Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457723.png" alt="Image grohtml-34457723.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ovs-dpdk
+setting</b> <br>
+OvsDpdk Link Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457724.png" alt="Image grohtml-34457724.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ovs-interface
+setting</b> <br>
+Open vSwitch Interface Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457725.png" alt="Image grohtml-34457725.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ovs-patch
+setting</b> <br>
+OvsPatch Link Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457726.png" alt="Image grohtml-34457726.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ovs-port
+setting</b> <br>
+OvsPort Link Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457727.png" alt="Image grohtml-34457727.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppp
+setting</b> <br>
+Point-to-Point Protocol Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457728.png" alt="Image grohtml-34457728.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pppoe
+setting</b> <br>
+PPP-over-Ethernet Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457729.png" alt="Image grohtml-34457729.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>proxy
+setting</b> <br>
+WWW Proxy Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457730.png" alt="Image grohtml-34457730.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>serial
+setting</b> <br>
+Serial Link Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457731.png" alt="Image grohtml-34457731.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>sriov
+setting</b> <br>
+SR-IOV settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457732.png" alt="Image grohtml-34457732.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tc
+setting</b> <br>
+Linux Traffic Control Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457733.png" alt="Image grohtml-34457733.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>team
+setting</b> <br>
+Teaming Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457734.png" alt="Image grohtml-34457734.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>team-port
+setting</b> <br>
+Team Port Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457735.png" alt="Image grohtml-34457735.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tun
+setting</b> <br>
+Tunnel Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457736.png" alt="Image grohtml-34457736.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>user
+setting</b> <br>
+General User Profile Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457737.png" alt="Image grohtml-34457737.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vlan
+setting</b> <br>
+VLAN Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457738.png" alt="Image grohtml-34457738.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vpn
+setting</b> <br>
+VPN Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457739.png" alt="Image grohtml-34457739.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vrf
+setting</b> <br>
+VRF settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457740.png" alt="Image grohtml-34457740.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vxlan
+setting</b> <br>
+VXLAN Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457741.png" alt="Image grohtml-34457741.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>wifi-p2p
+setting</b> <br>
+Wi-Fi P2P Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457742.png" alt="Image grohtml-34457742.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>wimax
+setting</b> <br>
+WiMax Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457743.png" alt="Image grohtml-34457743.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>802-3-ethernet
+setting</b> <br>
+Wired Ethernet Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457744.png" alt="Image grohtml-34457744.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>wireguard
+setting</b> <br>
+WireGuard Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457745.png" alt="Image grohtml-34457745.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>802-11-wireless
+setting</b> <br>
+Wi-Fi Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457746.png" alt="Image grohtml-34457746.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>802-11-wireless-security
+setting</b> <br>
+Wi-Fi Security Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457747.png" alt="Image grohtml-34457747.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>wpan
+setting</b> <br>
+IEEE 802.15.4 (WPAN) MAC Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457748.png" alt="Image grohtml-34457748.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bond-port
+setting</b> <br>
+Bond Port Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457749.png" alt="Image grohtml-34457749.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>hostname
+setting</b> <br>
+Hostname settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457750.png" alt="Image grohtml-34457750.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ovs-external-ids
+setting</b> <br>
+OVS External IDs Settings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-34457751.png" alt="Image grohtml-34457751.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>veth
+setting</b> <br>
+Veth Settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-34457752.png" alt="Image grohtml-34457752.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Secret flag
+types:</b> <br>
+Each password or secret property in a setting has an
+associated <i>flags</i> property that describes how to
+handle that secret. The <i>flags</i> property is a bitfield
+that contains zero or more of the following values logically
+OR-ed together.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; 0x0
+(none) - the system is responsible for providing and storing
+this secret. This may be required so that secrets are
+already available before the user logs in. It also commonly
+means that the secret will be stored in plain text on disk,
+accessible to root only. For example via the keyfile
+settings plugin as described in the &quot;PLUGINS&quot;
+section in <b>NetworkManager.conf</b>(5).</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; 0x1
+(agent-owned) - a user-session secret agent is responsible
+for providing and storing this secret; when it is required,
+agents will be asked to provide it.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; 0x2
+(not-saved) - this secret should not be saved but should be
+requested from the user each time it is required. This flag
+should be used for One-Time-Pad secrets, PIN codes from
+hardware tokens, or if the user simply does not want to save
+the secret.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; 0x4
+(not-required) - in some situations it cannot be
+automatically determined that a secret is required or not.
+This flag hints that the secret is not required and should
+not be requested from the user.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/NetworkManager/system-connections
+or distro plugin-specific location</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nm-settings-nmcli</b>(5),
+<b>nm-settings-keyfile</b>(5), <b>NetworkManager</b>(8),
+<b>nmcli</b>(1), <b>nmcli-examples</b>(7),
+<b>NetworkManager.conf</b>(5)</p>
+<hr>
+</body>
+</html>

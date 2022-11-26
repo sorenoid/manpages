@@ -1,0 +1,482 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:08 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Net::DBus::Exporter</title>
+
+</head>
+<body>
+
+<h1 align="center">Net::DBus::Exporter</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SCALAR TYPES">SCALAR TYPES</a><br>
+<a href="#COMPOUND TYPES">COMPOUND TYPES</a><br>
+<a href="#MAGIC TYPES">MAGIC TYPES</a><br>
+<a href="#ANNOTATIONS">ANNOTATIONS</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::Exporter
+- Export object methods and signals to the bus</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"># Define a new
+package for the object we're going <br>
+# to export <br>
+package Demo::HelloWorld; <br>
+# Specify the main interface provided by our object <br>
+use Net::DBus::Exporter qw(org.example.demo.Greeter); <br>
+# We're going to be a DBus object <br>
+use base qw(Net::DBus::Object); <br>
+# Ensure only explicitly exported methods can be invoked
+<br>
+dbus_strict_exports; <br>
+# Export a 'Greeting' signal taking a stringl string
+parameter <br>
+dbus_signal(&quot;Greeting&quot;, [&quot;string&quot;]);
+<br>
+# Export 'Hello' as a method accepting a single string <br>
+# parameter, and returning a single string value <br>
+dbus_method(&quot;Hello&quot;, [&quot;string&quot;],
+[&quot;string&quot;]); <br>
+# Export 'Goodbye' as a method accepting a single string
+<br>
+# parameter, and returning a single string, but put it <br>
+# in the 'org.exaple.demo.Farewell' interface <br>
+dbus_method(&quot;Goodbye&quot;, [&quot;string&quot;],
+[&quot;string&quot;],
+&quot;org.example.demo.Farewell&quot;);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;Net::DBus::Exporter&quot; module is used to export
+methods and signals defined in an object to the message bus.
+Since Perl is a loosely typed language it is not possible to
+automatically determine correct type information for methods
+to be exported. Thus when sub-classing Net::DBus::Object,
+this package will provide the type information for methods
+and signals.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When importing
+this package, an optional argument can be supplied to
+specify the default interface name to associate with methods
+and signals, for which an explicit interface is not
+specified. Thus in the common case of objects only providing
+a single interface, this removes the need to repeat the
+interface name against each method exported.</p>
+
+<h2>SCALAR TYPES
+<a name="SCALAR TYPES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When specifying
+scalar data types for parameters and return values, the
+following string constants must be used to denote the data
+type. When values corresponding to these types are
+(un)marshalled they are represented as the Perl
+<small>SCALAR</small> data type (see perldata). <br>
+&quot;string&quot;</p>
+
+<p style="margin-left:17%;">A <small>UTF-8</small> string
+of characters</p>
+
+<p style="margin-left:11%;">&quot;int16&quot;</p>
+
+<p style="margin-left:17%;">A 16-bit signed integer</p>
+
+<p style="margin-left:11%;">&quot;uint16&quot;</p>
+
+<p style="margin-left:17%;">A 16-bit unsigned integer</p>
+
+<p style="margin-left:11%;">&quot;int32&quot;</p>
+
+<p style="margin-left:17%;">A 32-bit signed integer</p>
+
+<p style="margin-left:11%;">&quot;uint32&quot;</p>
+
+<p style="margin-left:17%;">A 32-bit unsigned integer</p>
+
+<p style="margin-left:11%;">&quot;int64&quot;</p>
+
+<p style="margin-left:17%;">A 64-bit signed integer.
+<small>NB,</small> this type is not supported by many builds
+of Perl on 32-bit platforms, so if used, your data is liable
+to be truncated at 32-bits.</p>
+
+<p style="margin-left:11%;">&quot;uint64&quot;</p>
+
+<p style="margin-left:17%;">A 64-bit unsigned integer.
+<small>NB,</small> this type is not supported by many builds
+of Perl on 32-bit platforms, so if used, your data is liable
+to be truncated at 32-bits.</p>
+
+<p style="margin-left:11%;">&quot;byte&quot;</p>
+
+<p style="margin-left:17%;">A single 8-bit byte</p>
+
+<p style="margin-left:11%;">&quot;bool&quot;</p>
+
+<p style="margin-left:17%;">A boolean value</p>
+
+<p style="margin-left:11%;">&quot;double&quot;</p>
+
+<p style="margin-left:17%;">An <small>IEEE</small>
+double-precision floating point</p>
+
+<h2>COMPOUND TYPES
+<a name="COMPOUND TYPES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When specifying
+compound data types for parameters and return values, an
+array reference must be used, with the first element being
+the name of the compound type. <br>
+[&quot;array&quot;, <small>ARRAY-TYPE</small> ]</p>
+
+<p style="margin-left:17%;">An array of values, whose type
+os &quot;ARRAY-TYPE&quot;. The &quot;ARRAY-TYPE&quot; can be
+either a scalar type name, or a nested compound type. When
+values corresponding to the array type are (un)marshalled,
+they are represented as the Perl <small>ARRAY</small> data
+type (see perldata). If, for example, a method was declared
+to have a single parameter with the type,
+[&quot;array&quot;, &quot;string&quot;], then when calling
+the method one would provide a array reference of
+strings:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$object-&gt;hello([&quot;John&quot;,
+&quot;Doe&quot;])</p>
+
+<p style="margin-left:11%;">[&quot;dict&quot;, KEY-TYPE,
+<small>VALUE-TYPE</small> ]</p>
+
+<p style="margin-left:17%;">A dictionary of values, more
+commonly known as a hash table. The &quot;KEY-TYPE&quot; is
+the name of the scalar data type used for the dictionary
+keys. The &quot;VALUE-TYPE&quot; is the name of the scalar,
+or compound data type used for the dictionary values. When
+values corresponding to the dict type are (un)marshalled,
+they are represented as the Perl <small>HASH</small> data
+type (see perldata). If, for example, a method was declared
+to have a single parameter with the type [&quot;dict&quot;,
+&quot;string&quot;, &quot;string&quot;], then when calling
+the method one would provide a hash reference of
+strings,</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$object-&gt;hello({forename
+=&gt; &quot;John&quot;, surname =&gt; &quot;Doe&quot;});</p>
+
+<p style="margin-left:11%;">[&quot;struct&quot;,
+<small>VALUE-TYPE-1, VALUE-TYPE-2</small> ]</p>
+
+<p style="margin-left:17%;">A structure of values, best
+thought of as a variation on the array type where the
+elements can vary. Many languages have an explicit name
+associated with each value, but since Perl does not have a
+native representation of structures, they are represented by
+the <small>LIST</small> data type. If, for exaple, a method
+was declared to have a single parameter with the type
+[&quot;struct&quot;, &quot;string&quot;,
+&quot;string&quot;], corresponding to the C structure</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct { <br>
+char *forename; <br>
+char *surname; <br>
+} name;</p>
+
+<p style="margin-left:17%; margin-top: 1em">then, when
+calling the method one would provide an array reference with
+the values orded to match the structure</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$object-&gt;hello([&quot;John&quot;,
+&quot;Doe&quot;]);</p>
+
+<h2>MAGIC TYPES
+<a name="MAGIC TYPES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When specifying
+introspection data for an exported service, there are a
+couple of so called &quot;magic&quot; types. Parameters
+declared as magic types are not visible to clients, but
+instead their values are provided automatically by the
+server side bindings. One use of magic types is to get an
+extra parameter passed with the unique name of the caller
+invoking the method. <br>
+&quot;caller&quot;</p>
+
+<p style="margin-left:17%;">The value passed in is the
+unique name of the caller of the method. Unique names are
+strings automatically assigned to client connections by the
+bus daemon, for example &rsquo;:1.15&rsquo;</p>
+
+<p style="margin-left:11%;">&quot;serial&quot;</p>
+
+<p style="margin-left:17%;">The value passed in is an
+integer within the scope of a caller, which increments on
+every method call.</p>
+
+<h2>ANNOTATIONS
+<a name="ANNOTATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When exporting
+methods, signals &amp; properties, in addition to the core
+data typing information, a number of metadata annotations
+are possible. These are specified by passing a hash
+reference with the desired keys as the last parameter when
+defining the export. The following annotations are currently
+supported <br>
+no_return</p>
+
+<p style="margin-left:17%;">Indicate that this method does
+not return any value, and thus no reply message should be
+sent over the wire, likewise informing the clients not to
+expect / wait for a reply message</p>
+
+<p style="margin-left:11%;">deprecated</p>
+
+<p style="margin-left:17%;">Indicate that use of this
+method/signal/property is discouraged, and it may disappear
+altogether in a future release. Clients will typically print
+out a warning message when a deprecated
+method/signal/property is used.</p>
+
+<p style="margin-left:11%;">param_names</p>
+
+<p style="margin-left:17%;">An array of strings specifying
+names for the input parameters of the method or signal. If
+omitted, no names will be assigned.</p>
+
+<p style="margin-left:11%;">return_names</p>
+
+<p style="margin-left:17%;">An array of strings specifying
+names for the return parameters of the method. If omitted,
+no names will be assigned.</p>
+
+<p style="margin-left:11%;">strict_exceptions</p>
+
+<p style="margin-left:17%;">Exceptions thrown by this
+method which are not of type Net::DBus::Error will not be
+caught and converted to D-Bus errors. They will be rethrown
+and continue up the stack until something else catches them
+(or the process dies).</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus_method($name,
+$params, $returns, [\%annotations]); <br>
+dbus_method($name, $params, $returns, $interface,
+[\%annotations]);</p>
+
+<p style="margin-left:17%;">Exports a method called $name,
+having parameters whose types are defined by $params, and
+returning values whose types are defined by $returns. If the
+$interface parameter is provided, then the method is
+associated with that interface, otherwise the default
+interface for the calling package is used. The value for the
+$params parameter should be an array reference with each
+element defining the data type of a parameter to the method.
+Likewise, the $returns parameter should be an array
+reference with each element defining the data type of a
+return value. If it not possible to export a method which
+accepts a variable number of parameters, or returns a
+variable number of values.</p>
+
+
+<p style="margin-left:11%;"><b>dbus_no_strict_exports()</b>;</p>
+
+<p style="margin-left:17%;">If a object is using the
+Exporter to generate DBus introspection data, the default
+behaviour is to only allow invocation of methods which have
+been explicitly exported.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To allow
+clients to access methods which have not been explicitly
+exported, call &quot;dbus_no_strict_exports&quot;.
+<small>NB,</small> doing this may be a security risk if you
+have methods considered to be &quot;private&quot; for
+internal use only. As such this method should not normally
+be used. It is here only to allow switching export behaviour
+to match earlier releases.</p>
+
+<p style="margin-left:11%;">dbus_property($name, $type,
+$access, [\%attributes]); <br>
+dbus_property($name, $type, $access, $interface,
+[\%attributes]);</p>
+
+<p style="margin-left:17%;">Exports a property called
+$name, whose data type is $type. If the $interface parameter
+is provided, then the property is associated with that
+interface, otherwise the default interface for the calling
+package is used.</p>
+
+<p style="margin-left:11%;">dbus_signal($name, $params,
+[\%attributes]); <br>
+dbus_signal($name, $params, $interface, [\%attributes]);</p>
+
+<p style="margin-left:17%;">Exports a signal called $name,
+having parameters whose types are defined by $params. If the
+$interface parameter is provided, then the signal is
+associated with that interface, otherwise the default
+interface for the calling package is used. The value for the
+$params parameter should be an array reference with each
+element defining the data type of a parameter to the signal.
+Signals do not have return values. It not possible to export
+a signal which has a variable number of parameters.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">No parameters,
+no return values</p>
+
+<p style="margin-left:17%;">A method which simply prints
+&quot;Hello World&quot; each time its called</p>
+
+<p style="margin-left:17%; margin-top: 1em">sub Hello {
+<br>
+my $self = shift; <br>
+print &quot;Hello World\n&quot;; <br>
+} <br>
+dbus_method(&quot;Hello&quot;, [], []);</p>
+
+<p style="margin-left:11%;">One string parameter, returning
+an boolean value</p>
+
+<p style="margin-left:17%;">A method which accepts a
+process name, issues the killall command on it, and returns
+a boolean value to indicate whether it was successful.</p>
+
+<p style="margin-left:17%; margin-top: 1em">sub KillAll {
+<br>
+my $self = shift; <br>
+my $processname = shift; <br>
+my $ret = system(&quot;killall $processname&quot;); <br>
+return $ret == 0 ? 1 : 0; <br>
+} <br>
+dbus_method(&quot;KillAll&quot;, [&quot;string&quot;],
+[&quot;bool&quot;]);</p>
+
+<p style="margin-left:11%;">One list of strings parameter,
+returning a dictionary</p>
+
+<p style="margin-left:17%;">A method which accepts a list
+of files names, stats them, and returns a dictionary
+containing the last modification times.</p>
+
+<p style="margin-left:17%; margin-top: 1em">sub
+LastModified { <br>
+my $self = shift; <br>
+my $files = shift; <br>
+my %mods; <br>
+foreach my $file (@{$files}) { <br>
+$mods{$file} = (stat $file)[9]; <br>
+} <br>
+return \%mods; <br>
+} <br>
+dbus_method(&quot;LastModified&quot;, [&quot;array&quot;,
+&quot;string&quot;], [&quot;dict&quot;, &quot;string&quot;,
+&quot;int32&quot;]);</p>
+
+<p style="margin-left:11%;">Annotating methods with
+metdata</p>
+
+<p style="margin-left:17%;">A method which is targeted for
+removal, and also does not return any value</p>
+
+<p style="margin-left:17%; margin-top: 1em">sub PlayMP3 {
+<br>
+my $self = shift; <br>
+my $track = shift; <br>
+system &quot;mpg123 $track &amp;&quot;; <br>
+} <br>
+dbus_method(&quot;PlayMP3&quot;, [&quot;string&quot;], [], {
+deprecated =&gt; 1, no_return =&gt; 1 });</p>
+
+<p style="margin-left:17%; margin-top: 1em">Or giving names
+to input parameters:</p>
+
+<p style="margin-left:17%; margin-top: 1em">sub PlayMP3 {
+<br>
+my $self = shift; <br>
+my $track = shift; <br>
+system &quot;mpg123 $track &amp;&quot;; <br>
+} <br>
+dbus_method(&quot;PlayMP3&quot;, [&quot;string&quot;], [], {
+param_names =&gt; [&quot;track&quot;] });</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Daniel P.
+Berrange &lt;dan@berrange.com&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copright (C)
+2004-2011, Daniel Berrange.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::Object,
+Net::DBus::Binding::Introspector</p>
+<hr>
+</body>
+</html>

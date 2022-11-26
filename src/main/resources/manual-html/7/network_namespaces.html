@@ -1,0 +1,100 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:45 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NETWORK_NAMESPACES</title>
+
+</head>
+<body>
+
+<h1 align="center">NETWORK_NAMESPACES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">network_namespaces
+- overview of Linux network namespaces</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Network
+namespaces provide isolation of the system resources
+associated with networking: network devices, IPv4 and IPv6
+protocol stacks, IP routing tables, firewall rules, the
+<i>/proc/net</i> directory (which is a symbolic link to
+<i>/proc/PID/net</i>), the <i>/sys/class/net</i> directory,
+various files under <i>/proc/sys/net</i>, port numbers
+(sockets), and so on. In addition, network namespaces
+isolate the UNIX domain abstract socket namespace (see
+<b>unix</b>(7)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A physical
+network device can live in exactly one network namespace.
+When a network namespace is freed (i.e., when the last
+process in the namespace terminates), its physical network
+devices are moved back to the initial network namespace (not
+to the parent of the process).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A virtual
+network (<b>veth</b>(4)) device pair provides a pipe-like
+abstraction that can be used to create tunnels between
+network namespaces, and can be used to create a bridge to a
+physical network device in another namespace. When a
+namespace is freed, the <b>veth</b>(4) devices that it
+contains are destroyed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use of network
+namespaces requires a kernel that is configured with the
+<b>CONFIG_NET_NS</b> option.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nsenter</b>(1),
+<b>unshare</b>(1), <b>clone</b>(2), <b>veth</b>(4),
+<b>proc</b>(5), <b>sysfs</b>(5), <b>namespaces</b>(7),
+<b>user_namespaces</b>(7), <b>brctl</b>(8), <b>ip</b>(8),
+<b>ip-address</b>(8), <b>ip-link</b>(8), <b>ip-netns</b>(8),
+<b>iptables</b>(8), <b>ovs-vsctl</b>(8)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

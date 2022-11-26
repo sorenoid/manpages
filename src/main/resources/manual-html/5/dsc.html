@@ -1,0 +1,361 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dsc</title>
+
+</head>
+<body>
+
+<h1 align="center">dsc</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FIELDS">FIELDS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dsc - Debian
+source packages&rsquo; control file format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>filename</i><b>.dsc</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each Debian
+source package is composed of a .dsc control file, which
+contains a number of fields, in <b>deb822</b>(5) format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each field
+begins with a tag, such as <b>Source</b> or <b>Binary</b>
+(case insensitive), followed by a colon, and the body of the
+field (case sensitive unless stated otherwise). Fields are
+delimited only by field tags. In other words, field text may
+be multiple lines in length, but the installation tools will
+generally join lines when processing the body of the field
+(except in case of the multiline fields <b>Package-List</b>,
+<b>Files</b>, <b>Checksums-Sha1</b> and
+<b>Checksums-Sha256</b>, see below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The control
+data might be enclosed in an OpenPGP <small>ASCII</small>
+Armored signature, as specified in
+<small>RFC4880.</small></p>
+
+<h2>FIELDS
+<a name="FIELDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Format:</b>
+<i>format-version</i> (required)</p>
+
+<p style="margin-left:17%;">The value of this field
+declares the format version of the source package. The field
+value is used by programs acting on a source package to
+interpret the list of files in the source package and
+determine how to unpack it. The syntax of the field value is
+a numeric major revision (&ldquo;0-9&rdquo;), a period
+(&ldquo;.&rdquo;), a numeric minor revision
+(&ldquo;0-9&rdquo;), and then an optional subtype after
+whitespace (&ldquo; \t&rdquo;), which if specified is a
+lowercase alphanumeric (&ldquo;a-z0-9&rdquo;) word in
+parentheses (&ldquo;()&rdquo;). The subtype is optional in
+the syntax but may be mandatory for particular source format
+revisions.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The source
+formats currently supported by <b>dpkg</b> are <b>1.0</b>,
+<b>2.0</b>, <b>3.0 (native)</b>, <b>3.0 (quilt)</b>, <b>3.0
+(git)</b>, <b>3.0 (bzr)</b> and <b>3.0 (custom)</b>. See
+<b>dpkg-source</b>(1) for their description.</p>
+
+<p style="margin-left:11%;"><b>Source:</b>
+<i>source-name</i> (required)</p>
+
+<p style="margin-left:17%;">The value of this field
+determines the package name, and is used to generate file
+names by most installation tools.</p>
+
+<p style="margin-left:11%;"><b>Binary:</b>
+<i>binary-package-list</i></p>
+
+<p style="margin-left:17%;">This folded field lists binary
+packages which this source package can produce, separated by
+commas.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This field has
+now been superseded by the <b>Package-List</b> field, which
+gives enough information about what binary packages are
+produced on which architecture, build-profile and other
+involved restrictions.</p>
+
+<p style="margin-left:11%;"><b>Architecture:</b>
+<i>arch-list</i> (recommended)</p>
+
+<p style="margin-left:17%;">A list of architectures and
+architecture wildcards separated by spaces which specify the
+type of hardware this package can be compiled for. Common
+architecture names and architecture wildcards are
+<b>amd64</b>, <b>armel</b>, <b>i386</b>, <b>linux-any</b>,
+<b>any-amd64</b>, etc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+<b>all</b> value is meant for packages that are architecture
+independent, and <b>any</b> for packages that are
+architecture dependent. The list may include (or consist
+solely of) the special value <b>all</b>. When the list
+contains the architecture wildcard <b>any</b>, the only
+other value allowed in the list is <b>all</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The field value
+is generally generated from <b>Architecture</b> fields from
+in the <i>debian/control</i> in the source package.</p>
+
+<p style="margin-left:11%;"><b>Version:</b>
+<i>version-string</i> (required)</p>
+
+<p style="margin-left:17%;">Typically, this is the original
+package&rsquo;s version number in whatever form the
+program&rsquo;s author uses. It may also include a Debian
+revision number (for non-native packages). The exact format
+and sorting algorithm are described in
+<b>deb-version</b>(7).</p>
+
+<p style="margin-left:11%;"><b>Origin:</b> <i>name</i></p>
+
+<p style="margin-left:17%;">The name of the distribution
+this package is originating from.</p>
+
+<p style="margin-left:11%;"><b>Maintainer:</b>
+<i>fullname-email</i> (recommended)</p>
+
+<p style="margin-left:17%;">Should be in the format
+&ldquo;Joe Bloggs &lt;jbloggs@foo.com&gt;&rdquo;, and is
+typically the person who created the package, as opposed to
+the author of the software that was packaged.</p>
+
+<p style="margin-left:11%;"><b>Uploaders:</b>
+<i>fullname-email-list</i></p>
+
+<p style="margin-left:17%;">Lists all the names and email
+addresses of co-maintainers of the package, in the same
+format as the <b>Maintainer</b> field. Multiple
+co-maintainers should be separated by a comma.</p>
+
+<p style="margin-left:11%;"><b>Description</b>
+<i>short-description <br>
+long-description</i></p>
+
+<p style="margin-left:17%;">The format for the source
+package description is a short brief summary on the first
+line (after the <b>Description</b> field). The following
+lines should be used as a longer, more detailed description.
+Each line of the long description must be preceded by a
+space, and blank lines in the long description must contain
+a single &rsquo;<b>.</b>&rsquo; following the preceding
+space.</p>
+
+<p style="margin-left:11%;"><b>Homepage:</b> <i>url</i></p>
+
+<p style="margin-left:17%;">The upstream project home page
+<i>url</i>.</p>
+
+<p style="margin-left:11%;"><b>Standards-Version:</b>
+<i>version-string</i> (recommended)</p>
+
+<p style="margin-left:17%;">This documents the most recent
+version of the distribution policy standards this package
+complies with.</p>
+
+<p style="margin-left:11%;"><b>Vcs-Browser:</b>
+<i>url</i></p>
+
+<p style="margin-left:17%;">The <i>url</i> of a web
+interface to browse the Version Control System
+repository.</p>
+
+<p style="margin-left:11%;"><b>Vcs-Arch:</b> <i>url</i>
+<b><br>
+Vcs-Bzr:</b> <i>url</i> <b><br>
+Vcs-Cvs:</b> <i>url</i> <b><br>
+Vcs-Darcs:</b> <i>url</i> <b><br>
+Vcs-Git:</b> <i>url</i> <b><br>
+Vcs-Hg:</b> <i>url</i> <b><br>
+Vcs-Mtn:</b> <i>url</i> <b><br>
+Vcs-Svn:</b> <i>url</i></p>
+
+<p style="margin-left:17%;">These fields declare the
+<i>url</i> of the Version Control System repository used to
+maintain this package. See <b>deb-src-control</b>(5) for
+more details.</p>
+
+<p style="margin-left:11%;"><b>Testsuite:</b>
+<i>name-list</i></p>
+
+<p style="margin-left:17%;">This field declares that the
+source package contains the specified test suites. The value
+is a comma-separated list of test suites. If the
+<b>autopkgtest</b> value is present, a
+<i>debian/tests/control</i> is expected to be present, if
+the file is present but not the value, then
+<b>dpkg-source</b> will automatically add it, preserving
+previous values.</p>
+
+<p style="margin-left:11%;"><b>Testsuite-Triggers:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">This field declares the
+comma-separated union of all test dependencies
+(<b>Depends</b> fields in <i>debian/tests/control</i> file),
+with all restrictions removed, and <small>OR</small>
+dependencies flattened (that is, converted to separate
+<small>AND</small> relationships), except for binaries
+generated by this source package and its meta-dependency
+equivalent <b>@</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Rationale: this
+field is needed because otherwise to be able to get the test
+dependencies, each source package would need to be
+unpacked.</p>
+
+<p style="margin-left:11%;"><b>Build-Depends:</b>
+<i>package-list</i> <b><br>
+Build-Depends-Arch:</b> <i>package-list</i> <b><br>
+Build-Depends-Indep:</b> <i>package-list</i> <b><br>
+Build-Conflicts:</b> <i>package-list</i> <b><br>
+Build-Conflicts-Arch:</b> <i>package-list</i> <b><br>
+Build-Conflicts-Indep:</b> <i>package-list</i></p>
+
+<p style="margin-left:17%;">These fields declare
+relationships between the source package and packages used
+to build it. They are discussed in the
+<b>deb-src-control</b>(5) manpage.</p>
+
+<p style="margin-left:11%;"><b>Package-List:</b> <br>
+&Acirc;&nbsp;<i>package package-type section priority
+key-value-list</i></p>
+
+<p style="margin-left:17%;">This multiline field contains a
+list of binary packages generated by this source
+package.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>package</i> is the binary package name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>package-type</i> is the binary package type, usually
+<b>deb</b>, another common value is <b>udeb</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>section</i> and <i>priority</i> match the binary package
+fields of the same name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>key-value-list</i> is a space separated
+<i>key</i><b>=</b><i>value</i> list, and the currently known
+optional keys are: <b><br>
+arch</b></p>
+
+<p style="margin-left:23%;">The architecture restriction
+from the binary package <b>Architecture</b> field, with
+spaces converted to &rsquo;,&rsquo;.</p>
+
+<p style="margin-left:17%;"><b>profile</b></p>
+
+<p style="margin-left:23%;">The normalized build-profile
+restriction formula from the binary package
+<b>Build-Profile</b> field, with ORs converted to
+&rsquo;+&rsquo; and ANDs to &rsquo;,&rsquo;.</p>
+
+<p style="margin-left:17%;"><b>protected</b></p>
+
+<p style="margin-left:23%;">If the binary package is
+protected, this key will contain the value of the
+<b>Protected</b> field, that is a <b>yes</b> value.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Supported since
+dpkg 1.20.1.</p>
+
+<p style="margin-left:17%;"><b>essential</b></p>
+
+<p style="margin-left:23%;">If the binary package is
+essential, this key will contain the value of the
+<b>Essential</b> field, that is a <b>yes</b> value.</p>
+
+<p style="margin-left:11%;"><b>Files:</b> (required)
+<b><br>
+Checksums-Sha1:</b> (required) <b><br>
+Checksums-Sha256:</b> (required) <br>
+&Acirc;&nbsp;<i>checksum size filename</i></p>
+
+<p style="margin-left:17%;">These multiline fields contain
+a list of files with a checksum and size for each one. These
+fields have the same syntax and differ only in the checksum
+algorithm used: <small>MD5</small> for <b>Files</b>,
+<small>SHA-1</small> for <b>Checksums-Sha1</b> and
+<small>SHA-256</small> for <b>Checksums-Sha256</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The first line
+of the field value (the part on the same line as the field
+name followed by a colon) is always empty. The content of
+the field is expressed as continuation lines, one line per
+file. Each line consists of the checksum, a space, the file
+size, a space, and the file name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">These fields
+list all files that make up the source package. The list of
+files in these fields must match the list of files in the
+other related fields.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>Format</b> field conflates the format for the <b>.dsc</b>
+file itself and the format of the extracted source
+package.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb822</b>(5),
+<b>deb-src-control</b>(5), <b>deb-version</b>(7),
+<b>dpkg-source</b>(1).</p>
+<hr>
+</body>
+</html>

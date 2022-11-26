@@ -1,0 +1,100 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:06 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-conffiles</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-conffiles</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-conffiles -
+package conffiles</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DEBIAN/conffiles</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A package
+declares its list of conffiles by including a
+<i>conffiles</i> file in its control archive (i.e.
+<i>DEBIAN/conffiles</i> during package creation).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This file
+contains a list of files, one per line, with an optional
+leading flag separated by whitespace. The conffiles must be
+listed as absolute pathnames. Trailing whitespace will be
+trimmed, but empty or whitespace-only lines are not
+accepted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Files without a
+flag should exist in the binary package, otherwise
+<b>dpkg</b>(1) will ignore them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is
+currently only one flag supported, <b>remove-on-upgrade</b>,
+to mark that a conffile needs to be removed on the next
+upgrade (since dpkg 1.20.6). These files must not exist in
+the binary package, as both <b>dpkg</b>(1) and
+<b>dpkg-deb</b>(1) will not accept building nor processing
+such binary packages.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/alternatives/README
+<br>
+/etc/cron.daily/dpkg <br>
+/etc/dpkg/dpkg.cfg <br>
+/etc/logrotate.d/dpkg <br>
+remove-on-upgrade /etc/some-old-file.conf</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-deb</b>(1),
+<b>dpkg</b>(1).</p>
+<hr>
+</body>
+</html>

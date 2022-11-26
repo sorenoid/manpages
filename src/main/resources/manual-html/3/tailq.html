@@ -1,0 +1,382 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TAILQ</title>
+
+</head>
+<body>
+
+<h1 align="center">TAILQ</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">TAILQ_CONCAT,
+TAILQ_EMPTY, TAILQ_ENTRY, TAILQ_FIRST, TAILQ_FOREACH,
+TAILQ_FOREACH_REVERSE, TAILQ_HEAD, TAILQ_HEAD_INITIALIZER,
+TAILQ_INIT, TAILQ_INSERT_AFTER, TAILQ_INSERT_BEFORE,
+TAILQ_INSERT_HEAD, TAILQ_INSERT_TAIL, TAILQ_LAST,
+TAILQ_NEXT, TAILQ_PREV, TAILQ_REMOVE - implementation of a
+doubly linked tail queue</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/queue.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_CONCAT(TAILQ_HEAD *</b><i>head1</i><b>, TAILQ_HEAD
+*</b><i>head2</i><b>, <br>
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+TAILQ_EMPTY(TAILQ_HEAD *</b><i>head</i><b>);</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_ENTRY(TYPE);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>struct TYPE
+*TAILQ_FIRST(TAILQ_HEAD *</b><i>head</i><b>);</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_FOREACH(struct
+TYPE *</b><i>var</i><b>, TAILQ_HEAD *</b><i>head</i><b>,
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_FOREACH_REVERSE(struct
+TYPE *</b><i>var</i><b>, TAILQ_HEAD *</b><i>head</i><b>,
+HEADNAME, <br>
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_HEAD(HEADNAME,
+TYPE);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_HEAD
+TAILQ_HEAD_INITIALIZER(TAILQ_HEAD</b>
+<i>head</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_INIT(TAILQ_HEAD *</b><i>head</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_INSERT_AFTER(TAILQ_HEAD *</b><i>head</i><b>, struct
+TYPE *</b><i>listelm</i><b>, <br>
+struct TYPE *</b><i>elm</i><b>, TAILQ_ENTRY</b>
+<i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_INSERT_BEFORE(struct TYPE *</b><i>listelm</i><b>,
+struct TYPE *</b><i>elm</i><b>, <br>
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_INSERT_HEAD(TAILQ_HEAD *</b><i>head</i><b>, struct
+TYPE *</b><i>elm</i><b>, <br>
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_INSERT_TAIL(TAILQ_HEAD *</b><i>head</i><b>, struct
+TYPE *</b><i>elm</i><b>, <br>
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>struct TYPE
+*TAILQ_LAST(TAILQ_HEAD *</b><i>head</i><b>,
+HEADNAME);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>struct TYPE
+*TAILQ_NEXT(struct TYPE *</b><i>elm</i><b>, TAILQ_ENTRY</b>
+<i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>struct TYPE
+*TAILQ_PREV(struct TYPE *</b><i>elm</i><b>, HEADNAME,
+TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+TAILQ_REMOVE(TAILQ_HEAD *</b><i>head</i><b>, struct TYPE
+*</b><i>elm</i><b>, TAILQ_ENTRY</b> <i>NAME</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These macros
+define and operate on doubly linked tail queues.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the macro
+definitions, <i>TYPE</i> is the name of a user defined
+structure, that must contain a field of type
+<i>TAILQ_ENTRY</i>, named <i>NAME</i>. The argument
+<i>HEADNAME</i> is the name of a user defined structure that
+must be declared using the macro <b>TAILQ_HEAD</b>().</p>
+
+<p style="margin-left:11%; margin-top: 1em">A tail queue is
+headed by a structure defined by the <b>TAILQ_HEAD</b>()
+macro. This structure contains a pair of pointers, one to
+the first element in the tail queue and the other to the
+last element in the tail queue. The elements are doubly
+linked so that an arbitrary element can be removed without
+traversing the tail queue. New elements can be added to the
+tail queue after an existing element, before an existing
+element, at the head of the tail queue, or at the end of the
+tail queue. A <i>TAILQ_HEAD</i> structure is declared as
+follows:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">TAILQ_HEAD(HEADNAME,
+TYPE) head;</p>
+
+<p style="margin-left:11%; margin-top: 1em">where <i>struct
+HEADNAME</i> is the structure to be defined, and <i>struct
+TYPE</i> is the type of the elements to be linked into the
+tail queue. A pointer to the head of the tail queue can
+later be declared as:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct HEADNAME
+*headp;</p>
+
+<p style="margin-left:11%; margin-top: 1em">(The names
+<i>head</i> and <i>headp</i> are user selectable.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_HEAD_INITIALIZER</b>() evaluates to an initializer
+for the tail queue <i>head</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_CONCAT</b>() concatenates the tail queue headed by
+<i>head2</i> onto the end of the one headed by <i>head1</i>
+removing all entries from the former.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_EMPTY</b>() evaluates to true if there are no items
+on the tail queue.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_ENTRY</b>() declares a structure that connects the
+elements in the tail queue.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_FIRST</b>() returns the first item on the tail
+queue or NULL if the tail queue is empty.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_FOREACH</b>() traverses the tail queue referenced
+by <i>head</i> in the forward direction, assigning each
+element in turn to <i>var</i>. <i>var</i> is set to NULL if
+the loop completes normally, or if there were no
+elements.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_FOREACH_REVERSE</b>() traverses the tail queue
+referenced by <i>head</i> in the reverse direction,
+assigning each element in turn to <i>var</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_INIT</b>() initializes the tail queue referenced by
+<i>head</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_INSERT_HEAD</b>() inserts the new element
+<i>elm</i> at the head of the tail queue.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_INSERT_TAIL</b>() inserts the new element
+<i>elm</i> at the end of the tail queue.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_INSERT_AFTER</b>() inserts the new element
+<i>elm</i> after the element <i>listelm</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_INSERT_BEFORE</b>() inserts the new element
+<i>elm</i> before the element <i>listelm</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_LAST</b>() returns the last item on the tail queue.
+If the tail queue is empty the return value is NULL.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_NEXT</b>() returns the next item on the tail queue,
+or NULL if this item is the last.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_PREV</b>() returns the previous item on the tail
+queue, or NULL if this item is the first.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The macro
+<b>TAILQ_REMOVE</b>() removes the element <i>elm</i> from
+the tail queue.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_EMPTY</b>()
+returns nonzero if the queue is empty, and zero if the queue
+contains at least one entry.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_FIRST</b>(),
+<b>TAILQ_LAST</b>(), <b>TAILQ_NEXT</b>(), and
+<b>TAILQ_PREV</b>() return a pointer to the first, last,
+next or previous <i>TYPE</i> structure, respectively.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TAILQ_HEAD_INITIALIZER</b>()
+returns an initializer that can be assigned to the queue
+<i>head</i>.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not in POSIX.1,
+POSIX.1-2001 or POSIX.1-2008. Present on the BSDs. (TAILQ
+functions first appeared in 4.4BSD).</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The macros
+<b>TAILQ_FOREACH</b>() and <b>TAILQ_FOREACH_REVERSE</b>()
+don&rsquo;t allow <i>var</i> to be removed or freed within
+the loop, as it would interfere with the traversal. The
+macros <b>TAILQ_FOREACH_SAFE</b>() and
+<b>TAILQ_FOREACH_REVERSE_SAFE</b>(), which are present on
+the BSDs but are not present in glibc, fix this limitation
+by allowing <i>var</i> to safely be removed from the list
+and freed from within the loop without interfering with the
+traversal.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;stddef.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;sys/queue.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">struct entry {
+<br>
+int data; <br>
+TAILQ_ENTRY(entry) entries; /* Tail queue. */ <br>
+};</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">TAILQ_HEAD(tailhead,
+entry);</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(void) <br>
+{ <br>
+struct entry *n1, *n2, *n3, *np; <br>
+struct tailhead head; /* Tail queue head. */ <br>
+int i;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">TAILQ_INIT(&amp;head);
+/* Initialize the queue. */</p>
+
+<p style="margin-left:11%; margin-top: 1em">n1 =
+malloc(sizeof(struct entry)); /* Insert at the head. */ <br>
+TAILQ_INSERT_HEAD(&amp;head, n1, entries);</p>
+
+<p style="margin-left:11%; margin-top: 1em">n1 =
+malloc(sizeof(struct entry)); /* Insert at the tail. */ <br>
+TAILQ_INSERT_TAIL(&amp;head, n1, entries);</p>
+
+<p style="margin-left:11%; margin-top: 1em">n2 =
+malloc(sizeof(struct entry)); /* Insert after. */ <br>
+TAILQ_INSERT_AFTER(&amp;head, n1, n2, entries);</p>
+
+<p style="margin-left:11%; margin-top: 1em">n3 =
+malloc(sizeof(struct entry)); /* Insert before. */ <br>
+TAILQ_INSERT_BEFORE(n2, n3, entries);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">TAILQ_REMOVE(&amp;head,
+n2, entries); /* Deletion. */ <br>
+free(n2); <br>
+/* Forward traversal. */ <br>
+i = 0; <br>
+TAILQ_FOREACH(np, &amp;head, entries) <br>
+np-&gt;data = i++; <br>
+/* Reverse traversal. */ <br>
+TAILQ_FOREACH_REVERSE(np, &amp;head, tailhead, entries) <br>
+printf(&quot;%i\n&quot;, np-&gt;data); <br>
+/* TailQ Deletion. */ <br>
+n1 = TAILQ_FIRST(&amp;head); <br>
+while (n1 != NULL) { <br>
+n2 = TAILQ_NEXT(n1, entries); <br>
+free(n1); <br>
+n1 = n2; <br>
+} <br>
+TAILQ_INIT(&amp;head);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">exit(EXIT_SUCCESS);
+<br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>insque</b>(3),
+<b>queue</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

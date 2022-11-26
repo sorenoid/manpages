@@ -1,0 +1,186 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EVP_RAND-HMAC-DRBG</title>
+
+</head>
+<body>
+
+<h1 align="center">EVP_RAND-HMAC-DRBG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_RAND-HMAC-DRBG
+- The HMAC DRBG EVP_RAND implementation</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Support for the
+<small>HMAC</small> deterministic random bit generator
+through the <b><small>EVP_RAND</small></b>
+<small>API.</small></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Identity</b>
+<br>
+&quot;HMAC-DRBG&quot; is the name for this implementation;
+it can be used with the <b>EVP_RAND_fetch()</b>
+function.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+parameters</b> <br>
+The supported parameters are: <br>
+&quot;state&quot; (
+<b><small>OSSL_RAND_PARAM_STATE</small></b> )
+&lt;integer&gt; <br>
+&quot;strength&quot; (
+<b><small>OSSL_RAND_PARAM_STRENGTH</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;max_request&quot; (
+<b><small>OSSL_RAND_PARAM_MAX_REQUEST</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;reseed_requests&quot; (
+<b><small>OSSL_DRBG_PARAM_RESEED_REQUESTS</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;reseed_time_interval&quot; (
+<b><small>OSSL_DRBG_PARAM_RESEED_TIME_INTERVAL</small></b> )
+&lt;integer&gt; <br>
+&quot;min_entropylen&quot; (
+<b><small>OSSL_DRBG_PARAM_MIN_ENTROPYLEN</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;max_entropylen&quot; (
+<b><small>OSSL_DRBG_PARAM_MAX_ENTROPYLEN</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;min_noncelen&quot; (
+<b><small>OSSL_DRBG_PARAM_MIN_NONCELEN</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;max_noncelen&quot; (
+<b><small>OSSL_DRBG_PARAM_MAX_NONCELEN</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;max_perslen&quot; (
+<b><small>OSSL_DRBG_PARAM_MAX_PERSLEN</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;max_adinlen&quot; (
+<b><small>OSSL_DRBG_PARAM_MAX_ADINLEN</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;reseed_counter&quot; (
+<b><small>OSSL_DRBG_PARAM_RESEED_COUNTER</small></b> )
+&lt;unsigned integer&gt; <br>
+&quot;properties&quot; (
+<b><small>OSSL_DRBG_PARAM_PROPERTIES</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;mac&quot; ( <b><small>OSSL_DRBG_PARAM_MAC</small></b>
+) &lt; <small>UTF8</small> string&gt; <br>
+&quot;digest&quot; (
+<b><small>OSSL_DRBG_PARAM_DIGEST</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">These parameters work as
+described in &quot; <small>PARAMETERS&quot;</small> in
+<b><small>EVP_RAND</small></b> (3).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A context for
+<small>HMAC DRBG</small> can be obtained by calling:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_RAND *rand
+= EVP_RAND_fetch(NULL, &quot;HMAC-DRBG&quot;, NULL); <br>
+EVP_RAND_CTX *rctx = EVP_RAND_CTX_new(rand);</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_RAND *rand;
+<br>
+EVP_RAND_CTX *rctx; <br>
+unsigned char bytes[100]; <br>
+OSSL_PARAM params[3], *p = params; <br>
+unsigned int strength = 128; <br>
+rand = EVP_RAND_fetch(NULL, &quot;HMAC-DRBG&quot;, NULL);
+<br>
+rctx = EVP_RAND_CTX_new(rand, NULL); <br>
+EVP_RAND_free(rand); <br>
+*p++ = OSSL_PARAM_construct_utf8_string(OSSL_DRBG_PARAM_MAC,
+SN_hmac, 0); <br>
+*p++ =
+OSSL_PARAM_construct_utf8_string(OSSL_DRBG_PARAM_DIGEST,
+SN_sha256, 0); <br>
+*p = OSSL_PARAM_construct_end(); <br>
+EVP_RAND_instantiate(rctx, strength, 0, NULL, 0, params);
+<br>
+EVP_RAND_generate(rctx, bytes, sizeof(bytes), strength, 0,
+NULL, 0); <br>
+EVP_RAND_CTX_free(rctx);</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>NIST SP
+800-90A</small> and <small>SP 800-90B</small></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small><b>EVP_RAND</b></small>
+(3), &quot; <small>PARAMETERS&quot;</small> in
+<b><small>EVP_RAND</small></b> (3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:40 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>FAILLOCK.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">FAILLOCK.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">faillock.conf -
+pam_faillock configuration file</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>faillock.conf</b>
+provides a way to configure the default settings for locking
+the user after multiple failed authentication attempts. This
+file is read by the <i>pam_faillock</i> module and is the
+preferred method over configuring <i>pam_faillock</i>
+directly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file has a
+very simple <i>name = value</i> format with possible
+comments starting with <i>#</i> character. The whitespace at
+the beginning of line, end of line, and around the <i>=</i>
+sign is ignored.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dir=</b><i>/path/to/tally-directory</i></p>
+
+<p style="margin-left:17%;">The directory where the user
+files with the failure records are kept. The default is
+/var/run/faillock.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>audit</b></p>
+
+<p style="margin-left:17%;">Will log the user name into the
+system log if the user is not found.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>silent</b></p>
+
+<p style="margin-left:17%;">Don't print informative
+messages to the user. Please note that when this option is
+not used there will be difference in the authentication
+behavior for users which exist on the system and
+non-existing users.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>no_log_info</b></p>
+
+<p style="margin-left:17%;">Don't log informative messages
+via <b>syslog</b>(3).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>local_users_only</b></p>
+
+<p style="margin-left:17%;">Only track failed user
+authentications attempts for local users in /etc/passwd and
+ignore centralized (AD, IdM, LDAP, etc.) users. The
+<b>faillock</b>(8) command will also no longer track user
+failed authentication attempts. Enabling this option will
+prevent a double-lockout scenario where a user is locked out
+locally and in the centralized mechanism.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deny=</b><i>n</i></p>
+
+<p style="margin-left:17%;">Deny access if the number of
+consecutive authentication failures for this user during the
+recent interval exceeds <i>n</i>. The default is 3.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fail_interval=</b><i>n</i></p>
+
+<p style="margin-left:17%;">The length of the interval
+during which the consecutive authentication failures must
+happen for the user account lock out is <i>n</i> seconds.
+The default is 900 (15 minutes).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>unlock_time=</b><i>n</i></p>
+
+<p style="margin-left:17%;">The access will be re-enabled
+after <i>n</i> seconds after the lock out. The value 0 has
+the same meaning as value <i>never</i> - the access will not
+be re-enabled without resetting the faillock entries by the
+<b>faillock</b>(8) command. The default is 600 (10
+minutes).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+default directory that <i>pam_faillock</i> uses is usually
+cleared on system boot so the access will be also re-enabled
+after system reboot. If that is undesirable a different
+tally directory must be set with the <b>dir</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Also note that
+it is usually undesirable to permanently lock out users as
+they can become easily a target of denial of service attack
+unless the usernames are random and kept secret to potential
+attackers.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>even_deny_root</b></p>
+
+<p style="margin-left:17%;">Root account can become locked
+as well as regular accounts.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>root_unlock_time=</b><i>n</i></p>
+
+<p style="margin-left:17%;">This option implies
+<b>even_deny_root</b> option. Allow access after <i>n</i>
+seconds to root account after the account is locked. In case
+the option is not specified the value is the same as of the
+<b>unlock_time</b> option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>admin_group=</b><i>name</i></p>
+
+<p style="margin-left:17%;">If a group name is specified
+with this option, members of the group will be handled by
+this module the same as the root account (the options
+<b>even_deny_root</b> and <b>root_unlock_time</b> will apply
+to them. By default the option is not set.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/security/faillock.conf
+file example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">deny=4 <br>
+unlock_time=1200 <br>
+silent</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/security/faillock.conf</p>
+
+<p style="margin-left:17%;">the config file for custom
+options</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>faillock</b>(8),
+<b>pam_faillock</b>(8), <b>pam.conf</b>(5), <b>pam.d</b>(5),
+<b>pam</b>(8)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_faillock
+was written by Tomas Mraz. The support for faillock.conf was
+written by Brian Ward.</p>
+<hr>
+</body>
+</html>

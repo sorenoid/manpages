@@ -1,0 +1,232 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:27 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Iconv</title>
+
+</head>
+<body>
+
+<h1 align="center">Iconv</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Text::Iconv -
+Perl interface to iconv() codeset conversion function</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Text::Iconv; <br>
+$converter = Text::Iconv-&gt;new(&quot;fromcode&quot;,
+&quot;tocode&quot;); <br>
+$converted = $converter-&gt;convert(&quot;Text to
+convert&quot;);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>Text::Iconv</b> module provides a Perl interface to the
+<b>iconv()</b> function as defined by the Single
+<small>UNIX</small> Specification.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>convert()</b> method converts the encoding of characters
+in the input string from the <i>fromcode</i> codeset to the
+<i>tocode</i> codeset, and returns the result.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Settings of
+<i>fromcode</i> and <i>tocode</i> and their permitted
+combinations are implementation-dependent. Valid values are
+specified in the system documentation; the <b>iconv</b>(1)
+utility should also provide a <b>-l</b> option that lists
+all supported codesets.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Utility
+methods <br>
+Text::Iconv</b> objects also provide the following
+methods:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>retval()</b>
+returns the return value of the underlying <b>iconv()</b>
+function for the last conversion; according to the Single
+<small>UNIX</small> Specification, this value indicates
+&quot;the number of non-identical conversions
+performed.&quot; Note, however, that iconv implementations
+vary widely in the interpretation of this specification.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method can
+be called after calling <b>convert()</b>, e.g.:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$result =
+$converter-&gt;convert(&quot;lorem ipsum dolor sit
+amet&quot;); <br>
+$retval = $converter-&gt;retval;</p>
+
+<p style="margin-left:11%; margin-top: 1em">When called
+before the first call to <b>convert()</b>, or if an error
+occured during the conversion, <b>retval()</b> returns
+<b>undef</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_attr()</b>:
+This method is only available with <small>GNU</small>
+libiconv, otherwise it throws an exception. The
+<b>get_attr()</b> method allows you to query various
+attributes which influence the behavior of <b>convert()</b>.
+The currently supported attributes are <i>trivialp</i>,
+<i>transliterate</i>, and <i>discard_ilseq</i>, e.g.:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$state =
+$converter-&gt;get_attr(&quot;transliterate&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>iconvctl</b>(3) for details. To ensure portability to
+other iconv implementations you should first check for the
+availability of this method using <b>eval {}</b>, e.g.:</p>
+
+<p style="margin-left:11%; margin-top: 1em">eval {
+$conv-&gt;get_attr(&quot;trivialp&quot;) }; <br>
+if ($@) <br>
+{ <br>
+# get_attr() is not available <br>
+} <br>
+else <br>
+{ <br>
+# get_attr() is available <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method
+should be considered experimental.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>set_attr()</b>:
+This method is only available with <small>GNU</small>
+libiconv, otherwise it throws an exception. The
+<b>set_attr()</b> method allows you to set various
+attributes which influence the behavior of <b>convert()</b>.
+The currently supported attributes are <i>transliterate</i>
+and <i>discard_ilseq</i>, e.g.:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$state =
+$converter-&gt;set_attr(&quot;transliterate&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>iconvctl</b>(3) for details. To ensure portability to
+other iconv implementations you should first check for the
+availability of this method using <b>eval {}</b>, cf. the
+description of <b>set_attr()</b> above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method
+should be considered experimental.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the
+conversion can&rsquo;t be initialized an exception is raised
+(using <b>croak()</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Handling of
+conversion errors</b> <i><br>
+Text::Iconv</i> provides a class attribute
+<b>raise_error</b> and a corresponding class method for
+setting and getting its value. The handling of errors during
+conversion depends on the setting of this attribute. If
+<b>raise_error</b> is set to a true value, an exception is
+raised; otherwise, the <b>convert()</b> method only returns
+<b>undef</b>. By default <b>raise_error</b> is false.
+Example usage:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Text::Iconv-&gt;raise_error(1);
+# Conversion errors raise exceptions <br>
+Text::Iconv-&gt;raise_error(0); # Conversion errors return
+undef <br>
+$a = Text::Iconv-&gt;raise_error(); # Get current
+setting</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Per-object
+handling of conversion errors</b> <br>
+As an experimental feature, <i>Text::Iconv</i> also provides
+an instance attribute <b>raise_error</b> and a corresponding
+method for setting and getting its value. If
+<b>raise_error</b> is <b>undef</b>, the class-wide settings
+apply. If <b>raise_error</b> is 1 or 0 (true or false), the
+object settings override the class-wide settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Consult
+<b>iconv</b>(3) for details on errors that might occur.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Conversion
+of undef</b> <br>
+Converting <b>undef</b>, e.g.,</p>
+
+<p style="margin-left:11%; margin-top: 1em">$converted =
+$converter-&gt;convert(undef);</p>
+
+<p style="margin-left:11%; margin-top: 1em">always returns
+<b>undef</b>. This is not considered an error.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The supported
+codesets, their names, the supported conversions, and the
+quality of the conversions are all system-dependent.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Michael
+Piotrowski &lt;mxp@dynalabs.de&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>iconv</b>(1),
+<b>iconv</b>(3)</p>
+<hr>
+</body>
+</html>

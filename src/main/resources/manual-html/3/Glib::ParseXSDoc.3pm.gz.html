@@ -1,0 +1,258 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:14 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Glib::ParseXSDoc</title>
+
+</head>
+<body>
+
+<h1 align="center">Glib::ParseXSDoc</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Glib::ParseXSDoc
+- Parse POD and XSub declarations from XS files.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is the
+heart of an automatic <small>API</small> reference
+documentation system for XS-based Perl modules.
+<small>FIXME</small> more info here!!</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>FIXME</small>
+document recognized <small>POD</small> directives and the
+output data structures</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xsdocparse
+(@filenames)</p>
+
+<p style="margin-left:17%;">Parse xs files for xsub
+signatures and pod. Writes to standard output a data
+structure suitable for eval&rsquo;ing in another Perl
+script, describing all the stuff found. The output contains
+three variables: <br>
+$xspods = <small>ARRAYREF</small></p>
+
+<p style="margin-left:23%;">array of pods found in the
+verbatim C portion of the <small>XS</small> file, listed in
+the order found. These are assumed to pertain to the
+<small>XS/C</small> api, not the Perl api. Any &quot;=for
+apidoc&quot; paragraphs following an &quot;=object&quot;
+paragraphs in the verbatim sections are stripped (as are the
+&quot;=object&quot; paragraphs), and will appear instead in
+&quot;$data-&gt;{$package}{pods}&quot;.</p>
+
+<p style="margin-left:17%;">$data =
+<small>HASHREF</small></p>
+
+<p style="margin-left:23%;">big hash keyed by package name
+(as found in the <small>MODULE</small> line), containing
+under each key a hash with all the xsubs and pods in that
+package, in the order found. Packages are consolidated
+across multiple files.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>FYI,</small>
+this creates a new parser and calls &quot;parse_file&quot;
+on it for each input filename; then calls
+&quot;swizzle_pods&quot; to ensure that any &quot;=for
+apidoc name&quot; pods are matched up with their target
+xsubs; and finally calls Data::Dumper to write the data to
+stdout. So, if you want to get finer control over how the
+output is created, or keep all the data in-process, now you
+know how. :-)</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">$Glib::ParseXSDoc::verbose</p>
+
+<p style="margin-left:17%;">If true, this causes the parser
+to be verbose.</p>
+
+<p style="margin-left:11%;">$parser =
+Glib::ParseXSDoc-&gt;new</p>
+
+<p style="margin-left:17%;">Create a new xsub parser.</p>
+
+<p style="margin-left:11%;">string =
+$parser-&gt;package</p>
+
+<p style="margin-left:17%;">Get the current package name.
+Falls back to the module name. Will be undef if the parser
+hasn&rsquo;t reached the first <small>MODULE</small>
+line.</p>
+
+<p style="margin-left:11%;"><small>HASHREF</small> =
+$parser-&gt;pkgdata</p>
+
+<p style="margin-left:17%;">The data hash corresponding to
+the current package, honoring the most recently encountered
+&quot;=for object&quot; directive. Ensures that it exists.
+Returns a reference to the member of the main data
+structure, so modifications are permanent and useful.</p>
+
+<p style="margin-left:11%;">$parser-&gt;parse_file
+(filename)</p>
+
+<p style="margin-left:17%;">Parse one xs file. Stores all
+the collected data in <i>$parser</i>&rsquo;s internal data
+structures.</p>
+
+<p style="margin-left:11%;">$parser-&gt;swizzle_pods</p>
+
+<p style="margin-left:17%;">Match &quot;=for apidoc&quot;
+pods to xsubs.</p>
+
+
+<p style="margin-left:11%;">$parser-&gt;preprocess_pods</p>
+
+<p style="margin-left:17%;">Honor the &quot;__hide__&quot;
+and &quot;__function__&quot; directives in &quot;=for
+apidoc&quot; lines.</p>
+
+<p style="margin-left:17%; margin-top: 1em">We look for the
+strings anywhere, but you&rsquo;ll typically have it at the
+end of the line, e.g.:</p>
+
+<p style="margin-left:17%; margin-top: 1em">=for apidoc
+symname __hide__ for detached blocks <br>
+=for apidoc __hide__ for attached blocks <br>
+=for apidoc symname __function__ for functions rather than
+methods <br>
+=for apidoc __function__ for functions rather than
+methods</p>
+
+<p style="margin-left:11%;">bool =
+$parser-&gt;is_module_line ($line)</p>
+
+<p style="margin-left:17%;">Analyze <i>$line</i> to see if
+it contains an <small>XS MODULE</small> directive. If so,
+returns true after setting the <i>$parser</i>&rsquo;s
+<i>module</i>, <i>package</i>, and <i>prefix</i>
+accordingly.</p>
+
+<p style="margin-left:11%;">$pod =
+$parser-&gt;slurp_pod_paragraph ($firstline, <br>
+$term_regex=/^=cut\s*/)</p>
+
+<p style="margin-left:17%;">Slurp up <small>POD</small>
+lines from <i>$filehandle</i> from here to the next
+<i>$term_regex</i> or <small>EOF.</small> Since you probably
+already read a line to determine that we needed to start a
+pod, you can pass that first line to be included.</p>
+
+<p style="margin-left:11%;">$xsub = $parser-&gt;parse_xsub
+(\@lines) <br>
+$xsub = $parser-&gt;parse_xsub (@lines)</p>
+
+<p style="margin-left:17%;">Parse an xsub header, in the
+form of a list of lines, into a data structure describing
+the xsub. That includes pulling out the argument types,
+aliases, and code type.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Without
+artificial intelligence, we cannot reliably determine
+anything about the types or number of parameters returned
+from xsubs with <small>PPCODE</small> bodies.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>OUTLIST</small>
+parameters are pulled from the args list and put into an
+&quot;outlist&quot; key. <small>IN_OUTLIST</small>
+parameters are put into both.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Data type names
+are not mangled at all.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+method can take either a list of lines or a reference to a
+list of lines. The flat list form is provided for
+compatibility; the reference form is preferred, to avoid
+duplicating a potentially large list of strings.</p>
+
+
+<p style="margin-left:11%;">$parser-&gt;clean_out_empty_pods</p>
+
+<p style="margin-left:17%;">Looks through the data member
+of the parser and removes any keys (and associated values)
+when no pod, enums, and xsubs exist for the package.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">muppet
+&lt;scott at asofyet dot org&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2003, 2004 by muppet</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the terms of the <small>GNU</small> Library General
+Public License as published by the Free Software Foundation;
+either version 2.1 of the License, or (at your option) any
+later version.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+distributed in the hope that it will be useful, but
+<small>WITHOUT ANY WARRANTY</small> ; without even the
+implied warranty of <small>MERCHANTABILITY</small> or
+<small>FITNESS FOR A PARTICULAR PURPOSE.</small> See the
+<small>GNU</small> Library General Public License for more
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You should have
+received a copy of the <small>GNU</small> Library General
+Public License along with this library; if not, write to the
+Free Software Foundation, Inc., 51 Franklin Street, Fifth
+Floor, Boston, <small>MA 02110-1301 USA.</small></p>
+<hr>
+</body>
+</html>

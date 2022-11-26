@@ -1,0 +1,248 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:06 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PIPEWIRE.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">PIPEWIRE.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION FILE FORMAT">CONFIGURATION FILE FORMAT</a><br>
+<a href="#CONFIGURATION FILE SECTIONS">CONFIGURATION FILE SECTIONS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pipewire.conf -
+The PipeWire server configuration file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$XDG_CONFIG_HOME/pipewire/pipewire.conf</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/pipewire/pipewire.conf</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/pipewire/pipewire.conf</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/pipewire/pipewire.conf.d/</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/pipewire/pipewire.conf.d/</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$XDG_CONFIG_HOME/pipewire/pipewire.conf.d/</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">PipeWire is a
+service that facilitates sharing of multimedia content
+between devices and applications.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On startup, the
+daemon reads a main configuration file to configure itself.
+It executes a series of commands listed in the config
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The config
+files are loaded in the order listed in the <i>SYNOPSIS</i>.
+The environment variables <b>PIPEWIRE_CONFIG_DIR</b>,
+<b>PIPEWIRE_CONFIG_PREFIX</b> and
+<b>PIPEWIRE_CONFIG_NAME</b> can be used to specify an
+alternative config directory, subdirectory and file
+respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Next to the
+configuration file can be a directory with the same name as
+the file with a <b>.d/</b> suffix. All directories in the
+<i>SYNOPSIS</i> directory search paths are traversed in the
+listed order and the contents of the <b>*.conf</b> files
+inside them are appended to the main configuration file as
+overrides. Object sections are merged and array sections are
+appended.</p>
+
+<h2>CONFIGURATION FILE FORMAT
+<a name="CONFIGURATION FILE FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration file format is grouped into sections. A
+section is either a dictionary, {}, or an array, [].
+Dictionary and array entries are separated by whitespace and
+may be simple value assignment, an array or a dictionary.
+For example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">name = value #
+simple assignment</p>
+
+<p style="margin-left:11%; margin-top: 1em">name = { key1 =
+value1 key2 = value2 } # a dictionary with two entries</p>
+
+<p style="margin-left:11%; margin-top: 1em">name = [ value1
+value2 ] # an array with two entries</p>
+
+<p style="margin-left:11%; margin-top: 1em">name = [ { k =
+v1 } { k = v2 } ] # an array of dictionaries</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration files can be expressed in full JSON syntax but
+for ease of use, a relaxed format may be used where:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p><b>:</b> to delimit keys and values can be substuted by
+<b>=</b> or a space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p><b>&quot; around keys and string can be omited as long
+as no special</b></p></td></tr>
+</table>
+
+<p style="margin-left:18%;"><b>characters</b></p>
+
+<p style="margin-left:29%;">are used in the strings.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p><b>,</b> to separate objects can be replaced with a
+whitespace character.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p><b>#</b> can be used to start a comment until the line
+end</p> </td></tr>
+</table>
+
+<h2>CONFIGURATION FILE SECTIONS
+<a name="CONFIGURATION FILE SECTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>context.properties</b></p>
+
+<p style="margin-left:22%;">Dictionary. These properties
+configure the PipeWire instance.</p>
+
+<p style="margin-left:11%;"><b>context.spa-libs</b></p>
+
+<p style="margin-left:22%;">Dictionary. Maps plugin
+features with globs to a spa library.</p>
+
+<p style="margin-left:11%;"><b>context.modules</b></p>
+
+<p style="margin-left:22%;">Array of dictionaries. Each
+entry in the array is a dictionary with the <i>name</i> of
+the module to load, including optional <i>args</i> and
+<i>flags</i>. Most modules support being loaded multiple
+times.</p>
+
+<p style="margin-left:11%;"><b>context.objects</b></p>
+
+<p style="margin-left:22%;">Array of dictionaries. Each
+entry in the array is a dictionary containing the
+<i>factory</i> to create an object from and optional extra
+arguments specific to that factory.</p>
+
+<p style="margin-left:11%;"><b>context.exec</b></p>
+
+<p style="margin-left:22%;">Array of dictionaries. Each
+entry in the array is dictionary containing the <i>path</i>
+of a program to execute on startup and optional
+<i>args</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This array used
+to contain an entry to start the session manager but this
+mode of operation has since been demoted to development aid.
+Avoid starting a session manager in this way in production
+environment.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The PipeWire
+Developers &lt;-
+<i>https://gitlab.freedesktop.org/pipewire/pipewire/issues</i>&gt;;
+PipeWire is available from <i>https://pipewire.org</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>pipewire(1)</b></i>,
+<b>pw-mon(1)</b>,</p>
+<hr>
+</body>
+</html>

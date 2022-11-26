@@ -1,0 +1,174 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:13 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GETS</title>
+
+</head>
+<body>
+
+<h1 align="center">GETS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">gets - get a
+string from standard input (DEPRECATED)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;stdio.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>char
+*gets(char *</b><i>s</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>Never use
+this function</i></b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gets</b>()
+reads a line from <i>stdin</i> into the buffer pointed to by
+<i>s</i> until either a terminating newline or <b>EOF</b>,
+which it replaces with a null byte ('\0'). No check for
+buffer overrun is performed (see BUGS below).</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gets</b>()
+returns <i>s</i> on success, and NULL on error or when end
+of file occurs while no characters have been read. However,
+given the lack of buffer overrun checking, there can be no
+guarantees that the function will even return.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3392041.png" alt="Image grohtml-3392041.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">C89, C99,
+POSIX.1-2001.</p>
+
+<p style="margin-left:11%; margin-top: 1em">LSB deprecates
+<b>gets</b>(). POSIX.1-2008 marks <b>gets</b>() obsolescent.
+ISO C11 removes the specification of <b>gets</b>() from the
+C language, and since version 2.16, glibc header files
+don&rsquo;t expose the function declaration if the
+<b>_ISOC11_SOURCE</b> feature test macro is defined.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Never use
+<b>gets</b>(). Because it is impossible to tell without
+knowing the data in advance how many characters
+<b>gets</b>() will read, and because <b>gets</b>() will
+continue to store characters past the end of the buffer, it
+is extremely dangerous to use. It has been used to break
+computer security. Use <b>fgets</b>() instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information, see CWE-242 (aka &quot;Use of Inherently
+Dangerous Function&quot;) at
+http://cwe.mitre.org/data/definitions/242.html</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>read</b>(2),
+<b>write</b>(2), <b>ferror</b>(3), <b>fgetc</b>(3),
+<b>fgets</b>(3), <b>fgetwc</b>(3), <b>fgetws</b>(3),
+<b>fopen</b>(3), <b>fread</b>(3), <b>fseek</b>(3),
+<b>getline</b>(3), <b>getwchar</b>(3), <b>puts</b>(3),
+<b>scanf</b>(3), <b>ungetwc</b>(3),
+<b>unlocked_stdio</b>(3), <b>feature_test_macros</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

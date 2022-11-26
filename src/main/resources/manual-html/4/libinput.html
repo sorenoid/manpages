@@ -1,0 +1,734 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:39 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LIBINPUT</title>
+
+</head>
+<body>
+
+<h1 align="center">LIBINPUT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#NOTE">NOTE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION DETAILS">CONFIGURATION DETAILS</a><br>
+<a href="#SUPPORTED PROPERTIES">SUPPORTED PROPERTIES</a><br>
+<a href="#BUTTON MAPPING">BUTTON MAPPING</a><br>
+<a href="#BUTTON DRAG LOCK">BUTTON DRAG LOCK</a><br>
+<a href="#TABLET TOOL PRESSURECURVE">TABLET TOOL PRESSURECURVE</a><br>
+<a href="#TABLET TOOL AREA RATIO">TABLET TOOL AREA RATIO</a><br>
+<a href="#SCROLL PIXEL DISTANCE">SCROLL PIXEL DISTANCE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">libinput -
+libinput-based X.Org input driver</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Section
+&quot;InputDevice&quot; <br>
+Identifier &quot;</b><i>devname</i><b>&quot; <br>
+Driver &quot;libinput&quot; <br>
+Option &quot;Device&quot; &quot;</b><i>devpath</i><b>&quot;
+&nbsp;&nbsp;</b> <br>
+... <b><br>
+EndSection</b></p>
+
+<h2>NOTE
+<a name="NOTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is the man
+page for the X input driver. If you are looking for the
+library documentation, go to
+<b>http://wayland.freedesktop.org/libinput/doc/</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>libinput</b>
+is an Xorg input driver based on libinput. It therefore
+supports all input devices that libinput can handle,
+including most mice, keyboards, tablets and
+touchscreens.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is
+recommended that <b>libinput</b> devices are configured
+through the <b>InputClass</b> directive (refer to
+xorg.conf(5)) instead of manual per-device configuration.
+Devices configured in the xorg.conf(5) are not hot-plug
+capable.</p>
+
+<h2>CONFIGURATION DETAILS
+<a name="CONFIGURATION DETAILS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please refer to
+xorg.conf(5) for general configuration details and for
+options that can be used with all input drivers. This
+section only covers configuration details specific to this
+driver.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+driver <b>Options</b> are supported: <b><br>
+Option &quot;AccelProfile&quot;
+&quot;</b><i>string</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the pointer acceleration
+profile to the given profile. Permitted values are
+<b>adaptive, flat.</b> Not all devices support this option
+or all profiles. If a profile is unsupported, the default
+profile for this device is used. For a description on the
+profiles and their behavior, see the libinput
+documentation.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;AccelSpeed&quot;
+&quot;</b><i>float</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the pointer acceleration
+speed within the range [-1, 1]</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;ButtonMapping&quot;
+&quot;</b><i>string</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the logical button mapping
+for this device, see XSetPointerMapping(3). The string must
+be a space-separated list of button mappings in the order of
+the logical buttons on the device, starting with button 1.
+The default mapping is &quot;1 2 3 ... 32&quot;. A mapping
+of 0 deactivates the button. Multiple buttons can have the
+same mapping. Invalid mapping strings are discarded and the
+default mapping is used for all buttons. Buttons not
+specified in the user&rsquo;s mapping use the default
+mapping. See section <b>BUTTON MAPPING</b> for more
+details.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;CalibrationMatrix&quot;
+&quot;</b><i>string</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">A string of 9 space-separated
+floating point numbers, in the order &quot;a b c d e f g h
+i&quot;. Sets the calibration matrix to the 3x3 matrix where
+the first row is (abc), the second row is (def) and the
+third row is (ghi).</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;ClickMethod&quot;
+&quot;</b><i>string</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables a click method.
+Permitted values are <b>none, buttonareas, clickfinger.</b>
+Not all devices support all methods, if an option is
+unsupported, the default click method for this device is
+used.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;DisableWhileTyping&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Indicates if the touchpad
+should be disabled while typing on the keyboard (this does
+not apply to modifier keys such as Ctrl or Alt).</p>
+
+<p style="margin-left:11%;"><b>Option &quot;Device&quot;
+&quot;</b><i>string</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Specifies the device through
+which the device can be accessed. This will generally be of
+the form &quot;/dev/input/eventX&quot;, where X is some
+integer. When using <b>InputClass</b> directives, this
+option is set by the server. The mapping from device node to
+hardware is system-dependent. Property: &quot;Device
+Node&quot; (read-only).</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;DragLockButtons&quot; &quot;</b><i>L1 B1 L2 B2
+...</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets &quot;drag lock
+buttons&quot; that simulate a button logically down even
+when it has been physically released. To logically release a
+locked button, a second click of the same button is
+required.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the option
+is a single button number, that button acts as the
+&quot;meta&quot; locking button for the next button number.
+See section <b>BUTTON DRAG LOCK</b> for details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the option
+is a list of button number pairs, the first number of each
+number pair is the lock button, the second number the
+logical button number to be locked. See section <b>BUTTON
+DRAG LOCK</b> for details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For both meta
+and button pair configuration, the button numbers are device
+button numbers, i.e. the <b>ButtonMapping</b> applies after
+drag lock.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;HighResolutionWheelScrolling&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Disables high-resolution wheel
+scroll events, enabled by default. When enabled, the driver
+forwards only high-resolution wheel scroll events from
+libinput. When disabled, the driver forwards legacy wheel
+scroll events instead.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;HorizontalScrolling&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Disables horizontal scrolling.
+When disabled, this driver will discard any horizontal
+scroll events from libinput. Note that this does not disable
+horizontal scrolling, it merely discards the horizontal axis
+from any scroll events.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;LeftHanded&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables left-handed button
+orientation, i.e. swapping left and right buttons.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;MiddleEmulation&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables middle button
+emulation. When enabled, pressing the left and right buttons
+simultaneously produces a middle mouse button click.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;NaturalScrolling&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables or disables natural
+scrolling behavior.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;RotationAngle&quot;
+&quot;</b><i>float</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the rotation angle of the
+device to the given angle, in degrees clockwise. The angle
+must be between 0.0 (inclusive) and 360.0 (exclusive).</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;ScrollButton&quot;
+&quot;</b><i>int</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Designates a button as scroll
+button. If the <b>ScrollMethod</b> is <b>button</b> and the
+button is logically down, x/y axis movement is converted
+into scroll events.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;ScrollButtonLock&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables or disables the scroll
+button lock. If enabled, the <b>ScrollButton</b> is
+considered logically down after the first click and remains
+down until the second click of that button. If disabled (the
+default), the <b>ScrollButton</b> button is considered
+logically down while held down and up once physically
+released.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;ScrollMethod&quot;
+&quot;</b><i>string</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables a scroll method.
+Permitted values are <b>none, twofinger, edge, button.</b>
+Not all devices support all options, if an option is
+unsupported, the default scroll option for this device is
+used.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;ScrollPixelDistance&quot;
+&quot;</b><i>int</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the movement distance, in
+&quot;pixels&quot;, required to trigger one logical wheel
+click. This option only applies to the scroll methods
+<b>twofinger, edge, button.</b> See section <b>SCROLL PIXEL
+DISTANCE</b> for more details.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;SendEventsMode&quot;
+&quot;</b><i>(disabled|enabled|disabled-on-external-mouse)</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the send events mode to
+disabled, enabled, or &quot;disable when an external mouse
+is connected&quot;.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;TabletToolPressureCurve&quot; &quot;</b><i>x0/y0 x1/y1
+x2/y2 x3/y3</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Set the pressure curve for a
+tablet stylus to the bezier formed by the four points. The
+respective x/y coordinate must be in the [0.0, 1.0] range.
+For more information see section <b>TABLET STYLUS PRESSURE
+CURVE.</b></p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;TabletToolAreaRatio&quot;
+&quot;</b><i>w:h</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Sets the area ratio for a
+tablet tool. The area always starts at the origin (0/0) and
+expands to the largest available area with the specified
+aspect ratio. Events outside this area are cropped to the
+area. The special value &quot;default&quot; is used for the
+default mapping (i.e. the device-native mapping). For more
+information see section <b>TABLET TOOL AREA RATIO.</b></p>
+
+<p style="margin-left:11%;"><b>Option &quot;Tapping&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables or disables
+tap-to-click behavior.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;TappingButtonMap&quot;
+&quot;</b><i>(lrm|lmr)</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Set the button mapping for
+1/2/3-finger taps to left/right/middle or left/middle/right,
+respectively.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;TappingDrag&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables or disables drag during
+tapping behavior (&quot;tap-and-drag&quot;). When enabled, a
+tap followed by a finger held down causes a single button
+down only, all motions of that finger thus translate into
+dragging motion. Tap-and-drag requires option <b>Tapping</b>
+to be enabled.</p>
+
+<p style="margin-left:11%;"><b>Option
+&quot;TappingDragLock&quot;
+&quot;</b><i>bool</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Enables or disables drag lock
+during tapping behavior. When enabled, a finger up during
+tap-and-drag will not immediately release the button. If the
+finger is set down again within the timeout, the dragging
+process continues.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For all
+options, the options are only parsed if the device supports
+that configuration option. For all options, the default
+value is the one used by libinput. On configuration failure,
+the default value is applied.</p>
+
+<h2>SUPPORTED PROPERTIES
+<a name="SUPPORTED PROPERTIES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>libinput</b>
+exports runtime-configurable options as properties. If a
+property listed below is not available, the matching
+configuration option is not available on the device. This
+however does not imply that the feature is not available on
+the device. The following properties are provided by the
+<b>libinput</b> driver. <b><br>
+libinput Accel Profiles Available</b></p>
+
+<p style="margin-left:22%;">2 boolean values (8 bit, 0 or
+1), in order &quot;adaptive&quot;, &quot;flat&quot;.
+Indicates which acceleration profiles are available on this
+device.</p>
+
+<p style="margin-left:11%;"><b>libinput Accel Profile
+Enabled</b></p>
+
+<p style="margin-left:22%;">2 boolean values (8 bit, 0 or
+1), in order &quot;adaptive&quot;, &quot;flat&quot;.
+Indicates which acceleration profile is currently enabled on
+this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Accel Speed</b></p>
+
+<p style="margin-left:22%;">1 32-bit float value, defines
+the pointer speed. Value range -1, 1</p>
+
+<p style="margin-left:11%;"><b>libinput Button Scrolling
+Button</b></p>
+
+<p style="margin-left:22%;">1 32-bit value. Sets the button
+number to use for button scrolling. This setting is
+independent of the scroll method, to enable button scrolling
+the method must be set to button-scrolling and a valid
+button must be set.</p>
+
+<p style="margin-left:11%;"><b>libinput Button Scrolling
+Button Lock Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value. If true, the
+scroll button lock is enabled. This setting is independent
+of the scroll method or the scroll button, to enable button
+scrolling the method must be set to button-scrolling and a
+valid button must be set.</p>
+
+<p style="margin-left:11%;"><b>libinput Calibration
+Matrix</b></p>
+
+<p style="margin-left:22%;">9 32-bit float values,
+representing a 3x3 calibration matrix, order is row 1, row
+2, row 3</p>
+
+<p style="margin-left:11%;"><b>libinput Click Methods
+Available</b></p>
+
+<p style="margin-left:22%;">2 boolean values (8 bit, 0 or
+1), in order &quot;buttonareas&quot;,
+&quot;clickfinger&quot;. Indicates which click methods are
+available on this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Click Methods
+Enabled</b></p>
+
+<p style="margin-left:22%;">2 boolean values (8 bit, 0 or
+1), in order &quot;buttonareas&quot;,
+&quot;clickfinger&quot;. Indicates which click methods are
+enabled on this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Drag Lock
+Buttons</b></p>
+
+<p style="margin-left:22%;">Either one 8-bit value
+specifying the meta drag lock button, or a list of button
+pairs. See section <b>BUTTON DRAG LOCK</b> for details.</p>
+
+<p style="margin-left:11%;"><b>libinput High Resolution
+Wheel Scroll Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). Indicates whether high-resolution wheel scroll events
+are enabled or not.</p>
+
+<p style="margin-left:11%;"><b>libinput Horizontal Scroll
+Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). Indicates whether horizontal scrolling events are
+enabled or not.</p>
+
+<p style="margin-left:11%;"><b>libinput Left Handed
+Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). Indicates if left-handed mode is enabled or
+disabled.</p>
+
+<p style="margin-left:11%;"><b>libinput Middle Emulation
+Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). Indicates if middle emulation is enabled or
+disabled.</p>
+
+<p style="margin-left:11%;"><b>libinput Natural Scrolling
+Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). 1 enables natural scrolling</p>
+
+<p style="margin-left:11%;"><b>libinput Rotation
+Angle</b></p>
+
+<p style="margin-left:22%;">1 32-bit float value [0.0 to
+360.0). Sets the rotation angle of the device, clockwise of
+its natural neutral position.</p>
+
+<p style="margin-left:11%;"><b>libinput Scroll Methods
+Available</b></p>
+
+<p style="margin-left:22%;">3 boolean values (8 bit, 0 or
+1), in order &quot;two-finger&quot;, &quot;edge&quot;,
+&quot;button&quot;. Indicates which scroll methods are
+available on this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Scroll Method
+Enabled</b></p>
+
+<p style="margin-left:22%;">3 boolean values (8 bit, 0 or
+1), in order &quot;two-finger&quot;, &quot;edge&quot;,
+&quot;button&quot;. Indicates which scroll method is
+currently enabled on this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Scroll Pixel
+Distance</b></p>
+
+<p style="margin-left:22%;">1 32-bit value (nonzero, with
+additional implementation-defined range checks). Changes the
+movement distance required to trigger one logical wheel
+click.</p>
+
+<p style="margin-left:11%;"><b>libinput Send Events Modes
+Available</b></p>
+
+<p style="margin-left:22%;">2 boolean values (8 bit, 0 or
+1), in order &quot;disabled&quot; and
+&quot;disabled-on-external-mouse&quot;. Indicates which
+send-event modes are available on this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Send Events Mode
+Enabled</b></p>
+
+<p style="margin-left:22%;">2 boolean values (8 bit, 0 or
+1), in order &quot;disabled&quot; and
+&quot;disabled-on-external-mouse&quot;. Indicates which
+send-event modes is currently enabled on this device.</p>
+
+<p style="margin-left:11%;"><b>libinput Tablet Tool
+Pressurecurve</b></p>
+
+<p style="margin-left:22%;">4 32-bit float values [0.0 to
+1.0]. See section <b>TABLET TOOL PRESSURE CURVE</b></p>
+
+<p style="margin-left:11%;"><b>libinput Tablet Tool Area
+Ratio</b></p>
+
+<p style="margin-left:22%;">2 32-bit values, corresponding
+to width and height. Special value 0, 0 resets to the
+default ratio. See section <b>TABLET TOOL AREA RATIO</b> for
+more information.</p>
+
+<p style="margin-left:11%;"><b>libinput Tapping
+Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). 1 enables tapping</p>
+
+<p style="margin-left:11%;"><b>libinput Tapping Button
+Mapping Enabled</b></p>
+
+<p style="margin-left:22%;">2 boolean value (8 bit, 0 or
+1), in order &quot;lrm&quot; and &quot;lmr&quot;. Indicates
+which button mapping is currently enabled on this
+device.</p>
+
+<p style="margin-left:11%;"><b>libinput Tapping Drag Lock
+Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). 1 enables drag lock during tapping</p>
+
+<p style="margin-left:11%;"><b>libinput Disable While
+Typing Enabled</b></p>
+
+<p style="margin-left:22%;">1 boolean value (8 bit, 0 or
+1). Indicates if disable while typing is enabled or
+disabled.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most properties
+have a <b>libinput &lt;property name&gt; Default</b>
+equivalent that indicates the default value for this setting
+on this device.</p>
+
+<h2>BUTTON MAPPING
+<a name="BUTTON MAPPING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X clients
+receive events with logical button numbers, where 1, 2, 3
+are usually interpreted as left, middle, right and logical
+buttons 4, 5, 6, 7 are usually interpreted as scroll up,
+down, left, right. The fourth and fifth physical buttons on
+a device will thus send logical buttons 8 and 9. The
+<b>ButtonMapping</b> option adjusts the logical button
+mapping, it does not affect how a physical button is mapped
+to a logical button.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Traditionally,
+a device was set to left-handed button mode by applying a
+button mapping of <b>&quot;3 2 1 ...&quot;</b> On systems
+using the <b>libinput</b> Xorg input driver it is
+recommended to use the <b>LeftHanded</b> option instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>libinput</b> Xorg input driver does not use the button
+mapping after setup. Use XSetPointerMapping(3) to modify the
+button mapping at runtime.</p>
+
+<h2>BUTTON DRAG LOCK
+<a name="BUTTON DRAG LOCK"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Button drag
+lock holds a button logically down even when the button
+itself has been physically released since. Button drag lock
+comes in two modes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If in
+&quot;meta&quot; mode, a meta button click activates drag
+lock for the next button press of any other button. A button
+click in the future will keep that button held logically
+down until a subsequent click of that same button. The meta
+button events themselves are discarded. A separate meta
+button click is required each time a drag lock should be
+activated for a button in the future.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If in
+&quot;pairs&quot; mode, each button can be assigned a target
+locking button. On button click, the target lock button is
+held logically down until the next click of the same button.
+The button events themselves are discarded and only the
+target button events are sent. <br>
+This feature is provided by this driver, not by
+libinput.</p>
+
+<h2>TABLET TOOL PRESSURECURVE
+<a name="TABLET TOOL PRESSURECURVE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The pressure
+curve affects how stylus pressure is reported. By default,
+the hardware pressure is reported as-is. By setting a
+pressure curve, the feel of the stylus can be adjusted to be
+more like e.g. a pencil or a brush.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The pressure
+curve is a cubic Bezier curve, drawn within a normalized
+range of 0.0 to 1.0 between the four points provided. This
+normalized range is applied to the tablet&rsquo;s pressure
+input so that the highest pressure maps to 1.0. The points
+must have increasing x coordinates, if x0 is larger than 0.0
+all pressure values lower than x0 are equivalent to y0. If
+x3 is less than 1.0, all pressure values higher than x3 are
+equivalent to y3.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input for a
+linear curve (default) is &quot;0.0/0.0 0.0/0.0 1.0/1.0
+1.0/1.0&quot;; a slightly depressed curve (firmer) might be
+&quot;0.0/0.0 0.05/0.0 1.0/0.95 1.0/1.0&quot;; a slightly
+raised curve (softer) might be &quot;0.0/0.0 0.0/0.05
+0.95/1.0 1.0/1.0&quot;. <br>
+This feature is provided by this driver, not by
+libinput.</p>
+
+<h2>TABLET TOOL AREA RATIO
+<a name="TABLET TOOL AREA RATIO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default, a
+tablet tool can access the whole sensor area and the tablet
+area is mapped to the available screen area. For external
+tablets like the Wacom Intuos series, the height:width ratio
+of the tablet may be different to that of the monitor,
+causing the skew of input data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To avoid this
+skew of input data, an area ratio may be set to match the
+ratio of the screen device. For example, a ratio of 4:3 will
+reduce the available area of the tablet to the largest
+available area with a ratio of 4:3. Events within this area
+will scale to the tablet&rsquo;s announced axis range, the
+area ratio is thus transparent to the X server. Any events
+outside this area will send events equal to the maximum
+value of that axis. The area always starts at the
+device&rsquo;s origin in it&rsquo;s current rotation, i.e.
+it takes left-handed-ness into account. <br>
+This feature is provided by this driver, not by
+libinput.</p>
+
+<h2>SCROLL PIXEL DISTANCE
+<a name="SCROLL PIXEL DISTANCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The X server
+does not support per-pixel scrolling but it does support
+smooth scrolling. All scroll events however are based around
+a logical unit of scrolling (traditionally corresponding to
+a wheel click). It is thus not possible to scroll by 10
+pixels, but it is possible for a driver to scroll by 1/10th
+of a logical wheel click.</p>
+
+<p style="margin-left:11%; margin-top: 1em">libinput
+provides scroll data in pixels. The
+<b>ScrollPixelDistance</b> option defines the amount of
+movement equivalent to one wheel click. For example, a value
+of 50 means the user has to move a finger by 50 pixels to
+generate one logical click event and each pixel is 1/50th of
+a wheel click.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This driver
+does not work with <b>Option &quot;Device&quot;</b> set to
+an event node in <i>/dev/input/by-id</i> and
+<i>/dev/input/by-path</i>. This can be usually be worked by
+using <b>Section &quot;InputClass&quot;</b> with an
+appropriate <b>Match*</b> statement in the xorg.conf(5).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Peter
+Hutterer</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Xorg(1),
+xorg.conf(5), Xserver(1), X(7)</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:58 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ORG.FREEDESKTOP.PORTABLE1</title>
+
+</head>
+<body>
+
+<h1 align="center">ORG.FREEDESKTOP.PORTABLE1</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INTRODUCTION">INTRODUCTION</a><br>
+<a href="#THE MANAGER OBJECT">THE MANAGER OBJECT</a><br>
+<a href="#THE IMAGE OBJECT">THE IMAGE OBJECT</a><br>
+<a href="#VERSIONING">VERSIONING</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">org.freedesktop.portable1
+- The D-Bus interface of systemd-portabled</p>
+
+<h2>INTRODUCTION
+<a name="INTRODUCTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-portabled.service</b>(8)
+is a system service that may be used to attach, detach and
+inspect portable services. This page describes the D-Bus
+interface.</p>
+
+<h2>THE MANAGER OBJECT
+<a name="THE MANAGER OBJECT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The service
+exposes the following interfaces on the Manager object on
+the bus:</p>
+
+<p style="margin-left:17%; margin-top: 1em">node
+/org/freedesktop/portable1 { <br>
+interface org.freedesktop.portable1.Manager { <br>
+methods: <br>
+GetImage(in s image, <br>
+out o object); <br>
+ListImages(out a(ssbtttso) images); <br>
+GetImageOSRelease(in s image, <br>
+out a{ss} os_release); <br>
+GetImageMetadata(in s image, <br>
+in as matches, <br>
+out s image, <br>
+out ay os_release, <br>
+out a{say} units); <br>
+GetImageMetadataWithExtensions(in s image, <br>
+in as extensions, <br>
+in as matches, <br>
+in t flags, <br>
+out s image, <br>
+out ay os_release, <br>
+out a{say} extensions, <br>
+out a{say} units); <br>
+GetImageState(in s image, <br>
+out s state); <br>
+AttachImage(in s image, <br>
+in as matches, <br>
+in s profile, <br>
+in b runtime, <br>
+in s copy_mode, <br>
+out a(sss) changes); <br>
+AttachImageWithExtensions(in s image, <br>
+in as extensions, <br>
+in as matches, <br>
+in s profile, <br>
+in s copy_mode, <br>
+in t flags, <br>
+out a(sss) changes); <br>
+DetachImage(in s image, <br>
+in b runtime, <br>
+out a(sss) changes); <br>
+DetachImageWithExtensions(in s image, <br>
+in as extensions, <br>
+in t flags, <br>
+out a(sss) changes); <br>
+ReattachImage(in s image, <br>
+in as matches, <br>
+in s profile, <br>
+in b runtime, <br>
+in s copy_mode, <br>
+out a(sss) changes_removed, <br>
+out a(sss) changes_updated); <br>
+ReattachImageWithExtensions(in s image, <br>
+in as extensions, <br>
+in as matches, <br>
+in s profile, <br>
+in s copy_mode, <br>
+in t flags, <br>
+out a(sss) changes_removed, <br>
+out a(sss) changes_updated); <br>
+RemoveImage(in s image); <br>
+MarkImageReadOnly(in s image, <br>
+in b read_only); <br>
+SetImageLimit(in s image, <br>
+in t limit); <br>
+SetPoolLimit(in t limit); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s PoolPath = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t PoolUsage = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t PoolLimit = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly as Profiles = ['...', ...]; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Methods <br>
+GetImage()</b> may be used to get the image object path of
+the image with the specified name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListImages()</b>
+returns an array of all currently known images. The
+structures in the array consist of the following fields:
+image name, type, read-only flag, creation time,
+modification time, current disk space, usage and image
+object path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>GetImageOSRelease()</b>
+retrieves the OS release information of an image. This
+method returns an array of key value pairs read from the
+<b>os-release</b>(5) file in the image and is useful to
+identify the operating system used in a portable
+service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>GetImageMetadata()</b>
+retrieves metadata associated with an image. This method
+returns the image name, the image's <b>os-release</b>(5)
+content in the form of a (streamable) array of bytes, and a
+list of portable units contained in the image, in the form
+of a string (unit name) and an array of bytes with the
+content.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>GetImageMetadataWithExtensions()</b>
+retrieves metadata associated with an image. This method is
+a superset of <b>GetImageMetadata()</b> with the addition of
+a list of extensions as input parameter, which were overlaid
+on top of the main image via
+<b>AttachImageWithExtensions()</b>. The path of each
+extension and an array of bytes with the content of the
+respective extension-release file are returned, one such
+structure for each extension named in the input
+arguments.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>GetImageState()</b>
+retrieves the image state as one of the following
+strings:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+detached</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+attached</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+attached-runtime</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+enabled</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+enabled-runtime</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+running</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+running-runtime</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>AttachImage()</b>
+attaches a portable image to the system. This method takes
+an image path or name, a list of strings that will be used
+to search for unit files inside the image (partial or
+complete matches), a string indicating which portable
+profile to use for the image (see <i>Profiles</i> property
+for a list of available profiles), a boolean indicating
+whether to attach the image only for the current boot
+session, and a string representing the preferred copy mode
+(whether to copy the image or to just symlink it) with the
+following possible values:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+(null)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; copy</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+symlink</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method
+returns the list of changes applied to the system (for
+example, which unit was added and is now available as a
+system service). Each change is represented as a triplet of
+strings: the type of change applied, the path on which it
+was applied, and the source (if any). The type of change
+applied will be one of the following possible values:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; copy</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+symlink</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+write</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+mkdir</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that an
+image cannot be attached if a unit that it contains is
+already present on the system.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>AttachImageWithExtensions()</b>
+attaches a portable image to the system. This method is a
+superset of <b>AttachImage()</b> with the addition of a list
+of extensions as input parameter, which will be overlaid on
+top of the main image. When this method is used, detaching
+must be done by passing the same arguments via the
+<b>DetachImageWithExtensions()</b> method. For more details
+on this functionality, see the <i>MountImages=</i> entry on
+<b>systemd.exec</b>(5) and <b>systemd-sysext</b>(8). The
+<i>flag</i> parameter is currently unused and reserved for
+future purposes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DetachImage()</b>
+detaches a portable image from the system. This method takes
+an image path or name, and a boolean indicating whether the
+image to detach was attached only for the current boot
+session or persistently. This method returns the list of
+changes applied to the system (for example, which unit was
+removed and is no longer available as a system service).
+Each change is represented as a triplet of strings: the type
+of change applied, the path on which it was applied, and the
+source (if any). The type of change applied will be one of
+the following possible values:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+unlink</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that an
+image cannot be detached if a unit that it contains is
+running.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DetachImageWithExtensions()</b>
+detaches a portable image from the system. This method is a
+superset of <b>DetachImage()</b> with the addition of a list
+of extensions as input parameter, which were overlaid on top
+of the main image via <b>AttachImageWithExtensions()</b>.
+The <i>flag</i> parameter is currently unused and reserved
+for future purposes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ReattachImage()</b>
+combines the effects of the <b>AttachImage()</b> method and
+the <b>DetachImage()</b> method. The difference is that it
+is allowed to reattach an image while one or more of its
+units are running. The reattach operation will fail if no
+matching image is attached. The input parameters match the
+<b>AttachImage()</b> method, and the return parameters are
+the combination of the return parameters of the
+<b>DetachImage()</b> method (first array, units that were
+removed) and the <b>AttachImage()</b> method (second array,
+units that were updated or added).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ReattachImageWithExtensions()</b>
+reattaches a portable image to the system. This method is a
+superset of <b>ReattachImage()</b> with the addition of a
+list of extensions as input parameter, which will be
+overlaid on top of the main image. For more details on this
+functionality, see the <i>MountImages=</i> entry on
+<b>systemd.exec</b>(5) and <b>systemd-sysext</b>(8). The
+<i>flag</i> parameter is currently unused and reserved for
+future purposes</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>RemoveImage()</b>
+removes the image with the specified name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MarkImageReadOnly()</b>
+toggles the read-only flag of an image.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SetPoolLimit()</b>
+sets an overall quota limit on the pool of images.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SetImageLimit()</b>
+sets a per-image quota limit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>AttachImageWithExtensions()</b>,
+<b>DetachImageWithExtensions()</b> and
+<b>ReattachImageWithExtensions()</b> methods take in options
+as flags instead of booleans to allow for extendability,
+defined as follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">#define
+SD_SYSTEMD_PORTABLE_RUNTIME (UINT64_C(1) &lt;&lt; 0)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties</b>
+<i><br>
+PoolPath</i> specifies the file system path where images are
+written to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>PoolUsage</i>
+specifies the current usage size of the image pool in
+bytes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>PoolLimit</i>
+specifies the size limit of the image pool in bytes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Profiles</i>
+specifies the available runtime profiles for portable
+services.</p>
+
+<h2>THE IMAGE OBJECT
+<a name="THE IMAGE OBJECT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The service
+exposes the following interfaces on the Image object on the
+bus:</p>
+
+<p style="margin-left:17%; margin-top: 1em">node
+/org/freedesktop/portable1 { <br>
+interface org.freedesktop.portable1.Image { <br>
+methods: <br>
+GetOSRelease(out a{ss} os_release); <br>
+GetMetadata(in as matches, <br>
+out s image, <br>
+out ay os_release, <br>
+out a{say} units); <br>
+GetMetadataWithExtensions(in as extensions, <br>
+in as matches, <br>
+in t flags, <br>
+out s image, <br>
+out ay os_release, <br>
+out a{say} extensions, <br>
+out a{say} units); <br>
+GetState(out s state); <br>
+Attach(in as matches, <br>
+in s profile, <br>
+in b runtime, <br>
+in s copy_mode, <br>
+out a(sss) changes); <br>
+AttachWithExtensions(in as extensions, <br>
+in as matches, <br>
+in s profile, <br>
+in s copy_mode, <br>
+in t flags, <br>
+out a(sss) changes); <br>
+Detach(in b runtime, <br>
+out a(sss) changes); <br>
+DetachWithExtensions(in as extensions, <br>
+in t flags, <br>
+out a(sss) changes); <br>
+Reattach(in as matches, <br>
+in s profile, <br>
+in b runtime, <br>
+in s copy_mode, <br>
+out a(sss) changes_removed, <br>
+out a(sss) changes_updated); <br>
+ReattacheWithExtensions(in as extensions, <br>
+in as matches, <br>
+in s profile, <br>
+in s copy_mode, <br>
+in t flags, <br>
+out a(sss) changes_removed, <br>
+out a(sss) changes_updated); <br>
+Remove(); <br>
+MarkReadOnly(in b read_only); <br>
+SetLimit(in t limit); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s Name = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s Path = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s Type = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b ReadOnly = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t CreationTimestamp = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t ModificationTimestamp = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t Usage = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t Limit = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t UsageExclusive = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t LimitExclusive = ...; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Methods</b>
+<br>
+The following methods implement the same operation as the
+respective methods on the Manager object (see above).
+However, these methods operate on the image object and hence
+does not take an image name parameter. Invoking the methods
+directly on the Manager object has the advantage of not
+requiring a <b>GetImage()</b> call to get the image object
+for a specific image name. Calling the methods on the
+Manager object is hence a round trip optimization. List of
+methods:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+GetOSRelease()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+GetMetadata()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+GetMetadataWithExtensions()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+GetState()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Attach()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+AttachWithExtensions()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Detach()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+DetachWithExtensions()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Reattach()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+ReattacheWithExtensions()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Remove()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+MarkReadOnly()</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+SetLimit()</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties</b>
+<i><br>
+Name</i> specifies the image name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Path</i>
+specifies the file system path where image is stored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Type</i>
+specifies the image type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>ReadOnly</i>
+specifies whether the image is read-only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>CreationTimestamp</i>
+specifies the image creation timestamp.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>ModificationTimestamp</i>
+specifies the image modification timestamp.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Usage</i>
+specifies the image disk usage.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Limit</i>
+specifies the image disk usage limit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>UsageExclusive</i>
+specifies the image disk usage (exclusive).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>LimitExclusive</i>
+specifies the image disk usage limit (exclusive).</p>
+
+<h2>VERSIONING
+<a name="VERSIONING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These D-Bus
+interfaces follow <b><font color="#0000FF">the usual
+interface versioning guidelines</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><font color="#000000">the usual
+interface versioning guidelines</font></p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://0pointer.de/blog/projects/versioning-dbus.html</font></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:25 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>update-motd</title>
+
+</head>
+<body>
+
+<h1 align="center">update-motd</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#BEST PRACTICES">BEST PRACTICES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">update-motd -
+dynamic MOTD generation</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/etc/update-motd.d/*</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">UNIX/Linux
+system adminstrators often communicate important information
+to console and remote users by maintaining text in the file
+<i>/etc/motd</i>, which is displayed by the
+<b>pam_motd</b>(8) module on interactive shell logins.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Traditionally,
+this file is static text, typically installed by the
+distribution and only updated on release upgrades, or
+overwritten by the local administrator with pertinent
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Ubuntu
+introduced the <b>update-motd</b> framework, by which the
+<b>motd</b>(5) is dynamically assembled from a collection of
+scripts at login.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Executable
+scripts in <i>/etc/update-motd.d/*</i> are executed by
+<b>pam_motd</b>(8) as the root user at each login, and this
+information is concatenated in <i>/run/motd.dynamic</i>. The
+order of script execution is determined by the
+<b>run-parts</b>(8) --lsbsysinit option (basically
+alphabetical order, with a few caveats).</p>
+
+<p style="margin-left:11%; margin-top: 1em">On Ubuntu
+systems, <i>/etc/motd</i> is typically a symbolic link to
+<i>/run/motd.dynamic</i>.</p>
+
+<h2>BEST PRACTICES
+<a name="BEST PRACTICES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">MOTD fragments
+must be scripts in <i>/etc/update-motd.d</i>, must be
+executable, and must emit information on standard out.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Scripts should
+be named named NN-xxxxxx where NN is a two digit number
+indicating their position in the MOTD, and xxxxxx is an
+appropriate name for the script.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Scripts must
+not have filename extensions, per <b>run-parts</b>(8)
+--lsbsysinit instructions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Packages should
+add scripts directly into <i>/etc/update-motd.d</i>, rather
+than symlinks to other scripts, such that administrators can
+modify or remove these scripts and upgrades will not wipe
+the local changes. Consider using a simple shell script that
+simply calls <b>exec</b> on the external utility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Long running
+operations (such as network calls) or resource intensive
+scripts should cache output, and only update that output if
+it is deemed expired. For instance:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/update-motd.d/50-news
+<br>
+#!/bin/sh <br>
+out=/run/foo <br>
+script=&quot;w3m -dump http://news.google.com/&quot; <br>
+if [ -f &quot;$out&quot; ]; then <br>
+# Output exists, print it <br>
+echo <br>
+cat &quot;$out&quot; <br>
+# See if it&rsquo;s expired, and background update <br>
+lastrun=$(stat -c %Y &quot;$out&quot;) || lastrun=0 <br>
+expiration=$(expr $lastrun + 86400) <br>
+if [ $(date +%s) -ge $expiration ]; then <br>
+$script &gt; &quot;$out&quot; &amp; <br>
+fi <br>
+else <br>
+# No cache at all, so update in the background <br>
+$script &gt; &quot;$out&quot; &amp; <br>
+fi</p>
+
+<p style="margin-left:11%; margin-top: 1em">Scripts should
+emit a blank line before output, and end with a newline
+character. For instance:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/update-motd/05-lsb-release
+<br>
+#!/bin/sh <br>
+echo <br>
+lsb-release -a</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/motd</i>,
+<i>/run/motd.dynamic</i>, <i>/etc/update-motd.d</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>motd</b></i>(5),
+<b>pam_motd</b>(8), <b>run-parts</b>(8)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manpage
+and the update-motd framework was written by Dustin Kirkland
+&lt;kirkland@canonical.com&gt; for Ubuntu systems (but may
+be used by others). Permission is granted to copy,
+distribute and/or modify this document under the terms of
+the GNU General Public License, Version 3 published by the
+Free Software Foundation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On Debian
+systems, the complete text of the GNU General Public License
+can be found in /usr/share/common-licenses/GPL.</p>
+<hr>
+</body>
+</html>

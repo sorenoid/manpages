@@ -1,0 +1,159 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BIO</title>
+
+</head>
+<body>
+
+<h1 align="center">BIO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bio - Basic I/O
+abstraction</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/bio.h&gt;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A
+<small>BIO</small> is an I/O abstraction, it hides many of
+the underlying I/O details from an application. If an
+application uses a <small>BIO</small> for its I/O it can
+transparently handle <small>SSL</small> connections,
+unencrypted network connections and file I/O.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+types of <small>BIO,</small> a source/sink
+<small>BIO</small> and a filter <small>BIO.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">As its name
+implies a source/sink <small>BIO</small> is a source and/or
+sink of data, examples include a socket <small>BIO</small>
+and a file <small>BIO.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">A filter
+<small>BIO</small> takes data from one <small>BIO</small>
+and passes it through to another, or the application. The
+data may be left unmodified (for example a message digest
+<small>BIO</small> ) or translated (for example an
+encryption <small>BIO</small> ). The effect of a filter
+<small>BIO</small> may change according to the I/O operation
+it is performing: for example an encryption
+<small>BIO</small> will encrypt data if it is being written
+to and decrypt data if it is being read from.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BIOs can be
+joined together to form a chain (a single <small>BIO</small>
+is a chain with one component). A chain normally consists of
+one source/sink <small>BIO</small> and one or more filter
+BIOs. Data read from or written to the first
+<small>BIO</small> then traverses the chain to the end
+(normally a source/sink <small>BIO</small> ).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some BIOs (such
+as memory BIOs) can be used immediately after calling
+<b>BIO_new()</b>. Others (such as file BIOs) need some
+additional initialization, and frequently a utility function
+exists to create and initialize such BIOs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>BIO_free()</b> is called on a <small>BIO</small> chain it
+will only free one <small>BIO</small> resulting in a memory
+leak.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Calling
+<b>BIO_free_all()</b> on a single <small>BIO</small> has the
+same effect as calling <b>BIO_free()</b> on it other than
+the discarded return value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Normally the
+<i>type</i> argument is supplied by a function which returns
+a pointer to a <small>BIO_METHOD.</small> There is a naming
+convention for such functions: a source/sink
+<small>BIO</small> typically starts with <i>BIO_s_</i> and a
+filter <small>BIO</small> with <i>BIO_f_</i>.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Create a memory
+<small>BIO:</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">BIO *mem =
+BIO_new(BIO_s_mem());</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>BIO_ctrl</b>(3),
+<b>BIO_f_base64</b>(3), <b>BIO_f_buffer</b>(3),
+<b>BIO_f_cipher</b>(3), <b>BIO_f_md</b>(3),
+<b>BIO_f_null</b>(3), <b>BIO_f_ssl</b>(3),
+<b>BIO_f_readbuffer</b>(3), <b>BIO_find_type</b>(3),
+<b>BIO_new</b>(3), <b>BIO_new_bio_pair</b>(3),
+<b>BIO_push</b>(3), <b>BIO_read_ex</b>(3),
+<b>BIO_s_accept</b>(3), <b>BIO_s_bio</b>(3),
+<b>BIO_s_connect</b>(3), <b>BIO_s_fd</b>(3),
+<b>BIO_s_file</b>(3), <b>BIO_s_mem</b>(3),
+<b>BIO_s_null</b>(3), <b>BIO_s_socket</b>(3),
+<b>BIO_set_callback</b>(3), <b>BIO_should_retry</b>(3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2000-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

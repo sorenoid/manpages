@@ -1,0 +1,342 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:00 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Net::DBus::Reactor</title>
+
+</head>
+<body>
+
+<h1 align="center">Net::DBus::Reactor</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::Reactor
+- application event loop</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Create and run
+an event loop:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+Net::DBus::Reactor; <br>
+my $reactor = Net::DBus::Reactor-&gt;main(); <br>
+$reactor-&gt;run();</p>
+
+<p style="margin-left:11%; margin-top: 1em">Manage some
+file handlers</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$reactor-&gt;add_read($fd,
+<br>
+Net::DBus::Callback-&gt;new(method =&gt; sub { <br>
+my $fd = shift; <br>
+...read some data... <br>
+}, args =&gt; [$fd])); <br>
+$reactor-&gt;add_write($fd, <br>
+Net::DBus::Callback-&gt;new(method =&gt; sub { <br>
+my $fd = shift; <br>
+...write some data... <br>
+}, args =&gt; [$fd]));</p>
+
+<p style="margin-left:11%; margin-top: 1em">Temporarily
+(dis|en)able a handle</p>
+
+<p style="margin-left:11%; margin-top: 1em"># Disable <br>
+$reactor-&gt;toggle_read($fd, 0); <br>
+# Enable <br>
+$reactor-&gt;toggle_read($fd, 1);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permanently
+remove a handle</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$reactor-&gt;remove_read($fd);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Manage a
+regular timeout every 100 milliseconds</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $timer =
+$reactor-&gt;add_timeout(100, <br>
+Net::DBus::Callback-&gt;new( <br>
+method =&gt; sub { <br>
+...process the alarm... <br>
+}));</p>
+
+<p style="margin-left:11%; margin-top: 1em">Temporarily
+(dis|en)able a timer</p>
+
+<p style="margin-left:11%; margin-top: 1em"># Disable <br>
+$reactor-&gt;toggle_timeout($timer, 0); <br>
+# Enable <br>
+$reactor-&gt;toggle_timeout($timer, 1);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permanently
+remove a timer</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$reactor-&gt;remove_timeout($timer);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Add a
+post-dispatch hook</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $hook =
+$reactor-&gt;add_hook(Net::DBus::Callback-&gt;new( <br>
+method =&gt; sub { <br>
+... do some work... <br>
+}));</p>
+
+<p style="margin-left:11%; margin-top: 1em">Remove a
+hook</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$reactor-&gt;remove_hook($hook);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This class
+provides a general purpose event loop for the purposes of
+multiplexing I/O events and timeouts in a single process.
+The underlying implementation is done using the select
+system call. File handles can be registered for monitoring
+on read, write and exception (out-of-band data) events.
+Timers can be registered to expire with a periodic
+frequency. These are implemented using the timeout parameter
+of the select system call. Since this parameter merely
+represents an upper bound on the amount of time the select
+system call is allowed to sleep, the actual period of the
+timers may vary. Under normal load this variance is
+typically 10 milliseconds. Finally, hooks may be registered
+which will be invoked on each iteration of the event loop
+(ie after processing the file events, or timeouts indicated
+by the select system call returning).</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">my $reactor =
+Net::DBus::Reactor-&gt;<b>new()</b>;</p>
+
+<p style="margin-left:17%;">Creates a new event loop ready
+for monitoring file handles, or generating timeouts. Except
+in very unusual circumstances (examples of which I
+can&rsquo;t think up) it is not necessary or desriable to
+explicitly create new reactor instances. Instead call the
+main method to get a handle to the singleton instance.</p>
+
+<p style="margin-left:11%;">$reactor =
+Net::DBus::Reactor-&gt;main;</p>
+
+<p style="margin-left:17%;">Return a handle to the
+singleton instance of the reactor. This is the recommended
+way of getting hold of a reactor, since it removes the need
+for modules to pass around handles to their privately
+created reactors.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;manage($connection);
+<br>
+$reactor-&gt;manage($server);</p>
+
+<p style="margin-left:17%;">Registers a
+&quot;Net::DBus::Binding::Connection&quot; or
+&quot;Net::DBus::Binding::Server&quot; object for management
+by the event loop. This basically involves hooking up the
+watch &amp; timeout callbacks to the event loop. For
+connections it will also register a hook to invoke the
+&quot;dispatch&quot; method periodically.</p>
+
+<p style="margin-left:11%;">$reactor-&gt;<b>run()</b>;</p>
+
+<p style="margin-left:17%;">Starts the event loop
+monitoring any registered file handles and timeouts. At
+least one file handle, or timer must have been registered
+prior to running the reactor, otherwise it will immediately
+exit. The reactor will run until all registered file
+handles, or timeouts have been removed, or disabled. The
+reactor can be explicitly stopped by calling the
+&quot;shutdown&quot; method.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;<b>shutdown()</b>;</p>
+
+<p style="margin-left:17%;">Explicitly shutdown the reactor
+after pending events have been processed.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;<b>step()</b>;</p>
+
+<p style="margin-left:17%;">Perform one iteration of the
+event loop, going to sleep until an event occurs on a
+registered file handle, or a timeout occurrs. This method is
+generally not required in day-to-day use.</p>
+
+<p style="margin-left:11%;">$reactor-&gt;add_read($fd,
+$callback[, $status]);</p>
+
+<p style="margin-left:17%;">Registers a file handle for
+monitoring of read events. The $callback parameter specifies
+either a code reference to a subroutine, or an instance of
+the &quot;Net::DBus::Callback&quot; object to invoke each
+time an event occurs. The optional $status parameter is a
+boolean value to specify whether the watch is initially
+enabled.</p>
+
+<p style="margin-left:11%;">$reactor-&gt;add_write($fd,
+$callback[, $status]);</p>
+
+<p style="margin-left:17%;">Registers a file handle for
+monitoring of write events. The $callback parameter
+specifies either a code reference to a subroutine, or an
+instance of the &quot;Net::DBus::Callback&quot; object to
+invoke each time an event occurs. The optional $status
+parameter is a boolean value to specify whether the watch is
+initially enabled.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;add_exception($fd,
+$callback[, $status]);</p>
+
+<p style="margin-left:17%;">Registers a file handle for
+monitoring of exception events. The $callback parameter
+specifies either a code reference to a subroutine, or an
+instance of the &quot;Net::DBus::Callback&quot; object to
+invoke each time an event occurs. The optional $status
+parameter is a boolean value to specify whether the watch is
+initially enabled.</p>
+
+<p style="margin-left:11%;">my $id =
+$reactor-&gt;add_timeout($interval, $callback, $status);</p>
+
+<p style="margin-left:17%;">Registers a new timeout to
+expire every $interval milliseconds. The $callback parameter
+specifies either a code reference to a subroutine, or an
+instance of the &quot;Net::DBus::Callback&quot; object to
+invoke each time the timeout expires. The optional $status
+parameter is a boolean value to specify whether the timeout
+is initially enabled. The return parameter is a unique
+identifier which can be used to later remove or disable the
+timeout.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;remove_timeout($id);</p>
+
+<p style="margin-left:17%;">Removes a previously registered
+timeout specified by the $id parameter.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;toggle_timeout($id,
+$status[, $interval]);</p>
+
+<p style="margin-left:17%;">Updates the state of a
+previously registered timeout specified by the $id
+parameter. The $status parameter specifies whether the
+timeout is to be enabled or disabled, while the optional
+$interval parameter can be used to change the period of the
+timeout.</p>
+
+<p style="margin-left:11%;">my $id =
+$reactor-&gt;add_hook($callback[, $status]);</p>
+
+<p style="margin-left:17%;">Registers a new hook to be
+fired on each iteration of the event loop. The $callback
+parameter specifies either a code reference to a subroutine,
+or an instance of the &quot;Net::DBus::Callback&quot; class
+to invoke. The $status parameter determines whether the hook
+is initially enabled, or disabled. The return parameter is a
+unique id which should be used to later remove, or disable
+the hook.</p>
+
+
+<p style="margin-left:11%;">$reactor-&gt;remove_hook($id)</p>
+
+<p style="margin-left:17%;">Removes the previously
+registered hook identified by $id.</p>
+
+<p style="margin-left:11%;">$reactor-&gt;toggle_hook($id,
+$status)</p>
+
+<p style="margin-left:17%;">Updates the status of the
+previously registered hook identified by $id. The $status
+parameter determines whether the hook is to be enabled or
+disabled.</p>
+
+<p style="margin-left:11%;">$reactor-&gt;remove_read($fd);
+<br>
+$reactor-&gt;remove_write($fd); <br>
+$reactor-&gt;remove_exception($fd);</p>
+
+<p style="margin-left:17%;">Removes a watch on the file
+handle $fd.</p>
+
+<p style="margin-left:11%;">$reactor-&gt;toggle_read($fd,
+$status); <br>
+$reactor-&gt;toggle_write($fd, $status); <br>
+$reactor-&gt;toggle_exception($fd, $status);</p>
+
+<p style="margin-left:17%;">Updates the status of a watch
+on the file handle $fd. The $status parameter species
+whether the watch is to be enabled or disabled.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::Callback,
+Net::DBus::Connection, Net::DBus::Server</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Daniel Berrange
+&lt;dan@berrange.com&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2004-2011 by Daniel Berrange</p>
+<hr>
+</body>
+</html>

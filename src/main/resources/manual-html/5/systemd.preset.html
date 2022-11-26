@@ -1,0 +1,324 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:08 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD.PRESET</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD.PRESET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PRESET FILE FORMAT">PRESET FILE FORMAT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#MOTIVATION FOR THE PRESET LOGIC">MOTIVATION FOR THE PRESET LOGIC</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd.preset
+- Service enablement presets</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/systemd/system-preset/*.preset</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/run/systemd/system-preset/*.preset</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/lib/systemd/system-preset/*.preset</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/systemd/user-preset/*.preset</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/run/systemd/user-preset/*.preset</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/usr/lib/systemd/user-preset/*.preset</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Preset files
+may be used to encode policy which units shall be enabled by
+default and which ones shall be disabled. They are read by
+<b>systemctl preset</b> which uses this information to
+enable or disable a unit. Depending on that policy,
+<b>systemctl preset</b> is identical to <b>systemctl
+enable</b> or <b>systemctl disable</b>. <b>systemctl
+preset</b> is used by the post install scriptlets of rpm
+packages (or other OS package formats), to enable/disable
+specific units by default on package installation, enforcing
+distribution, spin or administrator preset policy. This
+allows choosing a certain set of units to be
+enabled/disabled even before installing the actual package.
+For more information, see <b>systemctl</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is not
+recommended to ship preset files within the respective
+software packages implementing the units, but rather
+centralize them in a distribution or spin default policy,
+which can be amended by administrator policy, see below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no preset
+files exist, <b>systemctl preset</b> will enable all units
+that are installed by default. If this is not desired and
+all units shall rather be disabled, it is necessary to ship
+a preset file with a single, catchall &quot;disable *&quot;
+line. (See example 1, below.)</p>
+
+<h2>PRESET FILE FORMAT
+<a name="PRESET FILE FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The preset
+files contain a list of directives consisting of either the
+word &quot;enable&quot; or &quot;disable&quot; followed by a
+space and a unit name (possibly with shell style wildcards),
+separated by newlines. Empty lines and lines whose first
+non-whitespace character is &quot;#&quot; or &quot;;&quot;
+are ignored. Multiple instance names for unit templates may
+be specified as a space separated list at the end of the
+line instead of the customary position between &quot;@&quot;
+and the unit suffix.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Presets must
+refer to the &quot;real&quot; unit file, and not to any
+aliases. See <b>systemd.unit</b>(5) for a description of
+unit aliasing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Two different
+directives are understood: &quot;enable&quot; may be used to
+enable units by default, &quot;disable&quot; to disable
+units by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If multiple
+lines apply to a unit name, the first matching one takes
+precedence over all others.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each preset
+file shall be named in the style of
+&lt;priority&gt;-&lt;policy-name&gt;.preset. Files in /etc/
+override files with the same name in /usr/lib/ and /run/.
+Files in /run/ override files with the same name in /lib/.
+Packages should install their preset files in /lib/. Files
+in /etc/ are reserved for the local administrator, who may
+use this logic to override the preset files installed by
+vendor packages. All preset files are sorted by their
+filename in lexicographic order, regardless of which of the
+directories they reside in. If multiple files specify the
+same unit name, the entry in the file with the
+lexicographically earliest name will be applied. It is
+recommended to prefix all filenames with a two-digit number
+and a dash, to simplify the ordering of the files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+administrator wants to disable a preset file supplied by the
+vendor, the recommended way is to place a symlink to
+/dev/null in /etc/systemd/system-preset/ bearing the same
+filename.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Default
+to off</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/lib/systemd/system-preset/99-default.preset</p>
+
+<p style="margin-left:17%; margin-top: 1em">disable *</p>
+
+<p style="margin-left:11%; margin-top: 1em">This disables
+all units. Due to the filename prefix &quot;99-&quot;, it
+will be read last and hence can easily be overridden by spin
+or administrator preset policy.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;2.&nbsp;Enable
+multiple template instances</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/lib/systemd/system-preset/80-dirsrv.preset</p>
+
+<p style="margin-left:17%; margin-top: 1em">enable
+dirsrv@.service foo bar baz</p>
+
+<p style="margin-left:11%; margin-top: 1em">This enables
+all three of dirsrv@foo.service, dirsrv@bar.service and
+dirsrv@baz.service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;3.&nbsp;A
+GNOME spin</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/lib/systemd/system-preset/50-gnome.preset</p>
+
+<p style="margin-left:17%; margin-top: 1em">enable
+gdm.service <br>
+enable colord.service <br>
+enable accounts-daemon.service <br>
+enable avahi-daemon.*</p>
+
+<p style="margin-left:11%; margin-top: 1em">This enables
+the three mentioned units, plus all avahi-daemon regardless
+of which unit type. A file like this could be useful for
+inclusion in a GNOME spin of a distribution. It will ensure
+that the units necessary for GNOME are properly enabled as
+they are installed. It leaves all other units untouched, and
+subject to other (later) preset files, for example like the
+one from the first example above.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;4.&nbsp;Administrator
+policy</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/etc/systemd/system-preset/00-lennart.preset</p>
+
+<p style="margin-left:17%; margin-top: 1em">enable
+httpd.service <br>
+enable sshd.service <br>
+enable postfix.service <br>
+disable *</p>
+
+<p style="margin-left:11%; margin-top: 1em">This enables
+three specific services and disables all others. This is
+useful for administrators to specifically select the units
+to enable, and disable all others. Due to the filename
+prefix &quot;00-&quot; it will be read early and override
+all other preset policy files.</p>
+
+<h2>MOTIVATION FOR THE PRESET LOGIC
+<a name="MOTIVATION FOR THE PRESET LOGIC"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Different
+distributions have different policies on which services
+shall be enabled by default when the package they are
+shipped in is installed. On Fedora all services stay off by
+default, so that installing a package will not cause a
+service to be enabled (with some exceptions). On Debian all
+services are immediately enabled by default, so that
+installing a package will cause its services to be enabled
+right-away.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Even within a
+single distribution, different spins (flavours, remixes,
+whatever you might want to call them) of a distribution also
+have different policies on what services to enable, and what
+services to leave off. For example, Fedora Workstation will
+enable <b>gdm</b> as display manager by default, while the
+Fedora KDE spin will enable <b>sddm</b> instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Different sites
+might also have different policies what to turn on by
+default and what to turn off. For example, one administrator
+would prefer to enforce the policy of &quot;<b>sshd</b>
+should be always on, but everything else off&quot;, while
+another one might say &quot;<b>snmpd</b> always on, and for
+everything else use the distribution policy
+defaults&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Traditionally,
+policy about which services shall be enabled were
+implemented in each package individually. This made it
+cumbersome to implement different policies per spin or per
+site, or to create software packages that do the right thing
+on more than one distribution. The enablement mechanism was
+also encoding the enablement policy.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The preset
+mechanism allows clean separation of the enablement
+mechanism (inside the package scriptlets, by invoking
+<b>systemctl preset</b>) and enablement policy (centralized
+in the preset files), and lifts the configuration out of
+individual packages. Preset files may be written for
+specific distributions, for specific spins or for specific
+sites, in order to enforce different policies as needed. It
+is recommended to apply the policy encoded in preset files
+in package installation scriptlets.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemctl</b>(1), <b>systemd-delta</b>(1)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>daemon</b>(7)
+has a discussion of packaging scriptlets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Fedora page
+introducing the use of presets:
+<b><font color="#0000FF">Features/PackagePresets</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="35%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">Features/PackagePresets</font></p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://fedoraproject.org/wiki/Features/PackagePresets</font></p>
+<hr>
+</body>
+</html>

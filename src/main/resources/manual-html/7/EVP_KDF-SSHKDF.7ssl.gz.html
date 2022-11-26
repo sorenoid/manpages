@@ -1,0 +1,255 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EVP_KDF-SSHKDF</title>
+
+</head>
+<body>
+
+<h1 align="center">EVP_KDF-SSHKDF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KDF-SSHKDF
+- The SSHKDF EVP_KDF implementation</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Support for
+computing the <b><small>SSHKDF</small></b>
+<small>KDF</small> through the <b><small>EVP_KDF</small></b>
+<small>API.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>EVP_KDF-SSHKDF</small> algorithm implements the
+<small>SSHKDF</small> key derivation function. It is defined
+in <small>RFC 4253,</small> section 7.2 and is used by
+<small>SSH</small> to derive IVs, encryption keys and
+integrity keys. Five inputs are required to perform key
+derivation: The hashing function (for example
+<small>SHA256</small> ), the Initial Key, the Exchange Hash,
+the Session <small>ID,</small> and the derivation key
+type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Identity</b>
+<br>
+&quot; <small>SSHKDF&quot;</small> is the name for this
+implementation; it can be used with the
+<b>EVP_KDF_fetch()</b> function.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+parameters</b> <br>
+The supported parameters are: <br>
+&quot;properties&quot; (
+<b><small>OSSL_KDF_PARAM_PROPERTIES</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;digest&quot; (
+<b><small>OSSL_KDF_PARAM_DIGEST</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;key&quot; ( <b><small>OSSL_KDF_PARAM_KEY</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">These parameters work as
+described in &quot; <small>PARAMETERS&quot;</small> in
+<b><small>EVP_KDF</small></b> (3).</p>
+
+<p style="margin-left:11%;">&quot;xcghash&quot; (
+<b><small>OSSL_KDF_PARAM_SSHKDF_XCGHASH</small></b> )
+&lt;octet string&gt; <br>
+&quot;session_id&quot; (
+<b><small>OSSL_KDF_PARAM_SSHKDF_SESSION_ID</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">These parameters set the
+respective values for the <small>KDF.</small> If a value is
+already set, the contents are replaced.</p>
+
+<p style="margin-left:11%;">&quot;type&quot; (
+<b><small>OSSL_KDF_PARAM_SSHKDF_TYPE</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">This parameter sets the type
+for the <small>SSHKDF</small> operation. There are six
+supported types: <small><br>
+EVP_KDF_SSHKDF_TYPE_INITIAL_IV_CLI_TO_SRV</small></p>
+
+<p style="margin-left:23%;">The Initial <small>IV</small>
+from client to server. A single char of value 65 (
+<small>ASCII</small> char &rsquo;A&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_INITIAL_IV_SRV_TO_CLI</small></p>
+
+<p style="margin-left:23%;">The Initial <small>IV</small>
+from server to client A single char of value 66 (
+<small>ASCII</small> char &rsquo;B&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_ENCRYPTION_KEY_CLI_TO_SRV</small></p>
+
+<p style="margin-left:23%;">The Encryption Key from client
+to server A single char of value 67 ( <small>ASCII</small>
+char &rsquo;C&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_ENCRYPTION_KEY_SRV_TO_CLI</small></p>
+
+<p style="margin-left:23%;">The Encryption Key from server
+to client A single char of value 68 ( <small>ASCII</small>
+char &rsquo;D&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_INTEGRITY_KEY_CLI_TO_SRV</small></p>
+
+<p style="margin-left:23%;">The Integrity Key from client
+to server A single char of value 69 ( <small>ASCII</small>
+char &rsquo;E&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_INTEGRITY_KEY_SRV_TO_CLI</small></p>
+
+<p style="margin-left:23%;">The Integrity Key from client
+to server A single char of value 70 ( <small>ASCII</small>
+char &rsquo;F&rsquo;).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A context for
+<small>SSHKDF</small> can be obtained by calling:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KDF *kdf =
+EVP_KDF_fetch(NULL, &quot;SSHKDF&quot;, NULL); <br>
+EVP_KDF_CTX *kctx = EVP_KDF_CTX_new(kdf);</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+length of the <small>SSHKDF</small> derivation is specified
+via the <i>keylen</i> parameter to the
+<b>EVP_KDF_derive</b>(3) function. Since the
+<small>SSHKDF</small> output length is variable, calling
+<b>EVP_KDF_CTX_get_kdf_size</b>(3) to obtain the requisite
+length is not meaningful. The caller must allocate a buffer
+of the desired length, and pass that buffer to the
+<b>EVP_KDF_derive</b>(3) function along with the desired
+length.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This example
+derives an 8 byte <small>IV</small> using
+<small>SHA-256</small> with a 1K &quot;key&quot; and
+appropriate &quot;xcghash&quot; and &quot;session_id&quot;
+values:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KDF *kdf;
+<br>
+EVP_KDF_CTX *kctx; <br>
+const char type = EVP_KDF_SSHKDF_TYPE_INITIAL_IV_CLI_TO_SRV;
+<br>
+unsigned char key[1024] = &quot;01234...&quot;; <br>
+unsigned char xcghash[32] = &quot;012345...&quot;; <br>
+unsigned char session_id[32] = &quot;012345...&quot;; <br>
+unsigned char out[8]; <br>
+size_t outlen = sizeof(out); <br>
+OSSL_PARAM params[6], *p = params; <br>
+kdf = EVP_KDF_fetch(NULL, &quot;SSHKDF&quot;, NULL); <br>
+kctx = EVP_KDF_CTX_new(kdf); <br>
+EVP_KDF_free(kdf); <br>
+*p++ =
+OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_DIGEST, <br>
+SN_sha256, strlen(SN_sha256)); <br>
+*p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_KEY,
+<br>
+key, (size_t)1024); <br>
+*p++ =
+OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SSHKDF_XCGHASH,
+<br>
+xcghash, (size_t)32); <br>
+*p++ =
+OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SSHKDF_SESSION_ID,
+<br>
+session_id, (size_t)32); <br>
+*p++ =
+OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_SSHKDF_TYPE,
+<br>
+&amp;type, sizeof(type)); <br>
+*p = OSSL_PARAM_construct_end(); <br>
+if (EVP_KDF_derive(kctx, out, &amp;outlen, params) &lt;= 0)
+<br>
+/* Error */</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>RFC
+4253</small></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small><b>EVP_KDF</b></small>
+(3), <b>EVP_KDF_CTX_new</b>(3), <b>EVP_KDF_CTX_free</b>(3),
+<b>EVP_KDF_CTX_set_params</b>(3),
+<b>EVP_KDF_CTX_get_kdf_size</b>(3),
+<b>EVP_KDF_derive</b>(3), &quot;
+<small>PARAMETERS&quot;</small> in
+<b><small>EVP_KDF</small></b> (3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2016-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

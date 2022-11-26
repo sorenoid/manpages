@@ -1,0 +1,368 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROVIDER-MAC</title>
+
+</head>
+<body>
+
+<h1 align="center">PROVIDER-MAC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#RETURN VALUES">RETURN VALUES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">provider-mac -
+The mac library &lt;-&gt; provider functions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/core_dispatch.h&gt; <br>
+#include &lt;openssl/core_names.h&gt; <br>
+/* <br>
+* None of these are actual functions, but are displayed like
+this for <br>
+* the function signatures for functions that are offered as
+function <br>
+* pointers in OSSL_DISPATCH arrays. <br>
+*/ <br>
+/* Context management */ <br>
+void *OSSL_FUNC_mac_newctx(void *provctx); <br>
+void OSSL_FUNC_mac_freectx(void *mctx); <br>
+void *OSSL_FUNC_mac_dupctx(void *src); <br>
+/* Encryption/decryption */ <br>
+int OSSL_FUNC_mac_init(void *mctx, unsigned char *key,
+size_t keylen, <br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_mac_update(void *mctx, const unsigned char
+*in, size_t inl); <br>
+int OSSL_FUNC_mac_final(void *mctx, unsigned char *out,
+size_t *outl, size_t outsize); <br>
+/* MAC parameter descriptors */ <br>
+const OSSL_PARAM *OSSL_FUNC_mac_gettable_params(void
+*provctx); <br>
+const OSSL_PARAM *OSSL_FUNC_mac_gettable_ctx_params(void
+*mctx, void *provctx); <br>
+const OSSL_PARAM *OSSL_FUNC_mac_settable_ctx_params(void
+*mctx, void *provctx); <br>
+/* MAC parameters */ <br>
+int OSSL_FUNC_mac_get_params(OSSL_PARAM params[]); <br>
+int OSSL_FUNC_mac_get_ctx_params(void *mctx, OSSL_PARAM
+params[]); <br>
+int OSSL_FUNC_mac_set_ctx_params(void *mctx, const
+OSSL_PARAM params[]);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+documentation is primarily aimed at provider authors. See
+<b>provider</b>(7) for further information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>MAC</small> operation enables providers to implement
+mac algorithms and make them available to applications via
+the <small>API</small> functions <b>EVP_MAC_init</b>(3),
+<b>EVP_MAC_update</b>(3) and <b>EVP_MAC_final</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+&quot;functions&quot; mentioned here are passed as function
+pointers between <i>libcrypto</i> and the provider in
+<b><small>OSSL_DISPATCH</small></b> arrays via
+<b><small>OSSL_ALGORITHM</small></b> arrays that are
+returned by the provider&rsquo;s
+<b>provider_query_operation()</b> function (see
+&quot;Provider Functions&quot; in
+<b>provider-base</b>(7)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All these
+&quot;functions&quot; have a corresponding function type
+definition named <b>OSSL_FUNC_{name}_fn</b>, and a helper
+function to retrieve the function pointer from an
+<b><small>OSSL_DISPATCH</small></b> element named
+<b>OSSL_FUNC_{name}</b>. For example, the
+&quot;function&quot; <b>OSSL_FUNC_mac_newctx()</b> has
+these:</p>
+
+<p style="margin-left:11%; margin-top: 1em">typedef void
+*(OSSL_OSSL_FUNC_mac_newctx_fn)(void *provctx); <br>
+static ossl_inline OSSL_OSSL_FUNC_mac_newctx_fn <br>
+OSSL_FUNC_mac_newctx(const OSSL_DISPATCH *opf);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OSSL_DISPATCH</small></b>
+arrays are indexed by numbers that are provided as macros in
+<b>openssl-core_dispatch.h</b>(7), as follows:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_FUNC_mac_newctx
+OSSL_FUNC_MAC_NEWCTX <br>
+OSSL_FUNC_mac_freectx OSSL_FUNC_MAC_FREECTX <br>
+OSSL_FUNC_mac_dupctx OSSL_FUNC_MAC_DUPCTX <br>
+OSSL_FUNC_mac_init OSSL_FUNC_MAC_INIT <br>
+OSSL_FUNC_mac_update OSSL_FUNC_MAC_UPDATE <br>
+OSSL_FUNC_mac_final OSSL_FUNC_MAC_FINAL <br>
+OSSL_FUNC_mac_get_params OSSL_FUNC_MAC_GET_PARAMS <br>
+OSSL_FUNC_mac_get_ctx_params OSSL_FUNC_MAC_GET_CTX_PARAMS
+<br>
+OSSL_FUNC_mac_set_ctx_params OSSL_FUNC_MAC_SET_CTX_PARAMS
+<br>
+OSSL_FUNC_mac_gettable_params OSSL_FUNC_MAC_GETTABLE_PARAMS
+<br>
+OSSL_FUNC_mac_gettable_ctx_params
+OSSL_FUNC_MAC_GETTABLE_CTX_PARAMS <br>
+OSSL_FUNC_mac_settable_ctx_params
+OSSL_FUNC_MAC_SETTABLE_CTX_PARAMS</p>
+
+<p style="margin-left:11%; margin-top: 1em">A mac algorithm
+implementation may not implement all of these functions. In
+order to be a consistent set of functions, at least the
+following functions must be implemented:
+<b>OSSL_FUNC_mac_newctx()</b>,
+<b>OSSL_FUNC_mac_freectx()</b>, <b>OSSL_FUNC_mac_init()</b>,
+<b>OSSL_FUNC_mac_update()</b>, <b>OSSL_FUNC_mac_final()</b>.
+All other functions are optional.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Context
+Management Functions <br>
+OSSL_FUNC_mac_newctx()</b> should create and return a
+pointer to a provider side structure for holding context
+information during a mac operation. A pointer to this
+context will be passed back in a number of the other mac
+operation function calls. The parameter <i>provctx</i> is
+the provider context generated during provider
+initialisation (see <b>provider</b>(7)).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_freectx()</b>
+is passed a pointer to the provider side mac context in the
+<i>mctx</i> parameter. If it receives <small>NULL</small> as
+<i>mctx</i> value, it should not do anything other than
+return. This function should free any resources associated
+with that context.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_dupctx()</b>
+should duplicate the provider side mac context in the
+<i>mctx</i> parameter and return the duplicate copy.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Encryption/Decryption
+Functions <br>
+OSSL_FUNC_mac_init()</b> initialises a mac operation given a
+newly created provider side mac context in the <i>mctx</i>
+parameter. The <i>params</i> are set before setting the
+<small>MAC</small> <i>key</i> of <i>keylen</i> bytes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_update()</b>
+is called to supply data for <small>MAC</small> computation
+of a previously initialised mac operation. The <i>mctx</i>
+parameter contains a pointer to a previously initialised
+provider side context. <b>OSSL_FUNC_mac_update()</b> may be
+called multiple times for a single mac operation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_final()</b>
+completes the <small>MAC</small> computation started through
+previous <b>OSSL_FUNC_mac_init()</b> and
+<b>OSSL_FUNC_mac_update()</b> calls. The <i>mctx</i>
+parameter contains a pointer to the provider side context.
+The resulting <small>MAC</small> should be written to
+<i>out</i> and the amount of data written to <i>*outl</i>,
+which should not exceed <i>outsize</i> bytes. The same
+expectations apply to <i>outsize</i> as documented for
+<b>EVP_MAC_final</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Mac
+Parameters</b> <br>
+See <b><small>OSSL_PARAM</small></b> (3) for further details
+on the parameters structure used by these functions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_get_params()</b>
+gets details of parameter values associated with the
+provider algorithm and stores them in <i>params</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_set_ctx_params()</b>
+sets mac parameters associated with the given provider side
+mac context <i>mctx</i> to <i>params</i>. Any parameter
+settings are additional to any that were previously set.
+Passing <small>NULL</small> for <i>params</i> should return
+true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_get_ctx_params()</b>
+gets details of currently set parameter values associated
+with the given provider side mac context <i>mctx</i> and
+stores them in <i>params</i>. Passing <small>NULL</small>
+for <i>params</i> should return true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_gettable_params()</b>,
+<b>OSSL_FUNC_mac_gettable_ctx_params()</b>, and
+<b>OSSL_FUNC_mac_settable_ctx_params()</b> all return
+constant <b><small>OSSL_PARAM</small></b> arrays as
+descriptors of the parameters that
+<b>OSSL_FUNC_mac_get_params()</b>,
+<b>OSSL_FUNC_mac_get_ctx_params()</b>, and
+<b>OSSL_FUNC_mac_set_ctx_params()</b> can handle,
+respectively. <b>OSSL_FUNC_mac_gettable_ctx_params()</b> and
+<b>OSSL_FUNC_mac_settable_ctx_params()</b> will return the
+parameters associated with the provider side context
+<i>mctx</i> in its current state if it is not
+<small>NULL.</small> Otherwise, they return the parameters
+associated with the provider side algorithm
+<i>provctx</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+<small>MAC</small> implementations are expected to handle
+the following parameters: <br>
+with <b>OSSL_FUNC_set_ctx_params()</b>:</p>
+
+<p style="margin-left:17%;">&quot;key&quot; (
+<b><small>OSSL_MAC_PARAM_KEY</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:23%;">Sets the key in the associated
+<small>MAC</small> ctx. This is identical to passing a
+<i>key</i> argument to the <b>OSSL_FUNC_mac_init()</b>
+function.</p>
+
+<p style="margin-left:11%;">with
+<b>OSSL_FUNC_get_params()</b>:</p>
+
+<p style="margin-left:17%;">&quot;size&quot; (
+<b><small>OSSL_MAC_PARAM_SIZE</small></b> )
+&lt;integer&gt;</p>
+
+<p style="margin-left:23%;">Can be used to get the default
+<small>MAC</small> size (which might be the only allowable
+<small>MAC</small> size for the implementation).</p>
+
+<p style="margin-left:23%; margin-top: 1em">Note that some
+implementations allow setting the size that the resulting
+<small>MAC</small> should have as well, see the
+documentation of the implementation.</p>
+
+<p style="margin-left:17%;">&quot;size&quot; (
+<b><small>OSSL_MAC_PARAM_BLOCK_SIZE</small></b> )
+&lt;integer&gt;</p>
+
+<p style="margin-left:23%;">Can be used to get the
+<small>MAC</small> block size (if supported by the
+algorithm).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>MAC</small> life-cycle is described in
+<b>life_cycle-rand</b>(7). Providers should ensure that the
+various transitions listed there are supported. At some
+point the <small>EVP</small> layer will begin enforcing the
+listed transitions.</p>
+
+<h2>RETURN VALUES
+<a name="RETURN VALUES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_newctx()</b>
+and <b>OSSL_FUNC_mac_dupctx()</b> should return the newly
+created provider side mac context, or <small>NULL</small> on
+failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_init()</b>,
+<b>OSSL_FUNC_mac_update()</b>, <b>OSSL_FUNC_mac_final()</b>,
+<b>OSSL_FUNC_mac_get_params()</b>,
+<b>OSSL_FUNC_mac_get_ctx_params()</b> and
+<b>OSSL_FUNC_mac_set_ctx_params()</b> should return 1 for
+success or 0 on error.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_mac_gettable_params()</b>,
+<b>OSSL_FUNC_mac_gettable_ctx_params()</b> and
+<b>OSSL_FUNC_mac_settable_ctx_params()</b> should return a
+constant <b><small>OSSL_PARAM</small></b> array, or
+<small>NULL</small> if none is offered.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider</b>(7),
+<b><small>EVP_MAC-BLAKE2</small></b> (7),
+<b><small>EVP_MAC-CMAC</small></b> (7),
+<b><small>EVP_MAC-GMAC</small></b> (7),
+<b><small>EVP_MAC-HMAC</small></b> (7),
+<b><small>EVP_MAC-KMAC</small></b> (7),
+<b>EVP_MAC-Poly1305</b>(7), <b>EVP_MAC-Siphash</b>(7),
+<b>life_cycle-mac</b>(7), <b><small>EVP_MAC</small></b>
+(3)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The provider
+<small>MAC</small> interface was introduced in OpenSSL
+3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2019-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,770 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:59 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ADJTIMEX</title>
+
+</head>
+<body>
+
+<h1 align="center">ADJTIMEX</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">adjtimex,
+clock_adjtime, ntp_adjtime - tune kernel clock</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/timex.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+adjtimex(struct timex *</b><i>buf</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+clock_adjtime(clockid_t</b> <i>clk_id,</i> <b>struct timex
+*</b><i>buf</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+ntp_adjtime(struct timex *</b><i>buf</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux uses
+David L. Mills&rsquo; clock adjustment algorithm (see
+RFC&nbsp;5905). The system call <b>adjtimex</b>() reads and
+optionally sets adjustment parameters for this algorithm. It
+takes a pointer to a <i>timex</i> structure, updates kernel
+parameters from (selected) field values, and returns the
+same structure updated with the current kernel values. This
+structure is declared as follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct timex {
+<br>
+int modes; /* Mode selector */ <br>
+long offset; /* Time offset; nanoseconds, if STA_NANO <br>
+status flag is set, otherwise <br>
+microseconds */ <br>
+long freq; /* Frequency offset; see NOTES for units */ <br>
+long maxerror; /* Maximum error (microseconds) */ <br>
+long esterror; /* Estimated error (microseconds) */ <br>
+int status; /* Clock command/status */ <br>
+long constant; /* PLL (phase-locked loop) time constant */
+<br>
+long precision; /* Clock precision <br>
+(microseconds, read-only) */ <br>
+long tolerance; /* Clock frequency tolerance (read-only);
+<br>
+see NOTES for units */ <br>
+struct timeval time; <br>
+/* Current time (read-only, except for <br>
+ADJ_SETOFFSET); upon return, time.tv_usec <br>
+contains nanoseconds, if STA_NANO status <br>
+flag is set, otherwise microseconds */ <br>
+long tick; /* Microseconds between clock ticks */ <br>
+long ppsfreq; /* PPS (pulse per second) frequency <br>
+(read-only); see NOTES for units */ <br>
+long jitter; /* PPS jitter (read-only); nanoseconds, if <br>
+STA_NANO status flag is set, otherwise <br>
+microseconds */ <br>
+int shift; /* PPS interval duration <br>
+(seconds, read-only) */ <br>
+long stabil; /* PPS stability (read-only); <br>
+see NOTES for units */ <br>
+long jitcnt; /* PPS count of jitter limit exceeded <br>
+events (read-only) */ <br>
+long calcnt; /* PPS count of calibration intervals <br>
+(read-only) */ <br>
+long errcnt; /* PPS count of calibration errors <br>
+(read-only) */ <br>
+long stbcnt; /* PPS count of stability limit exceeded <br>
+events (read-only) */ <br>
+int tai; /* TAI offset, as set by previous ADJ_TAI <br>
+operation (seconds, read-only, <br>
+since Linux 2.6.26) */ <br>
+/* Further padding bytes to allow for future expansion */
+<br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>modes</i> field determines which parameters, if any, to
+set. (As described later in this page, the constants used
+for <b>ntp_adjtime</b>() are equivalent but differently
+named.) It is a bit mask containing a bitwise-<i>or</i>
+combination of zero or more of the following bits: <b><br>
+ADJ_OFFSET</b></p>
+
+<p style="margin-left:22%;">Set time offset from
+<i>buf.offset</i>. Since Linux 2.6.26, the supplied value is
+clamped to the range (-0.5s, +0.5s). In older kernels, an
+<b>EINVAL</b> error occurs if the supplied value is out of
+range.</p>
+
+<p style="margin-left:11%;"><b>ADJ_FREQUENCY</b></p>
+
+<p style="margin-left:22%;">Set frequency offset from
+<i>buf.freq</i>. Since Linux 2.6.26, the supplied value is
+clamped to the range (-32768000, +32768000). In older
+kernels, an <b>EINVAL</b> error occurs if the supplied value
+is out of range.</p>
+
+<p style="margin-left:11%;"><b>ADJ_MAXERROR</b></p>
+
+<p style="margin-left:22%;">Set maximum time error from
+<i>buf.maxerror</i>.</p>
+
+<p style="margin-left:11%;"><b>ADJ_ESTERROR</b></p>
+
+<p style="margin-left:22%;">Set estimated time error from
+<i>buf.esterror</i>.</p>
+
+<p style="margin-left:11%;"><b>ADJ_STATUS</b></p>
+
+<p style="margin-left:22%;">Set clock status bits from
+<i>buf.status</i>. A description of these bits is provided
+below.</p>
+
+<p style="margin-left:11%;"><b>ADJ_TIMECONST</b></p>
+
+<p style="margin-left:22%;">Set PLL time constant from
+<i>buf.constant</i>. If the <b>STA_NANO</b> status flag (see
+below) is clear, the kernel adds 4 to this value.</p>
+
+<p style="margin-left:11%;"><b>ADJ_SETOFFSET</b> (since
+Linux 2.6.39)</p>
+
+<p style="margin-left:22%;">Add <i>buf.time</i> to the
+current time. If <i>buf.status</i> includes the
+<b>ADJ_NANO</b> flag, then <i>buf.time.tv_usec</i> is
+interpreted as a nanosecond value; otherwise it is
+interpreted as microseconds.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The value of
+<i>buf.time</i> is the sum of its two fields, but the field
+<i>buf.time.tv_usec</i> must always be nonnegative. The
+following example shows how to normalize a <i>timeval</i>
+with nanosecond resolution.</p>
+
+<p style="margin-left:28%; margin-top: 1em">while
+(buf.time.tv_usec &lt; 0) { <br>
+buf.time.tv_sec -= 1; <br>
+buf.time.tv_usec += 1000000000; <br>
+}</p>
+
+<p style="margin-left:11%;"><b>ADJ_MICRO</b> (since Linux
+2.6.26)</p>
+
+<p style="margin-left:22%;">Select microsecond
+resolution.</p>
+
+<p style="margin-left:11%;"><b>ADJ_NANO</b> (since Linux
+2.6.26)</p>
+
+<p style="margin-left:22%;">Select nanosecond resolution.
+Only one of <b>ADJ_MICRO</b> and <b>ADJ_NANO</b> should be
+specified.</p>
+
+<p style="margin-left:11%;"><b>ADJ_TAI</b> (since Linux
+2.6.26)</p>
+
+<p style="margin-left:22%;">Set TAI (Atomic International
+Time) offset from <i>buf.constant</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>ADJ_TAI</b>
+should not be used in conjunction with <b>ADJ_TIMECONST</b>,
+since the latter mode also employs the <i>buf.constant</i>
+field.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For a complete
+explanation of TAI and the difference between TAI and UTC,
+see
+<a href="http://www.bipm.org/en/bipm/tai/tai.html"><i>BIPM</i></a></p>
+
+<p style="margin-left:11%;"><b>ADJ_TICK</b></p>
+
+<p style="margin-left:22%;">Set tick value from
+<i>buf.tick</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Alternatively,
+<i>modes</i> can be specified as either of the following
+(multibit mask) values, in which case other bits should not
+be specified in <i>modes</i>: <b><br>
+ADJ_OFFSET_SINGLESHOT</b></p>
+
+<p style="margin-left:22%;">Old-fashioned
+<b>adjtime</b>(3): (gradually) adjust time by value
+specified in <i>buf.offset</i>, which specifies an
+adjustment in microseconds.</p>
+
+<p style="margin-left:11%;"><b>ADJ_OFFSET_SS_READ</b>
+(functional since Linux 2.6.28)</p>
+
+<p style="margin-left:22%;">Return (in <i>buf.offset</i>)
+the remaining amount of time to be adjusted after an earlier
+<b>ADJ_OFFSET_SINGLESHOT</b> operation. This feature was
+added in Linux 2.6.24, but did not work correctly until
+Linux 2.6.28.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Ordinary users
+are restricted to a value of either 0 or
+<b>ADJ_OFFSET_SS_READ</b> for <i>modes</i>. Only the
+superuser may set any parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>buf.status</i> field is a bit mask that is used to set
+and/or retrieve status bits associated with the NTP
+implementation. Some bits in the mask are both readable and
+settable, while others are read-only. <b><br>
+STA_PLL</b> (read-write)</p>
+
+<p style="margin-left:22%;">Enable phase-locked loop (PLL)
+updates via <b>ADJ_OFFSET</b>.</p>
+
+<p style="margin-left:11%;"><b>STA_PPSFREQ</b>
+(read-write)</p>
+
+<p style="margin-left:22%;">Enable PPS (pulse-per-second)
+frequency discipline.</p>
+
+<p style="margin-left:11%;"><b>STA_PPSTIME</b>
+(read-write)</p>
+
+<p style="margin-left:22%;">Enable PPS time discipline.</p>
+
+<p style="margin-left:11%;"><b>STA_FLL</b> (read-write)</p>
+
+<p style="margin-left:22%;">Select frequency-locked loop
+(FLL) mode.</p>
+
+<p style="margin-left:11%;"><b>STA_INS</b> (read-write)</p>
+
+<p style="margin-left:22%;">Insert a leap second after the
+last second of the UTC day, thus extending the last minute
+of the day by one second. Leap-second insertion will occur
+each day, so long as this flag remains set.</p>
+
+<p style="margin-left:11%;"><b>STA_DEL</b> (read-write)</p>
+
+<p style="margin-left:22%;">Delete a leap second at the
+last second of the UTC day. Leap second deletion will occur
+each day, so long as this flag remains set.</p>
+
+<p style="margin-left:11%;"><b>STA_UNSYNC</b>
+(read-write)</p>
+
+<p style="margin-left:22%;">Clock unsynchronized.</p>
+
+<p style="margin-left:11%;"><b>STA_FREQHOLD</b>
+(read-write)</p>
+
+<p style="margin-left:22%;">Hold frequency. Normally
+adjustments made via <b>ADJ_OFFSET</b> result in dampened
+frequency adjustments also being made. So a single call
+corrects the current offset, but as offsets in the same
+direction are made repeatedly, the small frequency
+adjustments will accumulate to fix the long-term skew.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This flag
+prevents the small frequency adjustment from being made when
+correcting for an <b>ADJ_OFFSET</b> value.</p>
+
+<p style="margin-left:11%;"><b>STA_PPSSIGNAL</b>
+(read-only)</p>
+
+<p style="margin-left:22%;">A valid PPS (pulse-per-second)
+signal is present.</p>
+
+<p style="margin-left:11%;"><b>STA_PPSJITTER</b>
+(read-only)</p>
+
+<p style="margin-left:22%;">PPS signal jitter exceeded.</p>
+
+<p style="margin-left:11%;"><b>STA_PPSWANDER</b>
+(read-only)</p>
+
+<p style="margin-left:22%;">PPS signal wander exceeded.</p>
+
+<p style="margin-left:11%;"><b>STA_PPSERROR</b>
+(read-only)</p>
+
+<p style="margin-left:22%;">PPS signal calibration
+error.</p>
+
+<p style="margin-left:11%;"><b>STA_CLOCKERR</b>
+(read-only)</p>
+
+<p style="margin-left:22%;">Clock hardware fault.</p>
+
+<p style="margin-left:11%;"><b>STA_NANO</b> (read-only;
+since Linux 2.6.26)</p>
+
+<p style="margin-left:22%;">Resolution (0 = microsecond, 1
+= nanoseconds). Set via <b>ADJ_NANO</b>, cleared via
+<b>ADJ_MICRO</b>.</p>
+
+<p style="margin-left:11%;"><b>STA_MODE</b> (since Linux
+2.6.26)</p>
+
+<p style="margin-left:22%;">Mode (0 = Phase Locked Loop, 1
+= Frequency Locked Loop).</p>
+
+<p style="margin-left:11%;"><b>STA_CLK</b> (read-only;
+since Linux 2.6.26)</p>
+
+<p style="margin-left:22%;">Clock source (0 = A, 1 = B);
+currently unused.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Attempts to set
+read-only <i>status</i> bits are silently ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clock_adjtime
+()</b> <br>
+The <b>clock_adjtime</b>() system call (added in Linux
+2.6.39) behaves like <b>adjtimex</b>() but takes an
+additional <i>clk_id</i> argument to specify the particular
+clock on which to act.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ntp_adjtime
+()</b> <br>
+The <b>ntp_adjtime</b>() library function (described in the
+NTP &quot;Kernel Application Program API&quot;, KAPI) is a
+more portable interface for performing the same task as
+<b>adjtimex</b>(). Other than the following points, it is
+identical to <b>adjtimex</b>():</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The constants used in <i>modes</i> are prefixed with
+&quot;MOD_&quot; rather than &quot;ADJ_&quot;, and have the
+same suffixes (thus, <b>MOD_OFFSET</b>,
+<b>MOD_FREQUENCY</b>, and so on), other than the exceptions
+noted in the following points.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>MOD_CLKA</b> is the synonym for
+<b>ADJ_OFFSET_SINGLESHOT</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>MOD_CLKB</b> is the synonym for <b>ADJ_TICK</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The is no synonym for <b>ADJ_OFFSET_SS_READ</b>, which
+is not described in the KAPI.</p></td></tr>
+</table>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>adjtimex</b>() and <b>ntp_adjtime</b>() return the clock
+state; that is, one of the following values:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em"><b>TIME_OK</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em">Clock synchronized, no leap
+second adjustment pending.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>TIME_INS</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Indicates that a leap second will be added at the end of
+the UTC day.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>TIME_DEL</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Indicates that a leap second will be deleted at the end
+of the UTC day.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>TIME_OOP</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Insertion of a leap second is in progress.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>TIME_WAIT</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>A leap-second insertion or deletion has been completed.
+This value will be returned until the next <b>ADJ_STATUS</b>
+operation clears the <b>STA_INS</b> and <b>STA_DEL</b>
+flags.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>TIME_ERROR</b></p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>The system clock is not synchronized to a reliable
+server. This value is returned when any of the following
+holds true:</p></td></tr>
+</table>
+
+<p style="margin-left:29%;">*</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%"></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">Either <b>STA_UNSYNC</b> or
+<b>STA_CLOCKERR</b> is set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p><b>STA_PPSSIGNAL</b> is clear and either
+<b>STA_PPSFREQ</b> or <b>STA_PPSTIME</b> is set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p><b>STA_PPSTIME</b> and <b>STA_PPSJITTER</b> are both
+set.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p><b>STA_PPSFREQ</b> is set and either
+<b>STA_PPSWANDER</b> or <b>STA_PPSJITTER</b> is set.</p></td></tr>
+</table>
+
+<p style="margin-left:29%; margin-top: 1em">The symbolic
+name <b>TIME_BAD</b> is a synonym for <b>TIME_ERROR</b>,
+provided for backward compatibility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+starting with Linux 3.4, the call operates asynchronously
+and the return value usually will not reflect a state change
+caused by the call itself.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On failure,
+these calls return -1 and set <i>errno</i>.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="58%">
+
+
+<p style="margin-top: 1em"><i>buf</i> does not point to
+writable memory.</p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EINVAL</b> (kernels before
+Linux 2.6.26)</p>
+
+<p style="margin-left:22%;">An attempt was made to set
+<i>buf.freq</i> to a value outside the range (-33554432,
++33554432).</p>
+
+<p style="margin-left:11%;"><b>EINVAL</b> (kernels before
+Linux 2.6.26)</p>
+
+<p style="margin-left:22%;">An attempt was made to set
+<i>buf.offset</i> to a value outside the permitted range. In
+kernels before Linux 2.0, the permitted range was (-131072,
++131072). From Linux 2.0 onwards, the permitted range was
+(-512000, +512000).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>An attempt was made to set <i>buf.status</i> to a value
+other than those listed above.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The <i>clk_id</i> given to <b>clock_adjtime</b>() is
+invalid for one of two reasons. Either the System-V style
+hard-coded positive clock ID value is out of range, or the
+dynamic <i>clk_id</i> does not refer to a valid instance of
+a clock object. See <b>clock_gettime</b>(2) for a discussion
+of dynamic clocks.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>An attempt was made to set <i>buf.tick</i> to a value
+outside the range 900000/<b>HZ</b> to 1100000/<b>HZ</b>,
+where <b>HZ</b> is the system timer interrupt frequency.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENODEV</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The hot-pluggable device (like USB for example)
+represented by a dynamic <i>clk_id</i> has disappeared after
+its character device was opened. See <b>clock_gettime</b>(2)
+for a discussion of dynamic clocks.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EOPNOTSUPP</b></p>
+
+<p style="margin-left:22%;">The given <i>clk_id</i> does
+not support adjustment.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>buf.modes</i> is neither 0 nor
+<b>ADJ_OFFSET_SS_READ</b>, and the caller does not have
+sufficient privilege. Under Linux, the <b>CAP_SYS_TIME</b>
+capability is required.</p></td></tr>
+</table>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3250581.png" alt="Image grohtml-3250581.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None of these
+interfaces is described in POSIX.1</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>adjtimex</b>()
+and <b>clock_adjtime</b>() are Linux-specific and should not
+be used in programs intended to be portable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The preferred
+API for the NTP daemon is <b>ntp_adjtime</b>().</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In struct
+<i>timex</i>, <i>freq</i>, <i>ppsfreq</i>, and <i>stabil</i>
+are ppm (parts per million) with a 16-bit fractional part,
+which means that a value of 1 in one of those fields
+actually means 2^-16 ppm, and 2^16=65536 is 1 ppm. This is
+the case for both input values (in the case of <i>freq</i>)
+and output values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The leap-second
+processing triggered by <b>STA_INS</b> and <b>STA_DEL</b> is
+done by the kernel in timer context. Thus, it will take one
+tick into the second for the leap second to be inserted or
+deleted.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clock_gettime</b>(2),
+<b>clock_settime</b>(2), <b>settimeofday</b>(2),
+<b>adjtime</b>(3), <b>ntp_gettime</b>(3),
+<b>capabilities</b>(7), <b>time</b>(7), <b>adjtimex</b>(8),
+<b>hwclock</b>(8) <br>
+
+<a href="http://www.slac.stanford.edu/comp/unix/package/rtems/src/ssrlApps/ntpNanoclock/api.htm">NTP
+&quot;Kernel Application Program Interface&quot;</a></p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

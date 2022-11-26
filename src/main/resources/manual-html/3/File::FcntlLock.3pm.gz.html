@@ -1,0 +1,390 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>File::FcntlLock</title>
+
+</head>
+<body>
+
+<h1 align="center">File::FcntlLock</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#INCOMPATIBILITIES">INCOMPATIBILITIES</a><br>
+<a href="#CREDITS">CREDITS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">File::FcntlLock
+- File locking with fcntl(2)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This text also
+documents the following sub-packages: <br>
+File::FcntlLock::XS <br>
+File::FcntlLock::Pure <br>
+File::FcntlLock::Inline</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+File::FcntlLock; <br>
+my $fs = new File::FcntlLock; <br>
+$fs-&gt;l_type( F_RDLCK ); <br>
+$fs-&gt;l_whence( SEEK_CUR ); <br>
+$fs-&gt;l_start( 100 ); <br>
+$fs-&gt;l_len( 123 ); <br>
+open my $fh, '&lt;', 'file_name' or die &quot;Can't open
+file: $!\n&quot;; <br>
+$fs-&gt;lock( $fh, F_SETLK ) <br>
+or print &quot;Locking failed: &quot; . $fs-&gt;error .
+&quot;\n&quot;; <br>
+$fs-&gt;l_type( F_UNLCK ); <br>
+$fs-&gt;lock( $fh, F_SETLK ) <br>
+or print &quot;Unlocking failed: &quot; . $fs-&gt;error .
+&quot;\n&quot;;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">File locking in
+Perl is usually done using the &quot;flock&quot; function.
+Unfortunately, this only allows locks on whole files and is
+often implemented in terms of the <b>flock</b>(2) system
+function which has some shortcomings (especially concerning
+locks on remotely mounted file systems) and slightly
+different behaviour than <b>fcntl</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using this
+module file locking via <b>fcntl</b>(2) can be done
+(obviously, this restricts the use of the module to systems
+that have a <b>fcntl</b>(2) system call). Before a file (or
+parts of a file) can be locked, an object simulating a flock
+structure, containing information in a binary format to be
+passed to <b>fcntl</b>(2) for locking requests, must be
+created and its properties set. Afterwards, by calling the
+<b>lock()</b> method a lock can be set and removed or it can
+be determined if and which process currently holds the
+lock.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">File::FcntlLock
+(or its alias File::FcntlLock::XS) uses a shared library,
+build during installation, to call the <b>fcntl</b>(2)
+system function directly. If this is unsuitable there are
+two alternatives, File::FcntlLock::Pure and
+File::FcntlLock::Inline. Both call the Perl
+&quot;fcntl&quot; function instead and use Perl code to
+assemble and disassemble the structure. For this at some
+time the (system-dependent) binary layout of the flock
+structure must have been determined via a program written in
+C. The difference between File::FcntlLock::Pure and
+File::FcntlLock::Inline is that for the former this happened
+when the package is installed while for the latter it is
+done each time the package is loaded (e.g., with
+&quot;use&quot;). Thus, for File::FcntlLock::Inline to work
+a C compiler must be available. There are some minor
+differences in the functionality and the behaviour on
+passing the method for locking invalid arguments to be
+described below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Creating
+objects</b> <br>
+&quot;new()&quot;</p>
+
+<p style="margin-left:17%;">To create a new object,
+representing a flock structure, call <b>new()</b>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$fs = new
+File::FcntlLock;</p>
+
+<p style="margin-left:17%; margin-top: 1em">The object has
+a number of properties, reflecting the members of the flock
+structure to be passed to <b>fcntl</b>(2) (see below). Per
+default on object creation the l_type property is set to
+&quot;F_RDLCK&quot;, l_whence to &quot;SEEK_SET&quot;, and
+both l_start and l_len to 0, i.e., the settings for a read
+lock on the whole file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">These defaults
+can be overruled by passing the <b>new()</b> method a set of
+key-value pairs to initialize the objects properties, e.g.
+use</p>
+
+<p style="margin-left:17%; margin-top: 1em">$fs = new
+File::FcntlLock( l_type =&gt; F_WRLCK, <br>
+l_whence =&gt; SEEK_SET, <br>
+l_start =&gt; 0, <br>
+l_len =&gt; 100 );</p>
+
+<p style="margin-left:17%; margin-top: 1em">if you intend
+to obtain a write lock for the first 100 bytes of a
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Object
+properties</b> <br>
+Once the object simulating the flock structure has been
+created the following methods allow to query and, in most
+cases, to also modify its properties. <br>
+&quot;l_type()&quot;</p>
+
+<p style="margin-left:17%;">If called without an argument
+the method returns the current setting of the lock type,
+otherwise the lock type is set to the argument&rsquo;s value
+which must be either &quot;F_RDLCK&quot;,
+&quot;F_WRLCK&quot; or &quot;F_UNLCK&quot; (for read lock,
+write lock or unlock).</p>
+
+<p style="margin-left:11%;">&quot;l_whence()&quot;</p>
+
+<p style="margin-left:17%;">This method sets, when called
+with an argument, the l_whence property of the flock object,
+determining if the l_start value is relative to the start of
+the file, to the current position in the file or to the end
+of the file. These values are &quot;SEEK_SET&quot;,
+&quot;SEEK_CUR&quot; and &quot;SEEK_END&quot; (also see the
+man page for <b>lseek</b>(2)). If called with no argument
+the current value of the property is returned.</p>
+
+<p style="margin-left:11%;">&quot;l_start()&quot;</p>
+
+<p style="margin-left:17%;">Queries or sets the start
+position (offset) of the lock in the file according to the
+mode selected by the l_whence member. See also the man page
+for <b>lseek</b>(2).</p>
+
+<p style="margin-left:11%;">&quot;l_len()&quot;</p>
+
+<p style="margin-left:17%;">Queries or sets the length of
+the region (in bytes) in the file to be locked. A value of 0
+is interpreted to mean a lock, starting at
+&quot;l_start&quot;, to the end of the file. E.g., a lock
+obtained with l_whence set to &quot;SEEK_SET&quot; and both
+l_start and l_len set to 0 locks the complete file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">According to
+SUSv3 support for negative values for l_len are permitted,
+resulting in a lock ranging from &quot;l_start+l_len&quot;
+up to and including &quot;l_start-1&quot;. But not all
+systems support negative values for l_len and will return an
+error when you try to obtain such a lock, so please read the
+<b>fcntl</b>(2) man page of the system carefully for
+details.</p>
+
+<p style="margin-left:11%;">&quot;l_pid()&quot;</p>
+
+<p style="margin-left:17%;">If a call of the <b>lock()</b>
+method with &quot;F_GETLK&quot; indicates that another
+process is holding the lock (in which case the l_type
+property will be either &quot;F_WRLCK&quot; or
+&quot;F_RDLCK&quot;) a call of the <b>l_pid()</b> method
+returns the <small>PID</small> of the process holding the
+lock. This method does not accept any arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Locking</b>
+<br>
+After having set up the object representing a flock
+structure one can then try to obtain a lock, release it or
+determine the current holder of the lock by invoking the
+<b>lock()</b> method: <br>
+&quot;lock()&quot;</p>
+
+<p style="margin-left:17%;">This method expects two
+arguments. The first one is a file handle (or typeglob).
+File::FcntlLock, and thus File::FcntlLock::XS (<b>but
+neither</b> File::FcntlLock::Pure <b>nor</b>
+File::FcntlLock::Inline), also accepts a &quot;raw&quot;
+integer file descriptor. The second argument is a flag
+indicating the action to be taken. So call it as in</p>
+
+<p style="margin-left:17%; margin-top: 1em">$fs-&gt;lock(
+$fh, F_SETLK );</p>
+
+<p style="margin-left:17%; margin-top: 1em">There are three
+values that can be used as the second argument: <br>
+&quot;F_SETLK&quot;</p>
+
+<p style="margin-left:23%;">With &quot;F_SETLK&quot; the
+<b>lock()</b> method tries to obtain a lock (when l_type is
+set to either &quot;F_WRLCK&quot; or &quot;F_RDLCK&quot;) or
+releases it (if l_type is set to &quot;F_UNLCK&quot;). If an
+attempt is made to obtain a lock but a lock is already being
+held by some other process the method returns
+&quot;undef&quot; and &quot;errno&quot; is set to
+&quot;EACCESS&quot; or &quot;EAGAIN&quot; (please see the
+the man page for <b>fcntl</b>(2) for more details).</p>
+
+<p style="margin-left:17%;">&quot;F_SETLKW&quot;</p>
+
+<p style="margin-left:23%;">is similar to
+&quot;F_SETLK&quot;, but instead of returning an error if
+the lock can&rsquo;t be obtained immediately it puts the
+calling process to sleep, i.e., it blocks, until the lock is
+obtained at some later time. If a signal is received while
+waiting for the lock the method returns &quot;undef&quot;
+and &quot;errno&quot; is set to &quot;EINTR&quot;.</p>
+
+<p style="margin-left:17%;">&quot;F_GETLK&quot;</p>
+
+<p style="margin-left:23%;">With &quot;F_GETLK&quot; the
+<b>lock()</b> method determines if and which process
+currently is holding the lock. If there&rsquo;s no other
+lock the l_type property will be set to &quot;F_UNLCK&quot;.
+Otherwise the flock structure object is set to the values
+that would prevent us from obtaining a lock. There may be
+several processes that keep us from getting a lock,
+including some that themselves are blocked waiting to obtain
+a lock. &quot;F_GETLK&quot; will only make details of one of
+these processes visible, and one has no control over which
+process this is.</p>
+
+<p style="margin-left:17%; margin-top: 1em">On success the
+<b>lock()</b> method returns the string &quot;0 but
+true&quot;, i.e., a value that is true in boolean but 0 in
+numeric context. If the method fails (as indicated by an
+&quot;undef&quot; return value) you can either immediately
+evaluate the error number (using $!, $ERRNO or $OS_ERROR) or
+check for it via the methods discussed below at some later
+time.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Error
+handling</b> <br>
+There are minor differences between File::FcntlLock on the
+one hand and File::FcntlLock::Pure and
+File::FcntlLock::Inline on the other, due to the first
+calling the system function <b>fcntl</b>(2) directly while
+the latter two invoke the Perl &quot;fcntl&quot; function.
+Perl&rsquo;s &quot;fcntl&quot; function already returns a
+Perl error on some types of invalid arguments. In contrast
+File::FcntlLock passes them on to the <b>fcntl</b>(2) system
+call and then returns the systems response to the
+caller.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are three
+methods for obtaining information about the reason the a
+call of the <b>lock()</b> method failed: <br>
+&quot;lock_errno()&quot;</p>
+
+<p style="margin-left:17%;">Returns the &quot;errno&quot;
+error number from the latest call of <b>lock()</b>. If the
+last call did not result in an error &quot;undef&quot; is
+returned.</p>
+
+<p style="margin-left:11%;">&quot;error()&quot;</p>
+
+<p style="margin-left:17%;">Returns a short description of
+the error that happened during the latest call of
+<b>lock()</b>. Please take the messages with a grain of
+salt, they represent what SUSv3 ( <small>IEEE
+1003.1-2001</small> ) and the Linux, <small>TRUE64,</small>
+OpenBSD3 and Solaris8 man pages tell what the error numbers
+mean. There could be differences (and additional error
+numbers) on other systems. If there was no error the method
+returns &quot;undef&quot;.</p>
+
+<p style="margin-left:11%;">&quot;system_error()&quot;</p>
+
+<p style="margin-left:17%;">While the <b>error()</b> method
+tries to return a string with some direct relevance to the
+locking operation (i.e., &quot;File or segment already
+locked by other process(es)&quot; instead of
+&quot;Permission denied&quot;) this method returns the
+&quot;normal&quot; system error message associated with
+&quot;errno&quot;. The method returns &quot;undef&quot; if
+there was no error.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>EXPORT</small></b>
+<br>
+The package exports the following constants: <br>
+F_GETLK F_SETLK F_SETLKW <br>
+F_RDLCK F_WRLCK F_UNLCK <small><br>
+SEEK_SET SEEK_CUR SEEK_END</small></p>
+
+<h2>INCOMPATIBILITIES
+<a name="INCOMPATIBILITIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Obviously, this
+module requires that there&rsquo;s a <b>fcntl</b>(2) system
+call. Note also that under certain circumstances the
+File::FcntlLock::Pure and File::FcntlLock::Inline modules
+may not have been installed. This happens on 32-bit systems
+that use 64-bit integers in their flock structure but where
+the installed Perl version doesn&rsquo;t support the
+&rsquo;q&rsquo; format for its &quot;pack&quot; and
+&quot;unpack&quot; functions.</p>
+
+<h2>CREDITS
+<a name="CREDITS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Thanks to Mark
+Jason Dominus and Benjamin Goldberg for helpful discussions,
+code examples and encouragement. Glenn Herteg pointed out
+several problems and also helped improve the documentation.
+Julian Moreno Patino helped correcting the documentation and
+pointed out problems arising on <small>GNU</small> Hurd
+which seems to have only very rudimentary support for
+locking with <b>fcntl</b>(2). Niko Tyni and Guillem Jover
+encouraged and helped with implementing alternatives to an
+XS-only approach which hopefully will make the module more
+useful under certain circumstances.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Jens Thoms
+Toerring &lt;jt@toerring.de&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>perl</b>(1),
+<b>fcntl</b>(2), <b>lseek</b>(2).</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software. You can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

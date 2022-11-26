@@ -1,0 +1,136 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:10 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Changelog::Parse</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Changelog::Parse</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Changelog::Parse
+- generic changelog parser for dpkg-parsechangelog</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+provides a set of functions which reproduce all the features
+of dpkg-parsechangelog.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$fields =
+changelog_parse(%opt)</p>
+
+<p style="margin-left:17%;">This function will parse a
+changelog. In list context, it returns as many Dpkg::Control
+objects as the parser did create. In scalar context, it will
+return only the first one. If the parser did not return any
+data, it will return an empty list in list context or undef
+on scalar context. If the parser failed, it will die. Any
+parse errors will be printed as warnings on standard error,
+but this can be disabled by passing $opt{verbose} to 0.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The changelog
+file that is parsed is <i>debian/changelog</i> by default
+but it can be overridden with $opt{file}. The changelog name
+used in output messages can be specified with $opt{label},
+otherwise it will default to $opt{file}. The default output
+format is &quot;dpkg&quot; but it can be overridden with
+$opt{format}.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The parsing
+itself is done by a parser module (searched in the standard
+perl library directories. That module is named according to
+the format that it is able to parse, with the name
+capitalized. By default it is either Dpkg::Changelog::Debian
+(from the &quot;debian&quot; format) or the format name
+looked up in the 40 last lines of the changelog itself
+(extracted with this perl regular expression
+&quot;\schangelog-format:\s+([0-9a-z]+)\W&quot;). But it can
+be overridden with $opt{changelogformat}.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+$opt{compression} is false, the file will be loaded without
+compression support, otherwise by default compression
+support is disabled if the file is the default.</p>
+
+<p style="margin-left:17%; margin-top: 1em">All the other
+keys in %opt are forwarded to the parser module
+constructor.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 2.01
+(dpkg 1.20.6)</b> <br>
+New option: &rsquo;verbose&rsquo; in
+<b>changelog_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 2.00
+(dpkg 1.20.0)</b> <br>
+Remove functions: <b>changelog_parse_debian()</b>,
+<b>changelog_parse_plugin()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Remove
+warnings: For options &rsquo;forceplugin&rsquo;,
+&rsquo;libdir&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.19.0)</b> <br>
+New option: &rsquo;compression&rsquo; in
+<b>changelog_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.18.8)</b> <br>
+Deprecated functions: <b>changelog_parse_debian()</b>,
+<b>changelog_parse_plugin()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Obsolete
+options: forceplugin, libdir.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.18.2)</b> <br>
+New functions: <b>changelog_parse_debian()</b>,
+<b>changelog_parse_plugin()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

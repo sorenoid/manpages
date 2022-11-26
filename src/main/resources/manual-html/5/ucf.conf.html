@@ -1,0 +1,239 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UCF.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">UCF.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#Configuration File options">Configuration File options</a><br>
+<a href="#Files">Files</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ucf.conf -
+site-wide configuration file for <b>ucf</b></p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>/etc/ucf.conf</i></b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The file
+<i>/etc/ucf.conf</i> is actually a <b>Bourne Shell</b>
+snippet included during the package build process, and hence
+you may put any shell directive in that file (just make very
+sure you know what you are doing).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All the
+variables have reasonable default values, and some may be
+overridden on a per run or a per individual basis by using
+environment variables, and all configurable variables can be
+overridden by options to the scripts themselves.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value of a
+variable can be set so:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>a)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Defaults exist in the rules file. These are the values
+used if no customization is done.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>b)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Some variables can be set in the config file
+<i>/etc/ucf.conf.</i> These values override the
+defaults.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>c)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Some variables can also be set by setting a
+corresponding environment variable. These values override
+the config file and the defaults.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>d)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Using script command line options. All configurable
+variables may be set by this method, and will override the
+other methods above.</p></td></tr>
+</table>
+
+<h2>Configuration File options
+<a name="Configuration File options"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">At the moment,
+the user modifiable variables supported are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>DEBUG</b></p></td>
+<td width="16%"></td>
+<td width="62%">
+
+
+<p style="margin-top: 1em">Debugging information: The
+default value is 0 (no debugging information is printed). To
+enable debugging output, set the value to 1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>VERBOSE</b></p></td>
+<td width="16%"></td>
+<td width="62%">
+
+
+<p>Verbosity: The default value is 0 (quiet). To change the
+default behavior, set the value to 1.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>conf_force_conffold</b></p>
+
+<p style="margin-left:38%;">Force the installed file to be
+retained. The default is to have this variable unset, which
+makes the script ask in case of doubt. This can be
+overridden by the environment variable
+<b>UCF_FORCE_CONFFOLD</b></p>
+
+<p style="margin-left:11%;"><b>conf_force_conffnew</b></p>
+
+<p style="margin-left:38%;">Force the installed file to be
+overridden. The default is to have this variable unset,
+which makes the script ask in case of doubt. This can be
+overridden by the environment variable
+<b>UCF_FORCE_CONFFNEW</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="23%">
+
+
+<p><b>conf_source_dir</b></p></td>
+<td width="4%"></td>
+<td width="62%">
+
+
+<p>This is the directory where the historical md5sums for a
+file are looked for. Specifically, the historical md5sums
+are looked for in either the file <i>${filename}.md5sum,</i>
+or the subdirectory <i>${filename}.md5sum.d/</i></p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>conf_old_mdsum_file</b></p>
+
+<p style="margin-left:38%;">Force the historical md5sums to
+be read from this file, rather than defaulting to living in
+the source directory. Setting this option overrides settings
+in the environment variable <b>UCF_OLD_MDSUM_FILE</b></p>
+
+<h2>Files
+<a name="Files"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">System-wide
+defaults are placed in <i>/etc/ucf.conf,</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>ucf</b></i>(1),</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+bugs. Any resemblance thereof is delirium. Really.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Manoj Srivastava
+&lt;srivasta@debian.org&gt;, for the Debian GNU/Linux
+system.</p>
+<hr>
+</body>
+</html>

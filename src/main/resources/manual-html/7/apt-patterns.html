@@ -1,0 +1,466 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>APT-PATTERNS</title>
+
+</head>
+<body>
+
+<h1 align="center">APT-PATTERNS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#LOGIC PATTERNS">LOGIC PATTERNS</a><br>
+<a href="#NARROWING PATTERNS">NARROWING PATTERNS</a><br>
+<a href="#PACKAGE PATTERNS">PACKAGE PATTERNS</a><br>
+<a href="#VERSION PATTERNS">VERSION PATTERNS</a><br>
+<a href="#PACKAGE RELATIONSHIP PATTERNS">PACKAGE RELATIONSHIP PATTERNS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#MIGRATING FROM APTITUDE">MIGRATING FROM APTITUDE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">apt-patterns -
+Syntax and semantics of apt search patterns</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Starting with
+version 2.0, <b>APT</b> provides support for patterns, which
+can be used to query the apt cache for packages.</p>
+
+<h2>LOGIC PATTERNS
+<a name="LOGIC PATTERNS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These patterns
+provide the basic means to combine other patterns into more
+complex expressions, as well as ?true and ?false
+patterns.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?and(PATTERN,
+PATTERN, ...), PATTERN PATTERN ...</p>
+
+<p style="margin-left:17%;">Selects objects where all
+specified patterns match.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?false, ~F</p>
+
+<p style="margin-left:17%;">Selects nothing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?not(PATTERN),
+!PATTERN</p>
+
+<p style="margin-left:17%;">Selects objects where PATTERN
+does not match.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?or(PATTERN,
+PATTERN, ...), PATTERN | PATTERN | ...</p>
+
+<p style="margin-left:17%;">Selects objects where at least
+one of the specified patterns match.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?true, ~T</p>
+
+<p style="margin-left:17%;">Selects all objects.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(PATTERN)</p>
+
+<p style="margin-left:17%;">Selects the same as PATTERN,
+can be used to work around precedence, for example,
+(~ramd64|~ri386)~nfoo</p>
+
+<h2>NARROWING PATTERNS
+<a name="NARROWING PATTERNS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">?all-versions(PATTERN)</p>
+
+<p style="margin-left:17%;">Selects packages where all
+versions match PATTERN. When matching versions instead, same
+as PATTERN.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?any-version(PATTERN)</p>
+
+<p style="margin-left:17%;">Selects any version where the
+pattern matches on the version.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example,
+while ?and(?version(1),?version(2)) matches a package which
+has one version containing 1 and one version containing 2,
+?any-version(?and(?version(1),?version(2))) restricts the
+?and to act on the same version.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?narrow(PATTERN...)</p>
+
+<p style="margin-left:17%;">Selects any version matching
+all PATTERNs, short for ?any-version(?and(PATTERN...)).</p>
+
+<h2>PACKAGE PATTERNS
+<a name="PACKAGE PATTERNS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These patterns
+select specific packages.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?architecture(WILDCARD),
+~rWILDCARD</p>
+
+<p style="margin-left:17%;">Selects packages matching the
+specified architecture, which may contain wildcards using
+any.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?automatic,
+~M</p>
+
+<p style="margin-left:17%;">Selects packages that were
+installed automatically.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?broken, ~b</p>
+
+<p style="margin-left:17%;">Selects packages that have
+broken dependencies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?config-files,
+~c</p>
+
+<p style="margin-left:17%;">Selects packages that are not
+fully installed, but have solely residual configuration
+files left.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?essential,
+~E</p>
+
+<p style="margin-left:17%;">Selects packages that have
+Essential: yes set in their control file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?exact-name(NAME)</p>
+
+<p style="margin-left:17%;">Selects packages with the exact
+specified name.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?garbage,
+~g</p>
+
+<p style="margin-left:17%;">Selects packages that can be
+removed automatically.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?installed,
+~i</p>
+
+<p style="margin-left:17%;">Selects packages that are
+currently installed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?name(REGEX),
+~nREGEX</p>
+
+<p style="margin-left:17%;">Selects packages where the name
+matches the given regular expression.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?obsolete,
+~o</p>
+
+<p style="margin-left:17%;">Selects packages that no longer
+exist in repositories.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?upgradable,
+~U</p>
+
+<p style="margin-left:17%;">Selects packages that can be
+upgraded (have a newer candidate).</p>
+
+<p style="margin-left:11%; margin-top: 1em">?virtual,
+~v</p>
+
+<p style="margin-left:17%;">Selects all virtual packages;
+that is packages without a version. These exist when they
+are referenced somewhere in the archive, for example because
+something depends on that name.</p>
+
+<h2>VERSION PATTERNS
+<a name="VERSION PATTERNS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These patterns
+select specific versions of a package.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?archive(REGEX),
+~AREGEX</p>
+
+<p style="margin-left:17%;">Selects versions that come from
+the archive that matches the specified regular expression.
+Archive, here, means the values after a= in <b>apt-cache
+policy</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?codename(REGEX)</p>
+
+<p style="margin-left:17%;">Selects versions that come from
+the codename that matches the specified regular expression.
+Codename, here, means the values after n= in <b>apt-cache
+policy</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?origin(REGEX),
+~OREGEX</p>
+
+<p style="margin-left:17%;">Selects versions that come from
+the origin that matches the specified regular expression.
+Origin, here, means the values after o= in <b>apt-cache
+policy</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?section(REGEX),
+~sREGEX</p>
+
+<p style="margin-left:17%;">Selects versions where the
+section matches the specified regular expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?source-package(REGEX),
+~eREGEX</p>
+
+<p style="margin-left:17%;">Selects versions where the
+source package name matches the specified regular
+expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?source-version(REGEX)</p>
+
+<p style="margin-left:17%;">Selects versions where the
+source package version matches the specified regular
+expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?version(REGEX),
+~VREGEX</p>
+
+<p style="margin-left:17%;">Selects versions where the
+version string matches the specified regular expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?priority(NAME),
+~pNAME</p>
+
+<p style="margin-left:17%;">Selects versions where the
+Priority string equals the given name.</p>
+
+<h2>PACKAGE RELATIONSHIP PATTERNS
+<a name="PACKAGE RELATIONSHIP PATTERNS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These patterns
+match specific package versions that depend/conflict with
+some other packages.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?depends(PATTERN),
+~DPATTERN, ?pre-depends(PATTERN), ~DPre-Depends:PATTERN,
+?suggests(PATTERN), ~DSuggests:PATTERN, ?conflicts(PATTERN),
+~DConflicts:PATTERN, ?replaces(PATTERN), ~DReplaces:PATTERN,
+?obsoletes(PATTERN), ~DObsoletes:PATTERN, ?breaks(PATTERN),
+~DBreaks:PATTERN, ?enhances(PATTERN), ~DEnhances:PATTERN</p>
+
+<p style="margin-left:17%;">Selects versions
+depending/pre-depending/suggesting/conflicting/etc on/with/
+packages matching PATTERN.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?reverse-<i>depType</i>(PATTERN),
+~R<i>DepType</i>:PATTERN</p>
+
+<p style="margin-left:17%;">Opposite of ?depends and
+friends - selects all packages that have
+reverse-dependencies (versions) matching PATTERN.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>depType</i>
+is one of the dependency types such as depends, so that we
+don't have to repeat the entire list from the first
+paragraph here.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">apt remove
+?garbage</p>
+
+<p style="margin-left:17%;">Remove all packages that are
+automatically installed and no longer needed - same as apt
+autoremove</p>
+
+<p style="margin-left:11%; margin-top: 1em">apt purge
+?config-files</p>
+
+<p style="margin-left:17%;">Purge all packages that only
+have configuration files left</p>
+
+<p style="margin-left:11%; margin-top: 1em">apt list '~i
+!~M (~slibs|~sperl|~spython)'</p>
+
+<p style="margin-left:17%;">List all manually-installed
+packages in sections matching libs, perl, or python.</p>
+
+<h2>MIGRATING FROM APTITUDE
+<a name="MIGRATING FROM APTITUDE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Patterns in apt
+are heavily inspired by patterns in aptitude, but with some
+tweaks:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Syntax
+is uniform: If there is an opening parenthesis after a term,
+it is always assumed to be the beginning of an argument
+list.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In aptitude, a
+syntactic form &quot;?foo(bar)&quot; could mean
+&quot;?and(?foo,bar)&quot; if foo does not take an argument.
+In APT, this will cause an error.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Not all
+patterns are supported.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Some
+additional patterns are available, for example, for finding
+gstreamer codecs.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Escaping
+terms with ~ is not supported.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; A
+trailing comma is allowed in argument lists</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; ?narrow
+accepts infinite arguments</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; foo
+cannot be used as a shortform for ?name(foo), as this can
+cause typos to go unnoticed: Consider ?and(...,~poptional):
+this requires the package to have required priority, but if
+you do not type the ~, it would require the package name to
+contain poptional.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Grouping
+patterns with (...) or writing ?or(A,B) as A|B are not
+supported. We do not believe that the use of | is that
+common, and the grouping is not necessary without it.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Dependency types for ~D and related operators need to be
+specified in the canonical case.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-get</b>(8),
+<b>apt</b>(8)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><font color="#0000FF">APT
+bug page</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">. If you wish to report a bug in APT,
+please see /usr/share/doc/debian/bug-reporting.txt or the
+<b>reportbug</b>(1) command.</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">APT
+was written by the APT team
+&lt;apt@packages.debian.org&gt;.</font></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Jason
+Gunthorpe</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>APT
+team</b></font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><font color="#000000">APT bug
+page</font></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://bugs.debian.org/src:apt</font></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:00 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HOSTS.EQUIV</title>
+
+</head>
+<body>
+
+<h1 align="center">HOSTS.EQUIV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hosts.equiv -
+list of hosts and users that are granted &quot;trusted&quot;
+<b>r</b> command access to your system</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The file
+<i>/etc/hosts.equiv</i> allows or denies hosts and users to
+use the <b>r</b>-commands (e.g., <b>rlogin</b>, <b>rsh</b>,
+or <b>rcp</b>) without supplying a password.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file uses
+the following format: <i><br>
++|[-]hostname|+@netgroup|-@netgroup <br>
+[+|[-]username|+@netgroup|-@netgroup]</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>hostname</i> is the name of a host which is logically
+equivalent to the local host. Users logged into that host
+are allowed to access like-named user accounts on the local
+host without supplying a password. The <i>hostname</i> may
+be (optionally) preceded by a plus (+) sign. If the plus
+sign is used alone, it allows any host to access your
+system. You can explicitly deny access to a host by
+preceding the <i>hostname</i> by a minus (-) sign. Users
+from that host must always supply additional credentials,
+including possibly a password. For security reasons you
+should always use the FQDN of the hostname and not the short
+hostname.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>username</i> entry grants a specific user access to all
+user accounts (except root) without supplying a password.
+That means the user is NOT restricted to like-named
+accounts. The <i>username</i> may be (optionally) preceded
+by a plus (+) sign. You can also explicitly deny access to a
+specific user by preceding the <i>username</i> with a minus
+(-) sign. This says that the user is not trusted no matter
+what other entries for that host exist.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Netgroups can
+be specified by preceding the netgroup by an @ sign.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Be extremely
+careful when using the plus (+) sign. A simple typographical
+error could result in a standalone plus sign. A standalone
+plus sign is a wildcard character that means &quot;any
+host&quot;!</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/hosts.equiv</i></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some systems
+will honor the contents of this file only when it has owner
+root and no write permission for anybody else. Some
+exceptionally paranoid systems even require that there be no
+other hard links to the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Modern systems
+use the Pluggable Authentication Modules library (PAM). With
+PAM a standalone plus sign is considered a wildcard
+character which means &quot;any host&quot; only when the
+word <i>promiscuous</i> is added to the auth component line
+in your PAM file for the particular service (e.g.,
+<b>rlogin</b>).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Below are some
+example <i>/etc/host.equiv</i> or <i>~/.rhosts</i>
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow any user
+to log in from any host:</p>
+
+<p style="margin-left:11%; margin-top: 1em">+</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow any user
+from <i>host</i> with a matching local account to log
+in:</p>
+
+<p style="margin-left:11%; margin-top: 1em">host</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: the use
+of <i>+host</i> is never a valid syntax, including
+attempting to specify that any user from the host is
+allowed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow any user
+from <i>host</i> to log in:</p>
+
+<p style="margin-left:11%; margin-top: 1em">host +</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: this is
+distinct from the previous example since it does not require
+a matching local account.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow
+<i>user</i> from <i>host</i> to log in as any non-root
+user:</p>
+
+<p style="margin-left:11%; margin-top: 1em">host user</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow all users
+with matching local accounts from <i>host</i> to log in
+except for <i>baduser</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">host -baduser
+<br>
+host</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deny all users
+from <i>host</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">-host</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: the use
+of <i>-host&nbsp;-user</i> is never a valid syntax,
+including attempting to specify that a particular user from
+the host is not trusted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow all users
+with matching local accounts on all hosts in a
+<i>netgroup</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">+@netgroup</p>
+
+<p style="margin-left:11%; margin-top: 1em">Disallow all
+users on all hosts in a <i>netgroup</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">-@netgroup</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow all users
+in a <i>netgroup</i> to log in from <i>host</i> as any
+non-root user:</p>
+
+<p style="margin-left:11%; margin-top: 1em">host
++@netgroup</p>
+
+<p style="margin-left:11%; margin-top: 1em">Allow all users
+with matching local accounts on all hosts in a
+<i>netgroup</i> except <i>baduser</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">+@netgroup
+-baduser <br>
++@netgroup</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: the deny
+statements must always precede the allow statements because
+the file is processed sequentially until the first matching
+rule is found.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rhosts</b>(5),
+<b>rlogind</b>(8), <b>rshd</b>(8)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

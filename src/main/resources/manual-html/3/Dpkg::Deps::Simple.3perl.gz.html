@@ -1,0 +1,262 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Deps::Simple</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Deps::Simple</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Deps::Simple
+- represents a single dependency statement</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This class
+represents a single dependency statement. It has several
+interesting properties: <br>
+package</p>
+
+<p style="margin-left:17%;">The package name (can be undef
+if the dependency has not been initialized or if the
+simplification of the dependency lead to its removal).</p>
+
+<p style="margin-left:11%;">relation</p>
+
+<p style="margin-left:17%;">The relational operator:
+&quot;=&quot;, &quot;&lt;&lt;&quot;, &quot;&lt;=&quot;,
+&quot;&gt;=&quot; or &quot;&gt;&gt;&quot;. It can be
+undefined if the dependency had no version restriction. In
+that case the following field is also undefined.</p>
+
+<p style="margin-left:11%;">version</p>
+
+<p style="margin-left:17%;">The version.</p>
+
+<p style="margin-left:11%;">arches</p>
+
+<p style="margin-left:17%;">The list of architectures where
+this dependency is applicable. It is undefined when
+there&rsquo;s no restriction, otherwise it is an array ref.
+It can contain an exclusion list, in that case each
+architecture is prefixed with an exclamation mark.</p>
+
+<p style="margin-left:11%;">archqual</p>
+
+<p style="margin-left:17%;">The arch qualifier of the
+dependency (can be undef if there is none). In the
+dependency &quot;python:any (&gt;= 2.6)&quot;, the arch
+qualifier is &quot;any&quot;.</p>
+
+<p style="margin-left:11%;">restrictions</p>
+
+<p style="margin-left:17%;">The restrictions formula for
+this dependency. It is undefined when there is no
+restriction formula. Otherwise it is an array ref.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$dep =
+Dpkg::Deps::Simple-&gt;new([$dep[, %opts]]);</p>
+
+<p style="margin-left:17%;">Creates a new object. Some
+options can be set through %opts: <br>
+host_arch</p>
+
+<p style="margin-left:23%;">Sets the host architecture.</p>
+
+<p style="margin-left:17%;">build_arch</p>
+
+<p style="margin-left:23%;">Sets the build
+architecture.</p>
+
+<p style="margin-left:17%;">build_dep</p>
+
+<p style="margin-left:23%;">Specifies whether the parser
+should consider it a build dependency. Defaults to 0.</p>
+
+<p style="margin-left:17%;">tests_dep</p>
+
+<p style="margin-left:23%;">Specifies whether the parser
+should consider it a tests dependency. Defaults to 0.</p>
+
+<p style="margin-left:11%;">$dep-&gt;<b>reset()</b></p>
+
+<p style="margin-left:17%;">Clears any dependency
+information stored in $dep so that
+$dep-&gt;<b>is_empty()</b> returns true.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;parse_string($dep_string)</p>
+
+<p style="margin-left:17%;">Parses the dependency string
+and modifies internal properties to match the parsed
+dependency.</p>
+
+<p style="margin-left:11%;">$dep-&gt;parse($fh, $desc)</p>
+
+<p style="margin-left:17%;">Parse a dependency line from a
+filehandle.</p>
+
+<p style="margin-left:11%;">$dep-&gt;load($filename)</p>
+
+<p style="margin-left:17%;">Parse a dependency line from
+$filename.</p>
+
+<p style="margin-left:11%;">$dep-&gt;output([$fh]) <br>
+&quot;$dep&quot;</p>
+
+<p style="margin-left:17%;">Returns a string representing
+the dependency. If $fh is set, it prints the string to the
+filehandle.</p>
+
+<p style="margin-left:11%;">$dep-&gt;save($filename)</p>
+
+<p style="margin-left:17%;">Save the dependency into the
+given $filename.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;implies($other_dep)</p>
+
+<p style="margin-left:17%;">Returns 1 when $dep implies
+$other_dep. Returns 0 when $dep implies <small>NOT</small>
+($other_dep). Returns undef when there is no implication.
+$dep and $other_dep do not need to be of the same type.</p>
+
+<p style="margin-left:11%;">$dep-&gt;<b>get_deps()</b></p>
+
+<p style="margin-left:17%;">Returns a list of
+sub-dependencies, which for this object it means it returns
+itself.</p>
+
+<p style="margin-left:11%;">$dep-&gt;<b>sort()</b></p>
+
+<p style="margin-left:17%;">This method is a no-op for this
+object.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;arch_is_concerned($arch)</p>
+
+<p style="margin-left:17%;">Returns true if the dependency
+applies to the indicated architecture.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;reduce_arch($arch)</p>
+
+<p style="margin-left:17%;">Simplifies the dependency to
+contain only information relevant to the given architecture.
+This object can be left empty after this operation. This
+trims off the architecture restriction list of these
+objects.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;<b>has_arch_restriction()</b></p>
+
+<p style="margin-left:17%;">Returns the package name if the
+dependency applies only to a subset of architectures.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;<b>profile_is_concerned()</b></p>
+
+<p style="margin-left:17%;">Returns true if the dependency
+applies to the indicated profile.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;<b>reduce_profiles()</b></p>
+
+<p style="margin-left:17%;">Simplifies the dependency to
+contain only information relevant to the given profile. This
+object can be left empty after this operation. This trims
+off the profile restriction list of this object.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;get_evaluation($facts)</p>
+
+<p style="margin-left:17%;">Evaluates the dependency given
+a list of installed packages and a list of virtual packages
+provided. These lists are part of the Dpkg::Deps::KnownFacts
+object given as parameters.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns 1 when
+it&rsquo;s true, 0 when it&rsquo;s false, undef when some
+information is lacking to conclude.</p>
+
+<p style="margin-left:11%;">$dep-&gt;simplify_deps($facts,
+@assumed_deps)</p>
+
+<p style="margin-left:17%;">Simplifies the dependency as
+much as possible given the list of facts (see class
+Dpkg::Deps::KnownFacts) and a list of other dependencies
+that are known to be true.</p>
+
+<p style="margin-left:11%;">$dep-&gt;<b>is_empty()</b></p>
+
+<p style="margin-left:17%;">Returns true if the dependency
+is empty and doesn&rsquo;t contain any useful information.
+This is true when the object has not yet been
+initialized.</p>
+
+
+<p style="margin-left:11%;">$dep-&gt;merge_union($other_dep)</p>
+
+<p style="margin-left:17%;">Returns true if $dep could be
+modified to represent the union of both dependencies.
+Otherwise returns false.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.17.10)</b> <br>
+New methods: Add $dep-&gt;<b>profile_is_concerned()</b> and
+$dep-&gt;<b>reduce_profiles()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.16.1)</b> <br>
+New method: Add $dep-&gt;<b>reset()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New property:
+recognizes the arch qualifier &quot;any&quot; and stores it
+in the &quot;archqual&quot; property when present.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

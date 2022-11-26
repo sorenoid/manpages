@@ -3,8 +3,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Linux Manpages Online - man.page</title>
     <meta name="robots" content="index,follow"/>
-    <link rel="stylesheet" type="text/css" href="___/css/layout.css"/>
-    <link rel="stylesheet" type="text/css" href="___/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/___/css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="/___/css/style.css"/>
 
     <script language="JavaScript" type="text/javascript">
         function wysiwygUrl(base, tform) {
@@ -24,7 +24,7 @@
              data-ad-format="auto"></ins>
     </div>
     <#if level!=-1 && name !="bar">
-    <h1><a name="top" href="/">Linux Manual Pages</a></h1><nav> | <a href="/${level}">${level}</a> | <a href="/${name}">${name}</a> </nav>
+    <h1><a name="top" href="/">Linux Manual Pages</a></h1><nav> | <a href="/${level}">${level}</a> | <a href="/${level}/${name}">${name}</a> </nav>
     <#else>
     <h1><a name="top" href="/">Linux Manual Pages</a></h1>
     </#if>

@@ -1,0 +1,249 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:00 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LOADER.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">LOADER.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">loader.conf -
+Configuration file for systemd-boot</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>ESP</i>/loader/loader.conf,
+<i>ESP</i>/loader/entries/*.conf</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-boot</b>(7)
+will read <i>ESP</i>/loader/loader.conf and any files with
+the &quot;.conf&quot; extension under
+<i>ESP</i>/loader/entries/ on the EFI system partition
+(ESP).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each
+configuration file must consist of an option name, followed
+by whitespace, and the option value. &quot;#&quot; may be
+used to start a comment line. Empty and comment lines are
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Boolean
+arguments may be written as
+&quot;yes&quot;/&quot;y&quot;/&quot;true&quot;/&quot;1&quot;
+or
+&quot;no&quot;/&quot;n&quot;/&quot;false&quot;/&quot;0&quot;.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+configuration options in loader.conf are understood:</p>
+
+<p style="margin-left:11%; margin-top: 1em">default</p>
+
+<p style="margin-left:17%;">A glob pattern to select the
+default entry. The default entry may be changed in the boot
+menu itself, in which case the name of the selected entry
+will be stored as an EFI variable, overriding this
+option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">timeout</p>
+
+<p style="margin-left:17%;">How long the boot menu should
+be shown before the default entry is booted, in seconds.
+This may be changed in the boot menu itself and will be
+stored as an EFI variable in that case, overriding this
+option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the timeout
+is disabled, the default entry will be booted immediately.
+The menu can be shown by pressing and holding a key before
+systemd-boot is launched.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">console-mode</p>
+
+<p style="margin-left:17%;">This option configures the
+resolution of the console. Takes a number or one of the
+special values listed below. The following values may be
+used:</p>
+
+<p style="margin-left:17%; margin-top: 1em">0</p>
+
+<p style="margin-left:23%;">Standard UEFI 80x25 mode</p>
+
+<p style="margin-left:17%; margin-top: 1em">1</p>
+
+<p style="margin-left:23%;">80x50 mode, not supported by
+all devices</p>
+
+<p style="margin-left:17%; margin-top: 1em">2</p>
+
+<p style="margin-left:23%;">the first non-standard mode
+provided by the device firmware, if any</p>
+
+<p style="margin-left:17%; margin-top: 1em">auto</p>
+
+<p style="margin-left:23%;">Pick a suitable mode
+automatically using heuristics</p>
+
+<p style="margin-left:17%; margin-top: 1em">max</p>
+
+<p style="margin-left:23%;">Pick the highest-numbered
+available mode</p>
+
+<p style="margin-left:17%; margin-top: 1em">keep</p>
+
+<p style="margin-left:23%;">Keep the mode selected by
+firmware (the default)</p>
+
+<p style="margin-left:11%; margin-top: 1em">editor</p>
+
+<p style="margin-left:17%;">Takes a boolean argument.
+Enable (the default) or disable the editor. The editor
+should be disabled if the machine can be accessed by
+unauthorized persons.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">auto-entries</p>
+
+<p style="margin-left:17%;">Takes a boolean argument.
+Enable (the default) or disable entries for other boot
+entries found on the boot partition. In particular, this may
+be useful when loader entries are created to show
+replacement descriptions for those entries.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">auto-firmware</p>
+
+<p style="margin-left:17%;">Takes a boolean argument.
+Enable (the default) or disable the &quot;Reboot into
+firmware&quot; entry.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">random-seed-mode</p>
+
+<p style="margin-left:17%;">Takes one of &quot;off&quot;,
+&quot;with-system-token&quot; and &quot;always&quot;. If
+&quot;off&quot; no random seed data is read off the ESP, nor
+passed to the OS. If &quot;with-system-token&quot; (the
+default) <b>systemd-boot</b> will read a random seed from
+the ESP (from the file /loader/random-seed) only if the
+<i>LoaderSystemToken</i> EFI variable is set, and then
+derive the random seed to pass to the OS from the
+combination. If &quot;always&quot; the boot loader will do
+so even if <i>LoaderSystemToken</i> is not set. This mode is
+useful in environments where protection against OS image
+reuse is not a concern, and the random seed shall be used
+even with no further setup in place. Use <b>bootctl
+random-seed</b> to initialize both the random seed file in
+the ESP and the system token EFI variable.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b><font color="#0000FF">Random Seeds</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">for further information.</font></p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#
+/boot/efi/loader/loader.conf <br>
+timeout 0 <br>
+default 01234567890abcdef1234567890abdf0-* <br>
+editor no</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+menu will not be shown by default (the menu can still be
+shown by pressing and holding a key during boot). One of the
+entries with files with a name starting with
+&quot;01234567890abcdef1234567890abdf0-&quot; will be
+selected by default. If more than one entry matches, the one
+with the highest priority will be selected (generally the
+one with the highest version number). The editor will be
+disabled, so it is not possible to alter the kernel command
+line.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd-boot</b>(7),
+<b>bootctl</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Random
+Seeds</font></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/RANDOM_SEEDS</font></p>
+<hr>
+</body>
+</html>

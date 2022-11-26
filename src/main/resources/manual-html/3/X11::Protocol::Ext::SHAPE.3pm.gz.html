@@ -1,0 +1,141 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Protocol::Ext::SHAPE</title>
+
+</head>
+<body>
+
+<h1 align="center">Protocol::Ext::SHAPE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SYMBOLIC CONSTANTS">SYMBOLIC CONSTANTS</a><br>
+<a href="#EVENTS">EVENTS</a><br>
+<a href="#REQUESTS">REQUESTS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">X11::Protocol::Ext::SHAPE
+- Perl module for the X11 Protocol Nonrectangular Window
+Shape Extension</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+X11::Protocol; <br>
+$x = X11::Protocol-&gt;new($ENV{'DISPLAY'}); <br>
+$x-&gt;init_extension('SHAPE') or die;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+used by the X11::Protocol module to participate in the
+shaped window extension to the X protocol, allowing windows
+to be of any shape, not just rectangles.</p>
+
+<h2>SYMBOLIC CONSTANTS
+<a name="SYMBOLIC CONSTANTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This extension
+adds the constant types &rsquo;ShapeKind&rsquo; and
+&rsquo;ShapeOp&rsquo;, with values as defined in the
+standard.</p>
+
+<h2>EVENTS
+<a name="EVENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This extension
+adds the event type &rsquo;ShapeNotify&rsquo;, with values
+as specified in the standard. This event is selected using
+the <b>ShapeSelectInput()</b> request.</p>
+
+<h2>REQUESTS
+<a name="REQUESTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This extension
+adds several requests, called as shown below:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$x-&gt;ShapeQueryVersion
+<br>
+=&gt; <br>
+($major, $minor) <br>
+$x-&gt;ShapeRectangles($dest, $destKind, $op, $xOff, $yOff,
+<br>
+$ordering, @rectangles) <br>
+$x-&gt;ShapeMask($dest, $destKind, $op, $xOff, $yOff,
+$source) <br>
+$x-&gt;ShapeCombine($dest, $destKind, $op, $xOff, $yOff,
+$source, <br>
+$sourceKind) <br>
+$x-&gt;ShapeOffset($dest, $destKind, $xOff, $yOff) <br>
+$x-&gt;ShapeQueryExtents($dest) <br>
+=&gt; <br>
+($boundingShaped, $clipShaped, <br>
+($xBoundingShape, $yBoundingShape, <br>
+$widthBoundingShape, $heightBoundingShape) <br>
+($xClipShape, $yClipShape, $widthClipShape,
+$heightClipShape)) <br>
+$x-&gt;ShapeSelectInput($window, $enable) <br>
+$x-&gt;ShapeInputSelected($window) <br>
+=&gt; <br>
+$enable <br>
+$x-&gt;ShapeGetRectangles($window, $kind) <br>
+=&gt; <br>
+($ordering, [$x, $y, $width, $height], ...)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Stephen
+McCamant &lt;SMCCAM@cpan.org&gt;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>perl</b>(1),
+X11::Protocol, <i>Nonrectangular Window Shape Extension (X
+Consortium Standard)</i>.</p>
+<hr>
+</body>
+</html>

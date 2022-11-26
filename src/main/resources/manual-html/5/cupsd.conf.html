@@ -1,0 +1,1326 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>cupsd.conf</title>
+
+</head>
+<body>
+
+<h1 align="center">cupsd.conf</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cupsd.conf -
+server configuration file for cups</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>cupsd.conf</i> file configures the CUPS scheduler,
+<b>cupsd</b>(8). It is normally located in the
+<i>/etc/cups</i> directory. Each line in the file can be a
+configuration directive, a blank line, or a comment.
+Configuration directives typically consist of a name and
+zero or more values separated by whitespace. The
+configuration directive name and values are
+case-insensitive. Comment lines start with the #
+character.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TOP-LEVEL
+DIRECTIVES</b> <br>
+The following top-level directives are understood by
+<b>cupsd</b>(8): <b><br>
+AccessLogLevel config <br>
+AccessLogLevel actions <br>
+AccessLogLevel all</b></p>
+
+<p style="margin-left:18%;">Specifies the logging level for
+the AccessLog file. The &quot;config&quot; level logs when
+printers and classes are added, deleted, or modified and
+when configuration files are accessed or updated. The
+&quot;actions&quot; level logs when print jobs are
+submitted, held, released, modified, or canceled, and any of
+the conditions for &quot;config&quot;. The &quot;all&quot;
+level logs all requests. The default access log level is
+&quot;actions&quot;.</p>
+
+<p style="margin-left:11%;"><b>AutoPurgeJobs Yes <br>
+AutoPurgeJobs No</b></p>
+
+<p style="margin-left:18%;">Specifies whether to purge job
+history data automatically when it is no longer required for
+quotas. The default is &quot;No&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>BrowseDNSSDSubTypes</b><i>_subtype[,...]</i></p>
+
+<p style="margin-left:18%;">Specifies a list of Bonjour
+sub-types to advertise for each shared printer. For example,
+&quot;BrowseDNSSDSubTypes _cups,_print&quot; will tell
+network clients that both CUPS sharing and IPP Everywhere
+are supported. The default is &quot;_cups&quot; which is
+necessary for printer sharing to work between systems using
+CUPS.</p>
+
+<p style="margin-left:11%;"><b>BrowseLocalProtocols all
+<br>
+BrowseLocalProtocols dnssd <br>
+BrowseLocalProtocols none</b></p>
+
+<p style="margin-left:18%;">Specifies which protocols to
+use for local printer sharing. The default is
+&quot;dnssd&quot; on systems that support Bonjour and
+&quot;none&quot; otherwise.</p>
+
+<p style="margin-left:11%;"><b>BrowseWebIF Yes <br>
+BrowseWebIF No</b></p>
+
+<p style="margin-left:18%;">Specifies whether the CUPS web
+interface is advertised. The default is &quot;No&quot;.</p>
+
+<p style="margin-left:11%;"><b>Browsing Yes <br>
+Browsing No</b></p>
+
+<p style="margin-left:18%;">Specifies whether shared
+printers are advertised. The default is &quot;No&quot;.</p>
+
+<p style="margin-left:11%;"><b>DefaultAuthType
+Basic</b></p>
+
+<p style="margin-left:18%;">Specifies the default type of
+authentication to use. The default is &quot;Basic&quot;.</p>
+
+<p style="margin-left:11%;"><b>DefaultEncryption Never <br>
+DefaultEncryption IfRequested <br>
+DefaultEncryption Required</b></p>
+
+<p style="margin-left:18%;">Specifies whether encryption
+will be used for authenticated requests. The default is
+&quot;Required&quot;.</p>
+
+<p style="margin-left:11%;"><b>DefaultLanguage</b>
+<i>locale</i></p>
+
+<p style="margin-left:18%;">Specifies the default language
+to use for text and web content. The default is
+&quot;en&quot;.</p>
+
+<p style="margin-left:11%;"><b>DefaultPaperSize Auto <br>
+DefaultPaperSize None <br>
+DefaultPaperSize</b> <i>sizename</i></p>
+
+<p style="margin-left:18%;">Specifies the default paper
+size for new print queues. &quot;Auto&quot; uses a
+locale-specific default, while &quot;None&quot; specifies
+there is no default paper size. Specific size names are
+typically &quot;Letter&quot; or &quot;A4&quot;. The default
+is &quot;Auto&quot;. Note: The default paper size must use a
+size name from the PPD file and not a PWG self-describing
+media size name.</p>
+
+<p style="margin-left:11%;"><b>DefaultPolicy</b>
+<i>policy-name</i></p>
+
+<p style="margin-left:18%;">Specifies the default access
+policy to use. The default access policy is
+&quot;default&quot;.</p>
+
+<p style="margin-left:11%;"><b>DefaultShared Yes <br>
+DefaultShared No</b></p>
+
+<p style="margin-left:18%;">Specifies whether local
+printers are shared by default. The default is
+&quot;Yes&quot;.</p>
+
+<p style="margin-left:11%;"><b>DirtyCleanInterval</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the delay for
+updating of configuration and state files. A value of 0
+causes the update to happen as soon as possible, typically
+within a few milliseconds. The default value is
+&quot;30&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>DNSSDHostName</b><i>hostname.example.com</i></p>
+
+<p style="margin-left:18%;">Specifies the fully-qualified
+domain name for the server that is used for Bonjour sharing.
+The default is typically the server&rsquo;s
+&quot;.local&quot; hostname.</p>
+
+<p style="margin-left:11%;"><b>ErrorPolicy
+abort-job</b></p>
+
+<p style="margin-left:18%;">Specifies that a failed print
+job should be aborted (discarded) unless otherwise specified
+for the printer.</p>
+
+<p style="margin-left:11%;"><b>ErrorPolicy
+retry-current-job</b></p>
+
+<p style="margin-left:18%;">Specifies that a failed print
+job should be retried immediately unless otherwise specified
+for the printer.</p>
+
+<p style="margin-left:11%;"><b>ErrorPolicy
+retry-job</b></p>
+
+<p style="margin-left:18%;">Specifies that a failed print
+job should be retried at a later time unless otherwise
+specified for the printer.</p>
+
+<p style="margin-left:11%;"><b>ErrorPolicy
+stop-printer</b></p>
+
+<p style="margin-left:18%;">Specifies that a failed print
+job should stop the printer unless otherwise specified for
+the printer. The &rsquo;stop-printer&rsquo; error policy is
+the default.</p>
+
+<p style="margin-left:11%;"><b>FilterLimit</b>
+<i>limit</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum cost of
+filters that are run concurrently, which can be used to
+minimize disk, memory, and CPU resource problems. A limit of
+0 disables filter limiting. An average print to a
+non-PostScript printer needs a filter limit of about 200. A
+PostScript printer needs about half that (100). Setting the
+limit below these thresholds will effectively limit the
+scheduler to printing a single job at any time. The default
+limit is &quot;0&quot;.</p>
+
+<p style="margin-left:11%;"><b>FilterNice</b>
+<i>nice-value</i></p>
+
+<p style="margin-left:18%;">Specifies the scheduling
+priority ( <b>nice</b>(8) value) of filters that are run to
+print a job. The nice value ranges from 0, the highest
+priority, to 19, the lowest priority. The default is 0.</p>
+
+<p style="margin-left:11%;"><b>HostNameLookups On <br>
+HostNameLookups Off <br>
+HostNameLookups Double</b></p>
+
+<p style="margin-left:18%;">Specifies whether to do reverse
+lookups on connecting clients. The &quot;Double&quot;
+setting causes <b>cupsd</b>(8) to verify that the hostname
+resolved from the address matches one of the addresses
+returned for that hostname. Double lookups also prevent
+clients with unregistered addresses from connecting to your
+server. The default is &quot;Off&quot; to avoid the
+potential server performance problems with hostname lookups.
+Only set this option to &quot;On&quot; or &quot;Double&quot;
+if absolutely required.</p>
+
+<p style="margin-left:11%;"><b>IdleExitTimeout</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the length of time to
+wait before shutting down due to inactivity. The default is
+&quot;60&quot; seconds. Note: Only applicable when
+<b>cupsd</b>(8) is run on-demand (e.g., with <b>-l</b>).</p>
+
+<p style="margin-left:11%;"><b>JobKillDelay</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the number of seconds
+to wait before killing the filters and backend associated
+with a canceled or held job. The default is
+&quot;30&quot;.</p>
+
+<p style="margin-left:11%;"><b>JobRetryInterval</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the interval between
+retries of jobs in seconds. This is typically used for fax
+queues but can also be used with normal print queues whose
+error policy is &quot;retry-job&quot; or
+&quot;retry-current-job&quot;. The default is
+&quot;30&quot;.</p>
+
+<p style="margin-left:11%;"><b>JobRetryLimit</b>
+<i>count</i></p>
+
+<p style="margin-left:18%;">Specifies the number of retries
+that are done for jobs. This is typically used for fax
+queues but can also be used with normal print queues whose
+error policy is &quot;retry-job&quot; or
+&quot;retry-current-job&quot;. The default is
+&quot;5&quot;.</p>
+
+<p style="margin-left:11%;"><b>KeepAlive Yes <br>
+KeepAlive No</b></p>
+
+<p style="margin-left:18%;">Specifies whether to support
+HTTP keep-alive connections. The default is
+&quot;Yes&quot;.</p>
+
+<p style="margin-left:11%;"><b>&lt;Limit</b>
+<i>operation</i> ...<b>&gt;</b> ...
+<b>&lt;/Limit&gt;</b></p>
+
+<p style="margin-left:18%;">Specifies the IPP operations
+that are being limited inside a Policy section. IPP
+operation names are listed below in the section &quot;IPP
+OPERATION NAMES&quot;.</p>
+
+<p style="margin-left:11%;"><b>&lt;Limit</b> <i>method</i>
+...<b>&gt;</b> ... <b>&lt;/Limit&gt; <br>
+&lt;LimitExcept</b> <i>method</i> ...<b>&gt;</b> ...
+<b>&lt;/LimitExcept&gt;</b></p>
+
+<p style="margin-left:18%;">Specifies the HTTP methods that
+are being limited inside a Location section. HTTP method
+names are listed below in the section &quot;HTTP METHOD
+NAMES&quot;.</p>
+
+<p style="margin-left:11%;"><b>LimitRequestBody</b>
+<i>size</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum size of
+print files, IPP requests, and HTML form data. The default
+is &quot;0&quot; which disables the limit check.</p>
+
+<p style="margin-left:11%;"><b>Listen</b>
+<i>ipv4-address</i><b>:</b><i>port</i> <b><br>
+Listen [</b><i>ipv6-address</i><b>]:</b><i>port</i> <b><br>
+Listen *:</b><i>port</i> <b><br>
+Listen</b> <i>/path/to/domain/socket</i></p>
+
+<p style="margin-left:18%;">Listens to the specified
+address and port or domain socket path for connections.
+Multiple Listen directives can be provided to listen on
+multiple addresses. The Listen directive is similar to the
+Port directive but allows you to restrict access to specific
+interfaces or networks. Note: &quot;Listen
+*:<i>port</i>&quot; and &quot;Port <i>port</i>&quot;
+effectively listen on all IP addresses, so you cannot
+combine them with Listen directives for explicit IPv4 or
+IPv6 addresses on the same port.</p>
+
+<p style="margin-left:11%;"><b>&lt;Location</b>
+<i>/path</i><b>&gt;</b> ... <b>&lt;/Location&gt;</b></p>
+
+<p style="margin-left:18%;">Specifies access control for
+the named location. Paths are documented below in the
+section &quot;LOCATION PATHS&quot;.</p>
+
+<p style="margin-left:11%;"><b>LogDebugHistory</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the number of
+debugging messages that are retained for logging if an error
+occurs in a print job. Debug messages are logged regardless
+of the LogLevel setting.</p>
+
+<p style="margin-left:11%;"><b>LogLevel</b> none <b><br>
+LogLevel</b> emerg <b><br>
+LogLevel</b> alert <b><br>
+LogLevel</b> crit <b><br>
+LogLevel</b> error <b><br>
+LogLevel</b> warn <b><br>
+LogLevel</b> notice <b><br>
+LogLevel</b> info <b><br>
+LogLevel</b> debug <b><br>
+LogLevel</b> debug2</p>
+
+<p style="margin-left:18%;">Specifies the level of logging
+for the ErrorLog file. The value &quot;none&quot; stops all
+logging while &quot;debug2&quot; logs everything. The
+default is &quot;warn&quot;.</p>
+
+<p style="margin-left:11%;"><b>LogTimeFormat</b> standard
+<b><br>
+LogTimeFormat</b> usecs</p>
+
+<p style="margin-left:18%;">Specifies the format of the
+date and time in the log files. The value
+&quot;standard&quot; is the default and logs whole seconds
+while &quot;usecs&quot; logs microseconds.</p>
+
+<p style="margin-left:11%;"><b>MaxClients</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous clients that are allowed by the scheduler. The
+default is &quot;100&quot;.</p>
+
+<p style="margin-left:11%;"><b>MaxClientsPerHost</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous clients that are allowed from a single address.
+The default is the MaxClients value.</p>
+
+<p style="margin-left:11%;"><b>MaxCopies</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+copies that a user can print of each job. The default is
+&quot;9999&quot;.</p>
+
+<p style="margin-left:11%;"><b>MaxHoldTime</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum time a
+job may remain in the &quot;indefinite&quot; hold state
+before it is canceled. The default is &quot;0&quot; which
+disables cancellation of held jobs.</p>
+
+<p style="margin-left:11%;"><b>MaxJobs</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous jobs that are allowed. Set to &quot;0&quot; to
+allow an unlimited number of jobs. The default is
+&quot;500&quot;.</p>
+
+<p style="margin-left:11%;"><b>MaxJobsPerPrinter</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous jobs that are allowed per printer. The default
+is &quot;0&quot; which allows up to MaxJobs jobs per
+printer.</p>
+
+<p style="margin-left:11%;"><b>MaxJobsPerUser</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous jobs that are allowed per user. The default is
+&quot;0&quot; which allows up to MaxJobs jobs per user.</p>
+
+<p style="margin-left:11%;"><b>MaxJobTime</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum time a
+job may take to print before it is canceled. Set to
+&quot;0&quot; to disable cancellation of &quot;stuck&quot;
+jobs. The default is &quot;10800&quot; (3 hours).</p>
+
+<p style="margin-left:11%;"><b>MaxLogSize</b>
+<i>size</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum size of
+the log files before they are rotated. The value
+&quot;0&quot; disables log rotation. The default is
+&quot;1048576&quot; (1MB).</p>
+
+<p style="margin-left:11%;"><b>MaxSubscriptions</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous event subscriptions that are allowed. Set to
+&quot;0&quot; to allow an unlimited number of subscriptions.
+The default is &quot;100&quot;.</p>
+
+<p style="margin-left:11%;"><b>MaxSubscriptionsPerJob</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous event subscriptions that are allowed per job.
+The default is &quot;0&quot; which allows up to
+MaxSubscriptions subscriptions per job.</p>
+
+
+<p style="margin-left:11%;"><b>MaxSubscriptionsPerPrinter</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous event subscriptions that are allowed per
+printer. The default is &quot;0&quot; which allows up to
+MaxSubscriptions subscriptions per printer.</p>
+
+<p style="margin-left:11%;"><b>MaxSubscriptionsPerUser</b>
+<i>number</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum number of
+simultaneous event subscriptions that are allowed per user.
+The default is &quot;0&quot; which allows up to
+MaxSubscriptions subscriptions per user.</p>
+
+
+<p style="margin-left:11%;"><b>MultipleOperationTimeout</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the maximum amount of
+time to allow between files in a multiple file print job.
+The default is &quot;900&quot; (15 minutes).</p>
+
+<p style="margin-left:11%;"><b>&lt;Policy</b>
+<i>name</i><b>&gt;</b> ... <b>&lt;/Policy&gt;</b></p>
+
+<p style="margin-left:18%;">Specifies access control for
+the named policy.</p>
+
+<p style="margin-left:11%;"><b>Port</b> <i>number</i></p>
+
+<p style="margin-left:18%;">Listens to the specified port
+number for connections.</p>
+
+<p style="margin-left:11%;"><b>PreserveJobFiles Yes <br>
+PreserveJobFiles No <br>
+PreserveJobFiles</b> <i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies whether job files
+(documents) are preserved after a job is printed. If a
+numeric value is specified, job files are preserved for the
+indicated number of seconds after printing. The default is
+&quot;86400&quot; (preserve 1 day).</p>
+
+<p style="margin-left:11%;"><b>PreserveJobHistory Yes <br>
+PreserveJobHistory No <br>
+PreserveJobHistory</b> <i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies whether the job
+history is preserved after a job is printed. If a numeric
+value is specified, the job history is preserved for the
+indicated number of seconds after printing. If
+&quot;Yes&quot;, the job history is preserved until the
+MaxJobs limit is reached. The default is
+&quot;Yes&quot;.</p>
+
+<p style="margin-left:11%;"><b>ReadyPaperSizes</b>
+<i>sizename[,...]</i></p>
+
+<p style="margin-left:18%;">Specifies a list of potential
+paper sizes that are reported as &quot;ready&quot; (loaded).
+The actual list will only contain sizes that each printer
+supports. The default is
+&quot;Letter,Legal,Tabloid,4x6,Env10&quot; when the default
+paper size is &quot;Letter&quot; and
+&quot;A3,A4,A5,A6,EnvDL&quot; otherwise. Note: Paper sizes
+must use the size names from the PPD file and not PWG
+self-describing media size names.</p>
+
+<p style="margin-left:11%;"><b>ReloadTimeout</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the amount of time to
+wait for job completion before restarting the scheduler. The
+default is &quot;30&quot;.</p>
+
+<p style="margin-left:11%;"><b>ServerAdmin</b>
+<i>email-address</i></p>
+
+<p style="margin-left:18%;">Specifies the email address of
+the server administrator. The default value is
+&quot;root@ServerName&quot;.</p>
+
+<p style="margin-left:11%;"><b>ServerAlias</b>
+<i>hostname</i> [ ... <i>hostname</i> ] <b><br>
+ServerAlias *</b></p>
+
+<p style="margin-left:18%;">The ServerAlias directive is
+used for HTTP Host header validation when clients connect to
+the scheduler from external interfaces. Using the special
+name &quot;*&quot; can expose your system to known
+browser-based DNS rebinding attacks, even when accessing
+sites through a firewall. If the auto-discovery of alternate
+names does not work, we recommend listing each alternate
+name with a ServerAlias directive instead of using
+&quot;*&quot;.</p>
+
+<p style="margin-left:11%;"><b>ServerName</b>
+<i>hostname</i></p>
+
+<p style="margin-left:18%;">Specifies the fully-qualified
+hostname of the server. The default is the value reported by
+the <b>hostname</b>(1) command.</p>
+
+<p style="margin-left:11%;"><b>ServerTokens None <br>
+ServerTokens ProductOnly <br>
+ServerTokens Major <br>
+ServerTokens Minor <br>
+ServerTokens Minimal <br>
+ServerTokens OS <br>
+ServerTokens Full</b></p>
+
+<p style="margin-left:18%;">Specifies what information is
+included in the Server header of HTTP responses.
+&quot;None&quot; disables the Server header.
+&quot;ProductOnly&quot; reports &quot;CUPS&quot;.
+&quot;Major&quot; reports &quot;CUPS/major IPP/2&quot;.
+&quot;Minor&quot; reports &quot;CUPS/major.minor
+IPP/2.1&quot;. &quot;Minimal&quot; reports
+&quot;CUPS/major.minor.patch IPP/2.1&quot;. &quot;OS&quot;
+reports &quot;CUPS/major.minor.path (osname osversion)
+IPP/2.1&quot;. &quot;Full&quot; reports
+&quot;CUPS/major.minor.path (osname osversion; architecture)
+IPP/2.1&quot;. The default is &quot;Minimal&quot;.</p>
+
+<p style="margin-left:11%;"><b>SSLListen</b>
+<i>ipv4-address</i><b>:</b><i>port</i> <b><br>
+SSLListen [</b><i>ipv6-address</i><b>]:</b><i>port</i>
+<b><br>
+SSLListen *:</b><i>port</i></p>
+
+<p style="margin-left:18%;">Listens on the specified
+address and port for encrypted connections.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SSLOptions</b>
+[<i>AllowDH</i>] [<i>AllowRC4</i>] [<i>AllowSSL3</i>]
+[<i>DenyCBC</i>] [<i>DenyTLS1.0</i>] <br>
+[<i>MaxTLS1.0</i>] [<i>MaxTLS1.1</i>] [<i>MaxTLS1.2</i>]
+[<i>MaxTLS1.3</i>] [<i>MinTLS1.0</i>] [<i>MinTLS1.1</i>]
+<br>
+[<i>MinTLS1.2</i>] [<i>MinTLS1.3</i>] <b><br>
+SSLOptions None</b></p>
+
+<p style="margin-left:18%;">Sets encryption options (only
+in /etc/cups/client.conf). By default, CUPS only supports
+encryption using TLS v1.0 or higher using known secure
+cipher suites. Security is reduced when <i>Allow</i> options
+are used. Security is enhanced when <i>Deny</i> options are
+used. The <i>AllowDH</i> option enables cipher suites using
+plain Diffie-Hellman key negotiation (not supported on
+systems using GNU TLS). The <i>AllowRC4</i> option enables
+the 128-bit RC4 cipher suites, which are required for some
+older clients. The <i>AllowSSL3</i> option enables SSL v3.0,
+which is required for some older clients that do not support
+TLS v1.0. The <i>DenyCBC</i> option disables all CBC cipher
+suites. The <i>DenyTLS1.0</i> option disables TLS v1.0
+support - this sets the minimum protocol version to TLS
+v1.1. The <i>MinTLS</i> options set the minimum TLS version
+to support. The <i>MaxTLS</i> options set the maximum TLS
+version to support. Not all operating systems support TLS
+1.3 at this time.</p>
+
+<p style="margin-left:11%;"><b>SSLPort</b> <i>port</i></p>
+
+<p style="margin-left:18%;">Listens on the specified port
+for encrypted connections.</p>
+
+<p style="margin-left:11%;"><b>StrictConformance Yes <br>
+StrictConformance No</b></p>
+
+<p style="margin-left:18%;">Specifies whether the scheduler
+requires clients to strictly adhere to the IPP
+specifications. The default is &quot;No&quot;.</p>
+
+<p style="margin-left:11%;"><b>Timeout</b>
+<i>seconds</i></p>
+
+<p style="margin-left:18%;">Specifies the HTTP request
+timeout. The default is &quot;900&quot; (15 minutes).</p>
+
+<p style="margin-left:11%;"><b>WebInterface yes <br>
+WebInterface no</b></p>
+
+<p style="margin-left:18%;">Specifies whether the web
+interface is enabled. The default is &quot;No&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>HTTP METHOD
+NAMES</b> <br>
+The following HTTP methods are supported by
+<b>cupsd</b>(8):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>GET</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Used by a client to download icons and other printer
+resources and to access the CUPS web interface.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>HEAD</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Used by a client to get the type, size, and modification
+date of resources.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">OPTIONS</p>
+
+<p style="margin-left:18%;">Used by a client to establish a
+secure (SSL/TLS) connection.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>POST</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Used by a client to submit IPP requests and HTML forms
+from the CUPS web interface.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>PUT</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Used by a client to upload configuration files.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>IPP
+OPERATION NAMES</b> <br>
+The following IPP operations are supported by
+<b>cupsd</b>(8): <br>
+CUPS-Accept-Jobs</p>
+
+<p style="margin-left:18%;">Allows a printer to accept new
+jobs.</p>
+
+<p style="margin-left:11%;">CUPS-Add-Modify-Class</p>
+
+<p style="margin-left:18%;">Adds or modifies a printer
+class.</p>
+
+<p style="margin-left:11%;">CUPS-Add-Modify-Printer</p>
+
+<p style="margin-left:18%;">Adds or modifies a printer.</p>
+
+<p style="margin-left:11%;">CUPS-Authenticate-Job</p>
+
+<p style="margin-left:18%;">Releases a job that is held for
+authentication.</p>
+
+<p style="margin-left:11%;">CUPS-Delete-Class</p>
+
+<p style="margin-left:18%;">Deletes a printer class.</p>
+
+<p style="margin-left:11%;">CUPS-Delete-Printer</p>
+
+<p style="margin-left:18%;">Deletes a printer.</p>
+
+<p style="margin-left:11%;">CUPS-Get-Classes</p>
+
+<p style="margin-left:18%;">Gets a list of printer
+classes.</p>
+
+<p style="margin-left:11%;">CUPS-Get-Default</p>
+
+<p style="margin-left:18%;">Gets the server default printer
+or printer class.</p>
+
+<p style="margin-left:11%;">CUPS-Get-Devices</p>
+
+<p style="margin-left:18%;">Gets a list of devices that are
+currently available.</p>
+
+<p style="margin-left:11%;">CUPS-Get-Document</p>
+
+<p style="margin-left:18%;">Gets a document file for a
+job.</p>
+
+<p style="margin-left:11%;">CUPS-Get-PPD</p>
+
+<p style="margin-left:18%;">Gets a PPD file.</p>
+
+<p style="margin-left:11%;">CUPS-Get-PPDs</p>
+
+<p style="margin-left:18%;">Gets a list of installed PPD
+files.</p>
+
+<p style="margin-left:11%;">CUPS-Get-Printers</p>
+
+<p style="margin-left:18%;">Gets a list of printers.</p>
+
+<p style="margin-left:11%;">CUPS-Move-Job</p>
+
+<p style="margin-left:18%;">Moves a job.</p>
+
+<p style="margin-left:11%;">CUPS-Reject-Jobs</p>
+
+<p style="margin-left:18%;">Prevents a printer from
+accepting new jobs.</p>
+
+<p style="margin-left:11%;">CUPS-Set-Default</p>
+
+<p style="margin-left:18%;">Sets the server default printer
+or printer class.</p>
+
+<p style="margin-left:11%;">Cancel-Job</p>
+
+<p style="margin-left:18%;">Cancels a job.</p>
+
+<p style="margin-left:11%;">Cancel-Jobs</p>
+
+<p style="margin-left:18%;">Cancels one or more jobs.</p>
+
+<p style="margin-left:11%;">Cancel-My-Jobs</p>
+
+<p style="margin-left:18%;">Cancels one or more jobs
+creates by a user.</p>
+
+<p style="margin-left:11%;">Cancel-Subscription</p>
+
+<p style="margin-left:18%;">Cancels a subscription.</p>
+
+<p style="margin-left:11%;">Close-Job</p>
+
+<p style="margin-left:18%;">Closes a job that is waiting
+for more documents.</p>
+
+<p style="margin-left:11%;">Create-Job</p>
+
+<p style="margin-left:18%;">Creates a new job with no
+documents.</p>
+
+<p style="margin-left:11%;">Create-Job-Subscriptions</p>
+
+<p style="margin-left:18%;">Creates a subscription for job
+events.</p>
+
+
+<p style="margin-left:11%;">Create-Printer-Subscriptions</p>
+
+<p style="margin-left:18%;">Creates a subscription for
+printer events.</p>
+
+<p style="margin-left:11%;">Get-Job-Attributes</p>
+
+<p style="margin-left:18%;">Gets information about a
+job.</p>
+
+<p style="margin-left:11%;">Get-Jobs</p>
+
+<p style="margin-left:18%;">Gets a list of jobs.</p>
+
+<p style="margin-left:11%;">Get-Notifications</p>
+
+<p style="margin-left:18%;">Gets a list of event
+notifications for a subscription.</p>
+
+<p style="margin-left:11%;">Get-Printer-Attributes</p>
+
+<p style="margin-left:18%;">Gets information about a
+printer or printer class.</p>
+
+
+<p style="margin-left:11%;">Get-Subscription-Attributes</p>
+
+<p style="margin-left:18%;">Gets information about a
+subscription.</p>
+
+<p style="margin-left:11%;">Get-Subscriptions</p>
+
+<p style="margin-left:18%;">Gets a list of
+subscriptions.</p>
+
+<p style="margin-left:11%;">Hold-Job</p>
+
+<p style="margin-left:18%;">Holds a job from printing.</p>
+
+<p style="margin-left:11%;">Hold-New-Jobs</p>
+
+<p style="margin-left:18%;">Holds all new jobs from
+printing.</p>
+
+<p style="margin-left:11%;">Pause-Printer</p>
+
+<p style="margin-left:18%;">Stops processing of jobs by a
+printer or printer class.</p>
+
+
+<p style="margin-left:11%;">Pause-Printer-After-Current-Job</p>
+
+<p style="margin-left:18%;">Stops processing of jobs by a
+printer or printer class after the current job is
+finished.</p>
+
+<p style="margin-left:11%;">Print-Job</p>
+
+<p style="margin-left:18%;">Creates a new job with a single
+document.</p>
+
+<p style="margin-left:11%;">Purge-Jobs</p>
+
+<p style="margin-left:18%;">Cancels one or more jobs and
+deletes the job history.</p>
+
+<p style="margin-left:11%;">Release-Held-New-Jobs</p>
+
+<p style="margin-left:18%;">Allows previously held jobs to
+print.</p>
+
+<p style="margin-left:11%;">Release-Job</p>
+
+<p style="margin-left:18%;">Allows a job to print.</p>
+
+<p style="margin-left:11%;">Renew-Subscription</p>
+
+<p style="margin-left:18%;">Renews a subscription.</p>
+
+<p style="margin-left:11%;">Restart-Job</p>
+
+<p style="margin-left:18%;">Reprints a job, if
+possible.</p>
+
+<p style="margin-left:11%;">Send-Document</p>
+
+<p style="margin-left:18%;">Adds a document to a job.</p>
+
+<p style="margin-left:11%;">Set-Job-Attributes</p>
+
+<p style="margin-left:18%;">Changes job information.</p>
+
+<p style="margin-left:11%;">Set-Printer-Attributes</p>
+
+<p style="margin-left:18%;">Changes printer or printer
+class information.</p>
+
+<p style="margin-left:11%;">Validate-Job</p>
+
+<p style="margin-left:18%;">Validates options for a new
+job.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>LOCATION
+PATHS</b> <br>
+The following paths are commonly used when configuring
+<b>cupsd</b>(8):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>/</p></td>
+<td width="6%"></td>
+<td width="82%">
+
+
+<p>The path for all get operations (get-printers, get-jobs,
+etc.)</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">/admin</p>
+
+<p style="margin-left:18%;">The path for all administration
+operations (add-printer, delete-printer, start-printer,
+etc.)</p>
+
+<p style="margin-left:11%;">/admin/conf</p>
+
+<p style="margin-left:18%;">The path for access to the CUPS
+configuration files (cupsd.conf, client.conf, etc.)</p>
+
+<p style="margin-left:11%;">/admin/log</p>
+
+<p style="margin-left:18%;">The path for access to the CUPS
+log files (access_log, error_log, page_log)</p>
+
+<p style="margin-left:11%;">/classes</p>
+
+<p style="margin-left:18%;">The path for all printer
+classes</p>
+
+<p style="margin-left:11%;">/classes/name</p>
+
+<p style="margin-left:18%;">The resource for the named
+printer class</p>
+
+<p style="margin-left:11%;">/jobs</p>
+
+<p style="margin-left:18%;">The path for all jobs
+(hold-job, release-job, etc.)</p>
+
+<p style="margin-left:11%;">/jobs/id</p>
+
+<p style="margin-left:18%;">The path for the specified
+job</p>
+
+<p style="margin-left:11%;">/printers</p>
+
+<p style="margin-left:18%;">The path for all printers</p>
+
+<p style="margin-left:11%;">/printers/name</p>
+
+<p style="margin-left:18%;">The path for the named
+printer</p>
+
+<p style="margin-left:11%;">/printers/name.png</p>
+
+<p style="margin-left:18%;">The icon file path for the
+named printer</p>
+
+<p style="margin-left:11%;">/printers/name.ppd</p>
+
+<p style="margin-left:18%;">The PPD file path for the named
+printer</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DIRECTIVES
+VALID WITHIN LOCATION AND LIMIT SECTIONS</b> <br>
+The following directives may be placed inside Location and
+Limit sections in the <b>cupsd.conf</b> file: <b><br>
+Allow all <br>
+Allow none <br>
+Allow</b> <i>host.domain.com</i> <b><br>
+Allow *.</b><i>domain.com</i> <b><br>
+Allow</b> <i>ipv4-address</i> <b><br>
+Allow</b> <i>ipv4-address</i><b>/</b><i>netmask</i> <b><br>
+Allow</b> <i>ipv4-address</i><b>/</b><i>mm</i> <b><br>
+Allow [</b><i>ipv6-address</i><b>] <br>
+Allow [</b><i>ipv6-address</i><b>]/</b><i>mm</i> <b><br>
+Allow @IF(</b><i>name</i><b>) <br>
+Allow @LOCAL</b></p>
+
+<p style="margin-left:18%;">Allows access from the named
+hosts, domains, addresses, or interfaces. The @IF(name) form
+uses the current subnets configured for the named interface.
+The @LOCAL form uses the current subnets configured for all
+interfaces that are not point-to-point, for example Ethernet
+and Wi-Fi interfaces are used but DSL and VPN interfaces are
+not. The Order directive controls whether Allow lines are
+evaluated before or after Deny lines.</p>
+
+<p style="margin-left:11%;"><b>AuthType None <br>
+AuthType Basic <br>
+AuthType Default</b></p>
+
+<p style="margin-left:18%;">Specifies the type of
+authentication required. The value &quot;Default&quot;
+corresponds to the DefaultAuthType value.</p>
+
+<p style="margin-left:11%;"><b>Deny all <br>
+Deny none <br>
+Deny</b> <i>host.domain.com</i> <b><br>
+Deny *.</b><i>domain.com</i> <b><br>
+Deny</b> <i>ipv4-address</i> <b><br>
+Deny</b> <i>ipv4-address</i><b>/</b><i>netmask</i> <b><br>
+Deny</b> <i>ipv4-address</i><b>/</b><i>mm</i> <b><br>
+Deny [</b><i>ipv6-address</i><b>] <br>
+Deny [</b><i>ipv6-address</i><b>]/</b><i>mm</i> <b><br>
+Deny @IF(</b><i>name</i><b>) <br>
+Deny @LOCAL</b></p>
+
+<p style="margin-left:18%;">Denies access from the named
+hosts, domains, addresses, or interfaces. The @IF(name) form
+uses the current subnets configured for the named interface.
+The @LOCAL form uses the current subnets configured for all
+interfaces that are not point-to-point, for example Ethernet
+and Wi-Fi interfaces are used but DSL and VPN interfaces are
+not. The Order directive controls whether Deny lines are
+evaluated before or after Allow lines.</p>
+
+<p style="margin-left:11%;"><b>Encryption IfRequested <br>
+Encryption Never <br>
+Encryption Required</b></p>
+
+<p style="margin-left:18%;">Specifies the level of
+encryption that is required for a particular location. The
+default value is &quot;IfRequested&quot;.</p>
+
+<p style="margin-left:11%;"><b>Order allow,deny</b></p>
+
+<p style="margin-left:18%;">Specifies that access is denied
+by default. Allow lines are then processed followed by Deny
+lines to determine whether a client may access a particular
+resource.</p>
+
+<p style="margin-left:11%;"><b>Order deny,allow</b></p>
+
+<p style="margin-left:18%;">Specifies that access is
+allowed by default. Deny lines are then processed followed
+by Allow lines to determine whether a client may access a
+particular resource.</p>
+
+<p style="margin-left:11%;"><b>Require group</b>
+<i>group-name</i> [ <i>group-name</i> ... ]</p>
+
+<p style="margin-left:18%;">Specifies that an authenticated
+user must be a member of one of the named groups.</p>
+
+<p style="margin-left:11%;"><b>Require user
+{</b><i>user-name</i>|<b>@</b><i>group-name</i>} ...</p>
+
+<p style="margin-left:18%;">Specifies that an authenticated
+user must match one of the named users or be a member of one
+of the named groups. The group name &quot;@SYSTEM&quot;
+corresponds to the list of groups defined by the SystemGroup
+directive in the <b>cups-files.conf</b>(5) file. The group
+name &quot;@OWNER&quot; corresponds to the owner of the
+resource, for example the person that submitted a print job.
+Note: The &rsquo;root&rsquo; user is not special and must be
+granted privileges like any other user account.</p>
+
+<p style="margin-left:11%;"><b>Require valid-user</b></p>
+
+<p style="margin-left:18%;">Specifies that any
+authenticated user is acceptable.</p>
+
+<p style="margin-left:11%;"><b>Satisfy all</b></p>
+
+<p style="margin-left:18%;">Specifies that all Allow,
+AuthType, Deny, Order, and Require conditions must be
+satisfied to allow access.</p>
+
+<p style="margin-left:11%;"><b>Satisfy any</b></p>
+
+<p style="margin-left:18%;">Specifies that any a client may
+access a resource if either the authentication
+(AuthType/Require) or address (Allow/Deny/Order) conditions
+are satisfied. For example, this can be used to require
+authentication only for remote accesses.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DIRECTIVES
+VALID WITHIN POLICY SECTIONS</b> <br>
+The following directives may be placed inside Policy
+sections in the <b>cupsd.conf</b> file: <b><br>
+JobPrivateAccess all <br>
+JobPrivateAccess default <br>
+JobPrivateAccess</b>
+{<i>user</i>|<b>@</b><i>group</i>|<b>@ACL</b>|<b>@OWNER</b>|<b>@SYSTEM</b>}
+...</p>
+
+<p style="margin-left:18%;">Specifies an access list for a
+job&rsquo;s private values. The &quot;default&quot; access
+list is &quot;@OWNER @SYSTEM&quot;. &quot;@ACL&quot; maps to
+the printer&rsquo;s requesting-user-name-allowed or
+requesting-user-name-denied values. &quot;@OWNER&quot; maps
+to the job&rsquo;s owner. &quot;@SYSTEM&quot; maps to the
+groups listed for the SystemGroup directive in the
+<b>cups-files.conf</b>(5) file.</p>
+
+<p style="margin-left:11%;"><b>JobPrivateValues all <br>
+JobPrivateValues default <br>
+JobPrivateValues none <br>
+JobPrivateValues</b> <i>attribute-name</i> [ ...
+<i>attribute-name</i> ]</p>
+
+<p style="margin-left:18%;">Specifies the list of job
+values to make private. The &quot;default&quot; values are
+&quot;job-name&quot;, &quot;job-originating-host-name&quot;,
+&quot;job-originating-user-name&quot;, and
+&quot;phone&quot;.</p>
+
+<p style="margin-left:11%;"><b>SubscriptionPrivateAccess
+all <br>
+SubscriptionPrivateAccess default <br>
+SubscriptionPrivateAccess</b>
+{<i>user</i>|<b>@</b><i>group</i>|<b>@ACL</b>|<b>@OWNER</b>|<b>@SYSTEM</b>}
+...</p>
+
+<p style="margin-left:18%;">Specifies an access list for a
+subscription&rsquo;s private values. The &quot;default&quot;
+access list is &quot;@OWNER @SYSTEM&quot;. &quot;@ACL&quot;
+maps to the printer&rsquo;s requesting-user-name-allowed or
+requesting-user-name-denied values. &quot;@OWNER&quot; maps
+to the job&rsquo;s owner. &quot;@SYSTEM&quot; maps to the
+groups listed for the SystemGroup directive in the
+<b>cups-files.conf</b>(5) file.</p>
+
+<p style="margin-left:11%;"><b>SubscriptionPrivateValues
+all <br>
+SubscriptionPrivateValues default <br>
+SubscriptionPrivateValues none <br>
+SubscriptionPrivateValues</b> <i>attribute-name</i> [ ...
+<i>attribute-name</i> ]</p>
+
+<p style="margin-left:18%;">Specifies the list of
+subscription values to make private. The &quot;default&quot;
+values are &quot;notify-events&quot;,
+&quot;notify-pull-method&quot;,
+&quot;notify-recipient-uri&quot;,
+&quot;notify-subscriber-user-name&quot;, and
+&quot;notify-user-data&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DEPRECATED
+DIRECTIVES</b> <br>
+The following directives are deprecated and will be removed
+in a future release of CUPS: <b><br>
+AuthType Negotiate</b></p>
+
+<p style="margin-left:18%;">Specifies Kerberos
+authentication is required.</p>
+
+<p style="margin-left:11%;"><b>Classification</b>
+<i>banner</i></p>
+
+<p style="margin-left:18%;">Specifies the security
+classification of the server. Any valid banner name can be
+used, including &quot;classified&quot;,
+&quot;confidential&quot;, &quot;secret&quot;,
+&quot;topsecret&quot;, and &quot;unclassified&quot;, or the
+banner can be omitted to disable secure printing functions.
+The default is no classification banner.</p>
+
+<p style="margin-left:11%;"><b>ClassifyOverride Yes <br>
+ClassifyOverride No</b></p>
+
+<p style="margin-left:18%;">Specifies whether users may
+override the classification (cover page) of individual print
+jobs using the &quot;job-sheets&quot; option. The default is
+&quot;No&quot;.</p>
+
+<p style="margin-left:11%;"><b>DefaultAuthType
+Negotiate</b></p>
+
+<p style="margin-left:18%;">Specifies that Kerberos
+authentication is required by default.</p>
+
+<p style="margin-left:11%;"><b>GSSServiceName</b>
+<i>name</i></p>
+
+<p style="margin-left:18%;">Specifies the service name when
+using Kerberos authentication. The default service name is
+&quot;http.&quot;</p>
+
+<p style="margin-left:11%;"><b>PageLogFormat</b>
+<i>format-string</i></p>
+
+<p style="margin-left:18%;">Specifies the format of PageLog
+lines. Sequences beginning with percent (%) characters are
+replaced with the corresponding information, while all other
+characters are copied literally. The following percent
+sequences are recognized:</p>
+
+<p style="margin-left:18%; margin-top: 1em">&quot;%%&quot;
+inserts a single percent character. <br>
+&quot;%{name}&quot; inserts the value of the specified IPP
+attribute. <br>
+&quot;%C&quot; inserts the number of copies for the current
+page. <br>
+&quot;%P&quot; inserts the current page number. <br>
+&quot;%T&quot; inserts the current date and time in common
+log format. <br>
+&quot;%j&quot; inserts the job ID. <br>
+&quot;%p&quot; inserts the printer name. <br>
+&quot;%u&quot; inserts the username.</p>
+
+<p style="margin-left:18%; margin-top: 1em">The default is
+the empty string, which disables page logging. The string
+&quot;%p %u %j %T %P %C %{job-billing}
+%{job-originating-host-name} %{job-name} %{media}
+%{sides}&quot; creates a page log with the standard items.
+Use &quot;%{job-impressions-completed}&quot; to insert the
+number of pages (sides) that were printed, or
+&quot;%{job-media-sheets-completed}&quot; to insert the
+number of sheets that were printed.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">File,
+directory, and user configuration directives that used to be
+allowed in the <b>cupsd.conf</b> file are now stored in the
+<b>cups-files.conf</b>(5) file instead in order to prevent
+certain types of privilege escalation attacks.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The scheduler
+MUST be restarted manually after making changes to the
+<b>cupsd.conf</b> file. On Linux this is typically done
+using the <b>systemctl</b>(8) command, while on macOS the
+<b>launchctl</b>(8) command is used instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The @LOCAL
+macro name can be confusing since the system running
+<b>cupsd</b> often belongs to a different set of subnets
+from its clients.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>cupsd.conf</b> file format is based on the Apache HTTP
+Server configuration file format.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Log everything
+with a maximum log file size of 32 megabytes:</p>
+
+<p style="margin-left:11%; margin-top: 1em">AccessLogLevel
+all <br>
+LogLevel debug2 <br>
+MaxLogSize 32m</p>
+
+<p style="margin-left:11%; margin-top: 1em">Require
+authentication for accesses from outside the 10.
+network:</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;Location
+/&gt; <br>
+Order allow,deny <br>
+Allow from 10./8 <br>
+AuthType Basic <br>
+Require valid-user <br>
+Satisfy any <br>
+&lt;/Location&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>classes.conf</b>(5),
+<b>cups-files.conf</b>(5), <b>cupsd</b>(8),
+<b>mime.convs</b>(5), <b>mime.types</b>(5),
+<b>printers.conf</b>(5), <b>subscriptions.conf</b>(5), CUPS
+Online Help (http://localhost:631/help)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2020-2022 by OpenPrinting.</p>
+<hr>
+</body>
+</html>

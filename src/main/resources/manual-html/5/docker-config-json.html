@@ -1,0 +1,186 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:04 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CONFIG.JSON</title>
+
+</head>
+<body>
+
+<h1 align="center">CONFIG.JSON</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INTRODUCTION">INTRODUCTION</a><br>
+<a href="#Examples">Examples</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">HOME/.docker/config.json
+- Default Docker configuration file</p>
+
+<h2>INTRODUCTION
+<a name="INTRODUCTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+Docker command line stores its configuration files in a
+directory called <tt>.docker</tt> within your <tt>$HOME</tt>
+directory. Docker manages most of the files in the
+configuration directory and you should not modify them.
+However, you <i>can modify</i> the <tt>config.json</tt> file
+to control certain aspects of how the <tt>docker</tt>
+command behaves.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Currently, you
+can modify the <tt>docker</tt> command behavior using
+environment variables or command-line options. You can also
+use options within <tt>config.json</tt> to modify some of
+the same behavior. When using these mechanisms, you must
+keep in mind the order of precedence among them. Command
+line options override environment variables and environment
+variables override properties you specify in a
+<tt>config.json</tt> file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<tt>config.json</tt> file stores a JSON encoding of several
+properties:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>The <tt>HttpHeaders</tt> property specifies a set of
+headers to include in all messages sent from the Docker
+client to the daemon. Docker does not try to interpret or
+understand these header; it simply puts them into the
+messages. Docker does not allow these headers to change any
+headers it sets for itself.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>The <tt>psFormat</tt> property specifies the default
+format for <tt>docker ps</tt> output. When the
+<tt>--format</tt> flag is not provided with the <tt>docker
+ps</tt> command, Docker&rsquo;s client uses this property.
+If this property is not set, the client falls back to the
+default table format. For a list of supported formatting
+directives, see <b>docker-ps(1)</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>The <tt>detachKeys</tt> property specifies the default
+key sequence which detaches the container. When the
+<tt>--detach-keys</tt> flag is not provide with the
+<tt>docker attach</tt>, <tt>docker exec</tt>, <tt>docker
+run</tt> or <tt>docker start</tt>, Docker&rsquo;s client
+uses this property. If this property is not set, the client
+falls back to the default sequence
+<tt>ctrl-p,ctrl-q</tt>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>The <tt>imagesFormat</tt> property specifies the default
+format for <tt>docker images</tt> output. When the
+<tt>--format</tt> flag is not provided with the <tt>docker
+images</tt> command, Docker&rsquo;s client uses this
+property. If this property is not set, the client falls back
+to the default table format. For a list of supported
+formatting directives, see <b>docker-images(1)</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">You can specify
+a different location for the configuration files via the
+<tt>DOCKER_CONFIG</tt> environment variable or the
+<tt>--config</tt> command line option. If both are
+specified, then the <tt>--config</tt> option overrides the
+<tt>DOCKER_CONFIG</tt> environment variable:</p>
+
+<p style="margin-left:22%; margin-top: 1em">docker --config
+~/testconfigs/ ps</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+instructs Docker to use the configuration files in the
+<tt>~/testconfigs/</tt> directory when running the
+<tt>ps</tt> command.</p>
+
+<h2>Examples
+<a name="Examples"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Following is a
+sample <tt>config.json</tt> file:</p>
+
+<p style="margin-left:22%; margin-top: 1em">{ <br>
+&quot;HttpHeaders&quot;: { <br>
+&quot;MyHeader&quot;: &quot;MyValue&quot; <br>
+}, <br>
+&quot;psFormat&quot;: &quot;table
+{{.ID}}\\t{{.Image}}\\t{{.Command}}\\t{{.Labels}}&quot;,
+<br>
+&quot;imagesFormat&quot;: &quot;table
+{{.ID}}\\t{{.Repository}}\\t{{.Tag}}\\t{{.CreatedAt}}&quot;,
+<br>
+&quot;detachKeys&quot;: &quot;ctrl-e,e&quot; <br>
+}</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">January 2016,
+created by Moxiegirl mary@docker.com &lang;
+mailto:mary@docker.com&rang;</p>
+<hr>
+</body>
+</html>

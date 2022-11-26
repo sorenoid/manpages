@@ -1,0 +1,263 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SIGNAL-SAFETY</title>
+
+</head>
+<body>
+
+<h1 align="center">SIGNAL-SAFETY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">signal-safety -
+async-signal-safe functions</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">An
+<i>async-signal-safe</i> function is one that can be safely
+called from within a signal handler. Many functions are
+<i>not</i> async-signal-safe. In particular, nonreentrant
+functions are generally unsafe to call from a signal
+handler.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The kinds of
+issues that render a function unsafe can be quickly
+understood when one considers the implementation of the
+<i>stdio</i> library, all of whose functions are not
+async-signal-safe.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When performing
+buffered I/O on a file, the <i>stdio</i> functions must
+maintain a statically allocated data buffer along with
+associated counters and indexes (or pointers) that record
+the amount of data and the current position in the buffer.
+Suppose that the main program is in the middle of a call to
+a <i>stdio</i> function such as <b>printf</b>(3) where the
+buffer and associated variables have been partially updated.
+If, at that moment, the program is interrupted by a signal
+handler that also calls <b>printf</b>(3), then the second
+call to <b>printf</b>(3) will operate on inconsistent data,
+with unpredictable results.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To avoid
+problems with unsafe functions, there are two possible
+choices:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Ensure that (a) the signal handler calls only
+async-signal-safe functions, and (b) the signal handler
+itself is reentrant with respect to global variables in the
+main program.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Block signal delivery in the main program when calling
+functions that are unsafe or operating on global data that
+is also accessed by the signal handler.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Generally, the
+second choice is difficult in programs of any complexity, so
+the first choice is taken.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1
+specifies a set of functions that an implementation must
+make async-signal-safe. (An implementation may provide safe
+implementations of additional functions, but this is not
+required by the standard and other implementations may not
+provide the same guarantees.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">In general, a
+function is async-signal-safe either because it is reentrant
+or because it is atomic with respect to signals (i.e., its
+execution can&rsquo;t be interrupted by a signal
+handler).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The set of
+functions required to be async-signal-safe by POSIX.1 is
+shown in the following table. The functions not otherwise
+noted were required to be async-signal-safe in POSIX.1-2001;
+the table details changes in the subsequent standards.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3540461.png" alt="Image grohtml-3540461.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Notes:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">POSIX.1-2001 and POSIX.1-2001
+TC2 required the functions <b>fpathconf</b>(3),
+<b>pathconf</b>(3), and <b>sysconf</b>(3) to be
+async-signal-safe, but this requirement was removed in
+POSIX.1-2008.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>If a signal handler interrupts the execution of an
+unsafe function, and the handler terminates via a call to
+<b>longjmp</b>(3) or <b>siglongjmp</b>(3) and the program
+subsequently calls an unsafe function, then the behavior of
+the program is undefined.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>POSIX.1-2001 TC1 clarified that if an application calls
+<b>fork</b>(2) from a signal handler and any of the fork
+handlers registered by <b>pthread_atfork</b>(3) calls a
+function that is not async-signal-safe, the behavior is
+undefined. A future revision of the standard is likely to
+remove <b>fork</b>(2) from the list of async-signal-safe
+functions.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Asynchronous signal handlers that call functions which
+are cancellation points and nest over regions of deferred
+cancellation may trigger cancellation whose behavior is as
+if asynchronous cancellation had occurred and may cause
+application state to become inconsistent.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>errno</b>
+<br>
+Fetching and setting the value of <i>errno</i> is
+async-signal-safe provided that the signal handler saves
+<i>errno</i> on entry and restores its value before
+returning.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Deviations
+in the GNU C library</b> <br>
+The following known deviations from the standard occur in
+the GNU C library:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Before glibc 2.24,
+<b>execl</b>(3) and <b>execle</b>(3) employed
+<b>realloc</b>(3) internally and were consequently not
+async-signal-safe. This was fixed in glibc 2.24.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The glibc implementation of <b>aio_suspend</b>(3) is not
+async-signal-safe because it uses
+<b>pthread_mutex_lock</b>(3) internally.</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sigaction</b>(2),
+<b>signal</b>(7), <b>standards</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

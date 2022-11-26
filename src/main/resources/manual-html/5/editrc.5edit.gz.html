@@ -1,0 +1,289 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:00 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>EDITRC(5edit) LOCAL EDITRC(5edit)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>editrc</b> &mdash;
+configuration file for editline library</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:15%;"><b>editrc</b></p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The <b>editrc</b> file defines
+various settings to be used by the editline(3edit)
+library.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The format of
+each line is:</p>
+
+<p style="margin-left:14%; margin-top: 1em">[prog:]command
+[arg ...]</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>command</i>
+is one of the editline(3edit) builtin commands. Refer to
+<i>BUILTIN COMMANDS</i> for more information.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>prog</i> is
+the program name string that a program defines when it calls
+el_init(3) to set up editline(3edit), which is usually
+<i>argv[0]</i>. <i>command</i> will be executed for any
+program which matches <i>prog</i>.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>prog</i> may
+also be a regex(3) style regular expression, in which case
+<i>command</i> will be executed for any program that matches
+the regular expression.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If <i>prog</i>
+is absent, <i>command</i> is executed for all programs.</p>
+
+<p style="margin-top: 1em"><b>BUILTIN COMMANDS</b></p>
+
+<p style="margin-left:6%;">The <b>editline</b> library has
+some builtin commands, which affect the way that the line
+editing and history functions operate. These are based on
+similar named builtins present in the tcsh(1) shell.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The following
+builtin commands are available:</p>
+
+<p style="margin-top: 1em"><b>bind</b> [ <b><br>
+-aeklrsv</b>] [<i>key</i> [<i>command</i>]]</p>
+
+<p style="margin-left:14%;">Without options and arguments,
+list all bound keys and macros, and the editor command or
+input string to which each one is bound. If only <i>key</i>
+is supplied, show the binding for that key or macro. If
+<i>key command</i> is supplied, bind the editor
+<i>command</i> to that key or macro.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-a</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">List or change
+key bindings in the vi(1) mode alternate (command mode) key
+map.</p>
+
+<p style="margin-top: 1em"><b>-e</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Bind all keys
+to the standard GNU Emacs-like bindings.</p>
+
+<p style="margin-top: 1em"><b>-k</b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>key</i> is
+interpreted as a symbolic arrow key name, which may be one
+of &rsquo;up&rsquo;, &rsquo;down&rsquo;, &rsquo;left&rsquo;
+or &rsquo;right&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>-l</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">List all editor
+commands and a short description of each.</p>
+
+<p style="margin-top: 1em"><b>-r</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Remove the
+binding of the key or macro <i>key</i>.</p>
+
+<p style="margin-top: 1em"><b>-s</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Define a
+keyboard macro rather than a key binding or command macro:
+<i>command</i> is taken as a literal string and appended to
+the input queue whenever <i>key</i> is typed. Bound keys and
+macros in <i>command</i> are themselves reinterpreted, and
+this continues for ten levels of interpretation.</p>
+
+<p style="margin-top: 1em"><b>-v</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Bind all keys
+to the standard vi(1)-like bindings.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+editline(7edit) manual documents all editor commands and
+contains more information about macros and the input
+queue.</p>
+
+<p style="margin-left:14%; margin-top: 1em"><i>key</i> and
+<i>command</i> can contain control characters of the form
+&rsquo;^<i>character</i>&rsquo; (</p>
+
+<p>e.g. &rsquo;^A&rsquo; ), and the following backslashed
+escape sequences:</p>
+
+<p style="margin-top: 1em"><b>\a</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Bell</p>
+
+<p><b>\b</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Backspace</p>
+
+<p><b>\e</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Escape</p>
+
+<p><b>\f</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Formfeed</p>
+
+<p><b>\n</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Newline</p>
+
+<p><b>\r</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Carriage
+return</p>
+
+<p><b>\t</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Horizontal
+tab</p>
+
+<p><b>\v</b></p>
+
+<p style="margin-left:29%; margin-top: 1em">Vertical
+tab</p>
+
+<p><b>\</b><i>nnn</i></p>
+
+<p style="margin-left:29%; margin-top: 1em">The ASCII
+character corresponding to the octal number <i>nnn</i>.</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&rsquo;\&rsquo;
+nullifies the special meaning of the following character, if
+it has any, notably &rsquo;\&rsquo; and &rsquo;^&rsquo;.</p>
+
+<p style="margin-top: 1em"><b>echotc</b> [ <b><br>
+-sv</b>] <i>arg ...</i></p>
+
+<p style="margin-left:14%;">Exercise terminal capabilities
+given in <i>arg ...</i>. If <i>arg</i> is
+&rsquo;baud&rsquo;, &rsquo;cols&rsquo;, &rsquo;lines&rsquo;,
+&rsquo;rows&rsquo;, &rsquo;meta&rsquo;, or
+&rsquo;tabs&rsquo;, the value of that capability is printed,
+with &ldquo;yes&rdquo; or &ldquo;no&rdquo; indicating that
+the terminal does or does not have that capability.</p>
+
+<p style="margin-left:14%; margin-top: 1em"><b>-s</b>
+returns an empty string for non-existent capabilities,
+rather than causing an error. <b>-v</b> causes messages to
+be verbose.</p>
+
+<p style="margin-top: 1em"><b>edit</b> [on | off]</p>
+
+<p style="margin-left:14%;">Enable or disable the
+<b>editline</b> functionality in a program.</p>
+
+<p style="margin-top: 1em"><b>history</b> <i>list</i> |
+<i>size</i> n | <i>unique</i> n</p>
+
+<p style="margin-left:14%;">The <i>list</i> command lists
+all entries in the history. The <i>size</i> command sets the
+history size to n entries. The <i>unique</i> command
+controls if history should keep duplicate entries. If n is
+non zero, only keep unique history entries. If n is zero,
+then keep all entries (the default).</p>
+
+<p style="margin-top: 1em"><b>settc</b> <i>cap val</i></p>
+
+<p style="margin-left:14%;">Set the terminal capability
+<i>cap</i> to <i>val</i>, as defined in termcap(5). No
+sanity checking is done.</p>
+
+<p style="margin-top: 1em"><b>setty</b> [ <b><br>
+-a</b>] [ <b><br>
+-d</b>] [ <b><br>
+-q</b>] [ <b><br>
+-x</b>] [ <i><br>
++mode</i>] [ <i><br>
+-mode</i>] [ <i><br>
+mode</i>] [ <i><br>
+char=c</i>]</p>
+
+<p style="margin-left:14%;">Control which tty modes that
+<b>editrc</b> won&rsquo;t allow the user to change.
+<b>-d</b>, <b>-q</b> or <b>-x</b> tells <b>setty</b> to act
+on the &rsquo;edit&rsquo;, &rsquo;quote&rsquo; or
+&rsquo;execute&rsquo; set of tty modes respectively;
+defaulting to <b>-x</b>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">Without other
+arguments, <b>setty</b> lists the modes in the chosen set
+which are fixed on (</p>
+
+<p>&rsquo;+mode&rsquo; ) or off ( <br>
+&rsquo;-mode&rsquo; ). <b>-a</b> lists all tty modes in the
+chosen set regardless of the setting. With <i>+mode</i>,
+<i>-mode</i> or <i>mode</i>, fixes <i>mode</i> on or off or
+removes control of <i>mode</i> in the chosen set.</p>
+
+<p style="margin-left:14%; margin-top: 1em"><b>Setty</b>
+can also be used to set tty characters to particular values
+using <i>char=value</i>. If <i>value</i> is empty then the
+character is set to _POSIX_VDISABLE.</p>
+
+<p style="margin-top: 1em"><b>telltc</b></p>
+
+<p style="margin-left:14%;">List the values of all the
+terminal capabilities (see termcap(5)).</p>
+
+<p style="margin-top: 1em"><b>ENVIRONMENT</b> <br>
+EDITRC</p>
+
+<p style="margin-left:24%; margin-top: 1em">Names the
+default configuration file for the editline(3edit)
+library.</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+~/.editrc</p>
+
+<p style="margin-left:24%; margin-top: 1em">Last resort, if
+no other file is specified, user configuration file for the
+editline(3edit) library.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">editline(3edit), regex(3),
+termcap(5), editline(7edit)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">The <b>editline</b> library was
+written by Christos Zoulas, and this manual was written by
+Luke Mewburn, with some sections inspired by tcsh(1).</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD May&nbsp;22,
+2016 BSD</p>
+<hr>
+</body>
+</html>

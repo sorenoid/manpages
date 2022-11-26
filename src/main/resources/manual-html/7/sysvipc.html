@@ -1,0 +1,171 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:03 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SVIPC</title>
+
+</head>
+<body>
+
+<h1 align="center">SVIPC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sysvipc -
+System V interprocess communication mechanisms</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">System V IPC is
+the name given to three interprocess communication
+mechanisms that are widely available on UNIX systems:
+message queues, semaphore, and shared memory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Message
+queues</b> <br>
+System V message queues allow data to be exchanged in units
+called messages. Each messages can have an associated
+priority, POSIX message queues provide an alternative API
+for achieving the same result; see
+<b>mq_overview</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The System V
+message queue API consists of the following system calls:
+<b><br>
+msgget</b>(2)</p>
+
+<p style="margin-left:22%;">Create a new message queue or
+obtain the ID of an existing message queue. This call
+returns an identifier that is used in the remaining
+APIs.</p>
+
+<p style="margin-left:11%;"><b>msgsnd</b>(2)</p>
+
+<p style="margin-left:22%;">Add a message to a queue.</p>
+
+<p style="margin-left:11%;"><b>msgrcv</b>(2)</p>
+
+<p style="margin-left:22%;">Remove a message from a
+queue.</p>
+
+<p style="margin-left:11%;"><b>msgctl</b>(2)</p>
+
+<p style="margin-left:22%;">Perform various control
+operations on a queue, including deletion.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Semaphore
+sets</b> <br>
+System V semaphores allow processes to synchronize their
+actions System V semaphores are allocated in groups called
+sets; each semaphore in a set is a counting semaphore. POSIX
+semaphores provide an alternative API for achieving the same
+result; see <b>sem_overview</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The System V
+semaphore API consists of the following system calls:
+<b><br>
+semget</b>(2)</p>
+
+<p style="margin-left:22%;">Create a new set or obtain the
+ID of an existing set. This call returns an identifier that
+is used in the remaining APIs.</p>
+
+<p style="margin-left:11%;"><b>semop</b>(2)</p>
+
+<p style="margin-left:22%;">Perform operations on the
+semaphores in a set.</p>
+
+<p style="margin-left:11%;"><b>semctl</b>(2)</p>
+
+<p style="margin-left:22%;">Perform various control
+operations on a set, including deletion.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Shared
+memory segments</b> <br>
+System V shared memory allows processes to share a region a
+memory (a &quot;segment&quot;). POSIX shared memory is an
+alternative API for achieving the same result; see
+<b>shm_overview</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The System V
+shared memory API consists of the following system calls:
+<b><br>
+shmget</b>(2)</p>
+
+<p style="margin-left:22%;">Create a new segment or obtain
+the ID of an existing segment. This call returns an
+identifier that is used in the remaining APIs.</p>
+
+<p style="margin-left:11%;"><b>shmat</b>(2)</p>
+
+<p style="margin-left:22%;">Attach an existing shared
+memory object into the calling process&rsquo;s address
+space.</p>
+
+<p style="margin-left:11%;"><b>shmdt</b>(2)</p>
+
+<p style="margin-left:22%;">Detach a segment from the
+calling process&rsquo;s address space.</p>
+
+<p style="margin-left:11%;"><b>shmctl</b>(2)</p>
+
+<p style="margin-left:22%;">Perform various control
+operations on a segment, including deletion.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>IPC
+namespaces</b> <br>
+For a discussion of the interaction of System V IPC objects
+and IPC namespaces, see <b>ipc_namespaces</b>(7).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipcmk</b>(1),
+<b>ipcrm</b>(1), <b>ipcs</b>(1), <b>lsipc</b>(1),
+<b>ipc</b>(2), <b>msgctl</b>(2), <b>msgget</b>(2),
+<b>msgrcv</b>(2), <b>msgsnd</b>(2), <b>semctl</b>(2),
+<b>semget</b>(2), <b>semop</b>(2), <b>shmat</b>(2),
+<b>shmctl</b>(2), <b>shmdt</b>(2), <b>shmget</b>(2),
+<b>ftok</b>(3), <b>ipc_namespaces</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

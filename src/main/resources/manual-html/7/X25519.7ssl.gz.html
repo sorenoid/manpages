@@ -1,0 +1,147 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:59 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>X25519</title>
+
+</head>
+<body>
+
+<h1 align="center">X25519</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X25519, X448 -
+EVP_PKEY X25519 and X448 support</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>X25519</b> and <b>X448</b> <small>EVP_PKEY</small>
+implementation supports key generation and key derivation
+using <b>X25519</b> and <b>X448</b>. It has associated
+private and public key formats compatible with <small>RFC
+8410.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">No additional
+parameters can be set during key generation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The peer public
+key must be set using <b>EVP_PKEY_derive_set_peer()</b> when
+performing key derivation.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A context for
+the <b>X25519</b> algorithm can be obtained by calling:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_PKEY_CTX
+*pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_X25519, NULL);</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the
+<b>X448</b> algorithm a context can be obtained by
+calling:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_PKEY_CTX
+*pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_X448, NULL);</p>
+
+<p style="margin-left:11%; margin-top: 1em">X25519 or X448
+private keys can be set directly using
+<b>EVP_PKEY_new_raw_private_key</b>(3) or loaded from a
+PKCS#8 private key file using
+<b>PEM_read_bio_PrivateKey</b>(3) (or similar function).
+Completely new keys can also be generated (see the example
+below). Setting a private key also sets the associated
+public key.</p>
+
+<p style="margin-left:11%; margin-top: 1em">X25519 or X448
+public keys can be set directly using
+<b>EVP_PKEY_new_raw_public_key</b>(3) or loaded from a
+SubjectPublicKeyInfo structure in a <small>PEM</small> file
+using <b>PEM_read_bio_PUBKEY</b>(3) (or similar
+function).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This example
+generates an <b>X25519</b> private key and writes it to
+standard output in <small>PEM</small> format:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/evp.h&gt; <br>
+#include &lt;openssl/pem.h&gt; <br>
+... <br>
+EVP_PKEY *pkey = NULL; <br>
+EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_X25519,
+NULL); <br>
+EVP_PKEY_keygen_init(pctx); <br>
+EVP_PKEY_keygen(pctx, &amp;pkey); <br>
+EVP_PKEY_CTX_free(pctx); <br>
+PEM_write_PrivateKey(stdout, pkey, NULL, NULL, 0, NULL,
+NULL);</p>
+
+<p style="margin-left:11%; margin-top: 1em">The key
+derivation example in <b>EVP_PKEY_derive</b>(3) can be used
+with <b>X25519</b> and <b>X448</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_PKEY_CTX_new</b>(3),
+<b>EVP_PKEY_keygen</b>(3), <b>EVP_PKEY_derive</b>(3),
+<b>EVP_PKEY_derive_set_peer</b>(3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2017-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

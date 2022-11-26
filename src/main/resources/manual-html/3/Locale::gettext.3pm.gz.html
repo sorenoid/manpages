@@ -1,0 +1,218 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:46 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>gettext</title>
+
+</head>
+<body>
+
+<h1 align="center">gettext</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Locale::gettext
+- message handling functions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Locale::gettext; <br>
+use POSIX; # Needed for setlocale() <br>
+setlocale(LC_MESSAGES, &quot;&quot;); <br>
+# OO interface <br>
+my $d = Locale::gettext-&gt;domain(&quot;my_program&quot;);
+<br>
+print $d-&gt;get(&quot;Welcome to my program&quot;),
+&quot;\n&quot;; <br>
+# (printed in the local language) <br>
+# Direct access to C functions <br>
+textdomain(&quot;my_program&quot;); <br>
+print gettext(&quot;Welcome to my program&quot;),
+&quot;\n&quot;; <br>
+# (printed in the local language)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The gettext
+module permits access from perl to the <b>gettext()</b>
+family of functions for retrieving message strings from
+databases constructed to internationalize software. <br>
+$d = Locale::gettext-&gt;domain( <small>DOMAIN</small> )
+<br>
+$d = Locale::gettext-&gt;domain_raw( <small>DOMAIN</small>
+)</p>
+
+<p style="margin-left:14%;">Creates a new object for
+retrieving strings in the domain
+<b><small>DOMAIN</small></b> and returns it.
+&quot;domain&quot; requests that strings be returned as Perl
+strings (possibly with wide characters) if possible while
+&quot;domain_raw&quot; requests that octet strings directly
+from functions like &quot;dgettext()&quot;.</p>
+
+<p style="margin-left:11%;">$d-&gt;get(
+<small>MSGID</small> )</p>
+
+<p style="margin-left:14%;">Calls &quot;dgettext()&quot; to
+return the translated string for the given
+<b><small>MSGID</small></b> .</p>
+
+<p style="margin-left:11%;">$d-&gt;cget( <small>MSGID,
+CATEGORY</small> )</p>
+
+<p style="margin-left:14%;">Calls &quot;dcgettext()&quot;
+to return the translated string for the given
+<b><small>MSGID</small></b> in the given
+<b><small>CATEGORY</small></b> .</p>
+
+<p style="margin-left:11%;">$d-&gt;nget( <small>MSGID,
+MSGID_PLURAL, N</small> )</p>
+
+<p style="margin-left:14%;">Calls &quot;dngettext()&quot;
+to return the translated string for the given
+<b><small>MSGID</small></b> or
+<b><small>MSGID_PLURAL</small></b> depending on
+<b>N</b>.</p>
+
+<p style="margin-left:11%;">$d-&gt;ncget( <small>MSGID,
+MSGID_PLURAL, N, CATEGORY</small> )</p>
+
+<p style="margin-left:14%;">Calls &quot;dngettext()&quot;
+to return the translated string for the given
+<b><small>MSGID</small></b> or
+<b><small>MSGID_PLURAL</small></b> depending on <b>N</b> in
+the given <b><small>CATEGORY</small></b> .</p>
+
+<p style="margin-left:11%;">$d-&gt;dir([
+<small>NEWDIR</small> ])</p>
+
+<p style="margin-left:14%;">If <b><small>NEWDIR</small></b>
+is given, calls &quot;bindtextdomain&quot; to set the name
+of the directory where messages for the domain represented
+by $d are found. Returns the (possibly changed) current
+directory name.</p>
+
+<p style="margin-left:11%;">$d-&gt;codeset([
+<small>NEWCODE</small> ])</p>
+
+<p style="margin-left:14%;">For instances created with
+&quot;Locale::gettext-&gt;domain_raw&quot;, manuiplates the
+character set of the returned strings. If
+<b><small>NEWCODE</small></b> is given, calls
+&quot;bind_textdomain_codeset&quot; to set the character
+encoding in which messages for the domain represented by $d
+are returned. Returns the (possibly changed) current
+encoding name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gettext()</b>,
+<b>dgettext()</b>, and <b>dcgettext()</b> attempt to
+retrieve a string matching their &quot;msgid&quot; parameter
+within the context of the current locale. <b>dcgettext()</b>
+takes the message&rsquo;s category and the text domain as
+parameters while <b>dgettext()</b> defaults to the
+<small>LC_MESSAGES</small> category and <b>gettext()</b>
+defaults to <small>LC_MESSAGES</small> and uses the current
+text domain. If the string is not found in the database,
+then &quot;msgid&quot; is returned.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ngettext()</b>,
+<b>dngettext()</b>, and <b>dcngettext()</b> function
+similarily but implement differentiation of messages between
+singular and plural. See the documentation for the
+corresponding C functions for details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>textdomain()</b>
+sets the current text domain and returns the previously
+active domain.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>bindtextdomain(domain,
+dirname)</i> instructs the retrieval functions to look for
+the databases belonging to domain &quot;domain&quot; in the
+directory &quot;dirname&quot;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>bind_textdomain_codeset(domain,
+codeset)</i> instructs the retrieval functions to translate
+the returned messages to the character encoding given by
+<b>codeset</b> if the encoding of the message catalog is
+known.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not all
+platforms provide all of the functions. Functions that are
+not available in the underlying C library will not be
+available in Perl either.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Perl programs
+should use the object interface. In addition to being able
+to return native Perl wide character strings,
+&quot;bind_textdomain_codeset&quot; will be emulated if the
+C library does not provide it.</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">1.07.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gettext</b>(3i),
+<b>gettext</b>(1), <b>msgfmt</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Kim Vandry
+&lt;vandry@TZoNE.ORG&gt;</p>
+<hr>
+</body>
+</html>

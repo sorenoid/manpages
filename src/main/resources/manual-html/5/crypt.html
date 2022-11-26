@@ -1,0 +1,671 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:05 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>CRYPT(5) BSD File Formats Manual CRYPT(5)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>crypt</b> &mdash; storage
+format for hashed passphrases and available hashing
+methods</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The hashing methods implemented
+by crypt(3) are designed only to process user passphrases
+for storage and authentication; they are not suitable for
+use as general-purpose cryptographic hashes.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Passphrase
+hashing is not a replacement for strong passphrases. It is
+always possible for an attacker with access to the hashed
+passphrases to guess and check possible cleartext
+passphrases. However, with a strong hashing method, guessing
+will be too slow for the attacker to discover a strong
+passphrase.</p>
+
+<p style="margin-left:6%; margin-top: 1em">All of the
+hashing methods use a &ldquo;salt&rdquo; to perturb the hash
+function, so that the same passphrase may produce many
+possible hashes. Newer methods accept longer salt strings.
+The salt should be chosen at random for each user. Salt
+defeats a number of attacks:</p>
+
+<p style="margin-top: 1em">1.</p>
+
+<p style="margin-left:13%;">It is not possible to hash a
+passphrase once and then test it against each
+account&rsquo;s stored hash; the hash calculation must be
+repeated for each account.</p>
+
+<p style="margin-top: 1em">2.</p>
+
+<p style="margin-left:13%;">It is not possible to tell
+whether two accounts use the same passphrase without
+successfully guessing one of the phrases.</p>
+
+<p style="margin-top: 1em">3.</p>
+
+<p style="margin-left:13%;">Tables of precalculated hashes
+of commonly used passphrases must have an entry for each
+possible salt, which makes them impractically large.</p>
+
+<p style="margin-left:6%; margin-top: 1em">All of the
+hashing methods are also deliberately engineered to be slow;
+they use many iterations of an underlying cryptographic
+primitive to increase the cost of each guess. The newer
+hashing methods allow the number of iterations to be
+adjusted, using the &ldquo;CPU time cost&rdquo; parameter to
+crypt_gensalt(3). This makes it possible to keep the hash
+slow as hardware improves.</p>
+
+<p style="margin-top: 1em"><b>FORMAT OF HASHED
+PASSPHRASES</b></p>
+
+<p style="margin-left:6%;">All of the hashing methods
+supported by crypt(3) produce a hashed passphrase which
+consists of four components: <i>prefix</i>, <i>options</i>,
+<i>salt</i>, and <i>hash</i>. The prefix controls which
+hashing method is to be used, and is the appropriate string
+to pass to crypt_gensalt(3) to select that method. The
+contents of <i>options</i>, <i>salt</i>, and <i>hash</i> are
+up to the method. Depending on the method, the <i>prefix</i>
+and <i>options</i> components may be empty.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<i>setting</i> argument to crypt(3) must begin with the
+first three components of a valid hashed passphrase, but
+anything after that is ignored. This makes authentication
+simple: hash the input passphrase using the stored
+passphrase as the setting, and then compare the result to
+the stored passphrase.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Hashed
+passphrases are always entirely printable ASCII, and do not
+contain any whitespace or the characters &rsquo;:&rsquo;,
+&rsquo;;&rsquo;, &rsquo;*&rsquo;, &rsquo;!&rsquo;, or
+&rsquo;\&rsquo;. (These characters are used as delimiters
+and special markers in the passwd(5) and shadow(5)
+files.)</p>
+
+<p style="margin-left:6%; margin-top: 1em">The syntax of
+each component of a hashed passphrase is up to the hashing
+method. &rsquo;$&rsquo; characters usually delimit
+components, and the salt and hash are usually encoded as
+numerals in base 64. The details of this base-64 encoding
+vary among hashing methods. The common &ldquo;base64&rdquo;
+encoding specified by RFC 4648 is usually <i>not</i>
+used.</p>
+
+<p style="margin-top: 1em"><b>AVAILABLE HASHING
+METHODS</b></p>
+
+<p style="margin-left:6%;">This is a list of <i>all</i> the
+hashing methods supported by crypt(3), in decreasing order
+of strength. Many of the older methods are now considered
+too weak to use for new passphrases. The hashed passphrase
+format is expressed with extended regular expressions (see
+regex(7)) and does not show the division into prefix,
+options, salt, and hash.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>yescrypt</b>
+<br>
+yescrypt is a scalable passphrase hashing scheme designed by
+Solar Designer, which is based on Colin Percival&rsquo;s
+scrypt. Recommended for new hashes.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$y$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$y\$[./A-Za-z0-9]+\$[./A-Za-z0-9]{,86}\$[./A-Za-z0-9]{43}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">256 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">up to 512 (128+ recommended)
+bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1 to 11 (logarithmic)</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>gost-yescrypt</b>
+<br>
+gost-yescrypt uses the output from the yescrypt hashing
+method in place of a hmac message. Thus, the yescrypt crypto
+properties are superseded by the GOST R 34.11-2012
+(Streebog) hash function with a 256 bit digest. This hashing
+method is useful in applications that need modern passphrase
+hashing methods, but require to rely on the cryptographic
+properties of GOST algorithms. The GOST R 34.11-2012
+(Streebog) hash function has been published by the IETF as
+RFC 6986. Recommended for new hashes.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$gy$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$gy\$[./A-Za-z0-9]+\$[./A-Za-z0-9]{,86}\$[./A-Za-z0-9]{43}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">256 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">up to 512 (128+ recommended)
+bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1 to 11 (logarithmic)</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>scrypt</b>
+<br>
+scrypt is a password-based key derivation function created
+by Colin Percival, originally for the Tarsnap online backup
+service. The algorithm was specifically designed to make it
+costly to perform large-scale custom hardware attacks by
+requiring large amounts of memory. In 2016, the scrypt
+algorithm was published by IETF as RFC 7914.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$7$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$7\$[./A-Za-z0-9]{11,97}\$[./A-Za-z0-9]{43}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">256 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">up to 512 (128+ recommended)
+bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">6 to 11 (logarithmic)</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>bcrypt</b>
+<br>
+A hash based on the Blowfish block cipher, modified to have
+an extra-expensive key schedule. Originally developed by
+Niels Provos and David Mazieres for OpenBSD and also
+supported on recent versions of FreeBSD and NetBSD, on
+Solaris 10 and newer, and on several GNU/*/Linux
+distributions.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$2b$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$2[abxy]\$[0-9]{2}\$[./A-Za-z0-9]{53}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">72 characters</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">184 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">128 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">4 to 31 (logarithmic)</p>
+
+<p style="margin-left:6%; margin-top: 1em">The alternative
+prefix &quot;$2y$&quot; is equivalent to &quot;$2b$&quot;.
+It exists for historical reasons only. The alternative
+prefixes &quot;$2a$&quot; and &quot;$2x$&quot; provide
+bug-compatibility with crypt_blowfish 1.0.4 and earlier,
+which incorrectly processed characters with the 8th bit
+set.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>sha512crypt</b>
+<br>
+A hash based on SHA-2 with 512-bit output, originally
+developed by Ulrich Drepper for GNU libc. Supported on Linux
+but not common elsewhere. Acceptable for new hashes. The
+default CPU time cost parameter is 5000, which is too low
+for modern hardware.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$6$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$6\$(rounds=[1-9][0-9]+\$)?[^$:\n]{1,16}\$[./0-9A-Za-z]{86}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">512 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">6 to 96 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1000 to 999,999,999</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>sha256crypt</b>
+<br>
+A hash based on SHA-2 with 256-bit output, originally
+developed by Ulrich Drepper for GNU libc. Supported on Linux
+but not common elsewhere. Acceptable for new hashes. The
+default CPU time cost parameter is 5000, which is too low
+for modern hardware.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$5$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$5\$(rounds=[1-9][0-9]+\$)?[^$:\n]{1,16}\$[./0-9A-Za-z]{43}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">256 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">6 to 96 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1000 to 999,999,999</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>sha1crypt</b>
+<br>
+A hash based on HMAC-SHA1. Originally developed by Simon
+Gerraty for NetBSD. Not as weak as the DES-based hashes
+below, but SHA1 is so cheap on modern hardware that it
+should not be used for new hashes.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$sha1&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$sha1\$[1-9][0-9]+\$[./0-9A-Za-z]{1,64}\$[./0-9A-Za-z]{8,64}[./0-9A-Za-z]{32}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">160 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">6 to 384 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">4 to 4,294,967,295</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>SunMD5</b>
+<br>
+A hash based on the MD5 algorithm, with additional
+cleverness to make precomputation difficult, originally
+developed by Alec David Muffet for Solaris. Not adopted
+elsewhere, to our knowledge. Not as weak as the DES-based
+hashes below, but MD5 is so cheap on modern hardware that it
+should not be used for new hashes.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$md5&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$md5(,rounds=[1-9][0-9]+)?\$[./0-9A-Za-z]{8}\${1,2}[./0-9A-Za-z]{22}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">128 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">48 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">4096 to 4,294,963,199</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>md5crypt</b>
+<br>
+A hash based on the MD5 algorithm, originally developed by
+Poul-Henning Kamp for FreeBSD. Supported on most free Unixes
+and newer versions of Solaris. Not as weak as the DES-based
+hashes below, but MD5 is so cheap on modern hardware that it
+should not be used for new hashes. CPU time cost is not
+adjustable.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$1$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+
+<p style="margin-left:12%;">\$1\$[^$:\n]{1,8}\$[./0-9A-Za-z]{22}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">128 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">6 to 48 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1000</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>bsdicrypt
+(BSDI extended DES)</b> <br>
+A weak extension of traditional DES, which eliminates the
+length limit, increases the salt size, and makes the time
+cost tunable. It originates with BSDI and is also available
+on at least NetBSD, OpenBSD, and FreeBSD due to the use of
+David Burren&rsquo;s FreeSec library. It is better than
+bigcrypt and traditional DES, but still should not be used
+for new hashes.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;_&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+<p style="margin-left:12%;">_[./0-9A-Za-z]{19}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited (ignores 8th bit)</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">64 bits</p>
+
+<p style="margin-top: 1em"><b>Effective key size</b></p>
+
+<p style="margin-left:12%;">56 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">24 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1 to 16,777,215 (must be
+odd)</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>bigcrypt</b>
+<br>
+A weak extension of traditional DES, available on some
+System V-derived Unixes. All it does is raise the length
+limit from 8 to 128 characters, and it does this in a crude
+way that allows attackers to guess chunks of a long
+passphrase in parallel. It should not be used for new
+hashes.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;&quot; (empty string)</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+<p style="margin-left:12%;">[./0-9A-Za-z]{13,178}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">128 characters (ignores 8th
+bit)</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">up to 1024 bits</p>
+
+<p style="margin-top: 1em"><b>Effective key size</b></p>
+
+<p style="margin-left:12%;">up to 896 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">12 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">25</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>descrypt
+(Traditional DES)</b> <br>
+The original hashing method from Unix V7, based on the DES
+block cipher. Because DES is cheap on modern hardware,
+because there are only 4096 possible salts and 2**56
+possible hashes, and because it truncates passphrases to 8
+characters, it is feasible to discover <i>any</i> passphrase
+hashed with this method. It should only be used if you
+absolutely have to generate hashes that will work on an old
+operating system that supports nothing else.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;&quot; (empty string)</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+<p style="margin-left:12%;">[./0-9A-Za-z]{13}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">8 characters (ignores 8th
+bit)</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">64 bits</p>
+
+<p style="margin-top: 1em"><b>Effective key size</b></p>
+
+<p style="margin-left:12%;">56 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">12 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">25</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>NT</b> <br>
+The hashing method used for network authentication in some
+versions of the SMB/CIFS protocol. Available, for
+cross-compatibility&rsquo;s sake, on FreeBSD. Based on MD4.
+Has no salt or tunable cost parameter. Like traditional DES,
+it is so weak that <i>any</i> passphrase hashed with this
+method is guessable. It should only be used if you
+absolutely have to generate hashes that will work on an old
+operating system that supports nothing else.</p>
+
+<p style="margin-top: 1em"><b>Prefix</b></p>
+
+<p style="margin-left:12%;">&quot;$3$&quot;</p>
+
+<p style="margin-top: 1em"><b>Hashed passphrase
+format</b></p>
+
+<p style="margin-left:12%;">\$3\$\$[0-9a-f]{32}</p>
+
+<p style="margin-top: 1em"><b>Maximum passphrase
+length</b></p>
+
+<p style="margin-left:12%;">unlimited</p>
+
+<p style="margin-top: 1em"><b>Hash size</b></p>
+
+<p style="margin-left:12%;">256 bits</p>
+
+<p style="margin-top: 1em"><b>Salt size</b></p>
+
+<p style="margin-left:12%;">0 bits</p>
+
+<p style="margin-top: 1em"><b>CPU time cost
+parameter</b></p>
+
+<p style="margin-left:12%;">1</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">crypt(3), crypt_gensalt(3),
+getpwent(3), passwd(5), shadow(5), pam(8)</p>
+
+<p style="margin-top: 1em">Niels Provos</p>
+
+<p style="margin-left:6%;">and</p>
+
+<p>David Mazieres , &ldquo; <br>
+A Future-Adaptable Password Scheme &rdquo;, <i><br>
+Proceedings of the 1999 USENIX Annual Technical
+Conference</i> , <br>
+https://www.usenix.org/events/usenix99/provos.html , <br>
+June 1999 .</p>
+
+<p style="margin-top: 1em">Robert Morris</p>
+
+<p style="margin-left:6%;">and</p>
+
+<p>Ken Thompson , &ldquo; <br>
+Password Security: A Case History &rdquo;, <i><br>
+Communications of the ACM</i> , <br>
+11 , <br>
+22 , <br>
+
+http://wolfram.schneider.org/bsd/7thEdManVol2/password/password.pdf
+, <br>
+1979 .</p>
+
+<p style="margin-left:6%; margin-top: 1em">Openwall Project
+October&nbsp;11, 2017 Openwall Project</p>
+<hr>
+</body>
+</html>

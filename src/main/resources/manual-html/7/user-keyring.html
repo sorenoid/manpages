@@ -1,0 +1,122 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:51 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>USER-KEYRING</title>
+
+</head>
+<body>
+
+<h1 align="center">USER-KEYRING</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">user-keyring -
+per-user keyring</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The user
+keyring is a keyring used to anchor keys on behalf of a
+user. Each UID the kernel deals with has its own user
+keyring that is shared by all processes with that UID. The
+user keyring has a name (description) of the form
+<i>_uid.&lt;UID&gt;</i> where <i>&lt;UID&gt;</i> is the user
+ID of the corresponding user.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The user
+keyring is associated with the record that the kernel
+maintains for the UID. It comes into existence upon the
+first attempt to access either the user keyring, the
+<b>user-session-keyring</b>(7), or the
+<b>session-keyring</b>(7). The keyring remains pinned in
+existence so long as there are processes running with that
+real UID or files opened by those processes remain open.
+(The keyring can also be pinned indefinitely by linking it
+into another keyring.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Typically, the
+user keyring is created by <b>pam_keyinit</b>(8) when a user
+logs in.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The user
+keyring is not searched by default by <b>request_key</b>(2).
+When <b>pam_keyinit</b>(8) creates a session keyring, it
+adds to it a link to the user keyring so that the user
+keyring will be searched when the session keyring is.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A special
+serial number value, <b>KEY_SPEC_USER_KEYRING</b>, is
+defined that can be used in lieu of the actual serial number
+of the calling process&rsquo;s user keyring.</p>
+
+<p style="margin-left:11%; margin-top: 1em">From the
+<b>keyctl</b>(1) utility, &rsquo;<b>@u</b>&rsquo; can be
+used instead of a numeric key ID in much the same way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">User keyrings
+are independent of <b>clone</b>(2), <b>fork</b>(2),
+<b>vfork</b>(2), <b>execve</b>(2), and <b>_exit</b>(2)
+excepting that the keyring is destroyed when the UID record
+is destroyed when the last process pinning it exits.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If it is
+necessary for a key associated with a user to exist beyond
+the UID record being garbage collected&mdash;for example,
+for use by a <b>cron</b>(8) script&mdash;then the
+<b>persistent-keyring</b>(7) should be used instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a user
+keyring does not exist when it is accessed, it will be
+created.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>keyctl</b>(1),
+<b>keyctl</b>(3), <b>keyrings</b>(7),
+<b>persistent-keyring</b>(7), <b>process-keyring</b>(7),
+<b>session-keyring</b>(7), <b>thread-keyring</b>(7),
+<b>user-session-keyring</b>(7), <b>pam_keyinit</b>(8)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

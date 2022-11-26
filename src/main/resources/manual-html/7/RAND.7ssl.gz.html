@@ -1,0 +1,148 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:37 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RAND</title>
+
+</head>
+<body>
+
+<h1 align="center">RAND</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#DEFAULT SETUP">DEFAULT SETUP</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">RAND - the
+OpenSSL random generator</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Random numbers
+are a vital part of cryptography, they are needed to provide
+unpredictability for tasks like key generation, creating
+salts, and many more. Software-based generators must be
+seeded with external randomness before they can be used as a
+cryptographically-secure pseudo-random number generator (
+<small>CSPRNG</small> ). The availability of common hardware
+with special instructions and modern operating systems,
+which may use items such as interrupt jitter and network
+packet timings, can be reasonable sources of seeding
+material.</p>
+
+<p style="margin-left:11%; margin-top: 1em">OpenSSL comes
+with a default implementation of the <small>RAND API</small>
+which is based on the deterministic random bit generator (
+<small>DRBG</small> ) model as described in [ <small>NIST SP
+800-90A</small> Rev. 1]. The default random generator will
+initialize automatically on first use and will be fully
+functional without having to be initialized
+(&rsquo;seeded&rsquo;) explicitly. It seeds and reseeds
+itself automatically using trusted random sources provided
+by the operating system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As a normal
+application developer, you do not have to worry about any
+details, just use <b>RAND_bytes</b>(3) to obtain random
+data. Having said that, there is one important rule to obey:
+Always check the error return value of <b>RAND_bytes</b>(3)
+and do not take randomness for granted. Although
+(re-)seeding is automatic, it can fail because no trusted
+random source is available or the trusted source(s)
+temporarily fail to provide sufficient random seed material.
+In this case the <small>CSPRNG</small> enters an error state
+and ceases to provide output, until it is able to recover
+from the error by reseeding itself. For more details on
+reseeding and error recovery, see
+<b><small>EVP_RAND</small></b> (7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For values that
+should remain secret, you can use <b>RAND_priv_bytes</b>(3)
+instead. This method does not provide &rsquo;better&rsquo;
+randomness, it uses the same type of <small>CSPRNG.</small>
+The intention behind using a dedicated <small>CSPRNG</small>
+exclusively for private values is that none of its output
+should be visible to an attacker (e.g., used as salt value),
+in order to reveal as little information as possible about
+its internal state, and that a compromise of the
+&quot;public&quot; <small>CSPRNG</small> instance will not
+affect the secrecy of these private values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the rare
+case where the default implementation does not satisfy your
+special requirements, the default <small>RAND</small>
+internals can be replaced by your own
+<b><small>EVP_RAND</small></b> (3) objects.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Changing the
+default random generator should be necessary only in
+exceptional cases and is not recommended, unless you have a
+profound knowledge of cryptographic principles and
+understand the implications of your changes.</p>
+
+<h2>DEFAULT SETUP
+<a name="DEFAULT SETUP"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The default
+OpenSSL <small>RAND</small> method is based on the
+<small>EVP_RAND</small> deterministic random bit generator (
+<small>DRBG</small> ) classes. A <small>DRBG</small> is a
+certain type of cryptographically-secure pseudo-random
+number generator ( <small>CSPRNG</small> ), which is
+described in [ <small>NIST SP 800-90A</small> Rev. 1].</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>RAND_bytes</b>(3),
+<b>RAND_priv_bytes</b>(3), <b><small>EVP_RAND</small></b>
+(3), <b>RAND_get0_primary</b>(3),
+<b><small>EVP_RAND</small></b> (7)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2018-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

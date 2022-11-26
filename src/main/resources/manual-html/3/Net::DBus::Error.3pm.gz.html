@@ -1,0 +1,162 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:59 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Net::DBus::Error</title>
+
+</head>
+<body>
+
+<h1 align="center">Net::DBus::Error</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::Error
+- Error details for remote method invocation</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">package
+Music::Player::UnknownFormat; <br>
+use base qw(Net::DBus::Error); <br>
+# Define an error type for unknown track encoding type <br>
+# for a music player service <br>
+sub new { <br>
+my $proto = shift; <br>
+my $class = ref($proto) || $proto; <br>
+my $self = $class-&gt;SUPER::new(name =&gt;
+&quot;org.example.music.UnknownFormat&quot;, <br>
+message =&gt; &quot;Unknown track encoding format&quot;);
+<br>
+} <br>
+package Music::Player::Engine; <br>
+...snip... <br>
+# Play either mp3 or ogg music tracks, otherwise <br>
+# thrown an error <br>
+sub play { <br>
+my $self = shift; <br>
+my $url = shift; <br>
+if ($url =~ /\.(mp3|ogg)$/) { <br>
+...play the track <br>
+} else { <br>
+die Music::Player::UnknownFormat-&gt;new(); <br>
+} <br>
+}</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This objects
+provides for strongly typed error handling. Normally a
+service would simply call</p>
+
+<p style="margin-left:11%; margin-top: 1em">die &quot;some
+message text&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">When returning
+the error condition to the calling DBus client, the message
+is associated with a generic error code or
+&quot;org.freedesktop.DBus.Failed&quot;. While this suffices
+for many applications, occasionally it is desirable to be
+able to catch and handle specific error conditions. For such
+scenarios the service should create subclasses of the
+&quot;Net::DBus::Error&quot; object providing in a custom
+error name. This error name is then sent back to the client
+instead of the genreic
+&quot;org.freedesktop.DBus.Failed&quot; code.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">my $error =
+Net::DBus::Error-&gt;new(name =&gt; $error_name, message
+=&gt; <br>
+$description);</p>
+
+<p style="margin-left:17%;">Creates a new error object
+whose name is given by the &quot;name&quot; parameter, and
+long descriptive text is provided by the &quot;message&quot;
+parameter. The &quot;name&quot; parameter has certain
+formatting rules which must be adhered to. It must only
+contain the letters &rsquo;a&rsquo;-&rsquo;Z&rsquo;,
+&rsquo;0&rsquo;-&rsquo;9&rsquo;, &rsquo;-&rsquo;,
+&rsquo;_&rsquo; and &rsquo;.&rsquo;. There must be at least
+two components separated by a &rsquo;.&rsquo;, For example a
+valid name is
+&rsquo;org.example.Music.UnknownFormat&rsquo;.</p>
+
+<p style="margin-left:11%;">$error-&gt;name</p>
+
+<p style="margin-left:17%;">Returns the DBus error name
+associated with the object.</p>
+
+<p style="margin-left:11%;">$error-&gt;message</p>
+
+<p style="margin-left:17%;">Returns the descriptive
+text/message associated with the error condition.</p>
+
+<p style="margin-left:11%;">$error-&gt;stringify</p>
+
+<p style="margin-left:17%;">Formats the error as a string
+in a manner suitable for printing out / logging / displaying
+to the user, etc.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Daniel P.
+Berrange</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2005-2011 Daniel P. Berrange</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus,
+Net::DBus::Object</p>
+<hr>
+</body>
+</html>

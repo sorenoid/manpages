@@ -1,0 +1,369 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:51 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PTHREAD_MUTEXATTR_SETROBUST</title>
+
+</head>
+<body>
+
+<h1 align="center">PTHREAD_MUTEXATTR_SETROBUST</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">pthread_mutexattr_getrobust,
+pthread_mutexattr_setrobust - get and set the robustness
+attribute of a mutex attributes object</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;pthread.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+pthread_mutexattr_getrobust(const pthread_mutexattr_t
+*</b><i>attr</i><b>, <br>
+int *</b><i>robustness</i><b>); <br>
+int pthread_mutexattr_setrobust(const pthread_mutexattr_t
+*</b><i>attr</i><b>, <br>
+int</b> <i>robustness</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Compile and
+link with <i>-pthread</i>.</p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pthread_mutexattr_getrobust</b>(),
+<b>pthread_mutexattr_setrobust</b>():</p>
+
+<p style="margin-left:17%;">_POSIX_C_SOURCE &gt;=
+200809L</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_mutexattr_getrobust</b>() function places the
+value of the robustness attribute of the mutex attributes
+object referred to by <i>attr</i> in <i>*robustness</i>. The
+<b>pthread_mutexattr_setrobust</b>() function sets the value
+of the robustness attribute of the mutex attributes object
+referred to by <i>attr</i> to the value specified in
+<i>*robustness</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The robustness
+attribute specifies the behavior of the mutex when the
+owning thread dies without unlocking the mutex. The
+following values are valid for <i>robustness</i>: <b><br>
+PTHREAD_MUTEX_STALLED</b></p>
+
+<p style="margin-left:22%;">This is the default value for a
+mutex attributes object. If a mutex is initialized with the
+<b>PTHREAD_MUTEX_STALLED</b> attribute and its owner dies
+without unlocking it, the mutex remains locked afterwards
+and any future attempts to call <b>pthread_mutex_lock</b>(3)
+on the mutex will block indefinitely.</p>
+
+
+<p style="margin-left:11%;"><b>PTHREAD_MUTEX_ROBUST</b></p>
+
+<p style="margin-left:22%;">If a mutex is initialized with
+the <b>PTHREAD_MUTEX_ROBUST</b> attribute and its owner dies
+without unlocking it, any future attempts to call
+<b>pthread_mutex_lock</b>(3) on this mutex will succeed and
+return <b>EOWNERDEAD</b> to indicate that the original owner
+no longer exists and the mutex is in an inconsistent state.
+Usually after <b>EOWNERDEAD</b> is returned, the next owner
+should call <b>pthread_mutex_consistent</b>(3) on the
+acquired mutex to make it consistent again before using it
+any further.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the next
+owner unlocks the mutex using <b>pthread_mutex_unlock</b>(3)
+before making it consistent, the mutex will be permanently
+unusable and any subsequent attempts to lock it using
+<b>pthread_mutex_lock</b>(3) will fail with the error
+<b>ENOTRECOVERABLE</b>. The only permitted operation on such
+a mutex is <b>pthread_mutex_destroy</b>(3).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the next
+owner terminates before calling
+<b>pthread_mutex_consistent</b>(3), further
+<b>pthread_mutex_lock</b>(3) operations on this mutex will
+still return <b>EOWNERDEAD</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+<i>attr</i> argument of <b>pthread_mutexattr_getrobust</b>()
+and <b>pthread_mutexattr_setrobust</b>() should refer to a
+mutex attributes object that was initialized by
+<b>pthread_mutexattr_init</b>(3), otherwise the behavior is
+undefined.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+these functions return 0. On error, they return a positive
+error number.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the glibc
+implementation, <b>pthread_mutexattr_getrobust</b>() always
+return zero.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">A value other than
+<b>PTHREAD_MUTEX_STALLED</b> or <b>PTHREAD_MUTEX_ROBUST</b>
+was passed to <b>pthread_mutexattr_setrobust</b>().</p></td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pthread_mutexattr_getrobust</b>()
+and <b>pthread_mutexattr_setrobust</b>() were added to glibc
+in version 2.12.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2008.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the Linux
+implementation, when using process-shared robust mutexes, a
+waiting thread also receives the <b>EOWNERDEAD</b>
+notification if the owner of a robust mutex performs an
+<b>execve</b>(2) without first unlocking the mutex. POSIX.1
+does not specify this detail, but the same behavior also
+occurs in at least some other implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before the
+addition of <b>pthread_mutexattr_getrobust</b>() and
+<b>pthread_mutexattr_setrobust</b>() to POSIX, glibc defined
+the following equivalent nonstandard functions if
+<b>_GNU_SOURCE</b> was defined:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+pthread_mutexattr_getrobust_np(const pthread_mutexattr_t
+*</b><i>attr</i><b>, <br>
+int *</b><i>robustness</i><b>); <br>
+int pthread_mutexattr_setrobust_np(const pthread_mutexattr_t
+*</b><i>attr</i><b>, <br>
+int</b> <i>robustness</i><b>);</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Correspondingly,
+the constants <b>PTHREAD_MUTEX_STALLED_NP</b> and
+<b>PTHREAD_MUTEX_ROBUST_NP</b> were also defined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These
+GNU-specific APIs, which first appeared in glibc 2.4, are
+nowadays obsolete and should not be used in new
+programs.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+below demonstrates the use of the robustness attribute of a
+mutex attributes object. In this program, a thread holding
+the mutex dies prematurely without unlocking the mutex. The
+main thread subsequently acquires the mutex successfully and
+gets the error <b>EOWNERDEAD</b>, after which it makes the
+mutex consistent.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+shell session shows what we see when running this
+program:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+<b>./a.out</b> <br>
+[original owner] Setting lock... <br>
+[original owner] Locked. Now exiting without unlocking. <br>
+[main] Attempting to lock the robust mutex. <br>
+[main] pthread_mutex_lock() returned EOWNERDEAD <br>
+[main] Now make the mutex consistent <br>
+[main] Mutex is now consistent; unlocking</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+source</b> <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;unistd.h&gt; <br>
+#include &lt;pthread.h&gt; <br>
+#include &lt;errno.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#define
+handle_error_en(en, msg) \ <br>
+do { errno = en; perror(msg); exit(EXIT_FAILURE); } while
+(0)</p>
+
+<p style="margin-left:11%; margin-top: 1em">static
+pthread_mutex_t mtx;</p>
+
+<p style="margin-left:11%; margin-top: 1em">static void *
+<br>
+original_owner_thread(void *ptr) <br>
+{ <br>
+printf(&quot;[original owner] Setting lock...\n&quot;); <br>
+pthread_mutex_lock(&amp;mtx); <br>
+printf(&quot;[original owner] Locked. Now exiting without
+unlocking.\n&quot;); <br>
+pthread_exit(NULL); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+pthread_t thr; <br>
+pthread_mutexattr_t attr; <br>
+int s;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pthread_mutexattr_init(&amp;attr);
+<br>
+/* initialize the attributes object */ <br>
+pthread_mutexattr_setrobust(&amp;attr,
+PTHREAD_MUTEX_ROBUST); <br>
+/* set robustness */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pthread_mutex_init(&amp;mtx,
+&amp;attr); /* initialize the mutex */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pthread_create(&amp;thr,
+NULL, original_owner_thread, NULL);</p>
+
+<p style="margin-left:11%; margin-top: 1em">sleep(2);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/*
+&quot;original_owner_thread&quot; should have exited by now
+*/</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;[main]
+Attempting to lock the robust mutex.\n&quot;); <br>
+s = pthread_mutex_lock(&amp;mtx); <br>
+if (s == EOWNERDEAD) { <br>
+printf(&quot;[main] pthread_mutex_lock() returned
+EOWNERDEAD\n&quot;); <br>
+printf(&quot;[main] Now make the mutex consistent\n&quot;);
+<br>
+s = pthread_mutex_consistent(&amp;mtx); <br>
+if (s != 0) <br>
+handle_error_en(s, &quot;pthread_mutex_consistent&quot;);
+<br>
+printf(&quot;[main] Mutex is now consistent;
+unlocking\n&quot;); <br>
+s = pthread_mutex_unlock(&amp;mtx); <br>
+if (s != 0) <br>
+handle_error_en(s, &quot;pthread_mutex_unlock&quot;);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">exit(EXIT_SUCCESS);
+<br>
+} else if (s == 0) { <br>
+printf(&quot;[main] pthread_mutex_lock() unexpectedly
+succeeded\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+} else { <br>
+printf(&quot;[main] pthread_mutex_lock() unexpectedly
+failed\n&quot;); <br>
+handle_error_en(s, &quot;pthread_mutex_lock&quot;); <br>
+} <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_robust_list</b>(2),
+<b>set_robust_list</b>(2),
+<b>pthread_mutex_consistent</b>(3),
+<b>pthread_mutex_init</b>(3), <b>pthread_mutex_lock</b>(3),
+<b>pthreads</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

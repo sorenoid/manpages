@@ -1,0 +1,328 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:10 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTTP::Cookies</title>
+
+</head>
+<body>
+
+<h1 align="center">HTTP::Cookies</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::Cookies -
+HTTP cookie jars</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">version
+6.10</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+HTTP::Cookies; <br>
+$cookie_jar = HTTP::Cookies-&gt;new( <br>
+file =&gt; &quot;$ENV{'HOME'}/lwp_cookies.dat&quot;, <br>
+autosave =&gt; 1, <br>
+); <br>
+use LWP; <br>
+my $browser = LWP::UserAgent-&gt;new; <br>
+$browser-&gt;cookie_jar($cookie_jar);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Or for an empty
+and temporary cookie jar:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use LWP; <br>
+my $browser = LWP::UserAgent-&gt;new; <br>
+$browser-&gt;cookie_jar( {} );</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This class is
+for objects that represent a &quot;cookie jar&quot; -- that
+is, a database of all the <small>HTTP</small> cookies that a
+given LWP::UserAgent object knows about.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Cookies are a
+general mechanism which server side connections can use to
+both store and retrieve information on the client side of
+the connection. For more information about cookies refer to
+Cookie Spec &lt;http://curl.haxx.se/rfc/cookie_spec.html&gt;
+and Cookie Central &lt;http://www.cookiecentral.com&gt;.
+This module also implements the new style cookies described
+in <small>RFC 2965</small>
+&lt;https://tools.ietf.org/html/rfc2965&gt;. The two
+variants of cookies are supposed to be able to coexist
+happily.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Instances of
+the class <i>HTTP::Cookies</i> are able to store a
+collection of Set-Cookie2: and Set-Cookie: headers and are
+able to use this information to initialize Cookie-headers in
+<i>HTTP::Request</i> objects. The state of a
+<i>HTTP::Cookies</i> object can be saved in and restored
+from files.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+does not support Public Suffix
+&lt;https://publicsuffix.org/&gt; encouraged by a more
+recent standard, <small>RFC 6265</small>
+&lt;https://tools.ietf.org/html/rfc6265&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This
+module&rsquo;s shortcomings mean that a malicious Web site
+can set cookies to track your user agent across all sites
+under a top level domain. See <i>t/publicsuffix.t</i> in
+this module&rsquo;s distribution for details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::CookieJar::LWP
+supports Public Suffix, but only provides a limited subset
+of this module&rsquo;s functionality and does not support
+standards older than <i><small>RFC 6265</small></i> .</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods are provided: <br>
+$cookie_jar = HTTP::Cookies-&gt;new</p>
+
+<p style="margin-left:17%;">The constructor takes hash
+style parameters. The following parameters are
+recognized:</p>
+
+<p style="margin-left:17%; margin-top: 1em">file: name of
+the file to restore cookies from and save cookies to <br>
+autosave: save during destruction (bool) <br>
+ignore_discard: save even cookies that are requested to be
+discarded (bool) <br>
+hide_cookie2: do not add Cookie2 header to requests</p>
+
+<p style="margin-left:17%; margin-top: 1em">Future
+parameters might include (not yet implemented):</p>
+
+<p style="margin-left:17%; margin-top: 1em">max_cookies 300
+<br>
+max_cookies_per_domain 20 <br>
+max_cookie_size 4096 <br>
+no_cookies list of domain names that we never return cookies
+to</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;get_cookies(
+$url_or_domain ) <br>
+$cookie_jar-&gt;get_cookies( $url_or_domain, $cookie_key,...
+)</p>
+
+<p style="margin-left:17%;">Returns a hash of the cookies
+that applies to the given <small>URL.</small> If a
+domainname is given as argument, then a prefix of
+&quot;https://&quot; is assumed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If one or more
+$cookie_key parameters are provided return the given values,
+or &quot;undef&quot; if the cookie isn&rsquo;t
+available.</p>
+
+
+<p style="margin-left:11%;">$cookie_jar-&gt;add_cookie_header(
+$request )</p>
+
+<p style="margin-left:17%;">The <b>add_cookie_header()</b>
+method will set the appropriate Cookie:-header for the
+<i>HTTP::Request</i> object given as argument. The $request
+must have a valid url attribute before this method is
+called.</p>
+
+
+<p style="margin-left:11%;">$cookie_jar-&gt;extract_cookies(
+$response )</p>
+
+<p style="margin-left:17%;">The <b>extract_cookies()</b>
+method will look for Set-Cookie: and Set-Cookie2: headers in
+the <i>HTTP::Response</i> object passed as argument. Any of
+these headers that are found are used to update the state of
+the $cookie_jar.</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;set_cookie(
+$version, $key, $val, $path, $domain, $port, <br>
+$path_spec, $secure, $maxage, $discard, \%rest )</p>
+
+<p style="margin-left:17%;">The <b>set_cookie()</b> method
+updates the state of the $cookie_jar. The $key, $val,
+$domain, $port and $path arguments are strings. The
+$path_spec, $secure, $discard arguments are boolean values.
+The $maxage value is a number indicating number of seconds
+that this cookie will live. A value of $maxage &lt;= 0 will
+delete this cookie. The $version argument sets the version
+of the cookie; the default value is 0 ( original Netscape
+spec ). Setting $version to another value indicates the
+<small>RFC</small> to which the cookie conforms (e.g.
+version 1 for <small>RFC 2109</small> ). %rest defines
+various other attributes like &quot;Comment&quot; and
+&quot;CommentURL&quot;.</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;save <br>
+$cookie_jar-&gt;save( $file ) <br>
+$cookie_jar-&gt;save( file =&gt; $file, ignore_discard =&gt;
+$ignore_discard )</p>
+
+<p style="margin-left:17%;">This method file saves the
+state of the $cookie_jar to a file. The state can then be
+restored later using the <b>load()</b> method. If a filename
+is not specified we will use the name specified during
+construction. If the $ignore_discard value is true (or not
+specified, but attribute <i>ignore_discard</i> was set at
+cookie jar construction), then we will even save cookies
+that are marked to be discarded.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+to save a sequence of &quot;Set-Cookie3&quot; lines.
+&quot;Set-Cookie3&quot; is a proprietary <small>LWP</small>
+format, not known to be compatible with any browser. The
+<i>HTTP::Cookies::Netscape</i> sub-class can be used to save
+in a format compatible with Netscape.</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;load <br>
+$cookie_jar-&gt;load( $file )</p>
+
+<p style="margin-left:17%;">This method reads the cookies
+from the file and adds them to the $cookie_jar. The file
+must be in the format written by the <b>save()</b>
+method.</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;revert</p>
+
+<p style="margin-left:17%;">This method empties the
+$cookie_jar and re-loads the $cookie_jar from the last save
+file.</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;clear <br>
+$cookie_jar-&gt;clear( $domain ) <br>
+$cookie_jar-&gt;clear( $domain, $path ) <br>
+$cookie_jar-&gt;clear( $domain, $path, $key )</p>
+
+<p style="margin-left:17%;">Invoking this method without
+arguments will empty the whole $cookie_jar. If given a
+single argument only cookies belonging to that domain will
+be removed. If given two arguments, cookies belonging to the
+specified path within that domain are removed. If given
+three arguments, then the cookie with the specified key,
+path and domain is removed.</p>
+
+
+<p style="margin-left:11%;">$cookie_jar-&gt;clear_temporary_cookies</p>
+
+<p style="margin-left:17%;">Discard all temporary cookies.
+Scans for all cookies in the jar with either no expire field
+or a true &quot;discard&quot; flag. To be called when the
+user agent shuts down according to <small>RFC
+2965.</small></p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;scan(
+\&amp;callback )</p>
+
+<p style="margin-left:17%;">The argument is a subroutine
+that will be invoked for each cookie stored in the
+$cookie_jar. The subroutine will be invoked with the
+following arguments:</p>
+
+<p style="margin-left:17%; margin-top: 1em">0 version <br>
+1 key <br>
+2 val <br>
+3 path <br>
+4 domain <br>
+5 port <br>
+6 path_spec <br>
+7 secure <br>
+8 expires <br>
+9 discard <br>
+10 hash</p>
+
+<p style="margin-left:11%;">$cookie_jar-&gt;as_string <br>
+$cookie_jar-&gt;as_string( $skip_discardables )</p>
+
+<p style="margin-left:17%;">The <b>as_string()</b> method
+will return the state of the $cookie_jar represented as a
+sequence of &quot;Set-Cookie3&quot; header lines separated
+by &quot;\n&quot;. If $skip_discardables is
+<small>TRUE,</small> it will not return lines for cookies
+with the <i>Discard</i> attribute.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::Cookies::Netscape,
+HTTP::Cookies::Microsoft</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gisle Aas
+&lt;gisle@activestate.com&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is copyright (c) 2002 by Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; you can redistribute it and/or modify it under the
+same terms as the Perl 5 programming language system
+itself.</p>
+<hr>
+</body>
+</html>

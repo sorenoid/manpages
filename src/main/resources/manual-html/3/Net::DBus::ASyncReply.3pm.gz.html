@@ -1,0 +1,146 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:09 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Net::DBus::ASyncReply</title>
+
+</head>
+<body>
+
+<h1 align="center">Net::DBus::ASyncReply</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::ASyncReply
+- asynchronous method reply handler</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Net::DBus::Annotation qw(:call); <br>
+my $object =
+$service-&gt;get_object(&quot;/org/example/systemMonitor&quot;);
+<br>
+# List processes &amp; get on with other work until <br>
+# the list is returned. <br>
+my $asyncreply = $object-&gt;list_processes(dbus_call_async,
+&quot;someuser&quot;); <br>
+while (!$asyncreply-&gt;is_ready) { <br>
+... do some background work.. <br>
+} <br>
+my $processes = $asyncreply-&gt;get_result;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This object
+provides a handler for receiving asynchronous method
+replies. An asynchronous reply object is generated when
+making remote method call with the
+&quot;dbus_call_async&quot; annotation set.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">$asyncreply-&gt;discard_result;</p>
+
+<p style="margin-left:17%;">Indicates that the caller is no
+longer interested in receiving the reply &amp; that it
+should be discarded. After calling this method, this object
+should not be used again.</p>
+
+
+<p style="margin-left:11%;">$asyncreply-&gt;wait_for_result;</p>
+
+<p style="margin-left:17%;">Blocks the caller waiting for
+completion of the of the asynchronous reply. Upon returning
+from this method, the result can be obtained with the
+&quot;get_result&quot; method.</p>
+
+<p style="margin-left:11%;">my $boolean =
+$asyncreply-&gt;is_ready;</p>
+
+<p style="margin-left:17%;">Returns a true value if the
+asynchronous reply is now complete (or a timeout has
+occurred). When this method returns true, the result can be
+obtained with the &quot;get_result&quot; method.</p>
+
+
+<p style="margin-left:11%;">$asyncreply-&gt;set_notify($coderef);</p>
+
+<p style="margin-left:17%;">Sets a notify function which
+will be invoked when the asynchronous reply finally
+completes. The callback will be invoked with a single
+parameter which is this object.</p>
+
+<p style="margin-left:11%;">my @data =
+$asyncreply-&gt;get_result;</p>
+
+<p style="margin-left:17%;">Retrieves the data associated
+with the asynchronous reply. If a timeout occurred, then
+this method will throw an exception. This method can only be
+called once the reply is complete, as indicated by the
+&quot;is_ready&quot; method returning a true value. After
+calling this method, this object should no longer be
+used.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Daniel Berrange
+&lt;dan@berrange.com&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copright (C)
+2006-2011, Daniel Berrange.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus,
+Net::DBus::RemoteObject, Net::DBus::Annotation</p>
+<hr>
+</body>
+</html>

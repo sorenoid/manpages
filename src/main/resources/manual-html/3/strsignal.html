@@ -1,0 +1,243 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:31 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>STRSIGNAL</title>
+
+</head>
+<body>
+
+<h1 align="center">STRSIGNAL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">strsignal,
+sigdescr_np, sigdescr_np, sys_siglist - return string
+describing signal</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;string.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>char
+*strsignal(int</b> <i>sig</i><b>); <br>
+char *sigdescr_np(int</b> <i>sig</i><b>); <br>
+char *sigabbrev_np(int</b> <i>sig</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>extern const
+char * const</b> <i>sys_siglist</i><b>[];</b></p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sigabbrev_np</b>(),
+<b>sigdescr_np</b>():</p>
+
+<p style="margin-left:17%;">_GNU_SOURCE</p>
+
+<p style="margin-left:11%;"><b>strsignal</b>():</p>
+
+<p style="margin-left:17%;">From glibc 2.10 to 2.31:</p>
+
+
+<p style="margin-left:23%;">_POSIX_C_SOURCE&nbsp;&gt;=&nbsp;200809L</p>
+
+<p style="margin-left:17%;">Before glibc 2.10:</p>
+
+<p style="margin-left:23%;">_GNU_SOURCE</p>
+
+<p style="margin-left:11%;"><i>sys_siglist</i>: <br>
+Since glibc 2.19: <br>
+_DEFAULT_SOURCE <br>
+Glibc 2.19 and earlier: <br>
+_BSD_SOURCE</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>strsignal</b>() function returns a string describing the
+signal number passed in the argument <i>sig</i>. The string
+can be used only until the next call to <b>strsignal</b>().
+The string returned by <b>strsignal</b>() is localized
+according to the <b>LC_MESSAGES</b> category in the current
+locale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sigdescr_np</b>() function returns a string describing
+the signal number passed in the argument <i>sig</i>. Unlike
+<b>strsignal</b>() this string is not influenced by the
+current locale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sigabbrev_np</b>() function returns the abbreviated name
+of the signal, <i>sig</i>. For example, given the value
+<b>SIGINT</b>, it returns the string &quot;INT&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+(deprecated) array <i>sys_siglist</i> holds the signal
+description strings indexed by signal number. The
+<b>strsignal</b>() or the <b>sigdescr_np</b>() function
+should be used instead of this array; see also VERSIONS.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>strsignal</b>() function returns the appropriate
+description string, or an unknown signal message if the
+signal number is invalid. On some systems (but not on
+Linux), NULL may instead be returned for an invalid signal
+number.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sigdescr_np</b>() and <b>sigdabbrev_np</b>() functions
+return the appropriate description string. The returned
+string is statically allocated and valid for the lifetime of
+the program. These functions return NULL for an invalid
+signal number.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sigdescr_np</b>()
+and <b>sigdabbrev_np</b>() first appeared in glibc 2.32.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Starting with
+version 2.32, the <i>sys_siglist</i> symbol is no longer
+exported by glibc.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3426191.png" alt="Image grohtml-3426191.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>strsignal</b>():
+POSIX.1-2008. Present on Solaris and the BSDs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sigdescr_np</b>()
+and <b>sigdabbrev_np</b>() are GNU extensions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sys_siglist</i>
+is nonstandard, but present on many other systems.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sigdescr_np</b>()
+and <b>sigdabbrev_np</b>() are thread-safe and
+async-signal-safe.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>psignal</b>(3),
+<b>strerror</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

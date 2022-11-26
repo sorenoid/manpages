@@ -1,0 +1,167 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-symbols</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-symbols</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-symbols -
+Debian&rsquo;s extended shared library information file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DEBIAN/symbols</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The symbol
+files are shipped in Debian binary packages, and its format
+is a subset of the template symbol files used by
+<b>dpkg-gensymbols</b>(1) in Debian source packages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The format for
+an extended shared library dependency information entry in
+these files is:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>library-soname
+main-dependency-template</i> <br>
+[| <i>alternative-dependency-template</i>] <br>
+[...] <br>
+[* <i>field-name</i>: <i>field-value</i>] <br>
+[...] <i><br>
+symbol minimal-version</i>
+[<i>id-of-dependency-template</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>library-soname</i> is exactly the value of the
+<small>SONAME</small> field as exported by
+<b>objdump</b>(1). A <i>dependency-template</i> is a
+dependency where <i>#MINVER#</i> is dynamically replaced
+either by a version check like &ldquo;(&gt;=
+<i>minimal-version</i>)&rdquo; or by nothing (if an
+unversioned dependency is deemed sufficient).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each exported
+<i>symbol</i> (listed as <i>name</i>@<i>version</i>, with
+<i>version</i> being &ldquo;Base&rdquo; if the library is
+not versioned) is associated to a <i>minimal-version</i> of
+its dependency template (the main dependency template is
+always used and will end up being combined with the
+dependency template referenced by
+<i>id-of-dependency-template</i> if present). The first
+alternative dependency template is numbered 1, the second
+one 2, etc. Each column is separated by exactly a single
+whitespace.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each entry for
+a library can also have some fields of meta-information.
+Those fields are stored on lines starting with an asterisk.
+Currently, the only valid fields are: <b><br>
+Build-Depends-Package</b></p>
+
+<p style="margin-left:17%;">It indicates the name of the
+&ldquo;-dev&rdquo; package associated to the library and is
+used by <b>dpkg-shlibdeps</b> to make sure that the
+dependency generated is at least as strict as the
+corresponding build dependency (since dpkg 1.14.13).</p>
+
+
+<p style="margin-left:11%;"><b>Build-Depends-Packages</b></p>
+
+<p style="margin-left:17%;">The same as
+<b>Build-Depends-Package</b> but accepts a comma-separated
+list of package names (since dpkg 1.20.0). This field will
+override any <b>Build-Depends-Package</b> field present, and
+is mostly useful with &ldquo;-dev&rdquo; packages and
+metapackages depending on these, say for a transition
+period.</p>
+
+
+<p style="margin-left:11%;"><b>Allow-Internal-Symbol-Groups</b></p>
+
+<p style="margin-left:17%;">It indicates what internal
+symbol groups should be ignored, as a whitespace separated
+list, so that the symbols contained in those groups get
+included in the output file (since dpkg 1.20.1). This should
+only be necessary for toolchain packages providing those
+internal symbols. The available groups are system dependent,
+for <small>ELF</small> and GNU-based systems these are
+<b>aeabi</b> and <b>gomp</b>.</p>
+
+
+<p style="margin-left:11%;"><b>Ignore-Blacklist-Groups</b></p>
+
+<p style="margin-left:17%;">A deprecated alias for
+<b>Allow-Internal-Symbol-Groups</b> (since dpkg 1.20.1,
+supported since dpkg 1.17.6).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Simple
+symbols file</b> <br>
+libftp.so.3 libftp3 #MINVER# <br>
+DefaultNetbuf@Base 3.1-1-6 <br>
+FtpAccess@Base 3.1-1-6 <br>
+[...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Advanced
+symbols file</b> <br>
+libGL.so.1 libgl1 <br>
+| libgl1-mesa-glx #MINVER# <br>
+* Build-Depends-Package: libgl1-mesa-dev <br>
+publicGlSymbol@Base 6.3-1 <br>
+[...] <br>
+implementationSpecificSymbol@Base 6.5.2-7 1 <br>
+[...]</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;https://wiki.debian.org/Projects/ImprovedDpkgShlibdeps&gt;,
+<b>dpkg-shlibdeps</b>(1), <b>dpkg-gensymbols</b>(1).</p>
+<hr>
+</body>
+</html>

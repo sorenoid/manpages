@@ -1,0 +1,721 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:52 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>FIPS_MODULE</title>
+
+</head>
+<body>
+
+<h1 align="center">FIPS_MODULE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">fips_module -
+OpenSSL fips module guide</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See the
+individual manual pages for details.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This guide
+details different ways that OpenSSL can be used in
+conjunction with the <small>FIPS</small> module. Which is
+the correct approach to use will depend on your own specific
+circumstances and what you are attempting to achieve.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+old functions <b>FIPS_mode()</b> and <b>FIPS_mode_set()</b>
+are no longer present so you must remove them from your
+application if you use them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Applications
+written to use the OpenSSL 3.0 <small>FIPS</small> module
+should not use any legacy APIs or features that avoid the
+<small>FIPS</small> module. Specifically this includes:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Low level cryptographic APIs (use the high level APIs,
+such as <small>EVP,</small> instead)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Engines</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Any functions that create or modify custom &quot;
+<small>METHODS&quot;</small> (for example
+<b>EVP_MD_meth_new()</b>, <b>EVP_CIPHER_meth_new()</b>,
+<b>EVP_PKEY_meth_new()</b>, <b>RSA_meth_new()</b>,
+<b>EC_KEY_METHOD_new()</b>, etc.)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">All of the
+above APIs are deprecated in OpenSSL 3.0 - so a simple rule
+is to avoid using all deprecated functions. See
+<b>migration_guide</b>(7) for a list of deprecated
+functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Making all
+applications use the <small>FIPS</small> module by
+default</b> <br>
+One simple approach is to cause all applications that are
+using OpenSSL to only use the <small>FIPS</small> module for
+cryptographic algorithms by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This approach
+can be done purely via configuration. As long as
+applications are built and linked against OpenSSL 3.0 and do
+not override the loading of the default config file or its
+settings then they can automatically start using the
+<small>FIPS</small> module without the need for any further
+code changes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To do this the
+default OpenSSL config file will have to be modified. The
+location of this config file will depend on the platform,
+and any options that were given during the build process.
+You can check the location of the config file by running
+this command:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ openssl
+version -d <br>
+OPENSSLDIR: &quot;/usr/local/ssl&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Caution: Many
+Operating Systems install OpenSSL by default. It is a common
+error to not have the correct version of OpenSSL in your
+$PATH. Check that you are running an OpenSSL 3.0 version
+like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ openssl
+version -v <br>
+OpenSSL 3.0.0-dev xx XXX xxxx (Library: OpenSSL 3.0.0-dev xx
+XXX xxxx)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b><small>OPENSSLDIR</small></b> value above gives the
+directory name for where the default config file is stored.
+So in this case the default config file will be called
+<i>/usr/local/ssl/openssl.cnf</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Edit the config
+file to add the following lines near the beginning:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">config_diagnostics
+= 1 <br>
+openssl_conf = openssl_init <br>
+.include /usr/local/ssl/fipsmodule.cnf <br>
+[openssl_init] <br>
+providers = provider_sect <br>
+[provider_sect] <br>
+fips = fips_sect <br>
+base = base_sect <br>
+[base_sect] <br>
+activate = 1</p>
+
+<p style="margin-left:11%; margin-top: 1em">Obviously the
+include file location above should match the path and name
+of the <small>FIPS</small> module config file that you
+installed earlier. See
+&lt;https://github.com/openssl/openssl/blob/master/README-FIPS.md&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+<small>FIPS</small> usage, it is recommened that the
+<b>config_diagnostics</b> option is enabled to prevent
+accidental use of non-FIPS validated algorithms via broken
+or mistaken configuration. See <b>config</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any
+applications that use OpenSSL 3.0 and are started after
+these changes are made will start using only the
+<small>FIPS</small> module unless those applications take
+explicit steps to avoid this default behaviour. Note that
+this configuration also activates the &quot;base&quot;
+provider. The base provider does not include any
+cryptographic algorithms (and therefore does not impact the
+validation status of any cryptographic operations), but does
+include other supporting algorithms that may be required. It
+is designed to be used in conjunction with the
+<small>FIPS</small> module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This approach
+has the primary advantage that it is simple, and no code
+changes are required in applications in order to benefit
+from the <small>FIPS</small> module. There are some
+disadvantages to this approach:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">You may not want all
+applications to use the <small>FIPS</small> module.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">It may be the
+case that some applications should and some should not use
+the <small>FIPS</small> module.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">If applications take explicit
+steps to not load the default config file or set different
+settings.</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This method
+will not work for these cases.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The algorithms available in the
+<small>FIPS</small> module are a subset of the algorithms
+that are available in the default OpenSSL Provider.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">If any
+applications attempt to use any algorithms that are not
+present, then they will fail.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Usage of certain deprecated APIs
+avoids the use of the <small>FIPS</small> module.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">If any
+applications use those APIs then the <small>FIPS</small>
+module will not be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Selectively
+making applications use the <small>FIPS</small> module by
+default</b> <br>
+A variation on the above approach is to do the same thing on
+an individual application basis. The default OpenSSL config
+file depends on the compiled in value for
+<b><small>OPENSSLDIR</small></b> as described in the section
+above. However it is also possible to override the config
+file to be used via the <b><small>OPENSSL_CONF</small></b>
+environment variable. For example the following, on Unix,
+will cause the application to be executed with a
+non-standard config file location:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$
+OPENSSL_CONF=/my/nondefault/openssl.cnf myapplication</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using this
+mechanism you can control which config file is loaded (and
+hence whether the <small>FIPS</small> module is loaded) on
+an application by application basis.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This removes
+the disadvantage listed above that you may not want all
+applications to use the <small>FIPS</small> module. All the
+other advantages and disadvantages still apply.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Programmatically
+loading the <small>FIPS</small> module (default library
+context)</b> <br>
+Applications may choose to load the <small>FIPS</small>
+provider explicitly rather than relying on config to do
+this. The config file is still necessary in order to hold
+the <small>FIPS</small> module config data (such as its self
+test status and integrity data). But in this case we do not
+automatically activate the <small>FIPS</small> provider via
+that config file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To do things
+this way configure as per &quot;Making all applications use
+the <small>FIPS</small> module by default&quot; above, but
+edit the <i>fipsmodule.cnf</i> file to remove or comment out
+the line which says &quot;activate = 1&quot; (note that
+setting this value to 0 is <i>not</i> sufficient). This
+means all the required config information will be available
+to load the <small>FIPS</small> module, but it is not
+automatically loaded when the application starts. The
+<small>FIPS</small> provider can then be loaded
+programmatically like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/provider.h&gt; <br>
+int main(void) <br>
+{ <br>
+OSSL_PROVIDER *fips; <br>
+OSSL_PROVIDER *base; <br>
+fips = OSSL_PROVIDER_load(NULL, &quot;fips&quot;); <br>
+if (fips == NULL) { <br>
+printf(&quot;Failed to load FIPS provider\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+} <br>
+base = OSSL_PROVIDER_load(NULL, &quot;base&quot;); <br>
+if (base == NULL) { <br>
+OSSL_PROVIDER_unload(fips); <br>
+printf(&quot;Failed to load base provider\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+} <br>
+/* Rest of application */ <br>
+OSSL_PROVIDER_unload(base); <br>
+OSSL_PROVIDER_unload(fips); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+should be one of the first things that you do in your
+application. If any OpenSSL functions get called that
+require the use of cryptographic functions before this
+occurs then, if no provider has yet been loaded, then the
+default provider will be automatically loaded. If you then
+later explicitly load the <small>FIPS</small> provider then
+you will have both the <small>FIPS</small> and the default
+provider loaded at the same time. It is undefined which
+implementation of an algorithm will be used if multiple
+implementations are available and you have not explicitly
+specified via a property query (see below) which one should
+be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Also note that
+in this example we have additionally loaded the
+&quot;base&quot; provider. This loads a sub-set of
+algorithms that are also available in the default provider -
+specifically non cryptographic ones which may be used in
+conjunction with the <small>FIPS</small> provider. For
+example this contains algorithms for encoding and decoding
+keys. If you decide not to load the default provider then
+you will usually want to load the base provider instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this example
+we are using the &quot;default&quot; library context.
+OpenSSL functions operate within the scope of a library
+context. If no library context is explicitly specified then
+the default library context is used. For further details
+about library contexts see the
+<b><small>OSSL_LIB_CTX</small></b> (3) man page.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Loading the
+<small>FIPS</small> module at the same time as other
+providers</b> <br>
+It is possible to have the <small>FIPS</small> provider and
+other providers (such as the default provider) all loaded at
+the same time into the same library context. You can use a
+property query string during algorithm fetches to specify
+which implementation you would like to use.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example to
+fetch an implementation of <small>SHA256</small> which
+conforms to <small>FIPS</small> standards you can specify
+the property query &quot;fips=yes&quot; like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_MD *sha256;
+<br>
+sha256 = EVP_MD_fetch(NULL, &quot;SHA2-256&quot;,
+&quot;fips=yes&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no property
+query is specified, or more than one implementation matches
+the property query then it is undefined which implementation
+of a particular algorithm will be returned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+shows an explicit request for an implementation of
+<small>SHA256</small> from the default provider:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_MD *sha256;
+<br>
+sha256 = EVP_MD_fetch(NULL, &quot;SHA2-256&quot;,
+&quot;provider=default&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is also
+possible to set a default property query string. The
+following example sets the default property query of
+&quot;fips=yes&quot; for all fetches within the default
+library context:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_set_default_properties(NULL,
+&quot;fips=yes&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a fetch
+function has both an explicit property query specified, and
+a default property query is defined then the two queries are
+merged together and both apply. The local property query
+overrides the default properties if the same property name
+is specified in both.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+important built-in properties that you should be aware
+of:</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;provider&quot; property enables you to specify which
+provider you want an implementation to be fetched from, e.g.
+&quot;provider=default&quot; or &quot;provider=fips&quot;.
+All algorithms implemented in a provider have this property
+set on them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is also
+the &quot;fips&quot; property. All <small>FIPS</small>
+algorithms match against the property query
+&quot;fips=yes&quot;. There are also some non-cryptographic
+algorithms available in the default and base providers that
+also have the &quot;fips=yes&quot; property defined for
+them. These are the encoder and decoder algorithms that can
+(for example) be used to write out a key generated in the
+<small>FIPS</small> provider to a file. The encoder and
+decoder algorithms are not in the <small>FIPS</small> module
+itself but are allowed to be used in conjunction with the
+<small>FIPS</small> algorithms.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to specify default properties within a config file. For
+example the following config file automatically loads the
+default and fips providers and sets the default property
+value to be &quot;fips=yes&quot;. Note that this config file
+does not load the &quot;base&quot; provider. All supporting
+algorithms that are in &quot;base&quot; are also in
+&quot;default&quot;, so it is unnecessary in this case:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">config_diagnostics
+= 1 <br>
+openssl_conf = openssl_init <br>
+.include /usr/local/ssl/fipsmodule.cnf <br>
+[openssl_init] <br>
+providers = provider_sect <br>
+alg_section = algorithm_sect <br>
+[provider_sect] <br>
+fips = fips_sect <br>
+default = default_sect <br>
+[default_sect] <br>
+activate = 1 <br>
+[algorithm_sect] <br>
+default_properties = fips=yes</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Programmatically
+loading the <small>FIPS</small> module (nondefault library
+context)</b> <br>
+In addition to using properties to separate usage of the
+<small>FIPS</small> module from other usages this can also
+be achieved using library contexts. In this example we
+create two library contexts. In one we assume the existence
+of a config file called <i>openssl-fips.cnf</i> that
+automatically loads and configures the <small>FIPS</small>
+and base providers. The other library context will just use
+the default provider.</p>
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_LIB_CTX
+*fips_libctx, *nonfips_libctx; <br>
+OSSL_PROVIDER *defctxnull = NULL; <br>
+EVP_MD *fipssha256 = NULL, *nonfipssha256 = NULL; <br>
+int ret = 1; <br>
+/* <br>
+* Create two nondefault library contexts. One for fips usage
+and <br>
+* one for non-fips usage <br>
+*/ <br>
+fips_libctx = OSSL_LIB_CTX_new(); <br>
+nonfips_libctx = OSSL_LIB_CTX_new(); <br>
+if (fips_libctx == NULL || nonfips_libctx == NULL) <br>
+goto err; <br>
+/* Prevent anything from using the default library context
+*/ <br>
+defctxnull = OSSL_PROVIDER_load(NULL, &quot;null&quot;);
+<br>
+/* <br>
+* Load config file for the FIPS library context. We assume
+that <br>
+* this config file will automatically activate the FIPS and
+base <br>
+* providers so we don't need to explicitly load them here.
+<br>
+*/ <br>
+if (!OSSL_LIB_CTX_load_config(fips_libctx,
+&quot;openssl-fips.cnf&quot;)) <br>
+goto err; <br>
+/* <br>
+* We don't need to do anything special to load the default
+<br>
+* provider into nonfips_libctx. This happens automatically
+if no <br>
+* other providers are loaded. <br>
+* Because we don't call OSSL_LIB_CTX_load_config()
+explicitly for <br>
+* nonfips_libctx it will just use the default config file.
+<br>
+*/ <br>
+/* As an example get some digests */ <br>
+/* Get a FIPS validated digest */ <br>
+fipssha256 = EVP_MD_fetch(fips_libctx, &quot;SHA2-256&quot;,
+NULL); <br>
+if (fipssha256 == NULL) <br>
+goto err; <br>
+/* Get a non-FIPS validated digest */ <br>
+nonfipssha256 = EVP_MD_fetch(nonfips_libctx,
+&quot;SHA2-256&quot;, NULL); <br>
+if (nonfipssha256 == NULL) <br>
+goto err; <br>
+/* Use the digests */ <br>
+printf(&quot;Success\n&quot;); <br>
+ret = 0; <br>
+err: <br>
+EVP_MD_free(fipssha256); <br>
+EVP_MD_free(nonfipssha256); <br>
+OSSL_LIB_CTX_free(fips_libctx); <br>
+OSSL_LIB_CTX_free(nonfips_libctx); <br>
+OSSL_PROVIDER_unload(defctxnull); <br>
+return ret;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that we
+have made use of the special &quot;null&quot; provider here
+which we load into the default library context. We could
+have chosen to use the default library context for
+<small>FIPS</small> usage, and just create one additional
+library context for other usages - or vice versa. However if
+code has not been converted to use library contexts then the
+default library context will be automatically used. This
+could be the case for your own existing applications as well
+as certain parts of OpenSSL itself. Not all parts of OpenSSL
+are library context aware. If this happens then you could
+&quot;accidentally&quot; use the wrong library context for a
+particular operation. To be sure this doesn&rsquo;t happen
+you can load the &quot;null&quot; provider into the default
+library context. Because a provider has been explicitly
+loaded, the default provider will not automatically load.
+This means code using the default context by accident will
+fail because no algorithms will be available.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+&quot;Library Context&quot; in <b>migration_guide</b>(7) for
+additional information about the Library Context.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using
+Encoders and Decoders with the <small>FIPS</small>
+module</b> <br>
+Encoders and decoders are used to read and write keys or
+parameters from or to some external format (for example a
+<small>PEM</small> file). If your application generates keys
+or parameters that then need to be written into
+<small>PEM</small> or <small>DER</small> format then it is
+likely that you will need to use an encoder to do this.
+Similarly you need a decoder to read previously saved keys
+and parameters. In most cases this will be invisible to you
+if you are using APIs that existed in OpenSSL 1.1.1 or
+earlier such as <b>i2d_PrivateKey</b>(3). However the
+appropriate encoder/decoder will need to be available in the
+library context associated with the key or parameter object.
+The built-in OpenSSL encoders and decoders are implemented
+in both the default and base providers and are not in the
+<small>FIPS</small> module boundary. However since they are
+not cryptographic algorithms themselves it is still possible
+to use them in conjunction with the <small>FIPS</small>
+module, and therefore these encoders/decoders have the
+&quot;fips=yes&quot; property against them. You should
+ensure that either the default or base provider is loaded
+into the library context in this case.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using the
+<small>FIPS</small> module in <small>SSL/TLS</small></b>
+<br>
+Writing an application that uses libssl in conjunction with
+the <small>FIPS</small> module is much the same as writing a
+normal libssl application. If you are using global
+properties and the default library context to specify usage
+of <small>FIPS</small> validated algorithms then this will
+happen automatically for all cryptographic algorithms in
+libssl. If you are using a nondefault library context to
+load the <small>FIPS</small> provider then you can supply
+this to libssl using the function <b>SSL_CTX_new_ex</b>(3).
+This works as a drop in replacement for the function
+<b>SSL_CTX_new</b>(3) except it provides you with the
+capability to specify the library context to be used. You
+can also use the same function to specify libssl specific
+properties to use.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this first
+example we create two <small>SSL_CTX</small> objects using
+two different library contexts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* We assume that a nondefault library context with the FIPS
+<br>
+* provider loaded has been created called fips_libctx. <br>
+*/ <br>
+SSL_CTX *fips_ssl_ctx = SSL_CTX_new_ex(fips_libctx, NULL,
+TLS_method()); <br>
+/* <br>
+* We assume that a nondefault library context with the
+default <br>
+* provider loaded has been created called non_fips_libctx.
+<br>
+*/ <br>
+SSL_CTX *non_fips_ssl_ctx = SSL_CTX_new_ex(non_fips_libctx,
+NULL, <br>
+TLS_method());</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this second
+example we create two <small>SSL_CTX</small> objects using
+different properties to specify <small>FIPS</small>
+usage:</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* The &quot;fips=yes&quot; property includes all FIPS
+approved algorithms <br>
+* as well as encoders from the default provider that are
+allowed <br>
+* to be used. The NULL below indicates that we are using the
+<br>
+* default library context. <br>
+*/ <br>
+SSL_CTX *fips_ssl_ctx = SSL_CTX_new_ex(NULL,
+&quot;fips=yes&quot;, TLS_method()); <br>
+/* <br>
+* The &quot;provider!=fips&quot; property allows algorithms
+from any <br>
+* provider except the FIPS provider <br>
+*/ <br>
+SSL_CTX *non_fips_ssl_ctx = SSL_CTX_new_ex(NULL,
+&quot;provider!=fips&quot;, <br>
+TLS_method());</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Confirming
+that an algorithm is being provided by the
+<small>FIPS</small> module</b> <br>
+A chain of links needs to be followed to go from an
+algorithm instance to the provider that implements it. The
+process is similar for all algorithms. Here the example of a
+digest is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To go from an
+<b><small>EVP_MD_CTX</small></b> to an
+<b><small>EVP_MD</small></b> , use <b>EVP_MD_CTX_md</b>(3) .
+To go from the <b><small>EVP_MD</small></b> to its
+<b><small>OSSL_PROVIDER</small></b> , use
+<b>EVP_MD_get0_provider</b>(3). To extract the name from the
+<b><small>OSSL_PROVIDER</small></b> , use
+<b>OSSL_PROVIDER_get0_name</b>(3).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>migration_guide</b>(7),
+<b>crypto</b>(7), <b>fips_config</b>(5)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2021
+The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

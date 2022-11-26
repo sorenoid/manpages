@@ -1,0 +1,536 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>thermal-conf.xml</title>
+
+</head>
+<body>
+
+<h1 align="center">thermal-conf.xml</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FILE FORMAT">FILE FORMAT</a><br>
+<a href="#EXAMPLE CONFIGURATIONS">EXAMPLE CONFIGURATIONS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">thermal-conf.xml
+- Configuration file for thermal daemon</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">$(TDCONFDIR)/etc/thermald/thermal-conf.xml</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>thermal-conf.xml</b>
+is a configuration file for the thermal daemon. It is used
+to configure thermal sensors, zone and cooling devices.The
+location of this file depends on the configuration option
+used during build time.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The terminology
+used in this file conforms to &quot;Advanced Configuration
+and Power Interface Specification&quot;. The ACPI thermal
+model is based around conceptual platform regions called
+thermal zones that physically contain devices, thermal
+sensors, and cooling controls. For example of a thermal zone
+can be a CPU or a laptop cover. A zone can contain multiple
+sensors for monitoring temperature. A cooling device
+provides interface to reduce the temperature of a source
+device, which causes increase in the temperature. An example
+of a cooling device is a FAN or some Linux driver which can
+throttle the source device.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A thermal zone
+configuration includes one or more trip points. A trip point
+is a temperature at which a cooling device needs to be
+activated.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A cooling
+device can be either active or passive. An example of an
+active device is a FAN, which will not reduce performance at
+the cost of consuming more power and noise. A passive device
+uses performance throttling to control temperature. In
+addition to cooling devices present in the thermal sysfs,
+the following cooling devices are built into the thermald,
+which can be used as valid cooling device type:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>- rapl_controller</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>- intel_pstate</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>- cpufreq</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>- LCD</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The thermal
+sysfs under Linux (/sys/class/thermal) provides a way to
+represent per platform ACPI configuration. The kernel
+thermal governor uses this data to keep the platform
+thermals under control. But there are some limitations,
+which thermald tries to resolve. For example: <br>
+- If the ACPI data is not optimized or buggy. In this case
+<br>
+thermal-conf.xml can be used to correct the behavior without
+change in <br>
+BIOS.</p>
+
+<p style="margin-left:22%; margin-top: 1em">- There may be
+thermal zones exposed by the thermal sysfs without
+associated cooling actions. In this case thermal conf.xml
+can be used to tie the cooling devices to those zones.</p>
+
+<p style="margin-left:22%; margin-top: 1em">- The best
+cooling method may not be in the thermal sysfs. In this case
+thermal-conf.xml can be used to bind a zone to an external
+cooling device.</p>
+
+<p style="margin-left:22%; margin-top: 1em">- Specify
+thermal relationships. A zone can be influenced by multiple
+source devices with varying degrees. In this case
+thermal-conf.xml can be used to define the relative
+influence for apply compensation.</p>
+
+<h2>FILE FORMAT
+<a name="FILE FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration file format conforms to XML specifications. A
+set of tags defined to define platform, sensors, zones,
+cooling devices and trip points.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;ThermalConfiguration&gt;
+<br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Example Platform Name&lt;/Name&gt; <br>
+&lt;!-- UUID is optional, if present this will be matched.
+Both product <br>
+name and UUID can contain wild card &quot;*&quot;, which
+matches any <br>
+platform. --&gt; <br>
+&lt;UUID&gt;Example UUID&lt;/UUID&gt; <br>
+&lt;!-- configuration file format conforms to XML
+specifications. A <br>
+set of tags defined to define platform, sensors, zones,
+cooling <br>
+devices and trip points. --&gt; <br>
+&lt;ProductName&gt;Example Product Name&lt;/ProductName&gt;
+<br>
+&lt;Preference&gt;QUIET|PERFORMANCE&lt;/Preference&gt; <br>
+&lt;!-- Quiet mode will only use passive cooling device.
+&quot;PERFORMANCE&quot; <br>
+will only select active devices. --&gt; <br>
+&lt;ThermalSensors&gt; <br>
+&lt;ThermalSensor&gt; <br>
+&lt;!-- New Sensor with a type and path --&gt; <br>
+&lt;Type&gt;example_sensor_1&lt;/Type&gt; <br>
+&lt;Path&gt;/some_path&lt;/Path&gt; <br>
+&lt;AsyncCapable&gt;0&lt;/AsyncCapable&gt; <br>
+&lt;/ThermalSensor&gt; <br>
+&lt;ThermalSensor&gt; <br>
+&lt;!-- Already present in thermal sysfs, enable this or
+<br>
+add/change config For example, here we are indicating <br>
+that sensor can do async events to avoid polling. --&gt;
+<br>
+&lt;Type&gt;example_thermal_sysfs_sensor&lt;/Type&gt; <br>
+&lt;!-- If async capable, then we don&rsquo;t need to poll.
+--&gt; <br>
+&lt;AsyncCapable&gt;1&lt;/AsyncCapable&gt; <br>
+&lt;/ThermalSensor&gt; <br>
+&lt;/ThermalSensors&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;Example Zone type&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;example_sensor_1&lt;/SensorType&gt; <br>
+&lt;!-- Temperature at which to take action. --&gt; <br>
+&lt;Temperature&gt; 75000 &lt;/Temperature&gt; <br>
+&lt;!-- max/passive/active If a MAX type is specified, then
+<br>
+daemon will use PID control to aggressively throttle <br>
+to avoid reaching this temp. --&gt; <br>
+&lt;type&gt;max&lt;/type&gt; <br>
+&lt;!-- SEQUENTIAL | PARALLEL. When a trip point temp is
+<br>
+violated, then number of cooling devices can be <br>
+activated. If control type is SEQUENTIAL then, it <br>
+will exhaust first cooling device <br>
+before trying next. --&gt; <br>
+&lt;ControlType&gt;SEQUENTIAL&lt;/ControlType&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;index&gt;1&lt;/index&gt; <br>
+&lt;type&gt;example_cooling_device&lt;/type&gt; <br>
+&lt;!-- Influence will be used order cooling devices. First
+<br>
+cooling device will be used, which has highest <br>
+influence. --&gt; <br>
+&lt;influence&gt; 100 &lt;/influence&gt; <br>
+&lt;!-- Delay in using this cdev, this takes some time too
+<br>
+actually cool a zone. --&gt; <br>
+&lt;SamplingPeriod&gt; 12 &lt;/SamplingPeriod&gt; <br>
+&lt;!-- Set a specific state of this cooling device when
+this <br>
+trip is violated. --&gt; <br>
+&lt;TargetState&gt; 6 &lt;/TargetState&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;CoolingDevices&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;!-- Cooling device can be specified by a type and
+optionally <br>
+a sysfs path. If the type is already present in thermal <br>
+sysfs, there is no need of a path. Compensation can use <br>
+min/max and step size to increasing cool the system. <br>
+Debounce period can be used to force a waiting period <br>
+for action. --&gt; <br>
+&lt;Type&gt;example_cooling_device&lt;/Type&gt; <br>
+&lt;MinState&gt;0&lt;/MinState&gt; <br>
+&lt;IncDecStep&gt;10&lt;/IncDecStep&gt; <br>
+&lt;ReadBack&gt; 0 &lt;/ReadBack&gt; <br>
+&lt;MaxState&gt;50&lt;/MaxState&gt; <br>
+&lt;DebouncePeriod&gt;5000&lt;/DebouncePeriod&gt; <br>
+&lt;!-- If there are no PID parameters, compensation
+increase step <br>
+wise and exponentially (if single step is not able to <br>
+change trend). <br>
+Alternatively a PID parameters can be specified then next
+<br>
+step will use PID calculation using provided PID <br>
+constants. --&gt; <br>
+&lt;PidControl&gt; <br>
+&lt;kp&gt;0.001&lt;/kp&gt; <br>
+&lt;kd&gt;0.0001&lt;/kd&gt; <br>
+&lt;ki&gt;0.0001&lt;/ki&gt; <br>
+&lt;/PidControl&gt; <br>
+&lt;!-- Write some prefix attached to state value, like
+below the <br>
+prefix is &quot;level &quot;. It will preserve spaces as
+entered <br>
+when writing to sysfs. --&gt; <br>
+&lt;WritePrefix&gt;level &lt;/WritePrefix&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/CoolingDevices&gt; <br>
+&lt;/Platform&gt; <br>
+&lt;/ThermalConfiguration&gt;</p>
+
+<h2>EXAMPLE CONFIGURATIONS
+<a name="EXAMPLE CONFIGURATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+1:</b> This is a very simple configuration, to change the
+passive limit on the CPU. Instead of default, this new
+temperature 86C in the configuration is used. This will
+start cooling, once the temperature reaches 86C.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;?xml
+version=&quot;1.0&quot;?&gt; <br>
+&lt;ThermalConfiguration&gt; <br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Override CPU default passive&lt;/Name&gt; <br>
+&lt;ProductName&gt;*&lt;/ProductName&gt; <br>
+&lt;Preference&gt;QUIET&lt;/Preference&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;cpu&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;Temperature&gt;86000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;/Platform&gt; <br>
+&lt;/ThermalConfiguration&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+2:</b> In this configuration, we are controlling backlight
+when some sensor &quot;SEN2&quot; reaches 60C. Here
+&quot;LCD&quot; is a standard cooling device, which uses
+Linux backlight sysfs interface. &quot;LCD_Zone&quot; is a
+valid thermal zone in Linux thermal sysfs on the test
+platform, hence we don&rsquo;t need to provide path for
+sysfs for &quot;LCD_Zone&quot;. The Linux thermal sysfs is
+already parsed and loaded by thermald program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;?xml
+version=&quot;1.0&quot;?&gt; <br>
+&lt;ThermalConfiguration&gt; <br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Change Backlight&lt;/Name&gt; <br>
+&lt;ProductName&gt;*&lt;/ProductName&gt; <br>
+&lt;Preference&gt;QUIET&lt;/Preference&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;LCD_Zone&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;SEN2&lt;/SensorType&gt; <br>
+&lt;Temperature&gt;60000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;Type&gt;LCD&lt;/Type&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;/Platform&gt; <br>
+&lt;/ThermalConfiguration&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+3:</b> In this example Lenovo Thinkpad X220 and fan speed is
+controlled. Here a cooling device &quot;_Fan&quot;, can be
+controlled via sysfs
+/sys/devices/platform/thinkpad_hwmon/pwm1. When the
+x86_pkg_temp reaches 45C, Fan is started with increasing
+speeds, if the temperature can&rsquo;t be controlled at
+45C.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;?xml
+version=&quot;1.0&quot;?&gt; <br>
+&lt;ThermalConfiguration&gt; <br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Lenovo ThinkPad X220&lt;/Name&gt; <br>
+&lt;ProductName&gt;*&lt;/ProductName&gt; <br>
+&lt;Preference&gt;QUIET&lt;/Preference&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;x86_pkg_temp&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;x86_pkg_temp&lt;/SensorType&gt; <br>
+&lt;Temperature&gt;45000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;ControlType&gt;SEQUENTIAL&lt;/ControlType&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;index&gt;1&lt;/index&gt; <br>
+&lt;type&gt;_Fan&lt;/type&gt; <br>
+&lt;influence&gt; 100 &lt;/influence&gt; <br>
+&lt;SamplingPeriod&gt; 12 &lt;/SamplingPeriod&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;CoolingDevices&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;Type&gt;_Fan&lt;/Type&gt; <br>
+
+&lt;Path&gt;/sys/devices/platform/thinkpad_hwmon/pwm1&lt;/Path&gt;
+<br>
+&lt;MinState&gt;0&lt;/MinState&gt; <br>
+&lt;IncDecStep&gt;30&lt;/IncDecStep&gt; <br>
+&lt;ReadBack&gt; 0 &lt;/ReadBack&gt; <br>
+&lt;MaxState&gt;255&lt;/MaxState&gt; <br>
+&lt;DebouncePeriod&gt;5&lt;/DebouncePeriod&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/CoolingDevices&gt; <br>
+&lt;/Platform&gt; <br>
+&lt;/ThermalConfiguration&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+4:</b> The following example shows how PID can be used. Here
+once temperature exceeds 80C, compensation is calculated
+using PID using 80C as set point of PID. The compensation
+depends on error from the set point. Here the default built
+in processor cooling device is used with min state as 0 and
+max state as 10.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;?xml
+version=&quot;1.0&quot;?&gt; <br>
+&lt;ThermalConfiguration&gt; <br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Use PID param &lt;/Name&gt; <br>
+&lt;ProductName&gt;*&lt;/ProductName&gt; <br>
+&lt;Preference&gt;QUIET&lt;/Preference&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;x86_pkg_temp&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;x86_pkg_temp&lt;/SensorType&gt; <br>
+&lt;Temperature&gt;80000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;ControlType&gt;SEQUENTIAL&lt;/ControlType&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;type&gt;Processor&lt;/type&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;CoolingDevices&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;Type&gt;Processor&lt;/Type&gt; <br>
+&lt;PidControl&gt; <br>
+&lt;kp&gt;0.0002&lt;/kp&gt; <br>
+&lt;kd&gt;0&lt;/kd&gt; <br>
+&lt;ki&gt;0&lt;/ki&gt; <br>
+&lt;/PidControl&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/CoolingDevices&gt; <br>
+&lt;/Platform&gt; <br>
+&lt;/ThermalConfiguration&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+5:</b> The following example shows how to control Fan when
+the sysfs expects some string prefix. For example instead of
+just write a number to fan control sysfs, the interface
+requires &quot;level &quot; in front of the speed index
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;?xml
+version=&quot;1.0&quot;?&gt; <br>
+&lt;ThermalConfiguration&gt; <br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Use Fan control first then CPU throttle
+&lt;/Name&gt; <br>
+&lt;ProductName&gt;*&lt;/ProductName&gt; <br>
+&lt;Preference&gt;QUIET&lt;/Preference&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;x86_pkg_temp&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;x86_pkg_temp&lt;/SensorType&gt; <br>
+&lt;Temperature&gt;80000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;ControlType&gt;SEQUENTIAL&lt;/ControlType&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;type&gt;_fan_&lt;/type&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;CoolingDevices&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;Type&gt;_fan_&lt;/Type&gt; <br>
+&lt;Path&gt;/proc/acpi/ibm/fan&lt;/Path&gt; <br>
+&lt;WritePrefix&gt;level &lt;/WritePrefix&gt; <br>
+&lt;MinState&gt;0&lt;/MinState&gt; <br>
+&lt;MaxState&gt;5&lt;/MaxState&gt; <br>
+&lt;DebouncePeriod&gt;10&lt;/DebouncePeriod&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/CoolingDevices&gt; <br>
+&lt;/Platform&gt; <br>
+&lt;/ThermalConfiguration&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example 6:
+Similar to example 5, but write different speeds at
+different temperatures.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;?xml
+version=&quot;1.0&quot;?&gt; <br>
+&lt;ThermalConfiguration&gt; <br>
+&lt;Platform&gt; <br>
+&lt;Name&gt;Use Fan control first then CPU throttle
+&lt;/Name&gt; <br>
+&lt;ProductName&gt;*&lt;/ProductName&gt; <br>
+&lt;Preference&gt;QUIET&lt;/Preference&gt; <br>
+&lt;ThermalZones&gt; <br>
+&lt;ThermalZone&gt; <br>
+&lt;Type&gt;x86_pkg_temp&lt;/Type&gt; <br>
+&lt;TripPoints&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;x86_pkg_temp&lt;/SensorType&gt; <br>
+&lt;Temperature&gt;80000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;type&gt;_fan_&lt;/type&gt; <br>
+&lt;TargetState&gt;1&lt;/TargetState&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;TripPoint&gt; <br>
+&lt;SensorType&gt;x86_pkg_temp&lt;/SensorType&gt; <br>
+&lt;Temperature&gt;85000&lt;/Temperature&gt; <br>
+&lt;type&gt;passive&lt;/type&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;type&gt;_fan_&lt;/type&gt; <br>
+&lt;TargetState&gt;2&lt;/TargetState&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/TripPoint&gt; <br>
+&lt;/TripPoints&gt; <br>
+&lt;/ThermalZone&gt; <br>
+&lt;/ThermalZones&gt; <br>
+&lt;CoolingDevices&gt; <br>
+&lt;CoolingDevice&gt; <br>
+&lt;Type&gt;_fan_&lt;/Type&gt; <br>
+&lt;Path&gt;/proc/acpi/ibm/fan&lt;/Path&gt; <br>
+&lt;WritePrefix&gt;level &lt;/WritePrefix&gt; <br>
+&lt;MinState&gt;0&lt;/MinState&gt; <br>
+&lt;MaxState&gt;5&lt;/MaxState&gt; <br>
+&lt;DebouncePeriod&gt;10&lt;/DebouncePeriod&gt; <br>
+&lt;/CoolingDevice&gt; <br>
+&lt;/CoolingDevices&gt; <br>
+&lt;/Platform&gt; <br>
+ &lt;/ThermalConfiguration&gt;</p>
+<hr>
+</body>
+</html>

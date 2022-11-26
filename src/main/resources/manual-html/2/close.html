@@ -1,0 +1,315 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:59 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CLOSE</title>
+
+</head>
+<body>
+
+<h1 align="center">CLOSE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">close - close a
+file descriptor</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;unistd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+close(int</b> <i>fd</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>close</b>()
+closes a file descriptor, so that it no longer refers to any
+file and may be reused. Any record locks (see
+<b>fcntl</b>(2)) held on the file it was associated with,
+and owned by the process, are removed (regardless of the
+file descriptor that was used to obtain the lock).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>fd</i> is
+the last file descriptor referring to the underlying open
+file description (see <b>open</b>(2)), the resources
+associated with the open file description are freed; if the
+file descriptor was the last reference to a file which has
+been removed using <b>unlink</b>(2), the file is
+deleted.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>close</b>()
+returns zero on success. On error, -1 is returned, and
+<i>errno</i> is set appropriately.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>EBADF</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>fd</i> isn&rsquo;t a valid
+open file descriptor.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EINTR</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The <b>close</b>() call was interrupted by a signal; see
+<b>signal</b>(7).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EIO</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>An I/O error occurred.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENOSPC</b>,
+<b>EDQUOT</b></p>
+
+<p style="margin-left:22%;">On NFS, these errors are not
+normally reported against the first write which exceeds the
+available storage space, but instead against a subsequent
+<b>write</b>(2), <b>fsync</b>(2), or <b>close</b>().</p>
+
+<p style="margin-left:11%; margin-top: 1em">See NOTES for a
+discussion of why <b>close</b>() should not be retried after
+an error.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2001,
+POSIX.1-2008, SVr4, 4.3BSD.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A successful
+close does not guarantee that the data has been successfully
+saved to disk, as the kernel uses the buffer cache to defer
+writes. Typically, filesystems do not flush buffers when a
+file is closed. If you need to be sure that the data is
+physically stored on the underlying disk, use
+<b>fsync</b>(2). (It will depend on the disk hardware at
+this point.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+close-on-exec file descriptor flag can be used to ensure
+that a file descriptor is automatically closed upon a
+successful <b>execve</b>(2); see <b>fcntl</b>(2) for
+details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Multithreaded
+processes and close()</b> <br>
+It is probably unwise to close file descriptors while they
+may be in use by system calls in other threads in the same
+process. Since a file descriptor may be reused, there are
+some obscure race conditions that may cause unintended side
+effects.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Furthermore,
+consider the following scenario where two threads are
+performing operations on the same file descriptor:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>One thread is blocked in an I/O system call on the file
+descriptor. For example, it is trying to <b>write</b>(2) to
+a pipe that is already full, or trying to <b>read</b>(2)
+from a stream socket which currently has no available
+data.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Another thread closes the file descriptor.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The behavior in
+this situation varies across systems. On some systems, when
+the file descriptor is closed, the blocking system call
+returns immediately with an error.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On Linux (and
+possibly some other systems), the behavior is different. the
+blocking I/O system call holds a reference to the underlying
+open file description, and this reference keeps the
+description open until the I/O system call completes. (See
+<b>open</b>(2) for a discussion of open file descriptions.)
+Thus, the blocking system call in the first thread may
+successfully complete after the <b>close</b>() in the second
+thread.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Dealing with
+error returns from close()</b> <br>
+A careful programmer will check the return value of
+<b>close</b>(), since it is quite possible that errors on a
+previous <b>write</b>(2) operation are reported only on the
+final <b>close</b>() that releases the open file
+description. Failing to check the return value when closing
+a file may lead to <i>silent</i> loss of data. This can
+especially be observed with NFS and with disk quota.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note, however,
+that a failure return should be used only for diagnostic
+purposes (i.e., a warning to the application that there may
+still be I/O pending or there may have been failed I/O) or
+remedial purposes (e.g., writing the file once more or
+creating a backup).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Retrying the
+<b>close</b>() after a failure return is the wrong thing to
+do, since this may cause a reused file descriptor from
+another thread to be closed. This can occur because the
+Linux kernel <i>always</i> releases the file descriptor
+early in the close operation, freeing it for reuse; the
+steps that may return an error, such as flushing data to the
+filesystem or device, occur only later in the close
+operation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many other
+implementations similarly always close the file descriptor
+(except in the case of <b>EBADF</b>, meaning that the file
+descriptor was invalid) even if they subsequently report an
+error on return from <b>close</b>(). POSIX.1 is currently
+silent on this point, but there are plans to mandate this
+behavior in the next major release of the standard.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A careful
+programmer who wants to know about I/O errors may precede
+<b>close</b>() with a call to <b>fsync</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>EINTR</b> error is a somewhat special case. Regarding the
+<b>EINTR</b> error, POSIX.1-2008 says:</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<b>close</b>() is interrupted by a signal that is to be
+caught, it shall return -1 with <i>errno</i> set to
+<b>EINTR</b> and the state of <i>fildes</i> is
+unspecified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This permits
+the behavior that occurs on Linux and many other
+implementations, where, as with other errors that may be
+reported by <b>close</b>(), the file descriptor is
+guaranteed to be closed. However, it also permits another
+possibility: that the implementation returns an <b>EINTR</b>
+error and keeps the file descriptor open. (According to its
+documentation, HP-UX&rsquo;s <b>close</b>() does this.) The
+caller must then once more use <b>close</b>() to close the
+file descriptor, to avoid file descriptor leaks. This
+divergence in implementation behaviors provides a difficult
+hurdle for portable applications, since on many
+implementations, <b>close</b>() must not be called again
+after an <b>EINTR</b> error, and on at least one,
+<b>close</b>() must be called again. There are plans to
+address this conundrum for the next major release of the
+POSIX.1 standard.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fcntl</b>(2),
+<b>fsync</b>(2), <b>open</b>(2), <b>shutdown</b>(2),
+<b>unlink</b>(2), <b>fclose</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

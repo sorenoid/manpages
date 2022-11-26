@@ -1,0 +1,100 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:32 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROCESS-KEYRING</title>
+
+</head>
+<body>
+
+<h1 align="center">PROCESS-KEYRING</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">process-keyring
+- per-process shared keyring</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The process
+keyring is a keyring used to anchor keys on behalf of a
+process. It is created only when a process requests it. The
+process keyring has the name (description) <i>_pid</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A special
+serial number value, <b>KEY_SPEC_PROCESS_KEYRING</b>, is
+defined that can be used in lieu of the actual serial number
+of the calling process&rsquo;s process keyring.</p>
+
+<p style="margin-left:11%; margin-top: 1em">From the
+<b>keyctl</b>(1) utility, &rsquo;<b>@p</b>&rsquo; can be
+used instead of a numeric key ID in much the same way, but
+since <b>keyctl</b>(1) is a program run after forking, this
+is of no utility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A thread
+created using the <b>clone</b>(2) <b>CLONE_THREAD</b> flag
+has the same process keyring as the caller of
+<b>clone</b>(2). When a new process is created using
+<b>fork</b>() it initially has no process keyring. A
+process&rsquo;s process keyring is cleared on
+<b>execve</b>(2). The process keyring is destroyed when the
+last thread that refers to it terminates.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a process
+doesn&rsquo;t have a process keyring when it is accessed,
+then the process keyring will be created if the keyring is
+to be modified; otherwise, the error <b>ENOKEY</b>
+results.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>keyctl</b>(1),
+<b>keyctl</b>(3), <b>keyrings</b>(7),
+<b>persistent-keyring</b>(7), <b>session-keyring</b>(7),
+<b>thread-keyring</b>(7), <b>user-keyring</b>(7),
+<b>user-session-keyring</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

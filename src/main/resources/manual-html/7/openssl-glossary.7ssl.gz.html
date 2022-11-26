@@ -1,0 +1,364 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:58 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>OPENSSL-GLOSSARY</title>
+
+</head>
+<body>
+
+<h1 align="center">OPENSSL-GLOSSARY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">openssl-glossary
+- An OpenSSL Glossary</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Algorithm</p>
+
+<p style="margin-left:17%;">Cryptograpic primitives such as
+the <small>SHA256</small> digest, or <small>AES</small>
+encryption are referred to in OpenSSL as
+&quot;algorithms&quot;. There can be more than one
+implementation for any given algorithm available for
+use.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>crypto</b>(7)</p>
+
+<p style="margin-left:11%;"><small>ASN.1, ASN1</small></p>
+
+<p style="margin-left:17%;"><small>ASN.1</small>
+(&quot;Abstract Syntax Notation One&quot;) is a notation for
+describing abstract types and values. It is defined in the
+ITU-T documents X.680 to X.683:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://www.itu.int/rec/T-REC-X.680&gt;,
+&lt;https://www.itu.int/rec/T-REC-X.681&gt;,
+&lt;https://www.itu.int/rec/T-REC-X.682&gt;,
+&lt;https://www.itu.int/rec/T-REC-X.683&gt;</p>
+
+<p style="margin-left:11%;">Base Provider</p>
+
+<p style="margin-left:17%;">An OpenSSL Provider that
+contains encoders and decoders for OpenSSL keys. All the
+algorithm implementations in the Base Provider are also
+available in the Default Provider.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>OSSL_PROVIDER-base</b>(7)</p>
+
+<p style="margin-left:11%;">Decoder</p>
+
+<p style="margin-left:17%;">A decoder is a type of
+algorithm used for decoding keys and parameters from some
+external format such as <small>PEM</small> or
+<small>DER.</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>OSSL_DECODER_CTX_new_for_pkey</b>(3)</p>
+
+<p style="margin-left:11%;">Default Provider</p>
+
+<p style="margin-left:17%;">An OpenSSL Provider that
+contains the most commmon OpenSSL algorithm implementations.
+It is loaded by default if no other provider is available.
+All the algorithm implementations in the Base Provider are
+also available in the Default Provider.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>OSSL_PROVIDER-default</b>(7)</p>
+
+<p style="margin-left:11%;"><small>DER</small>
+(&quot;Distinguished Encoding Rules&quot;)</p>
+
+<p style="margin-left:17%;"><small>DER</small> is a binary
+encoding of data, structured according to an
+<small>ASN.1</small> specification. This is a common
+encoding used for cryptographic objects such as private and
+public keys, certificates, CRLs, ...</p>
+
+<p style="margin-left:17%; margin-top: 1em">It is defined
+in ITU-T document X.690:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://www.itu.int/rec/T-REC-X.690&gt;</p>
+
+<p style="margin-left:11%;">Encoder</p>
+
+<p style="margin-left:17%;">An encoder is a type of
+algorithm used for encoding keys and parameters to some
+external format such as <small>PEM</small> or
+<small>DER.</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>OSSL_ENCODER_CTX_new_for_pkey</b>(3)</p>
+
+<p style="margin-left:11%;">Explicit Fetching</p>
+
+<p style="margin-left:17%;">Explicit Fetching is a type of
+Fetching (see Fetching). Explicit Fetching is where a
+function call is made to obtain an algorithm object
+representing an implementation such as
+<b>EVP_MD_fetch</b>(3) or <b>EVP_CIPHER_fetch</b>(3)</p>
+
+<p style="margin-left:11%;">Fetching</p>
+
+<p style="margin-left:17%;">Fetching is the process of
+looking through the available algorithm implementations,
+applying selection criteria (via a property query string),
+and finally choosing the implementation that will be
+used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Also see
+Explicit Fetching and Implict Fetching.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>crypto</b>(7)</p>
+
+<p style="margin-left:11%;"><small>FIPS</small>
+Provider</p>
+
+<p style="margin-left:17%;">An OpenSSL Provider that
+contains OpenSSL algorithm implementations that have been
+validated according to the <small>FIPS 140-2</small>
+standard.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b><small>OSSL_PROVIDER-FIPS</small></b>
+(7)</p>
+
+<p style="margin-left:11%;">Implicit Fetching</p>
+
+<p style="margin-left:17%;">Implicit Fetching is a type of
+Fetching (see Fetching). Implicit Fetching is where an
+algorithm object with no associated implementation is used
+such as the return value from <b>EVP_sha256</b>(3) or
+<b>EVP_aes_128_cbc</b>(3). With implicit fetching an
+implementation is fetched automatically using default
+selection criteria the first time the algorithm is used.</p>
+
+<p style="margin-left:11%;">Legacy Provider</p>
+
+<p style="margin-left:17%;">An OpenSSL Provider that
+contains algorithm implementations that are considered
+insecure or are no longer in common use.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>OSSL_PROVIDER-legacy</b>(7)</p>
+
+<p style="margin-left:11%;">Library Context</p>
+
+<p style="margin-left:17%;">A Library Context in OpenSSL is
+represented by the type <b><small>OSSL_LIB_CTX</small></b> .
+It can be thought of as a scope within which configuration
+options apply. If an application does not explicitly create
+a library context then the &quot;default&quot; one is used.
+Many OpenSSL functions can take a library context as an
+argument. A <small>NULL</small> value can always be passed
+to indicate the default library context.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b><small>OSSL_LIB_CTX</small></b>
+(3)</p>
+
+<p style="margin-left:11%;"><small>MSBLOB</small></p>
+
+<p style="margin-left:17%;"><small>MSBLOB</small> is a
+Microsoft specific binary format for <small>RSA</small> and
+<small>DSA</small> keys, both private and public. This form
+is never passphrase protected.</p>
+
+<p style="margin-left:11%;">Null Provider</p>
+
+<p style="margin-left:17%;">An OpenSSL Provider that
+contains no algorithm implementations. This can be useful to
+prevent the default provider from being automatically loaded
+in a library context.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>OSSL_PROVIDER-null</b>(7)</p>
+
+<p style="margin-left:11%;">Operation</p>
+
+<p style="margin-left:17%;">An operation is a group of
+OpenSSL functions with a common purpose such as encryption,
+or digesting.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>crypto</b>(7)</p>
+
+<p style="margin-left:11%;"><small>PEM</small>
+(&quot;Privacy Enhanced Message&quot;)</p>
+
+<p style="margin-left:17%;"><small>PEM</small> is a format
+used for encoding of binary content into a mail and
+<small>ASCII</small> friendly form. The content is a series
+of base64-encoded lines, surrounded by begin/end markers
+each on their own line. For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">-----BEGIN
+PRIVATE KEY----- <br>
+MIICdg.... <br>
+... bhTQ== <br>
+-----END PRIVATE KEY-----</p>
+
+<p style="margin-left:17%; margin-top: 1em">Optional header
+line(s) may appear after the begin line, and their existence
+depends on the type of object being written or read.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For all OpenSSL
+uses, the binary content is expected to be a
+<small>DER</small> encoded structure.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is defined
+in <small>IETF RFC 1421:</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://tools.ietf.org/html/rfc1421&gt;</p>
+
+<p style="margin-left:11%;">PKCS#8</p>
+
+<p style="margin-left:17%;">PKCS#8 is a specification of
+<small>ASN.1</small> structures that OpenSSL uses for
+storing or transmitting any private key in a key type
+agnostic manner. There are two structures worth noting for
+OpenSSL use, one that contains the key data in unencrypted
+form (known as &quot;PrivateKeyInfo&quot;) and an encrypted
+wrapper structure (known as
+&quot;EncryptedPrivateKeyInfo&quot;).</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is
+specified in <small>RFC 5208:</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://tools.ietf.org/html/rfc5208&gt;</p>
+
+<p style="margin-left:11%;">Property</p>
+
+<p style="margin-left:17%;">A property is a way of
+classifying and selecting algorithm implementations. A
+property is a key/value pair expressed as a string. For
+example all algorithm implementations in the default
+provider have the property &quot;provider=default&quot;. An
+algorithm implementation can have multiple properties
+defined against it.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Also see
+Property Query String.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>property</b>(7)</p>
+
+<p style="margin-left:11%;">Property Query String</p>
+
+<p style="margin-left:17%;">A property query string is a
+string containing a sequence of properties that can be used
+to select an algorithm implementation. For example the query
+string &quot;provider=example,foo=bar&quot; will select
+algorithms from the &quot;example&quot; provider that have a
+&quot;foo&quot; property defined for them with a value of
+&quot;bar&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Property Query
+Strings are used during fetching. See Fetching.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>property</b>(7)</p>
+
+<p style="margin-left:11%;">Provider</p>
+
+<p style="margin-left:17%;">A provider in OpenSSL is a
+component that groups together algorithm implementations.
+Providers can come from OpenSSL itself or from third
+parties.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>provider</b>(7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><small>PVK</small></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p><small>PVK</small> is a Microsoft specific binary format
+for <small>RSA</small> and <small>DSA</small> private keys.
+This form may be passphrase protected.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">SubjectPublicKeyInfo</p>
+
+<p style="margin-left:17%;">SubjectPublicKeyInfo is an
+<small>ASN.1</small> structure that OpenSSL uses for storing
+and transmitting any public key in a key type agnostic
+manner.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is
+specified as part of the specification for certificates,
+<small>RFC 5280:</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://tools.ietf.org/html/rfc5280&gt;</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This glossary
+was added in OpenSSL 3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

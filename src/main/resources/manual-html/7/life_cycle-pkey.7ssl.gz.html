@@ -1,0 +1,342 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:37 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LIFE_CYCLE-PKEY</title>
+
+</head>
+<body>
+
+<h1 align="center">LIFE_CYCLE-PKEY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">life_cycle-pkey
+- The PKEY algorithm life-cycle</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All public keys
+(PKEYs) go through a number of stages in their life-cycle:
+<br>
+start</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> before it has been allocated. It is the
+starting state for any life-cycle transitions.</p>
+
+<p style="margin-left:11%;">newed</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> after it has been allocated.</p>
+
+<p style="margin-left:11%;">decapsulate</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to perform a private
+key decapsulation opeartion.</p>
+
+<p style="margin-left:11%;">decrypt</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to decrypt some
+ciphertext.</p>
+
+<p style="margin-left:11%;">derive</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to derive a shared
+secret.</p>
+
+<p style="margin-left:11%;">digest sign</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to perform a private
+key signature operation.</p>
+
+<p style="margin-left:11%;">encapsulate</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to perform a public key
+encapsulation opeartion.</p>
+
+<p style="margin-left:11%;">encrypt</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to encrypt some
+plaintext.</p>
+
+<p style="margin-left:11%;">key generation</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to generate a new
+public/private key.</p>
+
+<p style="margin-left:11%;">parameter generation</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to generate key
+parameters.</p>
+
+<p style="margin-left:11%;">verify</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to verify a public key
+signature.</p>
+
+<p style="margin-left:11%;">verify recover</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>PKEY</small> when it is ready to recover a public key
+signature data.</p>
+
+<p style="margin-left:11%;">freed</p>
+
+<p style="margin-left:17%;">This state is entered when the
+<small>PKEY</small> is freed. It is the terminal state for
+all life-cycle transitions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>State
+Transition Diagram</b> <br>
+The usual life-cycle of a <small>PKEY</small> object is
+illustrated: <br>
++-------------+ <br>
+| | <br>
+| start | <br>
+| | <br>
+EVP_PKEY_derive +-------------+ <br>
++-------------+ EVP_PKEY_derive_set_peer | +-------------+
+<br>
+| |----------------------------+ |
++----------------------------| | <br>
+| derive | | | | EVP_PKEY_verify | verify | <br>
+| |&lt;---------------------------+ |
++---------------------------&gt;| | <br>
++-------------+ | +-------------+ <br>
+^ | ^ <br>
+| EVP_PKEY_derive_init | EVP_PKEY_verify_init | <br>
++---------------------------------------+ |
++---------------------------------------+ <br>
+| | | <br>
++-------------+ | | | +-------------+ <br>
+| |----------------------------+ | | |
++----------------------------| | <br>
+| digest sign | EVP_PKEY_sign | | | | |
+EVP_PKEY_verify_recover | verify | <br>
+| |&lt;---------------------------+ | | |
++---------------------------&gt;| recover | <br>
++-------------+ | | | +-------------+ <br>
+^ | | | ^ <br>
+| EVP_PKEY_sign_init | | | EVP_PKEY_verify_recover_init |
+<br>
++---------------------------------+ | | |
++---------------------------------+ <br>
+| | | | | <br>
++-------------+ | | | | | +-------------+ <br>
+| |----------------------------+ | | | | |
++----------------------------| | <br>
+| decapsulate | EVP_PKEY_decapsulate | | | | | | |
+EVP_PKEY_decrypt | decrypt | <br>
+| |&lt;---------------------------+ | | v | |
++---------------------------&gt;| | <br>
++-------------+ | +-------------+ | +-------------+ <br>
+^ +---| |---+ ^ <br>
+| EVP_PKEY_decapsulate_init | | EVP_PKEY_decrypt_init | <br>
++-------------------------------------| newed
+|-------------------------------------+ <br>
+| | <br>
++---| |---+ <br>
++-------------+ | +-------------+ | +-------------+ <br>
+| |----------------------------+ | | | |
++----------------------------| | <br>
+| encapsulate | EVP_PKEY_encapsulate | | | | | |
+EVP_PKEY_encrypt | encrypt | <br>
+| |&lt;---------------------------+ | | | |
++---------------------------&gt;| | <br>
++-------------+ | | | | +-------------+ <br>
+^ | | | | ^ <br>
+| EVP_PKEY_encapsulate_init | | | | EVP_PKEY_encrypt_init |
+<br>
++---------------------------------+ | |
++---------------------------------+ <br>
+| | <br>
++---------------------------------------+
++---------------------------------------+ <br>
+| EVP_PKEY_paramgen_init EVP_PKEY_keygen_init | <br>
+v v <br>
++-------------+ +-------------+ <br>
+| |----------------------------+
++----------------------------| | <br>
+| parameter | | | | key | <br>
+| generation |&lt;---------------------------+
++---------------------------&gt;| generation | <br>
++-------------+ EVP_PKEY_paramgen EVP_PKEY_keygen
++-------------+ <br>
+EVP_PKEY_gen EVP_PKEY_gen</p>
+
+<p style="margin-left:11%; margin-top: 1em">+ - - - - - +
++-----------+ <br>
+&rsquo; &rsquo; EVP_PKEY_CTX_free | | <br>
+&rsquo; any state &rsquo;-------------------&gt;| freed |
+<br>
+&rsquo; &rsquo; | | <br>
++ - - - - - + +-----------+</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Formal State
+Transitions</b> <br>
+This section defines all of the legal state transitions.
+This is the canonical list. <br>
+Function Call
+----------------------------------------------------------------------
+Current State
+----------------------------------------------------------------------
+<br>
+start newed digest verify verify encrypt decrypt derive
+encapsulate decapsulate parameter key freed <br>
+sign recover generation generation <br>
+EVP_PKEY_CTX_new newed <br>
+EVP_PKEY_CTX_new_id newed <br>
+EVP_PKEY_CTX_new_from_name newed <br>
+EVP_PKEY_CTX_new_from_pkey newed <br>
+EVP_PKEY_sign_init digest digest digest digest digest digest
+digest digest digest digest digest <br>
+sign sign sign sign sign sign sign sign sign sign sign <br>
+EVP_PKEY_sign digest <br>
+sign <br>
+EVP_PKEY_verify_init verify verify verify verify verify
+verify verify verify verify verify verify <br>
+EVP_PKEY_verify verify <br>
+EVP_PKEY_verify_recover_init verify verify verify verify
+verify verify verify verify verify verify verify <br>
+recover recover recover recover recover recover recover
+recover recover recover recover <br>
+EVP_PKEY_verify_recover verify <br>
+recover <br>
+EVP_PKEY_encrypt_init encrypt encrypt encrypt encrypt
+encrypt encrypt encrypt encrypt encrypt encrypt encrypt <br>
+EVP_PKEY_encrypt encrypt <br>
+EVP_PKEY_decrypt_init decrypt decrypt decrypt decrypt
+decrypt decrypt decrypt decrypt decrypt decrypt decrypt <br>
+EVP_PKEY_decrypt decrypt <br>
+EVP_PKEY_derive_init derive derive derive derive derive
+derive derive derive derive derive derive <br>
+EVP_PKEY_derive_set_peer derive <br>
+EVP_PKEY_derive derive <br>
+EVP_PKEY_encapsulate_init encapsulate encapsulate
+encapsulate encapsulate encapsulate encapsulate encapsulate
+encapsulate encapsulate encapsulate encapsulate <br>
+EVP_PKEY_encapsulate encapsulate <br>
+EVP_PKEY_decapsulate_init decapsulate decapsulate
+decapsulate decapsulate decapsulate decapsulate decapsulate
+decapsulate decapsulate decapsulate decapsulate <br>
+EVP_PKEY_decapsulate decapsulate <br>
+EVP_PKEY_paramgen_init parameter parameter parameter
+parameter parameter parameter parameter parameter parameter
+parameter parameter <br>
+generation generation generation generation generation
+generation generation generation generation generation
+generation <br>
+EVP_PKEY_paramgen parameter <br>
+generation <br>
+EVP_PKEY_keygen_init key key key key key key key key key key
+key <br>
+generation generation generation generation generation
+generation generation generation generation generation
+generation <br>
+EVP_PKEY_keygen key <br>
+generation <br>
+EVP_PKEY_gen parameter key <br>
+generation generation <br>
+EVP_PKEY_CTX_get_params newed digest verify verify encrypt
+decrypt derive encapsulate decapsulate parameter key <br>
+sign recover generation generation <br>
+EVP_PKEY_CTX_set_params newed digest verify verify encrypt
+decrypt derive encapsulate decapsulate parameter key <br>
+sign recover generation generation <br>
+EVP_PKEY_CTX_gettable_params newed digest verify verify
+encrypt decrypt derive encapsulate decapsulate parameter key
+<br>
+sign recover generation generation <br>
+EVP_PKEY_CTX_settable_params newed digest verify verify
+encrypt decrypt derive encapsulate decapsulate parameter key
+<br>
+sign recover generation generation <br>
+EVP_PKEY_CTX_free freed freed freed freed freed freed freed
+freed freed freed freed freed</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">At some point
+the <small>EVP</small> layer will begin enforcing the
+transitions described herein.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_PKEY_new</b>(3),
+<b>EVP_PKEY_decapsulate</b>(3), <b>EVP_PKEY_decrypt</b>(3),
+<b>EVP_PKEY_encapsulate</b>(3), <b>EVP_PKEY_encrypt</b>(3),
+<b>EVP_PKEY_derive</b>(3), <b>EVP_PKEY_keygen</b>(3),
+<b>EVP_PKEY_sign</b>(3), <b>EVP_PKEY_verify</b>(3),
+<b>EVP_PKEY_verify_recover</b>(3)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The provider
+<small>PKEY</small> interface was introduced in OpenSSL
+3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2021
+The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

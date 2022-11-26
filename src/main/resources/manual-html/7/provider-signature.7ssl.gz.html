@@ -1,0 +1,669 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:06 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROVIDER-SIGNATURE</title>
+
+</head>
+<body>
+
+<h1 align="center">PROVIDER-SIGNATURE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUES">RETURN VALUES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">provider-signature
+- The signature library &lt;-&gt; provider functions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/core_dispatch.h&gt; <br>
+#include &lt;openssl/core_names.h&gt; <br>
+/* <br>
+* None of these are actual functions, but are displayed like
+this for <br>
+* the function signatures for functions that are offered as
+function <br>
+* pointers in OSSL_DISPATCH arrays. <br>
+*/ <br>
+/* Context management */ <br>
+void *OSSL_FUNC_signature_newctx(void *provctx, const char
+*propq); <br>
+void OSSL_FUNC_signature_freectx(void *ctx); <br>
+void *OSSL_FUNC_signature_dupctx(void *ctx); <br>
+/* Signing */ <br>
+int OSSL_FUNC_signature_sign_init(void *ctx, void *provkey,
+<br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_signature_sign(void *ctx, unsigned char *sig,
+size_t *siglen, <br>
+size_t sigsize, const unsigned char *tbs, size_t tbslen);
+<br>
+/* Verifying */ <br>
+int OSSL_FUNC_signature_verify_init(void *ctx, void
+*provkey, <br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_signature_verify(void *ctx, const unsigned
+char *sig, size_t siglen, <br>
+const unsigned char *tbs, size_t tbslen); <br>
+/* Verify Recover */ <br>
+int OSSL_FUNC_signature_verify_recover_init(void *ctx, void
+*provkey, <br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_signature_verify_recover(void *ctx, unsigned
+char *rout, <br>
+size_t *routlen, size_t routsize, <br>
+const unsigned char *sig, size_t siglen); <br>
+/* Digest Sign */ <br>
+int OSSL_FUNC_signature_digest_sign_init(void *ctx, const
+char *mdname, <br>
+const char *props, void *provkey, <br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_signature_digest_sign_update(void *ctx, const
+unsigned char *data, <br>
+size_t datalen); <br>
+int OSSL_FUNC_signature_digest_sign_final(void *ctx,
+unsigned char *sig, <br>
+size_t *siglen, size_t sigsize); <br>
+int OSSL_FUNC_signature_digest_sign(void *ctx, <br>
+unsigned char *sigret, size_t *siglen, <br>
+size_t sigsize, const unsigned char *tbs, <br>
+size_t tbslen); <br>
+/* Digest Verify */ <br>
+int OSSL_FUNC_signature_digest_verify_init(void *ctx, const
+char *mdname, <br>
+const char *props, void *provkey, <br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_signature_digest_verify_update(void *ctx, <br>
+const unsigned char *data, <br>
+size_t datalen); <br>
+int OSSL_FUNC_signature_digest_verify_final(void *ctx, const
+unsigned char *sig, <br>
+size_t siglen); <br>
+int OSSL_FUNC_signature_digest_verify(void *ctx, const
+unsigned char *sig, <br>
+size_t siglen, const unsigned char *tbs, <br>
+size_t tbslen); <br>
+/* Signature parameters */ <br>
+int OSSL_FUNC_signature_get_ctx_params(void *ctx, OSSL_PARAM
+params[]); <br>
+const OSSL_PARAM
+*OSSL_FUNC_signature_gettable_ctx_params(void *ctx, <br>
+void *provctx); <br>
+int OSSL_FUNC_signature_set_ctx_params(void *ctx, const
+OSSL_PARAM params[]); <br>
+const OSSL_PARAM
+*OSSL_FUNC_signature_settable_ctx_params(void *ctx, <br>
+void *provctx); <br>
+/* MD parameters */ <br>
+int OSSL_FUNC_signature_get_ctx_md_params(void *ctx,
+OSSL_PARAM params[]); <br>
+const OSSL_PARAM *
+OSSL_FUNC_signature_gettable_ctx_md_params(void *ctx); <br>
+int OSSL_FUNC_signature_set_ctx_md_params(void *ctx, const
+OSSL_PARAM params[]); <br>
+const OSSL_PARAM *
+OSSL_FUNC_signature_settable_ctx_md_params(void *ctx);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+documentation is primarily aimed at provider authors. See
+<b>provider</b>(7) for further information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The signature (
+<small>OSSL_OP_SIGNATURE</small> ) operation enables
+providers to implement signature algorithms and make them
+available to applications via the <small>API</small>
+functions <b>EVP_PKEY_sign</b>(3),
+<b>EVP_PKEY_verify</b>(3), and
+<b>EVP_PKEY_verify_recover</b>(3) (as well as other related
+functions).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+&quot;functions&quot; mentioned here are passed as function
+pointers between <i>libcrypto</i> and the provider in
+<b><small>OSSL_DISPATCH</small></b> arrays via
+<b><small>OSSL_ALGORITHM</small></b> arrays that are
+returned by the provider&rsquo;s
+<b>provider_query_operation()</b> function (see
+&quot;Provider Functions&quot; in
+<b>provider-base</b>(7)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All these
+&quot;functions&quot; have a corresponding function type
+definition named <b>OSSL_FUNC_{name}_fn</b>, and a helper
+function to retrieve the function pointer from an
+<b><small>OSSL_DISPATCH</small></b> element named
+<b>OSSL_FUNC_{name}</b>. For example, the
+&quot;function&quot; <b>OSSL_FUNC_signature_newctx()</b> has
+these:</p>
+
+<p style="margin-left:11%; margin-top: 1em">typedef void
+*(OSSL_FUNC_signature_newctx_fn)(void *provctx, const char
+*propq); <br>
+static ossl_inline OSSL_FUNC_signature_newctx_fn <br>
+OSSL_FUNC_signature_newctx(const OSSL_DISPATCH *opf);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OSSL_DISPATCH</small></b>
+arrays are indexed by numbers that are provided as macros in
+<b>openssl-core_dispatch.h</b>(7), as follows:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_FUNC_signature_newctx
+OSSL_FUNC_SIGNATURE_NEWCTX <br>
+OSSL_FUNC_signature_freectx OSSL_FUNC_SIGNATURE_FREECTX <br>
+OSSL_FUNC_signature_dupctx OSSL_FUNC_SIGNATURE_DUPCTX <br>
+OSSL_FUNC_signature_sign_init OSSL_FUNC_SIGNATURE_SIGN_INIT
+<br>
+OSSL_FUNC_signature_sign OSSL_FUNC_SIGNATURE_SIGN <br>
+OSSL_FUNC_signature_verify_init
+OSSL_FUNC_SIGNATURE_VERIFY_INIT <br>
+OSSL_FUNC_signature_verify OSSL_FUNC_SIGNATURE_VERIFY <br>
+OSSL_FUNC_signature_verify_recover_init
+OSSL_FUNC_SIGNATURE_VERIFY_RECOVER_INIT <br>
+OSSL_FUNC_signature_verify_recover
+OSSL_FUNC_SIGNATURE_VERIFY_RECOVER <br>
+OSSL_FUNC_signature_digest_sign_init
+OSSL_FUNC_SIGNATURE_DIGEST_SIGN_INIT <br>
+OSSL_FUNC_signature_digest_sign_update
+OSSL_FUNC_SIGNATURE_DIGEST_SIGN_UPDATE <br>
+OSSL_FUNC_signature_digest_sign_final
+OSSL_FUNC_SIGNATURE_DIGEST_SIGN_FINAL <br>
+OSSL_FUNC_signature_digest_sign
+OSSL_FUNC_SIGNATURE_DIGEST_SIGN <br>
+OSSL_FUNC_signature_digest_verify_init
+OSSL_FUNC_SIGNATURE_DIGEST_VERIFY_INIT <br>
+OSSL_FUNC_signature_digest_verify_update
+OSSL_FUNC_SIGNATURE_DIGEST_VERIFY_UPDATE <br>
+OSSL_FUNC_signature_digest_verify_final
+OSSL_FUNC_SIGNATURE_DIGEST_VERIFY_FINAL <br>
+OSSL_FUNC_signature_digest_verify
+OSSL_FUNC_SIGNATURE_DIGEST_VERIFY <br>
+OSSL_FUNC_signature_get_ctx_params
+OSSL_FUNC_SIGNATURE_GET_CTX_PARAMS <br>
+OSSL_FUNC_signature_gettable_ctx_params
+OSSL_FUNC_SIGNATURE_GETTABLE_CTX_PARAMS <br>
+OSSL_FUNC_signature_set_ctx_params
+OSSL_FUNC_SIGNATURE_SET_CTX_PARAMS <br>
+OSSL_FUNC_signature_settable_ctx_params
+OSSL_FUNC_SIGNATURE_SETTABLE_CTX_PARAMS <br>
+OSSL_FUNC_signature_get_ctx_md_params
+OSSL_FUNC_SIGNATURE_GET_CTX_MD_PARAMS <br>
+OSSL_FUNC_signature_gettable_ctx_md_params
+OSSL_FUNC_SIGNATURE_GETTABLE_CTX_MD_PARAMS <br>
+OSSL_FUNC_signature_set_ctx_md_params
+OSSL_FUNC_SIGNATURE_SET_CTX_MD_PARAMS <br>
+OSSL_FUNC_signature_settable_ctx_md_params
+OSSL_FUNC_SIGNATURE_SETTABLE_CTX_MD_PARAMS</p>
+
+<p style="margin-left:11%; margin-top: 1em">A signature
+algorithm implementation may not implement all of these
+functions. In order to be a consistent set of functions we
+must have at least a set of context functions
+(OSSL_FUNC_signature_newctx and OSSL_FUNC_signature_freectx)
+as well as a set of &quot;signature&quot; functions, i.e. at
+least one of: <br>
+OSSL_FUNC_signature_sign_init and OSSL_FUNC_signature_sign
+<br>
+OSSL_FUNC_signature_verify_init and
+OSSL_FUNC_signature_verify <br>
+OSSL_FUNC_signature_verify_recover_init and <br>
+OSSL_FUNC_signature_verify_init <br>
+OSSL_FUNC_signature_digest_sign_init, <br>
+OSSL_FUNC_signature_digest_sign_update and <br>
+OSSL_FUNC_signature_digest_sign_final <br>
+OSSL_FUNC_signature_digest_verify_init, <br>
+OSSL_FUNC_signature_digest_verify_update and <br>
+OSSL_FUNC_signature_digest_verify_final <br>
+OSSL_FUNC_signature_digest_sign_init and <br>
+OSSL_FUNC_signature_digest_sign <br>
+OSSL_FUNC_signature_digest_verify_init and <br>
+OSSL_FUNC_signature_digest_verify</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_FUNC_signature_set_ctx_params
+and OSSL_FUNC_signature_settable_ctx_params are optional,
+but if one of them is present then the other one must also
+be present. The same applies to
+OSSL_FUNC_signature_get_ctx_params and
+OSSL_FUNC_signature_gettable_ctx_params, as well as the
+&quot;md_params&quot; functions. The
+OSSL_FUNC_signature_dupctx function is optional.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A signature
+algorithm must also implement some mechanism for generating,
+loading or importing keys via the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation. See
+<b>provider-keymgmt</b>(7) for further details.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Context
+Management Functions <br>
+OSSL_FUNC_signature_newctx()</b> should create and return a
+pointer to a provider side structure for holding context
+information during a signature operation. A pointer to this
+context will be passed back in a number of the other
+signature operation function calls. The parameter
+<i>provctx</i> is the provider context generated during
+provider initialisation (see <b>provider</b>(7)). The
+<i>propq</i> parameter is a property query string that may
+be (optionally) used by the provider during any
+&quot;fetches&quot; that it may perform (if it performs
+any).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_freectx()</b>
+is passed a pointer to the provider side signature context
+in the <i>ctx</i> parameter. This function should free any
+resources associated with that context.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_dupctx()</b>
+should duplicate the provider side signature context in the
+<i>ctx</i> parameter and return the duplicate copy.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Signing
+Functions <br>
+OSSL_FUNC_signature_sign_init()</b> initialises a context
+for signing given a provider side signature context in the
+<i>ctx</i> parameter, and a pointer to a provider key object
+in the <i>provkey</i> parameter. The <i>params</i>, if not
+<small>NULL,</small> should be set on the context in a
+manner similar to using
+<b>OSSL_FUNC_signature_set_ctx_params()</b>. The key object
+should have been previously generated, loaded or imported
+into the provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_sign()</b>
+performs the actual signing itself. A previously initialised
+signature context is passed in the <i>ctx</i> parameter. The
+data to be signed is pointed to be the <i>tbs</i> parameter
+which is <i>tbslen</i> bytes long. Unless <i>sig</i> is
+<small>NULL,</small> the signature should be written to the
+location pointed to by the <i>sig</i> parameter and it
+should not exceed <i>sigsize</i> bytes in length. The length
+of the signature should be written to <i>*siglen</i>. If
+<i>sig</i> is <small>NULL</small> then the maximum length of
+the signature should be written to <i>*siglen</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Verify
+Functions <br>
+OSSL_FUNC_signature_verify_init()</b> initialises a context
+for verifying a signature given a provider side signature
+context in the <i>ctx</i> parameter, and a pointer to a
+provider key object in the <i>provkey</i> parameter. The
+<i>params</i>, if not <small>NULL,</small> should be set on
+the context in a manner similar to using
+<b>OSSL_FUNC_signature_set_ctx_params()</b>. The key object
+should have been previously generated, loaded or imported
+into the provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_verify()</b>
+performs the actual verification itself. A previously
+initialised signature context is passed in the <i>ctx</i>
+parameter. The data that the signature covers is pointed to
+be the <i>tbs</i> parameter which is <i>tbslen</i> bytes
+long. The signature is pointed to by the <i>sig</i>
+parameter which is <i>siglen</i> bytes long.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Verify
+Recover Functions <br>
+OSSL_FUNC_signature_verify_recover_init()</b> initialises a
+context for recovering the signed data given a provider side
+signature context in the <i>ctx</i> parameter, and a pointer
+to a provider key object in the <i>provkey</i> parameter.
+The <i>params</i>, if not <small>NULL,</small> should be set
+on the context in a manner similar to using
+<b>OSSL_FUNC_signature_set_ctx_params()</b>. The key object
+should have been previously generated, loaded or imported
+into the provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_verify_recover()</b>
+performs the actual verify recover itself. A previously
+initialised signature context is passed in the <i>ctx</i>
+parameter. The signature is pointed to by the <i>sig</i>
+parameter which is <i>siglen</i> bytes long. Unless
+<i>rout</i> is <small>NULL,</small> the recovered data
+should be written to the location pointed to by <i>rout</i>
+which should not exceed <i>routsize</i> bytes in length. The
+length of the recovered data should be written to
+<i>*routlen</i>. If <i>rout</i> is <small>NULL</small> then
+the maximum size of the output buffer is written to the
+<i>routlen</i> parameter.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Digest Sign
+Functions <br>
+OSSL_FUNC_signature_digeset_sign_init()</b> initialises a
+context for signing given a provider side signature context
+in the <i>ctx</i> parameter, and a pointer to a provider key
+object in the <i>provkey</i> parameter. The <i>params</i>,
+if not <small>NULL,</small> should be set on the context in
+a manner similar to using
+<b>OSSL_FUNC_signature_set_ctx_params()</b> and
+<b>OSSL_FUNC_signature_set_ctx_md_params()</b>. The key
+object should have been previously generated, loaded or
+imported into the provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;. The name of the digest to be
+used will be in the <i>mdname</i> parameter. There may also
+be properties to be used in fetching the digest in the
+<i>props</i> parameter, although this may be ignored by
+providers.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_digest_sign_update()</b>
+provides data to be signed in the <i>data</i> parameter
+which should be of length <i>datalen</i>. A previously
+initialised signature context is passed in the <i>ctx</i>
+parameter. This function may be called multiple times to
+cumulatively add data to be signed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_digest_sign_final()</b>
+finalises a signature operation previously started through
+<b>OSSL_FUNC_signature_digest_sign_init()</b> and
+<b>OSSL_FUNC_signature_digest_sign_update()</b> calls. Once
+finalised no more data will be added through
+<b>OSSL_FUNC_signature_digest_sign_update()</b>. A
+previously initialised signature context is passed in the
+<i>ctx</i> parameter. Unless <i>sig</i> is
+<small>NULL,</small> the signature should be written to the
+location pointed to by the <i>sig</i> parameter and it
+should not exceed <i>sigsize</i> bytes in length. The length
+of the signature should be written to <i>*siglen</i>. If
+<i>sig</i> is <small>NULL</small> then the maximum length of
+the signature should be written to <i>*siglen</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_digest_sign()</b>
+implements a &quot;one shot&quot; digest sign operation
+previously started through
+<b>OSSL_FUNC_signature_digeset_sign_init()</b>. A previously
+initialised signature context is passed in the <i>ctx</i>
+parameter. The data to be signed is in <i>tbs</i> which
+should be <i>tbslen</i> bytes long. Unless <i>sig</i> is
+<small>NULL,</small> the signature should be written to the
+location pointed to by the <i>sig</i> parameter and it
+should not exceed <i>sigsize</i> bytes in length. The length
+of the signature should be written to <i>*siglen</i>. If
+<i>sig</i> is <small>NULL</small> then the maximum length of
+the signature should be written to <i>*siglen</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Digest
+Verify Functions <br>
+OSSL_FUNC_signature_digeset_verify_init()</b> initialises a
+context for verifying given a provider side verification
+context in the <i>ctx</i> parameter, and a pointer to a
+provider key object in the <i>provkey</i> parameter. The
+<i>params</i>, if not <small>NULL,</small> should be set on
+the context in a manner similar to
+<b>OSSL_FUNC_signature_set_ctx_params()</b> and
+<b>OSSL_FUNC_signature_set_ctx_md_params()</b>. The key
+object should have been previously generated, loaded or
+imported into the provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;. The name of the digest to be
+used will be in the <i>mdname</i> parameter. There may also
+be properties to be used in fetching the digest in the
+<i>props</i> parameter, although this may be ignored by
+providers.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_digest_verify_update()</b>
+provides data to be verified in the <i>data</i> parameter
+which should be of length <i>datalen</i>. A previously
+initialised verification context is passed in the <i>ctx</i>
+parameter. This function may be called multiple times to
+cumulatively add data to be verified.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_digest_verify_final()</b>
+finalises a verification operation previously started
+through <b>OSSL_FUNC_signature_digest_verify_init()</b> and
+<b>OSSL_FUNC_signature_digest_verify_update()</b> calls.
+Once finalised no more data will be added through
+<b>OSSL_FUNC_signature_digest_verify_update()</b>. A
+previously initialised verification context is passed in the
+<i>ctx</i> parameter. The signature to be verified is in
+<i>sig</i> which is <i>siglen</i> bytes long.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_digest_verify()</b>
+implements a &quot;one shot&quot; digest verify operation
+previously started through
+<b>OSSL_FUNC_signature_digeset_verify_init()</b>. A
+previously initialised verification context is passed in the
+<i>ctx</i> parameter. The data to be verified is in
+<i>tbs</i> which should be <i>tbslen</i> bytes long. The
+signature to be verified is in <i>sig</i> which is
+<i>siglen</i> bytes long.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Signature
+parameters</b> <br>
+See <b><small>OSSL_PARAM</small></b> (3) for further details
+on the parameters structure used by the
+<b>OSSL_FUNC_signature_get_ctx_params()</b> and
+<b>OSSL_FUNC_signature_set_ctx_params()</b> functions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_get_ctx_params()</b>
+gets signature parameters associated with the given provider
+side signature context <i>ctx</i> and stored them in
+<i>params</i>. Passing <small>NULL</small> for <i>params</i>
+should return true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_set_ctx_params()</b>
+sets the signature parameters associated with the given
+provider side signature context <i>ctx</i> to <i>params</i>.
+Any parameter settings are additional to any that were
+previously set. Passing <small>NULL</small> for
+<i>params</i> should return true.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Common
+parameters currently recognised by built-in signature
+algorithms are as follows. <br>
+&quot;digest&quot; (
+<b><small>OSSL_SIGNATURE_PARAM_DIGEST</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Get or sets the name of the
+digest algorithm used for the input to the signature
+functions. It is required in order to calculate the
+&quot;algorithm-id&quot;.</p>
+
+<p style="margin-left:11%;">&quot;properties&quot; (
+<b><small>OSSL_SIGNATURE_PARAM_PROPERTIES</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Sets the name of the property
+query associated with the &quot;digest&quot; algorithm.
+<small>NULL</small> is used if this optional value is not
+set.</p>
+
+<p style="margin-left:11%;">&quot;digest-size&quot; (
+<b><small>OSSL_SIGNATURE_PARAM_DIGEST_SIZE</small></b> )
+&lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">Gets or sets the output size of
+the digest algorithm used for the input to the signature
+functions. The length of the &quot;digest-size&quot;
+parameter should not exceed that of a <b>size_t</b>.</p>
+
+<p style="margin-left:11%;">&quot;algorithm-id&quot; (
+<b><small>OSSL_SIGNATURE_PARAM_ALGORITHM_ID</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">Gets the <small>DER</small>
+encoded AlgorithmIdentifier that corresponds to the
+combination of signature algorithm and digest algorithm for
+the signature operation.</p>
+
+<p style="margin-left:11%;">&quot;kat&quot; (
+<b><small>OSSL_SIGNATURE_PARAM_KAT</small></b> )
+&lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">Sets a flag to modify the sign
+operation to return an error if the initial calculated
+signature is invalid. In the normal mode of operation - new
+random values are chosen until the signature operation
+succeeds. By default it retries until a signature is
+calculated. Setting the value to 0 causes the sign operation
+to retry, otherwise the sign operation is only tried once
+and returns whether or not it was successful. Known answer
+tests can be performed if the random generator is overridden
+to supply known values that either pass or fail.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_gettable_ctx_params()</b>
+and <b>OSSL_FUNC_signature_settable_ctx_params()</b> get a
+constant <b><small>OSSL_PARAM</small></b> array that
+describes the gettable and settable parameters, i.e.
+parameters that can be used with
+<b>OSSL_FUNC_signature_get_ctx_params()</b> and
+<b>OSSL_FUNC_signature_set_ctx_params()</b> respectively.
+See <b><small>OSSL_PARAM</small></b> (3) for the use of
+<b><small>OSSL_PARAM</small></b> as parameter
+descriptor.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>MD</small>
+parameters</b> <br>
+See <b><small>OSSL_PARAM</small></b> (3) for further details
+on the parameters structure used by the
+<b>OSSL_FUNC_signature_get_md_ctx_params()</b> and
+<b>OSSL_FUNC_signature_set_md_ctx_params()</b>
+functions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_get_md_ctx_params()</b>
+gets digest parameters associated with the given provider
+side digest signature context <i>ctx</i> and stores them in
+<i>params</i>. Passing <small>NULL</small> for <i>params</i>
+should return true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_set_ms_ctx_params()</b>
+sets the digest parameters associated with the given
+provider side digest signature context <i>ctx</i> to
+<i>params</i>. Any parameter settings are additional to any
+that were previously set. Passing <small>NULL</small> for
+<i>params</i> should return true.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Parameters
+currently recognised by built-in signature algorithms are
+the same as those for built-in digest algorithms. See
+&quot;Digest Parameters&quot; in <b>provider-digest</b>(7)
+for further information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_gettable_md_ctx_params()</b>
+and <b>OSSL_FUNC_signature_settable_md_ctx_params()</b> get
+a constant <b><small>OSSL_PARAM</small></b> array that
+describes the gettable and settable digest parameters, i.e.
+parameters that can be used with
+<b>OSSL_FUNC_signature_get_md_ctx_params()</b> and
+<b>OSSL_FUNC_signature_set_md_ctx_params()</b> respectively.
+See <b><small>OSSL_PARAM</small></b> (3) for the use of
+<b><small>OSSL_PARAM</small></b> as parameter
+descriptor.</p>
+
+<h2>RETURN VALUES
+<a name="RETURN VALUES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_newctx()</b>
+and <b>OSSL_FUNC_signature_dupctx()</b> should return the
+newly created provider side signature, or
+<small>NULL</small> on failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_signature_gettable_ctx_params()</b>,
+<b>OSSL_FUNC_signature_settable_ctx_params()</b>,
+<b>OSSL_FUNC_signature_gettable_md_ctx_params()</b> and
+<b>OSSL_FUNC_signature_settable_md_ctx_params()</b>, return
+the gettable or settable parameters in a constant
+<b><small>OSSL_PARAM</small></b> array.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All other
+functions should return 1 for success or 0 on error.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider</b>(7)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The provider
+<small>SIGNATURE</small> interface was introduced in OpenSSL
+3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2019-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

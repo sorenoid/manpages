@@ -1,0 +1,1029 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:21 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>VDSO</title>
+
+</head>
+<body>
+
+<h1 align="center">VDSO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#ARCHITECTURE-SPECIFIC NOTES">ARCHITECTURE-SPECIFIC NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">vdso - overview
+of the virtual ELF dynamic shared object</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/auxv.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void *vdso =
+(uintptr_t) getauxval(AT_SYSINFO_EHDR);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;vDSO&quot; (virtual dynamic shared object) is a small
+shared library that the kernel automatically maps into the
+address space of all user-space applications. Applications
+usually do not need to concern themselves with these details
+as the vDSO is most commonly called by the C library. This
+way you can code in the normal way using standard functions
+and the C library will take care of using any functionality
+that is available via the vDSO.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Why does the
+vDSO exist at all? There are some system calls the kernel
+provides that user-space code ends up using frequently, to
+the point that such calls can dominate overall performance.
+This is due both to the frequency of the call as well as the
+context-switch overhead that results from exiting user space
+and entering the kernel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The rest of
+this documentation is geared toward the curious and/or C
+library writers rather than general developers. If
+you&rsquo;re trying to call the vDSO in your own application
+rather than using the C library, you&rsquo;re most likely
+doing it wrong.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+background</b> <br>
+Making system calls can be slow. In x86 32-bit systems, you
+can trigger a software interrupt (<i>int $0x80</i>) to tell
+the kernel you wish to make a system call. However, this
+instruction is expensive: it goes through the full
+interrupt-handling paths in the processor&rsquo;s microcode
+as well as in the kernel. Newer processors have faster (but
+backward incompatible) instructions to initiate system
+calls. Rather than require the C library to figure out if
+this functionality is available at run time, the C library
+can use functions provided by the kernel in the vDSO.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+terminology can be confusing. On x86 systems, the vDSO
+function used to determine the preferred method of making a
+system call is named &quot;__kernel_vsyscall&quot;, but on
+x86-64, the term &quot;vsyscall&quot; also refers to an
+obsolete way to ask the kernel what time it is or what CPU
+the caller is on.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One frequently
+used system call is <b>gettimeofday</b>(2). This system call
+is called both directly by user-space applications as well
+as indirectly by the C library. Think timestamps or timing
+loops or polling&mdash;all of these frequently need to know
+what time it is right now. This information is also not
+secret&mdash;any application in any privilege mode (root or
+any unprivileged user) will get the same answer. Thus the
+kernel arranges for the information required to answer this
+question to be placed in memory the process can access. Now
+a call to <b>gettimeofday</b>(2) changes from a system call
+to a normal function call and a few memory accesses.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Finding the
+vDSO</b> <br>
+The base address of the vDSO (if one exists) is passed by
+the kernel to each program in the initial auxiliary vector
+(see <b>getauxval</b>(3)), via the <b>AT_SYSINFO_EHDR</b>
+tag.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You must not
+assume the vDSO is mapped at any particular location in the
+user&rsquo;s memory map. The base address will usually be
+randomized at run time every time a new process image is
+created (at <b>execve</b>(2) time). This is done for
+security reasons, to prevent &quot;return-to-libc&quot;
+attacks.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For some
+architectures, there is also an <b>AT_SYSINFO</b> tag. This
+is used only for locating the vsyscall entry point and is
+frequently omitted or set to 0 (meaning it&rsquo;s not
+available). This tag is a throwback to the initial vDSO work
+(see <i>History</i> below) and its use should be
+avoided.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>File
+format</b> <br>
+Since the vDSO is a fully formed ELF image, you can do
+symbol lookups on it. This allows new symbols to be added
+with newer kernel releases, and allows the C library to
+detect available functionality at run time when running
+under different kernel versions. Oftentimes the C library
+will do detection with the first call and then cache the
+result for subsequent calls.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All symbols are
+also versioned (using the GNU version format). This allows
+the kernel to update the function signature without breaking
+backward compatibility. This means changing the arguments
+that the function accepts as well as the return value. Thus,
+when looking up a symbol in the vDSO, you must always
+include the version to match the ABI you expect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Typically the
+vDSO follows the naming convention of prefixing all symbols
+with &quot;__vdso_&quot; or &quot;__kernel_&quot; so as to
+distinguish them from other standard symbols. For example,
+the &quot;gettimeofday&quot; function is named
+&quot;__vdso_gettimeofday&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You use the
+standard C calling conventions when calling any of these
+functions. No need to worry about weird register or stack
+behavior.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Source</b>
+<br>
+When you compile the kernel, it will automatically compile
+and link the vDSO code for you. You will frequently find it
+under the architecture-specific directory:</p>
+
+<p style="margin-left:11%; margin-top: 1em">find
+arch/$ARCH/ -name '*vdso*.so*' -o -name '*gate*.so*'</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vDSO
+names</b> <br>
+The name of the vDSO varies across architectures. It will
+often show up in things like glibc&rsquo;s <b>ldd</b>(1)
+output. The exact name should not matter to any code, so do
+not hardcode it.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549381.png" alt="Image grohtml-3549381.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>strace(1),
+seccomp(2), and the vDSO</b> <br>
+When tracing systems calls with <b>strace</b>(1), symbols
+(system calls) that are exported by the vDSO will <i>not</i>
+appear in the trace output. Those system calls will likewise
+not be visible to <b>seccomp</b>(2) filters.</p>
+
+<h2>ARCHITECTURE-SPECIFIC NOTES
+<a name="ARCHITECTURE-SPECIFIC NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The subsections
+below provide architecture-specific notes on the vDSO.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+vDSO that is used is based on the ABI of your user-space
+code and not the ABI of the kernel. Thus, for example, when
+you run an i386 32-bit ELF binary, you&rsquo;ll get the same
+vDSO regardless of whether you run it under an i386 32-bit
+kernel or under an x86-64 64-bit kernel. Therefore, the name
+of the user-space ABI should be used to determine which of
+the sections below is relevant.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ARM
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549382.png" alt="Image grohtml-3549382.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Additionally,
+the ARM port has a code page full of utility functions.
+Since it&rsquo;s just a raw page of code, there is no ELF
+information for doing symbol lookups or versioning. It does
+provide support for different versions though.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on this code page, it&rsquo;s best to refer to the kernel
+documentation as it&rsquo;s extremely detailed and covers
+everything you need to know:
+<i>Documentation/arm/kernel_user_helpers.txt</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>aarch64
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549383.png" alt="Image grohtml-3549383.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bfin
+(Blackfin) functions (port removed in Linux 4.17)</b> <br>
+As this CPU lacks a memory management unit (MMU), it
+doesn&rsquo;t set up a vDSO in the normal sense. Instead, it
+maps at boot time a few raw functions into a fixed location
+in memory. User-space applications then call directly into
+that region. There is no provision for backward
+compatibility beyond sniffing raw opcodes, but as this is an
+embedded CPU, it can get away with things&mdash;some of the
+object formats it runs aren&rsquo;t even ELF based
+(they&rsquo;re bFLT/FLAT).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on this code page, it&rsquo;s best to refer to the public
+documentation: <br>
+
+http://docs.blackfin.uclinux.org/doku.php?id=linux-kernel:fixed-code</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mips
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549384.png" alt="Image grohtml-3549384.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ia64
+(Itanium) functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="46%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549385.png" alt="Image grohtml-3549385.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The Itanium
+port is somewhat tricky. In addition to the vDSO above, it
+also has &quot;light-weight system calls&quot; (also known
+as &quot;fast syscalls&quot; or &quot;fsys&quot;). You can
+invoke these via the <i>__kernel_syscall_via_epc</i> vDSO
+helper. The system calls listed here have the same semantics
+as if you called them directly via <b>syscall</b>(2), so
+refer to the relevant documentation for each. The table
+below lists the functions available via this mechanism.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3549386.png" alt="Image grohtml-3549386.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>parisc
+(hppa) functions</b> <br>
+The parisc port has a code page with utility functions
+called a gateway page. Rather than use the normal ELF
+auxiliary vector approach, it passes the address of the page
+to the process via the SR2 register. The permissions on the
+page are such that merely executing those addresses
+automatically executes with kernel privileges and not in
+user space. This is done to match the way HP-UX works.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since
+it&rsquo;s just a raw page of code, there is no ELF
+information for doing symbol lookups or versioning. Simply
+call into the appropriate offset via the branch instruction,
+for example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ble
+&lt;offset&gt;(%sr2, %r0)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549387.png" alt="Image grohtml-3549387.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppc/32
+functions</b> <br>
+The table below lists the symbols exported by the vDSO. The
+functions marked with a <i>*</i> are available only when the
+kernel is a PowerPC64 (64-bit) kernel.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549388.png" alt="Image grohtml-3549388.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>CLOCK_REALTIME_COARSE</b> and
+<b>CLOCK_MONOTONIC_COARSE</b> clocks are <i>not</i>
+supported by the <i>__kernel_clock_getres</i> and
+<i>__kernel_clock_gettime</i> interfaces; the kernel falls
+back to the real system call.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppc/64
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3549389.png" alt="Image grohtml-3549389.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>CLOCK_REALTIME_COARSE</b> and
+<b>CLOCK_MONOTONIC_COARSE</b> clocks are <i>not</i>
+supported by the <i>__kernel_clock_getres</i> and
+<i>__kernel_clock_gettime</i> interfaces; the kernel falls
+back to the real system call.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>riscv
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493810.png" alt="Image grohtml-35493810.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>s390
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493811.png" alt="Image grohtml-35493811.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>s390x
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493812.png" alt="Image grohtml-35493812.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>sh (SuperH)
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493813.png" alt="Image grohtml-35493813.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>i386
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493814.png" alt="Image grohtml-35493814.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>x86-64
+functions</b> <br>
+The table below lists the symbols exported by the vDSO. All
+of these symbols are also available without the
+&quot;__vdso_&quot; prefix, but you should ignore those and
+stick to the names below.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493815.png" alt="Image grohtml-35493815.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>x86/x32
+functions</b> <br>
+The table below lists the symbols exported by the vDSO.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-35493816.png" alt="Image grohtml-35493816.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>History</b>
+<br>
+The vDSO was originally just a single function&mdash;the
+vsyscall. In older kernels, you might see that name in a
+process&rsquo;s memory map rather than &quot;vdso&quot;.
+Over time, people realized that this mechanism was a great
+way to pass more functionality to user space, so it was
+reconceived as a vDSO in the current format.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>syscalls</b>(2),
+<b>getauxval</b>(3), <b>proc</b>(5)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The documents,
+examples, and source code in the Linux source code tree:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">Documentation/ABI/stable/vdso
+<br>
+Documentation/ia64/fsys.txt <br>
+Documentation/vDSO/* (includes examples of using the
+vDSO)</p>
+
+<p style="margin-left:17%; margin-top: 1em">find arch/
+-iname '*vdso*' -o -iname '*gate*'</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

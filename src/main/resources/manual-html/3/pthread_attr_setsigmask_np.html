@@ -1,0 +1,262 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:20 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PTHREAD_ATTR_SETSIGMASK_NP</title>
+
+</head>
+<body>
+
+<h1 align="center">PTHREAD_ATTR_SETSIGMASK_NP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">pthread_attr_setsigmask_np,
+pthread_attr_getsigmask_np - set/get signal mask attribute
+in thread attributes object</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#define
+_GNU_SOURCE</b> /* See feature_test_macros(7) */ <b><br>
+#include &lt;pthread.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+pthread_attr_setsigmask_np(pthread_attr_t
+*</b><i>attr</i><b>, <br>
+const sigset_t *</b><i>sigmask</i><b>); <br>
+int pthread_attr_getsigmask_np(const pthread_attr_t
+*</b><i>attr</i><b>, <br>
+sigset_t *</b><i>sigmask</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Compile and
+link with <i>-pthread</i>.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_attr_setsigmask_np</b>() function sets the signal
+mask attribute of the thread attributes object referred to
+by <i>attr</i> to the value specified in <i>*sigmask</i>. If
+<i>sigmask</i> is specified as NULL, then any existing
+signal mask attribute in <i>attr</i> is unset.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_attr_getsigmask_np</b>() function returns the
+signal mask attribute of the thread attributes object
+referred to by <i>attr</i> in the buffer pointed to by
+<i>sigmask</i>. If the signal mask attribute is currently
+unset, then this function returns the special value
+<b>PTHREAD_ATTR_NO_SIGMASK_NP</b> as its result.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_attr_setsigmask_np</b>() function returns 0 on
+success, or a nonzero error number on failure.</p>
+
+<p style="margin-left:11%; margin-top: 1em">the
+<b>pthread_attr_getsigmask_np</b>() function returns either
+0 or <b>PTHREAD_ATTR_NO_SIGMASK_NP</b>. When 0 is returned,
+the signal mask attribute is returned via <i>sigmask</i>. A
+return value of <b>PTHREAD_ATTR_NO_SIGMASK_NP</b> indicates
+that the signal mask attribute is not set in
+<i>attr</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On error, these
+functions return a positive error number.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+
+<p style="margin-top: 1em">(<b>pthread_attr_setsigmask_np</b>())
+Could not allocate memory.</p></td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+are provided by glibc since version 2.32.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3293321.png" alt="Image grohtml-3293321.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+are nonstandard GNU extensions; hence the suffix
+&quot;_np&quot; (nonportable) in the names.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The signal mask
+attribute determines the signal mask that will be assigned
+to a thread created using the thread attributes object
+<i>attr</i>. If this attribute is not set, then a thread
+created using <i>attr</i> will inherit a copy of the
+creating thread&rsquo;s signal mask.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+details on signal masks, see <b>sigprocmask</b>(2). For a
+description of a set of macros that can be used to
+manipulate and inspect signals sets, see
+<b>sigsetops</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the absence
+of <b>pthread_attr_setsigmask_np</b>() it is possible to
+create a thread with a desired signal mask as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">The creating thread uses
+<b>pthread_sigmask</b>(3) to save its current signal mask
+and set its mask to block all signals.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The new thread is then created using
+<b>pthread_create</b>(); the new thread will inherit the
+creating thread&rsquo;s signal mask.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The new thread sets its signal mask to the desired value
+using <b>pthread_sigmask</b>(3).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The creating thread restores its signal mask to the
+original value.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Following the
+above steps, there is no possibility for the new thread to
+receive a signal before it has adjusted its signal mask to
+the desired value.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sigprocmask</b>(2),
+<b>pthread_attr_init</b>(3), <b>pthread_sigmask</b>(3),
+<b>pthreads</b>(7), <b>signals</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

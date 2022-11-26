@@ -1,0 +1,161 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:16 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD.TARGET</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD.TARGET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTOMATIC DEPENDENCIES">AUTOMATIC DEPENDENCIES</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd.target
+- Target unit configuration</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>target</i>.target</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A unit
+configuration file whose name ends in &quot;.target&quot;
+encodes information about a target unit of systemd, which is
+used for grouping units and as well-known synchronization
+points during start-up.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This unit type
+has no specific options. See <b>systemd.unit</b>(5) for the
+common options of all unit configuration files. The common
+configuration items are configured in the generic [Unit] and
+[Install] sections. A separate [Target] section does not
+exist, since no target-specific options may be
+configured.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Target units do
+not offer any additional functionality on top of the generic
+functionality provided by units. They exist merely to group
+units via dependencies (useful as boot targets), and to
+establish standardized names for synchronization points used
+in dependencies between units. Among other things, target
+units are a more flexible replacement for SysV runlevels in
+the classic SysV init system. (And for compatibility reasons
+special target units such as runlevel3.target exist which
+are used by the SysV runlevel compatibility code in systemd.
+See <b>systemd.special</b>(7) for details).</p>
+
+<h2>AUTOMATIC DEPENDENCIES
+<a name="AUTOMATIC DEPENDENCIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Implicit
+Dependencies</b> <br>
+There are no implicit dependencies for target units.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default
+Dependencies</b> <br>
+The following dependencies are added unless
+<i>DefaultDependencies=no</i> is set:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Target
+units will automatically complement all configured
+dependencies of type <i>Wants=</i> or <i>Requires=</i> with
+dependencies of type <i>After=</i> unless
+<i>DefaultDependencies=no</i> is set in the specified units.
+Note that <i>Wants=</i> or <i>Requires=</i> must be defined
+in the target unit itself &mdash; if you for example define
+<i>Wants=</i>some.target in some.service, the automatic
+ordering will not be added.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Target
+units automatically gain <i>Conflicts=</i> and
+<i>Before=</i> dependencies against shutdown.target.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Simple
+standalone target</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+emergency-net.target</p>
+
+<p style="margin-left:17%; margin-top: 1em">[Unit] <br>
+Description=Emergency Mode with Networking <br>
+Requires=emergency.target systemd-networkd.service <br>
+After=emergency.target systemd-networkd.service <br>
+AllowIsolate=yes</p>
+
+<p style="margin-left:11%; margin-top: 1em">When adding
+dependencies to other units, it's important to check if they
+set <i>DefaultDependencies=</i>. Service units, unless they
+set <i>DefaultDependencies=no</i>, automatically get a
+dependency on sysinit.target. In this case, both
+emergency.target and systemd-networkd.service have
+<i>DefaultDependencies=no</i>, so they are suitable for use
+in this target, and do not pull in sysinit.target.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can now
+switch into this emergency mode by running <i>systemctl
+isolate emergency-net.target</i> or by passing the option
+<i>systemd.unit=emergency-net.target</i> on the kernel
+command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other units can
+have <i>WantedBy=emergency-net.target</i> in the
+<i>[Install]</i> section. After they are enabled using
+<b>systemctl enable</b>, they will be started before
+<i>emergency-net.target</i> is started. It is also possible
+to add arbitrary units as dependencies of emergency.target
+without modifying them by using <b>systemctl
+add-wants</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemctl</b>(1), <b>systemd.unit</b>(5),
+<b>systemd.special</b>(7), <b>systemd.directives</b>(7)</p>
+<hr>
+</body>
+</html>

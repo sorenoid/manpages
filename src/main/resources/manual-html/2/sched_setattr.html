@@ -1,0 +1,589 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:06 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SCHED_SETATTR</title>
+
+</head>
+<body>
+
+<h1 align="center">SCHED_SETATTR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sched_setattr,
+sched_getattr - set and get scheduling policy and
+attributes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sched.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+sched_setattr(pid_t</b> <i>pid</i><b>, struct sched_attr
+*</b><i>attr</i><b>, <br>
+unsigned int</b> <i>flags</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+sched_getattr(pid_t</b> <i>pid</i><b>, struct sched_attr
+*</b><i>attr</i><b>, <br>
+unsigned int</b> <i>size</i><b>, unsigned int</b>
+<i>flags</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sched_setattr()</b>
+<br>
+The <b>sched_setattr</b>() system call sets the scheduling
+policy and associated attributes for the thread whose ID is
+specified in <i>pid</i>. If <i>pid</i> equals zero, the
+scheduling policy and attributes of the calling thread will
+be set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Currently,
+Linux supports the following &quot;normal&quot; (i.e.,
+non-real-time) scheduling policies as values that may be
+specified in <i>policy</i>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>SCHED_OTHER</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>the standard round-robin time-sharing policy;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>SCHED_BATCH</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>for &quot;batch&quot; style execution of processes;
+and</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>SCHED_IDLE</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>for running <i>very</i> low priority background
+jobs.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Various
+&quot;real-time&quot; policies are also supported, for
+special time-critical applications that need precise control
+over the way in which runnable threads are selected for
+execution. For the rules governing when a process may use
+these policies, see <b>sched</b>(7). The real-time policies
+that may be specified in <i>policy</i> are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em"><b>SCHED_FIFO</b></p></td>
+<td width="6%"></td>
+<td width="51%">
+
+
+<p style="margin-top: 1em">a first-in, first-out policy;
+and</p> </td>
+<td width="17%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>SCHED_RR</b></p></td>
+<td width="6%"></td>
+<td width="51%">
+
+
+<p>a round-robin policy.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Linux also
+provides the following policy: <b><br>
+SCHED_DEADLINE</b></p>
+
+<p style="margin-left:32%;">a deadline scheduling policy;
+see <b>sched</b>(7) for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>attr</i>
+argument is a pointer to a structure that defines the new
+scheduling policy and attributes for the specified thread.
+This structure has the following form:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct
+sched_attr { <br>
+u32 size; /* Size of this structure */ <br>
+u32 sched_policy; /* Policy (SCHED_*) */ <br>
+u64 sched_flags; /* Flags */ <br>
+s32 sched_nice; /* Nice value (SCHED_OTHER, <br>
+SCHED_BATCH) */ <br>
+u32 sched_priority; /* Static priority (SCHED_FIFO, <br>
+SCHED_RR) */ <br>
+/* Remaining fields are for SCHED_DEADLINE */ <br>
+u64 sched_runtime; <br>
+u64 sched_deadline; <br>
+u64 sched_period; <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fields of
+the <i>sched_attr</i> structure are as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>size</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This field should be set to the size of the structure in
+bytes, as in <i>sizeof(struct sched_attr)</i>. If the
+provided structure is smaller than the kernel structure, any
+additional fields are assumed to be &rsquo;0&rsquo;. If the
+provided structure is larger than the kernel structure, the
+kernel verifies that all additional fields are 0; if they
+are not, <b>sched_setattr</b>() fails with the error
+<b>E2BIG</b> and updates <i>size</i> to contain the size of
+the kernel structure.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The above
+behavior when the size of the user-space <i>sched_attr</i>
+structure does not match the size of the kernel structure
+allows for future extensibility of the interface. Malformed
+applications that pass oversize structures won&rsquo;t break
+in the future if the size of the kernel <i>sched_attr</i>
+structure is increased. In the future, it could also allow
+applications that know about a larger user-space
+<i>sched_attr</i> structure to determine whether they are
+running on an older kernel that does not support the larger
+structure.</p>
+
+<p style="margin-left:11%;"><i>sched_policy</i></p>
+
+<p style="margin-left:22%;">This field specifies the
+scheduling policy, as one of the <b>SCHED_*</b> values
+listed above.</p>
+
+<p style="margin-left:11%;"><i>sched_flags</i></p>
+
+<p style="margin-left:22%;">This field contains zero or
+more of the following flags that are ORed together to
+control scheduling behavior: <b><br>
+SCHED_FLAG_RESET_ON_FORK</b></p>
+
+<p style="margin-left:32%;">Children created by
+<b>fork</b>(2) do not inherit privileged scheduling
+policies. See <b>sched</b>(7) for details.</p>
+
+<p style="margin-left:22%;"><b>SCHED_FLAG_RECLAIM</b>
+(since Linux 4.13)</p>
+
+<p style="margin-left:32%;">This flag allows a
+<b>SCHED_DEADLINE</b> thread to reclaim bandwidth unused by
+other real-time threads.</p>
+
+<p style="margin-left:22%;"><b>SCHED_FLAG_DL_OVERRUN</b>
+(since Linux 4.16)</p>
+
+<p style="margin-left:32%;">This flag allows an application
+to get informed about run-time overruns in
+<b>SCHED_DEADLINE</b> threads. Such overruns may be caused
+by (for example) coarse execution time accounting or
+incorrect parameter assignment. Notification takes the form
+of a <b>SIGXCPU</b> signal which is generated on each
+overrun.</p>
+
+<p style="margin-left:32%; margin-top: 1em">This
+<b>SIGXCPU</b> signal is <i>process-directed</i> (see
+<b>signal</b>(7)) rather than thread-directed. This is
+probably a bug. On the one hand, <b>sched_setattr</b>() is
+being used to set a per-thread attribute. On the other hand,
+if the process-directed signal is delivered to a thread
+inside the process other than the one that had a run-time
+overrun, the application has no way of knowing which thread
+overran.</p>
+
+<p style="margin-left:11%;"><i>sched_nice</i></p>
+
+<p style="margin-left:22%;">This field specifies the nice
+value to be set when specifying <i>sched_policy</i> as
+<b>SCHED_OTHER</b> or <b>SCHED_BATCH</b>. The nice value is
+a number in the range -20 (high priority) to +19 (low
+priority); see <b>sched</b>(7).</p>
+
+<p style="margin-left:11%;"><i>sched_priority</i></p>
+
+<p style="margin-left:22%;">This field specifies the static
+priority to be set when specifying <i>sched_policy</i> as
+<b>SCHED_FIFO</b> or <b>SCHED_RR</b>. The allowed range of
+priorities for these policies can be determined using
+<b>sched_get_priority_min</b>(2) and
+<b>sched_get_priority_max</b>(2). For other policies, this
+field must be specified as 0.</p>
+
+<p style="margin-left:11%;"><i>sched_runtime</i></p>
+
+<p style="margin-left:22%;">This field specifies the
+&quot;Runtime&quot; parameter for deadline scheduling. The
+value is expressed in nanoseconds. This field, and the next
+two fields, are used only for <b>SCHED_DEADLINE</b>
+scheduling; for further details, see <b>sched</b>(7).</p>
+
+<p style="margin-left:11%;"><i>sched_deadline</i></p>
+
+<p style="margin-left:22%;">This field specifies the
+&quot;Deadline&quot; parameter for deadline scheduling. The
+value is expressed in nanoseconds.</p>
+
+<p style="margin-left:11%;"><i>sched_period</i></p>
+
+<p style="margin-left:22%;">This field specifies the
+&quot;Period&quot; parameter for deadline scheduling. The
+value is expressed in nanoseconds.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>flags</i> argument is provided to allow for future
+extensions to the interface; in the current implementation
+it must be specified as 0.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sched_getattr()</b>
+<br>
+The <b>sched_getattr</b>() system call fetches the
+scheduling policy and the associated attributes for the
+thread whose ID is specified in <i>pid</i>. If <i>pid</i>
+equals zero, the scheduling policy and attributes of the
+calling thread will be retrieved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>size</i>
+argument should be set to the size of the <i>sched_attr</i>
+structure as known to user space. The value must be at least
+as large as the size of the initially published
+<i>sched_attr</i> structure, or the call fails with the
+error <b>EINVAL</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The retrieved
+scheduling attributes are placed in the fields of the
+<i>sched_attr</i> structure pointed to by <i>attr</i>. The
+kernel sets <i>attr.size</i> to the size of its
+<i>sched_attr</i> structure.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+caller-provided <i>attr</i> buffer is larger than the
+kernel&rsquo;s <i>sched_attr</i> structure, the additional
+bytes in the user-space structure are not touched. If the
+caller-provided structure is smaller than the kernel
+<i>sched_attr</i> structure, the kernel will silently not
+return any values which would be stored outside the provided
+space. As with <b>sched_setattr</b>(), these semantics allow
+for future extensibility of the interface.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>flags</i> argument is provided to allow for future
+extensions to the interface; in the current implementation
+it must be specified as 0.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>sched_setattr</b>() and <b>sched_getattr</b>() return 0.
+On error, -1 is returned, and <i>errno</i> is set to
+indicate the cause of the error.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sched_getattr</b>()
+and <b>sched_setattr</b>() can both fail for the following
+reasons:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>attr</i> is NULL; or <i>pid</i> is negative; or
+<i>flags</i> is not zero.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ESRCH</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The thread whose ID is <i>pid</i> could not be
+found.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">In addition,
+<b>sched_getattr</b>() can fail for the following
+reasons:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>E2BIG</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The buffer specified by
+<i>size</i> and <i>attr</i> is too small.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>size</i> is invalid; that is, it is smaller than the
+initial version of the <i>sched_attr</i> structure (48
+bytes) or larger than the system page size.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">In addition,
+<b>sched_setattr</b>() can fail for the following
+reasons:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>E2BIG</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The buffer specified by
+<i>size</i> and <i>attr</i> is larger than the kernel
+structure, and one or more of the excess bytes is
+nonzero.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EBUSY</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><b>SCHED_DEADLINE</b> admission control failure, see
+<b>sched</b>(7).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>attr.sched_policy</i> is not one of the recognized
+policies; <i>attr.sched_flags</i> contains a flag other than
+<b>SCHED_FLAG_RESET_ON_FORK</b>; or
+<i>attr.sched_priority</i> is invalid; or
+<i>attr.sched_policy</i> is <b>SCHED_DEADLINE</b> and the
+deadline scheduling parameters in <i>attr</i> are
+invalid.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The caller does not have appropriate privileges.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The CPU affinity mask of the thread specified by
+<i>pid</i> does not include all CPUs in the system (see
+<b>sched_setaffinity</b>(2)).</p> </td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These system
+calls first appeared in Linux 3.14.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These system
+calls are nonstandard Linux extensions.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sched_setattr</b>()
+provides a superset of the functionality of
+<b>sched_setscheduler</b>(2), <b>sched_setparam</b>(2),
+<b>nice</b>(2), and (other than the ability to set the
+priority of all processes belonging to a specified user or
+all processes in a specified group) <b>setpriority</b>(2).
+Analogously, <b>sched_getattr</b>() provides a superset of
+the functionality of <b>sched_getscheduler</b>(2),
+<b>sched_getparam</b>(2), and (partially)
+<b>getpriority</b>(2).</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In Linux
+versions up to 3.15, <b>sched_setattr</b>() failed with the
+error <b>EFAULT</b> instead of <b>E2BIG</b> for the case
+described in ERRORS.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Linux
+versions up to 5.3, <b>sched_getattr</b>() failed with the
+error <b>EFBIG</b> if the in-kernel <i>sched_attr</i>
+structure was larger than the <i>size</i> passed by user
+space.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>(1),
+<b>nice</b>(2), <b>sched_get_priority_max</b>(2),
+<b>sched_get_priority_min</b>(2),
+<b>sched_getaffinity</b>(2), <b>sched_getparam</b>(2),
+<b>sched_getscheduler</b>(2),
+<b>sched_rr_get_interval</b>(2),
+<b>sched_setaffinity</b>(2), <b>sched_setparam</b>(2),
+<b>sched_setscheduler</b>(2), <b>sched_yield</b>(2),
+<b>setpriority</b>(2), <b>pthread_getschedparam</b>(3),
+<b>pthread_setschedparam</b>(3),
+<b>pthread_setschedprio</b>(3), <b>capabilities</b>(7),
+<b>cpuset</b>(7), <b>sched</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

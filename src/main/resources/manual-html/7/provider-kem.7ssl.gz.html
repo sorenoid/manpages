@@ -1,0 +1,338 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROVIDER-KEM</title>
+
+</head>
+<body>
+
+<h1 align="center">PROVIDER-KEM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUES">RETURN VALUES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">provider-kem -
+The kem library &lt;-&gt; provider functions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/core_dispatch.h&gt; <br>
+#include &lt;openssl/core_names.h&gt; <br>
+/* <br>
+* None of these are actual functions, but are displayed like
+this for <br>
+* the function signatures for functions that are offered as
+function <br>
+* pointers in OSSL_DISPATCH arrays. <br>
+*/ <br>
+/* Context management */ <br>
+void *OSSL_FUNC_kem_newctx(void *provctx); <br>
+void OSSL_FUNC_kem_freectx(void *ctx); <br>
+void *OSSL_FUNC_kem_dupctx(void *ctx); <br>
+/* Encapsulation */ <br>
+int OSSL_FUNC_kem_encapsulate_init(void *ctx, void *provkey,
+const char *name, <br>
+const OSSL_PARAM params[]); <br>
+int OSSL_FUNC_kem_encapsulate(void *ctx, unsigned char *out,
+size_t *outlen, <br>
+unsigned char *secret, size_t *secretlen); <br>
+/* Decapsulation */ <br>
+int OSSL_FUNC_kem_decapsulate_init(void *ctx, void *provkey,
+const char *name); <br>
+int OSSL_FUNC_kem_decapsulate(void *ctx, unsigned char *out,
+size_t *outlen, <br>
+const unsigned char *in, size_t inlen); <br>
+/* KEM parameters */ <br>
+int OSSL_FUNC_kem_get_ctx_params(void *ctx, OSSL_PARAM
+params[]); <br>
+const OSSL_PARAM *OSSL_FUNC_kem_gettable_ctx_params(void
+*ctx, void *provctx); <br>
+int OSSL_FUNC_kem_set_ctx_params(void *ctx, const OSSL_PARAM
+params[]); <br>
+const OSSL_PARAM *OSSL_FUNC_kem_settable_ctx_params(void
+*ctx, void *provctx);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+documentation is primarily aimed at provider authors. See
+<b>provider</b>(7) for further information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The asymmetric
+kem ( <small>OSSL_OP_KEM</small> ) operation enables
+providers to implement asymmetric kem algorithms and make
+them available to applications via the <small>API</small>
+functions <b>EVP_PKEY_encapsulate</b>(3),
+<b>EVP_PKEY_decapsulate</b>(3) and other related
+functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+&quot;functions&quot; mentioned here are passed as function
+pointers between <i>libcrypto</i> and the provider in
+<b><small>OSSL_DISPATCH</small></b> arrays via
+<b><small>OSSL_ALGORITHM</small></b> arrays that are
+returned by the provider&rsquo;s
+<b>provider_query_operation()</b> function (see
+&quot;Provider Functions&quot; in
+<b>provider-base</b>(7)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All these
+&quot;functions&quot; have a corresponding function type
+definition named <b>OSSL_FUNC_{name}_fn</b>, and a helper
+function to retrieve the function pointer from an
+<b><small>OSSL_DISPATCH</small></b> element named
+<b>OSSL_FUNC_{name}</b>. For example, the
+&quot;function&quot; <b>OSSL_FUNC_kem_newctx()</b> has
+these:</p>
+
+<p style="margin-left:11%; margin-top: 1em">typedef void
+*(OSSL_FUNC_kem_newctx_fn)(void *provctx); <br>
+static ossl_inline OSSL_FUNC_kem_newctx_fn <br>
+OSSL_FUNC_kem_newctx(const OSSL_DISPATCH *opf);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OSSL_DISPATCH</small></b>
+arrays are indexed by numbers that are provided as macros in
+<b>openssl-core_dispatch.h</b>(7), as follows:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_FUNC_kem_newctx
+OSSL_FUNC_KEM_NEWCTX <br>
+OSSL_FUNC_kem_freectx OSSL_FUNC_KEM_FREECTX <br>
+OSSL_FUNC_kem_dupctx OSSL_FUNC_KEM_DUPCTX <br>
+OSSL_FUNC_kem_encapsulate_init
+OSSL_FUNC_KEM_ENCAPSULATE_INIT <br>
+OSSL_FUNC_kem_encapsulate OSSL_FUNC_KEM_ENCAPSULATE <br>
+OSSL_FUNC_kem_decapsulate_init
+OSSL_FUNC_KEM_DECAPSULATE_INIT <br>
+OSSL_FUNC_kem_decapsulate OSSL_FUNC_KEM_DECAPSULATE <br>
+OSSL_FUNC_kem_get_ctx_params OSSL_FUNC_KEM_GET_CTX_PARAMS
+<br>
+OSSL_FUNC_kem_gettable_ctx_params
+OSSL_FUNC_KEM_GETTABLE_CTX_PARAMS <br>
+OSSL_FUNC_kem_set_ctx_params OSSL_FUNC_KEM_SET_CTX_PARAMS
+<br>
+OSSL_FUNC_kem_settable_ctx_params
+OSSL_FUNC_KEM_SETTABLE_CTX_PARAMS</p>
+
+<p style="margin-left:11%; margin-top: 1em">An asymmetric
+kem algorithm implementation may not implement all of these
+functions. In order to be a consistent set of functions a
+provider must implement OSSL_FUNC_kem_newctx and
+OSSL_FUNC_kem_freectx. It must also implement both of
+OSSL_FUNC_kem_encapsulate_init and
+OSSL_FUNC_kem_encapsulate, or both of
+OSSL_FUNC_kem_decapsulate_init and
+OSSL_FUNC_kem_decapsulate. OSSL_FUNC_kem_get_ctx_params is
+optional but if it is present then so must
+OSSL_FUNC_kem_gettable_ctx_params. Similarly,
+OSSL_FUNC_kem_set_ctx_params is optional but if it is
+present then so must OSSL_FUNC_kem_settable_ctx_params.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An asymmetric
+kem algorithm must also implement some mechanism for
+generating, loading or importing keys via the key management
+( <small>OSSL_OP_KEYMGMT</small> ) operation. See
+<b>provider-keymgmt</b>(7) for further details.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Context
+Management Functions <br>
+OSSL_FUNC_kem_newctx()</b> should create and return a
+pointer to a provider side structure for holding context
+information during an asymmetric kem operation. A pointer to
+this context will be passed back in a number of the other
+asymmetric kem operation function calls. The parameter
+<i>provctx</i> is the provider context generated during
+provider initialisation (see <b>provider</b>(7)).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_freectx()</b>
+is passed a pointer to the provider side asymmetric kem
+context in the <i>ctx</i> parameter. This function should
+free any resources associated with that context.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_dupctx()</b>
+should duplicate the provider side asymmetric kem context in
+the <i>ctx</i> parameter and return the duplicate copy.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Key Encapsulation Functions <br>
+OSSL_FUNC_kem_encapsulate_init()</b> initialises a context
+for an asymmetric encapsulation given a provider side
+asymmetric kem context in the <i>ctx</i> parameter, a
+pointer to a provider key object in the <i>provkey</i>
+parameter and the <i>name</i> of the algorithm. The
+<i>params</i>, if not <small>NULL,</small> should be set on
+the context in a manner similar to using
+<b>OSSL_FUNC_kem_set_ctx_params()</b>. The key object should
+have been previously generated, loaded or imported into the
+provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_encapsulate()</b>
+performs the actual encapsulation itself. A previously
+initialised asymmetric kem context is passed in the
+<i>ctx</i> parameter. Unless <i>out</i> is
+<small>NULL,</small> the data to be encapsulated is
+internally generated, and returned into the buffer pointed
+to by the <i>secret</i> parameter and the encapsulated data
+should also be written to the location pointed to by the
+<i>out</i> parameter. The length of the encapsulated data
+should be written to <i>*outlen</i> and the length of the
+generated secret should be written to <i>*secretlen</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>out</i>
+is <small>NULL</small> then the maximum length of the
+encapsulated data should be written to <i>*outlen</i>, and
+the maximum length of the generated secret should be written
+to <i>*secretlen</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Decapsulation
+Functions <br>
+OSSL_FUNC_kem_decapsulate_init()</b> initialises a context
+for an asymmetric decapsulation given a provider side
+asymmetric kem context in the <i>ctx</i> parameter, a
+pointer to a provider key object in the <i>provkey</i>
+parameter, and a <i>name</i> of the algorithm. The key
+object should have been previously generated, loaded or
+imported into the provider using the key management (
+<small>OSSL_OP_KEYMGMT</small> ) operation (see
+<b>provider-keymgmt</b>(7)&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_decapsulate()</b>
+performs the actual decapsulation itself. A previously
+initialised asymmetric kem context is passed in the
+<i>ctx</i> parameter. The data to be decapsulated is pointed
+to by the <i>in</i> parameter which is <i>inlen</i> bytes
+long. Unless <i>out</i> is <small>NULL,</small> the
+decapsulated data should be written to the location pointed
+to by the <i>out</i> parameter. The length of the
+decapsulated data should be written to <i>*outlen</i>. If
+<i>out</i> is <small>NULL</small> then the maximum length of
+the decapsulated data should be written to
+<i>*outlen</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Key Encapsulation Parameters</b> <br>
+See <b><small>OSSL_PARAM</small></b> (3) for further details
+on the parameters structure used by the
+<b>OSSL_FUNC_kem_get_ctx_params()</b> and
+<b>OSSL_FUNC_kem_set_ctx_params()</b> functions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_get_ctx_params()</b>
+gets asymmetric kem parameters associated with the given
+provider side asymmetric kem context <i>ctx</i> and stores
+them in <i>params</i>. Passing <small>NULL</small> for
+<i>params</i> should return true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_set_ctx_params()</b>
+sets the asymmetric kem parameters associated with the given
+provider side asymmetric kem context <i>ctx</i> to
+<i>params</i>. Any parameter settings are additional to any
+that were previously set. Passing <small>NULL</small> for
+<i>params</i> should return true.</p>
+
+<p style="margin-left:11%; margin-top: 1em">No parameters
+are currently recognised by built-in asymmetric kem
+algorithms.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_gettable_ctx_params()</b>
+and <b>OSSL_FUNC_kem_settable_ctx_params()</b> get a
+constant <b><small>OSSL_PARAM</small></b> array that
+describes the gettable and settable parameters, i.e.
+parameters that can be used with
+<b>OSSL_FUNC_kem_get_ctx_params()</b> and
+<b>OSSL_FUNC_kem_set_ctx_params()</b> respectively. See
+<b><small>OSSL_PARAM</small></b> (3) for the use of
+<b><small>OSSL_PARAM</small></b> as parameter
+descriptor.</p>
+
+<h2>RETURN VALUES
+<a name="RETURN VALUES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kem_newctx()</b>
+and <b>OSSL_FUNC_kem_dupctx()</b> should return the newly
+created provider side asymmetric kem context, or
+<small>NULL</small> on failure.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All other
+functions should return 1 for success or 0 on error.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider</b>(7)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The provider
+<small>KEM</small> interface was introduced in OpenSSL
+3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

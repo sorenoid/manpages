@@ -1,0 +1,132 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:50 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Algorithm::Diff::XS</title>
+
+</head>
+<body>
+
+<h1 align="center">Algorithm::Diff::XS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#BENCHMARK">BENCHMARK</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Algorithm::Diff::XS
+- Algorithm::Diff with XS core loop</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"># Drop-in
+replacement to Algorithm::Diff, but &quot;compact_diff&quot;
+<br>
+# and C&lt;LCSidx&gt; will run much faster for large data
+sets. <br>
+use Algorithm::Diff::XS qw( compact_diff LCSidx );</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+a simple re-packaging of Joe Schaefer&rsquo;s excellent but
+not very well-known Algorithm::LCS with a drop-in interface
+that simply re-uses the installed version of the
+Algorithm::Diff module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that only
+the &quot;LCSidx&quot; function is optimized in
+<small>XS</small> at the moment, which means only
+&quot;compact_diff&quot; will get significantly faster for
+large data sets, while &quot;diff&quot; and
+&quot;sdiff&quot; will run in identical speed as
+&quot;Algorithm::Diff&quot;.</p>
+
+<h2>BENCHMARK
+<a name="BENCHMARK"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Rate
+Algorithm::Diff Algorithm::Diff::XS <br>
+Algorithm::Diff 14.7/s -- -98% <br>
+Algorithm::Diff::XS 806/s 5402% --</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+benchmarking script is as below:</p>
+
+<p style="margin-left:11%; margin-top: 1em">my @data =
+([qw/a b d/ x 50], [qw/b a d c/ x 50]); <br>
+cmpthese( 500, { <br>
+'Algorithm::Diff' =&gt; sub { <br>
+Algorithm::Diff::compact_diff(@data) <br>
+}, <br>
+'Algorithm::Diff::XS' =&gt; sub { <br>
+Algorithm::Diff::XS::compact_diff(@data) <br>
+}, <br>
+});</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Algorithm::Diff,
+Algorithm::LCS.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Audrey Tang
+&lt;cpan@audreyt.org&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2008
+by Audrey Tang &lt;cpan@audreyt.org&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Contains
+derived code copyrighted 2003 by Joe Schaefer,
+&lt;joe+cpan@sunstarsys.com&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

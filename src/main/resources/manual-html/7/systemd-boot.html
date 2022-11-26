@@ -1,0 +1,773 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-BOOT</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-BOOT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#KEY BINDINGS">KEY BINDINGS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#EFI VARIABLES">EFI VARIABLES</a><br>
+<a href="#BOOT COUNTING">BOOT COUNTING</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-boot,
+sd-boot - A simple UEFI boot manager</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-boot</b>
+(short: <b>sd-boot</b>) is a simple UEFI boot manager. It
+provides a graphical menu to select the entry to boot and an
+editor for the kernel command line. <b>systemd-boot</b>
+supports systems with UEFI firmware only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-boot</b>
+loads boot entry information from the EFI system partition
+(ESP), usually mounted at /efi/, /boot/, or /boot/efi/
+during OS runtime, as well as from the Extended Boot Loader
+partition if it exists (usually mounted to /boot/).
+Configuration file fragments, kernels, initrds and other EFI
+images to boot generally need to reside on the ESP or the
+Extended Boot Loader partition. Linux kernels must be built
+with <b>CONFIG_EFI_STUB</b> to be able to be directly
+executed as an EFI image. During boot <b>systemd-boot</b>
+automatically assembles a list of boot entries from the
+following sources:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Boot
+entries defined with <b><font color="#0000FF">Boot Loader
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">description files located in
+/loader/entries/ on the ESP and the Extended Boot Loader
+Partition. These usually describe Linux kernel images with
+associated initrd images, but alternatively may also
+describe arbitrary other EFI executables.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Unified kernel images following the</font>
+<b><font color="#0000FF">Boot Loader
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">, as executable EFI binaries in
+/EFI/Linux/ on the ESP and the Extended Boot Loader
+Partition.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The Microsoft Windows EFI boot manager, if
+installed</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The Apple macOS boot manager, if installed</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The EFI Shell binary, if installed</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+A reboot into the UEFI firmware setup option, if supported
+by the firmware</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd-boot</b>
+supports the following features:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Basic boot manager configuration changes (such as timeout
+configuration, default boot entry selection, ...) may be
+made directly from the boot loader UI at boot-time, as well
+as during system runtime with EFI variables.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The boot manager integrates with the <b>systemctl</b>
+command to implement features such as <b>systemctl reboot
+--boot-loader-entry=...</b> (for rebooting into a specific
+boot menu entry, i.e. &quot;reboot into Windows&quot;) and
+<b>systemctl reboot --boot-loader-menu=...</b> (for
+rebooting into the boot loader menu), by implementing
+the</font> <b><font color="#0000FF">Boot Loader
+Interface</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">. See <b>systemctl</b>(1) for
+details.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+An EFI variable set by the boot loader informs the OS about
+the EFI System Partition used during boot. This is then used
+to automatically mount the correct EFI System Partition to
+/efi/ or /boot/ during OS runtime. See
+<b>systemd-gpt-auto-generator</b>(8) for details.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The boot manager provides information about the boot time
+spent in UEFI firmware using the</font>
+<b><font color="#0000FF">Boot Loader Interface</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">. This information can be displayed
+using <b>systemd-analyze</b>(1).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The boot manager implements boot counting and automatic
+fallback to older, working boot entries on failure.
+See</font> <b><font color="#0000FF">Automatic Boot
+Assessment</font></b>
+<small><font color="#000000">[3]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+The boot manager optionally reads a random seed from the ESP
+partition, combines it with a 'system token' stored in a
+persistent EFI variable and derives a random seed to use by
+the OS as entropy pool initialization, providing a full
+entropy pool during early boot.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>bootctl</b>(1)
+may be used from a running system to locate the ESP and the
+Extended Boot Loader Partition, list available entries, and
+install <b>systemd-boot</b> itself.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>kernel-install</b>(8)
+may be used to copy kernel images onto the ESP or the
+Extended Boot Loader Partition and to generate description
+files compliant with the Boot Loader
+Specification.</font></p>
+
+<h2>KEY BINDINGS
+<a name="KEY BINDINGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following keys may be used in the boot menu:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&acirc;
+(Up), &acirc; (Down), j, k, PageUp, PageDown, Home,
+End</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Navigate
+up/down in the entry list</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&acirc;&micro;
+(Enter), &acirc; (Right)</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Boot
+selected entry</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">d</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Make
+selected entry the default</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">e</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Edit the
+kernel command line for selected entry</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">+,
+t</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Increase
+the timeout before default entry is booted</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">-,
+T</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Decrease
+the timeout</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">v</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Show
+systemd-boot, UEFI, and firmware versions</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">P</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print
+status</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Q</font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Quit</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">h,
+?, F1</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Show a
+help screen</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Ctrl+l</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Reprint
+the screen</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following keys may be pressed during bootup or in the boot
+menu to directly boot a specific entry:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">l</font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Linux</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">w</font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Windows</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">a</font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">macOS</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">s</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">EFI
+shell</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">1,
+2, 3, 4, 5, 6, 7, 8, 9</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Boot
+entry number 1 ... 9</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+boot menu is shown when a non-zero menu timeout has been
+configured. If the menu timeout has been set to zero, it is
+sufficient to press any key &mdash; before the boot loader
+initializes &mdash; to bring up the boot menu, except for
+the keys listed immediately above as they directly boot into
+the selected boot menu item. Note that depending on the
+firmware implementation the time window where key presses
+are accepted before the boot loader initializes might be
+short. If the window is missed, reboot and try again,
+possibly pressing a suitable key (e.g. the space bar)
+continuously; on most systems it should be possible to hit
+the time window after a few attempts. To avoid this problem,
+consider setting a non-zero timeout, thus showing the boot
+menu unconditionally. Some desktop environments might offer
+an option to directly boot into the boot menu, to avoid the
+problem altogether. Alternatively, use the command line
+<b>systemctl reboot --boot-loader-menu=0</b> from the
+shell.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">In
+the editor, most keys simply insert themselves, but the
+following keys may be used to perform additional
+actions:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&acirc;
+(Left), &acirc; (Right), Home, End</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Navigate
+left/right</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Esc</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Abort the
+edit and quit the editor</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Ctrl+k</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Clear the
+command line</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Ctrl+w,
+Alt+Backspace</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Delete
+word backwards</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Alt+d</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Delete
+word forwards</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&acirc;&micro;
+(Enter)</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Boot
+entry with the edited command line</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that unless configured otherwise in the UEFI firmware,
+systemd-boot will use the US keyboard layout, so key labels
+might not match for keys like +/-.</font></p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+files <b>systemd-boot</b> processes generally reside on the
+UEFI ESP which is usually mounted to /efi/, /boot/ or
+/boot/efi/ during OS runtime. It also processes files on the
+Extended Boot Loader partition which is typically mounted to
+/boot/, if it exists. <b>systemd-boot</b> reads runtime
+configuration such as the boot timeout and default entry
+from /loader/loader.conf on the ESP (in combination with
+data read from EFI variables). See <b>loader.conf</b>(5).
+Boot entry description files following the</font>
+<b><font color="#0000FF">Boot Loader
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">are read from /loader/entries/ on the
+ESP and the Extended Boot Loader partition. Unified kernel
+boot entries following the</font>
+<b><font color="#0000FF">Boot Loader
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">are read from /EFI/Linux/ on the ESP
+and the Extended Boot Loader partition. Optionally, a random
+seed for early boot entropy pool provisioning is stored in
+/loader/random-seed in the ESP.</font></p>
+
+<h2>EFI VARIABLES
+<a name="EFI VARIABLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following EFI variables are defined, set and read by
+<b>systemd-boot</b>, under the vendor UUID
+&quot;4a67b082-0a4c-41cf-b6c7-440b29bb8c4f&quot;, for
+communication between the OS and the boot loader:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderBootCountPath</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If boot
+counting is enabled, contains the path to the file in whose
+name the boot counters are encoded. Set by the boot loader.
+<b>systemd-bless-boot.service</b>(8) uses this information
+to mark a boot as successful as determined by the successful
+activation of the boot-complete.target target
+unit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderConfigTimeout</i>,
+<i>LoaderConfigTimeoutOneShot</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The menu
+timeout in seconds. Read by the boot loader.
+<i>LoaderConfigTimeout</i> is maintained persistently, while
+<i>LoaderConfigTimeoutOneShot</i> is a one-time override
+which is read once (in which case it takes precedence over
+<i>LoaderConfigTimeout</i>) and then removed.
+<i>LoaderConfigTimeout</i> may be manipulated with the t/T
+keys, see above.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderDevicePartUUID</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Contains
+the partition UUID of the EFI System Partition the boot
+loader was run from. Set by the boot loader.
+<b>systemd-gpt-auto-generator</b>(8) uses this information
+to automatically find the disk booted from, in order to
+discover various other partitions on the same disk
+automatically.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderEntries</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A list of
+the identifiers of all discovered boot loader entries. Set
+by the boot loader.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderEntryDefault</i>,
+<i>LoaderEntryOneShot</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+identifier of the default boot loader entry. Set primarily
+by the OS and read by the boot loader.
+<i>LoaderEntryOneShot</i> sets the default entry for the
+next boot only, while <i>LoaderEntryDefault</i> sets it
+persistently for all future boots. <b>bootctl</b>(1)'s
+<b>set-default</b> and <b>set-oneshot</b> commands make use
+of these variables. The boot loader modifies
+<i>LoaderEntryDefault</i> on request, when the d key is
+used, see above.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderEntrySelected</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+identifier of the boot loader entry currently being booted.
+Set by the boot loader.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderFeatures</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A set of
+flags indicating the features the boot loader supports. Set
+by the boot loader. Use <b>bootctl</b>(1) to view this
+data.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderFirmwareInfo</i>,
+<i>LoaderFirmwareType</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Brief
+firmware information. Set by the boot loader. Use
+<b>bootctl</b>(1) to view this data.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderImageIdentifier</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The path
+of executable of the boot loader used for the current boot,
+relative to the EFI System Partition's root directory. Set
+by the boot loader. Use <b>bootctl</b>(1) to view this
+data.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderInfo</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Brief
+information about the boot loader. Set by the boot loader.
+Use <b>bootctl</b>(1) to view this data.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderTimeExecUSec</i>,
+<i>LoaderTimeInitUSec</i>,
+<i>LoaderTimeMenuUsec</i></font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Information
+about the time spent in various parts of the boot loader.
+Set by the boot loader. Use <b>systemd-analyze</b>(1) to
+view this data.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderRandomSeed</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A binary
+random seed <b>systemd-boot</b> may optionally pass to the
+OS. This is a volatile EFI variable that is hashed at boot
+from the combination of a random seed stored in the ESP (in
+/loader/random-seed) and a &quot;system token&quot;
+persistently stored in the EFI variable
+<i>LoaderSystemToken</i> (see below). During early OS boot
+the system manager reads this variable and passes it to the
+OS kernel's random pool, crediting the full entropy it
+contains. This is an efficient way to ensure the system
+starts up with a fully initialized kernel random pool
+&mdash; as early as the initial RAM disk phase.
+<b>systemd-boot</b> reads the random seed from the ESP,
+combines it with the &quot;system token&quot;, and both
+derives a new random seed to update in-place the seed stored
+in the ESP, and the random seed to pass to the OS from it
+via SHA256 hashing in counter mode. This ensures that
+different physical systems that boot the same
+&quot;golden&quot; OS image &mdash; i.e. containing the same
+random seed file in the ESP &mdash; will still pass a
+different random seed to the OS. It is made sure the random
+seed stored in the ESP is fully overwritten before the OS is
+booted, to ensure different random seed data is used between
+subsequent boots.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">See</font>
+<b><font color="#0000FF">Random Seeds</font></b>
+<small><font color="#000000">[4]</font></small>
+<font color="#000000">for further information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LoaderSystemToken</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A binary
+random data field, that is used for generating the random
+seed to pass to the OS (see above). Note that this random
+data is generally only generated once, during OS
+installation, and is then never updated again.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Many
+of these variables are defined by the</font>
+<b><font color="#0000FF">Boot Loader Interface</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>BOOT COUNTING
+<a name="BOOT COUNTING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd-boot</b>
+implements a simple boot counting mechanism on top of
+the</font> <b><font color="#0000FF">Boot Loader
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">, for automatic and unattended
+fallback to older kernel versions/boot loader entries when a
+specific entry continuously fails. Any boot loader entry
+file and unified kernel image file that contains a
+&quot;+&quot; followed by one or two numbers (if two they
+need to be separated by a &quot;-&quot;), before the .conf
+or .efi suffix is subject to boot counting: the first of the
+two numbers ('tries left') is decreased by one on every boot
+attempt, the second of the two numbers ('tries done') is
+increased by one (if 'tries done' is absent it is considered
+equivalent to 0). Depending on the current value of these
+two counters the boot entry is considered to be in one of
+three states:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">1.
+If the 'tries left' counter of an entry is greater than zero
+the entry is considered to be in 'indeterminate' state. This
+means the entry has not completed booting successfully yet,
+but also hasn't been determined not to work.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">2.
+If the 'tries left' counter of an entry is zero it is
+considered to be in 'bad' state. This means no further
+attempts to boot this item will be made (that is, unless all
+other boot entries are also in 'bad' state), as all attempts
+to boot this entry have not completed
+successfully.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">3.
+If the 'tries left' and 'tries done' counters of an entry
+are absent it is considered to be in 'good' state. This
+means further boot counting for the entry is turned off, as
+it successfully booted at least once. The
+<b>systemd-bless-boot.service</b>(8) service moves the
+currently booted entry from 'indeterminate' into 'good'
+state when a boot attempt completed successfully.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Generally,
+when new entries are added to the boot loader, they first
+start out in 'indeterminate' state, i.e. with a 'tries left'
+counter greater than zero. The boot entry remains in this
+state until either it managed to complete a full boot
+successfully at least once (in which case it will be in
+'good' state) &mdash; or the 'tries left' counter reaches
+zero (in which case it will be in 'bad' state).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+let's say a boot loader entry file foo.conf is set up for 3
+boot tries. The installer will hence create it under the
+name foo+3.conf. On first boot, the boot loader will rename
+it to foo+2-1.conf. If that boot does not complete
+successfully, the boot loader will rename it to foo+1-2.conf
+on the following boot. If that fails too, it will finally be
+renamed foo+0-3.conf by the boot loader on next boot, after
+which it will be considered 'bad'. If the boot succeeds
+however the entry file will be renamed to foo.conf by the
+OS, so that it is considered 'good' from then on.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+boot menu takes the 'tries left' counter into account when
+sorting the menu entries: entries in 'bad' state are ordered
+at the beginning of the list, and entries in 'good' or
+'indeterminate' at the end. The user can freely choose to
+boot any entry of the menu, including those already marked
+'bad'. If the menu entry to boot is automatically
+determined, this means that 'good' or 'indeterminate'
+entries are generally preferred (as the bottom item of the
+menu is the one booted by default), and 'bad' entries will
+only be considered if there are no 'good' or 'indeterminate'
+entries left.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<b>kernel-install</b>(8) kernel install framework optionally
+sets the initial 'tries left' counter to the value specified
+in /etc/kernel/tries when a boot loader entry is first
+created.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>bootctl</b>(1),
+<b>loader.conf</b>(5), <b>systemd-bless-boot.service</b>(8),
+<b>systemd-boot-system-token.service</b>(8),
+<b>kernel-install</b>(8),</font>
+<b><font color="#0000FF">Boot Loader
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">,</font> <b><font color="#0000FF">Boot
+Loader Interface</font></b>
+<small><font color="#000000">[2]</font></small></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Boot
+Loader Specification</font></p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/BOOT_LOADER_SPECIFICATION</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Boot
+Loader Interface</font></p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/BOOT_LOADER_INTERFACE</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">3.</font></p> </td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Automatic
+Boot Assessment</font></p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/AUTOMATIC_BOOT_ASSESSMENT</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">4.</font></p> </td>
+<td width="2%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Random
+Seeds</font></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/RANDOM_SEEDS</font></p>
+<hr>
+</body>
+</html>

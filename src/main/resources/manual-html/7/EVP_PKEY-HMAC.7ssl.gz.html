@@ -1,0 +1,159 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EVP_PKEY-HMAC</title>
+
+</head>
+<body>
+
+<h1 align="center">EVP_PKEY-HMAC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_PKEY-HMAC,
+EVP_KEYMGMT-HMAC, EVP_PKEY-Siphash, EVP_KEYMGMT-Siphash,
+EVP_PKEY-Poly1305, EVP_KEYMGMT-Poly1305, EVP_PKEY-CMAC,
+EVP_KEYMGMT-CMAC - EVP_PKEY legacy MAC keytypes and
+algorithm support</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b><small>HMAC</small></b> and <b><small>CMAC</small></b>
+key types are implemented in OpenSSL&rsquo;s default and
+<small>FIPS</small> providers. Additionally the
+<b>Siphash</b> and <b>Poly1305</b> key types are implemented
+in the default provider. Performing <small>MAC</small>
+operations via an <small>EVP_PKEY</small> is considered
+legacy and are only available for backwards compatibility
+purposes and for a restricted set of algorithms. The
+preferred way of performing <small>MAC</small> operations is
+via the <small>EVP_MAC</small> APIs. See
+<b>EVP_MAC_init</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For further
+details on using <small>EVP_PKEY</small> based
+<small>MAC</small> keys see
+<b><small>EVP_SIGNATURE-HMAC</small></b> (7),
+<b>EVP_SIGNATURE-Siphash</b>(7),
+<b>EVP_SIGNATURE-Poly1305</b>(7) or
+<b><small>EVP_SIGNATURE-CMAC</small></b> (7).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+<small>MAC</small> parameters</b> <br>
+All the <b><small>MAC</small></b> keytypes support the
+following parameters. <br>
+&quot;priv&quot; (
+<b><small>OSSL_PKEY_PARAM_PRIV_KEY</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">The <small>MAC</small> key
+value.</p>
+
+<p style="margin-left:11%;">&quot;properties&quot; (
+<b><small>OSSL_PKEY_PARAM_PROPERTIES</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">A property query string to be
+used when any algorithms are fetched.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>CMAC</small>
+parameters</b> <br>
+As well as the parameters described above, the
+<b><small>CMAC</small></b> keytype additionally supports the
+following parameters. <br>
+&quot;cipher&quot; (
+<b><small>OSSL_PKEY_PARAM_CIPHER</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">The name of a cipher to be used
+when generating the <small>MAC.</small></p>
+
+<p style="margin-left:11%;">&quot;engine&quot; (
+<b><small>OSSL_PKEY_PARAM_ENGINE</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">The name of an engine to be
+used for the specified cipher (if any).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+<small>MAC</small> key generation parameters</b> <small><br>
+MAC</small> key generation is unusual in that no new key is
+actually generated. Instead a new provider side key object
+is created with the supplied raw key value. This is done for
+backwards compatibility with previous versions of OpenSSL.
+<br>
+&quot;priv&quot; (
+<b><small>OSSL_PKEY_PARAM_PRIV_KEY</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">The <small>MAC</small> key
+value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>CMAC</small>
+key generation parameters</b> <br>
+In addition to the common <small>MAC</small> key generation
+parameters, the <small>CMAC</small> key generation
+additionally recognises the following. <br>
+&quot;cipher&quot; (
+<b><small>OSSL_PKEY_PARAM_CIPHER</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">The name of a cipher to be used
+when generating the <small>MAC.</small></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small><b>EVP_KEYMGMT</b></small>
+(3), <b><small>EVP_PKEY</small></b> (3),
+<b>provider-keymgmt</b>(7)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2020
+The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

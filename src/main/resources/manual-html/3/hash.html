@@ -1,0 +1,250 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:27 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HASH</title>
+
+</head>
+<body>
+
+<h1 align="center">HASH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hash - hash
+database access method</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/types.h&gt; <br>
+#include &lt;db.h&gt;</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>Note
+well</i></b>: This page documents interfaces provided in
+glibc up until version 2.1. Since version 2.2, glibc no
+longer provides these interfaces. Probably, you are looking
+for the APIs provided by the <i>libdb</i> library
+instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The routine
+<b>dbopen</b>(3) is the library interface to database files.
+One of the supported file formats is hash files. The general
+description of the database access methods is in
+<b>dbopen</b>(3), this manual page describes only the
+hash-specific information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The hash data
+structure is an extensible, dynamic hashing scheme.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+access-method-specific data structure provided to
+<b>dbopen</b>(3) is defined in the <i>&lt;db.h&gt;</i>
+include file as follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">typedef struct
+{ <br>
+unsigned int bsize; <br>
+unsigned int ffactor; <br>
+unsigned int nelem; <br>
+unsigned int cachesize; <br>
+uint32_t (*hash)(const void *, size_t); <br>
+int lorder; <br>
+} HASHINFO;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The elements of
+this structure are as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><i>bsize</i></p></td>
+<td width="1%"></td>
+<td width="74%">
+
+
+<p>defines the hash table bucket size, and is, by default,
+256 bytes. It may be preferable to increase the page size
+for disk-resident tables and tables with large data
+items.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><i>ffactor</i></p></td>
+<td width="1%"></td>
+<td width="74%">
+
+
+<p>indicates a desired density within the hash table. It is
+an approximation of the number of keys allowed to accumulate
+in any one bucket, determining when the hash table grows or
+shrinks. The default value is 8.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><i>nelem</i></p></td>
+<td width="1%"></td>
+<td width="74%">
+
+
+<p>is an estimate of the final size of the hash table. If
+not set or set too low, hash tables will expand gracefully
+as keys are entered, although a slight performance
+degradation may be noticed. The default value is 1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><i>cachesize</i></p></td>
+<td width="1%"></td>
+<td width="74%">
+
+
+<p>is the suggested maximum size, in bytes, of the memory
+cache. This value is <i>only advisory</i>, and the access
+method will allocate more memory rather than fail.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><i>hash</i></p></td>
+<td width="1%"></td>
+<td width="74%">
+
+
+<p>is a user-defined hash function. Since no hash function
+performs equally well on all possible data, the user may
+find that the built-in hash function does poorly on a
+particular data set. A user-specified hash functions must
+take two arguments (a pointer to a byte string and a length)
+and return a 32-bit quantity to be used as the hash
+value.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p><i>lorder</i></p></td>
+<td width="1%"></td>
+<td width="74%">
+
+
+<p>is the byte order for integers in the stored database
+metadata. The number should represent the order as an
+integer; for example, big endian order would be the number
+4,321. If <i>lorder</i> is 0 (no order is specified), the
+current host order is used. If the file already exists, the
+specified value is ignored and the value specified when the
+tree was created is used.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the file
+already exists (and the <b>O_TRUNC</b> flag is not
+specified), the values specified for <i>bsize</i>,
+<i>ffactor</i>, <i>lorder</i>, and <i>nelem</i> are ignored
+and the values specified when the tree was created are
+used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a hash
+function is specified, <i>hash_open</i> attempts to
+determine if the hash function specified is the same as the
+one with which the database was created, and fails if it is
+not.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Backward-compatible
+interfaces to the routines described in <b>dbm</b>(3), and
+<b>ndbm</b>(3) are provided, however these interfaces are
+not compatible with previous file formats.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <i>hash</i>
+access method routines may fail and set <i>errno</i> for any
+of the errors specified for the library routine
+<b>dbopen</b>(3).</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Only big and
+little endian byte order are supported.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>btree</b>(3),
+<b>dbopen</b>(3), <b>mpool</b>(3), <b>recno</b>(3)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Dynamic Hash
+Tables</i>, Per-Ake Larson, Communications of the ACM, April
+1988.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>A New Hash
+Package for UNIX</i>, Margo Seltzer, USENIX Proceedings,
+Winter 1991.</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

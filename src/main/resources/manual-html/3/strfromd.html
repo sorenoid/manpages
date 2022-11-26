@@ -1,0 +1,315 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:55 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>STRFROMD</title>
+
+</head>
+<body>
+
+<h1 align="center">STRFROMD</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">strfromd,
+strfromf, strfroml - convert a floating-point value into a
+string</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;stdlib.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+strfromd(char *restrict</b> <i>str</i><b>, size_t</b>
+<i>n</i><b>, <br>
+const char *restrict</b> <i>format</i><b>, double</b>
+<i>fp</i><b>); <br>
+int strfromf(char *restrict</b> <i>str</i><b>, size_t</b>
+<i>n</i><b>, <br>
+const char *restrict</b> <i>format</i><b>, float</b>
+<i>fp</i><b>); <br>
+int strfroml(char *restrict</b> <i>str</i><b>, size_t</b>
+<i>n</i><b>, <br>
+const char *restrict</b> <i>format</i><b>, long double</b>
+<i>fp</i><b>);</b></p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>strfromd</b>(),
+<b>strfromf</b>(), <b>strfroml</b>():</p>
+
+
+<p style="margin-left:17%;">__STDC_WANT_IEC_60559_BFP_EXT__</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+convert a floating-point value, <i>fp</i>, into a string of
+characters, <i>str</i>, with a configurable <i>format</i>
+string. At most <i>n</i> characters are stored into
+<i>str</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The terminating
+null byte (&rsquo;\0&rsquo;) is written if and only if
+<i>n</i> is sufficiently large, otherwise the written string
+is truncated at <i>n</i> characters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>strfromd</b>(), <b>strfromf</b>(), and <b>strfroml</b>()
+functions are equivalent to</p>
+
+<p style="margin-left:17%; margin-top: 1em">snprintf(str,
+n, format, fp);</p>
+
+<p style="margin-left:11%; margin-top: 1em">except for the
+<i>format</i> string.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Format of
+the format string</b> <br>
+The <i>format</i> string must start with the character '%'.
+This is followed by an optional precision which starts with
+the period character (.), followed by an optional decimal
+integer. If no integer is specified after the period
+character, a precision of zero is used. Finally, the format
+string should have one of the conversion specifiers
+<b>a</b>, <b>A</b>, <b>e</b>, <b>E</b>, <b>f</b>, <b>F</b>,
+<b>g</b>, or <b>G</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The conversion
+specifier is applied based on the floating-point type
+indicated by the function suffix. Therefore, unlike
+<b>snprintf</b>(), the format string does not have a length
+modifier character. See <b>snprintf</b>(3) for a detailed
+description of these conversion specifiers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+implementation conforms to the C99 standard on conversion of
+NaN and infinity values:</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>fp</i> is
+a NaN, +NaN, or -NaN, and <b>f</b> (or <b>a</b>, <b>e</b>,
+<b>g</b>) is the conversion specifier, the conversion is to
+&quot;nan&quot;, &quot;nan&quot;, or &quot;-nan&quot;,
+respectively. If <b>F</b> (or <b>A</b>, <b>E</b>, <b>G</b>)
+is the conversion specifier, the conversion is to
+&quot;NAN&quot; or &quot;-NAN&quot;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Likewise if
+<i>fp</i> is infinity, it is converted to [-]inf or
+[-]INF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A malformed
+<i>format</i> string results in undefined behavior.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>strfromd</b>(), <b>strfromf</b>(), and <b>strfroml</b>()
+functions return the number of characters that would have
+been written in <i>str</i> if <i>n</i> had enough space, not
+counting the terminating null byte. Thus, a return value of
+<i>n</i> or greater means that the output was truncated.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>strfromd</b>(), <b>strfromf</b>(), and <b>strfroml</b>()
+functions are available in glibc since version 2.25.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7) and the <b>POSIX Safety Concepts</b>
+section in GNU C Library manual.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="16%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="16%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="16%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="16%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="31%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3360911.png" alt="Image grohtml-3360911.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: these
+attributes are preliminary.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">C99, ISO/IEC TS
+18661-1.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>strfromd</b>(), <b>strfromf</b>(), and <b>strfroml</b>()
+functions take account of the <b>LC_NUMERIC</b> category of
+the current locale.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To convert the
+value 12.1 as a float type to a string using decimal
+notation, resulting in &quot;12.100000&quot;:</p>
+
+<p style="margin-left:17%; margin-top: 1em">#define
+__STDC_WANT_IEC_60559_BFP_EXT__ <br>
+#include &lt;stdlib.h&gt; <br>
+int ssize = 10; <br>
+char s[ssize]; <br>
+strfromf(s, ssize, &quot;%f&quot;, 12.1);</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert the
+value 12.3456 as a float type to a string using decimal
+notation with two digits of precision, resulting in
+&quot;12.35&quot;:</p>
+
+<p style="margin-left:17%; margin-top: 1em">#define
+__STDC_WANT_IEC_60559_BFP_EXT__ <br>
+#include &lt;stdlib.h&gt; <br>
+int ssize = 10; <br>
+char s[ssize]; <br>
+strfromf(s, ssize, &quot;%.2f&quot;, 12.3456);</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert the
+value 12.345e19 as a double type to a string using
+scientific notation with zero digits of precision, resulting
+in &quot;1E+20&quot;:</p>
+
+<p style="margin-left:17%; margin-top: 1em">#define
+__STDC_WANT_IEC_60559_BFP_EXT__ <br>
+#include &lt;stdlib.h&gt; <br>
+int ssize = 10; <br>
+char s[ssize]; <br>
+strfromd(s, ssize, &quot;%.E&quot;, 12.345e19);</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>atof</b>(3),
+<b>snprintf</b>(3), <b>strtod</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

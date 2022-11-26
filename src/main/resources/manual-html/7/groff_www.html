@@ -1,0 +1,600 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:17 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GROFF_WWW</title>
+
+</head>
+<body>
+
+<h1 align="center">GROFF_WWW</h1>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">groff_www -
+groff macros for authoring web pages
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#REQUESTS">REQUESTS</a><br>
+<a href="#SECTION HEADING LINKS">SECTION HEADING LINKS</a><br>
+<a href="#LIMITATIONS OF GROHTML">LIMITATIONS OF GROHTML</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+</p><hr>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b>groff -m www</b></p></td>
+<td width="2%"></td>
+<td width="44%">
+
+
+<p style="margin-top: 1em">[<i>option</i> ...]
+[<i>input-file</i> ...]</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page describes the GNU -mwww macro package, which is part of
+the groff document formatting system. The manual page is
+very a basic guide, and the HTML device driver
+(<b>grohtml</b>) has been completely rewritten but still
+remains as in an alpha state. It has been included into the
+distribution so that a lot of people have a chance to test
+it. Note that this macro file is automatically called (via
+the <i>troffrc</i> file) if you use <b>-Thtml</b> or
+<b>-Txhtml</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To see the
+hyperlinks in action, please format this man page with the
+<b>grohtml</b> device.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is a
+summary of the functions found in this macro set.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3546081.png" alt="Image grohtml-3546081.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Output of the
+<b>pic</b>, <b>eqn</b>, <b>refer</b>, and <b>tbl</b>
+preprocessors is acceptable as input.</p>
+
+<h2>REQUESTS
+<a name="REQUESTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>.JOBNAME
+filename</b></p>
+
+<p style="margin-left:22%;">Split output into multiple HTML
+files. A file is split whenever a .SH or .NH&nbsp;1 is
+encountered. Its argument is the file stem name for future
+output files. This option is equivalent to
+<b>grohtml</b>&rsquo;s <b>-j</b> option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.HX n</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Specify the cut off depth when generating links from
+section headings. For example, a parameter of&nbsp;2 would
+cause <b>grohtml</b> to generate a list of links for
+<b>.NH&nbsp;1</b> and <b>.NH&nbsp;2</b> but not for
+<b>.NH&nbsp;3</b>. Whereas</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.HX
+0</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">tells
+<b>grohtml</b> that no heading links should be created at
+all. Another method for turning automatic headings off is by
+issuing the command-line switch <b>-P-l</b> to
+<b>groff</b>.</p>
+
+<p style="margin-left:11%;"><b>.BCL foreground background
+active not-visited visited</b></p>
+
+<p style="margin-left:22%;">This macro takes five
+parameters: foreground, background, active hypertext link,
+hypertext link not yet visited, and visited hypertext link
+colour.</p>
+
+<p style="margin-left:11%;"><b>.BGIMG imagefile</b></p>
+
+<p style="margin-left:22%;">the only parameter to this
+macro is the background image file.</p>
+
+<p style="margin-left:11%;"><b>.URL url [description]
+[after]</b></p>
+
+<p style="margin-left:22%;">generates <a name="URL"></a> a
+URL using either one, two or three arguments. The first
+parameter is the actual URL, the second is the name of the
+link, and the third is optional stuff to be printed
+immediately afterwards. If <b>description</b> and
+<b>after</b> are absent then the <b>URL</b> becomes the
+anchor text. Hyphenation is disabled while printing the
+actual URL; explicit breakpoints should be inserted with the
+<b>\:</b> escape. Here is how to encode
+<a href="http://foo.org/">foo</a>:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.URL
+http://\:foo.\:org/ foo :</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">If this is
+processed by a device other than <b>-Thtml</b> or
+<b>-Txhtml</b> it appears as:</p>
+
+<p style="margin-left:32%; margin-top: 1em">foo &lang;
+http://foo.org&rang; :</p>
+
+<p style="margin-left:22%; margin-top: 1em">The URL macro
+can be of any type; for example we can reference
+<a href="pic.html">Eric Raymond&rsquo;s pic guide</a>
+by:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.URL
+pic.html &quot;Eric Raymond&rsquo;s pic guide&quot;</b></p>
+
+<p style="margin-left:11%;"><b>.MTO address [description]
+[after]</b></p>
+
+<p style="margin-left:22%;">Generate an email HTML
+reference. The first argument is mandatory as the email
+address. The optional second argument is the text you see in
+your browser. If an empty argument is given, <b>address</b>
+is used instead. An optional third argument is stuff printed
+immediately afterwards. Hyphenation is disabled while
+printing the actual email address. For example,
+<a href="mailto:joe@user.org">Joe User</a> can be achieved
+by the following macro:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.MTO
+joe@user.org &quot;Joe User&quot;</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that all
+the URLs actually are treated as consuming no textual space
+in groff. This could be considered as a bug since it causes
+some problems. To circumvent this, <b>www.tmac</b> inserts a
+zero-width character which expands to a harmless space (only
+if run with <b>-Thtml</b> or <b>-Txhtml</b>).</p>
+
+<p style="margin-left:11%;"><b>.FTP url [description]
+[after]</b></p>
+
+<p style="margin-left:22%;">indicates that data can be
+obtained via FTP. The first argument is the URL and the
+second is the browser text. A third argument, similar to the
+macros above, is intended for stuff printed immediately
+afterwards. The second and the third parameter are optional.
+Hyphenation is disabled while printing the actual URL. As an
+example, here is the location of the
+<a href="ftp://ftp.gnu.org/">GNU FTP server</a>. The macro
+example above can be specified as:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.FTP
+ftp://\:ftp.gnu.org/ &quot;GNU FTP server&quot; .</b></p>
+
+<p style="margin-left:11%;"><b>.TAG name</b></p>
+
+<p style="margin-left:22%;">Generates an HTML name tag from
+its argument. This can then be referenced using the
+<a href="#URL">URL</a> macro. As you can see, you must
+precede the tag name with <b>#</b> since it is a local
+reference. This link was achieved via placing a TAG in the
+URL description above; the source looks like this:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.TP <br>
+.B URL <br>
+generates <br>
+.TAG URL <br>
+a URL using either two or three arguments. <br>
+...</b></p>
+
+<p style="margin-left:11%;"><b>.IMG [-R|-L|-C] filename
+[width] [height]</b></p>
+
+<p style="margin-left:22%;">Include a picture into the
+document. The first argument is the horizontal location:
+right, left, or center (<b>-R</b>, <b>-L</b>, or <b>-C</b>).
+Alignment is centered by default (<b>-C</b>). The second
+argument is the filename. The optional third and fourth
+arguments are the width and height. If the width is absent
+it defaults to 1&nbsp;inch. If the height is absent it
+defaults to the width. This maps onto an HTML img tag. If
+you are including a PNG image then it is advisable to use
+the <b>PIMG</b> macro.</p>
+
+<p style="margin-left:11%;"><b>.PIMG [-R|-L|-C] filename
+[width [height]]</b></p>
+
+<p style="margin-left:22%;">Include an image in PNG format.
+This macro takes exactly the same parameters as the
+<b>IMG</b> macro; it has the advantage of working with
+PostScript and HTML devices also since it can automatically
+convert the image into the EPS format, using the following
+programs of the <b>netpbm</b> package: <b>pngtopnm</b>,
+<b>pnmcrop</b>, and <b>pnmtops</b>. If the document
+isn&rsquo;t processed with <b>-Thtml</b> or <b>-Txhtml</b>
+it is necessary to use the <b>-U</b> option of groff.</p>
+
+<p style="margin-left:11%;"><b>.MPIMG [-R|-L] [-G gap]
+filename [width [height]]</b></p>
+
+<p style="margin-left:22%;">Place a PNG image on the margin
+and wrap text around it. The first parameters are optional.
+The alignment: left or right (<b>-L</b> or <b>-R</b>)
+specifies the margin where the picture is placed at. The
+default alignment is left (<b>-L</b>). Optionally,
+<b>-G&nbsp;</b><i>gap</i> can be used to arrange a gap
+between the picture and the text that wraps around it. The
+default gap width is zero. <br>
+The first non-optional argument is the filename. The
+optional following arguments are the width and height. If
+the width is absent it defaults to 1&nbsp;inch. If the
+height is absent it defaults to the width. Example:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.MPIMG -L -G
+2c foo.png 3c 1.5c</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The height and
+width may also be given as percentages. The PostScript
+device calculates the width from the <b>.l</b> register and
+the height from the <b>.p</b> register. For example:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.MPIMG -L -G
+2c foo.png 15%</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>.HnS n</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Begin heading. The numeric heading level <i>n</i> is
+specified by the first parameter. Use this macro if your
+headings contain URL, FTP or MTO macros. Example:</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.HnS 1 <br>
+.HR <br>
+GNU Troff <br>
+.URL http://groff.ffii.org (Groff) <br>
+&mdash; a <br>
+.URL http://www.gnu.org/ GNU <br>
+project. <br>
+Hosted by <br>
+.URL http://ffii.org/ FFII . <br>
+.HR <br>
+.HnE</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">In this case
+you might wish to disable automatic links to headings. This
+can be done via <b>-P-l</b> from the command line.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>.HnE</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">End heading.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.LK</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><a name="LK"></a> Force grohtml to place the
+automatically generated links at this position. If this
+manual page has been processed with <b>-Thtml</b> or
+<b>-Txhtml</b> those links can be seen right here.
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#REQUESTS">REQUESTS</a><br>
+<a href="#SECTION HEADING LINKS">SECTION HEADING LINKS</a><br>
+<a href="#LIMITATIONS OF GROHTML">LIMITATIONS OF GROHTML</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.HR</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Generate a full-width horizontal rule for <b>-Thtml</b>
+and <b>-Txhtml</b>. No effect for all other devices.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.NHR</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Suppress generation of the top and bottom rules which
+grohtml emits by default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.HTL</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Generate an HTML title only. This differs from the
+<b>TL</b> macro of the <b>ms</b> macro package which
+generates both an HTML title and an &lt;H1&gt; heading. Use
+it to provide an HTML title as search engine fodder but a
+graphic title in the document. The macro terminates when a
+space or break is seen (.sp, .br).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>.HEAD</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Add arbitrary HTML data to the &lt;head&gt; block.
+Ignored if not processed with <b>-Thtml</b> or
+<b>-Txhtml</b>. Example:</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.HEAD
+&quot;&lt;link \ <br>
+rel=&quot;&quot;icon&quot;&quot; \ <br>
+type=&quot;&quot;image/png&quot;&quot; \ <br>
+
+href=&quot;&quot;http://foo.org//bar.png&quot;&quot;/&gt;&quot;</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>.HTML</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">All text after this macro is
+treated as raw HTML. If the document is processed without
+<b>-Thtml</b> or <b>-Txhtml</b> then the macro is ignored.
+Internally, this macro is used as a building block for other
+higher-level macros.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">For example,
+the <b>BGIMG</b> macro is defined as</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.de BGIMG
+<br>
+. HTML &lt;body background=\\$1&gt; <br>
+..</b></p>
+
+<p style="margin-left:11%;"><b>.DC l text [color]</b></p>
+
+<p style="margin-left:22%;">Produce a drop capital. The
+first parameter is the letter to be dropped and enlarged,
+the second parameter <b>text</b> is the adjoining text whose
+height the first letter should not exceed. The optional
+third parameter is the color of the dropped letter. It
+defaults to black.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>.CDS</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Start displaying a code section in constant width
+font.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>.CDE</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>End code display</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>.ALN [color]
+[percentage]</b></p>
+
+<p style="margin-left:22%;">Place section heading links
+automatically to the left of the main text. The color
+argument is optional and if present indicates which HTML
+background color is to be used under the links. The optional
+percentage indicates the amount of width to devote to
+displaying the links. The default values are #eeeeee and 30
+for color and percentage width, respectively. This macro
+should only be called once at the beginning of the document.
+After calling this macro each section heading emits an HTML
+table consisting of the links in the left and the section
+text on the right.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>.LNS</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Start a new two-column table with links in the left
+column. This can be called if the document has text before
+the first .SH and if .ALN is used. Typically this is called
+just before the first paragraph and after the main title as
+it indicates that text after this point should be positioned
+to the right of the left-hand navigational links.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>.LNE</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>End a two-column table. This should be called at the end
+of the document if .ALN was used.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>.LINKSTYLE color [ fontstyle
+[ openglyph closeglyph ] ]</b></p>
+
+<p style="margin-left:22%;">Initialize default URL
+attributes to be used if this macro set is not used with the
+HTML device. The macro set initializes itself with the
+following call</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.LINKSTYLE
+blue CR \[la] \[ra]</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">but these
+values will be superseded by a user call to LINKSTYLE.</p>
+
+<h2>SECTION HEADING LINKS
+<a name="SECTION HEADING LINKS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default
+<b>grohtml</b> generates links to all section headings and
+places these at the top of the HTML document. (See
+<a href="#LK">LINKS</a> for details of how to switch this
+off or alter the position).</p>
+
+<h2>LIMITATIONS OF GROHTML
+<a name="LIMITATIONS OF GROHTML"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tbl</b>
+information is currently rendered as a PNG image.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/tmac/www.tmac</i></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <i>www</i>
+macro package was written by
+<a href="mailto:gaius@glam.ac.uk">Gaius Mulley</a>, with
+additions by <a href="mailto:wl@gnu.org">Werner Lemberg</a>
+and <a href="mailto:groff-bernd.warken-72@web.de">Bernd
+Warken</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>troff</b>(1), <b>grohtml</b>(1), <b>netpbm</b>(1)</p>
+<hr>
+</body>
+</html>

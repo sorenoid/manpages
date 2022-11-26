@@ -1,0 +1,191 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTTP::Headers::Util</title>
+
+</head>
+<body>
+
+<h1 align="center">HTTP::Headers::Util</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::Headers::Util
+- Header value parsing utility functions</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">version
+6.36</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+HTTP::Headers::Util qw(split_header_words); <br>
+@values =
+split_header_words($h-&gt;header(&quot;Content-Type&quot;));</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+provides a few functions that helps parsing and construction
+of valid <small>HTTP</small> header values. None of the
+functions are exported by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+functions are available: <br>
+split_header_words( @header_values )</p>
+
+<p style="margin-left:17%;">This function will parse the
+header values given as argument into a list of anonymous
+arrays containing key/value pairs. The function knows how to
+deal with &quot;,&quot;, &quot;;&quot; and &quot;=&quot; as
+well as quoted values after &quot;=&quot;. A list of space
+separated tokens are parsed as if they were separated by
+&quot;;&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+@header_values passed as argument contains multiple values,
+then they are treated as if they were a single value
+separated by comma &quot;,&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This means that
+this function is useful for parsing header fields that
+follow this syntax ( <small>BNF</small> as from the
+<small>HTTP/1.1</small> specification, but we relax the
+requirement for tokens).</p>
+
+<p style="margin-left:17%; margin-top: 1em">headers =
+#header <br>
+header = (token | parameter) *( [&quot;;&quot;] (token |
+parameter)) <br>
+token = 1*&lt;any CHAR except CTLs or separators&gt; <br>
+separators = &quot;(&quot; | &quot;)&quot; |
+&quot;&lt;&quot; | &quot;&gt;&quot; | &quot;@&quot; <br>
+| &quot;,&quot; | &quot;;&quot; | &quot;:&quot; |
+&quot;\&quot; | &lt;&quot;&gt; <br>
+| &quot;/&quot; | &quot;[&quot; | &quot;]&quot; |
+&quot;?&quot; | &quot;=&quot; <br>
+| &quot;{&quot; | &quot;}&quot; | SP | HT <br>
+quoted-string = ( &lt;&quot;&gt; *(qdtext | quoted-pair )
+&lt;&quot;&gt; ) <br>
+qdtext = &lt;any TEXT except &lt;&quot;&gt;&gt; <br>
+quoted-pair = &quot;\&quot; CHAR <br>
+parameter = attribute &quot;=&quot; value <br>
+attribute = token <br>
+value = token | quoted-string</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each
+<i>header</i> is represented by an anonymous array of
+key/value pairs. The keys will be all be forced to lower
+case. The value for a simple token (not part of a parameter)
+is &quot;undef&quot;. Syntactically incorrect headers will
+not necessarily be parsed as you would want.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is easier
+to describe with some examples:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">split_header_words('foo=&quot;bar&quot;;
+port=&quot;80,81&quot;; DISCARD, BAR=baz'); <br>
+split_header_words('text/html;
+charset=&quot;iso-8859-1&quot;'); <br>
+split_header_words('Basic
+realm=&quot;\\&quot;foo\\\\bar\\&quot;&quot;');</p>
+
+<p style="margin-left:17%; margin-top: 1em">will return</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[foo=&gt;'bar',
+port=&gt;'80,81', discard=&gt; undef], [bar=&gt;'baz' ] <br>
+['text/html' =&gt; undef, charset =&gt; 'iso-8859-1'] <br>
+[basic =&gt; undef, realm =&gt;
+&quot;\&quot;foo\\bar\&quot;&quot;]</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you
+don&rsquo;t want the function to convert tokens and
+attribute keys to lower case you can call it as
+&quot;_split_header_words&quot; instead (with a leading
+underscore).</p>
+
+<p style="margin-left:11%;">join_header_words( @arrays
+)</p>
+
+<p style="margin-left:17%;">This will do the opposite of
+the conversion done by <b>split_header_words()</b>. It takes
+a list of anonymous arrays as arguments (or a list of
+key/value pairs) and produces a single header value.
+Attribute values are quoted if needed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">join_header_words([&quot;text/plain&quot;
+=&gt; undef, charset =&gt; &quot;iso-8859/1&quot;]); <br>
+join_header_words(&quot;text/plain&quot; =&gt; undef,
+charset =&gt; &quot;iso-8859/1&quot;);</p>
+
+<p style="margin-left:17%; margin-top: 1em">will both
+return the string:</p>
+
+<p style="margin-left:17%; margin-top: 1em">text/plain;
+charset=&quot;iso-8859/1&quot;</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gisle Aas
+&lt;gisle@activestate.com&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is copyright (c) 1994 by Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; you can redistribute it and/or modify it under the
+same terms as the Perl 5 programming language system
+itself.</p>
+<hr>
+</body>
+</html>

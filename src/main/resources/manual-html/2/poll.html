@@ -1,0 +1,826 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:03 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>POLL</title>
+
+</head>
+<body>
+
+<h1 align="center">POLL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">poll, ppoll -
+wait for some event on a file descriptor</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;poll.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+poll(struct pollfd *</b><i>fds</i><b>, nfds_t</b>
+<i>nfds</i><b>, int</b> <i>timeout</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>#define
+_GNU_SOURCE</b> /* See feature_test_macros(7) */ <b><br>
+#include &lt;signal.h&gt; <br>
+#include &lt;poll.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+ppoll(struct pollfd *</b><i>fds</i><b>, nfds_t</b>
+<i>nfds</i><b>, <br>
+const struct timespec *</b><i>tmo_p</i><b>, const sigset_t
+*</b><i>sigmask</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>poll</b>()
+performs a similar task to <b>select</b>(2): it waits for
+one of a set of file descriptors to become ready to perform
+I/O. The Linux-specific <b>epoll</b>(7) API performs a
+similar task, but offers features beyond those found in
+<b>poll</b>().</p>
+
+<p style="margin-left:11%; margin-top: 1em">The set of file
+descriptors to be monitored is specified in the <i>fds</i>
+argument, which is an array of structures of the following
+form:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct pollfd {
+<br>
+int fd; /* file descriptor */ <br>
+short events; /* requested events */ <br>
+short revents; /* returned events */ <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">The caller
+should specify the number of items in the <i>fds</i> array
+in <i>nfds</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The field
+<i>fd</i> contains a file descriptor for an open file. If
+this field is negative, then the corresponding <i>events</i>
+field is ignored and the <i>revents</i> field returns zero.
+(This provides an easy way of ignoring a file descriptor for
+a single <b>poll</b>() call: simply negate the <i>fd</i>
+field. Note, however, that this technique can&rsquo;t be
+used to ignore file descriptor 0.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The field
+<i>events</i> is an input parameter, a bit mask specifying
+the events the application is interested in for the file
+descriptor <i>fd</i>. This field may be specified as zero,
+in which case the only events that can be returned in
+<i>revents</i> are <b>POLLHUP</b>, <b>POLLERR</b>, and
+<b>POLLNVAL</b> (see below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The field
+<i>revents</i> is an output parameter, filled by the kernel
+with the events that actually occurred. The bits returned in
+<i>revents</i> can include any of those specified in
+<i>events</i>, or one of the values <b>POLLERR</b>,
+<b>POLLHUP</b>, or <b>POLLNVAL</b>. (These three bits are
+meaningless in the <i>events</i> field, and will be set in
+the <i>revents</i> field whenever the corresponding
+condition is true.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">If none of the
+events requested (and no error) has occurred for any of the
+file descriptors, then <b>poll</b>() blocks until one of the
+events occurs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>timeout</i> argument specifies the number of milliseconds
+that <b>poll</b>() should block waiting for a file
+descriptor to become ready. The call will block until
+either:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>a file descriptor becomes ready;</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>the call is interrupted by a signal handler; or</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>the timeout expires.</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+<i>timeout</i> interval will be rounded up to the system
+clock granularity, and kernel scheduling delays mean that
+the blocking interval may overrun by a small amount.
+Specifying a negative value in <i>timeout</i> means an
+infinite timeout. Specifying a <i>timeout</i> of zero causes
+<b>poll</b>() to return immediately, even if no file
+descriptors are ready.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The bits that
+may be set/returned in <i>events</i> and <i>revents</i> are
+defined in <i>&lt;poll.h&gt;</i>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>POLLIN</b></p></td>
+<td width="2%"></td>
+<td width="33%">
+
+
+<p style="margin-top: 1em">There is data to read.</p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>POLLPRI</b></p>
+
+<p style="margin-left:22%;">There is some exceptional
+condition on the file descriptor. Possibilities include:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>There is out-of-band data on a TCP socket (see
+<b>tcp</b>(7)).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>A pseudoterminal master in packet mode has seen a state
+change on the slave (see <b>ioctl_tty</b>(2)).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>A <i>cgroup.events</i> file has been modified (see
+<b>cgroups</b>(7)).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>POLLOUT</b></p>
+
+<p style="margin-left:22%;">Writing is now possible, though
+a write larger than the available space in a socket or pipe
+will still block (unless <b>O_NONBLOCK</b> is set).</p>
+
+<p style="margin-left:11%;"><b>POLLRDHUP</b> (since Linux
+2.6.17)</p>
+
+<p style="margin-left:22%;">Stream socket peer closed
+connection, or shut down writing half of connection. The
+<b>_GNU_SOURCE</b> feature test macro must be defined
+(before including <i>any</i> header files) in order to
+obtain this definition.</p>
+
+<p style="margin-left:11%;"><b>POLLERR</b></p>
+
+<p style="margin-left:22%;">Error condition (only returned
+in <i>revents</i>; ignored in <i>events</i>). This bit is
+also set for a file descriptor referring to the write end of
+a pipe when the read end has been closed.</p>
+
+<p style="margin-left:11%;"><b>POLLHUP</b></p>
+
+<p style="margin-left:22%;">Hang up (only returned in
+<i>revents</i>; ignored in <i>events</i>). Note that when
+reading from a channel such as a pipe or a stream socket,
+this event merely indicates that the peer closed its end of
+the channel. Subsequent reads from the channel will return 0
+(end of file) only after all outstanding data in the channel
+has been consumed.</p>
+
+<p style="margin-left:11%;"><b>POLLNVAL</b></p>
+
+<p style="margin-left:22%;">Invalid request: <i>fd</i> not
+open (only returned in <i>revents</i>; ignored in
+<i>events</i>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">When compiling
+with <b>_XOPEN_SOURCE</b> defined, one also has the
+following, which convey no further information beyond the
+bits listed above: <b><br>
+POLLRDNORM</b></p>
+
+<p style="margin-left:22%;">Equivalent to
+<b>POLLIN</b>.</p>
+
+<p style="margin-left:11%;"><b>POLLRDBAND</b></p>
+
+<p style="margin-left:22%;">Priority band data can be read
+(generally unused on Linux).</p>
+
+<p style="margin-left:11%;"><b>POLLWRNORM</b></p>
+
+<p style="margin-left:22%;">Equivalent to
+<b>POLLOUT</b>.</p>
+
+<p style="margin-left:11%;"><b>POLLWRBAND</b></p>
+
+<p style="margin-left:22%;">Priority data may be
+written.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Linux also
+knows about, but does not use <b>POLLMSG</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppoll()</b>
+<br>
+The relationship between <b>poll</b>() and <b>ppoll</b>() is
+analogous to the relationship between <b>select</b>(2) and
+<b>pselect</b>(2): like <b>pselect</b>(2), <b>ppoll</b>()
+allows an application to safely wait until either a file
+descriptor becomes ready or until a signal is caught.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other than the
+difference in the precision of the <i>timeout</i> argument,
+the following <b>ppoll</b>() call:</p>
+
+<p style="margin-left:17%; margin-top: 1em">ready =
+ppoll(&amp;fds, nfds, tmo_p, &amp;sigmask);</p>
+
+<p style="margin-left:11%; margin-top: 1em">is nearly
+equivalent to <i>atomically</i> executing the following
+calls:</p>
+
+<p style="margin-left:17%; margin-top: 1em">sigset_t
+origmask; <br>
+int timeout;</p>
+
+<p style="margin-left:17%; margin-top: 1em">timeout =
+(tmo_p == NULL) ? -1 : <br>
+(tmo_p-&gt;tv_sec * 1000 + tmo_p-&gt;tv_nsec / 1000000);
+<br>
+pthread_sigmask(SIG_SETMASK, &amp;sigmask, &amp;origmask);
+<br>
+ready = poll(&amp;fds, nfds, timeout); <br>
+pthread_sigmask(SIG_SETMASK, &amp;origmask, NULL);</p>
+
+<p style="margin-left:11%; margin-top: 1em">The above code
+segment is described as <i>nearly</i> equivalent because
+whereas a negative <i>timeout</i> value for <b>poll</b>() is
+interpreted as an infinite timeout, a negative value
+expressed in <i>*tmo_p</i> results in an error from
+<b>ppoll</b>().</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+description of <b>pselect</b>(2) for an explanation of why
+<b>ppoll</b>() is necessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>sigmask</i> argument is specified as NULL, then no signal
+mask manipulation is performed (and thus <b>ppoll</b>()
+differs from <b>poll</b>() only in the precision of the
+<i>timeout</i> argument).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>tmo_p</i> argument specifies an upper limit on the amount
+of time that <b>ppoll</b>() will block. This argument is a
+pointer to a structure of the following form:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct timespec
+{ <br>
+long tv_sec; /* seconds */ <br>
+long tv_nsec; /* nanoseconds */ <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>tmo_p</i>
+is specified as NULL, then <b>ppoll</b>() can block
+indefinitely.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>poll</b>() returns a nonnegative value which is the
+number of elements in the <i>pollfds</i> whose
+<i>revents</i> fields have been set to a nonzero value
+(indicating an event or an error). A return value of zero
+indicates that the system call timed out before any file
+descriptors became read.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On error, -1 is
+returned, and <i>errno</i> is set to indicate the cause of
+the error.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>fds</i> points outside the
+process&rsquo;s accessible address space. The array given as
+argument was not contained in the calling program&rsquo;s
+address space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINTR</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>A signal occurred before any requested event; see
+<b>signal</b>(7).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The <i>nfds</i> value exceeds the <b>RLIMIT_NOFILE</b>
+value.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>ppoll</b>()) The timeout value expressed in
+<i>*ip</i> is invalid (negative).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Unable to allocate memory for kernel data
+structures.</p> </td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>poll</b>() system call was introduced in Linux 2.1.23. On
+older kernels that lack this system call, the glibc
+<b>poll</b>() wrapper function provides emulation using
+<b>select</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ppoll</b>() system call was added to Linux in kernel
+2.6.16. The <b>ppoll</b>() library call was added in glibc
+2.4.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>poll</b>()
+conforms to POSIX.1-2001 and POSIX.1-2008. <b>ppoll</b>() is
+Linux-specific.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The operation
+of <b>poll</b>() and <b>ppoll</b>() is not affected by the
+<b>O_NONBLOCK</b> flag.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On some other
+UNIX systems, <b>poll</b>() can fail with the error
+<b>EAGAIN</b> if the system fails to allocate
+kernel-internal resources, rather than <b>ENOMEM</b> as
+Linux does. POSIX permits this behavior. Portable programs
+may wish to check for <b>EAGAIN</b> and loop, just as with
+<b>EINTR</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+implementations define the nonstandard constant
+<b>INFTIM</b> with the value -1 for use as a <i>timeout</i>
+for <b>poll</b>(). This constant is not provided in
+glibc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a
+discussion of what may happen if a file descriptor being
+monitored by <b>poll</b>() is closed in another thread, see
+<b>select</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>C
+library/kernel differences</b> <br>
+The Linux <b>ppoll</b>() system call modifies its
+<i>tmo_p</i> argument. However, the glibc wrapper function
+hides this behavior by using a local variable for the
+timeout argument that is passed to the system call. Thus,
+the glibc <b>ppoll</b>() function does not modify its
+<i>tmo_p</i> argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The raw
+<b>ppoll</b>() system call has a fifth argument, <i>size_t
+sigsetsize</i>, which specifies the size in bytes of the
+<i>sigmask</i> argument. The glibc <b>ppoll</b>() wrapper
+function specifies this argument as a fixed value (equal to
+<i>sizeof(kernel_sigset_t)</i>). See <b>sigprocmask</b>(2)
+for a discussion on the differences between the kernel and
+the libc notion of the sigset.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See the
+discussion of spurious readiness notifications under the
+BUGS section of <b>select</b>(2).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+below opens each of the files named in its command-line
+arguments and monitors the resulting file descriptors for
+readiness to read (<b>POLLIN</b>). The program loops,
+repeatedly using <b>poll</b>() to monitor the file
+descriptors, printing the number of ready file descriptors
+on return. For each ready file descriptor, the program:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">displays the returned
+<i>revents</i> field in a human-readable form;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>if the file descriptor is readable, reads some data from
+it, and displays that data on standard output; and</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>if the file descriptors was not readable, but some other
+event occurred (presumably <b>POLLHUP</b>), closes the file
+descriptor.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Suppose we run
+the program in one terminal, asking it to open a FIFO:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>mkfifo
+myfifo</b> <br>
+$ <b>./poll_input myfifo</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">In a second
+terminal window, we then open the FIFO for writing, write
+some data to it, and close the FIFO:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>echo
+aaaaabbbbbccccc &gt; myfifo</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">In the terminal
+where we are running the program, we would then see:</p>
+
+<p style="margin-left:17%; margin-top: 1em">Opened
+&quot;myfifo&quot; on fd 3 <br>
+About to poll() <br>
+Ready: 1 <br>
+fd=3; events: POLLIN POLLHUP <br>
+read 10 bytes: aaaaabbbbb <br>
+About to poll() <br>
+Ready: 1 <br>
+fd=3; events: POLLIN POLLHUP <br>
+read 6 bytes: ccccc</p>
+
+<p style="margin-left:17%; margin-top: 1em">About to poll()
+<br>
+Ready: 1 <br>
+fd=3; events: POLLHUP <br>
+closing fd 3 <br>
+All file descriptors closed; bye</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the above
+output, we see that <b>poll</b>() returned three times:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">On the first return, the bits
+returned in the <i>revents</i> field were <b>POLLIN</b>,
+indicating that the file descriptor is readable, and
+<b>POLLHUP</b>, indicating that the other end of the FIFO
+has been closed. The program then consumed some of the
+available input.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The second return from <b>poll</b>() also indicated
+<b>POLLIN</b> and <b>POLLHUP</b>; the program then consumed
+the last of the available input.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>On the final return, <b>poll</b>() indicated only
+<b>POLLHUP</b> on the FIFO, at which point the file
+descriptor was closed and the program terminated.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+source</b> <br>
+/* poll_input.c</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+GNU General Public License v2 or later. <br>
+*/ <br>
+#include &lt;poll.h&gt; <br>
+#include &lt;fcntl.h&gt; <br>
+#include &lt;sys/types.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;unistd.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#define
+errExit(msg) do { perror(msg); exit(EXIT_FAILURE); \ <br>
+} while (0)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+int nfds, num_open_fds; <br>
+struct pollfd *pfds;</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (argc &lt;
+2) { <br>
+fprintf(stderr, &quot;Usage: %s file...\n&quot;, argv[0]);
+<br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">num_open_fds =
+nfds = argc - 1; <br>
+pfds = calloc(nfds, sizeof(struct pollfd)); <br>
+if (pfds == NULL) <br>
+errExit(&quot;malloc&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Open each
+file on command line, and add it 'pfds' array */</p>
+
+<p style="margin-left:11%; margin-top: 1em">for (int j = 0;
+j &lt; nfds; j++) { <br>
+pfds[j].fd = open(argv[j + 1], O_RDONLY); <br>
+if (pfds[j].fd == -1) <br>
+errExit(&quot;open&quot;);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;Opened
+\&quot;%s\&quot; on fd %d\n&quot;, argv[j + 1],
+pfds[j].fd);</p>
+
+<p style="margin-left:11%; margin-top: 1em">pfds[j].events
+= POLLIN; <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Keep calling
+poll() as long as at least one file descriptor is <br>
+open */</p>
+
+<p style="margin-left:11%; margin-top: 1em">while
+(num_open_fds &gt; 0) { <br>
+int ready;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;About
+to poll()\n&quot;); <br>
+ready = poll(pfds, nfds, -1); <br>
+if (ready == -1) <br>
+errExit(&quot;poll&quot;);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;Ready:
+%d\n&quot;, ready);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Deal with
+array returned by poll() */</p>
+
+<p style="margin-left:11%; margin-top: 1em">for (int j = 0;
+j &lt; nfds; j++) { <br>
+char buf[10];</p>
+
+<p style="margin-left:11%; margin-top: 1em">if
+(pfds[j].revents != 0) { <br>
+printf(&quot; fd=%d; events: %s%s%s\n&quot;, pfds[j].fd,
+<br>
+(pfds[j].revents &amp; POLLIN) ? &quot;POLLIN &quot; :
+&quot;&quot;, <br>
+(pfds[j].revents &amp; POLLHUP) ? &quot;POLLHUP &quot; :
+&quot;&quot;, <br>
+(pfds[j].revents &amp; POLLERR) ? &quot;POLLERR &quot; :
+&quot;&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">if
+(pfds[j].revents &amp; POLLIN) { <br>
+ssize_t s = read(pfds[j].fd, buf, sizeof(buf)); <br>
+if (s == -1) <br>
+errExit(&quot;read&quot;); <br>
+printf(&quot; read %zd bytes: %.*s\n&quot;, <br>
+s, (int) s, buf); <br>
+} else { /* POLLERR | POLLHUP */ <br>
+printf(&quot; closing fd %d\n&quot;, pfds[j].fd); <br>
+if (close(pfds[j].fd) == -1) <br>
+errExit(&quot;close&quot;); <br>
+num_open_fds--; <br>
+} <br>
+} <br>
+} <br>
+}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;All
+file descriptors closed; bye\n&quot;); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>restart_syscall</b>(2),
+<b>select</b>(2), <b>select_tut</b>(2), <b>epoll</b>(7),
+<b>time</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:41 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BZERO</title>
+
+</head>
+<body>
+
+<h1 align="center">BZERO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bzero,
+explicit_bzero - zero a byte string</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;strings.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+bzero(void *</b><i>s</i><b>, size_t</b>
+<i>n</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;string.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+explicit_bzero(void *</b><i>s</i><b>, size_t</b>
+<i>n</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>bzero</b>() function erases the data in the <i>n</i>
+bytes of the memory starting at the location pointed to by
+<i>s</i>, by writing zeros (bytes containing '\0') to that
+area.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>explicit_bzero</b>() function performs the same task as
+<b>bzero</b>(). It differs from <b>bzero</b>() in that it
+guarantees that compiler optimizations will not remove the
+erase operation if the compiler deduces that the operation
+is &quot;unnecessary&quot;.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>explicit_bzero</b>()
+first appeared in glibc 2.25.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3334071.png" alt="Image grohtml-3334071.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>bzero</b>() function is deprecated (marked as LEGACY in
+POSIX.1-2001); use <b>memset</b>(3) in new programs.
+POSIX.1-2008 removes the specification of <b>bzero</b>().
+The <b>bzero</b>() function first appeared in 4.3BSD.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>explicit_bzero</b>() function is a nonstandard extension
+that is also present on some of the BSDs. Some other
+implementations have a similar function, such as
+<b>memset_explicit</b>() or <b>memset_s</b>().</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>explicit_bzero</b>() function addresses a problem that
+security-conscious applications may run into when using
+<b>bzero</b>(): if the compiler can deduce that the location
+to zeroed will never again be touched by a <i>correct</i>
+program, then it may remove the <b>bzero</b>() call
+altogether. This is a problem if the intent of the
+<b>bzero</b>() call was to erase sensitive data (e.g.,
+passwords) to prevent the possibility that the data was
+leaked by an incorrect or compromised program. Calls to
+<b>explicit_bzero</b>() are never optimized away by the
+compiler.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>explicit_bzero</b>() function does not solve all problems
+associated with erasing sensitive data:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>The <b>explicit_bzero</b>() function does <i>not</i>
+guarantee that sensitive data is completely erased from
+memory. (The same is true of <b>bzero</b>().) For example,
+there may be copies of the sensitive data in a register and
+in &quot;scratch&quot; stack areas. The
+<b>explicit_bzero</b>() function is not aware of these
+copies, and can&rsquo;t erase them.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>In some circumstances, <b>explicit_bzero</b>() can
+<i>decrease</i> security. If the compiler determined that
+the variable containing the sensitive data could be
+optimized to be stored in a register (because it is small
+enough to fit in a register, and no operation other than the
+<b>explicit_bzero</b>() call would need to take the address
+of the variable), then the <b>explicit_bzero</b>() call will
+force the data to be copied from the register to a location
+in RAM that is then immediately erased (while the copy in
+the register remains unaffected). The problem here is that
+data in RAM is more likely to be exposed by a bug than data
+in a register, and thus the <b>explicit_bzero</b>() call
+creates a brief time window where the sensitive data is more
+vulnerable than it would otherwise have been if no attempt
+had been made to erase the data.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+declaring the sensitive variable with the <b>volatile</b>
+qualifier does <i>not</i> eliminate the above problems.
+Indeed, it will make them worse, since, for example, it may
+force a variable that would otherwise have been optimized
+into a register to instead be maintained in (more
+vulnerable) RAM for its entire lifetime.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Notwithstanding
+the above details, for security-conscious applications,
+using <b>explicit_bzero</b>() is generally preferable to not
+using it. The developers of <b>explicit_bzero</b>()
+anticipate that future compilers will recognize calls to
+<b>explicit_bzero</b>() and take steps to ensure that all
+copies of the sensitive data are erased, including copies in
+registers or in &quot;scratch&quot; stack areas.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bstring</b>(3),
+<b>memset</b>(3), <b>swab</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:38 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Checksums</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Checksums</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Checksums
+- generate and manipulate file checksums</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+provides a class that can generate and manipulate various
+file checksums as well as some methods to query information
+about supported checksums.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">@list =
+<b>checksums_get_list()</b></p>
+
+<p style="margin-left:17%;">Returns the list of supported
+checksums algorithms.</p>
+
+<p style="margin-left:11%;">$bool =
+checksums_is_supported($alg)</p>
+
+<p style="margin-left:17%;">Returns a boolean indicating
+whether the given checksum algorithm is supported. The
+checksum algorithm is case-insensitive.</p>
+
+<p style="margin-left:11%;">$value =
+checksums_get_property($alg, $property)</p>
+
+<p style="margin-left:17%;">Returns the requested property
+of the checksum algorithm. Returns undef if either the
+property or the checksum algorithm doesn&rsquo;t exist.
+Valid properties currently include &quot;name&quot; (returns
+the name of the digest algorithm), &quot;regex&quot; for the
+regular expression describing the common string
+representation of the checksum, and &quot;strong&quot; for a
+boolean describing whether the checksum algorithm is
+considered cryptographically strong.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ck =
+Dpkg::Checksums-&gt;<b>new()</b></p>
+
+<p style="margin-left:17%;">Create a new Dpkg::Checksums
+object. This object is able to store the checksums of
+several files to later export them or verify them.</p>
+
+<p style="margin-left:11%;">$ck-&gt;<b>reset()</b></p>
+
+<p style="margin-left:17%;">Forget about all checksums
+stored. The object is again in the same state as if it was
+newly created.</p>
+
+
+<p style="margin-left:11%;">$ck-&gt;add_from_file($filename,
+%opts)</p>
+
+<p style="margin-left:17%;">Add or verify checksums
+information for the file $filename. The file must exists for
+the call to succeed. If you don&rsquo;t want the given
+filename to appear when you later export the checksums you
+might want to set the &quot;key&quot; option with the public
+name that you want to use. Also if you don&rsquo;t want to
+generate all the checksums, you can pass an array reference
+of the wanted checksums in the &quot;checksums&quot;
+option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It the object
+already contains checksums information associated the
+filename (or key), it will error out if the newly computed
+information does not match what&rsquo;s stored, and the
+caller did not request that it be updated with the boolean
+&quot;update&quot; option.</p>
+
+<p style="margin-left:11%;">$ck-&gt;add_from_string($alg,
+$value, %opts)</p>
+
+<p style="margin-left:17%;">Add checksums of type $alg that
+are stored in the $value variable. $value can be
+multi-lines, each line should be a space separated list of
+checksum, file size and filename. Leading or trailing spaces
+are not allowed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It the object
+already contains checksums information associated to the
+filenames, it will error out if the newly read information
+does not match what&rsquo;s stored, and the caller did not
+request that it be updated with the boolean
+&quot;update&quot; option.</p>
+
+
+<p style="margin-left:11%;">$ck-&gt;add_from_control($control,
+%opts)</p>
+
+<p style="margin-left:17%;">Read checksums from Checksums-*
+fields stored in the Dpkg::Control object $control. It uses
+$self-&gt;<b>add_from_string()</b> on the field values to do
+the actual work.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the option
+&quot;use_files_for_md5&quot; evaluates to true, then the
+&quot;Files&quot; field is used in place of the
+&quot;Checksums-Md5&quot; field. By default the option is
+false.</p>
+
+<p style="margin-left:11%;">@files =
+$ck-&gt;<b>get_files()</b></p>
+
+<p style="margin-left:17%;">Return the list of files whose
+checksums are stored in the object.</p>
+
+<p style="margin-left:11%;">$bool =
+$ck-&gt;has_file($file)</p>
+
+<p style="margin-left:17%;">Return true if we have
+checksums for the given file. Returns false otherwise.</p>
+
+<p style="margin-left:11%;">$ck-&gt;remove_file($file)</p>
+
+<p style="margin-left:17%;">Remove all checksums of the
+given file.</p>
+
+<p style="margin-left:11%;">$checksum =
+$ck-&gt;get_checksum($file, $alg)</p>
+
+<p style="margin-left:17%;">Return the checksum of type
+$alg for the requested $file. This will not compute the
+checksum but only return the checksum stored in the object,
+if any.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If $alg is not
+defined, it returns a reference to a hash: keys are the
+checksum algorithms and values are the checksums themselves.
+The hash returned must not be modified, it&rsquo;s internal
+to the object.</p>
+
+<p style="margin-left:11%;">$size =
+$ck-&gt;get_size($file)</p>
+
+<p style="margin-left:17%;">Return the size of the
+requested file if it&rsquo;s available in the object.</p>
+
+<p style="margin-left:11%;">$bool =
+$ck-&gt;has_strong_checksums($file)</p>
+
+<p style="margin-left:17%;">Return a boolean on whether the
+file has a strong checksum.</p>
+
+<p style="margin-left:11%;">$ck-&gt;export_to_string($alg,
+%opts)</p>
+
+<p style="margin-left:17%;">Return a multi-line string
+containing the checksums of type $alg. The string can be
+stored as-is in a Checksum-* field of a Dpkg::Control
+object.</p>
+
+
+<p style="margin-left:11%;">$ck-&gt;export_to_control($control,
+%opts)</p>
+
+<p style="margin-left:17%;">Export the checksums in the
+Checksums-* fields of the Dpkg::Control $control object.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.04
+(dpkg 1.20.0)</b> <br>
+Remove warning: For obsolete property
+&rsquo;program&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.18.5)</b> <br>
+New property: Add new &rsquo;strong&rsquo; property.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New member:
+$ck-&gt;<b>has_strong_checksums()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.18.0)</b> <br>
+Obsolete property: Getting the &rsquo;program&rsquo;
+checksum property will warn and return undef, the Digest
+module is used internally now.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New property:
+Add new &rsquo;name&rsquo; property with the name of the
+Digest algorithm to use.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.17.6)</b> <br>
+New argument: Accept an options argument in
+$ck-&gt;<b>export_to_string()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New option:
+Accept new option &rsquo;update&rsquo; in
+$ck-&gt;<b>add_from_file()</b> and
+$ck-&gt;<b>add_from_control()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

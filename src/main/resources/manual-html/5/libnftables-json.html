@@ -1,0 +1,2241 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LIBNFTABLES-JSON</title>
+
+</head>
+<body>
+
+<h1 align="center">LIBNFTABLES-JSON</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#GLOBAL STRUCTURE">GLOBAL STRUCTURE</a><br>
+<a href="#METAINFO OBJECT">METAINFO OBJECT</a><br>
+<a href="#COMMAND OBJECTS">COMMAND OBJECTS</a><br>
+<a href="#RULESET ELEMENTS">RULESET ELEMENTS</a><br>
+<a href="#STATEMENTS">STATEMENTS</a><br>
+<a href="#EXPRESSIONS">EXPRESSIONS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">libnftables-json
+- Supported JSON schema by libnftables</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>{
+&quot;nftables&quot;: [</b> <i>OBJECTS</i> <b>] }</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>OBJECTS</i>
+:= <i>LIST_OBJECTS</i> | <i>CMD_OBJECTS</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>LIST_OBJECTS</i>
+:= <i>LIST_OBJECT</i> [ <b>,</b> <i>LIST_OBJECTS</i> ]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>CMD_OBJECTS</i>
+:= <i>CMD_OBJECT</i> [ <b>,</b> <i>CMD_OBJECTS</i> ]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>CMD_OBJECT</i>
+:= <b>{</b> <i>CMD</i><b>:</b> <i>LIST_OBJECT</i> <b>}</b> |
+<i>METAINFO_OBJECT</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>CMD</i> :=
+<b>&quot;add&quot;</b> | <b>&quot;replace&quot;</b> |
+<b>&quot;create&quot;</b> | <b>&quot;insert&quot;</b> |
+<b>&quot;delete&quot;</b> | <b>&quot;list&quot;</b> |
+<b>&quot;reset&quot;</b> | <b>&quot;flush&quot;</b> |
+<b>&quot;rename&quot;</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>LIST_OBJECT</i>
+:= <i>TABLE</i> | <i>CHAIN</i> | <i>RULE</i> | <i>SET</i> |
+<i>MAP</i> | <i>ELEMENT</i> | <i>FLOWTABLE</i> |
+<i>COUNTER</i> | <i>QUOTA</i> | <i>CT_HELPER</i> |
+<i>LIMIT</i> | <i>METAINFO_OBJECT</i> | <i>CT_TIMEOUT</i> |
+<i>CT_EXPECTATION</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">libnftables
+supports JSON formatted input and output. This is
+implemented as an alternative frontend to the standard CLI
+syntax parser, therefore basic behaviour is identical and,
+for (almost) any operation available in standard syntax,
+there should be an equivalent one in JSON.</p>
+
+<p style="margin-left:11%; margin-top: 1em">JSON input may
+be provided in a single string as parameter to
+<b>nft_run_cmd_from_buffer()</b> or in a file identified by
+the <i>filename</i> parameter of the
+<b>nft_run_cmd_from_filename()</b> function.</p>
+
+<p style="margin-left:11%; margin-top: 1em">JSON output has
+to be enabled via the <b>nft_ctx_output_set_json()</b>
+function, turning library standard output into JSON format.
+Error output remains unaffected.</p>
+
+<h2>GLOBAL STRUCTURE
+<a name="GLOBAL STRUCTURE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In general, any
+JSON input or output is enclosed in an object with a single
+property named <i>nftables</i>. Its value is an array
+containing commands (for input) or ruleset elements (for
+output).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A command is an
+object with a single property whose name identifies the
+command. Its value is a ruleset element - basically
+identical to output elements, apart from certain properties
+which may be interpreted differently or are required when
+output generally omits them.</p>
+
+<h2>METAINFO OBJECT
+<a name="METAINFO OBJECT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In output, the
+first object in an <b>nftables</b> array is a special one
+containing library information. Its content is as
+follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;metainfo&quot;: { <br>
+&quot;version&quot;:</b> <i>STRING</i><b>, <br>
+&quot;release_name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;json_schema_version&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The values of
+<b>version</b> and <b>release_name</b> properties are equal
+to the package version and release name as printed by <b>nft
+-v</b>. The value of the <b>json_schema_version</b> property
+is an integer indicating the schema version.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If supplied in
+library input, the parser will verify the
+<b>json_schema_version</b> value to not exceed the
+internally hardcoded one (to make sure the given schema is
+fully understood). In future, a lower number than the
+internal one may activate compatibility mode to parse
+outdated and incompatible JSON input.</p>
+
+<h2>COMMAND OBJECTS
+<a name="COMMAND OBJECTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The structure
+accepts an arbitrary amount of commands which are
+interpreted in order of appearance. For instance, the
+following standard syntax input:</p>
+
+<p style="margin-left:17%; margin-top: 1em">flush ruleset
+<br>
+add table inet mytable <br>
+add chain inet mytable mychain <br>
+add rule inet mytable mychain tcp dport 22 accept</p>
+
+<p style="margin-left:11%; margin-top: 1em">translates into
+JSON as such:</p>
+
+<p style="margin-left:17%; margin-top: 1em">{
+&quot;nftables&quot;: [ <br>
+{ &quot;flush&quot;: { &quot;ruleset&quot;: null }}, <br>
+{ &quot;add&quot;: { &quot;table&quot;: { <br>
+&quot;family&quot;: &quot;inet&quot;, <br>
+&quot;name&quot;: &quot;mytable&quot; <br>
+}}}, <br>
+{ &quot;add&quot;: { &quot;chain&quot;: { <br>
+&quot;family&quot;: &quot;inet&quot;, <br>
+&quot;table&quot;: &quot;mytable&quot;, <br>
+&quot;name&quot;: &quot;mychain&quot; <br>
+}}}, <br>
+{ &quot;add&quot;: { &quot;rule&quot;: { <br>
+&quot;family&quot;: &quot;inet&quot;, <br>
+&quot;table&quot;: &quot;mytable&quot;, <br>
+&quot;chain&quot;: &quot;mychain&quot;, <br>
+&quot;expr&quot;: [ <br>
+{ &quot;match&quot;: { <br>
+&quot;op&quot;: &quot;==&quot;, <br>
+&quot;left&quot;: { &quot;payload&quot;: { <br>
+&quot;protocol&quot;: &quot;tcp&quot;, <br>
+&quot;field&quot;: &quot;dport&quot; <br>
+}}, <br>
+&quot;right&quot;: 22 <br>
+}}, <br>
+{ &quot;accept&quot;: null } <br>
+] <br>
+}}} <br>
+]}</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ADD</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;add&quot;:</b>
+<i>ADD_OBJECT</i> <b>}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>ADD_OBJECT</i>
+:= <i>TABLE</i> | <i>CHAIN</i> | <i>RULE</i> | <i>SET</i> |
+<i>MAP</i> | <i>ELEMENT</i> | <i><br>
+FLOWTABLE</i> | <i>COUNTER</i> | <i>QUOTA</i> |
+<i>CT_HELPER</i> | <i>LIMIT</i> | <i><br>
+CT_TIMEOUT</i> | <i>CT_EXPECTATION</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Add a new
+ruleset element to the kernel.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>REPLACE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;replace&quot;:</b>
+<i>RULE</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Replace a rule.
+In <i>RULE</i>, the <b>handle</b> property is mandatory and
+identifies the rule to be replaced.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CREATE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;create&quot;:</b>
+<i>ADD_OBJECT</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Identical to
+<b>add</b> command, but returns an error if the object
+already exists.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>INSERT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;insert&quot;:</b>
+<i>RULE</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This command is
+identical to <b>add</b> for rules, but instead of appending
+the rule to the chain by default, it inserts at first
+position. If a <b>handle</b> or <b>index</b> property is
+given, the rule is inserted before the rule identified by
+those properties.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DELETE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;delete&quot;:</b>
+<i>ADD_OBJECT</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Delete an
+object from the ruleset. Only the minimal number of
+properties required to uniquely identify an object is
+generally needed in <i>ADD_OBJECT</i>. For most ruleset
+elements, this is <b>family</b> and <b>table</b> plus either
+<b>handle</b> or <b>name</b> (except rules since they
+don&rsquo;t have a name).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LIST</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;list&quot;:</b>
+<i>LIST_OBJECT</i> <b>}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>LIST_OBJECT</i>
+:= <i>TABLE</i> | <i>TABLES</i> | <i>CHAIN</i> |
+<i>CHAINS</i> | <i>SET</i> | <i>SETS</i> | <i><br>
+MAP</i> | <i>MAPS | COUNTER</i> | <i>COUNTERS</i> |
+<i>QUOTA</i> | <i>QUOTAS</i> | <i><br>
+CT_HELPER</i> | <i>CT_HELPERS</i> | <i>LIMIT</i> |
+<i>LIMITS</i> | <i>RULESET</i> | <i><br>
+METER</i> | <i>METERS</i> | <i>FLOWTABLE</i> |
+<i>FLOWTABLES</i> | <i><br>
+CT_TIMEOUT</i> | <i>CT_EXPECTATION</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">List ruleset
+elements. The plural forms are used to list all objects of
+that kind, optionally filtered by <b>family</b> and for
+some, also <b>table</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>RESET</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;reset&quot;:</b>
+<i>RESET_OBJECT</i> <b>}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>RESET_OBJECT</i>
+:= <i>COUNTER</i> | <i>COUNTERS</i> | <i>QUOTA</i> |
+<i>QUOTAS</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Reset state in
+suitable objects, i.e. zero their internal counter.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FLUSH</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;flush&quot;:</b>
+<i>FLUSH_OBJECT</i> <b>}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>FLUSH_OBJECT</i>
+:= <i>TABLE</i> | <i>CHAIN</i> | <i>SET</i> | <i>MAP</i> |
+<i>METER</i> | <i>RULESET</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Empty contents
+in given object, e.g. remove all chains from given
+<b>table</b> or remove all elements from given
+<b>set</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>RENAME</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;rename&quot;:</b>
+<i>CHAIN</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Rename a chain.
+The new name is expected in a dedicated property named
+<b>newname</b>.</p>
+
+<h2>RULESET ELEMENTS
+<a name="RULESET ELEMENTS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TABLE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;table&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+describes a table.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family, e.g.
+<b>&quot;ip&quot;</b> or <b>&quot;ip6&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s handle. In
+input, it is used only in <b>delete</b> command as
+alternative to <b>name</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CHAIN</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;chain&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;newname&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;type&quot;:</b> <i>STRING</i><b>, <br>
+&quot;hook&quot;:</b> <i>STRING</i><b>, <br>
+&quot;prio&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;dev&quot;:</b> <i>STRING</i><b>, <br>
+&quot;policy&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+describes a chain.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s handle. In
+input, it is used only in <b>delete</b> command as
+alternative to <b>name</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>newname</b></p>
+
+<p style="margin-left:17%;">A new name for the chain, only
+relevant in the <b>rename</b> command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+properties are required for base chains:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>type</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hook</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s hook.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>prio</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s priority.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dev</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s bound
+interface (if in the netdev family).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>policy</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s policy.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>RULE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;rule&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;chain&quot;:</b> <i>STRING</i><b>, <br>
+&quot;expr&quot;: [</b> <i>STATEMENTS</i> <b>], <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;index&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;comment&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>STATEMENTS</i>
+:= <i>STATEMENT</i> [<b>,</b> <i>STATEMENTS</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+describes a rule. Basic building blocks of rules are
+statements. Each rule consists of at least one.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chain</b></p>
+
+<p style="margin-left:17%;">The chain&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>expr</b></p>
+
+<p style="margin-left:17%;">An array of statements this
+rule consists of. In input, it is used in
+<b>add</b>/<b>insert</b>/<b>replace</b> commands only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The rule&rsquo;s handle. In
+<b>delete</b>/<b>replace</b> commands, it serves as an
+identifier of the rule to delete/replace. In
+<b>add</b>/<b>insert</b> commands, it serves as an
+identifier of an existing rule to append/prepend the rule
+to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>index</b></p>
+
+<p style="margin-left:17%;">The rule&rsquo;s position for
+<b>add</b>/<b>insert</b> commands. It is used as an
+alternative to <b>handle</b> then.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>comment</b></p>
+
+<p style="margin-left:17%;">Optional rule comment.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SET /
+MAP</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;set&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;type&quot;:</b> <i>SET_TYPE</i><b>, <br>
+&quot;policy&quot;:</b> <i>SET_POLICY</i><b>, <br>
+&quot;flags&quot;: [</b> <i>SET_FLAG_LIST</i> <b>], <br>
+&quot;elem&quot;:</b> <i>SET_ELEMENTS</i><b>, <br>
+&quot;timeout&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;gc-interval&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;size&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;map&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;type&quot;:</b> <i>SET_TYPE</i><b>, <br>
+&quot;map&quot;:</b> <i>STRING</i><b>, <br>
+&quot;policy&quot;:</b> <i>SET_POLICY</i><b>, <br>
+&quot;flags&quot;: [</b> <i>SET_FLAG_LIST</i> <b>], <br>
+&quot;elem&quot;:</b> <i>SET_ELEMENTS</i><b>, <br>
+&quot;timeout&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;gc-interval&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;size&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>SET_TYPE</i>
+:= <i>STRING</i> | <b>[</b> <i>SET_TYPE_LIST</i> <b>]</b>
+<i><br>
+SET_TYPE_LIST</i> := <i>STRING</i> [<b>,</b>
+<i>SET_TYPE_LIST</i> ] <i><br>
+SET_POLICY</i> := <b>&quot;performance&quot;</b> |
+<b>&quot;memory&quot;</b> <i><br>
+SET_FLAG_LIST</i> := <i>SET_FLAG</i> [<b>,</b>
+<i>SET_FLAG_LIST</i> ] <i><br>
+SET_FLAG</i> := <b>&quot;constant&quot;</b> |
+<b>&quot;interval&quot;</b> | <b>&quot;timeout&quot;</b>
+<i><br>
+SET_ELEMENTS</i> := <i>EXPRESSION</i> | <b>[</b>
+<i>EXPRESSION_LIST</i> <b>]</b> <i><br>
+EXPRESSION_LIST</i> := <i>EXPRESSION</i> [<b>,</b>
+<i>EXPRESSION_LIST</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">These objects
+describe a named set or map. Maps are a special form of sets
+in that they translate a unique key to a value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The set&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The set&rsquo;s handle. For
+input, it is used in the <b>delete</b> command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>type</b></p>
+
+<p style="margin-left:17%;">The set&rsquo;s datatype, see
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>map</b></p>
+
+<p style="margin-left:17%;">Type of values this set maps to
+(i.e. this set is a map).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>policy</b></p>
+
+<p style="margin-left:17%;">The set&rsquo;s policy.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flags</b></p>
+
+<p style="margin-left:17%;">The set&rsquo;s flags.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>elem</b></p>
+
+<p style="margin-left:17%;">Initial set element(s), see
+below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>timeout</b></p>
+
+<p style="margin-left:17%;">Element timeout in seconds.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gc-interval</b></p>
+
+<p style="margin-left:17%;">Garbage collector interval in
+seconds.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>size</b></p>
+
+<p style="margin-left:17%;">Maximum number of elements
+supported.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>TYPE</big></b></p>
+
+<p style="margin-left:17%;">The set type might be a string,
+such as <b>&quot;ipv4_addr&quot;</b> or an array consisting
+of strings (for concatenated types).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>ELEM</big></b></p>
+
+<p style="margin-left:17%;">A single set element might be
+given as string, integer or boolean value for simple cases.
+If additional properties are required, a formal <b>elem</b>
+object may be used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Multiple
+elements may be given in an array.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ELEMENT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;element&quot;: {
+<br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;elem&quot;:</b> <i>SET_ELEM</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>SET_ELEM</i>
+:= <i>EXPRESSION</i> | <b>[</b> <i>EXPRESSION_LIST</i>
+<b>]</b> <i><br>
+EXPRESSION_LIST</i> := <i>EXPRESSION</i> [<b>,</b>
+<i>EXPRESSION</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Manipulate
+element(s) in a named set.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The set&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>elem</b></p>
+
+<p style="margin-left:17%;">See elem property of set
+object.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FLOWTABLE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;flowtable&quot;: {
+<br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;hook&quot;:</b> <i>STRING</i><b>, <br>
+&quot;prio&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;dev&quot;:</b> <i>FT_INTERFACE</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>FT_INTERFACE</i>
+:= <i>STRING</i> | <b>[</b> <i>FT_INTERFACE_LIST</i>
+<b>]</b> <i><br>
+FT_INTERFACE_LIST</i> := <i>STRING</i> [<b>,</b>
+<i>STRING</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named flowtable.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The flow table&rsquo;s
+name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The flow table&rsquo;s handle.
+In input, it is used by the <b>delete</b> command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hook</b></p>
+
+<p style="margin-left:17%;">The flow table&rsquo;s
+hook.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>prio</b></p>
+
+<p style="margin-left:17%;">The flow table&rsquo;s
+priority.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dev</b></p>
+
+<p style="margin-left:17%;">The flow table&rsquo;s
+interface(s).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>COUNTER</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;counter&quot;: {
+<br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;packets&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;bytes&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named counter.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The counter&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The counter&rsquo;s handle. In
+input, it is used by the <b>delete</b> command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>packets</b></p>
+
+<p style="margin-left:17%;">Packet counter value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bytes</b></p>
+
+<p style="margin-left:17%;">Byte counter value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>QUOTA</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;quota&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;bytes&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;used&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;inv&quot;:</b> <i>BOOLEAN</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named quota.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The quota&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The quota&rsquo;s handle. In
+input, it is used by the <b>delete</b> command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bytes</b></p>
+
+<p style="margin-left:17%;">Quota threshold.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>used</b></p>
+
+<p style="margin-left:17%;">Quota used so far.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>inv</b></p>
+
+<p style="margin-left:17%;">If true, match if the quota has
+been exceeded.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+HELPER</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct helper&quot;: {
+<br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>... '</i><b>, <br>
+&quot;type&quot;:</b> <i>'STRING</i><b>, <br>
+&quot;protocol&quot;:</b> <i>CTH_PROTO</i><b>, <br>
+&quot;l3proto&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>CTH_PROTO</i>
+:= <b>&quot;tcp&quot;</b> | <b>&quot;udp&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named conntrack helper.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The ct helper&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The ct helper&rsquo;s handle.
+In input, it is used by the <b>delete</b> command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>type</b></p>
+
+<p style="margin-left:17%;">The ct helper type name, e.g.
+<b>&quot;ftp&quot;</b> or <b>&quot;tftp&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>protocol</b></p>
+
+<p style="margin-left:17%;">The ct helper&rsquo;s layer 4
+protocol.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>l3proto</b></p>
+
+<p style="margin-left:17%;">The ct helper&rsquo;s layer 3
+protocol, e.g. <b>&quot;ip&quot;</b> or
+<b>&quot;ip6&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LIMIT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;limit&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;rate&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;per&quot;:</b> <i>STRING</i><b>, <br>
+&quot;burst&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;unit&quot;:</b> <i>LIMIT_UNIT</i><b>, <br>
+&quot;inv&quot;:</b> <i>BOOLEAN</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>LIMIT_UNIT</i>
+:= <b>&quot;packets&quot;</b> | <b>&quot;bytes&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named limit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The limit&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The limit&rsquo;s handle. In
+input, it is used by the <b>delete</b> command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rate</b></p>
+
+<p style="margin-left:17%;">The limit&rsquo;s rate
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>per</b></p>
+
+<p style="margin-left:17%;">Time unit to apply the limit
+to, e.g. <b>&quot;week&quot;</b>, <b>&quot;day&quot;</b>,
+<b>&quot;hour&quot;</b>, etc. If omitted, defaults to
+<b>&quot;second&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>burst</b></p>
+
+<p style="margin-left:17%;">The limit&rsquo;s burst value.
+If omitted, defaults to <b>0</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>unit</b></p>
+
+<p style="margin-left:17%;">Unit of rate and burst values.
+If omitted, defaults to <b>&quot;packets&quot;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>inv</b></p>
+
+<p style="margin-left:17%;">If true, match if limit was
+exceeded. If omitted, defaults to <b>false</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+TIMEOUT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct timeout&quot;: {
+<br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;protocol&quot;:</b> <i>CTH_PROTO</i><b>, <br>
+&quot;state&quot;:</b> <i>STRING</i><b>, <br>
+&quot;value:</b> <i>NUMBER</i><b>, <br>
+&quot;l3proto&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>CTH_PROTO</i>
+:= <b>&quot;tcp&quot;</b> | <b>&quot;udp&quot;</b> |
+<b>&quot;dccp&quot;</b> | <b>&quot;sctp&quot;</b> |
+<b>&quot;gre&quot;</b> | <b>&quot;icmpv6&quot;</b> |
+<b>&quot;icmp&quot;</b> | <b>&quot;generic&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named conntrack timeout policy.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The ct timeout object&rsquo;s
+name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The ct timeout object&rsquo;s
+handle. In input, it is used by <b>delete</b> command
+only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>protocol</b></p>
+
+<p style="margin-left:17%;">The ct timeout object&rsquo;s
+layer 4 protocol.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>state</b></p>
+
+<p style="margin-left:17%;">The connection state name, e.g.
+<b>&quot;established&quot;</b>, <b>&quot;syn_sent&quot;</b>,
+<b>&quot;close&quot;</b> or <b>&quot;close_wait&quot;</b>,
+for which the timeout value has to be updated.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>value</b></p>
+
+<p style="margin-left:17%;">The updated timeout value for
+the specified connection state.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>l3proto</b></p>
+
+<p style="margin-left:17%;">The ct timeout object&rsquo;s
+layer 3 protocol, e.g. <b>&quot;ip&quot;</b> or
+<b>&quot;ip6&quot;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+EXPECTATION</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct
+expectation&quot;: { <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;table&quot;:</b> <i>STRING</i><b>, <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;handle&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;l3proto&quot;:</b> <i>STRING</i> <br>
+&quot;protocol&quot;:* <i>CTH_PROTO</i><b>, <br>
+&quot;dport&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;timeout:</b> <i>NUMBER</i><b>, <br>
+&quot;size:</b> <i>NUMBER</i><b>, <br>
+*}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>CTH_PROTO</i>
+:= <b>&quot;tcp&quot;</b> | <b>&quot;udp&quot;</b> |
+<b>&quot;dccp&quot;</b> | <b>&quot;sctp&quot;</b> |
+<b>&quot;gre&quot;</b> | <b>&quot;icmpv6&quot;</b> |
+<b>&quot;icmp&quot;</b> | <b>&quot;generic&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a named conntrack expectation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">The table&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">The ct expectation
+object&rsquo;s name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>handle</b></p>
+
+<p style="margin-left:17%;">The ct expectation
+object&rsquo;s handle. In input, it is used by <b>delete</b>
+command only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>l3proto</b></p>
+
+<p style="margin-left:17%;">The ct expectation
+object&rsquo;s layer 3 protocol, e.g. <b>&quot;ip&quot;</b>
+or <b>&quot;ip6&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>protocol</b></p>
+
+<p style="margin-left:17%;">The ct expectation
+object&rsquo;s layer 4 protocol.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dport</b></p>
+
+<p style="margin-left:17%;">The destination port of the
+expected connection.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>timeout</b></p>
+
+<p style="margin-left:17%;">The time in millisecond that
+this expectation will live.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>size</b></p>
+
+<p style="margin-left:17%;">The maximum count of
+expectations to be living in the same time.</p>
+
+<h2>STATEMENTS
+<a name="STATEMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Statements are
+the building blocks for rules. Each rule consists of at
+least one.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>VERDICT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;accept&quot;: null }
+<br>
+{ &quot;drop&quot;: null } <br>
+{ &quot;continue&quot;: null } <br>
+{ &quot;return&quot;: null } <br>
+{ &quot;jump&quot;: { &quot;target&quot;: *</b>
+<i>STRING</i> <b>*}} <br>
+{ &quot;goto&quot;: { &quot;target&quot;: *</b>
+<i>STRING</i> <b>*}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">A verdict
+either terminates packet traversal through the current chain
+or delegates to a different one.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>jump</b> and
+<b>goto</b> statements expect a target chain name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MATCH</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;match&quot;: { <br>
+&quot;left&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;right&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;op&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This matches
+the expression on left hand side (typically a packet header
+or packet meta info) with the expression on right hand side
+(typically a constant value). If the statement evaluates to
+true, the next statement in this rule is considered. If not,
+processing continues with the next rule in the same
+chain.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>left</b></p>
+
+<p style="margin-left:17%;">Left hand side of this
+match.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>right</b></p>
+
+<p style="margin-left:17%;">Right hand side of this
+match.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>op</b></p>
+
+<p style="margin-left:17%;">Operator indicating the type of
+comparison.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>OPERATORS</big></b></p>
+
+
+<p align="center"><b><big><img src="grohtml-3457071.png" alt="Image grohtml-3457071.png"></big></b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Unlike with the
+standard API, the operator is mandatory here. In the
+standard API, a missing operator may be resolved in two
+ways, depending on the type of expression on the RHS:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; If the
+RHS is a bitmask or a list of bitmasks, the expression
+resolves into a binary operation with the inequality
+operator, like this: <i>LHS &amp; RHS != 0</i>.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; In any
+other case, the equality operator is simply inserted.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For the
+non-trivial first case, the JSON API supports the <b>in</b>
+operator.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>COUNTER</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;counter&quot;: {
+<br>
+&quot;packets&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;bytes&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;counter&quot;:</b> <i>STRING</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+represents a byte/packet counter. In input, no properties
+are required. If given, they act as initial values for the
+counter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first form
+creates an anonymous counter which lives in the rule it
+appears in. The second form specifies a reference to a named
+counter object.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>packets</b></p>
+
+<p style="margin-left:17%;">Packets counted.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bytes</b></p>
+
+<p style="margin-left:17%;">Bytes counted.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MANGLE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;mangle&quot;: { <br>
+&quot;key&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;value&quot;:</b> <i>EXPRESSION</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This changes
+the packet data or meta info.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>key</b></p>
+
+<p style="margin-left:17%;">The packet data to be changed,
+given as an <b>exthdr</b>, <b>payload</b>, <b>meta</b>,
+<b>ct</b> or <b>ct helper</b> expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>value</b></p>
+
+<p style="margin-left:17%;">Value to change data to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>QUOTA</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;quota&quot;: { <br>
+&quot;val&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;val_unit&quot;:</b> <i>STRING</i><b>, <br>
+&quot;used&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;used_unit&quot;:</b> <i>STRING</i><b>, <br>
+&quot;inv&quot;:</b> <i>BOOLEAN</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;quota&quot;:</b> <i>STRING</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The first form
+creates an anonymous quota which lives in the rule it
+appears in. The second form specifies a reference to a named
+quota object.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>val</b></p>
+
+<p style="margin-left:17%;">Quota value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>val_unit</b></p>
+
+<p style="margin-left:17%;">Unit of <b>val</b>, e.g.
+<b>&quot;kbytes&quot;</b> or <b>&quot;mbytes&quot;</b>. If
+omitted, defaults to <b>&quot;bytes&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>used</b></p>
+
+<p style="margin-left:17%;">Quota used so far. Optional on
+input. If given, serves as initial value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>used_unit</b></p>
+
+<p style="margin-left:17%;">Unit of <b>used</b>. Defaults
+to <b>&quot;bytes&quot;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>inv</b></p>
+
+<p style="margin-left:17%;">If <b>true</b>, will match if
+quota was exceeded. Defaults to <b>false</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LIMIT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;limit&quot;: { <br>
+&quot;rate&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;rate_unit&quot;:</b> <i>STRING</i><b>, <br>
+&quot;per&quot;:</b> <i>STRING</i><b>, <br>
+&quot;burst&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;burst_unit&quot;:</b> <i>STRING</i><b>, <br>
+&quot;inv&quot;:</b> <i>BOOLEAN</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;limit&quot;:</b> <i>STRING</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The first form
+creates an anonymous limit which lives in the rule it
+appears in. The second form specifies a reference to a named
+limit object.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rate</b></p>
+
+<p style="margin-left:17%;">Rate value to limit to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rate_unit</b></p>
+
+<p style="margin-left:17%;">Unit of <b>rate</b>, e.g.
+<b>&quot;packets&quot;</b> or <b>&quot;mbytes&quot;</b>.
+Defaults to <b>&quot;packets&quot;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>per</b></p>
+
+<p style="margin-left:17%;">Denominator of <b>rate</b>,
+e.g. <b>&quot;week&quot;</b> or
+<b>&quot;minutes&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>burst</b></p>
+
+<p style="margin-left:17%;">Burst value. Defaults to
+<b>0</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>burst_unit</b></p>
+
+<p style="margin-left:17%;">Unit of <b>burst</b>, ignored
+if <b>rate_unit</b> is <b>&quot;packets&quot;</b>. Defaults
+to <b>&quot;bytes&quot;</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>inv</b></p>
+
+<p style="margin-left:17%;">If <b>true</b>, matches if the
+limit was exceeded. Defaults to <b>false</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>FWD</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;fwd&quot;: { <br>
+&quot;dev&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;family&quot;:</b> <i>FWD_FAMILY</i><b>, <br>
+&quot;addr&quot;:</b> <i>EXPRESSION</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>FWD_FAMILY</i>
+:= <b>&quot;ip&quot;</b> | <b>&quot;ip6&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Forward a
+packet to a different destination.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dev</b></p>
+
+<p style="margin-left:17%;">Interface to forward the packet
+on.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">Family of <b>addr</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>addr</b></p>
+
+<p style="margin-left:17%;">IP(v6) address to forward the
+packet to.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Both
+<b>family</b> and <b>addr</b> are optional, but if at least
+one is given, both must be present.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>NOTRACK</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;notrack&quot;: null
+}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Disable
+connection tracking for the packet.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DUP</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;dup&quot;: { <br>
+&quot;addr&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;dev&quot;:</b> <i>EXPRESSION</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Duplicate a
+packet to a different destination.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>addr</b></p>
+
+<p style="margin-left:17%;">Address to duplicate packet
+to.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dev</b></p>
+
+<p style="margin-left:17%;">Interface to duplicate packet
+on. May be omitted to not specify an interface
+explicitly.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>NETWORK
+ADDRESS TRANSLATION</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;snat&quot;: { <br>
+&quot;addr&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;port&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;flags&quot;:</b> <i>FLAGS</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;dnat&quot;: { <br>
+&quot;addr&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;family&quot;:</b> <i>STRING</i><b>, <br>
+&quot;port&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;flags&quot;:</b> <i>FLAGS</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;masquerade&quot;: { <br>
+&quot;port&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;flags&quot;:</b> <i>FLAGS</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;redirect&quot;: { <br>
+&quot;port&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;flags&quot;:</b> <i>FLAGS</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>FLAGS</i> :=
+<i>FLAG</i> | <b>[</b> <i>FLAG_LIST</i> <b>]</b> <i><br>
+FLAG_LIST</i> := <i>FLAG</i> [<b>,</b> <i>FLAG_LIST</i> ]
+<i><br>
+FLAG</i> := <b>&quot;random&quot;</b> |
+<b>&quot;fully-random&quot;</b> |
+<b>&quot;persistent&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Perform Network
+Address Translation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>addr</b></p>
+
+<p style="margin-left:17%;">Address to translate to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>family</b></p>
+
+<p style="margin-left:17%;">Family of <b>addr</b>, either
+<b>ip</b> or <b>ip6</b>. Required in <b>inet</b> table
+family.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>port</b></p>
+
+<p style="margin-left:17%;">Port to translate to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flags</b></p>
+
+<p style="margin-left:17%;">Flag(s).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All properties
+are optional and default to none.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>REJECT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;reject&quot;: { <br>
+&quot;type&quot;:</b> <i>STRING</i><b>, <br>
+&quot;expr&quot;:</b> <i>EXPRESSION</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Reject the
+packet and send the given error reply.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>type</b></p>
+
+<p style="margin-left:17%;">Type of reject, either
+<b>&quot;tcp reset&quot;</b>, <b>&quot;icmpx&quot;</b>,
+<b>&quot;icmp&quot;</b> or <b>&quot;icmpv6&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>expr</b></p>
+
+<p style="margin-left:17%;">ICMP code to reject with.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All properties
+are optional.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SET</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;set&quot;: { <br>
+&quot;op&quot;:</b> <i>STRING</i><b>, <br>
+&quot;elem&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;set&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Dynamically
+add/update elements to a set.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>op</b></p>
+
+<p style="margin-left:17%;">Operator on set, either
+<b>&quot;add&quot;</b> or <b>&quot;update&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>elem</b></p>
+
+<p style="margin-left:17%;">Set element to add or
+update.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>set</b></p>
+
+<p style="margin-left:17%;">Set reference.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>LOG</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;log&quot;: { <br>
+&quot;prefix&quot;:</b> <i>STRING</i><b>, <br>
+&quot;group&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;snaplen&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;queue-threshold&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;level&quot;:</b> <i>LEVEL</i><b>, <br>
+&quot;flags&quot;:</b> <i>FLAGS</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>LEVEL</i> :=
+<b>&quot;emerg&quot;</b> | <b>&quot;alert&quot;</b> |
+<b>&quot;crit&quot;</b> | <b>&quot;err&quot;</b> |
+<b>&quot;warn&quot;</b> | <b>&quot;notice&quot;</b> |
+<b><br>
+&quot;info&quot;</b> | <b>&quot;debug&quot;</b> |
+<b>&quot;audit&quot;</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>FLAGS</i> :=
+<i>FLAG</i> | <b>[</b> <i>FLAG_LIST</i> <b>]</b> <i><br>
+FLAG_LIST</i> := <i>FLAG</i> [<b>,</b> <i>FLAG_LIST</i> ]
+<i><br>
+FLAG</i> := <b>&quot;tcp sequence&quot;</b> | <b>&quot;tcp
+options&quot;</b> | <b>&quot;ip options&quot;</b> |
+<b>&quot;skuid&quot;</b> | <b><br>
+&quot;ether&quot;</b> | <b>&quot;all&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Log the
+packet.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>prefix</b></p>
+
+<p style="margin-left:17%;">Prefix for log entries.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>group</b></p>
+
+<p style="margin-left:17%;">Log group.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>snaplen</b></p>
+
+<p style="margin-left:17%;">Snaplen for logging.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>queue-threshold</b></p>
+
+<p style="margin-left:17%;">Queue threshold.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>level</b></p>
+
+<p style="margin-left:17%;">Log level. Defaults to
+<b>&quot;warn&quot;</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flags</b></p>
+
+<p style="margin-left:17%;">Log flags.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All properties
+are optional.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+HELPER</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct helper&quot;:</b>
+<i>EXPRESSION</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Enable the
+specified conntrack helper for this packet.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ct
+helper</b></p>
+
+<p style="margin-left:17%;">CT helper reference.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>METER</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;meter&quot;: { <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;key&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;stmt&quot;:</b> <i>STATEMENT</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Apply a given
+statement using a meter.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>name</b></p>
+
+<p style="margin-left:17%;">Meter name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>key</b></p>
+
+<p style="margin-left:17%;">Meter key.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stmt</b></p>
+
+<p style="margin-left:17%;">Meter statement.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>QUEUE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;queue&quot;: { <br>
+&quot;num&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;flags&quot;:</b> <i>FLAGS</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>FLAGS</i> :=
+<i>FLAG</i> | <b>[</b> <i>FLAG_LIST</i> <b>]</b> <i><br>
+FLAG_LIST</i> := <i>FLAG</i> [<b>,</b> <i>FLAG_LIST</i> ]
+<i><br>
+FLAG</i> := <b>&quot;bypass&quot;</b> |
+<b>&quot;fanout&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Queue the
+packet to userspace.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>num</b></p>
+
+<p style="margin-left:17%;">Queue number.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flags</b></p>
+
+<p style="margin-left:17%;">Queue flags.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>VERDICT
+MAP</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;vmap&quot;: { <br>
+&quot;key&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;data&quot;:</b> <i>EXPRESSION</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Apply a verdict
+conditionally.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>key</b></p>
+
+<p style="margin-left:17%;">Map key.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>data</b></p>
+
+<p style="margin-left:17%;">Mapping expression consisting
+of value/verdict pairs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+COUNT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct count&quot;: {
+<br>
+&quot;val&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;inv&quot;:</b> <i>BOOLEAN</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Limit the
+number of connections using conntrack.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>val</b></p>
+
+<p style="margin-left:17%;">Connection count threshold.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>inv</b></p>
+
+<p style="margin-left:17%;">If <b>true</b>, match if
+<b>val</b> was exceeded. If omitted, defaults to
+<b>false</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+TIMEOUT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct
+timeout&quot;:</b> <i>EXPRESSION</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Assign
+connection tracking timeout policy.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ct
+timeout</b></p>
+
+<p style="margin-left:17%;">CT timeout reference.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT
+EXPECTATION</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct
+expectation&quot;:</b> <i>EXPRESSION</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Assign
+connection tracking expectation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ct
+expectation</b></p>
+
+<p style="margin-left:17%;">CT expectation reference.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>XT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;xt&quot;: null
+}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This represents
+an xt statement from xtables compat interface. Sadly, at
+this point, it is not possible to provide any further
+information about its content.</p>
+
+<h2>EXPRESSIONS
+<a name="EXPRESSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Expressions are
+the building blocks of (most) statements. In their most
+basic form, they are just immediate values represented as a
+JSON string, integer or boolean type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>IMMEDIATES</b></p>
+
+<p style="margin-left:17%;"><i>STRING <br>
+NUMBER <br>
+BOOLEAN</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Immediate
+expressions are typically used for constant values. For
+strings, there are two special cases:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>@STRING</b></p>
+
+<p style="margin-left:17%;">The remaining part is taken as
+set name to create a set reference.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>\</b>*</p>
+
+<p style="margin-left:17%;">Construct a wildcard
+expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LISTS</b></p>
+
+<p style="margin-left:17%;"><i>ARRAY</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">List
+expressions are constructed by plain arrays containing of an
+arbitrary number of expressions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CONCAT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;concat&quot;:</b>
+<i>CONCAT</i> <b>}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>CONCAT</i>
+:= <b>[</b> <i>EXPRESSION_LIST</i> <b>]</b> <i><br>
+EXPRESSION_LIST</i> := <i>EXPRESSION</i> [<b>,</b>
+<i>EXPRESSION_LIST</i> ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Concatenate
+several expressions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SET</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;set&quot;:</b>
+<i>SET</i> <b>}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>SET</i> :=
+<i>EXPRESSION</i> | <b>[</b> <i>EXPRESSION_LIST</i>
+<b>]</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This object
+constructs an anonymous set. For mappings, an array of
+arrays with exactly two elements is expected.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>MAP</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;map&quot;: { <br>
+&quot;key&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;data&quot;:</b> <i>EXPRESSION</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Map a key to a
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>key</b></p>
+
+<p style="margin-left:17%;">Map key.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>data</b></p>
+
+<p style="margin-left:17%;">Mapping expression consisting
+of value/target pairs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PREFIX</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;prefix&quot;: { <br>
+&quot;addr&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;len&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Construct an
+IPv4 or IPv6 prefix consisting of address part in
+<b>addr</b> and prefix length in <b>len</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>RANGE</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;range&quot;: [</b>
+<i>EXPRESSION</i> <b>,</b> <i>EXPRESSION</i> <b>] }</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Construct a
+range of values. The first array item denotes the lower
+boundary, the second one the upper boundary.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PAYLOAD</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;payload&quot;: {
+<br>
+&quot;base&quot;:</b> <i>BASE</i><b>, <br>
+&quot;offset&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;len&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;payload&quot;: { <br>
+&quot;protocol&quot;:</b> <i>STRING</i><b>, <br>
+&quot;field&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>BASE</i> :=
+<b>&quot;ll&quot;</b> | <b>&quot;nh&quot;</b> |
+<b>&quot;th&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Construct a
+payload expression, i.e. a reference to a certain part of
+packet data. The first form creates a raw payload expression
+to point at a random number (<b>len</b>) of bytes at a
+certain offset (<b>offset</b>) from a given reference point
+(<b>base</b>). The following <b>base</b> values are
+accepted:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;ll&quot;</b></p>
+
+<p style="margin-left:17%;">The offset is relative to Link
+Layer header start offset.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;nh&quot;</b></p>
+
+<p style="margin-left:17%;">The offset is relative to
+Network Layer header start offset.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;th&quot;</b></p>
+
+<p style="margin-left:17%;">The offset is relative to
+Transport Layer header start offset.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The second form
+allows to reference a field by name (<b>field</b>) in a
+named packet header (<b>protocol</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EXTHDR</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;exthdr&quot;: { <br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;field&quot;:</b> <i>STRING</i><b>, <br>
+&quot;offset&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a
+reference to a field (<b>field</b>) in an IPv6 extension
+header (<b>name</b>). <b>offset</b> is used only for
+<b>rt0</b> protocol.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>field</b> property is not given, the expression is to be
+used as a header existence check in a <b>match</b> statement
+with a boolean on the right hand side.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TCP
+OPTION</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;tcp option&quot;: {
+<br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;field&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a
+reference to a field (<b>field</b>) of a TCP option header
+(<b>name</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>field</b> property is not given, the expression is to be
+used as a TCP option existence check in a <b>match</b>
+statement with a boolean on the right hand side.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SCTP
+CHUNK</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;sctp chunk&quot;: {
+<br>
+&quot;name&quot;:</b> <i>STRING</i><b>, <br>
+&quot;field&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a
+reference to a field (<b>field</b>) of an SCTP chunk
+(<b>name</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>field</b> property is not given, the expression is to be
+used as an SCTP chunk existence check in a <b>match</b>
+statement with a boolean on the right hand side.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>META</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;meta&quot;: { <br>
+&quot;key&quot;:</b> <i>META_KEY</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>META_KEY</i>
+:= <b>&quot;length&quot;</b> | <b>&quot;protocol&quot;</b> |
+<b>&quot;priority&quot;</b> | <b>&quot;random&quot;</b> |
+<b>&quot;mark&quot;</b> | <b><br>
+&quot;iif&quot;</b> | <b>&quot;iifname&quot;</b> |
+<b>&quot;iiftype&quot;</b> | <b>&quot;oif&quot;</b> |
+<b>&quot;oifname&quot;</b> | <b><br>
+&quot;oiftype&quot;</b> | <b>&quot;skuid&quot;</b> |
+<b>&quot;skgid&quot;</b> | <b>&quot;nftrace&quot;</b> |
+<b><br>
+&quot;rtclassid&quot;</b> | <b>&quot;ibriport&quot;</b> |
+<b>&quot;obriport&quot;</b> | <b>&quot;ibridgename&quot;</b>
+| <b><br>
+&quot;obridgename&quot;</b> | <b>&quot;pkttype&quot;</b> |
+<b>&quot;cpu&quot;</b> | <b>&quot;iifgroup&quot;</b> |
+<b><br>
+&quot;oifgroup&quot;</b> | <b>&quot;cgroup&quot;</b> |
+<b>&quot;nfproto&quot;</b> | <b>&quot;l4proto&quot;</b> |
+<b><br>
+&quot;secpath&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a
+reference to packet meta data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>RT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;rt&quot;: { <br>
+&quot;key&quot;:</b> <i>RT_KEY</i><b>, <br>
+&quot;family&quot;:</b> <i>RT_FAMILY</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>RT_KEY</i>
+:= <b>&quot;classid&quot;</b> | <b>&quot;nexthop&quot;</b> |
+<b>&quot;mtu&quot;</b> <i><br>
+RT_FAMILY</i> := <b>&quot;ip&quot;</b> |
+<b>&quot;ip6&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a
+reference to packet routing data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>family</b> property is optional and defaults to
+unspecified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;ct&quot;: { <br>
+&quot;key&quot;:</b> <i>STRING</i><b>, <br>
+&quot;family&quot;:</b> <i>CT_FAMILY</i><b>, <br>
+&quot;dir&quot;:</b> <i>CT_DIRECTION</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>CT_FAMILY</i>
+:= <b>&quot;ip&quot;</b> | <b>&quot;ip6&quot;</b> <i><br>
+CT_DIRECTION</i> := <b>&quot;original&quot;</b> |
+<b>&quot;reply&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a
+reference to packet conntrack data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some CT keys do
+not support a direction. In this case, <b>dir</b> must not
+be given.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>NUMGEN</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;numgen&quot;: { <br>
+&quot;mode&quot;:</b> <i>NG_MODE</i><b>, <br>
+&quot;mod&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;offset&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>NG_MODE</i>
+:= <b>&quot;inc&quot;</b> | <b>&quot;random&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Create a number
+generator.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>offset</b> property is optional and defaults to 0.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>HASH</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;jhash&quot;: { <br>
+&quot;mod&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;offset&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;expr&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;seed&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>{
+&quot;symhash&quot;: { <br>
+&quot;mod&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;offset&quot;:</b> <i>NUMBER</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Hash packet
+data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>offset</b> and <b>seed</b> properties are optional and
+default to 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>FIB</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;fib&quot;: { <br>
+&quot;result&quot;:</b> <i>FIB_RESULT</i><b>, <br>
+&quot;flags&quot;:</b> <i>FIB_FLAGS</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>FIB_RESULT</i>
+:= <b>&quot;oif&quot;</b> | <b>&quot;oifname&quot;</b> |
+<b>&quot;type&quot;</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>FIB_FLAGS</i>
+:= <i>FIB_FLAG</i> | <b>[</b> <i>FIB_FLAG_LIST</i> <b>]</b>
+<i><br>
+FIB_FLAG_LIST</i> := <i>FIB_FLAG</i> [<b>,</b>
+<i>FIB_FLAG_LIST</i> ] <i><br>
+FIB_FLAG</i> := <b>&quot;saddr&quot;</b> |
+<b>&quot;daddr&quot;</b> | <b>&quot;mark&quot;</b> |
+<b>&quot;iif&quot;</b> | <b>&quot;oif&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Perform kernel
+Forwarding Information Base lookups.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>BINARY
+OPERATION</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;|&quot;: [</b>
+<i>EXPRESSION</i><b>,</b> <i>EXPRESSION</i> <b>] } <br>
+{ &quot;^&quot;: [</b> <i>EXPRESSION</i><b>,</b>
+<i>EXPRESSION</i> <b>] } <br>
+{ &quot;&amp;&quot;: [</b> <i>EXPRESSION</i><b>,</b>
+<i>EXPRESSION</i> <b>] } <br>
+{ &quot;&lt;&lt;&quot;: [</b> <i>EXPRESSION</i><b>,</b>
+<i>EXPRESSION</i> <b>] } <br>
+{ &quot;&gt;&gt;&quot;: [</b> <i>EXPRESSION</i><b>,</b>
+<i>EXPRESSION</i> <b>] }</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">All binary
+operations expect an array of exactly two expressions, of
+which the first element denotes the left hand side and the
+second one the right hand side.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>VERDICT</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;accept&quot;: null }
+<br>
+{ &quot;drop&quot;: null } <br>
+{ &quot;continue&quot;: null } <br>
+{ &quot;return&quot;: null } <br>
+{ &quot;jump&quot;: { &quot;target&quot;:</b> <i>STRING</i>
+<b>}} <br>
+{ &quot;goto&quot;: { &quot;target&quot;:</b> <i>STRING</i>
+<b>}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Same as the
+<b>verdict</b> statement, but for use in verdict maps.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>jump</b> and
+<b>goto</b> verdicts expect a target chain name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ELEM</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;elem&quot;: { <br>
+&quot;val&quot;:</b> <i>EXPRESSION</i><b>, <br>
+&quot;timeout&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;expires&quot;:</b> <i>NUMBER</i><b>, <br>
+&quot;comment&quot;:</b> <i>STRING</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Explicitly set
+element object, in case <b>timeout</b>, <b>expires</b> or
+<b>comment</b> are desired. Otherwise, it may be replaced by
+the value of <b>val</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SOCKET</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;socket&quot;: { <br>
+&quot;key&quot;:</b> <i>SOCKET_KEY</i> <b><br>
+}}</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>SOCKET_KEY</i>
+:= <b>&quot;transparent&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Construct a
+reference to packet&rsquo;s socket.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSF</b></p>
+
+<p style="margin-left:17%;"><b>{ &quot;osf&quot;: { <br>
+&quot;key&quot;:</b> <i>OSF_KEY</i><b>, <br>
+&quot;ttl&quot;:</b> <i>OSF_TTL</i> <b><br>
+}}</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>OSF_KEY</i>
+:= <b>&quot;name&quot;</b> <i><br>
+OSF_TTL</i> := <b>&quot;loose&quot;</b> |
+<b>&quot;skip&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Perform OS
+fingerprinting. This expression is typically used in the LHS
+of a <b>match</b> statement.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>key</b></p>
+
+<p style="margin-left:17%;">Which part of the fingerprint
+info to match against. At this point, only the OS name is
+supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ttl</b></p>
+
+<p style="margin-left:17%;">Define how the packet&rsquo;s
+TTL value is to be matched. This property is optional. If
+omitted, the TTL value has to match exactly. A value of
+<b>loose</b> accepts TTL values less than the fingerprint
+one. A value of <b>skip</b> omits TTL value comparison
+entirely.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Phil
+Sutter</b> &lt;phil@nwl.cc&gt;</p>
+ 
+<p style="margin-left:17%;">Author.</p>
+<hr>
+</body>
+</html>

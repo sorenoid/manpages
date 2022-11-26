@@ -1,0 +1,352 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:16 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>libnetlink</title>
+
+</head>
+<body>
+
+<h1 align="center">libnetlink</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">libnetlink - A
+library for accessing the netlink service</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;asm/types.h&gt; <br>
+#include &lt;libnetlink.h&gt; <br>
+#include &lt;linux/netlink.h&gt; <br>
+#include &lt;linux/rtnetlink.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_open(struct rtnl_handle *rth, unsigned
+subscriptions)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_wilddump_request(struct rtnl_handle *rth, int family,
+int type)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_send(struct rtnl_handle *rth, char *buf, int len)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_dump_request(struct rtnl_handle *rth, int type, void
+*req, int len)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_dump_filter(struct rtnl_handle *rth,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>int (*filter)(struct sockaddr_nl *, struct nlmsghdr *n,
+void *),</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>void *arg1,</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>int (*junk)(struct sockaddr_nl *,struct nlmsghdr *n,
+void *),</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p>void *arg2)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_talk(struct rtnl_handle *rtnl, struct nlmsghdr *n,
+pid_t peer,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>unsigned groups, struct nlmsghdr *answer,</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>int (*junk)(struct sockaddr_nl *,struct nlmsghdr *n,
+void *),</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>void *jarg)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_listen(struct rtnl_handle *rtnl,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>int (*handler)(struct sockaddr_nl *, struct
+rtnl_ctrl_data *,</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>struct nlmsghdr *n, void *),</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>void *jarg)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rtnl_from_file(FILE *rtnl,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>int (*handler)(struct sockaddr_nl *,struct nlmsghdr *n,
+void *),</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>void *jarg)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">int
+addattr32(struct nlmsghdr *n, int maxlen, int type, __u32
+data)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+addattr_l(struct nlmsghdr *n, int maxlen, int type, void
+*data, int alen)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rta_addattr32(struct rtattr *rta, int maxlen, int type,
+__u32 data)</p>
+
+<p style="margin-left:11%; margin-top: 1em">int
+rta_addattr_l(struct rtattr *rta, int maxlen, int type, void
+*data, int alen)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">libnetlink
+provides a higher level interface to <b>rtnetlink</b>(7).
+The read functions return 0 on success and a negative errno
+on failure. The send functions return the amount of data
+sent, or -1 on error. <br>
+rtnl_open</p>
+
+<p style="margin-left:22%;">Open a rtnetlink socket and
+save the state into the <b>rth</b> handle. This handle is
+passed to all subsequent calls. <b>subscriptions</b> is a
+bitmap of the rtnetlink multicast groups the socket will be
+a member of.</p>
+
+<p style="margin-left:11%;">rtnl_wilddump_request</p>
+
+<p style="margin-left:22%;">Request a full dump of the
+<b>type</b> database for <b>family</b> addresses.
+<b>type</b> is a rtnetlink message type.</p>
+
+<p style="margin-left:11%;">rtnl_dump_request</p>
+
+<p style="margin-left:22%;">Request a full dump of the
+<b>type</b> data buffer into <b>buf</b> with maximum length
+of <b>len. type</b> is a rtnetlink message type.</p>
+
+<p style="margin-left:11%;">rtnl_dump_filter</p>
+
+<p style="margin-left:22%;">Receive netlink data after a
+request and filter it. The <b>filter</b> callback checks if
+the received message is wanted. It gets the source address
+of the message, the message itself and <b>arg1</b> as
+arguments. 0 as return means that the filter passed, a
+negative value is returned by <i>rtnl_dump_filter</i> in
+case of error. NULL for <i>filter</i> means to not use a
+filter. <b>junk</b> is used to filter messages not destined
+to the local socket. Only one message bundle is received. If
+there is a message pending, this function does not
+block.</p>
+
+<p style="margin-left:11%;">rtnl_listen</p>
+
+<p style="margin-left:22%;">Receive netlink data after a
+request and pass it to <i>handler.</i> <b>handler</b> is a
+callback that gets the message source address, anscillary
+data, the message itself, and the <b>jarg</b> cookie as
+arguments. It will get called for all received messages.
+Only one message bundle is received. If there is a message
+pending this function does not block.</p>
+
+<p style="margin-left:11%;">rtnl_from_file</p>
+
+<p style="margin-left:22%;">Works like <i>rtnl_listen,</i>
+but reads a netlink message bundle from the file <b>file</b>
+and passes the messages to <b>handler</b> for parsing. The
+file should contain raw data as received from a rtnetlink
+socket.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+functions are useful to construct custom rtnetlink messages.
+For simple database dumping with filtering it is better to
+use the higher level functions above. See
+<b>rtnetlink</b>(3) and <b>netlink</b>(3) on how to generate
+a rtnetlink message. The following utility functions require
+a continuous buffer that already contains a netlink message
+header and a rtnetlink request. <br>
+rtnl_send</p>
+
+<p style="margin-left:22%;">Send the rtnetlink message in
+<b>buf</b> of length <b>len</b> to handle <b>rth.</b></p>
+
+<p style="margin-left:11%;">addattr32</p>
+
+<p style="margin-left:22%;">Add a __u32 attribute of type
+<b>type</b> and with value <b>data</b> to netlink message
+<b>n,</b> which is part of a buffer of length
+<b>maxlen.</b></p>
+
+<p style="margin-left:11%;">addattr_l</p>
+
+<p style="margin-left:22%;">Add a variable length attribute
+of type <b>type</b> and with value <b>data</b> and
+<b>alen</b> length to netlink message <b>n,</b> which is
+part of a buffer of length <b>maxlen. data</b> is
+copied.</p>
+
+<p style="margin-left:11%;">rta_addattr32</p>
+
+<p style="margin-left:22%;">Initialize the rtnetlink
+attribute <b>rta</b> with a __u32 data value.</p>
+
+<p style="margin-left:11%;">rta_addattr32</p>
+
+<p style="margin-left:22%;">Initialize the rtnetlink
+attribute <b>rta</b> with a variable length data value.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+meant for internal use, use libmnl for new programs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The functions
+sometimes use fprintf and exit when a fatal error occurs.
+This library should be named librtnetlink.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">netlink/rtnetlink
+was designed and written by Alexey Kuznetsov. Andi Kleen
+wrote the man page.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>netlink</b>(7),
+<b>rtnetlink</b>(7) <br>
+ /usr/include/linux/rtnetlink.h</p>
+<hr>
+</body>
+</html>

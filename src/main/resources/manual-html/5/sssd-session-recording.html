@@ -1,0 +1,203 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:56 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SSSD-SESSION-RECOR</title>
+
+</head>
+<body>
+
+<h1 align="center">SSSD-SESSION-RECOR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION OPTIONS">CONFIGURATION OPTIONS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">sssd-session-recording
+- Configuring session recording with SSSD</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page describes how to configure <b>sssd</b>(8) to work with
+<b>tlog-rec-session</b>(8), a part of tlog package, to
+implement user session recording on text terminals. For a
+detailed configuration syntax reference, refer to the
+&ldquo;FILE FORMAT&rdquo; section of the <b>sssd.conf</b>(5)
+manual page.</p>
+
+<p style="margin-left:11%; margin-top: 1em">SSSD can be set
+up to enable recording of everything specific users see or
+type during their sessions on text terminals. E.g. when
+users log in on the console, or via SSH. SSSD itself doesn't
+record anything, but makes sure tlog-rec-session is started
+upon user login, so it can record according to its
+configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For users with
+session recording enabled, SSSD replaces the user shell with
+tlog-rec-session in NSS responses, and adds a variable
+specifying the original shell to the user environment, upon
+PAM session setup. This way tlog-rec-session can be started
+in place of the user shell, and know which actual shell to
+start, once it set up the recording.</p>
+
+<h2>CONFIGURATION OPTIONS
+<a name="CONFIGURATION OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These options
+can be used to configure the session recording.</p>
+
+<p style="margin-left:11%; margin-top: 1em">scope
+(string)</p>
+
+<p style="margin-left:17%;">One of the following strings
+specifying the scope of session recording:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;none&quot;</p>
+
+<p style="margin-left:23%;">No users are recorded.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;some&quot;</p>
+
+<p style="margin-left:23%;">Users/groups specified by
+<i>users</i> and <i>groups</i> options are recorded.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;all&quot;</p>
+
+<p style="margin-left:23%;">All users are recorded.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&quot;none&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">users
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of users
+which should have session recording enabled. Matches user
+names as returned by NSS. I.e. after the possible space
+replacement, case changes, etc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+Matches no users.</p>
+
+<p style="margin-left:11%; margin-top: 1em">groups
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of
+groups, members of which should have session recording
+enabled. Matches group names as returned by NSS. I.e. after
+the possible space replacement, case changes, etc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: using
+this option (having it set to anything) has a considerable
+performance cost, because each uncached request for a user
+requires retrieving and matching the groups the user is
+member of.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+Matches no groups.</p>
+
+<p style="margin-left:11%; margin-top: 1em">exclude_users
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of users
+to be excluded from recording, only applicable with
+'scope=all'.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+No users excluded.</p>
+
+<p style="margin-left:11%; margin-top: 1em">exclude_groups
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of
+groups, members of which should be excluded from recording.
+Only applicable with 'scope=all'.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: using
+this option (having it set to anything) has a considerable
+performance cost, because each uncached request for a user
+requires retrieving and matching the groups the user is
+member of.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+No groups excluded.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+snippet of sssd.conf enables session recording for users
+&quot;contractor1&quot; and &quot;contractor2&quot;, and
+group &quot;students&quot;.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[session_recording]
+<br>
+scope = some <br>
+users = contractor1, contractor2 <br>
+groups = students</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sssd</b>(8),
+<b>sssd.conf</b>(5), <b>sssd-ldap</b>(5),
+<b>sssd-krb5</b>(5), <b>sssd-simple</b>(5),
+<b>sssd-ipa</b>(5), <b>sssd-ad</b>(5), <b>sssd-files</b>(5),
+<b>sssd-sudo</b>(5), <b>sssd-session-recording</b>(5),
+<b>sss_cache</b>(8), <b>sss_debuglevel</b>(8),
+<b>sss_obfuscate</b>(8), <b>sss_seed</b>(8),
+<b>sssd_krb5_locator_plugin</b>(8),
+<b>sss_ssh_authorizedkeys</b>(8),
+<b>sss_ssh_knownhostsproxy</b>(8), <b>sssd-ifp</b>(5),
+<b>pam_sss</b>(8). <b>sss_rpcidmapd</b>(5)
+<b>sssd-systemtap</b>(5)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>The SSSD
+upstream - https://github.com/SSSD/sssd/</b></p>
+<hr>
+</body>
+</html>

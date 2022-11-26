@@ -1,0 +1,2408 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:58 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>KEYCTL</title>
+
+</head>
+<body>
+
+<h1 align="center">KEYCTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">keyctl -
+manipulate the kernel&rsquo;s key management facility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/types.h&gt; <br>
+#include &lt;keyutils.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>long
+keyctl(int</b> <i>operation</i><b>, ...);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>/* For
+direct call via syscall(2): */ <br>
+#include &lt;asm/unistd.h&gt; <br>
+#include &lt;linux/keyctl.h&gt; <br>
+#include &lt;unistd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>long
+syscall(__NR_keyctl, int</b> <i>operation</i><b>,
+__kernel_ulong_t</b> <i>arg2</i><b>, <br>
+__kernel_ulong_t</b> <i>arg3</i><b>, __kernel_ulong_t</b>
+<i>arg4</i><b>, <br>
+__kernel_ulong_t</b> <i>arg5</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">No glibc
+wrapper is provided for this system call; see NOTES.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>keyctl</b>()
+allows user-space programs to perform key manipulation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The operation
+performed by <b>keyctl</b>() is determined by the value of
+the <i>operation</i> argument. Each of these operations is
+wrapped by the <i>libkeyutils</i> library (provided by the
+<i>keyutils</i> package) into individual functions (noted
+below) to permit the compiler to check types.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The permitted
+values for <i>operation</i> are: <b><br>
+KEYCTL_GET_KEYRING_ID</b> (since Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Map a special key ID to a real
+key ID for this process.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+looks up the special key whose ID is provided in <i>arg2</i>
+(cast to <i>key_serial_t</i>). If the special key is found,
+the ID of the corresponding real key is returned as the
+function result. The following values may be specified in
+<i>arg2</i>: <b><br>
+KEY_SPEC_THREAD_KEYRING</b></p>
+
+<p style="margin-left:32%;">This specifies the calling
+thread&rsquo;s thread-specific keyring. See
+<b>thread-keyring</b>(7).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_SPEC_PROCESS_KEYRING</b></p>
+
+<p style="margin-left:32%;">This specifies the
+caller&rsquo;s process-specific keyring. See
+<b>process-keyring</b>(7).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_SPEC_SESSION_KEYRING</b></p>
+
+<p style="margin-left:32%;">This specifies the
+caller&rsquo;s session-specific keyring. See
+<b>session-keyring</b>(7).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_SPEC_USER_KEYRING</b></p>
+
+<p style="margin-left:32%;">This specifies the
+caller&rsquo;s UID-specific keyring. See
+<b>user-keyring</b>(7).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_SPEC_USER_SESSION_KEYRING</b></p>
+
+<p style="margin-left:32%;">This specifies the
+caller&rsquo;s UID-session keyring. See
+<b>user-session-keyring</b>(7).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_SPEC_REQKEY_AUTH_KEY</b>
+(since Linux 2.6.16)</p>
+
+<p style="margin-left:32%;">This specifies the
+authorization key created by <b>request_key</b>(2) and
+passed to the process it spawns to generate a key. This key
+is available only in a <b>request-key</b>(8)-style program
+that was passed an authorization key by the kernel and
+ceases to be available once the requested key has been
+instantiated; see <b>request_key</b>(2).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_SPEC_REQUESTOR_KEYRING</b>
+(since Linux 2.6.29)</p>
+
+<p style="margin-left:32%;">This specifies the key ID for
+the <b>request_key</b>(2) destination keyring. This keyring
+is available only in a <b>request-key</b>(8)-style program
+that was passed an authorization key by the kernel and
+ceases to be available once the requested key has been
+instantiated; see <b>request_key</b>(2).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The behavior if
+the key specified in <i>arg2</i> does not exist depends on
+the value of <i>arg3</i> (cast to <i>int</i>). If
+<i>arg3</i> contains a nonzero value, then&mdash;if it is
+appropriate to do so (e.g., when looking up the user,
+user-session, or session key)&mdash;a new key is created and
+its real key ID returned as the function result. Otherwise,
+the operation fails with the error <b>ENOKEY</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If a valid key
+ID is specified in <i>arg2</i>, and the key exists, then
+this operation simply returns the key ID. If the key does
+not exist, the call fails with error <b>ENOKEY</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>search</i> permission on a keyring in order for it
+to be found.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg4</i> and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_get_keyring_ID</b>(3).</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_JOIN_SESSION_KEYRING</b>
+(since Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Replace the session keyring
+this process subscribes to with a new session keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>arg2</i>
+is NULL, an anonymous keyring with the description
+&quot;_ses&quot; is created and the process is subscribed to
+that keyring as its session keyring, displacing the previous
+session keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Otherwise,
+<i>arg2</i> (cast to <i>char&nbsp;*</i>) is treated as the
+description (name) of a keyring, and the behavior is as
+follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>If a keyring with a matching description exists, the
+process will attempt to subscribe to that keyring as its
+session keyring if possible; if that is not possible, an
+error is returned. In order to subscribe to the keyring, the
+caller must have <i>search</i> permission on the
+keyring.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>If a keyring with a matching description does not exist,
+then a new keyring with the specified description is
+created, and the process is subscribed to that keyring as
+its session keyring.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_join_session_keyring</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_UPDATE</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Update a key&rsquo;s data
+payload.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg2</i>
+argument (cast to <i>key_serial_t</i>) specifies the ID of
+the key to be updated. The <i>arg3</i> argument (cast to
+<i>void&nbsp;*</i>) points to the new payload and
+<i>arg4</i> (cast to <i>size_t</i>) contains the new payload
+size in bytes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>write</i> permission on the key specified and the
+key type must support updating.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A negatively
+instantiated key (see the description of
+<b>KEYCTL_REJECT</b>) can be positively instantiated with
+this operation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg5</i>
+argument is ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_update</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_REVOKE</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Revoke the key with the ID
+provided in <i>arg2</i> (cast to <i>key_serial_t</i>). The
+key is scheduled for garbage collection; it will no longer
+be findable, and will be unavailable for further operations.
+Further attempts to use the key will fail with the error
+<b>EKEYREVOKED</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>write</i> or <i>setattr</i> permission on the
+key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_revoke</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_CHOWN</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Change the ownership (user and
+group ID) of a key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg2</i>
+argument (cast to <i>key_serial_t</i>) contains the key ID.
+The <i>arg3</i> argument (cast to <i>uid_t</i>) contains the
+new user ID (or -1 in case the user ID shouldn&rsquo;t be
+changed). The <i>arg4</i> argument (cast to <i>gid_t</i>)
+contains the new group ID (or -1 in case the group ID
+shouldn&rsquo;t be changed).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key must
+grant the caller <i>setattr</i> permission.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For the UID to
+be changed, or for the GID to be changed to a group the
+caller is not a member of, the caller must have the
+<b>CAP_SYS_ADMIN</b> capability (see
+<b>capabilities</b>(7)).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the UID is
+to be changed, the new user must have sufficient quota to
+accept the key. The quota deduction will be removed from the
+old user to the new user should the UID be changed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg5</i>
+argument is ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_chown</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_SETPERM</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Change the permissions of the
+key with the ID provided in the <i>arg2</i> argument (cast
+to <i>key_serial_t</i>) to the permissions provided in the
+<i>arg3</i> argument (cast to <i>key_perm_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the caller
+doesn&rsquo;t have the <b>CAP_SYS_ADMIN</b> capability, it
+can change permissions only for the keys it owns. (More
+precisely: the caller&rsquo;s filesystem UID must match the
+UID of the key.)</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key must
+grant <i>setattr</i> permission to the caller
+<i>regardless</i> of the caller&rsquo;s capabilities.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The permissions
+in <i>arg3</i> specify masks of available operations for
+each of the following user categories: <i><br>
+possessor</i> (since Linux 2.6.14)</p>
+
+<p style="margin-left:32%;">This is the permission granted
+to a process that possesses the key (has it attached
+searchably to one of the process&rsquo;s keyrings); see
+<b>keyrings</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><i>user</i></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>This is the permission granted to a process whose
+filesystem UID matches the UID of the key.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><i>group</i></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>This is the permission granted to a process whose
+filesystem GID or any of its supplementary GIDs matches the
+GID of the key.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><i>other</i></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>This is the permission granted to other processes that
+do not match the <i>user</i> and <i>group</i>
+categories.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>user</i>, <i>group</i>, and <i>other</i> categories are
+exclusive: if a process matches the <i>user</i> category, it
+will not receive permissions granted in the <i>group</i>
+category; if a process matches the <i>user</i> or
+<i>group</i> category, then it will not receive permissions
+granted in the <i>other</i> category.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>possessor</i> category grants permissions that are
+cumulative with the grants from the <i>user</i>,
+<i>group</i>, or <i>other</i> category.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Each permission
+mask is eight bits in size, with only six bits currently
+used. The available permissions are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>view</i></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">This permission allows reading
+attributes of a key.</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">This permission
+is required for the <b>KEYCTL_DESCRIBE</b> operation.</p>
+
+<p style="margin-left:32%; margin-top: 1em">The permission
+bits for each category are <b>KEY_POS_VIEW</b>,
+<b>KEY_USR_VIEW</b>, <b>KEY_GRP_VIEW</b>, and
+<b>KEY_OTH_VIEW</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>read</i></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">This permission allows reading a
+key&rsquo;s payload.</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">This permission
+is required for the <b>KEYCTL_READ</b> operation.</p>
+
+<p style="margin-left:32%; margin-top: 1em">The permission
+bits for each category are <b>KEY_POS_READ</b>,
+<b>KEY_USR_READ</b>, <b>KEY_GRP_READ</b>, and
+<b>KEY_OTH_READ</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><i>write</i></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">This permission allows update or
+instantiation of a key&rsquo;s payload. For a keyring, it
+allows keys to be linked and unlinked from the keyring,</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">This permission
+is required for the <b>KEYCTL_UPDATE</b>,
+<b>KEYCTL_REVOKE</b>, <b>KEYCTL_CLEAR</b>,
+<b>KEYCTL_LINK</b>, and <b>KEYCTL_UNLINK</b> operations.</p>
+
+<p style="margin-left:32%; margin-top: 1em">The permission
+bits for each category are <b>KEY_POS_WRITE</b>,
+<b>KEY_USR_WRITE</b>, <b>KEY_GRP_WRITE</b>, and
+<b>KEY_OTH_WRITE</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>search</i></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">This permission allows keyrings
+to be searched and keys to be found. Searches can recurse
+only into nested keyrings that have <i>search</i> permission
+set.</p> </td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">This permission
+is required for the <b>KEYCTL_GET_KEYRING_ID</b>,
+<b>KEYCTL_JOIN_SESSION_KEYRING</b>, <b>KEYCTL_SEARCH</b>,
+and <b>KEYCTL_INVALIDATE</b> operations.</p>
+
+<p style="margin-left:32%; margin-top: 1em">The permission
+bits for each category are <b>KEY_POS_SEARCH</b>,
+<b>KEY_USR_SEARCH</b>, <b>KEY_GRP_SEARCH</b>, and
+<b>KEY_OTH_SEARCH</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>link</i></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">This permission allows a key or
+keyring to be linked to.</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">This permission
+is required for the <b>KEYCTL_LINK</b> and
+<b>KEYCTL_SESSION_TO_PARENT</b> operations.</p>
+
+<p style="margin-left:32%; margin-top: 1em">The permission
+bits for each category are <b>KEY_POS_LINK</b>,
+<b>KEY_USR_LINK</b>, <b>KEY_GRP_LINK</b>, and
+<b>KEY_OTH_LINK</b>.</p>
+
+<p style="margin-left:22%;"><i>setattr</i> (since Linux
+2.6.15).</p>
+
+<p style="margin-left:32%;">This permission allows a
+key&rsquo;s UID, GID, and permissions mask to be
+changed.</p>
+
+<p style="margin-left:32%; margin-top: 1em">This permission
+is required for the <b>KEYCTL_REVOKE</b>,
+<b>KEYCTL_CHOWN</b>, and <b>KEYCTL_SETPERM</b>
+operations.</p>
+
+<p style="margin-left:32%; margin-top: 1em">The permission
+bits for each category are <b>KEY_POS_SETATTR</b>,
+<b>KEY_USR_SETATTR</b>, <b>KEY_GRP_SETATTR</b>, and
+<b>KEY_OTH_SETATTR</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As a
+convenience, the following macros are defined as masks for
+all of the permission bits in each of the user categories:
+<b>KEY_POS_ALL</b>, <b>KEY_USR_ALL</b>, <b>KEY_GRP_ALL</b>,
+and <b>KEY_OTH_ALL</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg4</i>
+and <i>arg5</i> arguments are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_setperm</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_DESCRIBE</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Obtain a string describing the
+attributes of a specified key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key to be described is specified in <i>arg2</i> (cast to
+<i>key_serial_t</i>). The descriptive string is returned in
+the buffer pointed to by <i>arg3</i> (cast to
+<i>char&nbsp;*</i>); <i>arg4</i> (cast to <i>size_t</i>)
+specifies the size of that buffer in bytes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key must
+grant the caller <i>view</i> permission.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The returned
+string is null-terminated and contains the following
+information about the key:</p>
+
+
+<p style="margin-left:28%; margin-top: 1em"><i>type</i>;<i>uid</i>;<i>gid</i>;<i>perm</i>;<i>description</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">In the above,
+<i>type</i> and <i>description</i> are strings, <i>uid</i>
+and <i>gid</i> are decimal strings, and <i>perm</i> is a
+hexadecimal permissions mask. The descriptive string is
+written with the following format:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">%s;%d;%d;%08x;%s</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note: the
+intention is that the descriptive string should be
+extensible in future kernel versions</b>. In particular, the
+<i>description</i> field will not contain semicolons; it
+should be parsed by working backwards from the end of the
+string to find the last semicolon. This allows future
+semicolon-delimited fields to be inserted in the descriptive
+string in the future.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Writing to the
+buffer is attempted only when <i>arg3</i> is non-NULL and
+the specified buffer size is large enough to accept the
+descriptive string (including the terminating null byte). In
+order to determine whether the buffer size was too small,
+check to see if the return value of the operation is greater
+than <i>arg4</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg5</i>
+argument is ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_describe</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_CLEAR</b></p>
+
+<p style="margin-left:22%;">Clear the contents of (i.e.,
+unlink all keys from) a keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key (which must be of keyring type) is provided in
+<i>arg2</i> (cast to <i>key_serial_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>write</i> permission on the keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_clear</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_LINK</b> (since Linux
+2.6.10)</p>
+
+<p style="margin-left:22%;">Create a link from a keyring to
+a key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key to be
+linked is specified in <i>arg2</i> (cast to
+<i>key_serial_t</i>); the keyring is specified in
+<i>arg3</i> (cast to <i>key_serial_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If a key with
+the same type and description is already linked in the
+keyring, then that key is displaced from the keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before creating
+the link, the kernel checks the nesting of the keyrings and
+returns appropriate errors if the link would produce a cycle
+or if the nesting of keyrings would be too deep (The limit
+on the nesting of keyrings is determined by the kernel
+constant <b>KEYRING_SEARCH_MAX_DEPTH</b>, defined with the
+value 6, and is necessary to prevent overflows on the kernel
+stack when recursively searching keyrings).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>link</i> permission on the key being added and
+<i>write</i> permission on the keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg4</i> and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_link</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_UNLINK</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Unlink a key from a
+keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key to be unlinked is specified in <i>arg2</i> (cast to
+<i>key_serial_t</i>); the ID of the keyring from which it is
+to be unlinked is specified in <i>arg3</i> (cast to
+<i>key_serial_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the key is
+not currently linked into the keyring, an error results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>write</i> permission on the keyring from which the
+key is being removed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the last
+link to a key is removed, then that key will be scheduled
+for destruction.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg4</i> and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_unlink</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_SEARCH</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Search for a key in a keyring
+tree, returning its ID and optionally linking it to a
+specified keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The tree to be
+searched is specified by passing the ID of the head keyring
+in <i>arg2</i> (cast to <i>key_serial_t</i>). The search is
+performed breadth-first and recursively.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg3</i>
+and <i>arg4</i> arguments specify the key to be searched
+for: <i>arg3</i> (cast as <i>char&nbsp;*</i>) contains the
+key type (a null-terminated character string up to 32 bytes
+in size, including the terminating null byte), and
+<i>arg4</i> (cast as <i>char&nbsp;*</i>) contains the
+description of the key (a null-terminated character string
+up to 4096 bytes in size, including the terminating null
+byte).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The source
+keyring must grant <i>search</i> permission to the caller.
+When performing the recursive search, only keyrings that
+grant the caller <i>search</i> permission will be searched.
+Only keys with for which the caller has <i>search</i>
+permission can be found.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the key is
+found, its ID is returned as the function result.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the key is
+found and <i>arg5</i> (cast to <i>key_serial_t</i>) is
+nonzero, then, subject to the same constraints and rules as
+<b>KEYCTL_LINK</b>, the key is linked into the keyring whose
+ID is specified in <i>arg5</i>. If the destination keyring
+specified in <i>arg5</i> already contains a link to a key
+that has the same type and description, then that link will
+be displaced by a link to the key found by this
+operation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Instead of
+valid existing keyring IDs, the source (<i>arg2</i>) and
+destination (<i>arg5</i>) keyrings can be one of the special
+keyring IDs listed under <b>KEYCTL_GET_KEYRING_ID</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_search</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_READ</b> (since Linux
+2.6.10)</p>
+
+<p style="margin-left:22%;">Read the payload data of a
+key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key whose payload is to be read is specified in <i>arg2</i>
+(cast to <i>key_serial_t</i>). This can be the ID of an
+existing key, or any of the special key IDs listed for
+<b>KEYCTL_GET_KEYRING_ID</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The payload is
+placed in the buffer pointed by <i>arg3</i> (cast to
+<i>char&nbsp;*</i>); the size of that buffer must be
+specified in <i>arg4</i> (cast to <i>size_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The returned
+data will be processed for presentation according to the key
+type. For example, a keyring will return an array of
+<i>key_serial_t</i> entries representing the IDs of all the
+keys that are linked to it. The <i>user</i> key type will
+return its data as is. If a key type does not implement this
+function, the operation fails with the error
+<b>EOPNOTSUPP</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>arg3</i>
+is not NULL, as much of the payload data as will fit is
+copied into the buffer. On a successful return, the return
+value is always the total size of the payload data. To
+determine whether the buffer was of sufficient size, check
+to see that the return value is less than or equal to the
+value supplied in <i>arg4</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key must
+either grant the caller <i>read</i> permission, or grant the
+caller <i>search</i> permission when searched for from the
+process keyrings (i.e., the key is possessed).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg5</i>
+argument is ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_read</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_INSTANTIATE</b>
+(since Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">(Positively) instantiate an
+uninstantiated key with a specified payload.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key to be instantiated is provided in <i>arg2</i> (cast to
+<i>key_serial_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key payload
+is specified in the buffer pointed to by <i>arg3</i> (cast
+to <i>void&nbsp;*</i>); the size of that buffer is specified
+in <i>arg4</i> (cast to <i>size_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The payload may
+be a NULL pointer and the buffer size may be 0 if this is
+supported by the key type (e.g., it is a keyring).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The operation
+may be fail if the payload data is in the wrong format or is
+otherwise invalid.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>arg5</i>
+(cast to <i>key_serial_t</i>) is nonzero, then, subject to
+the same constraints and rules as <b>KEYCTL_LINK</b>, the
+instantiated key is linked into the keyring whose ID
+specified in <i>arg5</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have the appropriate authorization key, and once the
+uninstantiated key has been instantiated, the authorization
+key is revoked. In other words, this operation is available
+only from a <b>request-key</b>(8)-style program. See
+<b>request_key</b>(2) for an explanation of uninstantiated
+keys and key instantiation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_instantiate</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_NEGATE</b> (since
+Linux 2.6.10)</p>
+
+<p style="margin-left:22%;">Negatively instantiate an
+uninstantiated key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is equivalent to the call:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">keyctl(KEYCTL_REJECT,
+arg2, arg3, ENOKEY, arg4);</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg5</i>
+argument is ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_negate</b>(3).</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_SET_REQKEY_KEYRING</b>
+(since Linux 2.6.13)</p>
+
+<p style="margin-left:22%;">Set the default keyring to
+which implicitly requested keys will be linked for this
+thread, and return the previous setting. Implicit key
+requests are those made by internal kernel components, such
+as can occur when, for example, opening files on an AFS or
+NFS filesystem. Setting the default keyring also has an
+effect when requesting a key from user space; see
+<b>request_key</b>(2) for details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg2</i>
+argument (cast to <i>int</i>) should contain one of the
+following values, to specify the new default keyring:
+<b><br>
+KEY_REQKEY_DEFL_NO_CHANGE</b></p>
+
+<p style="margin-left:32%;">Don&rsquo;t change the default
+keyring. This can be used to discover the current default
+keyring (without changing it).</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_DEFAULT</b></p>
+
+<p style="margin-left:32%;">This selects the default
+behaviour, which is to use the thread-specific keyring if
+there is one, otherwise the process-specific keyring if
+there is one, otherwise the session keyring if there is one,
+otherwise the UID-specific session keyring, otherwise the
+user-specific keyring.</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_THREAD_KEYRING</b></p>
+
+<p style="margin-left:32%;">Use the thread-specific keyring
+(<b>thread-keyring</b>(7)) as the new default keyring.</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_PROCESS_KEYRING</b></p>
+
+<p style="margin-left:32%;">Use the process-specific
+keyring (<b>process-keyring</b>(7)) as the new default
+keyring.</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_SESSION_KEYRING</b></p>
+
+<p style="margin-left:32%;">Use the session-specific
+keyring (<b>session-keyring</b>(7)) as the new default
+keyring.</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_USER_KEYRING</b></p>
+
+<p style="margin-left:32%;">Use the UID-specific keyring
+(<b>user-keyring</b>(7)) as the new default keyring.</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_USER_SESSION_KEYRING</b></p>
+
+<p style="margin-left:32%;">Use the UID-specific session
+keyring (<b>user-session-keyring</b>(7)) as the new default
+keyring.</p>
+
+
+<p style="margin-left:22%;"><b>KEY_REQKEY_DEFL_REQUESTOR_KEYRING</b>
+(since Linux 2.6.29)</p>
+
+<p style="margin-left:32%;">Use the requestor keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">All other
+values are invalid.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The setting
+controlled by this operation is inherited by the child of
+<b>fork</b>(2) and preserved across <b>execve</b>(2).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_set_reqkey_keyring</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_SET_TIMEOUT</b>
+(since Linux 2.6.16)</p>
+
+<p style="margin-left:22%;">Set a timeout on a key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key is specified in <i>arg2</i> (cast to
+<i>key_serial_t</i>). The timeout value, in seconds from the
+current time, is specified in <i>arg3</i> (cast to
+<i>unsigned int</i>). The timeout is measured against the
+realtime clock.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specifying the
+timeout value as 0 clears any existing timeout on the
+key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>/proc/keys</i> file displays the remaining time until
+each key will expire. (This is the only method of
+discovering the timeout on a key.)</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+either have the <i>setattr</i> permission on the key or hold
+an instantiation authorization token for the key (see
+<b>request_key</b>(2)).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The key and any
+links to the key will be automatically garbage collected
+after the timeout expires. Subsequent attempts to access the
+key will then fail with the error <b>EKEYEXPIRED</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+cannot be used to set timeouts on revoked, expired, or
+negatively instantiated keys.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg4</i> and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_set_timeout</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_ASSUME_AUTHORITY</b>
+(since Linux 2.6.16)</p>
+
+<p style="margin-left:22%;">Assume (or divest) the
+authority for the calling thread to instantiate a key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg2</i>
+argument (cast to <i>key_serial_t</i>) specifies either a
+nonzero key ID to assume authority, or the value 0 to divest
+authority.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>arg2</i>
+is nonzero, then it specifies the ID of an uninstantiated
+key for which authority is to be assumed. That key can then
+be instantiated using one of <b>KEYCTL_INSTANTIATE</b>,
+<b>KEYCTL_INSTANTIATE_IOV</b>, <b>KEYCTL_REJECT</b>, or
+<b>KEYCTL_NEGATE</b>. Once the key has been instantiated,
+the thread is automatically divested of authority to
+instantiate the key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Authority over
+a key can be assumed only if the calling thread has present
+in its keyrings the authorization key that is associated
+with the specified key. (In other words, the
+<b>KEYCTL_ASSUME_AUTHORITY</b> operation is available only
+from a <b>request-key</b>(8)-style program; see
+<b>request_key</b>(2) for an explanation of how this
+operation is used.) The caller must have <i>search</i>
+permission on the authorization key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the
+specified key has a matching authorization key, then the ID
+of that key is returned. The authorization key can be read
+(<b>KEYCTL_READ</b>) to obtain the callout information
+passed to <b>request_key</b>(2).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the ID given
+in <i>arg2</i> is 0, then the currently assumed authority is
+cleared (divested), and the value 0 is returned.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>KEYCTL_ASSUME_AUTHORITY</b> mechanism allows a program
+such as <b>request-key</b>(8) to assume the necessary
+authority to instantiate a new uninstantiated key that was
+created as a consequence of a call to <b>request_key</b>(2).
+For further information, see <b>request_key</b>(2) and the
+kernel source file
+<i>Documentation/security/keys-request-key.txt</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_assume_authority</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_GET_SECURITY</b>
+(since Linux 2.6.26)</p>
+
+<p style="margin-left:22%;">Get the LSM (Linux Security
+Module) security label of the specified key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key whose security label is to be fetched is specified in
+<i>arg2</i> (cast to <i>key_serial_t</i>). The security
+label (terminated by a null byte) will be placed in the
+buffer pointed to by <i>arg3</i> argument (cast to
+<i>char&nbsp;*</i>); the size of the buffer must be provided
+in <i>arg4</i> (cast to <i>size_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>arg3</i>
+is specified as NULL or the buffer size specified in
+<i>arg4</i> is too small, the full size of the security
+label string (including the terminating null byte) is
+returned as the function result, and nothing is copied to
+the buffer.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>view</i> permission on the specified key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The returned
+security label string will be rendered in a form appropriate
+to the LSM in force. For example, with SELinux, it may look
+like:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023</p>
+
+<p style="margin-left:22%; margin-top: 1em">If no LSM is
+currently in force, then an empty string is placed in the
+buffer.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg5</i>
+argument is ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the functions
+<b>keyctl_get_security</b>(3) and
+<b>keyctl_get_security_alloc</b>(3).</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_SESSION_TO_PARENT</b>
+(since Linux 2.6.32)</p>
+
+<p style="margin-left:22%;">Replace the session keyring to
+which the <i>parent</i> of the calling process subscribes
+with the session keyring of the calling process.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The keyring
+will be replaced in the parent process at the point where
+the parent next transitions from kernel space to user
+space.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The keyring
+must exist and must grant the caller <i>link</i> permission.
+The parent process must be single-threaded and have the same
+effective ownership as this process and must not be
+set-user-ID or set-group-ID. The UID of the parent
+process&rsquo;s existing session keyring (f it has one), as
+well as the UID of the caller&rsquo;s session keyring much
+match the caller&rsquo;s effective UID.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The fact that
+it is the parent process that is affected by this operation
+allows a program such as the shell to start a child process
+that uses this operation to change the shell&rsquo;s session
+keyring. (This is what the <b>keyctl</b>(1)
+<b>new_session</b> command does.)</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg2</i>, <i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are
+ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_session_to_parent</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_REJECT</b> (since
+Linux 2.6.39)</p>
+
+<p style="margin-left:22%;">Mark a key as negatively
+instantiated and set an expiration timer on the key. This
+operation provides a superset of the functionality of the
+earlier <b>KEYCTL_NEGATE</b> operation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key that is to be negatively instantiated is specified in
+<i>arg2</i> (cast to <i>key_serial_t</i>). The <i>arg3</i>
+(cast to <i>unsigned int</i>) argument specifies the
+lifetime of the key, in seconds. The <i>arg4</i> argument
+(cast to <i>unsigned int</i>) specifies the error to be
+returned when a search hits this key; typically, this is one
+of <b>EKEYREJECTED</b>, <b>EKEYREVOKED</b>, or
+<b>EKEYEXPIRED</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>arg5</i>
+(cast to <i>key_serial_t</i>) is nonzero, then, subject to
+the same constraints and rules as <b>KEYCTL_LINK</b>, the
+negatively instantiated key is linked into the keyring whose
+ID is specified in <i>arg5</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have the appropriate authorization key. In other words, this
+operation is available only from a
+<b>request-key</b>(8)-style program. See
+<b>request_key</b>(2).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have the appropriate authorization key, and once the
+uninstantiated key has been instantiated, the authorization
+key is revoked. In other words, this operation is available
+only from a <b>request-key</b>(8)-style program. See
+<b>request_key</b>(2) for an explanation of uninstantiated
+keys and key instantiation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_reject</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_INSTANTIATE_IOV</b>
+(since Linux 2.6.39)</p>
+
+<p style="margin-left:22%;">Instantiate an uninstantiated
+key with a payload specified via a vector of buffers.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is the same as <b>KEYCTL_INSTANTIATE</b>, but the payload
+data is specified as an array of <i>iovec</i>
+structures:</p>
+
+<p style="margin-left:28%; margin-top: 1em">struct iovec {
+<br>
+void *iov_base; /* Starting address of buffer */ <br>
+size_t iov_len; /* Size of buffer (in bytes) */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">The pointer to
+the payload vector is specified in <i>arg3</i> (cast as
+<i>const struct iovec&nbsp;*</i>). The number of items in
+the vector is specified in <i>arg4</i> (cast as <i>unsigned
+int</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg2</i>
+(key ID) and <i>arg5</i> (keyring ID) are interpreted as for
+<b>KEYCTL_INSTANTIATE</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_instantiate_iov</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_INVALIDATE</b> (since
+Linux 3.5)</p>
+
+<p style="margin-left:22%;">Mark a key as invalid.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The ID of the
+key to be invalidated is specified in <i>arg2</i> (cast to
+<i>key_serial_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">To invalidate a
+key, the caller must have <i>search</i> permission on the
+key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+marks the key as invalid and schedules immediate garbage
+collection. The garbage collector removes the invalidated
+key from all keyrings and deletes the key when its reference
+count reaches zero. After this operation, the key will be
+ignored by all searches, even if it is not yet deleted.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Keys that are
+marked invalid become invisible to normal key operations
+immediately, though they are still visible in
+<i>/proc/keys</i> (marked with an &rsquo;i&rsquo; flag)
+until they are actually removed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg3</i>, <i>arg4</i>, and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_invalidate</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_GET_PERSISTENT</b>
+(since Linux 3.13)</p>
+
+<p style="margin-left:22%;">Get the persistent keyring
+(<b>persistent-keyring</b>(7)) for a specified user and link
+it to a specified keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The user ID is
+specified in <i>arg2</i> (cast to <i>uid_t</i>). If the
+value -1 is specified, the caller&rsquo;s real user ID is
+used. The ID of the destination keyring is specified in
+<i>arg3</i> (cast to <i>key_serial_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have the <b>CAP_SETUID</b> capability in its user namespace
+in order to fetch the persistent keyring for a user ID that
+does not match either the real or effective user ID of the
+caller.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the call is
+successful, a link to the persistent keyring is added to the
+keyring whose ID was specified in <i>arg3</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The caller must
+have <i>write</i> permission on the keyring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The persistent
+keyring will be created by the kernel if it does not yet
+exist.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Each time the
+<b>KEYCTL_GET_PERSISTENT</b> operation is performed, the
+persistent keyring will have its expiration timeout reset to
+the value in:</p>
+
+
+<p style="margin-left:28%; margin-top: 1em">/proc/sys/kernel/keys/persistent_keyring_expiry</p>
+
+<p style="margin-left:22%; margin-top: 1em">Should the
+timeout be reached, the persistent keyring will be removed
+and everything it pins can then be garbage collected.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Persistent
+keyrings were added to Linux in kernel version 3.13.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The arguments
+<i>arg4</i> and <i>arg5</i> are ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> via the function
+<b>keyctl_get_persistent</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_DH_COMPUTE</b> (since
+Linux 4.7)</p>
+
+<p style="margin-left:22%;">Compute a Diffie-Hellman shared
+secret or public key, optionally applying key derivation
+function (KDF) to the result.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg2</i>
+argument is a pointer to a set of parameters containing
+serial numbers for three <i>&quot;user&quot;</i> keys used
+in the Diffie-Hellman calculation, packaged in a structure
+of the following form:</p>
+
+<p style="margin-left:28%; margin-top: 1em">struct
+keyctl_dh_params { <br>
+int32_t private; /* The local private key */ <br>
+int32_t prime; /* The prime, known to both parties */ <br>
+int32_t base; /* The base integer: either a shared <br>
+generator or the remote public key */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">Each of the
+three keys specified in this structure must grant the caller
+<i>read</i> permission. The payloads of these keys are used
+to calculate the Diffie-Hellman result as:</p>
+
+<p style="margin-left:22%; margin-top: 1em">base ^ private
+mod prime</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the base is
+the shared generator, the result is the local public key. If
+the base is the remote public key, the result is the shared
+secret.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>arg3</i>
+argument (cast to <i>char&nbsp;*</i>) points to a buffer
+where the result of the calculation is placed. The size of
+that buffer is specified in <i>arg4</i> (cast to
+<i>size_t</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The buffer must
+be large enough to accommodate the output data, otherwise an
+error is returned. If <i>arg4</i> is specified zero, in
+which case the buffer is not used and the operation returns
+the minimum required buffer size (i.e., the length of the
+prime).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Diffie-Hellman
+computations can be performed in user space, but require a
+multiple-precision integer (MPI) library. Moving the
+implementation into the kernel gives access to the kernel
+MPI implementation, and allows access to secure or
+acceleration hardware.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Adding support
+for DH computation to the <b>keyctl</b>() system call was
+considered a good fit due to the DH algorithm&rsquo;s use
+for deriving shared keys; it also allows the type of the key
+to determine which DH implementation (software or hardware)
+is appropriate.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the
+<i>arg5</i> argument is <b>NULL</b>, then the DH result
+itself is returned. Otherwise (since Linux 4.12), it is a
+pointer to a structure which specifies parameters of the KDF
+operation to be applied:</p>
+
+<p style="margin-left:28%; margin-top: 1em">struct
+keyctl_kdf_params { <br>
+char *hashname; /* Hash algorithm name */ <br>
+char *otherinfo; /* SP800-56A OtherInfo */ <br>
+__u32 otherinfolen; /* Length of otherinfo data */ <br>
+__u32 __spare[8]; /* Reserved */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>hashname</i> field is a null-terminated string which
+specifies a hash name (available in the kernel&rsquo;s
+crypto API; the list of the hashes available is rather
+tricky to observe; please refer to the
+<a href="https://www.kernel.org/doc/html/latest/crypto/architecture.html">&quot;Kernel
+Crypto API Architecture&quot;</a> documentation for the
+information regarding how hash names are constructed and
+your kernel&rsquo;s source and configuration regarding what
+ciphers and templates with type <b>CRYPTO_ALG_TYPE_SHASH</b>
+are available) to be applied to DH result in KDF
+operation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>otherinfo</i> field is an <i>OtherInfo</i> data as
+described in SP800-56A section 5.8.1.2 and is
+algorithm-specific. This data is concatenated with the
+result of DH operation and is provided as an input to the
+KDF operation. Its size is provided in the
+<i>otherinfolen</i> field and is limited by
+<b>KEYCTL_KDF_MAX_OI_LEN</b> constant that defined in
+<i>security/keys/internal.h</i> to a value of 64.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>__spare</b> field is currently unused. It was ignored
+until Linux 4.13 (but still should be user-addressable since
+it is copied to the kernel), and should contain zeros since
+Linux 4.13.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The KDF
+implementation complies with SP800-56A as well as with
+SP800-108 (the counter KDF).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This operation
+is exposed by <i>libkeyutils</i> (from version 1.5.10
+onwards) via the functions <b>keyctl_dh_compute</b>(3) and
+<b>keyctl_dh_compute_alloc</b>(3).</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_RESTRICT_KEYRING</b>
+(since Linux 4.12)</p>
+
+<p style="margin-left:22%;">Apply a key-linking restriction
+to the keyring with the ID provided in <i>arg2</i> (cast to
+<i>key_serial_t</i>). The caller must have <i>setattr</i>
+permission on the key. If <i>arg3</i> is NULL, any attempt
+to add a key to the keyring is blocked; otherwise it
+contains a pointer to a string with a key type name and
+<i>arg4</i> contains a pointer to string that describes the
+type-specific restriction. As of Linux 4.12, only the type
+&quot;asymmetric&quot; has restrictions defined: <b><br>
+builtin_trusted</b></p>
+
+<p style="margin-left:32%;">Allows only keys that are
+signed by a key linked to the built-in keyring
+(&quot;.builtin_trusted_keys&quot;).</p>
+
+
+<p style="margin-left:22%;"><b>builtin_and_secondary_trusted</b></p>
+
+<p style="margin-left:32%;">Allows only keys that are
+signed by a key linked to the secondary keyring
+(&quot;.secondary_trusted_keys&quot;) or, by extension, a
+key in a built-in keyring, as the latter is linked to the
+former.</p>
+
+
+<p style="margin-left:22%;"><b>key_or_keyring:</b><i>key</i>
+<b><br>
+key_or_keyring:</b><i>key</i><b>:chain</b></p>
+
+<p style="margin-left:32%;">If <i>key</i> specifies the ID
+of a key of type &quot;asymmetric&quot;, then only keys that
+are signed by this key are allowed.</p>
+
+<p style="margin-left:32%; margin-top: 1em">If <i>key</i>
+specifies the ID of a keyring, then only keys that are
+signed by a key linked to this keyring are allowed.</p>
+
+<p style="margin-left:32%; margin-top: 1em">If
+&quot;:chain&quot; is specified, keys that are signed by a
+keys linked to the destination keyring (that is, the keyring
+with the ID specified in the <i>arg2</i> argument) are also
+allowed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that a
+restriction can be configured only once for the specified
+keyring; once a restriction is set, it can&rsquo;t be
+overridden.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The argument
+<i>arg5</i> is ignored.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For a
+successful call, the return value depends on the operation:
+<b><br>
+KEYCTL_GET_KEYRING_ID</b></p>
+
+<p style="margin-left:22%;">The ID of the requested
+keyring.</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_JOIN_SESSION_KEYRING</b></p>
+
+<p style="margin-left:22%;">The ID of the joined session
+keyring.</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_DESCRIBE</b></p>
+
+<p style="margin-left:22%;">The size of the description
+(including the terminating null byte), irrespective of the
+provided buffer size.</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_SEARCH</b></p>
+
+<p style="margin-left:22%;">The ID of the key that was
+found.</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_READ</b></p>
+
+<p style="margin-left:22%;">The amount of data that is
+available in the key, irrespective of the provided buffer
+size.</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_SET_REQKEY_KEYRING</b></p>
+
+<p style="margin-left:22%;">The ID of the previous default
+keyring to which implicitly requested keys were linked (one
+of <b>KEY_REQKEY_DEFL_USER_*</b>).</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_ASSUME_AUTHORITY</b></p>
+
+<p style="margin-left:22%;">Either 0, if the ID given was
+0, or the ID of the authorization key matching the specified
+key, if a nonzero key ID was provided.</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_GET_SECURITY</b></p>
+
+<p style="margin-left:22%;">The size of the LSM security
+label string (including the terminating null byte),
+irrespective of the provided buffer size.</p>
+
+
+<p style="margin-left:11%;"><b>KEYCTL_GET_PERSISTENT</b></p>
+
+<p style="margin-left:22%;">The ID of the persistent
+keyring.</p>
+
+<p style="margin-left:11%;"><b>KEYCTL_DH_COMPUTE</b></p>
+
+<p style="margin-left:22%;">The number of bytes copied to
+the buffer, or, if <i>arg4</i> is 0, the required buffer
+size.</p>
+
+<p style="margin-left:11%;">All other operations</p>
+
+<p style="margin-left:22%;">Zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On error, -1 is
+returned, and <i>errno</i> is set appropriately to indicate
+the error.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EACCES</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The requested operation
+wasn&rsquo;t permitted.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EAGAIN</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> and there
+was an error during crypto module initialization.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EDEADLK</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_LINK</b> and the requested link would result in a
+cycle.</p>
+
+<p style="margin-left:11%;"><b>EDEADLK</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_RESTRICT_KEYRING</b> and the requested keyring
+restriction would result in a cycle.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EDQUOT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The key quota for the caller&rsquo;s user would be
+exceeded by creating a key or linking it to the keyring.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EEXIST</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_RESTRICT_KEYRING</b> and
+keyring provided in <i>arg2</i> argument already has a
+restriction set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> and one of
+the following has failed:</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">&bull;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%"></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">copying of the <i>struct
+keyctl_dh_params</i>, provided in the <i>arg2</i> argument,
+from user space;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>copying of the <i>struct keyctl_kdf_params</i>, provided
+in the non-NULL <i>arg5</i> argument, from user space (in
+case kernel supports performing KDF operation on DH
+operation result);</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>copying of data pointed by the <i>hashname</i> field of
+the <i>struct keyctl_kdf_params</i> from user space;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>copying of data pointed by the <i>otherinfo</i> field of
+the <i>struct keyctl_kdf_params</i> from user space if the
+<i>otherinfolen</i> field was nonzero;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>copying of the result to user space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>operation</i>
+was <b>KEYCTL_SETPERM</b> and an invalid permission bit was
+specified in <i>arg3</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>operation</i> was
+<b>KEYCTL_SEARCH</b> and the size of the description in
+<i>arg4</i> (including the terminating null byte) exceeded
+4096 bytes. size of the string (including the terminating
+null byte) specified in <i>arg3</i> (the key type) or
+<i>arg4</i> (the key description) exceeded the limit (32
+bytes and 4096 bytes respectively).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EINVAL</b> (Linux kernels
+before 4.12)</p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_DH_COMPUTE</b>, argument <i>arg5</i> was
+non-NULL.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> And the
+digest size of the hashing algorithm supplied is zero.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> and the
+buffer size provided is not enough to hold the result.
+Provide 0 as a buffer size in order to obtain the minimum
+buffer size.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> and the
+hash name provided in the <i>hashname</i> field of the
+<i>struct keyctl_kdf_params</i> pointed by <i>arg5</i>
+argument is too big (the limit is implementation-specific
+and varies between kernel versions, but it is deemed big
+enough for all valid algorithm names).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> and the
+<i>__spare</i> field of the <i>struct keyctl_kdf_params</i>
+provided in the <i>arg5</i> argument contains nonzero
+values.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EKEYEXPIRED</b></p>
+
+<p style="margin-left:22%;">An expired key was found or
+specified.</p>
+
+<p style="margin-left:11%;"><b>EKEYREJECTED</b></p>
+
+<p style="margin-left:22%;">A rejected key was found or
+specified.</p>
+
+<p style="margin-left:11%;"><b>EKEYREVOKED</b></p>
+
+<p style="margin-left:22%;">A revoked key was found or
+specified.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>ELOOP</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_LINK</b> and the
+requested link would cause the maximum nesting depth for
+keyrings to be exceeded.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EMSGSIZE</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_DH_COMPUTE</b> and the buffer length exceeds
+<b>KEYCTL_KDF_MAX_OUTPUT_LEN</b> (which is 1024 currently)
+or the <i>otherinfolen</i> field of the <i>struct
+keyctl_kdf_parms</i> passed in <i>arg5</i> exceeds
+<b>KEYCTL_KDF_MAX_OI_LEN</b> (which is 64 currently).</p>
+
+<p style="margin-left:11%;"><b>ENFILE</b> (Linux kernels
+before 3.13)</p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_LINK</b> and the keyring is full. (Before Linux
+3.13, the available space for storing keyring links was
+limited to a single page of memory; since Linux 3.13, there
+is no fixed limit.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOENT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_UNLINK</b> and the key to
+be unlinked isn&rsquo;t linked to the keyring.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOENT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_DH_COMPUTE</b> and the
+hashing algorithm specified in the <i>hashname</i> field of
+the <i>struct keyctl_kdf_params</i> pointed by <i>arg5</i>
+argument hasn&rsquo;t been found.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOENT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_RESTRICT_KEYRING</b> and
+the type provided in <i>arg3</i> argument doesn&rsquo;t
+support setting key linking restrictions.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOKEY</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>No matching key was found or an invalid key was
+specified.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOKEY</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The value <b>KEYCTL_GET_KEYRING_ID</b> was specified in
+<i>operation</i>, the key specified in <i>arg2</i> did not
+exist, and <i>arg3</i> was zero (meaning don&rsquo;t create
+the key if it didn&rsquo;t exist).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>One of kernel memory allocation routines failed during
+the execution of the syscall.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENOTDIR</b></p>
+
+<p style="margin-left:22%;">A key of keyring type was
+expected but the ID of a key with a different type was
+provided.</p>
+
+<p style="margin-left:11%;"><b>EOPNOTSUPP</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_READ</b> and the key type does not support reading
+(e.g., the type is <i>&quot;login&quot;</i>).</p>
+
+<p style="margin-left:11%;"><b>EOPNOTSUPP</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_UPDATE</b> and the key type does not support
+updating.</p>
+
+<p style="margin-left:11%;"><b>EOPNOTSUPP</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_RESTRICT_KEYRING</b>, the type provided in
+<i>arg3</i> argument was &quot;asymmetric&quot;, and the key
+specified in the restriction specification provided in
+<i>arg4</i> has type other than &quot;asymmetric&quot; or
+&quot;keyring&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_GET_PERSISTENT</b>,
+<i>arg2</i> specified a UID other than the calling
+thread&rsquo;s real or effective UID, and the caller did not
+have the <b>CAP_SETUID</b> capability.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>operation</i> was <b>KEYCTL_SESSION_TO_PARENT</b> and
+either: all of the UIDs (GIDs) of the parent process do not
+match the effective UID (GID) of the calling process; the
+UID of the parent&rsquo;s existing session keyring or the
+UID of the caller&rsquo;s session keyring did not match the
+effective UID of the caller; the parent process is not
+single-thread; or the parent process is <b>init</b>(1) or a
+kernel thread.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ETIMEDOUT</b></p>
+
+<p style="margin-left:22%;"><i>operation</i> was
+<b>KEYCTL_DH_COMPUTE</b> and the initialization of crypto
+modules has timed out.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This system
+call first appeared in Linux 2.6.10.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This system
+call is a nonstandard Linux extension.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">No wrapper for
+this system call is provided in glibc. A wrapper is provided
+in the <i>libkeyutils</i> library. When employing the
+wrapper in that library, link with <i>-lkeyutils</i>.
+However, rather than using this system call directly, you
+probably want to use the various library functions mentioned
+in the descriptions of individual operations above.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+below provide subset of the functionality of the
+<b>request-key</b>(8) program provided by the
+<i>keyutils</i> package. For informational purposes, the
+program records various information in a log file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As described in
+<b>request_key</b>(2), the <b>request-key</b>(8) program is
+invoked with command-line arguments that describe a key that
+is to be instantiated. The example program fetches and logs
+these arguments. The program assumes authority to
+instantiate the requested key, and then instantiates that
+key.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+shell session demonstrates the use of this program. In the
+session, we compile the program and then use it to
+temporarily replace the standard <b>request-key</b>(8)
+program. (Note that temporarily disabling the standard
+<b>request-key</b>(8) program may not be safe on some
+systems.) While our example program is installed, we use the
+example program shown in <b>request_key</b>(2) to request a
+key.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cc -o
+key_instantiate key_instantiate.c -lkeyutils</b> <br>
+$ <b>sudo mv /sbin/request-key /sbin/request-key.backup</b>
+<br>
+$ <b>sudo cp key_instantiate /sbin/request-key</b> <br>
+$ <b>./t_request_key user mykey somepayloaddata</b> <br>
+Key ID is 20d035bf <br>
+$ <b>sudo mv /sbin/request-key.backup
+/sbin/request-key</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Looking at the
+log file created by this program, we can see the
+command-line arguments supplied to our example program:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cat
+/tmp/key_instantiate.log</b> <br>
+Time: Mon Nov 7 13:06:47 2016</p>
+
+<p style="margin-left:17%; margin-top: 1em">Command line
+arguments: <br>
+argv[0]: /sbin/request-key <br>
+operation: create <br>
+key_to_instantiate: 20d035bf <br>
+UID: 1000 <br>
+GID: 1000 <br>
+thread_keyring: 0 <br>
+process_keyring: 0 <br>
+session_keyring: 256e6a6</p>
+
+<p style="margin-left:17%; margin-top: 1em">Key
+description: user;1000;1000;3f010000;mykey <br>
+Auth key payload: somepayloaddata <br>
+Destination keyring: 256e6a6 <br>
+Auth key description:
+.request_key_auth;1000;1000;0b010000;20d035bf</p>
+
+<p style="margin-left:11%; margin-top: 1em">The last few
+lines of the above output show that the example program was
+able to fetch:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>the description of the key to be instantiated, which
+included the name of the key (<i>mykey</i>);</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>the payload of the authorization key, which consisted of
+the data (<i>somepayloaddata</i>) passed to
+<b>request_key</b>(2);</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>the destination keyring that was specified in the call
+to <b>request_key</b>(2); and</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>the description of the authorization key, where we can
+see that the name of the authorization key matches the ID of
+the key that is to be instantiated (<i>20d035bf</i>).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The example
+program in <b>request_key</b>(2) specified the destination
+keyring as <b>KEY_SPEC_SESSION_KEYRING</b>. By examining the
+contents of <i>/proc/keys</i>, we can see that this was
+translated to the ID of the destination keyring
+(<i>0256e6a6</i>) shown in the log output above; we can also
+see the newly created key with the name <i>mykey</i> and ID
+<i>20d035bf</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cat
+/proc/keys | egrep 'mykey|256e6a6'</b> <br>
+0256e6a6 I--Q--- 194 perm 3f030000 1000 1000 keyring _ses: 3
+<br>
+20d035bf I--Q--- 1 perm 3f010000 1000 1000 user mykey:
+16</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+source</b> <br>
+/* key_instantiate.c */</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;sys/types.h&gt; <br>
+#include &lt;keyutils.h&gt; <br>
+#include &lt;time.h&gt; <br>
+#include &lt;fcntl.h&gt; <br>
+#include &lt;stdint.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;unistd.h&gt; <br>
+#include &lt;string.h&gt; <br>
+#include &lt;errno.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#ifndef
+KEY_SPEC_REQUESTOR_KEYRING <br>
+#define KEY_SPEC_REQUESTOR_KEYRING -8 <br>
+#endif</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+FILE *fp; <br>
+time_t t; <br>
+char *operation; <br>
+key_serial_t key_to_instantiate, dest_keyring; <br>
+key_serial_t thread_keyring, process_keyring,
+session_keyring; <br>
+uid_t uid; <br>
+gid_t gid; <br>
+char dbuf[256]; <br>
+char auth_key_payload[256]; <br>
+int akp_size; /* Size of auth_key_payload */ <br>
+int auth_key;</p>
+
+<p style="margin-left:11%; margin-top: 1em">fp =
+fopen(&quot;/tmp/key_instantiate.log&quot;, &quot;w&quot;);
+<br>
+if (fp == NULL) <br>
+exit(EXIT_FAILURE);</p>
+
+<p style="margin-left:11%; margin-top: 1em">setbuf(fp,
+NULL);</p>
+
+<p style="margin-left:11%; margin-top: 1em">t = time(NULL);
+<br>
+fprintf(fp, &quot;Time: %s\n&quot;, ctime(&amp;t));</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* The kernel passes a fixed set of arguments to the program
+<br>
+* that it execs; fetch them. <br>
+*/ <br>
+operation = argv[1]; <br>
+key_to_instantiate = atoi(argv[2]); <br>
+uid = atoi(argv[3]); <br>
+gid = atoi(argv[4]); <br>
+thread_keyring = atoi(argv[5]); <br>
+process_keyring = atoi(argv[6]); <br>
+session_keyring = atoi(argv[7]);</p>
+
+<p style="margin-left:11%; margin-top: 1em">fprintf(fp,
+&quot;Command line arguments:\n&quot;); <br>
+fprintf(fp, &quot; argv[0]: %s\n&quot;, argv[0]); <br>
+fprintf(fp, &quot; operation: %s\n&quot;, operation); <br>
+fprintf(fp, &quot; key_to_instantiate: %jx\n&quot;, <br>
+(uintmax_t) key_to_instantiate); <br>
+fprintf(fp, &quot; UID: %jd\n&quot;, (intmax_t) uid); <br>
+fprintf(fp, &quot; GID: %jd\n&quot;, (intmax_t) gid); <br>
+fprintf(fp, &quot; thread_keyring: %jx\n&quot;, <br>
+(uintmax_t) thread_keyring); <br>
+fprintf(fp, &quot; process_keyring: %jx\n&quot;, <br>
+(uintmax_t) process_keyring); <br>
+fprintf(fp, &quot; session_keyring: %jx\n&quot;, <br>
+(uintmax_t) session_keyring); <br>
+fprintf(fp, &quot;\n&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* Assume the authority to instantiate the key named in
+argv[2] <br>
+*/ <br>
+if (keyctl(KEYCTL_ASSUME_AUTHORITY, key_to_instantiate) ==
+-1) { <br>
+fprintf(fp, &quot;KEYCTL_ASSUME_AUTHORITY failed:
+%s\n&quot;, <br>
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* Fetch the description of the key that is to be
+instantiated <br>
+*/ <br>
+if (keyctl(KEYCTL_DESCRIBE, key_to_instantiate, <br>
+dbuf, sizeof(dbuf)) == -1) { <br>
+fprintf(fp, &quot;KEYCTL_DESCRIBE failed: %s\n&quot;,
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">fprintf(fp,
+&quot;Key description: %s\n&quot;, dbuf);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* Fetch the payload of the authorization key, which is <br>
+* actually the callout data given to request_key() <br>
+*/ <br>
+akp_size = keyctl(KEYCTL_READ, KEY_SPEC_REQKEY_AUTH_KEY,
+<br>
+auth_key_payload, sizeof(auth_key_payload)); <br>
+if (akp_size == -1) { <br>
+fprintf(fp, &quot;KEYCTL_READ failed: %s\n&quot;,
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">auth_key_payload[akp_size]
+= '\0'; <br>
+fprintf(fp, &quot;Auth key payload: %s\n&quot;,
+auth_key_payload);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* For interest, get the ID of the authorization key and <br>
+* display it. <br>
+*/ <br>
+auth_key = keyctl(KEYCTL_GET_KEYRING_ID, <br>
+KEY_SPEC_REQKEY_AUTH_KEY); <br>
+if (auth_key == -1) { <br>
+fprintf(fp, &quot;KEYCTL_GET_KEYRING_ID failed: %s\n&quot;,
+<br>
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">fprintf(fp,
+&quot;Auth key ID: %jx\n&quot;, (uintmax_t) auth_key);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* Fetch key ID for the request_key(2) destination keyring.
+<br>
+*/ <br>
+dest_keyring = keyctl(KEYCTL_GET_KEYRING_ID, <br>
+KEY_SPEC_REQUESTOR_KEYRING); <br>
+if (dest_keyring == -1) { <br>
+fprintf(fp, &quot;KEYCTL_GET_KEYRING_ID failed: %s\n&quot;,
+<br>
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">fprintf(fp,
+&quot;Destination keyring: %jx\n&quot;, (uintmax_t)
+dest_keyring);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* Fetch the description of the authorization key. This <br>
+* allows us to see the key type, UID, GID, permissions, <br>
+* and description (name) of the key. Among other things,
+<br>
+* we will see that the name of the key is a hexadecimal <br>
+* string representing the ID of the key to be instantiated.
+<br>
+*/ <br>
+if (keyctl(KEYCTL_DESCRIBE, KEY_SPEC_REQKEY_AUTH_KEY, <br>
+dbuf, sizeof(dbuf)) == -1) { <br>
+fprintf(fp, &quot;KEYCTL_DESCRIBE failed: %s\n&quot;,
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">fprintf(fp,
+&quot;Auth key description: %s\n&quot;, dbuf);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* <br>
+* Instantiate the key using the callout data that was
+supplied <br>
+* in the payload of the authorization key. <br>
+*/ <br>
+if (keyctl(KEYCTL_INSTANTIATE, key_to_instantiate, <br>
+auth_key_payload, akp_size + 1, dest_keyring) == -1) { <br>
+fprintf(fp, &quot;KEYCTL_INSTANTIATE failed: %s\n&quot;,
+<br>
+strerror(errno)); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">exit(EXIT_SUCCESS);
+<br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>keyctl</b>(1),
+<b>add_key</b>(2), <b>request_key</b>(2), <b>keyctl</b>(3),
+<b>keyctl_assume_authority</b>(3), <b>keyctl_chown</b>(3),
+<b>keyctl_clear</b>(3), <b>keyctl_describe</b>(3),
+<b>keyctl_describe_alloc</b>(3),
+<b>keyctl_dh_compute</b>(3),
+<b>keyctl_dh_compute_alloc</b>(3),
+<b>keyctl_get_keyring_ID</b>(3),
+<b>keyctl_get_persistent</b>(3),
+<b>keyctl_get_security</b>(3),
+<b>keyctl_get_security_alloc</b>(3),
+<b>keyctl_instantiate</b>(3),
+<b>keyctl_instantiate_iov</b>(3),
+<b>keyctl_invalidate</b>(3),
+<b>keyctl_join_session_keyring</b>(3),
+<b>keyctl_link</b>(3), <b>keyctl_negate</b>(3),
+<b>keyctl_read</b>(3), <b>keyctl_read_alloc</b>(3),
+<b>keyctl_reject</b>(3), <b>keyctl_revoke</b>(3),
+<b>keyctl_search</b>(3), <b>keyctl_session_to_parent</b>(3),
+<b>keyctl_set_reqkey_keyring</b>(3),
+<b>keyctl_set_timeout</b>(3), <b>keyctl_setperm</b>(3),
+<b>keyctl_unlink</b>(3), <b>keyctl_update</b>(3),
+<b>recursive_key_scan</b>(3),
+<b>recursive_session_key_scan</b>(3),
+<b>capabilities</b>(7), <b>credentials</b>(7),
+<b>keyrings</b>(7), <b>keyutils</b>(7),
+<b>persistent-keyring</b>(7), <b>process-keyring</b>(7),
+<b>session-keyring</b>(7), <b>thread-keyring</b>(7),
+<b>user-keyring</b>(7), <b>user_namespaces</b>(7),
+<b>user-session-keyring</b>(7), <b>request-key</b>(8)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The kernel
+source files under <i>Documentation/security/keys/</i> (or,
+before Linux 4.13, in the file
+<i>Documentation/security/keys.txt</i>).</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

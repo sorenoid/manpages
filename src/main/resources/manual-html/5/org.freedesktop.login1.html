@@ -1,0 +1,1586 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:24 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ORG.FREEDESKTOP.LOGIN1</title>
+
+</head>
+<body>
+
+<h1 align="center">ORG.FREEDESKTOP.LOGIN1</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INTRODUCTION">INTRODUCTION</a><br>
+<a href="#THE MANAGER OBJECT">THE MANAGER OBJECT</a><br>
+<a href="#SEAT OBJECTS">SEAT OBJECTS</a><br>
+<a href="#USER OBJECTS">USER OBJECTS</a><br>
+<a href="#SESSION OBJECTS">SESSION OBJECTS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#VERSIONING">VERSIONING</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">org.freedesktop.login1
+- The D-Bus interface of systemd-logind</p>
+
+<h2>INTRODUCTION
+<a name="INTRODUCTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-logind.service</b>(8)
+is a system service that keeps track of user logins and
+seats.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The daemon
+provides both a C library interface as well as a D-Bus
+interface. The library interface may be used to introspect
+and watch the state of user logins and seats. The bus
+interface provides the same functionality but in addition
+may also be used to make changes to the system state. For
+more information please consult <b>sd-login</b>(3).</p>
+
+<h2>THE MANAGER OBJECT
+<a name="THE MANAGER OBJECT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The service
+exposes the following interfaces on the Manager object on
+the bus:</p>
+
+<p style="margin-left:17%; margin-top: 1em">node
+/org/freedesktop/login1 { <br>
+interface org.freedesktop.login1.Manager { <br>
+methods: <br>
+GetSession(in s session_id, <br>
+out o object_path); <br>
+GetSessionByPID(in u pid, <br>
+out o object_path); <br>
+GetUser(in u uid, <br>
+out o object_path); <br>
+GetUserByPID(in u pid, <br>
+out o object_path); <br>
+GetSeat(in s seat_id, <br>
+out o object_path); <br>
+ListSessions(out a(susso) sessions); <br>
+ListUsers(out a(uso) users); <br>
+ListSeats(out a(so) seats); <br>
+ListInhibitors(out a(ssssuu) inhibitors); <br>
+CreateSession(in u uid, <br>
+in u pid, <br>
+in s service, <br>
+in s type, <br>
+in s class, <br>
+in s desktop, <br>
+in s seat_id, <br>
+in u vtnr, <br>
+in s tty, <br>
+in s display, <br>
+in b remote, <br>
+in s remote_user, <br>
+in s remote_host, <br>
+in a(sv) properties, <br>
+out s session_id, <br>
+out o object_path, <br>
+out s runtime_path, <br>
+out h fifo_fd, <br>
+out u uid, <br>
+out s seat_id, <br>
+out u vtnr, <br>
+out b existing); <br>
+ReleaseSession(in s session_id); <br>
+ActivateSession(in s session_id); <br>
+ActivateSessionOnSeat(in s session_id, <br>
+in s seat_id); <br>
+LockSession(in s session_id); <br>
+UnlockSession(in s session_id); <br>
+LockSessions(); <br>
+UnlockSessions(); <br>
+KillSession(in s session_id, <br>
+in s who, <br>
+in i signal_number); <br>
+KillUser(in u uid, <br>
+in i signal_number); <br>
+TerminateSession(in s session_id); <br>
+TerminateUser(in u uid); <br>
+TerminateSeat(in s seat_id); <br>
+SetUserLinger(in u uid, <br>
+in b enable, <br>
+in b interactive); <br>
+AttachDevice(in s seat_id, <br>
+in s sysfs_path, <br>
+in b interactive); <br>
+FlushDevices(in b interactive); <br>
+PowerOff(in b interactive); <br>
+PowerOffWithFlags(in t flags); <br>
+Reboot(in b interactive); <br>
+RebootWithFlags(in t flags); <br>
+Halt(in b interactive); <br>
+HaltWithFlags(in t flags); <br>
+Suspend(in b interactive); <br>
+SuspendWithFlags(in t flags); <br>
+Hibernate(in b interactive); <br>
+HibernateWithFlags(in t flags); <br>
+HybridSleep(in b interactive); <br>
+HybridSleepWithFlags(in t flags); <br>
+SuspendThenHibernate(in b interactive); <br>
+SuspendThenHibernateWithFlags(in t flags); <br>
+CanPowerOff(out s result); <br>
+CanReboot(out s result); <br>
+CanHalt(out s result); <br>
+CanSuspend(out s result); <br>
+CanHibernate(out s result); <br>
+CanHybridSleep(out s result); <br>
+CanSuspendThenHibernate(out s result); <br>
+ScheduleShutdown(in s type, <br>
+in t usec); <br>
+CancelScheduledShutdown(out b cancelled); <br>
+Inhibit(in s what, <br>
+in s who, <br>
+in s why, <br>
+in s mode, <br>
+out h pipe_fd); <br>
+CanRebootParameter(out s result); <br>
+SetRebootParameter(in s parameter); <br>
+CanRebootToFirmwareSetup(out s result); <br>
+SetRebootToFirmwareSetup(in b enable); <br>
+CanRebootToBootLoaderMenu(out s result); <br>
+SetRebootToBootLoaderMenu(in t timeout); <br>
+CanRebootToBootLoaderEntry(out s result); <br>
+SetRebootToBootLoaderEntry(in s boot_loader_entry); <br>
+SetWallMessage(in s wall_message, <br>
+in b enable); <br>
+signals: <br>
+SessionNew(s session_id, <br>
+o object_path); <br>
+SessionRemoved(s session_id, <br>
+o object_path); <br>
+UserNew(u uid, <br>
+o object_path); <br>
+UserRemoved(u uid, <br>
+o object_path); <br>
+SeatNew(s seat_id, <br>
+o object_path); <br>
+SeatRemoved(s seat_id, <br>
+o object_path); <br>
+PrepareForShutdown(b start); <br>
+PrepareForSleep(b start); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+@org.freedesktop.systemd1.Privileged(&quot;true&quot;) <br>
+readwrite b EnableWallMessages = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+@org.freedesktop.systemd1.Privileged(&quot;true&quot;) <br>
+readwrite s WallMessage = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u NAutoVTs = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly as KillOnlyUsers = ['...', ...]; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly as KillExcludeUsers = ['...', ...]; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly b KillUserProcesses = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s RebootParameter = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b RebootToFirmwareSetup = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t RebootToBootLoaderMenu = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s RebootToBootLoaderEntry = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly as BootLoaderEntries = ['...', ...]; <br>
+readonly b IdleHint = ...; <br>
+readonly t IdleSinceHint = ...; <br>
+readonly t IdleSinceHintMonotonic = ...; <br>
+readonly s BlockInhibited = '...'; <br>
+readonly s DelayInhibited = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t InhibitDelayMaxUSec = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t UserStopDelayUSec = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HandlePowerKey = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HandleSuspendKey = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HandleHibernateKey = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HandleLidSwitch = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HandleLidSwitchExternalPower = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HandleLidSwitchDocked = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t HoldoffTimeoutUSec = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s IdleAction = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t IdleActionUSec = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b PreparingForShutdown = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b PreparingForSleep = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly (st) ScheduledShutdown = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b Docked = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b LidClosed = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b OnExternalPower = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly b RemoveIPC = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t RuntimeDirectorySize = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t RuntimeDirectoryInodesMax = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t InhibitorsMax = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t NCurrentInhibitors = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t SessionsMax = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t NCurrentSessions = ...; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Methods <br>
+GetSession()</b> may be used to get the session object path
+for the session with the specified ID. Similarly,
+<b>GetUser()</b> and <b>GetSeat()</b> get the user and seat
+objects, respectively. <b>GetSessionByPID()</b> and
+<b>GetUserByPID()</b> get the session/user object the
+specified PID belongs to if there is any.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListSessions()</b>
+returns an array of all current sessions. The structures in
+the array consist of the following fields: session id, user
+id, user name, seat id, session object path. If a session
+does not have a seat attached, the seat id field will be an
+empty string.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListUsers()</b>
+returns an array of all currently logged in users. The
+structures in the array consist of the following fields:
+user id, user name, user object path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListSeats()</b>
+returns an array of all currently available seats. The
+structure in the array consists of the following fields:
+seat id, seat object path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListInhibitors()</b>
+lists all currently active inhibitors. It returns an array
+of structures consisting of <i>what</i>, <i>who</i>,
+<i>why</i>, <i>mode</i>, <i>uid</i> (user ID), and
+<i>pid</i> (process ID).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CreateSession()</b>
+and <b>ReleaseSession()</b> may be used to open or close
+login sessions. These calls should <i>never</i> be invoked
+directly by clients. Creating/closing sessions is
+exclusively the job of PAM and its <b>pam_systemd</b>(8)
+module.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ActivateSession()</b>
+brings the session with the specified ID into the
+foreground. <b>ActivateSessionOnSeat()</b> does the same,
+but only if the seat id matches.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LockSession()</b>
+asks the session with the specified ID to activate the
+screen lock. <b>UnlockSession()</b> asks the session with
+the specified ID to remove an active screen lock, if there
+is any. This is implemented by sending out the Lock() and
+Unlock() signals from the respective session object which
+session managers are supposed to listen on.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LockSessions()</b>
+asks all sessions to activate their screen locks. This may
+be used to lock access to the entire machine in one action.
+Similarly, <b>UnlockSessions()</b> asks all sessions to
+deactivate their screen locks.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>KillSession()</b>
+may be used to send a Unix signal to one or all processes of
+a session. As arguments it takes the session id, either the
+string &quot;leader&quot; or &quot;all&quot; and a signal
+number. If &quot;leader&quot; is passed only the session
+&quot;leader&quot; is killed. If &quot;all&quot; is passed
+all processes of the session are killed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>KillUser()</b>
+may be used to send a Unix signal to all processes of a
+user. As arguments it takes the user id and a signal
+number.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TerminateSession()</b>,
+<b>TerminateUser()</b>, <b>TerminateSeat()</b> may be used
+to forcibly terminate one specific session, all processes of
+a user, and all sessions attached to a specific seat,
+respectively. The session, user, and seat are identified by
+their respective IDs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SetUserLinger()</b>
+enables or disables user lingering. If enabled, the runtime
+directory of a user is kept around and they may continue to
+run processes while logged out. If disabled, the runtime
+directory goes away as soon as they log out.
+<b>SetUserLinger()</b> expects three arguments: the UID, a
+boolean whether to enable/disable and a boolean controlling
+the <b><font color="#0000FF">polkit</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">authorization interactivity (see
+below). Note that the user linger state is persistently
+stored on disk.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>AttachDevice()</b>
+may be used to assign a specific device to a specific seat.
+The device is identified by its /sys/ path and must be
+eligible for seat assignments. <b>AttachDevice()</b> takes
+three arguments: the seat id, the sysfs path, and a boolean
+for controlling polkit interactivity (see below). Device
+assignments are persistently stored on disk. To create a new
+seat, simply specify a previously unused seat id. For more
+information about the seat assignment logic see
+<b>sd-login</b>(3).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>FlushDevices()</b>
+removes all explicit seat assignments for devices, resetting
+all assignments to the automatic defaults. The only argument
+it takes is the polkit interactivity boolean (see
+below).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>PowerOff()</b>,
+<b>Reboot()</b>, <b>Halt()</b>, <b>Suspend()</b>, and
+<b>Hibernate()</b> result in the system being powered off,
+rebooted, halted (shut down without turning off power),
+suspended (the system state is saved to RAM and the CPU is
+turned off), or hibernated (the system state is saved to
+disk and the machine is powered down). <b>HybridSleep()</b>
+results in the system entering a hybrid-sleep mode, i.e. the
+system is both hibernated and suspended.
+<b>SuspendThenHibernate()</b> results in the system being
+suspended, then later woken using an RTC timer and
+hibernated. The only argument is the polkit interactivity
+boolean <i>interactive</i> (see below). The main purpose of
+these calls is that they enforce polkit policy and hence
+allow powering off/rebooting/suspending/hibernating even by
+unprivileged users. They also enforce inhibition locks for
+non-privileged users. UIs should expose these calls as the
+primary mechanism to poweroff/reboot/suspend/hibernate the
+machine. Methods <b>PowerOffWithFlags()</b>,
+<b>RebootWithFlags()</b>, <b>HaltWithFlags()</b>,
+<b>SuspendWithFlags()</b>, <b>HibernateWithFlags()</b>,
+<b>HybridSleepWithFlags()</b> and
+<b>SuspendThenHibernateWithFlags()</b> add <i>flags</i> to
+allow for extendability, defined as follows:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#define
+SD_LOGIND_ROOT_CHECK_INHIBITORS (UINT64_C(1) &lt;&lt; 0)
+<br>
+#define SD_LOGIND_KEXEC_REBOOT (UINT64_C(1) &lt;&lt;
+1)</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">When
+the <i>flags</i> is 0 then these methods behave just like
+the versions without flags. When
+<b>SD_LOGIND_ROOT_CHECK_INHIBITORS</b> (0x01) is set, active
+inhibitors are honoured for privileged users too. When
+<b>SD_LOGIND_KEXEC_REBOOT</b> (0x02) is set, then
+<b>RebootWithFlags()</b> perform kexec reboot if kexec
+kernel is loaded.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetRebootParameter()</b>
+sets a parameter for a subsequent reboot operation. See the
+description of <b>reboot</b> in <b>systemctl</b>(1) and
+<b>reboot</b>(2) for more information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetRebootToFirmwareSetup()</b>,
+<b>SetRebootToBootLoaderMenu()</b>, and
+<b>SetRebootToBootLoaderEntry()</b> configure the action to
+be taken from the boot loader after a reboot: respectively
+entering firmware setup mode, the boot loader menu, or a
+specific boot loader entry. See <b>systemctl</b>(1) for the
+corresponding command line interface.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>CanPowerOff()</b>,
+<b>CanReboot()</b>, <b>CanHalt()</b>, <b>CanSuspend()</b>,
+<b>CanHibernate()</b>, <b>CanHybridSleep()</b>,
+<b>CanSuspendThenHibernate()</b>,
+<b>CanRebootParameter()</b>,
+<b>CanRebootToFirmwareSetup()</b>,
+<b>CanRebootToBootLoaderMenu()</b>, and
+<b>CanRebootToBootLoaderEntry()</b> test whether the system
+supports the respective operation and whether the calling
+user is allowed to execute it. Returns one of
+&quot;na&quot;, &quot;yes&quot;, &quot;no&quot;, and
+&quot;challenge&quot;. If &quot;na&quot; is returned, the
+operation is not available because hardware, kernel, or
+drivers do not support it. If &quot;yes&quot; is returned,
+the operation is supported and the user may execute the
+operation without further authentication. If &quot;no&quot;
+is returned, the operation is available but the user is not
+allowed to execute the operation. If &quot;challenge&quot;
+is returned, the operation is available but only after
+authorization.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>ScheduleShutdown()</b>
+schedules a shutdown operation <i>type</i> at time
+<i>usec</i> in microseconds since the UNIX epoch.
+<i>type</i> can be one of &quot;poweroff&quot;,
+&quot;dry-poweroff&quot;, &quot;reboot&quot;,
+&quot;dry-reboot&quot;, &quot;halt&quot;, and
+&quot;dry-halt&quot;. (The &quot;dry-&quot; variants do not
+actually execute the shutdown action.)
+<b>CancelScheduledShutdown()</b> cancels a scheduled
+shutdown. The output parameter <i>cancelled</i> is true if a
+shutdown operation was scheduled.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetWallMessage()</b>
+sets the wall message (the message that will be sent out to
+all terminals and stored in a <b>utmp</b>(5) record) for a
+subsequent scheduled shutdown operation. The parameter
+<i>wall_message</i> specifies the shutdown reason (and may
+be empty) which will be included in the shutdown message.
+The parameter <i>enable</i> specifies whether to print a
+wall message on shutdown.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Inhibit()</b>
+creates an inhibition lock. It takes four parameters:
+<i>what</i>, <i>who</i>, <i>why</i>, and <i>mode</i>.
+<i>what</i> is one or more of &quot;shutdown&quot;,
+&quot;sleep&quot;, &quot;idle&quot;,
+&quot;handle-power-key&quot;,
+&quot;handle-suspend-key&quot;,
+&quot;handle-hibernate-key&quot;,
+&quot;handle-lid-switch&quot;, separated by colons, for
+inhibiting poweroff/reboot, suspend/hibernate, the automatic
+idle logic, or hardware key handling. <i>who</i> should be a
+short human readable string identifying the application
+taking the lock. <i>why</i> should be a short human readable
+string identifying the reason why the lock is taken.
+Finally, <i>mode</i> is either &quot;block&quot; or
+&quot;delay&quot; which encodes whether the inhibit shall be
+consider mandatory or whether it should just delay the
+operation to a certain maximum time. The method returns a
+file descriptor. The lock is released the moment this file
+descriptor and all its duplicates are closed. For more
+information on the inhibition logic see</font>
+<b><font color="#0000FF">Inhibitor Locks</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Signals</b>
+<br>
+Whenever the inhibition state or idle hint changes,
+<b>PropertyChanged</b> signals are sent out to which clients
+can subscribe.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<b>SessionNew</b>, <b>SessionRemoved</b>, <b>UserNew</b>,
+<b>UserRemoved</b>, <b>SeatNew</b>, and <b>SeatRemoved</b>
+signals are sent each time a session is created or removed,
+a user logs in or out, or a seat is added or removed. They
+each contain the ID of the object plus the object
+path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<b>PrepareForShutdown()</b> and <b>PrepareForSleep()</b>
+signals are sent right before (with the argument
+&quot;true&quot;) or after (with the argument
+&quot;false&quot;) the system goes down for reboot/poweroff
+and suspend/hibernate, respectively. This may be used by
+applications to save data on disk, release memory, or do
+other jobs that should be done shortly before
+shutdown/sleep, in conjunction with delay inhibitor locks.
+After completion of this work they should release their
+inhibition locks in order to not delay the operation any
+further. For more information see</font>
+<b><font color="#0000FF">Inhibitor Locks</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Properties</b>
+<br>
+Most properties simply reflect the configuration, see
+<b>logind.conf</b>(5). This includes: <i>NAutoVTs</i>,
+<i>KillOnlyUsers</i>, <i>KillExcludeUsers</i>,
+<i>KillUserProcesses</i>, <i>IdleAction</i>,
+<i>InhibitDelayMaxUSec</i>, <i>InhibitorsMax</i>,
+<i>UserStopDelayUSec</i>, <i>HandlePowerKey</i>,
+<i>HandleSuspendKey</i>, <i>HandleHibernateKey</i>,
+<i>HandleLidSwitch</i>, <i>HandleLidSwitchExternalPower</i>,
+<i>HandleLidSwitchDocked</i>, <i>IdleActionUSec</i>,
+<i>HoldoffTimeoutUSec</i>, <i>RemoveIPC</i>,
+<i>RuntimeDirectorySize</i>,
+<i>RuntimeDirectoryInodesMax</i>, <i>InhibitorsMax</i>, and
+<i>SessionsMax</i>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>IdleHint</i> property reflects the idle hint state of the
+system. If the system is idle it might get into automatic
+suspend or shutdown depending on the
+configuration.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>IdleSinceHint</i>
+and <i>IdleSinceHintMonotonic</i> encode the timestamps of
+the last change of the idle hint boolean, in
+<b>CLOCK_REALTIME</b> and <b>CLOCK_MONOTONIC</b> timestamps,
+respectively, in microseconds since the epoch.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>BlockInhibited</i> and <i>DelayInhibited</i> properties
+encode the currently active locks of the respective modes.
+They are colon separated lists of &quot;shutdown&quot;,
+&quot;sleep&quot;, and &quot;idle&quot; (see
+above).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>NCurrentSessions</i>
+and <i>NCurrentInhibitors</i> contain the number of
+currently registered sessions and inhibitors.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>BootLoaderEntries</i> property contains a list of boot
+loader entries. This includes boot loader entries defined in
+configuration and any additional loader entries reported by
+the boot loader. See <b>systemd-boot</b>(7) for more
+information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>PreparingForShutdown</i> and <i>PreparingForSleep</i>
+boolean properties are true during the interval between the
+two <b>PrepareForShutdown</b> and <b>PrepareForSleep</b>
+signals respectively. Note that these properties do not send
+out <b>PropertyChanged</b> signals.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>RebootParameter</i> property shows the value set with the
+<b>SetRebootParameter()</b> method described
+above.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ScheduledShutdown</i>
+shows the value pair set with the <b>ScheduleShutdown()</b>
+method described above.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>RebootToFirmwareSetup</i>,
+<i>RebootToBootLoaderMenu</i>, and
+<i>RebootToBootLoaderEntry</i> are true when the resprective
+post-reboot operation was selected with
+<b>SetRebootToFirmwareSetup</b>,
+<b>SetRebootToBootLoaderMenu</b>, or
+<b>SetRebootToBootLoaderEntry</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>WallMessage</i> and <i>EnableWallMessages</i> properties
+reflect the shutdown reason and wall message enablement
+switch which can be set with the <b>SetWallMessage()</b>
+method described above.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Docked</i>
+is true if the machine is connected to a dock.
+<i>LidClosed</i> is true when the lid (of a laptop) is
+closed. <i>OnExternalPower</i> is true when the machine is
+connected to an external power supply.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Security</b>
+<br>
+A number of operations are protected via the polkit
+privilege system. <b>SetUserLinger()</b> requires the
+org.freedesktop.login1.set-user-linger privilege.
+<b>AttachDevice()</b> requires
+org.freedesktop.login1.attach-device and
+<b>FlushDevices()</b> requires
+org.freedesktop.login1.flush-devices. <b>PowerOff()</b>,
+<b>Reboot()</b>, <b>Halt()</b>, <b>Suspend()</b>,
+<b>Hibernate()</b> require org.freedesktop.login1.power-off,
+org.freedesktop.login1.power-off-multiple-sessions,
+org.freedesktop.login1.power-off-ignore-inhibit,
+org.freedesktop.login1.reboot,
+org.freedesktop.login1.reboot-multiple-sessions,
+org.freedesktop.login1.reboot-ignore-inhibit,
+org.freedesktop.login1.halt,
+org.freedesktop.login1.halt-multiple-sessions,
+org.freedesktop.login1.halt-ignore-inhibit,
+org.freedesktop.login1.suspend,
+org.freedesktop.login1.suspend-multiple-sessions,
+org.freedesktop.login1.suspend-ignore-inhibit,
+org.freedesktop.login1.hibernate,
+org.freedesktop.login1.hibernate-multiple-sessions,
+org.freedesktop.login1.hibernate-ignore-inhibit,
+respectively depending on whether there are other sessions
+around or active inhibits are present. <b>HybridSleep()</b>
+and <b>SuspendThenHibernate()</b> use the same privileges as
+<b>Hibernate()</b>. <b>SetRebootParameter()</b> requires
+org.freedesktop.login1.set-reboot-parameter.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetRebootToFirmwareSetup</b>
+requires
+org.freedesktop.login1.set-reboot-to-firmware-setup.
+<b>SetRebootToBootLoaderMenu</b> requires
+org.freedesktop.login1.set-reboot-to-boot-loader-menu.
+<b>SetRebootToBootLoaderEntry</b> requires
+org.freedesktop.login1.set-reboot-to-boot-loader-entry.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>ScheduleShutdown</b>
+and <b>CancelScheduledShutdown</b> require the same
+privileges (listed above) as the immediate
+poweroff/reboot/halt operations.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Inhibit()</b>
+is protected via one of
+org.freedesktop.login1.inhibit-block-shutdown,
+org.freedesktop.login1.inhibit-delay-shutdown,
+org.freedesktop.login1.inhibit-block-sleep,
+org.freedesktop.login1.inhibit-delay-sleep,
+org.freedesktop.login1.inhibit-block-idle,
+org.freedesktop.login1.inhibit-handle-power-key,
+org.freedesktop.login1.inhibit-handle-suspend-key,
+org.freedesktop.login1.inhibit-handle-hibernate-key,
+org.freedesktop.login1.inhibit-handle-lid-switch depending
+on the lock type and mode taken.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>interactive</i> boolean parameters can be used to control
+whether polkit should interactively ask the user for
+authentication credentials if required.</font></p>
+
+<h2>SEAT OBJECTS
+<a name="SEAT OBJECTS"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">node
+/org/freedesktop/login1/seat/seat0 { <br>
+interface org.freedesktop.login1.Seat { <br>
+methods: <br>
+Terminate(); <br>
+ActivateSession(in s session_id); <br>
+SwitchTo(in u vtnr); <br>
+SwitchToNext(); <br>
+SwitchToPrevious(); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Id = '...'; <br>
+readonly (so) ActiveSession = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly b CanTTY = ...; <br>
+readonly b CanGraphical = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly a(so) Sessions = [...]; <br>
+readonly b IdleHint = ...; <br>
+readonly t IdleSinceHint = ...; <br>
+readonly t IdleSinceHintMonotonic = ...; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Methods
+<br>
+Terminate()</b> and <b>ActivateSession()</b> work similar to
+TerminateSeat(), ActivationSessionOnSeat() on the Manager
+object.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SwitchTo()</b>
+switches to the session on the virtual terminal <i>vtnr</i>.
+<b>SwitchToNext()</b> and <b>SwitchToPrevious()</b> switch
+to, respectively, the next and previous sessions on the seat
+in the order of virtual terminals. If there is no active
+session, they switch to, respectively, the first and last
+session on the seat.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Signals</b>
+<br>
+Whenever <b>ActiveSession</b>, <b>Sessions</b>,
+<b>CanGraphical</b>, <b>CanTTY</b>, or the idle state
+changes, <b>PropertyChanged</b> signals are sent out to
+which clients can subscribe.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Properties</b>
+<br>
+The <i>Id</i> property encodes the ID of the
+seat.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ActiveSession</i>
+encodes the currently active session if there is one. It is
+a structure consisting of the session id and the object
+path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>CanTTY</i>
+encodes whether the session is suitable for text logins, and
+<i>CanGraphical</i> whether it is suitable for graphical
+sessions.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>Sessions</i> property is an array of all current sessions
+of this seat, each encoded in a structure consisting of the
+ID and the object path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>IdleHint</i>, <i>IdleSinceHint</i>, and
+<i>IdleSinceHintMonotonic</i> properties encode the idle
+state, similar to the ones exposed on the Manager object,
+but specific for this seat.</font></p>
+
+<h2>USER OBJECTS
+<a name="USER OBJECTS"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">node
+/org/freedesktop/login1/user/_1000 { <br>
+interface org.freedesktop.login1.User { <br>
+methods: <br>
+Terminate(); <br>
+Kill(in i signal_number); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u UID = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u GID = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Name = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t Timestamp = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t TimestampMonotonic = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s RuntimePath = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Service = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Slice = '...'; <br>
+readonly (so) Display = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s State = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly a(so) Sessions = [...]; <br>
+readonly b IdleHint = ...; <br>
+readonly t IdleSinceHint = ...; <br>
+readonly t IdleSinceHintMonotonic = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly b Linger = ...; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Methods
+<br>
+Terminate()</b> and <b>Kill()</b> work similar to the
+<b>TerminateUser()</b> and <b>KillUser()</b> methods on the
+manager object.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Signals</b>
+<br>
+Whenever <i>Sessions</i> or the idle state changes,
+<b>PropertyChanged</b> signals are sent out to which clients
+can subscribe.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Properties</b>
+<br>
+The <i>UID</i> and <i>GID</i> properties encode the Unix UID
+and primary GID of the user.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>Name</i> property encodes the user name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Timestamp</i>
+and <i>TimestampMonotonic</i> encode the login time of the
+user in microseconds since the epoch, in the
+<b>CLOCK_REALTIME</b> and <b>CLOCK_MONOTONIC</b> clocks,
+respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>RuntimePath</i>
+encodes the runtime path of the user, i.e.
+<i>$XDG_RUNTIME_DIR</i>. For details see the</font>
+<b><font color="#0000FF">XDG Basedir
+Specification</font></b>
+<small><font color="#000000">[3]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Service</i>
+contains the unit name of the user systemd service of this
+user. Each logged in user is assigned a user service that
+runs a user systemd instance. This is usually an instance of
+user@.service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Slice</i>
+contains the unit name of the user systemd slice of this
+user. Each logged in user gets a private slice.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Display</i>
+encodes which graphical session should be used as the
+primary UI display for the user. It is a structure encoding
+the session ID and the object path of the session to
+use.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>State</i>
+encodes the user state and is one of &quot;offline&quot;,
+&quot;lingering&quot;, &quot;online&quot;,
+&quot;active&quot;, or &quot;closing&quot;. See
+<b>sd_uid_get_state</b>(3) for more information about the
+states.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Sessions</i>
+is an array of structures encoding all current sessions of
+the user. Each structure consists of the ID and object
+path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>IdleHint</i>, <i>IdleSinceHint</i>, and
+<i>IdleSinceHintMonotonic</i> properties encode the idle
+hint state of the user, similar to the Manager's properties,
+but specific for this user.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>Linger</i> property shows whether lingering is enabled
+for this user.</font></p>
+
+<h2>SESSION OBJECTS
+<a name="SESSION OBJECTS"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">node
+/org/freedesktop/login1/session/1 { <br>
+interface org.freedesktop.login1.Session { <br>
+methods: <br>
+Terminate(); <br>
+Activate(); <br>
+Lock(); <br>
+Unlock(); <br>
+SetIdleHint(in b idle); <br>
+SetLockedHint(in b locked); <br>
+Kill(in s who, <br>
+in i signal_number); <br>
+TakeControl(in b force); <br>
+ReleaseControl(); <br>
+SetType(in s type); <br>
+TakeDevice(in u major, <br>
+in u minor, <br>
+out h fd, <br>
+out b inactive); <br>
+ReleaseDevice(in u major, <br>
+in u minor); <br>
+PauseDeviceComplete(in u major, <br>
+in u minor); <br>
+SetBrightness(in s subsystem, <br>
+in s name, <br>
+in u brightness); <br>
+signals: <br>
+PauseDevice(u major, <br>
+u minor, <br>
+s type); <br>
+ResumeDevice(u major, <br>
+u minor, <br>
+h fd); <br>
+Lock(); <br>
+Unlock(); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Id = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly (uo) User = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Name = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t Timestamp = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t TimestampMonotonic = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u VTNr = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly (so) Seat = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s TTY = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Display = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly b Remote = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s RemoteHost = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s RemoteUser = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Service = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Desktop = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Scope = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u Leader = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u Audit = ...; <br>
+readonly s Type = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Class = '...'; <br>
+readonly b Active = ...; <br>
+readonly s State = '...'; <br>
+readonly b IdleHint = ...; <br>
+readonly t IdleSinceHint = ...; <br>
+readonly t IdleSinceHintMonotonic = ...; <br>
+readonly b LockedHint = ...; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Methods
+<br>
+Terminate()</b>, <b>Activate()</b>, <b>Lock()</b>,
+<b>Unlock()</b>, and <b>Kill()</b> work similarly to the
+respective calls on the Manager object.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetIdleHint()</b>
+is called by the session object to update the idle state of
+the session whenever it changes.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>TakeControl()</b>
+allows a process to take exclusive managed device
+access-control for that session. Only one D-Bus connection
+can be a controller for a given session at any time. If the
+<i>force</i> argument is set (root only), an existing
+controller is kicked out and replaced. Otherwise, this
+method fails if there is already a controller. Note that
+this method is limited to D-Bus users with the effective UID
+set to the user of the session or root.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>ReleaseControl()</b>
+drops control of a given session. Closing the D-Bus
+connection implicitly releases control as well. See
+<b>TakeControl()</b> for more information. This method also
+releases all devices for which the controller requested
+ownership via <b>TakeDevice()</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetType()</b>
+allows the type of the session to be changed dynamically. It
+can only be called by session's current controller. If
+<b>TakeControl()</b> has not been called, this method will
+fail. In addition, the session type will be reset to its
+original value once control is released, either by calling
+<b>ReleaseControl()</b> or closing the D-Bus connection.
+This should help prevent a session from entering an
+inconsistent state, for example if the controller crashes.
+The only argument <i>type</i> is the new session
+type.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>TakeDevice()</b>
+allows a session controller to get a file descriptor for a
+specific device. Pass in the major and minor numbers of the
+character device and systemd-logind will return a file
+descriptor for the device. Only a limited set of
+device-types is currently supported (but may be extended).
+systemd-logind automatically mutes the file descriptor if
+the session is inactive and resumes it once the session is
+activated again. This guarantees that a session can only
+access session devices if the session is active. Note that
+this revoke/resume mechanism is asynchronous and may happen
+at any given time. This only works on devices that are
+attached to the seat of the given session. A process is not
+required to have direct access to the device node.
+systemd-logind only requires you to be the active session
+controller (see <b>TakeControl()</b>). Also note that any
+device can only be requested once. As long as you don't
+release it, further <b>TakeDevice()</b> calls will
+fail.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>ReleaseDevice()</b>
+releases a device again (see <b>TakeDevice()</b>). This is
+also implicitly done by <b>ReleaseControl()</b> or when
+closing the D-Bus connection.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>PauseDeviceComplete()</b>
+allows a session controller to synchronously pause a device
+after receiving a <b>PauseDevice(&quot;pause&quot;)</b>
+signal. Forced signals (or after an internal timeout) are
+automatically completed by systemd-logind
+asynchronously.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetLockedHint()</b>
+may be used to set the &quot;locked hint&quot; to
+<i>locked</i>, i.e. information whether the session is
+locked. This is intended to be used by the desktop
+environment to tell <b>systemd-logind</b> when the session
+is locked and unlocked.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetBrightness()</b>
+may be used to set the display brightness. This is intended
+to be used by the desktop environment and allows
+unprivileged programs to access hardware settings in a
+controlled way. The <i>subsystem</i> parameter specifies a
+kernel subsystem, either &quot;backlight&quot; or
+&quot;leds&quot;. The <i>name</i> parameter specifies a
+device name under the specified subsystem. The
+<i>brightness</i> parameter specifies the brightness. The
+range is defined by individual drivers, see
+/sys/class/<i>subsystem</i>/<i>name</i>/max_brightness.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Signals</b>
+<br>
+The active session controller exclusively gets
+<b>PauseDevice</b> and <b>ResumeDevice</b> events for any
+device it requested via <b>TakeDevice()</b>. They notify the
+controller whenever a device is paused or resumed. A device
+is never resumed if its session is inactive. Also note that
+<b>PauseDevice</b> signals are sent before the
+<b>PropertyChanged</b> signal for the <b>Active</b> state.
+The inverse is true for <b>ResumeDevice</b>. A device may
+remain paused for unknown reasons even though the Session is
+active.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">A
+<b>PauseDevice</b> signal carries the major and minor
+numbers and a string describing the type as arguments.
+<b>force</b> means the device was already paused by
+systemd-logind and the signal is only an asynchronous
+notification. <b>pause</b> means systemd-logind grants you a
+limited amount of time to pause the device. You must respond
+to this via <b>PauseDeviceComplete()</b>. This synchronous
+pausing mechanism is used for backwards-compatibility to VTs
+and systemd-logind is free to not make use of it. It is also
+free to send a forced <b>PauseDevice</b> if you don't
+respond in a timely manner (or for any other reason).
+<b>gone</b> means the device was unplugged from the system
+and you will no longer get any notifications about it. There
+is no need to call <b>ReleaseDevice()</b>. You may call
+<b>TakeDevice()</b> again if a new device is assigned the
+major+minor combination.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>ResumeDevice</b>
+is sent whenever a session is active and a device is
+resumed. It carries the major/minor numbers as arguments and
+provides a new open file descriptor. You should switch to
+the new descriptor and close the old one. They are not
+guaranteed to have the same underlying open file descriptor
+in the kernel (except for a limited set of device
+types).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Whenever
+<b>Active</b> or the idle state changes,
+<b>PropertyChanged</b> signals are sent out to which clients
+can subscribe.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Lock</b>/<b>Unlock</b>
+is sent when the session is asked to be
+screen-locked/unlocked. A session manager of the session
+should listen to this signal and act accordingly. This
+signal is sent out as a result of the <b>Lock()</b> and
+<b>Unlock()</b> methods, respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Properties</b>
+<i><br>
+Id</i> encodes the session ID.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>User</i>
+encodes the user ID of the user this session belongs to.
+This is a structure consisting of the Unix UID and the
+object path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Name</i>
+encodes the user name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Timestamp</i>
+and <i>TimestampMonotonic</i> encode the microseconds since
+the epoch when the session was created, in
+<b>CLOCK_REALTIME</b> or <b>CLOCK_MONOTONIC</b>,
+respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>VTNr</i>
+encodes the virtual terminal number of the session if there
+is any, 0 otherwise.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Seat</i>
+encodes the seat this session belongs to if there is any.
+This is a structure consisting of the ID and the seat object
+path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>TTY</i>
+encodes the kernel TTY path of the session if this is a text
+login. If not this is an empty string.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Display</i>
+encodes the X11 display name if this is a graphical login.
+If not, this is an empty string.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Remote</i>
+encodes whether the session is local or remote.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>RemoteHost</i>
+and <i>RemoteUser</i> encode the remote host and user if
+this is a remote session, or an empty string
+otherwise.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Service</i>
+encodes the PAM service name that registered the
+session.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Desktop</i>
+describes the desktop environment running in the session (if
+known).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Scope</i>
+contains the systemd scope unit name of this
+session.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Leader</i>
+encodes the PID of the process that registered the
+session.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Audit</i>
+encodes the Kernel Audit session ID of the session if
+auditing is available.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Type</i>
+encodes the session type. It's one of
+&quot;unspecified&quot; (for cron PAM sessions and
+suchlike), &quot;tty&quot; (for text logins) or
+&quot;x11&quot;/&quot;mir&quot;/&quot;wayland&quot; (for
+graphical logins).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Class</i>
+encodes the session class. It's one of &quot;user&quot; (for
+normal user sessions), &quot;greeter&quot; (for display
+manager pseudo-sessions), or &quot;lock-screen&quot; (for
+display lock screens).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Active</i>
+is a boolean that is true if the session is active, i.e.
+currently in the foreground. This field is semi-redundant
+due to <i>State</i>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>State</i>
+encodes the session state and one of &quot;online&quot;,
+&quot;active&quot;, or &quot;closing&quot;. See
+<b>sd_session_get_state</b>(3) for more information about
+the states.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>IdleHint</i>,
+<i>IdleSinceHint</i>, and <i>IdleSinceHintMonotonic</i>
+encapsulate the idle hint state of this session, similarly
+to how the respective properties on the manager object do it
+for the whole system.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LockedHint</i>
+shows the locked hint state of this session, as set by the
+<b>SetLockedHint()</b> method described above.</font></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;1.&nbsp;Introspect
+org.freedesktop.login1.Manager on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system --dest org.freedesktop.login1 \
+<br>
+--object-path /org/freedesktop/login1</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;2.&nbsp;Introspect
+org.freedesktop.login1.Seat on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system --dest org.freedesktop.login1 \
+<br>
+--object-path /org/freedesktop/login1/seat/seat0</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;3.&nbsp;Introspect
+org.freedesktop.login1.User on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system --dest org.freedesktop.login1 \
+<br>
+--object-path /org/freedesktop/login1/user/_1000</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;4.&nbsp;Introspect
+org.freedesktop.login1.Session on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system --dest org.freedesktop.login1 \
+<br>
+--object-path /org/freedesktop/login1/session/45</font></p>
+
+<h2>VERSIONING
+<a name="VERSIONING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">These
+D-Bus interfaces follow</font> <b><font color="#0000FF">the
+usual interface versioning guidelines</font></b>
+<small><font color="#000000">[4]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="9%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">polkit</font></p> </td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/software/polkit/docs/latest/</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Inhibitor
+Locks</font></p> </td>
+<td width="60%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/wiki/Software/systemd/inhibit</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">3.</font></p> </td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><font color="#000000">XDG
+Basedir Specification</font></p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">4.</font></p> </td>
+<td width="2%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><font color="#000000">the usual
+interface versioning guidelines</font></p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://0pointer.de/blog/projects/versioning-dbus.html</font></p>
+<hr>
+</body>
+</html>

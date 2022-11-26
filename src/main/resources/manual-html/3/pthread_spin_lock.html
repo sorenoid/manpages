@@ -1,0 +1,203 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PTHREAD_SPIN_LOCK</title>
+
+</head>
+<body>
+
+<h1 align="center">PTHREAD_SPIN_LOCK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">pthread_spin_lock,
+pthread_spin_trylock, pthread_spin_unlock - lock and unlock
+a spin lock</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;pthread.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+pthread_spin_lock(pthread_spinlock_t *</b><i>lock</i><b>);
+<br>
+int pthread_spin_trylock(pthread_spinlock_t
+*</b><i>lock</i><b>); <br>
+int pthread_spin_unlock(pthread_spinlock_t
+*</b><i>lock</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Compile and
+link with <i>-pthread</i>.</p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pthread_spin_lock</b>(),
+<b>pthread_spin_trylock</b>():</p>
+
+<p style="margin-left:17%;">_POSIX_C_SOURCE &gt;=
+200112L</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_spin_lock</b>() function locks the spin lock
+referred to by <i>lock</i>. If the spin lock is currently
+unlocked, the calling thread acquires the lock immediately.
+If the spin lock is currently locked by another thread, the
+calling thread spins, testing the lock until it becomes
+available, at which point the calling thread acquires the
+lock.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Calling
+<b>pthread_spin_lock</b>() on a lock that is already held by
+the caller or a lock that has not been initialized with
+<b>pthread_spin_init</b>(3) results in undefined
+behavior.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_spin_trylock</b>() function is like
+<b>pthread_spin_lock</b>(), except that if the spin lock
+referred to by <i>lock</i> is currently locked, then,
+instead of spinning, the call returns immediately with the
+error <b>EBUSY</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pthread_spin_unlock</b>() function unlocks the spin lock
+referred to <i>lock</i>. If any threads are spinning on the
+lock, one of those threads will then acquire the lock.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Calling
+<b>pthread_spin_unlock</b>() on a lock that is not held by
+the caller results in undefined behavior.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+these functions return zero. On failure, they return an
+error number.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pthread_spin_lock</b>()
+may fail with the following errors: <b><br>
+EDEADLOCK</b></p>
+
+<p style="margin-left:22%;">The system detected a deadlock
+condition.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pthread_spin_trylock</b>()
+fails with the following errors:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EBUSY</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The spin lock is currently locked by another thread.</p></td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+first appeared in glibc in version 2.2.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2001.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Applying any of
+the functions described on this page to an uninitialized
+spin lock results in undefined behavior.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Carefully read
+NOTES in <b>pthread_spin_init</b>(3).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pthread_spin_destroy</b>(3),
+<b>pthread_spin_init</b>(3), <b>pthreads</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

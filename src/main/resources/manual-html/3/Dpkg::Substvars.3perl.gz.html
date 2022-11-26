@@ -1,0 +1,283 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:28 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Substvars</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Substvars</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Substvars
+- handle variable substitution in strings</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It provides a
+class which is able to substitute variables in strings.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$s =
+Dpkg::Substvars-&gt;new($file)</p>
+
+<p style="margin-left:23%;">Create a new object that can do
+substitutions. By default it contains generic substitutions
+like ${Newline}, ${Space}, ${Tab}, ${dpkg:Version} and
+${dpkg:Upstream-Version}.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Additional
+substitutions will be read from the $file passed as
+parameter.</p>
+
+<p style="margin-left:23%; margin-top: 1em">It keeps track
+of which substitutions were actually used (only counting
+<b>substvars()</b>, not <b>get()</b>), and warns about
+unused substvars when asked to. The substitutions that are
+always present are not included in these warnings.</p>
+
+<p style="margin-left:11%;">$s-&gt;set($key, $value)</p>
+
+<p style="margin-left:23%;">Add/replace a substitution.</p>
+
+<p style="margin-left:11%;">$s-&gt;set_as_used($key,
+$value)</p>
+
+<p style="margin-left:23%;">Add/replace a substitution and
+mark it as used (no warnings will be produced even if
+unused).</p>
+
+<p style="margin-left:11%;">$s-&gt;set_as_auto($key,
+$value)</p>
+
+<p style="margin-left:23%;">Add/replace a substitution and
+mark it as used and automatic (no warnings will be produced
+even if unused).</p>
+
+<p style="margin-left:11%;">$s-&gt;get($key)</p>
+
+<p style="margin-left:23%;">Get the value of a given
+substitution.</p>
+
+<p style="margin-left:11%;">$s-&gt;delete($key)</p>
+
+<p style="margin-left:23%;">Remove a given
+substitution.</p>
+
+<p style="margin-left:11%;">$s-&gt;mark_as_used($key)</p>
+
+<p style="margin-left:23%;">Prevents warnings about a
+unused substitution, for example if it is provided by
+default.</p>
+
+<p style="margin-left:11%;">$s-&gt;parse($fh, $desc)</p>
+
+<p style="margin-left:23%;">Add new substitutions read from
+the filehandle. $desc is used to identify the filehandle in
+error messages.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Returns the
+number of substitutions that have been parsed with
+success.</p>
+
+<p style="margin-left:11%;">$s-&gt;load($file)</p>
+
+<p style="margin-left:23%;">Add new substitutions read from
+$file.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;set_version_substvars($sourceversion,
+$binaryversion)</p>
+
+<p style="margin-left:23%;">Defines ${binary:Version},
+${source:Version} and ${source:Upstream-Version} based on
+the given version strings.</p>
+
+<p style="margin-left:23%; margin-top: 1em">These will
+never be warned about when unused.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;<b>set_arch_substvars()</b></p>
+
+<p style="margin-left:23%;">Defines architecture variables:
+${Arch}.</p>
+
+<p style="margin-left:23%; margin-top: 1em">This will never
+be warned about when unused.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;<b>set_vendor_substvars()</b></p>
+
+<p style="margin-left:23%;">Defines vendor variables:
+${vendor:Name} and ${vendor:Id}.</p>
+
+<p style="margin-left:23%; margin-top: 1em">These will
+never be warned about when unused.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;<b>set_desc_substvars()</b></p>
+
+<p style="margin-left:23%;">Defines source description
+variables: ${source:Synopsis} and
+${source:Extended-Description}.</p>
+
+<p style="margin-left:23%; margin-top: 1em">These will
+never be warned about when unused.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;set_field_substvars($ctrl,
+$prefix)</p>
+
+<p style="margin-left:23%;">Defines field variables from a
+Dpkg::Control object, with each variable having the form
+&quot;${$prefix:$field}&quot;.</p>
+
+<p style="margin-left:23%; margin-top: 1em">They will never
+be warned about when unused.</p>
+
+<p style="margin-left:11%;">$newstring =
+$s-&gt;substvars($string)</p>
+
+<p style="margin-left:23%;">Substitutes variables in
+$string and return the result in $newstring.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;<b>warn_about_unused()</b></p>
+
+<p style="margin-left:23%;">Issues warning about any
+variables that were set, but not used.</p>
+
+
+<p style="margin-left:11%;">$s-&gt;set_msg_prefix($prefix)</p>
+
+<p style="margin-left:23%;">Define a prefix displayed
+before all warnings/error messages output by the module.</p>
+
+<p style="margin-left:11%;">$s-&gt;filter(remove =&gt;
+$rmfunc) <br>
+$s-&gt;filter(keep =&gt; $keepfun)</p>
+
+<p style="margin-left:23%;">Filter the substitution
+variables, either removing or keeping all those that return
+true when $rmfunc-&gt;($key) or $keepfunc-&gt;($key) is
+called.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&quot;$s&quot;</p></td>
+<td width="6%"></td>
+<td width="77%">
+
+
+<p>Return a string representation of all substitutions
+variables except the automatic ones.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">$str = $s-&gt;output([$fh])</p>
+
+<p style="margin-left:23%;">Return all substitutions
+variables except the automatic ones. If $fh is passed print
+them into the filehandle.</p>
+
+<p style="margin-left:11%;">$s-&gt;save($file)</p>
+
+<p style="margin-left:23%;">Store all substitutions
+variables except the automatic ones in the indicated
+file.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 2.00
+(dpkg 1.20.0)</b> <br>
+Remove method: $s-&gt;<b>no_warn()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New method:
+$s-&gt;<b>set_vendor_substvars()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.06
+(dpkg 1.19.0)</b> <br>
+New method: $s-&gt;<b>set_desc_substvars()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.05
+(dpkg 1.18.11)</b> <br>
+Obsolete substvar: Emit an error on Source-Version substvar
+usage.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New return:
+$s-&gt;<b>parse()</b> now returns the number of parsed
+substvars.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New method:
+$s-&gt;<b>set_field_substvars()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.04
+(dpkg 1.18.0)</b> <br>
+New method: $s-&gt;<b>filter()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.17.11)</b> <br>
+New method: $s-&gt;<b>set_as_auto()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.16.5)</b> <br>
+New argument: Accept a $binaryversion in
+$s-&gt;<b>set_version_substvars()</b>, passing a single
+argument is still supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New method:
+$s-&gt;<b>mark_as_used()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+method: $s-&gt;<b>no_warn()</b>, use
+$s-&gt;<b>mark_as_used()</b> instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.16.4)</b> <br>
+New method: $s-&gt;<b>set_as_used()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

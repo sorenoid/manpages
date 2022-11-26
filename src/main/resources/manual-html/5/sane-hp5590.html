@@ -1,0 +1,706 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>sane-hp5590</title>
+
+</head>
+<body>
+
+<h1 align="center">sane-hp5590</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#DEVICE SPECIFIC OPTIONS">DEVICE SPECIFIC OPTIONS</a><br>
+<a href="#READ OUT OPTIONS">READ OUT OPTIONS</a><br>
+<a href="#HINTS FOR USERS OF SCANBD">HINTS FOR USERS OF SCANBD</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sane-hp5590 -
+SANE backend for Hewlett-Packard
+4500C/4570C/5500C/5550C/5590/7650 Workgroup/Document
+scanners</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sane-hp5590</b> library implements a SANE (Scanner Access
+Now Easy) backend that provides access to the following
+Hewlett-Packard Workgroup/Document scanners:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>ScanJet 4500C</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>ScanJet 4570C</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>ScanJet 5500C</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>ScanJet 5550C</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>ScanJet 5590</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>ScanJet 7650</p></td>
+<td width="66%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If you own a
+scanner other than the ones listed above that works with
+this backend, please let us know this by sending the
+scanner&rsquo;s exact model name and the USB vendor and
+device ids (e.g.&nbsp;from <i>/sys/bus/usb/devices</i>,
+<b>sane-find-scanner</b>(1) or syslog) to us. Even if the
+scanner&rsquo;s name is only slightly different from the
+models mentioned above, please let us know.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The options the
+backend supports can either be selected through command line
+options to programs like <b>scanimage</b>(1) or through GUI
+elements in <b>xscanimage</b>(1) or <b>xsane</b>(1). Valid
+command line options and their syntax can be listed by
+using:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">scanimage --help -d hp5590:interface:device</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">where
+<i>interface</i> and <i>device</i> specify the device in
+question, as in the configuration file. Add
+<b>--all-options</b> to also list the hardware read-out
+options. The <b>-d</b> parameter and its argument can be
+omitted to obtain information on the first scanner
+identified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+command:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">scanimage -L</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">to list all
+devices recognized by your SANE installation.</p>
+
+<h2>DEVICE SPECIFIC OPTIONS
+<a name="DEVICE SPECIFIC OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-l</b> <i>n</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Top-left X position of scan area
+in <b>mm</b>. Allowed range: 0 .. 215.889.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-t</b> <i>n</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Top-left Y position of scan area in <b>mm</b>. Allowed
+range: 0 .. 297.699.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-x</b> <i>n</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>X width of scan-area in <b>mm</b>. Allowed range: 0 ..
+215.889.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-y</b> <i>n</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Y height of scan-area in <b>mm</b>. Allowed range: 0 ..
+297.699.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+maximum size will be scanned. <b><br>
+--mode</b> <i>mode</i></p>
+
+<p style="margin-left:22%;">Select color mode. <i>mode</i>
+must be one of: &ldquo;Color&rdquo;, &ldquo;Color (48
+bits)&rdquo;, &ldquo;Gray&rdquo;, &ldquo;Lineart&rdquo;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;Color&rdquo; - Scanning is done with 3 * 8 bit
+RGB color values per pixel.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;Color (48 bits)&rdquo; - Scanning is done with 3
+* 16 bit RGB color values per pixel.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;Gray&rdquo; - Scanning is done with 1 * 8 bit
+gray value per pixel.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;Lineart&rdquo; - Scanning is done with 1 bit
+black and white value per pixel.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--source</b>
+<i>source</i></p>
+
+<p style="margin-left:22%;">Select the source for scanning.
+<i>source</i> must be one of: &ldquo;Flatbed&rdquo;,
+&ldquo;ADF&rdquo;, &ldquo;ADF Duplex&rdquo;, &ldquo;TMA
+Slides&rdquo;, &ldquo;TMA Negatives&rdquo;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;Flatbed&rdquo; - Scan document on the flat
+document glass.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;ADF&rdquo; - Scan frontsides of documents with
+automatic document feeder.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;ADF Duplex&rdquo; - Scan front- and backsides of
+documents with automatic document feeder. Note, the backside
+images must be rotated in a separate post process step.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;TMA Slides&rdquo; - Slide scanning with
+transparent media adapter. (Not fully supported by hp5590
+backend).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;TMA Negatives&rdquo; - Negative film scanning
+with transparent media adapter. (Not fully supported by
+hp5590 backend).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--resolution</b>
+<i>res</i></p>
+
+<p style="margin-left:22%;">Set the resolution of the
+scanned image in <b>dpi</b>. <i>res</i> must be one of: 100,
+200, 300, 600, 1200, 2400.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Default
+settings: Lineart, Flatbed, 100dpi. <b><br>
+--extend-lamp-timeout[=yes|no]</b></p>
+
+<p style="margin-left:22%;">Extend lamp timeout period. no
+= 15 minutes, yes = 1 hour. (Default: no)</p>
+
+
+<p style="margin-left:11%;"><b>--wait-for-button[=yes|no]</b></p>
+
+<p style="margin-left:22%;">Wait for button press before
+scanning starts. (Default: no)</p>
+
+<p style="margin-left:11%;"><b>--preview[=yes|no]</b></p>
+
+<p style="margin-left:22%;">Request a preview-quality scan.
+(Default: no)</p>
+
+
+<p style="margin-left:11%;"><b>--hide-eop-pixel[=yes|no]</b></p>
+
+<p style="margin-left:22%;">Hide end-of-page indicator
+pixels and overwrite with color of next neighbor pixels.
+(Default: yes) <br>
+The scanner uses the last pixel in every scan line for
+storing the end-of-page status. This is needed to detect the
+end of the document sheet when the automatic document feeder
+(ADF) is used. Unfortunately the end-of-page pixels are also
+generated in flatbed scans. It is recommended to hide these
+pixels.</p>
+
+<p style="margin-left:11%;"><b>--trailing-lines-mode</b>
+<i>mode</i></p>
+
+<p style="margin-left:22%;">Filling mode of trailing lines
+after end of page when automatic document feeder (ADF) is
+used. <i>mode</i> must be one of: &ldquo;last&rdquo;,
+&ldquo;raw&rdquo;, &ldquo;raster&rdquo;,
+&ldquo;white&rdquo;, &ldquo;black&rdquo;,
+&ldquo;color&rdquo;. (Default: &ldquo;last&rdquo;)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;last&rdquo; = repeat the last scan line
+(recommended),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;raw&rdquo; = read raw scan data (not
+recommended),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;raster&rdquo; = generate black and white pixel
+pattern,</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;white&rdquo; = white pixels,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;black&rdquo; = black pixels,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>&ldquo;color&rdquo; = RGB or gray colored pixels (see
+next option).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--trailing-lines-color</b>
+<i>n</i></p>
+
+<p style="margin-left:22%;">Set color value for filling
+trailing scan lines in trailing lines mode
+&ldquo;color&rdquo; (see previous option). (Default color:
+violet) <br>
+The RGB color value must be specified and calculated as
+65536 * r + 256 * g + b, with r, g, b being values in the
+range of 0 .. 255.</p>
+
+<h2>READ OUT OPTIONS
+<a name="READ OUT OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options allow reading out the button state, counter value,
+color setting, and the state of document in ADF. This can be
+used to programmatically control corresponding scanner
+options like switching between <i>flatbed</i> and <i>ADF</i>
+mode, or triggering post processing tasks after scanning.
+<b><br>
+--button-pressed</b></p>
+
+<p style="margin-left:22%;">Get the id of the last button
+pressed. Id is one of &ldquo;none&rdquo;,
+&ldquo;power&rdquo;, &ldquo;scan&rdquo;,
+&ldquo;collect&rdquo;, &ldquo;file&rdquo;,
+&ldquo;email&rdquo;, &ldquo;copy&rdquo;, &ldquo;up&rdquo;,
+&ldquo;down&rdquo;, &ldquo;mode&rdquo;,
+&ldquo;cancel&rdquo;. <br>
+The scanner stores the id of the last button pressed until
+it is read. After read out, the state is reset and
+subsequent readings will return &ldquo;none&rdquo;.</p>
+
+<p style="margin-left:11%;"><b>--color-led</b></p>
+
+<p style="margin-left:22%;">Get the state of the color LED
+indicators. The state is either &ldquo;color&rdquo; or
+&ldquo;black_white&rdquo;.</p>
+
+<p style="margin-left:11%;"><b>--counter-value</b></p>
+
+<p style="margin-left:22%;">Get the counter value as shown
+on LCD. The value is in the range of 1 .. 99.</p>
+
+<p style="margin-left:11%;"><b>--doc-in-adf</b></p>
+
+<p style="margin-left:22%;">Get the state of the
+document-available indicator of the automatic document
+feeder (ADF). The state is either &ldquo;yes&rdquo; or
+&ldquo;no&rdquo;.</p>
+
+<h2>HINTS FOR USERS OF SCANBD
+<a name="HINTS FOR USERS OF SCANBD"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>scanbd</b>(8)
+is a scanner button daemon, which can read scanner buttons
+and trigger scan actions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Do not use the
+old <b>scanbuttond</b>(8) interface with hp5590. It is
+outdated and shall not be used any more. The regular
+interface of <b>scanbd</b>(8) is fully supported by the
+current version of the <i>hp5590</i> backend.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+shows a minimum configuration file and the corresponding
+script file for <b>scanbd</b>(8) to be included in
+<i>scanbd.conf</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="17%">
+
+
+<p><i>hp5590.conf</i></p></td>
+<td width="69%">
+</td></tr>
+</table>
+<pre style="margin-left:14%; margin-top: 1em">device hp5590 {
+    # Device matching
+    filter = &quot;^hp5590.*&quot;
+    desc = &quot;HP5590 Scanner Family&quot;
+
+    # Read out counter value and store in environment variable.
+    function function_lcd_counter {
+        filter = &quot;^counter-value.*&quot;
+        desc   = &quot;hp5590: LCD counter&quot;
+        env    = &quot;SCANBD_FUNCTION_LCD_COUNTER&quot;
+    }
+
+
+    # Run scan script when button is pressed.
+    action do-scan {
+        filter = &quot;^button-pressed.*&quot;
+        desc   = &quot;hp5590: Scan button pressed&quot;
+        script = &quot;scan_action.script&quot;
+        string-trigger {
+            from-value  = &quot;none&quot;
+            to-value    = &quot;scan&quot;
+        }
+    }
+}</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="28%">
+
+
+<p style="margin-top: 1em"><b>scan_action.script</b></p></td>
+<td width="58%">
+</td></tr>
+</table>
+
+<pre style="margin-left:14%; margin-top: 1em">#!/bin/bash
+echo device = $SCANBD_DEVICE
+echo action = $SCANBD_ACTION
+echo counter = $SCANBD_FUNCTION_LCD_COUNTER
+scanfile=&quot;$HOME/tmp/scans/scan-$(date +%s).pnm&quot;
+case $SCANBD_ACTION in
+do-scan)
+    scanimage -d &quot;$SCANBD_DEVICE&quot; &gt; &quot;$scanfile&quot;
+    ;;
+*)
+    echo Warning: Unknown scanbd action: &quot;$SCANBD_ACTION&quot;
+    ;;
+esac</pre>
+
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>@LIBDIR@/libsane-hp5590.a</i></p>
+
+<p style="margin-left:22%;">The static library implementing
+this backend.</p>
+
+
+<p style="margin-left:11%;"><i>@LIBDIR@/libsane-hp5590.so</i></p>
+
+<p style="margin-left:22%;">The shared library implementing
+this backend (present on systems that support dynamic
+loading).</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the library
+was compiled with debug support enabled, this environment
+variable controls the debug level for this backend.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SANE_DEBUG_HP5590</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Higher debug
+levels increase the verbosity of the output:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">10 - generic processing
+20 - verbose backend messages
+40 - HP5590 high-level commands
+50 - HP5590 low-level (USB-in-USB) commands</pre>
+
+
+<p style="margin-left:11%;"><b>Example:</b></p>
+
+<p style="margin-left:22%;">export SANE_DEBUG_HP5590=50</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sane</b>(7),
+<b>sane-usb</b>(5) <b>scanbd</b>(8), <b>scanimage</b>(1),
+<b>xscanimage</b>(1), <b>xsane</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Ilia Sotnikov
+&lt;<i>hostcc@gmail.com</i>&gt;.</p>
+<hr>
+</body>
+</html>

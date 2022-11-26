@@ -1,0 +1,317 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BTREE</title>
+
+</head>
+<body>
+
+<h1 align="center">BTREE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">btree - btree
+database access method</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/types.h&gt; <br>
+#include &lt;db.h&gt;</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>Note
+well</i></b>: This page documents interfaces provided in
+glibc up until version 2.1. Since version 2.2, glibc no
+longer provides these interfaces. Probably, you are looking
+for the APIs provided by the <i>libdb</i> library
+instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The routine
+<b>dbopen</b>(3) is the library interface to database files.
+One of the supported file formats is btree files. The
+general description of the database access methods is in
+<b>dbopen</b>(3), this manual page describes only the
+btree-specific information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The btree data
+structure is a sorted, balanced tree structure storing
+associated key/data pairs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The btree
+access-method-specific data structure provided to
+<b>dbopen</b>(3) is defined in the <i>&lt;db.h&gt;</i>
+include file as follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">typedef struct
+{ <br>
+unsigned long flags; <br>
+unsigned int cachesize; <br>
+int maxkeypage; <br>
+int minkeypage; <br>
+unsigned int psize; <br>
+int (*compare)(const DBT *key1, const DBT *key2); <br>
+size_t (*prefix)(const DBT *key1, const DBT *key2); <br>
+int lorder; <br>
+} BTREEINFO;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The elements of
+this structure are as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>flags</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The flag value is specified by ORing any of the
+following values:</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>R_DUP</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">Permit duplicate keys in the
+tree, that is, permit insertion if the key to be inserted
+already exists in the tree. The default behavior, as
+described in <b>dbopen</b>(3), is to overwrite a matching
+key when inserting a new key or to fail if the
+<b>R_NOOVERWRITE</b> flag is specified. The <b>R_DUP</b>
+flag is overridden by the <b>R_NOOVERWRITE</b> flag, and if
+the <b>R_NOOVERWRITE</b> flag is specified, attempts to
+insert duplicate keys into the tree will fail.</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">If the database
+contains duplicate keys, the order of retrieval of key/data
+pairs is undefined if the <i>get</i> routine is used,
+however, <i>seq</i> routine calls with the <b>R_CURSOR</b>
+flag set will always return the logical &quot;first&quot; of
+any group of duplicate keys.</p>
+
+<p style="margin-left:11%;"><i>cachesize</i></p>
+
+<p style="margin-left:22%;">A suggested maximum size (in
+bytes) of the memory cache. This value is <i>only</i>
+advisory, and the access method will allocate more memory
+rather than fail. Since every search examines the root page
+of the tree, caching the most recently used pages
+substantially improves access time. In addition, physical
+writes are delayed as long as possible, so a moderate cache
+can reduce the number of I/O operations significantly.
+Obviously, using a cache increases (but only increases) the
+likelihood of corruption or lost data if the system crashes
+while a tree is being modified. If <i>cachesize</i> is 0 (no
+size is specified), a default cache is used.</p>
+
+<p style="margin-left:11%;"><i>maxkeypage</i></p>
+
+<p style="margin-left:22%;">The maximum number of keys
+which will be stored on any single page. Not currently
+implemented.</p>
+
+<p style="margin-left:11%;"><i>minkeypage</i></p>
+
+<p style="margin-left:22%;">The minimum number of keys
+which will be stored on any single page. This value is used
+to determine which keys will be stored on overflow pages,
+that is, if a key or data item is longer than the pagesize
+divided by the minkeypage value, it will be stored on
+overflow pages instead of in the page itself. If
+<i>minkeypage</i> is 0 (no minimum number of keys is
+specified), a value of 2 is used.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>psize</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Page size is the size (in bytes) of the pages used for
+nodes in the tree. The minimum page size is 512 bytes and
+the maximum page size is 64&nbsp;KiB. If <i>psize</i> is 0
+(no page size is specified), a page size is chosen based on
+the underlying filesystem I/O block size.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>compare</i></p>
+
+<p style="margin-left:22%;">Compare is the key comparison
+function. It must return an integer less than, equal to, or
+greater than zero if the first key argument is considered to
+be respectively less than, equal to, or greater than the
+second key argument. The same comparison function must be
+used on a given tree every time it is opened. If
+<i>compare</i> is NULL (no comparison function is
+specified), the keys are compared lexically, with shorter
+keys considered less than longer keys.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>prefix</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Prefix is the prefix comparison function. If specified,
+this routine must return the number of bytes of the second
+key argument which are necessary to determine that it is
+greater than the first key argument. If the keys are equal,
+the key length should be returned. Note, the usefulness of
+this routine is very data-dependent, but, in some data sets
+can produce significantly reduced tree sizes and search
+times. If <i>prefix</i> is NULL (no prefix function is
+specified), <i>and</i> no comparison function is specified,
+a default lexical comparison routine is used. If
+<i>prefix</i> is NULL and a comparison routine is specified,
+no prefix comparison is done.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>lorder</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The byte order for integers in the stored database
+metadata. The number should represent the order as an
+integer; for example, big endian order would be the number
+4,321. If <i>lorder</i> is 0 (no order is specified), the
+current host order is used.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the file
+already exists (and the <b>O_TRUNC</b> flag is not
+specified), the values specified for the arguments
+<i>flags</i>, <i>lorder</i>, and <i>psize</i> are ignored in
+favor of the values used when the tree was created.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Forward
+sequential scans of a tree are from the least key to the
+greatest.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Space freed up
+by deleting key/data pairs from the tree is never reclaimed,
+although it is normally made available for reuse. This means
+that the btree storage structure is grow-only. The only
+solutions are to avoid excessive deletions, or to create a
+fresh tree periodically from a scan of an existing one.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Searches,
+insertions, and deletions in a btree will all complete in O
+lg base N where base is the average fill factor. Often,
+inserting ordered data into btrees results in a low fill
+factor. This implementation has been modified to make
+ordered insertion the best case, resulting in a much better
+than normal page fill factor.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>btree</i> access method routines may fail and set
+<i>errno</i> for any of the errors specified for the library
+routine <b>dbopen</b>(3).</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Only big and
+little endian byte order is supported.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbopen</b>(3),
+<b>hash</b>(3), <b>mpool</b>(3), <b>recno</b>(3)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>The
+Ubiquitous B-tree</i>, Douglas Comer, ACM Comput. Surv. 11,
+2 (June 1979), 121-138.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Prefix
+B-trees</i>, Bayer and Unterauer, ACM Transactions on
+Database Systems, Vol. 2, 1 (March 1977), 11-26.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>The Art of
+Computer Programming Vol. 3: Sorting and Searching</i>, D.E.
+Knuth, 1968, pp 471-480.</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

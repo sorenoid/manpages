@@ -1,0 +1,178 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:48 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Conf</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Conf</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Conf -
+parse dpkg configuration files</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Dpkg::Conf
+object can be used to read options from a configuration
+file. It can export an array that can then be parsed exactly
+like @ARGV.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$conf =
+Dpkg::Conf-&gt;new(%opts)</p>
+
+<p style="margin-left:17%;">Create a new Dpkg::Conf object.
+Some options can be set through %opts: if allow_short
+evaluates to true (it defaults to false), then short options
+are allowed in the configuration file, they should be
+prepended with a single hyphen.</p>
+
+<p style="margin-left:11%;">@$conf <br>
+@options = $conf-&gt;<b>get_options()</b></p>
+
+<p style="margin-left:17%;">Returns the list of options
+that can be parsed like @ARGV.</p>
+
+<p style="margin-left:11%;">$conf-&gt;load($file)</p>
+
+<p style="margin-left:17%;">Read options from a file.
+Return the number of options parsed.</p>
+
+
+<p style="margin-left:11%;">$conf-&gt;load_system_config($file)</p>
+
+<p style="margin-left:17%;">Read options from a system
+configuration file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Return the
+number of options parsed.</p>
+
+
+<p style="margin-left:11%;">$conf-&gt;load_user_config($file)</p>
+
+<p style="margin-left:17%;">Read options from a user
+configuration file. It will try to use the
+<small>XDG</small> directory, either $XDG_CONFIG_HOME/dpkg/
+or $HOME/.config/dpkg/.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Return the
+number of options parsed.</p>
+
+
+<p style="margin-left:11%;">$conf-&gt;load_config($file)</p>
+
+<p style="margin-left:17%;">Read options from system and
+user configuration files.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Return the
+number of options parsed.</p>
+
+<p style="margin-left:11%;">$conf-&gt;parse($fh)</p>
+
+<p style="margin-left:17%;">Parse options from a file
+handle. When called multiple times, the parsed options are
+accumulated.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Return the
+number of options parsed.</p>
+
+<p style="margin-left:11%;">$conf-&gt;filter(%opts)</p>
+
+<p style="margin-left:17%;">Filter the list of options,
+either removing or keeping all those that return true when
+$opts{remove}-&gt;($option) or $opts{keep}-&gt;($option) is
+called.</p>
+
+<p style="margin-left:11%;">$string =
+$conf-&gt;output([$fh])</p>
+
+<p style="margin-left:17%;">Write the options in the given
+filehandle (if defined) and return a string representation
+of the content (that would be) written.</p>
+
+<p style="margin-left:11%;">&quot;$conf&quot;</p>
+
+<p style="margin-left:17%;">Return a string representation
+of the content.</p>
+
+<p style="margin-left:11%;">$conf-&gt;save($file)</p>
+
+<p style="margin-left:17%;">Save the options in a file.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.04
+(dpkg 1.20.0)</b> <br>
+Remove croak: For &rsquo;format_argv&rsquo; in
+$conf-&gt;<b>filter()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Remove methods:
+$conf-&gt;<b>get()</b>, $conf-&gt;<b>set()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.18.8)</b> <br>
+Obsolete option: &rsquo;format_argv&rsquo; in
+$conf-&gt;<b>filter()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Obsolete
+methods: $conf-&gt;<b>get()</b>, $conf-&gt;<b>set()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New methods:
+$conf-&gt;<b>load_system_config()</b>,
+$conf-&gt;<b>load_system_user()</b>,
+$conf-&gt;<b>load_config()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.18.5)</b> <br>
+New option: Accept new option &rsquo;format_argv&rsquo; in
+$conf-&gt;<b>filter()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New methods:
+$conf-&gt;<b>get()</b>, $conf-&gt;<b>set()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.15.8)</b> <br>
+New method: $conf-&gt;<b>filter()</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

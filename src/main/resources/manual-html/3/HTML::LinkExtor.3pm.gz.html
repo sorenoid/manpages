@@ -1,0 +1,170 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:20 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTML::LinkExtor</title>
+
+</head>
+<body>
+
+<h1 align="center">HTML::LinkExtor</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::LinkExtor
+- Extract links from an HTML document</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">require
+HTML::LinkExtor; <br>
+$p = HTML::LinkExtor-&gt;new(\&amp;cb,
+&quot;http://www.perl.org/&quot;); <br>
+sub cb { <br>
+my($tag, %links) = @_; <br>
+print &quot;$tag @{[%links]}\n&quot;; <br>
+} <br>
+$p-&gt;parse_file(&quot;index.html&quot;);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>HTML::LinkExtor</i>
+is an <small>HTML</small> parser that extracts links from an
+<small>HTML</small> document. The <i>HTML::LinkExtor</i> is
+a subclass of <i>HTML::Parser</i>. This means that the
+document should be given to the parser by calling the
+$p-&gt;<b>parse()</b> or $p-&gt;<b>parse_file()</b> methods.
+<br>
+$p = HTML::LinkExtor-&gt;new <br>
+$p = HTML::LinkExtor-&gt;new( $callback ) <br>
+$p = HTML::LinkExtor-&gt;new( $callback, $base )</p>
+
+<p style="margin-left:17%;">The constructor takes two
+optional arguments. The first is a reference to a callback
+routine. It will be called as links are found. If a callback
+is not provided, then links are just accumulated internally
+and can be retrieved by calling the $p-&gt;<b>links()</b>
+method.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The $base
+argument is an optional base <small>URL</small> used to
+absolutize all URLs found. You need to have the
+<i><small>URI</small></i> module installed if you provide
+$base.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The callback is
+called with the lowercase tag name as first argument, and
+then all link attributes as separate key/value pairs. All
+non-link attributes are removed.</p>
+
+<p style="margin-left:11%;">$p-&gt;links</p>
+
+<p style="margin-left:17%;">Returns a list of all links
+found in the document. The returned values will be anonymous
+arrays with the following elements:</p>
+
+<p style="margin-left:17%; margin-top: 1em">[$tag, $attr
+=&gt; $url1, $attr2 =&gt; $url2,...]</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+$p-&gt;links method will also truncate the internal link
+list. This means that if the method is called twice without
+any parsing between them the second call will return an
+empty list.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Also note that
+$p-&gt;links will always be empty if a callback routine was
+provided when the <i>HTML::LinkExtor</i> was created.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is an
+example showing how you can extract links from a document
+received using <small>LWP:</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+LWP::UserAgent; <br>
+use HTML::LinkExtor; <br>
+use URI::URL; <br>
+$url = &quot;http://www.perl.org/&quot;; # for instance <br>
+$ua = LWP::UserAgent-&gt;new; <br>
+# Set up a callback that collect image links <br>
+my @imgs = (); <br>
+sub callback { <br>
+my($tag, %attr) = @_; <br>
+return if $tag ne 'img'; # we only look closer at &lt;img
+...&gt; <br>
+push(@imgs, values %attr); <br>
+} <br>
+# Make the parser. Unfortunately, we don't know the base yet
+<br>
+# (it might be different from $url) <br>
+$p = HTML::LinkExtor-&gt;new(\&amp;callback); <br>
+# Request document and parse it as it arrives <br>
+$res = $ua-&gt;request(HTTP::Request-&gt;new(GET =&gt;
+$url), <br>
+sub {$p-&gt;parse($_[0])}); <br>
+# Expand all image URLs to absolute ones <br>
+my $base = $res-&gt;base; <br>
+@imgs = map { $_ = url($_, $base)-&gt;abs; } @imgs; <br>
+# Print them out <br>
+print join(&quot;\n&quot;, @imgs), &quot;\n&quot;;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::Parser,
+HTML::Tagset, <small>LWP</small> ,
+<small>URI::URL</small></p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1996-2001 Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

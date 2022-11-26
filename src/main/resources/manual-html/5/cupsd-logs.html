@@ -1,0 +1,575 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:05 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>cupsd-logs</title>
+
+</head>
+<body>
+
+<h1 align="center">cupsd-logs</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cupsd-logs -
+cupsd log files (access_log, error_log, and page_log)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cupsd</b>(8)
+normally maintains three log files: <i>access_log</i> to
+track requests that are submitted to the scheduler,
+<i>error_log</i> to track progress and errors, and
+<i>page_log</i> to track pages that are printed.
+Configuration directives in <b>cupsd.conf</b>(5) and
+<b>cups-files.conf</b>(5) control what information is logged
+and where it is stored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ACCESS LOG
+FILE FORMAT</b> <br>
+The <i>access_log</i> file lists each HTTP resource that is
+accessed by a web browser or client. Each line is in an
+extended version of the so-called &quot;Common Log
+Format&quot; used by many web servers and web reporting
+tools:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>host group
+user date-time</i> &quot;<i>method resource
+version</i>&quot; <i>status bytes <br>
+ipp-operation ipp-status</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">10.0.1.2 - -
+[01/Dec/2005:21:50:28 +0000] &quot;POST / HTTP/1.1&quot; 200
+317 <br>
+CUPS-Get-Printers
+successful-ok-ignored-or-substituted-attributes <br>
+localhost - - [01/Dec/2005:21:50:32 +0000] &quot;GET /admin
+HTTP/1.1&quot; <br>
+200 0 - - <br>
+localhost - - [01/Dec/2005:21:50:32 +0000] &quot;POST /
+HTTP/1.1&quot; <br>
+200 157 CUPS-Get-Printers <br>
+successful-ok-ignored-or-substituted-attributes <br>
+localhost - - [01/Dec/2005:21:50:32 +0000] &quot;POST /
+HTTP/1.1&quot; <br>
+200 1411 CUPS-Get-Devices - <br>
+localhost - - [01/Dec/2005:21:50:32 +0000] &quot;GET /admin
+HTTP/1.1&quot; <br>
+200 6667 - -</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>host</i>
+field will normally only be an IP address unless you have
+enabled the HostNameLookups directive in the
+<i>cupsd.conf</i> file or if the IP address corresponds to
+your local machine.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>group</i> field always contains &quot;-&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>user</i>
+field is the authenticated username of the requesting user.
+If no username and password is supplied for the request then
+this field contains &quot;-&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>date-time</i> field is the date and time of the request
+in local time and is in the format
+&quot;[DD/MON/YYYY:HH:MM:SS +ZZZZ]&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>method</i> field is the HTTP method used:
+&quot;GET&quot;, &quot;HEAD&quot;, &quot;OPTIONS&quot;,
+&quot;POST&quot;, or &quot;PUT&quot;. &quot;GET&quot;
+requests are used to get files from the server, both for the
+web interface and to get configuration and log files.
+&quot;HEAD&quot; requests are used to get information about
+a resource prior to a &quot;GET&quot;. &quot;OPTIONS&quot;
+requests are used to upgrade connections to TLS encryption.
+&quot;POST&quot; requests are used for web interface forms
+and IPP requests. &quot;PUT&quot; requests are used to
+upload configuration files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>resource</i> field is the filename of the requested
+resource.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>version</i> field is the HTTP specification version used
+by the client. For CUPS clients this will always be
+&quot;HTTP/1.1&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>status</i> field contains the HTTP result status of the
+request, as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>200</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Successful operation.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>201</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>File created/modified successfully.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>304</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>The requested file has not changed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>400</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Bad HTTP request; typically this means that you have a
+malicious program trying to access your server.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>401</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Unauthorized, authentication (username + password) is
+required.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>403</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Access is forbidden; typically this means that a client
+tried to access a file or resource they do not have
+permission to access.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>404</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>The file or resource does not exist.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>405</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>URL access method is not allowed; typically this means
+you have a web browser using your server as a proxy.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>413</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Request too large; typically this means that a client
+tried to print a file larger than the MaxRequestSize
+allows.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>426</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Upgrading to TLS-encrypted connection.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>500</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>Server error; typically this happens when the server is
+unable to open/create a file - consult the error_log file
+for details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>501</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>The client requested encryption but encryption support
+is not enabled/compiled in.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="5%">
+
+
+<p>505</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>HTTP version number not supported; typically this means
+that you have a malicious program trying to access your
+server.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>bytes</i> field contains the number of bytes in the
+request. For POST requests the bytes field contains the
+number of bytes of non-IPP data that is received from the
+client.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>ipp-operation</i> field contains either &quot;-&quot; for
+non-IPP requests or the IPP operation name for POST requests
+containing an IPP request.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>ipp-status</i> field contains either &quot;-&quot; for
+non-IPP requests or the IPP status code name for POST
+requests containing an IPP response.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ERROR LOG
+FILE FORMAT</b> <br>
+The <i>error_log</i> file lists messages from the scheduler
+- errors, warnings, etc. The LogLevel directive in the
+<b>cupsd.conf</b>(5) file controls which messages are
+logged:</p>
+
+<p style="margin-left:11%; margin-top: 1em">level date-time
+message</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">I
+[20/May/1999:19:18:28 +0000] [Job 1] Queued on
+&rsquo;DeskJet&rsquo; by &rsquo;mike&rsquo;. <br>
+D [20/May/1999:19:18:28 +0000] [Job 1]
+argv[0]=&quot;DeskJet&quot; <br>
+D [20/May/1999:19:18:28 +0000] [Job 1] argv[1]=&quot;1&quot;
+<br>
+D [20/May/1999:19:18:28 +0000] [Job 1]
+argv[2]=&quot;mike&quot; <br>
+D [20/May/1999:19:18:28 +0000] [Job 1]
+argv[3]=&quot;myjob&quot; <br>
+D [20/May/1999:19:18:28 +0000] [Job 1] argv[4]=&quot;1&quot;
+<br>
+D [20/May/1999:19:18:28 +0000] [Job 1] argv[5]=&quot;media=
+<br>
+na_letter_8.5x11in sides=one-sided&quot; <br>
+D [20/May/1999:19:18:28 +0000] [Job 1]
+argv[6]=&quot;/var/spool/cups/ <br>
+d000001-001&quot; <br>
+I [20/May/1999:19:21:02 +0000] [Job 2] Queued on
+&rsquo;DeskJet&rsquo; by &rsquo;mike&rsquo;. <br>
+I [20/May/1999:19:22:24 +0000] [Job 2] Canceled by
+&rsquo;mike&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>level</i> field contains the type of message:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">A</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">Alert message (LogLevel
+alert)</p> </td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>C</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Critical error message (LogLevel crit)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>D</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Debugging message (LogLevel debug)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>d</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Detailed debugging message (LogLevel debug2)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>E</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Normal error message (LogLevel error)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>I</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Informational message (LogLevel info)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>N</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Notice message (LogLevel notice)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>W</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Warning message (LogLevel warn)</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>X</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Emergency error message (LogLevel emerg)</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>date-time</i> field contains the date and time of when
+the page started printing. The format of this field is
+identical to the data-time field in the <i>access_log</i>
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>message</i> field contains a free-form textual message.
+Messages from job filters are prefixed with &quot;[Job
+NNN]&quot; where &quot;NNN&quot; is the job ID.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PAGE LOG
+FILE FORMAT</b> <br>
+The <i>page_log</i> file lists the total number of pages
+(sheets) that are printed. By default, each line contains
+the following information:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>printer user
+job-id date-time</i> <b>total</b> <i>num-sheets job-billing
+<br>
+job-originating-host-name job-name media sides</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">For example the
+entry for a two page job called &quot;myjob&quot; might look
+like:</p>
+
+<p style="margin-left:11%; margin-top: 1em">DeskJet root 1
+[20/May/1999:19:21:06 +0000] total 2 acme-123 <br>
+localhost myjob na_letter_8.5x11in one-sided</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+PageLogFormat directive in the <b>cupsd.conf</b>(5) file can
+be used to change this information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>printer</i> field contains the name of the printer that
+printed the page. If you send a job to a printer class, this
+field will contain the name of the printer that was assigned
+the job.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>user</i>
+field contains the name of the user (the IPP
+requesting-user-name attribute) that submitted this file for
+printing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>job-id</i> field contains the job number of the page
+being printed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>date-time</i> field contains the date and time of when
+the page started printing. The format of this field is
+identical to the data-time field in the <i>access_log</i>
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>num-sheets</i> field provides the total number of pages
+(sheets) that have been printed on for the job.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>job-billing</i> field contains a copy of the job-billing
+or job-account-id attributes provided with the IPP
+Create-Job or Print-Job requests or &quot;-&quot; if neither
+was provided.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>job-originating-host-name</i> field contains the hostname
+or IP address of the client that printed the job.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>job-name</i> field contains a copy of the job-name
+attribute provided with the IPP Create-Job or Print-Job
+requests or &quot;-&quot; if none was provided.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>media</i> field contains a copy of the media or
+media-col/media-size attribute provided with the IPP
+Create-Job or Print-Job requests or &quot;-&quot; if none
+was provided.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>sides</i> field contains a copy of the sides attribute
+provided with the IPP Create-Job or Print-Job requests or
+&quot;-&quot; if none was provided.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cupsd</b>(8),
+<b>cupsd.conf</b>(5), <b>cups-files.conf</b>(5), CUPS Online
+Help (http://localhost:631/help)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2021-2022 by OpenPrinting.</p>
+<hr>
+</body>
+</html>

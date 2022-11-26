@@ -1,0 +1,248 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:28 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MPOOL</title>
+
+</head>
+<body>
+
+<h1 align="center">MPOOL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mpool - shared
+memory buffer pool</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;db.h&gt; <br>
+#include &lt;mpool.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>MPOOL
+*mpool_open(DBT *</b><i>key</i><b>, int</b> <i>fd</i><b>,
+pgno_t</b> <i>pagesize</i><b>, pgno_t</b>
+<i>maxcache</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+mpool_filter(MPOOL *</b><i>mp</i><b>, void (*pgin)(void *,
+pgno_t, void *), <br>
+void (*</b><i>pgout</i><b>)(void *, pgno_t, void *), <br>
+void *</b><i>pgcookie</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+*mpool_new(MPOOL *</b><i>mp</i><b>, pgno_t
+*</b><i>pgnoaddr</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+*mpool_get(MPOOL *</b><i>mp</i><b>, pgno_t</b>
+<i>pgno</i><b>, unsigned int</b> <i>flags</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+mpool_put(MPOOL *</b><i>mp</i><b>, void
+*</b><i>pgaddr</i><b>, unsigned int</b>
+<i>flags</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+mpool_sync(MPOOL *</b><i>mp</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+mpool_close(MPOOL *</b><i>mp</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>Note
+well</i></b>: This page documents interfaces provided in
+glibc up until version 2.1. Since version 2.2, glibc no
+longer provides these interfaces. Probably, you are looking
+for the APIs provided by the <i>libdb</i> library
+instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Mpool</i> is
+the library interface intended to provide page oriented
+buffer management of files. The buffers may be shared
+between processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>mpool_open</b>() initializes a memory pool. The
+<i>key</i> argument is the byte string used to negotiate
+between multiple processes wishing to share buffers. If the
+file buffers are mapped in shared memory, all processes
+using the same key will share the buffers. If <i>key</i> is
+NULL, the buffers are mapped into private memory. The
+<i>fd</i> argument is a file descriptor for the underlying
+file, which must be seekable. If <i>key</i> is non-NULL and
+matches a file already being mapped, the <i>fd</i> argument
+is ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>pagesize</i> argument is the size, in bytes, of the pages
+into which the file is broken up. The <i>maxcache</i>
+argument is the maximum number of pages from the underlying
+file to cache at any one time. This value is not relative to
+the number of processes which share a file&rsquo;s buffers,
+but will be the largest value specified by any of the
+processes sharing the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_filter</b>() function is intended to make
+transparent input and output processing of the pages
+possible. If the <i>pgin</i> function is specified, it is
+called each time a buffer is read into the memory pool from
+the backing file. If the <i>pgout</i> function is specified,
+it is called each time a buffer is written into the backing
+file. Both functions are called with the <i>pgcookie</i>
+pointer, the page number and a pointer to the page to being
+read or written.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>mpool_new</b>() takes an <i>MPOOL</i> pointer and an
+address as arguments. If a new page can be allocated, a
+pointer to the page is returned and the page number is
+stored into the <i>pgnoaddr</i> address. Otherwise, NULL is
+returned and <i>errno</i> is set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>mpool_get</b>() takes an <i>MPOOL</i> pointer and a page
+number as arguments. If the page exists, a pointer to the
+page is returned. Otherwise, NULL is returned and
+<i>errno</i> is set. The <i>flags</i> argument is not
+currently used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>mpool_put</b>() unpins the page referenced by
+<i>pgaddr</i>. <i>pgaddr</i> must be an address previously
+returned by <b>mpool_get</b>() or <b>mpool_new</b>(). The
+flag value is specified by ORing any of the following
+values: <b><br>
+MPOOL_DIRTY</b></p>
+
+<p style="margin-left:22%;">The page has been modified and
+needs to be written to the backing file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mpool_put</b>()
+returns 0 on success and -1 if an error occurs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>mpool_sync</b>() writes all modified pages associated
+with the <i>MPOOL</i> pointer to the backing file.
+<b>mpool_sync</b>() returns 0 on success and -1 if an error
+occurs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_close</b>() function free&rsquo;s up any allocated
+memory associated with the memory pool cookie. Modified
+pages are <b>not</b> written to the backing file.
+<b>mpool_close</b>() returns 0 on success and -1 if an error
+occurs.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_open</b>() function may fail and set <i>errno</i>
+for any of the errors specified for the library routine
+<b>malloc</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_get</b>() function may fail and set <i>errno</i>
+for the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="14%"></td>
+<td width="54%">
+
+
+<p>The requested record doesn&rsquo;t exist.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_new</b>() and <b>mpool_get</b>() functions may fail
+and set <i>errno</i> for any of the errors specified for the
+library routines <b>read</b>(2), <b>write</b>(2), and
+<b>malloc</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_sync</b>() function may fail and set <i>errno</i>
+for any of the errors specified for the library routine
+<b>write</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mpool_close</b>() function may fail and set <i>errno</i>
+for any of the errors specified for the library routine
+<b>free</b>(3).</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not in POSIX.1.
+Present on the BSDs.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>btree</b>(3),
+<b>dbopen</b>(3), <b>hash</b>(3), <b>recno</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:11 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Compression::Process</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Compression::Process</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Compression::Process
+- run compression/decompression processes</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+provides an object oriented interface to run and manage
+compression/decompression processes.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$proc =
+Dpkg::Compression::Process-&gt;new(%opts)</p>
+
+<p style="margin-left:17%;">Create a new instance of the
+object. Supported options are &quot;compression&quot; and
+&quot;compression_level&quot; (see corresponding set_*
+functions).</p>
+
+
+<p style="margin-left:11%;">$proc-&gt;set_compression($comp)</p>
+
+<p style="margin-left:17%;">Select the compression method
+to use. It errors out if the method is not supported
+according to &quot;compression_is_supported&quot; (of
+<b>Dpkg::Compression</b>).</p>
+
+
+<p style="margin-left:11%;">$proc-&gt;set_compression_level($level)</p>
+
+<p style="margin-left:17%;">Select the compression level to
+use. It errors out if the level is not valid according to
+&quot;compression_is_valid_level&quot; (of
+<b>Dpkg::Compression</b>).</p>
+
+<p style="margin-left:11%;">@exec =
+$proc-&gt;<b>get_compress_cmdline()</b> <br>
+@exec = $proc-&gt;<b>get_uncompress_cmdline()</b></p>
+
+<p style="margin-left:17%;">Returns a list ready to be
+passed to &quot;exec&quot;, its first element is the program
+name (either for compression or decompression) and the
+following elements are parameters for the program.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When executed
+the program acts as a filter between its standard input and
+its standard output.</p>
+
+<p style="margin-left:11%;">$proc-&gt;compress(%opts)</p>
+
+<p style="margin-left:17%;">Starts a compressor program.
+You must indicate where it will read its uncompressed data
+from and where it will write its compressed data to. This is
+accomplished by passing one parameter &quot;to_*&quot; and
+one parameter &quot;from_*&quot; as accepted by
+<b>Dpkg::IPC::spawn</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You must call
+&quot;wait_end_process&quot; after having called this method
+to properly close the sub-process (and verify that it exited
+without error).</p>
+
+
+<p style="margin-left:11%;">$proc-&gt;uncompress(%opts)</p>
+
+<p style="margin-left:17%;">Starts a decompressor program.
+You must indicate where it will read its compressed data
+from and where it will write its uncompressed data to. This
+is accomplished by passing one parameter &quot;to_*&quot;
+and one parameter &quot;from_*&quot; as accepted by
+<b>Dpkg::IPC::spawn</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You must call
+&quot;wait_end_process&quot; after having called this method
+to properly close the sub-process (and verify that it exited
+without error).</p>
+
+
+<p style="margin-left:11%;">$proc-&gt;wait_end_process(%opts)</p>
+
+<p style="margin-left:17%;">Call
+<b>Dpkg::IPC::wait_child</b> to wait until the sub-process
+has exited and verify its return code. Any given option will
+be forwarded to the &quot;wait_child&quot; function. Most
+notably you can use the &quot;nocheck&quot; option to verify
+the return code yourself instead of letting
+&quot;wait_child&quot; do it for you.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

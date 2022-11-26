@@ -1,0 +1,731 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:41 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>scr_dump</title>
+
+</head>
+<body>
+
+<h1 align="center">scr_dump</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PORTABILITY">PORTABILITY</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">scr_dump -
+format of curses screen-dumps.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>scr_dump</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The curses
+library provides applications with the ability to write the
+contents of a window to an external file using
+<b>scr_dump</b> or <b>putwin</b>, and read it back using
+<b>scr_restore</b> or <b>getwin</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>putwin</b> and <b>getwin</b> functions do the work; while
+<b>scr_dump</b> and <b>scr_restore</b> conveniently save and
+restore the whole screen, i.e., <b>stdscr</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ncurses6</b>
+<br>
+A longstanding implementation of screen-dump was revised
+with ncurses6 to remedy problems with the earlier
+approach:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>A &ldquo;magic number&rdquo; is written to the beginning
+of the dump file, allowing applications (such as
+<b>file</b>(1)) to recognize curses dump files.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Because
+ncurses6 uses a new format, that requires a new magic number
+was unused by other applications. This 16-bit number was
+unused:</p>
+
+<pre style="margin-left:23%; margin-top: 1em">0x8888 (octal &ldquo;\210\210&rdquo;)</pre>
+
+
+<p style="margin-left:17%; margin-top: 1em">but to be more
+certain, this 32-bit number was chosen:</p>
+
+<pre style="margin-left:23%; margin-top: 1em">0x88888888 (octal &ldquo;\210\210\210\210&rdquo;)</pre>
+
+
+<p style="margin-left:17%; margin-top: 1em">This is the
+pattern submitted to the maintainers of the <b>file</b>
+program:</p>
+
+<pre style="margin-left:23%; margin-top: 1em">#
+# ncurses5 (and before) did not use a magic number,
+# making screen dumps &quot;data&quot;.
+#
+# ncurses6 (2015) uses this format, ignoring byte-order
+0    string    \210\210\210\210ncurses    ncurses6 screen image
+#</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The screen dumps are written in
+textual form, so that internal data sizes are not directly
+related to the dump-format, and enabling the library to read
+dumps from either narrow- or wide-character-
+configurations.</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>narrow</i> library configuration holds characters and
+video attributes in a 32-bit <b>chtype</b>, while the
+<i>wide-character</i> library stores this information in the
+<b>cchar_t</b> structure, which is much larger than
+32-bits.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">It is possible to read a screen
+dump into a terminal with a different screen-size, because
+the library truncates or fills the screen as necessary.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The ncurses6 <b>getwin</b> reads the legacy screen dumps
+from ncurses5.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ncurses5
+(legacy)</b> <br>
+The screen-dump feature was added to ncurses in June 1995.
+While there were fixes and improvements in succeeding years,
+the basic scheme was unchanged:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The <b>WINDOW</b> structure was
+written in binary form.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The <b>WINDOW</b> structure refers to lines of data,
+which were written as an array of binary data following the
+<b>WINDOW</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>When <b>getwin</b> restored the window, it would keep
+track of offsets into the array of line-data and adjust the
+<b>WINDOW</b> structure which was read back into memory.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">This is similar
+to Unix SystemV, but does not write a &ldquo;magic
+number&rdquo; to identify the file format.</p>
+
+<h2>PORTABILITY
+<a name="PORTABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+standard format for <b>putwin</b>. This section gives a
+brief description of the existing formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>X/Open
+Curses</b> <br>
+Refer to <i>X/Open Curses, Issue 7</i> (2009).</p>
+
+<p style="margin-left:11%; margin-top: 1em">X/Open&rsquo;s
+documentation for <i>enhanced curses</i> says only:</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+<i>getwin(&nbsp;)</i> function reads window-related data
+stored in the file by <i>putwin(&nbsp;)</i>. The function
+then creates and initializes a new window using that
+data.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+<i>putwin(&nbsp;)</i> function writes all data associated
+with <i>win</i> into the <i>stdio</i> stream to which
+<i>filep</i> points, using an <b>unspecified format</b>.
+This information can be retrieved later using
+<i>getwin(&nbsp;)</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+mid-1990s when the X/Open Curses document was written, there
+were still systems using older, less capable curses
+libraries (aside from the BSD curses library which was not
+relevant to X/Open because it did not meet the criteria for
+<i>base curses</i>). The document explained the term
+&ldquo;enhanced&rdquo; as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Shading is used to identify
+<i>X/Open Enhanced Curses</i> material, relating to
+interfaces included to provide enhanced capabilities for
+applications originally written to be compiled on systems
+based on the UNIX operating system. Therefore, the features
+described may not be present on systems that conform to
+<b>XPG4 or to earlier XPG releases</b>. The relevant
+reference pages may provide additional or more specific
+portability warnings about use of the material.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+foregoing, emphasis was added to <b>unspecified format</b>
+and to <b>XPG4 or to earlier XPG releases</b>, for
+clarity.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Unix
+SystemV</b> <br>
+Unix SystemV curses identified the file format by writing a
+&ldquo;magic number&rdquo; at the beginning of the dump. The
+<b>WINDOW</b> data and the lines of text follow, all in
+binary form.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Solaris
+curses source has these definitions:</p>
+<pre style="margin-left:17%; margin-top: 1em">/* terminfo magic number */
+#define MAGNUM  0432
+
+
+/* curses screen dump magic number */
+#define SVR2_DUMP_MAGIC_NUMBER  0433
+#define SVR3_DUMP_MAGIC_NUMBER  0434</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">That is, the
+feature was likely introduced in SVr2 (1984), and improved
+in SVr3 (1987). The Solaris curses source has no magic
+number for SVr4 (1989). Other operating systems (AIX and
+HPUX) use a magic number which would correspond to this
+definition:</p>
+
+<pre style="margin-left:17%; margin-top: 1em">/* curses screen dump magic number */
+#define SVR4_DUMP_MAGIC_NUMBER  0435</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">That octal
+number in bytes is 001, 035. Because most Unix vendors use
+big-endian hardware, the magic number is written with the
+high-order byte first, e.g.,</p>
+<pre style="margin-left:17%; margin-top: 1em"> 01 35</pre>
+
+<p style="margin-left:11%; margin-top: 1em">After the magic
+number, the <b>WINDOW</b> structure and line-data are
+written in binary format. While the magic number used by the
+Unix systems can be seen using <b>od</b>(1), none of the
+Unix systems documents the format used for screen-dumps.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Unix
+systems do not use identical formats. While collecting
+information for for this manual page, the <i>savescreen</i>
+test-program produced dumps of different size (all on 64-bit
+hardware, on 40x80 screens):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="37%">
+
+
+<p style="margin-top: 1em">AIX (51817 bytes)</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="37%">
+
+
+<p>HPUX (90093 bytes)</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="37%">
+
+
+<p>Solaris 10 (13273 bytes)</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="37%">
+
+
+<p>ncurses5 (12888 bytes)</p></td>
+<td width="46%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Solaris</b>
+<br>
+As noted above, Solaris curses has no magic number
+corresponding to SVr4 curses. This is odd since Solaris was
+the first operating system to pass the SVr4 guidelines.
+Solaris has two versions of curses:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The default curses library uses
+the SVr3 magic number.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>There is an alternate curses library in
+<b>/usr/xpg4</b>. This uses a textual format with no magic
+number.</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">According to
+the copyright notice, the <i>xpg4</i> Solaris curses library
+was developed by MKS (Mortice Kern Systems) from 1990 to
+1995.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Like ncurses6,
+there is a file-header with parameters. Unlike ncurses6, the
+contents of the window are written piecemeal, with
+coordinates and attributes for each chunk of text rather
+than writing the whole window from top to bottom.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PDCurses</b>
+<br>
+PDCurses added support for screen dumps in version 2.7
+(2005). Like Unix SystemV and ncurses5, it writes the
+<b>WINDOW</b> structure in binary, but begins the file with
+its three-byte identifier &ldquo;PDC&rdquo;, followed by a
+one-byte version, e.g.,</p>
+
+<pre style="margin-left:17%; margin-top: 1em">     &ldquo;PDC\001&rdquo;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>NetBSD</b>
+<br>
+As of April 2017, NetBSD curses does not support
+<b>scr_dump</b> and <b>scr_restore</b> (or <b>scr_init</b>,
+<b>scr_set</b>), although it has <b>putwin</b> and
+<b>getwin</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Like ncurses5,
+NetBSD <b>putwin</b> does not identify its dumps with a
+useful magic number. It writes</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">the curses shared library major
+and minor versions as the first two bytes (e.g., 7 and
+1),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>followed by a binary dump of the <b>WINDOW</b>,</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>some data for wide-characters referenced by the
+<b>WINDOW</b> structure, and</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>finally, lines as done by other implementations.</p></td></tr>
+</table>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Given a simple
+program which writes text to the screen (and for the sake of
+example, limiting the screen-size to 10x20):</p>
+<pre style="margin-left:17%; margin-top: 1em">#include &lt;curses.h&gt;
+
+
+int
+main(void)
+{
+    putenv(&quot;LINES=10&quot;);
+    putenv(&quot;COLUMNS=20&quot;);
+    initscr();
+    start_color();
+    init_pair(1, COLOR_WHITE, COLOR_BLUE);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
+    bkgd(COLOR_PAIR(1));
+    move(4, 5);
+    attron(A_BOLD);
+    addstr(&quot;Hello&quot;);
+    move(5, 5);
+    attroff(A_BOLD);
+    attrset(A_REVERSE | COLOR_PAIR(2));
+    addstr(&quot;World!&quot;);
+    refresh();
+    scr_dump(&quot;foo.out&quot;);
+    endwin();
+    return 0;
+}</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">When run using
+ncurses6, the output looks like this:</p>
+
+<pre style="margin-left:17%; margin-top: 1em">\210\210\210\210ncurses 6.0.20170415
+_cury=5
+_curx=11
+_maxy=9
+_maxx=19
+_flags=14
+_attrs=\{REVERSE|C2}
+flag=_idcok
+_delay=-1
+_regbottom=9
+_bkgrnd=\{NORMAL|C1}\s
+rows:
+1:\{NORMAL|C1}\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+2:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+3:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+4:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+5:\s\s\s\s\s\{BOLD}Hello\{NORMAL}\s\s\s\s\s\s\s\s\s\s
+6:\s\s\s\s\s\{REVERSE|C2}World!\{NORMAL|C1}\s\s\s\s\s\s\s\s\s
+7:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+8:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+9:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s
+10:\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s\s</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">The first four
+octal escapes are actually nonprinting characters, while the
+remainder of the file is printable text. You may notice:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The actual color pair values are
+not written to the file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>All characters are shown in printable form; spaces are
+&ldquo;\s&rdquo; to ensure they are not overlooked.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Attributes are written in escaped curly braces, e.g.,
+&ldquo;\{BOLD}&rdquo;, and may include a color-pair (C1 or
+C2 in this example).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The parameters in the header are written out only if
+they are nonzero. When reading back, order does not
+matter.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Running the
+same program with Solaris <i>xpg4</i> curses gives this
+dump:</p>
+
+<pre style="margin-left:17%; margin-top: 1em">MAX=10,20
+BEG=0,0
+SCROLL=0,10
+VMIN=1
+VTIME=0
+FLAGS=0x1000
+FG=0,0
+BG=0,0,
+0,0,0,1,
+0,19,0,0,
+1,0,0,1,
+1,19,0,0,
+2,0,0,1,
+2,19,0,0,
+3,0,0,1,
+3,19,0,0,
+4,0,0,1,
+4,5,0x20,0,Hello
+4,10,0,1,
+4,19,0,0,
+5,0,0,1,
+5,5,0x4,2,World!
+5,11,0,1,
+5,19,0,0,
+6,0,0,1,
+6,19,0,0,
+7,0,0,1,
+7,19,0,0,
+8,0,0,1,
+8,19,0,0,
+9,0,0,1,
+9,19,0,0,
+CUR=11,5</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Solaris
+<b>getwin</b> requires that all parameters are present, and
+in the same order. The <i>xpg4</i> curses library does not
+know about the <b>bce</b> (back color erase) capability, and
+does not color the window background.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On the other
+hand, the SVr4 curses library does know about the background
+color. However, its screen dumps are in binary. Here is the
+corresponding dump (using &ldquo;od -t x1&rdquo;):</p>
+
+<pre style="margin-left:17%; margin-top: 1em">0000000 1c 01 c3 d6 f3 58 05 00 0b 00 0a 00 14 00 00 00
+0000020 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00
+0000040 00 00 b8 1a 06 08 cc 1a 06 08 00 00 09 00 10 00
+0000060 00 00 00 80 00 00 20 00 00 00 ff ff ff ff 00 00
+0000100 ff ff ff ff 00 00 00 00 20 80 00 00 20 80 00 00
+0000120 20 80 00 00 20 80 00 00 20 80 00 00 20 80 00 00
+*
+0000620 20 80 00 00 20 80 00 00 20 80 00 00 48 80 00 04
+0000640 65 80 00 04 6c 80 00 04 6c 80 00 04 6f 80 00 04
+0000660 20 80 00 00 20 80 00 00 20 80 00 00 20 80 00 00
+*
+0000740 20 80 00 00 20 80 00 00 20 80 00 00 57 00 81 00
+0000760 6f 00 81 00 72 00 81 00 6c 00 81 00 64 00 81 00
+0001000 21 00 81 00 20 80 00 00 20 80 00 00 20 80 00 00
+0001020 20 80 00 00 20 80 00 00 20 80 00 00 20 80 00 00
+*
+0001540 20 80 00 00 20 80 00 00 00 00 f6 d1 01 00 f6 d1
+0001560 08 00 00 00 40 00 00 00 00 00 00 00 00 00 00 07
+0001600 00 04 00 01 00 01 00 00 00 01 00 00 00 00 00 00
+0001620 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+*
+0002371</pre>
+
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>scr_dump</b>(3NCURSES),
+<b>util</b>(3NCURSES).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Thomas E.
+Dickey <br>
+extended screen-dump format for ncurses 6.0 (2015)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Eric S. Raymond
+<br>
+screen dump feature in ncurses 1.9.2d (1995)</p>
+<hr>
+</body>
+</html>

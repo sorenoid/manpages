@@ -1,0 +1,3665 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SSSD.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">SSSD.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#FILE FORMAT">FILE FORMAT</a><br>
+<a href="#CONFIGURATION SNIPPETS FROM INCLUDE DIRECTORY">CONFIGURATION SNIPPETS FROM INCLUDE DIRECTORY</a><br>
+<a href="#GENERAL OPTIONS">GENERAL OPTIONS</a><br>
+<a href="#SPECIAL SECTIONS">SPECIAL SECTIONS</a><br>
+<a href="#SERVICES SECTIONS">SERVICES SECTIONS</a><br>
+<a href="#DOMAIN SECTIONS">DOMAIN SECTIONS</a><br>
+<a href="#TRUSTED DOMAIN SECTION">TRUSTED DOMAIN SECTION</a><br>
+<a href="#CERTIFICATE MAPPING SECTION">CERTIFICATE MAPPING SECTION</a><br>
+<a href="#PROMPTING CONFIGURATION SECTION">PROMPTING CONFIGURATION SECTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sssd.conf - the
+configuration file for SSSD</p>
+
+<h2>FILE FORMAT
+<a name="FILE FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The file has an
+ini-style syntax and consists of sections and parameters. A
+section begins with the name of the section in square
+brackets and continues until the next section begins. An
+example of section with single and multi-valued
+parameters:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>[section]
+<br>
+key</i> = <i>value <br>
+key2</i> = <i>value2,value3</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The data types
+used are string (no quotes needed), integer and bool (with
+values of &ldquo;TRUE/FALSE&rdquo;).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A comment line
+starts with a hash sign (&ldquo;#&rdquo;) or a semicolon
+(&ldquo;;&rdquo;). Inline comments are not supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All sections
+can have an optional <i>description</i> parameter. Its
+function is only as a label for the section.</p>
+
+<p style="margin-left:11%; margin-top: 1em">sssd.conf must
+be a regular file, owned by root and only root may read from
+or write to the file.</p>
+
+<h2>CONFIGURATION SNIPPETS FROM INCLUDE DIRECTORY
+<a name="CONFIGURATION SNIPPETS FROM INCLUDE DIRECTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration file sssd.conf will include configuration
+snippets using the include directory conf.d. This feature is
+available if SSSD was compiled with libini version 1.3.0 or
+later.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any file placed
+in conf.d that ends in &ldquo;.conf&rdquo; and does not
+begin with a dot (&ldquo;.&rdquo;) will be used together
+with sssd.conf to configure SSSD.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration snippets from conf.d have higher priority than
+sssd.conf and will override sssd.conf when conflicts occur.
+If several snippets are present in conf.d, then they are
+included in alphabetical order (based on locale). Files
+included later have higher priority. Numerical prefixes
+(01_snippet.conf, 02_snippet.conf etc.) can help visualize
+the priority (higher number means higher priority).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The snippet
+files require the same owner and permissions as sssd.conf.
+Which are by default root:root and 0600.</p>
+
+<h2>GENERAL OPTIONS
+<a name="GENERAL OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Following
+options are usable in more than one configuration
+sections.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options
+usable in all sections</b> <br>
+debug_level (integer)</p>
+
+<p style="margin-left:17%;">SSSD supports two
+representations for specifying the debug level. The simplest
+is to specify a decimal value from 0-9, which represents
+enabling that level and all lower-level debug messages. The
+more comprehensive option is to specify a hexadecimal
+bitmask to enable or disable specific levels (such as if you
+wish to suppress a level).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that each SSSD service logs into its own log file. Also
+please note that enabling &ldquo;debug_level&rdquo; in the
+&ldquo;[sssd]&rdquo; section only enables debugging just for
+the sssd process itself, not for the responder or provider
+processes. The &ldquo;debug_level&rdquo; parameter should be
+added to all sections that you wish to produce debug logs
+from.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In addition to
+changing the log level in the config file using the
+&ldquo;debug_level&rdquo; parameter, which is persistent,
+but requires SSSD restart, it is also possible to change the
+debug level on the fly using the <b>sss_debuglevel</b>(8)
+tool.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Currently
+supported debug levels:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>0</i>,
+<i>0x0010</i>: Fatal failures. Anything that would prevent
+SSSD from starting up or causes it to cease running.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>1</i>,
+<i>0x0020</i>: Critical failures. An error that doesn't kill
+SSSD, but one that indicates that at least one major feature
+is not going to work properly.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>2</i>,
+<i>0x0040</i>: Serious failures. An error announcing that a
+particular request or operation has failed.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>3</i>,
+<i>0x0080</i>: Minor failures. These are the errors that
+would percolate down to cause the operation failure of
+2.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>4</i>,
+<i>0x0100</i>: Configuration settings.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>5</i>,
+<i>0x0200</i>: Function data.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>6</i>,
+<i>0x0400</i>: Trace messages for operation functions.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>7</i>,
+<i>0x1000</i>: Trace messages for internal control
+functions.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>8</i>,
+<i>0x2000</i>: Contents of function-internal variables that
+may be interesting.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>9</i>,
+<i>0x4000</i>: Extremely low-level tracing information.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>10</i>,
+<i>0x10000</i>: Even more low-level libldb tracing
+information. Almost never really required.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To log required
+bitmask debug levels, simply add their numbers together as
+shown in following examples:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>Example</i>:
+To log fatal failures, critical failures, serious failures
+and function data use 0x0270.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>Example</i>:
+To log fatal failures, configuration settings, function
+data, trace messages for internal control functions use
+0x1310.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>Note</i>:
+The bitmask format of debug levels was introduced in
+1.7.0.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>Default</i>:
+0x0070 (i.e. fatal, critical and serious failures;
+corresponds to setting 2 in decimal notation)</p>
+
+<p style="margin-left:11%; margin-top: 1em">debug
+(integer)</p>
+
+<p style="margin-left:17%;">SSSD 1.14 and later also
+includes the <i>debug</i> alias for <i>debug_level</i> as a
+convenience feature. If both are specified, the value of
+<i>debug_level</i> will be used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">debug_timestamps
+(bool)</p>
+
+<p style="margin-left:17%;">Add a timestamp to the debug
+messages. If journald is enabled for SSSD debug logging this
+option is ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+true</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">debug_microseconds
+(bool)</p>
+
+<p style="margin-left:17%;">Add microseconds to the
+timestamp in debug messages. If journald is enabled for SSSD
+debug logging this option is ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+false</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">debug_backtrace_enabled
+(bool)</p>
+
+<p style="margin-left:17%;">Enable debug backtrace.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In case SSSD is
+run with debug_level less than 9, everything is logged to a
+ring buffer in memory and flushed to a log file on any error
+up to and including &rsquo;min(0x0040, debug_level)&rsquo;
+(i.e. if debug_level is explicitly set to 0 or 1 then only
+those error levels will trigger backtrace, otherwise up to
+2).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Feature is only
+supported for &rsquo;logger == files&rsquo; (i.e. setting
+doesn't have effect for other logger types).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+true</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options
+usable in SERVICE and DOMAIN sections</b> <br>
+timeout (integer)</p>
+
+<p style="margin-left:17%;">Timeout in seconds between
+heartbeats for this service. This is used to ensure that the
+process is alive and capable of answering requests. Note
+that after three missed heartbeats the process will
+terminate itself.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 10</p>
+
+<h2>SPECIAL SECTIONS
+<a name="SPECIAL SECTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>The [sssd]
+section</b> <br>
+Individual pieces of SSSD functionality are provided by
+special SSSD services that are started and stopped together
+with SSSD. The services are managed by a special service
+frequently called &ldquo;monitor&rdquo;. The
+&ldquo;[sssd]&rdquo; section is used to configure the
+monitor as well as some other important options like the
+identity domains.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Section
+parameters</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">config_file_version
+(integer)</p>
+
+<p style="margin-left:17%;">Indicates what is the syntax of
+the config file. SSSD 0.6.0 and later use version 2.</p>
+
+<p style="margin-left:11%; margin-top: 1em">services</p>
+
+<p style="margin-left:17%;">Comma separated list of
+services that are started when sssd itself starts. The
+services' list is optional on platforms where systemd is
+supported, as they will either be socket or D-Bus activated
+when needed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Supported
+services: nss, pam , sudo , autofs , ssh , pac , ifp</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default, all
+services are disabled and the administrator must enable the
+ones allowed to be used by executing: &quot;systemctl enable
+sssd-@service@.socket&quot;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">reconnection_retries
+(integer)</p>
+
+<p style="margin-left:17%;">Number of times services should
+attempt to reconnect in the event of a Data Provider crash
+or restart before they give up</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 3</p>
+
+<p style="margin-left:11%; margin-top: 1em">domains</p>
+
+<p style="margin-left:17%;">A domain is a database
+containing user information. SSSD can use more domains at
+the same time, but at least one must be configured or SSSD
+won't start. This parameter describes the list of domains in
+the order you want them to be queried. A domain name is
+recommended to contain only alphanumeric ASCII characters,
+dashes, dots and underscores. '/' character is
+forbidden.</p>
+
+<p style="margin-left:11%; margin-top: 1em">re_expression
+(string)</p>
+
+<p style="margin-left:17%;">Default regular expression that
+describes how to parse the string containing user name and
+domain into these components.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each domain can
+have an individual regular expression configured. For some
+ID providers there are also default regular expressions. See
+DOMAIN SECTIONS for more info on these regular
+expressions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">full_name_format
+(string)</p>
+
+<p style="margin-left:17%;">A <b>printf</b>(3)-compatible
+format that describes how to compose a fully qualified name
+from user name and domain name components.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The following
+expansions are supported:</p>
+
+<p style="margin-left:17%; margin-top: 1em">%1$s</p>
+
+<p style="margin-left:23%;">user name</p>
+
+<p style="margin-left:17%; margin-top: 1em">%2$s</p>
+
+<p style="margin-left:23%;">domain name as specified in the
+SSSD config file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">%3$s</p>
+
+<p style="margin-left:23%;">domain flat name. Mostly usable
+for Active Directory domains, both directly configured or
+discovered via IPA trusts.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each domain can
+have an individual format string configured. See DOMAIN
+SECTIONS for more info on this option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">monitor_resolv_conf
+(boolean)</p>
+
+<p style="margin-left:17%;">Controls if SSSD should monitor
+the state of resolv.conf to identify when it needs to update
+its internal DNS resolver.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+true</p>
+
+<p style="margin-left:11%; margin-top: 1em">try_inotify
+(boolean)</p>
+
+<p style="margin-left:17%;">By default, SSSD will attempt
+to use inotify to monitor configuration files changes and
+will fall back to polling every five seconds if inotify
+cannot be used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">There are some
+limited situations where it is preferred that we should skip
+even trying to use inotify. In these rare cases, this option
+should be set to 'false'</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: true
+on platforms where inotify is supported. False on other
+platforms.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: this
+option will have no effect on platforms where inotify is
+unavailable. On these platforms, polling will always be
+used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">krb5_rcache_dir
+(string)</p>
+
+<p style="margin-left:17%;">Directory on the filesystem
+where SSSD should store Kerberos replay cache files.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+accepts a special value __LIBKRB5_DEFAULTS__ that will
+instruct SSSD to let libkrb5 decide the appropriate location
+for the replay cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+Distribution-specific and specified at build-time.
+(__LIBKRB5_DEFAULTS__ if not configured)</p>
+
+<p style="margin-left:11%; margin-top: 1em">user
+(string)</p>
+
+<p style="margin-left:17%;">The user to drop the privileges
+to where appropriate to avoid running as the root user. This
+option does not work when running socket-activated services,
+as the user set up to run the processes is set up during
+compilation time. The way to override the systemd unit files
+is by creating the appropriate files in
+/etc/systemd/system/. Keep in mind that any change in the
+socket user, group or permissions may result in a non-usable
+SSSD. The same may occur in case of changes of the user
+running the NSS responder.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Both a user
+name and a uid can be used but the user should be a local
+one, i.e. accessible via &ldquo;files&rdquo; service of
+nsswitch.conf.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set, process will run as root</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">default_domain_suffix
+(string)</p>
+
+<p style="margin-left:17%;">This string will be used as a
+default domain name for all names without a domain name
+component. The main use case is environments where the
+primary domain is intended for managing host policies and
+all users are located in a trusted domain. The option allows
+those users to log in just with their user name without
+giving a domain name as well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that if this option is set all users from the primary domain
+have to use their fully qualified name, e.g.
+user@domain.name, to log in. Setting this option changes
+default of use_fully_qualified_names to True. It is not
+allowed to use this option together with
+use_fully_qualified_names set to False. One exception from
+this rule are domains with &ldquo;id_provider=files&rdquo;
+that always try to match the behaviour of nss_files and
+therefore their output is not qualified even when the
+default_domain_suffix option is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set</p>
+
+<p style="margin-left:11%; margin-top: 1em">override_space
+(string)</p>
+
+<p style="margin-left:17%;">This parameter will replace
+spaces (space bar) with the given character for user and
+group names. e.g. (_). User name &quot;john doe&quot; will
+be &quot;john_doe&quot; This feature was added to help
+compatibility with shell scripts that have difficulty
+handling spaces, due to the default field separator in the
+shell.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note it
+is a configuration error to use a replacement character that
+might be used in user or group names. If a name contains the
+replacement character SSSD tries to return the unmodified
+name but in general the result of a lookup is undefined.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set (spaces will not be replaced)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">certificate_verification
+(string)</p>
+
+<p style="margin-left:17%;">With this parameter the
+certificate verification can be tuned with a comma separated
+list of options. Supported options are:</p>
+
+<p style="margin-left:17%; margin-top: 1em">no_ocsp</p>
+
+<p style="margin-left:23%;">Disables Online Certificate
+Status Protocol (OCSP) checks. This might be needed if the
+OCSP servers defined in the certificate are not reachable
+from the client.</p>
+
+<p style="margin-left:17%; margin-top: 1em">soft_ocsp</p>
+
+<p style="margin-left:23%;">If a connection cannot be
+established to an OCSP responder the OCSP check is skipped.
+This option should be used to allow authentication when the
+system is offline and the OCSP responder cannot be
+reached.</p>
+
+<p style="margin-left:17%; margin-top: 1em">ocsp_dgst</p>
+
+<p style="margin-left:23%;">Digest (hash) function used to
+create the certificate ID for the OCSP request. Allowed
+values are:</p>
+
+<p style="margin-left:29%; margin-top: 1em">&bull; sha1</p>
+
+<p style="margin-left:29%; margin-top: 1em">&bull;
+sha256</p>
+
+<p style="margin-left:29%; margin-top: 1em">&bull;
+sha384</p>
+
+<p style="margin-left:29%; margin-top: 1em">&bull;
+sha512</p>
+
+<p style="margin-left:23%; margin-top: 1em">Default: sha1
+(to allow compatibility with RFC5019-compliant
+responder)</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">no_verification</p>
+
+<p style="margin-left:23%;">Disables verification
+completely. This option should only be used for testing.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">partial_chain</p>
+
+<p style="margin-left:23%;">Allow verification to succeed
+even if a <i>complete</i> chain cannot be built to a
+self-signed trust-anchor, provided it is possible to
+construct a chain to a trusted certificate that might not be
+self-signed.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ocsp_default_responder=URL</p>
+
+<p style="margin-left:23%;">Sets the OCSP default responder
+which should be used instead of the one mentioned in the
+certificate. URL must be replaced with the URL of the OCSP
+default responder e.g. http://example.com:80/ocsp.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ocsp_default_responder_signing_cert=NAME</p>
+
+<p style="margin-left:23%;">This option is currently
+ignored. All needed certificates must be available in the
+PEM file given by pam_cert_db_path.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">crl_file=/PATH/TO/CRL/FILE</p>
+
+<p style="margin-left:23%;">Use the Certificate Revocation
+List (CRL) from the given file during the verification of
+the certificate. The CRL must be given in PEM format, see
+<b>crl</b>(1ssl) for details.</p>
+
+<p style="margin-left:17%; margin-top: 1em">soft_crl</p>
+
+<p style="margin-left:23%;">If a Certificate Revocation
+List (CRL) is expired ignore the CRL checks for the related
+certificates. This option should be used to allow
+authentication when the system is offline and the CRL cannot
+be renewed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unknown options
+are reported but ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set, i.e. do not restrict certificate verification</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">disable_netlink
+(boolean)</p>
+
+<p style="margin-left:17%;">SSSD hooks into the netlink
+interface to monitor changes to routes, addresses, links and
+trigger certain actions.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The SSSD state
+changes caused by netlink events may be undesirable and can
+be disabled by setting this option to 'true'</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: false
+(netlink changes are detected)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">enable_files_domain
+(boolean)</p>
+
+<p style="margin-left:17%;">When this option is enabled,
+SSSD prepends an implicit domain with
+&ldquo;id_provider=files&rdquo; before any explicitly
+configured domains.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+false</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">domain_resolution_order</p>
+
+<p style="margin-left:17%;">Comma separated list of domains
+and subdomains representing the lookup order that will be
+followed. The list doesn't have to include all possible
+domains as the missing domains will be looked up based on
+the order they're presented in the &ldquo;domains&rdquo;
+configuration option. The subdomains which are not listed as
+part of &ldquo;lookup_order&rdquo; will be looked up in a
+random order for each parent domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please, note
+that when this option is set the output format of all
+commands is always fully-qualified even when using short
+names for input, for all users but the ones managed by the
+files provider. In case the administrator wants the output
+not fully-qualified, the full_name_format option can be used
+as shown below: &ldquo;full_name_format=%1$s&rdquo; However,
+keep in mind that during login, login applications often
+canonicalize the username by calling <b>getpwnam</b>(3)
+which, if a shortname is returned for a qualified input
+(while trying to reach a user which exists in multiple
+domains) might re-route the login attempt into the domain
+which uses shortnames, making this workaround totally not
+recommended in cases where usernames may overlap between
+domains.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Not
+set</p>
+
+<h2>SERVICES SECTIONS
+<a name="SERVICES SECTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Settings that
+can be used to configure different services are described in
+this section. They should reside in the [<i>$NAME</i>]
+section, for example, for NSS service, the section would be
+&ldquo;[nss]&rdquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>General
+service configuration options</b> <br>
+These options can be used to configure any service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">reconnection_retries
+(integer)</p>
+
+<p style="margin-left:17%;">Number of times services should
+attempt to reconnect in the event of a Data Provider crash
+or restart before they give up</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 3</p>
+
+<p style="margin-left:11%; margin-top: 1em">fd_limit</p>
+
+<p style="margin-left:17%;">This option specifies the
+maximum number of file descriptors that may be opened at one
+time by this SSSD process. On systems where SSSD is granted
+the CAP_SYS_RESOURCE capability, this will be an absolute
+setting. On systems without this capability, the resulting
+value will be the lower value of this or the limits.conf
+&quot;hard&quot; limit.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 8192
+(or limits.conf &quot;hard&quot; limit)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">client_idle_timeout</p>
+
+<p style="margin-left:17%;">This option specifies the
+number of seconds that a client of an SSSD process can hold
+onto a file descriptor without communicating on it. This
+value is limited in order to avoid resource exhaustion on
+the system. The timeout can't be shorter than 10 seconds. If
+a lower value is configured, it will be adjusted to 10
+seconds.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 60,
+KCM: 300</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">offline_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">When SSSD switches to offline
+mode the amount of time before it tries to go back online
+will increase based upon the time spent disconnected. By
+default SSSD uses incremental behaviour to calculate delay
+in between retries. So, the wait time for a given retry will
+be longer than the wait time for the previous ones. After
+each unsuccessful attempt to go online, the new interval is
+recalculated by the following:</p>
+
+<p style="margin-left:17%; margin-top: 1em">new_delay =
+Minimum(old_delay * 2, offline_timeout_max) +
+random[0...offline_timeout_random_offset]</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+offline_timeout default value is 60. The offline_timeout_max
+default value is 3600. The offline_timeout_random_offset
+default value is 30. The end result is amount of seconds
+before next retry.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+maximum length of each interval is defined by
+offline_timeout_max (apart of random part).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 60</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">offline_timeout_max
+(integer)</p>
+
+<p style="margin-left:17%;">Controls by how much the time
+between attempts to go online can be incremented following
+unsuccessful attempts to go online.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A value of 0
+disables the incrementing behaviour.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value of
+this parameter should be set in correlation to
+offline_timeout parameter value.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+offline_timeout set to 60 (default value) there is no point
+in setting offlinet_timeout_max to less than 120 as it will
+saturate instantly. General rule here should be to set
+offline_timeout_max to at least 4 times offline_timeout.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Although a
+value between 0 and offline_timeout may be specified, it has
+the effect of overriding the offline_timeout value so is of
+little use.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+3600</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">offline_timeout_random_offset
+(integer)</p>
+
+<p style="margin-left:17%;">When SSSD is in offline mode it
+keeps probing backend servers in specified time
+intervals:</p>
+
+<p style="margin-left:17%; margin-top: 1em">new_delay =
+Minimum(old_delay * 2, offline_timeout_max) +
+random[0...offline_timeout_random_offset]</p>
+
+<p style="margin-left:17%; margin-top: 1em">This parameter
+controls the value of the random offset used for the above
+equation. Final random_offset value will be random number in
+range:</p>
+
+<p style="margin-left:17%; margin-top: 1em">[0 -
+offline_timeout_random_offset]</p>
+
+<p style="margin-left:17%; margin-top: 1em">A value of 0
+disables the random offset addition.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 30</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">responder_idle_timeout</p>
+
+<p style="margin-left:17%;">This option specifies the
+number of seconds that an SSSD responder process can be up
+without being used. This value is limited in order to avoid
+resource exhaustion on the system. The minimum acceptable
+value for this option is 60 seconds. Setting this option to
+0 (zero) means that no timeout will be set up to the
+responder. This option only has effect when SSSD is built
+with systemd support and when services are either socket or
+D-Bus activated.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+300</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">cache_first</p>
+
+<p style="margin-left:17%;">This option specifies whether
+the responder should query all caches before querying the
+Data Providers.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+false</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>NSS
+configuration options</b> <br>
+These options can be used to configure the Name Service
+Switch (NSS) service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">enum_cache_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+cache enumerations (requests for info about all users)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+120</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_nowait_percentage
+(integer)</p>
+
+<p style="margin-left:17%;">The entry cache can be set to
+automatically update entries in the background if they are
+requested beyond a percentage of the entry_cache_timeout
+value for the domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example, if
+the domain's entry_cache_timeout is set to 30s and
+entry_cache_nowait_percentage is set to 50 (percent),
+entries that come in after 15 seconds past the last cache
+update will be returned immediately, but the SSSD will go
+and update the cache on its own, so that future requests
+will not need to block waiting for a cache update.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Valid values
+for this option are 0-99 and represent a percentage of the
+entry_cache_timeout for each domain. For performance
+reasons, this percentage will never reduce the nowait
+timeout to less than 10 seconds. (0 disables this
+feature)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 50</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_negative_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Specifies for how many seconds
+nss_sss should cache negative cache hits (that is, queries
+for invalid database entries, like nonexistent ones) before
+asking the back end again.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 15</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">local_negative_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Specifies for how many seconds
+nss_sss should keep local users and groups in negative cache
+before trying to look it up in the back end again. Setting
+the option to 0 disables this feature.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 14400
+(4 hours)</p>
+
+<p style="margin-left:11%; margin-top: 1em">filter_users,
+filter_groups (string)</p>
+
+<p style="margin-left:17%;">Exclude certain users or groups
+from being fetched from the sss NSS database. This is
+particularly useful for system accounts. This option can
+also be set per-domain or include fully-qualified names to
+filter only users from the particular domain or by a user
+principal name (UPN).</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: The
+filter_groups option doesn't affect inheritance of nested
+group members, since filtering happens after they are
+propagated for returning via NSS. E.g. a group having a
+member group filtered out will still have the member users
+of the latter listed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+root</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">filter_users_in_groups
+(bool)</p>
+
+<p style="margin-left:17%;">If you want filtered user still
+be group members set this option to false.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+true</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">override_homedir
+(string)</p>
+
+<p style="margin-left:17%;">Override the user's home
+directory. You can either provide an absolute value or a
+template. In the template, the following sequences are
+substituted:</p>
+
+<p style="margin-left:17%; margin-top: 1em">%u</p>
+
+<p style="margin-left:23%;">login name</p>
+
+<p style="margin-left:17%; margin-top: 1em">%U</p>
+
+<p style="margin-left:23%;">UID number</p>
+
+<p style="margin-left:17%; margin-top: 1em">%d</p>
+
+<p style="margin-left:23%;">domain name</p>
+
+<p style="margin-left:17%; margin-top: 1em">%f</p>
+
+<p style="margin-left:23%;">fully qualified user name
+(user@domain)</p>
+
+<p style="margin-left:17%; margin-top: 1em">%l</p>
+
+<p style="margin-left:23%;">The first letter of the login
+name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">%P</p>
+
+<p style="margin-left:23%;">UPN - User Principal Name
+(name@REALM)</p>
+
+<p style="margin-left:17%; margin-top: 1em">%o</p>
+
+<p style="margin-left:23%;">The original home directory
+retrieved from the identity provider.</p>
+
+<p style="margin-left:17%; margin-top: 1em">%H</p>
+
+<p style="margin-left:23%;">The value of configure option
+<i>homedir_substring</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">%%</p>
+
+<p style="margin-left:23%;">a literal '%'</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option can
+also be set per-domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">override_homedir
+= /home/%u</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Not
+set (SSSD will use the value retrieved from LDAP)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note,
+the home directory from a specific override for the user,
+either locally (see <b>sss_override</b>(8)) or centrally
+managed IPA id-overrides, has a higher precedence and will
+be used instead of the value given by override_homedir.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">homedir_substring
+(string)</p>
+
+<p style="margin-left:17%;">The value of this option will
+be used in the expansion of the <i>override_homedir</i>
+option if the template contains the format string <i>%H</i>.
+An LDAP directory entry can directly contain this template
+so that this option can be used to expand the home directory
+path for each client machine (or operating system). It can
+be set per-domain or globally in the [nss] section. A value
+specified in a domain section will override one set in the
+[nss] section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+/home</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">fallback_homedir
+(string)</p>
+
+<p style="margin-left:17%;">Set a default template for a
+user's home directory if one is not specified explicitly by
+the domain's data provider.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The available
+values for this option are the same as for
+override_homedir.</p>
+
+<p style="margin-left:17%; margin-top: 1em">example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">fallback_homedir
+= /home/%u</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set (no substitution for unset home directories)</p>
+
+<p style="margin-left:11%; margin-top: 1em">override_shell
+(string)</p>
+
+<p style="margin-left:17%;">Override the login shell for
+all users. This option supersedes any other shell options if
+it takes effect and can be set either in the [nss] section
+or per-domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set (SSSD will use the value retrieved from LDAP)</p>
+
+<p style="margin-left:11%; margin-top: 1em">allowed_shells
+(string)</p>
+
+<p style="margin-left:17%;">Restrict user shell to one of
+the listed values. The order of evaluation is:</p>
+
+<p style="margin-left:17%; margin-top: 1em">1. If the shell
+is present in &ldquo;/etc/shells&rdquo;, it is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">2. If the shell
+is in the allowed_shells list but not in
+&ldquo;/etc/shells&rdquo;, use the value of the
+shell_fallback parameter.</p>
+
+<p style="margin-left:17%; margin-top: 1em">3. If the shell
+is not in the allowed_shells list and not in
+&ldquo;/etc/shells&rdquo;, a nologin shell is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The wildcard
+(*) can be used to allow any shell.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The (*) is
+useful if you want to use shell_fallback in case that user's
+shell is not in &ldquo;/etc/shells&rdquo; and maintaining
+list of all allowed shells in allowed_shells would be to
+much overhead.</p>
+
+<p style="margin-left:17%; margin-top: 1em">An empty string
+for shell is passed as-is to libc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&ldquo;/etc/shells&rdquo; is only read on SSSD start up,
+which means that a restart of the SSSD is required in case a
+new shell is installed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Not
+set. The user shell is automatically used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">vetoed_shells
+(string)</p>
+
+<p style="margin-left:17%;">Replace any instance of these
+shells with the shell_fallback</p>
+
+<p style="margin-left:11%; margin-top: 1em">shell_fallback
+(string)</p>
+
+<p style="margin-left:17%;">The default shell to use if an
+allowed shell is not installed on the machine.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+/bin/sh</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">default_shell</p>
+
+<p style="margin-left:17%;">The default shell to use if the
+provider does not return one during lookup. This option can
+be specified globally in the [nss] section or
+per-domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set (Return NULL if no shell is specified and rely on libc
+to substitute something sensible when necessary, usually
+/bin/sh)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">get_domains_timeout
+(int)</p>
+
+<p style="margin-left:17%;">Specifies time in seconds for
+which the list of subdomains will be considered valid.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 60</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">memcache_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Specifies time in seconds for
+which records in the in-memory cache will be valid. Setting
+this option to zero will disable the in-memory cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+300</p>
+
+<p style="margin-left:17%; margin-top: 1em">WARNING:
+Disabling the in-memory cache will have significant negative
+impact on SSSD's performance and should only be used for
+testing.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: If the
+environment variable SSS_NSS_USE_MEMCACHE is set to
+&quot;NO&quot;, client applications will not use the fast
+in-memory cache.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">memcache_size_passwd
+(integer)</p>
+
+<p style="margin-left:17%;">Size (in megabytes) of the data
+table allocated inside fast in-memory cache for passwd
+requests. Setting the size to 0 will disable the passwd
+in-memory cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 8</p>
+
+<p style="margin-left:17%; margin-top: 1em">WARNING:
+Disabled or too small in-memory cache can have significant
+negative impact on SSSD's performance.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: If the
+environment variable SSS_NSS_USE_MEMCACHE is set to
+&quot;NO&quot;, client applications will not use the fast
+in-memory cache.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">memcache_size_group
+(integer)</p>
+
+<p style="margin-left:17%;">Size (in megabytes) of the data
+table allocated inside fast in-memory cache for group
+requests. Setting the size to 0 will disable the group
+in-memory cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 6</p>
+
+<p style="margin-left:17%; margin-top: 1em">WARNING:
+Disabled or too small in-memory cache can have significant
+negative impact on SSSD's performance.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: If the
+environment variable SSS_NSS_USE_MEMCACHE is set to
+&quot;NO&quot;, client applications will not use the fast
+in-memory cache.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">memcache_size_initgroups
+(integer)</p>
+
+<p style="margin-left:17%;">Size (in megabytes) of the data
+table allocated inside fast in-memory cache for initgroups
+requests. Setting the size to 0 will disable the initgroups
+in-memory cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 10</p>
+
+<p style="margin-left:17%; margin-top: 1em">WARNING:
+Disabled or too small in-memory cache can have significant
+negative impact on SSSD's performance.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: If the
+environment variable SSS_NSS_USE_MEMCACHE is set to
+&quot;NO&quot;, client applications will not use the fast
+in-memory cache.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">user_attributes
+(string)</p>
+
+<p style="margin-left:17%;">Some of the additional NSS
+responder requests can return more attributes than just the
+POSIX ones defined by the NSS interface. The list of
+attributes is controlled by this option. It is handled the
+same way as the &ldquo;user_attributes&rdquo; option of the
+InfoPipe responder (see <b>sssd-ifp</b>(5) for details) but
+with no default values.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To make
+configuration more easy the NSS responder will check the
+InfoPipe option if it is not set for the NSS responder.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set, fallback to InfoPipe option</p>
+
+<p style="margin-left:11%; margin-top: 1em">pwfield
+(string)</p>
+
+<p style="margin-left:17%;">The value that NSS operations
+that return users or groups will return for the
+&ldquo;password&rdquo; field.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;*&rdquo;</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This
+option can also be set per-domain which overwrites the value
+in [nss] section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;not set&rdquo; (remote domains), &ldquo;x&rdquo; (the
+files domain), &ldquo;x&rdquo; (proxy domain with nss_files
+and sssd-shadowutils target)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PAM
+configuration options</b> <br>
+These options can be used to configure the Pluggable
+Authentication Module (PAM) service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">offline_credentials_expiration
+(integer)</p>
+
+<p style="margin-left:17%;">If the authentication provider
+is offline, how long should we allow cached logins (in days
+since the last successful online login).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0 (No
+limit)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">offline_failed_login_attempts
+(integer)</p>
+
+<p style="margin-left:17%;">If the authentication provider
+is offline, how many failed login attempts are allowed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0 (No
+limit)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">offline_failed_login_delay
+(integer)</p>
+
+<p style="margin-left:17%;">The time in minutes which has
+to pass after offline_failed_login_attempts has been reached
+before a new login attempt is possible.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If set to 0 the
+user cannot authenticate offline if
+offline_failed_login_attempts has been reached. Only a
+successful online authentication can enable offline
+authentication again.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 5</p>
+
+<p style="margin-left:11%; margin-top: 1em">pam_verbosity
+(integer)</p>
+
+<p style="margin-left:17%;">Controls what kind of messages
+are shown to the user during authentication. The higher the
+number to more messages are displayed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Currently sssd
+supports the following values:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>0</i>: do
+not show any message</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>1</i>: show
+only important messages</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>2</i>: show
+informational messages</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>3</i>: show
+all messages and debug information</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 1</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_response_filter
+(string)</p>
+
+<p style="margin-left:17%;">A comma separated list of
+strings which allows to remove (filter) data sent by the PAM
+responder to pam_sss PAM module. There are different kind of
+responses sent to pam_sss e.g. messages displayed to the
+user or environment variables which should be set by
+pam_sss.</p>
+
+<p style="margin-left:17%; margin-top: 1em">While messages
+already can be controlled with the help of the pam_verbosity
+option this option allows to filter out other kind of
+responses as well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Currently the
+following filters are supported:</p>
+
+<p style="margin-left:17%; margin-top: 1em">ENV</p>
+
+<p style="margin-left:23%;">Do not send any environment
+variables to any service.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ENV:var_name</p>
+
+<p style="margin-left:23%;">Do not send environment
+variable var_name to any service.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ENV:var_name:service</p>
+
+<p style="margin-left:23%;">Do not send environment
+variable var_name to service.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The list of
+strings can either be the list of filters which would set
+this list of filters and overwrite the defaults. Or each
+element of the list can be prefixed by a '+' or '-'
+character which would add the filter to the existing default
+or remove it from the defaults, respectively. Please note
+that either all list elements must have a '+' or '-' prefix
+or none. It is considered as an error to mix both
+styles.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+ENV:KRB5CCNAME:sudo, ENV:KRB5CCNAME:sudo-i</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:
+-ENV:KRB5CCNAME:sudo-i will remove the filter from the
+default list</p>
+
+<p style="margin-left:11%; margin-top: 1em">pam_id_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">For any PAM request while SSSD
+is online, the SSSD will attempt to immediately update the
+cached identity information for the user in order to ensure
+that authentication takes place with the latest
+information.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A complete PAM
+conversation may perform multiple PAM requests, such as
+account management and session opening. This option controls
+(on a per-client-application basis) how long (in seconds) we
+can cache the identity information to avoid excessive
+round-trips to the identity provider.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 5</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_pwd_expiration_warning
+(integer)</p>
+
+<p style="margin-left:17%;">Display a warning N days before
+the password expires.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that the backend server has to provide information about the
+expiration time of the password. If this information is
+missing, sssd cannot display a warning.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If zero is set,
+then this filter is not applied, i.e. if the expiration
+warning was received from backend server, it will
+automatically be displayed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting
+can be overridden by setting <i>pwd_expiration_warning</i>
+for a particular domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">get_domains_timeout
+(int)</p>
+
+<p style="margin-left:17%;">Specifies time in seconds for
+which the list of subdomains will be considered valid.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 60</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_trusted_users
+(string)</p>
+
+<p style="margin-left:17%;">Specifies the comma-separated
+list of UID values or user names that are allowed to run PAM
+conversations against trusted domains. Users not included in
+this list can only access domains marked as public with
+&ldquo;pam_public_domains&rdquo;. User names are resolved to
+UIDs at startup.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: All
+users are considered trusted by default</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that UID 0 is always allowed to access the PAM responder
+even in case it is not in the pam_trusted_users list.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_public_domains
+(string)</p>
+
+<p style="margin-left:17%;">Specifies the comma-separated
+list of domain names that are accessible even to untrusted
+users.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Two special
+values for pam_public_domains option are defined:</p>
+
+<p style="margin-left:17%; margin-top: 1em">all (Untrusted
+users are allowed to access all domains in PAM
+responder.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">none (Untrusted
+users are not allowed to access any domains PAM in
+responder.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+none</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_account_expired_message
+(string)</p>
+
+<p style="margin-left:17%;">Allows a custom expiration
+message to be set, replacing the default 'Permission denied'
+message.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: Please be
+aware that message is only printed for the SSH service
+unless pam_verbosity is set to 3 (show all messages and
+debug information).</p>
+
+<p style="margin-left:17%; margin-top: 1em">example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">pam_account_expired_message
+= Account expired, please contact help desk.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+none</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_account_locked_message
+(string)</p>
+
+<p style="margin-left:17%;">Allows a custom lockout message
+to be set, replacing the default 'Permission denied'
+message.</p>
+
+<p style="margin-left:17%; margin-top: 1em">example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">pam_account_locked_message
+= Account locked, please contact help desk.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+none</p>
+
+<p style="margin-left:11%; margin-top: 1em">pam_cert_auth
+(bool)</p>
+
+<p style="margin-left:17%;">Enable certificate based
+Smartcard authentication. Since this requires additional
+communication with the Smartcard which will delay the
+authentication process this option is disabled by
+default.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+False</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_cert_db_path
+(string)</p>
+
+<p style="margin-left:17%;">The path to the certificate
+database.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+/etc/sssd/pki/sssd_auth_ca_db.pem (path to a file with
+trusted CA certificates in PEM format)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_cert_verification
+(string)</p>
+
+<p style="margin-left:17%;">With this parameter the PAM
+certificate verification can be tuned with a comma separated
+list of options that override the
+&ldquo;certificate_verification&rdquo; value in
+&ldquo;[sssd]&rdquo; section. Supported options are the same
+of &ldquo;certificate_verification&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">pam_cert_verification
+= partial_chain</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set, i.e. use default &ldquo;certificate_verification&rdquo;
+option defined in &ldquo;[sssd]&rdquo; section.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">p11_child_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds will pam_sss
+wait for p11_child to finish.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 10</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_app_services
+(string)</p>
+
+<p style="margin-left:17%;">Which PAM services are
+permitted to contact domains of type
+&ldquo;application&rdquo;</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Not
+set</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_p11_allowed_services
+(integer)</p>
+
+<p style="margin-left:17%;">A comma-separated list of PAM
+service names for which it will be allowed to use
+Smartcards.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It is possible
+to add another PAM service name to the default set by using
+&ldquo;+service_name&rdquo; or to explicitly remove a PAM
+service name from the default set by using
+&ldquo;-service_name&rdquo;. For example, in order to
+replace a default PAM service name for authentication with
+Smartcards (e.g. &ldquo;login&rdquo;) with a custom PAM
+service name (e.g. &ldquo;my_pam_service&rdquo;), you would
+use the following configuration:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">pam_p11_allowed_services
+= +my_pam_service, -login</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: the
+default set of PAM service names includes:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+login</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; su</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; su-l</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+gdm-smartcard</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+gdm-password</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; kdm</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; sudo</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+sudo-i</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+gnome-screensaver</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">p11_wait_for_card_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">If Smartcard authentication is
+required how many extra seconds in addition to
+p11_child_timeout should the PAM responder wait until a
+Smartcard is inserted.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 60</p>
+
+<p style="margin-left:11%; margin-top: 1em">p11_uri
+(string)</p>
+
+<p style="margin-left:17%;">PKCS#11 URI (see RFC-7512 for
+details) which can be used to restrict the selection of
+devices used for Smartcard authentication. By default SSSD's
+p11_child will search for a PKCS#11 slot (reader) where the
+'removable' flags is set and read the certificates from the
+inserted token from the first slot found. If multiple
+readers are connected p11_uri can be used to tell p11_child
+to use a specific reader.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:23%; margin-top: 1em">p11_uri =
+pkcs11:slot-description=My%20Smartcard%20Reader</p>
+
+<p style="margin-left:17%; margin-top: 1em">or</p>
+
+<p style="margin-left:23%; margin-top: 1em">p11_uri =
+pkcs11:library-description=OpenSC%20smartcard%20framework;slot-id=2</p>
+
+<p style="margin-left:17%; margin-top: 1em">To find
+suitable URI please check the debug output of p11_child. As
+an alternative the GnuTLS utility 'p11tool' with e.g. the
+'--list-all' will show PKCS#11 URIs as well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+none</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_initgroups_scheme</p>
+
+<p style="margin-left:17%;">The PAM responder can force an
+online lookup to get the current group memberships of the
+user trying to log in. This option controls when this should
+be done and the following values are allowed:</p>
+
+<p style="margin-left:17%; margin-top: 1em">always</p>
+
+<p style="margin-left:23%;">Always do an online lookup,
+please note that pam_id_timeout still applies</p>
+
+<p style="margin-left:17%; margin-top: 1em">no_session</p>
+
+<p style="margin-left:23%;">Only do an online lookup if
+there is no active session of the user, i.e. if the user is
+currently not logged in</p>
+
+<p style="margin-left:17%; margin-top: 1em">never</p>
+
+<p style="margin-left:23%;">Never force an online lookup,
+use the data from the cache as long as they are not
+expired</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+no_session</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_gssapi_services</p>
+
+<p style="margin-left:17%;">Comma separated list of PAM
+services that are allowed to try GSSAPI authentication using
+pam_sss_gss.so module.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To disable
+GSSAPI authentication, set this option to &ldquo;-&rdquo;
+(dash).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This
+option can also be set per-domain which overwrites the value
+in [pam] section. It can also be set for trusted domain
+which overwrites the value in the domain section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">pam_gssapi_services
+= sudo, sudo-i</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: -
+(GSSAPI authentication is disabled)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_gssapi_check_upn</p>
+
+<p style="margin-left:17%;">If True, SSSD will require that
+the Kerberos user principal that successfully authenticated
+through GSSAPI can be associated with the user who is being
+authenticated. Authentication will fail if the check
+fails.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If False, every
+user that is able to obtained required service ticket will
+be authenticated.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This
+option can also be set per-domain which overwrites the value
+in [pam] section. It can also be set for trusted domain
+which overwrites the value in the domain section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+True</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_gssapi_indicators_map</p>
+
+<p style="margin-left:17%;">Comma separated list of
+authentication indicators required to be present in a
+Kerberos ticket to access a PAM service that is allowed to
+try GSSAPI authentication using pam_sss_gss.so module.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each element of
+the list can be either an authentication indicator name or a
+pair &ldquo;service:indicator&rdquo;. Indicators not
+prefixed with the PAM service name will be required to
+access any PAM service configured to be used with
+<b>pam_gssapi_services</b>. A resulting list of indicators
+per PAM service is then checked against indicators in the
+Kerberos ticket during authentication by pam_sss_gss.so. Any
+indicator from the ticket that matches the resulting list of
+indicators for the PAM service would grant access. If none
+of the indicators in the list match, access will be denied.
+If the resulting list of indicators for the PAM service is
+empty, the check will not prevent the access.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To disable
+GSSAPI authentication indicator check, set this option to
+&ldquo;-&rdquo; (dash). To disable the check for a specific
+PAM service, add &ldquo;service:-&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This
+option can also be set per-domain which overwrites the value
+in [pam] section. It can also be set for trusted domain
+which overwrites the value in the domain section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Following
+authentication indicators are supported by IPA Kerberos
+deployments:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; pkinit
+-- pre-authentication using X.509 certificates -- whether
+stored in files or on smart cards.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; hardened
+-- SPAKE pre-authentication or any pre-authentication
+wrapped in a FAST channel.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; radius
+-- pre-authentication with the help of a RADIUS server.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; otp --
+pre-authentication using integrated two-factor
+authentication (2FA or one-time password, OTP) in IPA.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example: to
+require access to SUDO services only for users which
+obtained their Kerberos tickets with a X.509 certificate
+pre-authentication (PKINIT), set</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">pam_gssapi_indicators_map
+= sudo:pkinit, sudo-i:pkinit</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set (use of authentication indicators is not required)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SUDO
+configuration options</b> <br>
+These options can be used to configure the sudo service. The
+detailed instructions for configuration of <b>sudo</b>(8) to
+work with <b>sssd</b>(8) are in the manual page
+<b>sssd-sudo</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">sudo_timed
+(bool)</p>
+
+<p style="margin-left:17%;">Whether or not to evaluate the
+sudoNotBefore and sudoNotAfter attributes that implement
+time-dependent sudoers entries.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+false</p>
+
+<p style="margin-left:11%; margin-top: 1em">sudo_threshold
+(integer)</p>
+
+<p style="margin-left:17%;">Maximum number of expired rules
+that can be refreshed at once. If number of expired rules is
+below threshold, those rules are refreshed with &ldquo;rules
+refresh&rdquo; mechanism. If the threshold is exceeded a
+&ldquo;full refresh&rdquo; of sudo rules is triggered
+instead. This threshold number also applies to IPA sudo
+command and command group searches.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 50</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>AUTOFS
+configuration options</b> <br>
+These options can be used to configure the autofs
+service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">autofs_negative_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Specifies for how many seconds
+should the autofs responder negative cache hits (that is,
+queries for invalid map entries, like nonexistent ones)
+before asking the back end again.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 15</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that the automounter only reads the master map on startup,
+so if any autofs-related changes are made to the sssd.conf,
+you typically also need to restart the automounter daemon
+after restarting the SSSD.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SSH
+configuration options</b> <br>
+These options can be used to configure the SSH service.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ssh_hash_known_hosts
+(bool)</p>
+
+<p style="margin-left:17%;">Whether or not to hash host
+names and addresses in the managed known_hosts file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+false</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ssh_known_hosts_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds to keep a host
+in the managed known_hosts file after its host keys were
+requested.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+180</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ssh_use_certificate_keys
+(bool)</p>
+
+<p style="margin-left:17%;">If set to true the
+<b>sss_ssh_authorizedkeys</b> will return ssh keys derived
+from the public key of X.509 certificates stored in the user
+entry as well. See <b>sss_ssh_authorizedkeys</b>(1) for
+details.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+true</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ssh_use_certificate_matching_rules
+(string)</p>
+
+<p style="margin-left:17%;">By default the ssh responder
+will use all available certificate matching rules to filter
+the certificates so that ssh keys are only derived from the
+matching ones. With this option the used rules can be
+restricted with a comma separated list of mapping and
+matching rule names. All other rules will be ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">There are two
+special key words 'all_rules' and 'no_rules' which will
+enable all or no rules, respectively. The latter means that
+no certificates will be filtered out and ssh keys will be
+generated from all valid certificates.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no rules are
+configured using 'all_rules' will enable a default rule
+which enables all certificates suitable for client
+authentication. This is the same behavior as for the PAM
+responder if certificate authentication is enabled.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A non-existing
+rule name is considered an error. If as a result no rule is
+selected all certificates will be ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set, equivalent to 'all_rules', all found rules or the
+default rule are used</p>
+
+<p style="margin-left:11%; margin-top: 1em">ca_db
+(string)</p>
+
+<p style="margin-left:17%;">Path to a storage of trusted CA
+certificates. The option is used to validate user
+certificates before deriving public ssh keys from them.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+/etc/sssd/pki/sssd_auth_ca_db.pem (path to a file with
+trusted CA certificates in PEM format)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PAC
+responder configuration options</b> <br>
+The PAC responder works together with the authorization data
+plugin for MIT Kerberos sssd_pac_plugin.so and a sub-domain
+provider. The plugin sends the PAC data during a GSSAPI
+authentication to the PAC responder. The sub-domain provider
+collects domain SID and ID ranges of the domain the client
+is joined to and of remote trusted domains from the local
+domain controller. If the PAC is decoded and evaluated some
+of the following operations are done:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; If the
+remote user does not exist in the cache, it is created. The
+UID is determined with the help of the SID, trusted domains
+will have UPGs and the GID will have the same value as the
+UID. The home directory is set based on the
+subdomain_homedir parameter. The shell will be empty by
+default, i.e. the system defaults are used, but can be
+overwritten with the default_shell parameter.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; If there
+are SIDs of groups from domains sssd knows about, the user
+will be added to those groups.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These options
+can be used to configure the PAC responder.</p>
+
+<p style="margin-left:11%; margin-top: 1em">allowed_uids
+(string)</p>
+
+<p style="margin-left:17%;">Specifies the comma-separated
+list of UID values or user names that are allowed to access
+the PAC responder. User names are resolved to UIDs at
+startup.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Local user
+names are required, i.e. accessible via &ldquo;files&rdquo;
+service of nsswitch.conf.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0
+(only the root user is allowed to access the PAC
+responder)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that although the UID 0 is used as the default it will be
+overwritten with this option. If you still want to allow the
+root user to access the PAC responder, which would be the
+typical case, you have to add 0 to the list of allowed UIDs
+as well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pac_lifetime
+(integer)</p>
+
+<p style="margin-left:17%;">Lifetime of the PAC entry in
+seconds. As long as the PAC is valid the PAC data can be
+used to determine the group memberships of a user.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+300</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Session
+recording configuration options</b> <br>
+Session recording works in conjunction with
+<b>tlog-rec-session</b>(8), a part of tlog package, to log
+what users see and type when they log in on a text terminal.
+See also <b>sssd-session-recording</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">These options
+can be used to configure session recording.</p>
+
+<p style="margin-left:11%; margin-top: 1em">scope
+(string)</p>
+
+<p style="margin-left:17%;">One of the following strings
+specifying the scope of session recording:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;none&quot;</p>
+
+<p style="margin-left:23%;">No users are recorded.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;some&quot;</p>
+
+<p style="margin-left:23%;">Users/groups specified by
+<i>users</i> and <i>groups</i> options are recorded.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;all&quot;</p>
+
+<p style="margin-left:23%;">All users are recorded.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&quot;none&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">users
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of users
+which should have session recording enabled. Matches user
+names as returned by NSS. I.e. after the possible space
+replacement, case changes, etc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+Matches no users.</p>
+
+<p style="margin-left:11%; margin-top: 1em">groups
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of
+groups, members of which should have session recording
+enabled. Matches group names as returned by NSS. I.e. after
+the possible space replacement, case changes, etc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: using
+this option (having it set to anything) has a considerable
+performance cost, because each uncached request for a user
+requires retrieving and matching the groups the user is
+member of.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+Matches no groups.</p>
+
+<p style="margin-left:11%; margin-top: 1em">exclude_users
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of users
+to be excluded from recording, only applicable with
+'scope=all'.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+No users excluded.</p>
+
+<p style="margin-left:11%; margin-top: 1em">exclude_groups
+(string)</p>
+
+<p style="margin-left:17%;">A comma-separated list of
+groups, members of which should be excluded from recording.
+Only applicable with 'scope=all'.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: using
+this option (having it set to anything) has a considerable
+performance cost, because each uncached request for a user
+requires retrieving and matching the groups the user is
+member of.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Empty.
+No groups excluded.</p>
+
+<h2>DOMAIN SECTIONS
+<a name="DOMAIN SECTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These
+configuration options can be present in a domain
+configuration section, that is, in a section called
+&ldquo;[domain/<i>NAME</i>]&rdquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em">enabled</p>
+
+<p style="margin-left:17%;">Explicitly enable or disable
+the domain. If &ldquo;true&rdquo;, the domain is always
+&ldquo;enabled&rdquo;. If &ldquo;false&rdquo;, the domain is
+always &ldquo;disabled&rdquo;. If this option is not set,
+the domain is enabled only if it is listed in the domains
+option in the &ldquo;[sssd]&rdquo; section.</p>
+
+<p style="margin-left:11%; margin-top: 1em">domain_type
+(string)</p>
+
+<p style="margin-left:17%;">Specifies whether the domain is
+meant to be used by POSIX-aware clients such as the Name
+Service Switch or by applications that do not need POSIX
+data to be present or generated. Only objects from POSIX
+domains are available to the operating system interfaces and
+utilities.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Allowed values
+for this option are &ldquo;posix&rdquo; and
+&ldquo;application&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">POSIX domains
+are reachable by all services. Application domains are only
+reachable from the InfoPipe responder (see
+<b>sssd-ifp</b>(5)) and the PAM responder.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: The
+application domains are currently well tested with
+&ldquo;id_provider=ldap&rdquo; only.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For an easy way
+to configure a non-POSIX domains, please see the
+&ldquo;Application domains&rdquo; section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+posix</p>
+
+<p style="margin-left:11%; margin-top: 1em">min_id,max_id
+(integer)</p>
+
+<p style="margin-left:17%;">UID and GID limits for the
+domain. If a domain contains an entry that is outside these
+limits, it is ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For users, this
+affects the primary GID limit. The user will not be returned
+to NSS if either the UID or the primary GID is outside the
+range. For non-primary group memberships, those that are in
+range will be reported as expected.</p>
+
+<p style="margin-left:17%; margin-top: 1em">These ID limits
+affect even saving entries to cache, not only returning them
+by name or ID.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 1 for
+min_id, 0 (no limit) for max_id</p>
+
+<p style="margin-left:11%; margin-top: 1em">enumerate
+(bool)</p>
+
+<p style="margin-left:17%;">Determines if a domain can be
+enumerated, that is, whether the domain can list all the
+users and group it contains. Note that it is not required to
+enable enumeration in order for secondary groups to be
+displayed. This parameter can have one of the following
+values:</p>
+
+<p style="margin-left:17%; margin-top: 1em">TRUE = Users
+and groups are enumerated</p>
+
+<p style="margin-left:17%; margin-top: 1em">FALSE = No
+enumerations for this domain</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+FALSE</p>
+
+<p style="margin-left:17%; margin-top: 1em">Enumerating a
+domain requires SSSD to download and store ALL user and
+group entries from the remote server.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: Enabling
+enumeration has a moderate performance impact on SSSD while
+enumeration is running. It may take up to several minutes
+after SSSD startup to fully complete enumerations. During
+this time, individual requests for information will go
+directly to LDAP, though it may be slow, due to the heavy
+enumeration processing. Saving a large number of entries to
+cache after the enumeration completes might also be CPU
+intensive as the memberships have to be recomputed. This can
+lead to the &ldquo;sssd_be&rdquo; process becoming
+unresponsive or even restarted by the internal watchdog.</p>
+
+<p style="margin-left:17%; margin-top: 1em">While the first
+enumeration is running, requests for the complete user or
+group lists may return no results until it completes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Further,
+enabling enumeration may increase the time necessary to
+detect network disconnection, as longer timeouts are
+required to ensure that enumeration lookups are completed
+successfully. For more information, refer to the man pages
+for the specific id_provider in use.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For the reasons
+cited above, enabling enumeration is not recommended,
+especially in large environments.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">subdomain_enumerate
+(string)</p>
+
+<p style="margin-left:17%;">Whether any of autodetected
+trusted domains should be enumerated. The supported values
+are:</p>
+
+<p style="margin-left:17%; margin-top: 1em">all</p>
+
+<p style="margin-left:23%;">All discovered trusted domains
+will be enumerated</p>
+
+<p style="margin-left:17%; margin-top: 1em">none</p>
+
+<p style="margin-left:23%;">No discovered trusted domains
+will be enumerated</p>
+
+<p style="margin-left:17%; margin-top: 1em">Optionally, a
+list of one or more domain names can enable enumeration just
+for these trusted domains.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+none</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+consider entries valid before asking the backend again</p>
+
+<p style="margin-left:17%; margin-top: 1em">The cache
+expiration timestamps are stored as attributes of individual
+objects in the cache. Therefore, changing the cache timeout
+only has effect for newly added or expired entries. You
+should run the <b>sss_cache</b>(8) tool in order to force
+refresh of entries that have already been cached.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+5400</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_user_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+consider user entries valid before asking the backend
+again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_group_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+consider group entries valid before asking the backend
+again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_netgroup_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+consider netgroup entries valid before asking the backend
+again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_service_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+consider service entries valid before asking the backend
+again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_resolver_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should nss_sss
+consider hosts and networks entries valid before asking the
+backend again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_sudo_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should sudo
+consider rules valid before asking the backend again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_autofs_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds should the
+autofs service consider automounter maps valid before asking
+the backend again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_ssh_host_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds to keep a host
+ssh key after refresh. IE how long to cache the host key
+for.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">entry_cache_computer_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">How many seconds to keep the
+local computer entry before asking the backend again</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+entry_cache_timeout</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">refresh_expired_interval
+(integer)</p>
+
+<p style="margin-left:17%;">Specifies how many seconds SSSD
+has to wait before triggering a background refresh task
+which will refresh all expired or nearly expired
+records.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The background
+refresh will process users, groups and netgroups in the
+cache. For users who have performed the initgroups (get
+group membership for user, typically ran at login) operation
+in the past, both the user entry and the group membership
+are updated.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+automatically inherited for all trusted domains.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You can
+consider setting this value to 3/4 *
+entry_cache_timeout.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Cache entry
+will be refreshed by background task when 2/3 of cache
+timeout has already passed. If there are existing cached
+entries, the background task will refer to their original
+cache timeout values instead of current configuration value.
+This may lead to a situation in which background refresh
+task appears to not be working. This is done by design to
+improve offline mode operation and reuse of existing valid
+cache entries. To make this change instant the user may want
+to manually invalidate existing cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0
+(disabled)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">cache_credentials
+(bool)</p>
+
+<p style="margin-left:17%;">Determines if user credentials
+are also cached in the local LDB cache</p>
+
+<p style="margin-left:17%; margin-top: 1em">User
+credentials are stored in a SHA512 hash, not in
+plaintext</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+FALSE</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">cache_credentials_minimal_first_factor_length
+(int)</p>
+
+<p style="margin-left:17%;">If 2-Factor-Authentication
+(2FA) is used and credentials should be saved this value
+determines the minimal length the first authentication
+factor (long term password) must have to be saved as SHA512
+hash into the cache.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This should
+avoid that the short PINs of a PIN based 2FA scheme are
+saved in the cache which would make them easy targets for
+brute-force attacks.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 8</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">account_cache_expiration
+(integer)</p>
+
+<p style="margin-left:17%;">Number of days entries are left
+in cache after last successful login before being removed
+during a cleanup of the cache. 0 means keep forever. The
+value of this parameter must be greater than or equal to
+offline_credentials_expiration.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0
+(unlimited)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pwd_expiration_warning
+(integer)</p>
+
+<p style="margin-left:17%;">Display a warning N days before
+the password expires.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If zero is set,
+then this filter is not applied, i.e. if the expiration
+warning was received from backend server, it will
+automatically be displayed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that the backend server has to provide information about the
+expiration time of the password. If this information is
+missing, sssd cannot display a warning. Also an auth
+provider has to be configured for the backend.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 7
+(Kerberos), 0 (LDAP)</p>
+
+<p style="margin-left:11%; margin-top: 1em">id_provider
+(string)</p>
+
+<p style="margin-left:17%;">The identification provider
+used for the domain. Supported ID providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;proxy&rdquo;:
+Support a legacy NSS provider.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;files&rdquo;:
+FILES provider. See <b>sssd-files</b>(5) for more
+information on how to mirror local users and groups into
+SSSD.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;:
+LDAP provider. See <b>sssd-ldap</b>(5) for more information
+on configuring LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;:
+FreeIPA and Red Hat Enterprise Identity Management provider.
+See <b>sssd-ipa</b>(5) for more information on configuring
+FreeIPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;:
+Active Directory provider. See <b>sssd-ad</b>(5) for more
+information on configuring Active Directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">use_fully_qualified_names
+(bool)</p>
+
+<p style="margin-left:17%;">Use the full name and domain
+(as formatted by the domain's full_name_format) as the
+user's login name reported to NSS.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If set to TRUE,
+all requests to this domain must use fully qualified names.
+For example, if used in LOCAL domain that contains a
+&quot;test&quot; user, <b>getent passwd test</b> wouldn't
+find the user while <b>getent passwd test@LOCAL</b>
+would.</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: This
+option has no effect on netgroup lookups due to their
+tendency to include nested netgroups without qualified
+names. For netgroups, all domains will be searched when an
+unqualified name is requested.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: FALSE
+(TRUE for trusted domain/sub-domains or if
+default_domain_suffix is used)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ignore_group_members
+(bool)</p>
+
+<p style="margin-left:17%;">Do not return group members for
+group lookups.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If set to TRUE,
+the group membership attribute is not requested from the
+ldap server, and group members are not returned when
+processing group lookup calls, such as <b>getgrnam</b>(3) or
+<b>getgrgid</b>(3). As an effect, &ldquo;getent group
+$groupname&rdquo; would return the requested group as if it
+was empty.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Enabling this
+option can also make access provider checks for group
+membership significantly faster, especially for groups
+containing many members.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+FALSE</p>
+
+<p style="margin-left:11%; margin-top: 1em">auth_provider
+(string)</p>
+
+<p style="margin-left:17%;">The authentication provider
+used for the domain. Supported auth providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;
+for native LDAP authentication. See <b>sssd-ldap</b>(5) for
+more information on configuring LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;krb5&rdquo;
+for Kerberos authentication. See <b>sssd-krb5</b>(5) for
+more information on configuring Kerberos.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;:
+FreeIPA and Red Hat Enterprise Identity Management provider.
+See <b>sssd-ipa</b>(5) for more information on configuring
+FreeIPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;:
+Active Directory provider. See <b>sssd-ad</b>(5) for more
+information on configuring Active Directory.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;proxy&rdquo;
+for relaying authentication to some other PAM target.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disables authentication explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;id_provider&rdquo; is used if it is set and can
+handle authentication requests.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">access_provider
+(string)</p>
+
+<p style="margin-left:17%;">The access control provider
+used for the domain. There are two built-in access providers
+(in addition to any included in installed backends) Internal
+special providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;permit&rdquo;
+always allow access. It's the only permitted access provider
+for a local domain.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;deny&rdquo;
+always deny access.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;
+for native LDAP authentication. See <b>sssd-ldap</b>(5) for
+more information on configuring LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;:
+FreeIPA and Red Hat Enterprise Identity Management provider.
+See <b>sssd-ipa</b>(5) for more information on configuring
+FreeIPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;:
+Active Directory provider. See <b>sssd-ad</b>(5) for more
+information on configuring Active Directory.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;simple&rdquo;
+access control based on access or deny lists. See
+<b>sssd-simple</b>(5) for more information on configuring
+the simple access module.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;krb5&rdquo;:
+.k5login based access control. See <b>sssd-krb5</b>(5) for
+more information on configuring Kerberos.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;proxy&rdquo;
+for relaying access control to another PAM module.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;permit&rdquo;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">chpass_provider
+(string)</p>
+
+<p style="margin-left:17%;">The provider which should
+handle change password operations for the domain. Supported
+change password providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;
+to change a password stored in a LDAP server. See
+<b>sssd-ldap</b>(5) for more information on configuring
+LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;krb5&rdquo;
+to change the Kerberos password. See <b>sssd-krb5</b>(5) for
+more information on configuring Kerberos.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;:
+FreeIPA and Red Hat Enterprise Identity Management provider.
+See <b>sssd-ipa</b>(5) for more information on configuring
+FreeIPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;:
+Active Directory provider. See <b>sssd-ad</b>(5) for more
+information on configuring Active Directory.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;proxy&rdquo;
+for relaying password changes to some other PAM target.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disallows password changes explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;auth_provider&rdquo; is used if it is set and can
+handle change password requests.</p>
+
+<p style="margin-left:11%; margin-top: 1em">sudo_provider
+(string)</p>
+
+<p style="margin-left:17%;">The SUDO provider used for the
+domain. Supported SUDO providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;
+for rules stored in LDAP. See <b>sssd-ldap</b>(5) for more
+information on configuring LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;
+the same as &ldquo;ldap&rdquo; but with IPA default
+settings.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;
+the same as &ldquo;ldap&rdquo; but with AD default
+settings.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disables SUDO explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: The
+value of &ldquo;id_provider&rdquo; is used if it is set.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The detailed
+instructions for configuration of sudo_provider are in the
+manual page <b>sssd-sudo</b>(5). There are many
+configuration options that can be used to adjust the
+behavior. Please refer to &quot;ldap_sudo_*&quot; in
+<b>sssd-ldap</b>(5).</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>NOTE:</i>
+Sudo rules are periodically downloaded in the background
+unless the sudo provider is explicitly disabled. Set
+<i>sudo_provider = None</i> to disable all sudo-related
+activity in SSSD if you do not want to use sudo with SSSD at
+all.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">selinux_provider
+(string)</p>
+
+<p style="margin-left:17%;">The provider which should
+handle loading of selinux settings. Note that this provider
+will be called right after access provider ends. Supported
+selinux providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;
+to load selinux settings from an IPA server. See
+<b>sssd-ipa</b>(5) for more information on configuring
+IPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disallows fetching selinux settings explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;id_provider&rdquo; is used if it is set and can
+handle selinux loading requests.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">subdomains_provider
+(string)</p>
+
+<p style="margin-left:17%;">The provider which should
+handle fetching of subdomains. This value should be always
+the same as id_provider. Supported subdomain providers
+are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;
+to load a list of subdomains from an IPA server. See
+<b>sssd-ipa</b>(5) for more information on configuring
+IPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;
+to load a list of subdomains from an Active Directory
+server. See <b>sssd-ad</b>(5) for more information on
+configuring the AD provider.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disallows fetching subdomains explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: The
+value of &ldquo;id_provider&rdquo; is used if it is set.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">session_provider
+(string)</p>
+
+<p style="margin-left:17%;">The provider which configures
+and manages user session related tasks. The only user
+session task currently provided is the integration with
+Fleet Commander, which works only with IPA. Supported
+session providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;
+to allow performing user session related tasks.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+does not perform any kind of user session related tasks.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;id_provider&rdquo; is used if it is set and can
+perform session related tasks.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>NOTE:</i> In
+order to have this feature working as expected SSSD must be
+running as &quot;root&quot; and not as the unprivileged
+user.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">autofs_provider
+(string)</p>
+
+<p style="margin-left:17%;">The autofs provider used for
+the domain. Supported autofs providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;
+to load maps stored in LDAP. See <b>sssd-ldap</b>(5) for
+more information on configuring LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;
+to load maps stored in an IPA server. See <b>sssd-ipa</b>(5)
+for more information on configuring IPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;
+to load maps stored in an AD server. See <b>sssd-ad</b>(5)
+for more information on configuring the AD provider.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disables autofs explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: The
+value of &ldquo;id_provider&rdquo; is used if it is set.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">hostid_provider
+(string)</p>
+
+<p style="margin-left:17%;">The provider used for
+retrieving host identity information. Supported hostid
+providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ipa&rdquo;
+to load host identity stored in an IPA server. See
+<b>sssd-ipa</b>(5) for more information on configuring
+IPA.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disables hostid explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: The
+value of &ldquo;id_provider&rdquo; is used if it is set.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">resolver_provider
+(string)</p>
+
+<p style="margin-left:17%;">The provider which should
+handle hosts and networks lookups. Supported resolver
+providers are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;proxy&rdquo;
+to forward lookups to another NSS library. See
+&ldquo;proxy_resolver_lib_name&rdquo;</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ldap&rdquo;
+to fetch hosts and networks stored in LDAP. See
+<b>sssd-ldap</b>(5) for more information on configuring
+LDAP.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;ad&rdquo;
+to fetch hosts and networks stored in AD. See
+<b>sssd-ad</b>(5) for more information on configuring the AD
+provider.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;none&rdquo;
+disallows fetching hosts and networks explicitly.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: The
+value of &ldquo;id_provider&rdquo; is used if it is set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">re_expression
+(string)</p>
+
+<p style="margin-left:17%;">Regular expression for this
+domain that describes how to parse the string containing
+user name and domain into these components. The
+&quot;domain&quot; can match either the SSSD configuration
+domain name, or, in the case of IPA trust subdomains and
+Active Directory domains, the flat (NetBIOS) name of the
+domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default for the
+AD and IPA provider:
+&ldquo;(((?P&lt;domain&gt;[^\\]+)\\(?P&lt;name&gt;.+$))|((?P&lt;name&gt;[^@]+)@(?P&lt;domain&gt;.+$))|(^(?P&lt;name&gt;[^@\\]+)$))&rdquo;
+which allows three different styles for user names:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+username</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+username@domain.name</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+domain\username</p>
+
+<p style="margin-left:17%; margin-top: 1em">While the first
+two correspond to the general default the third one is
+introduced to allow easy integration of users from Windows
+domains.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;(?P&lt;name&gt;[^@]+)@?(?P&lt;domain&gt;[^@]*$)&rdquo;
+which translates to &quot;the name is everything up to the
+&ldquo;@&rdquo; sign, the domain everything after
+that&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">NOTE: Some
+Active Directory groups, typically those used for MS
+Exchange contain an &ldquo;@&rdquo; sign in the name, which
+clashes with the default re_expression value for the AD and
+IPA providers. To support these groups, consider changing
+the re_expression value to:
+&ldquo;((?P&lt;name&gt;.+)@(?P&lt;domain&gt;[^@]+$))&rdquo;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">full_name_format
+(string)</p>
+
+<p style="margin-left:17%;">A <b>printf</b>(3)-compatible
+format that describes how to compose a fully qualified name
+from user name and domain name components.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The following
+expansions are supported:</p>
+
+<p style="margin-left:17%; margin-top: 1em">%1$s</p>
+
+<p style="margin-left:23%;">user name</p>
+
+<p style="margin-left:17%; margin-top: 1em">%2$s</p>
+
+<p style="margin-left:23%;">domain name as specified in the
+SSSD config file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">%3$s</p>
+
+<p style="margin-left:23%;">domain flat name. Mostly usable
+for Active Directory domains, both directly configured or
+discovered via IPA trusts.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+&ldquo;%1$s@%2$s&rdquo;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">lookup_family_order
+(string)</p>
+
+<p style="margin-left:17%;">Provides the ability to select
+preferred address family to use when performing DNS
+lookups.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Supported
+values:</p>
+
+<p style="margin-left:17%; margin-top: 1em">ipv4_first: Try
+looking up IPv4 address, if that fails, try IPv6</p>
+
+<p style="margin-left:17%; margin-top: 1em">ipv4_only: Only
+attempt to resolve hostnames to IPv4 addresses.</p>
+
+<p style="margin-left:17%; margin-top: 1em">ipv6_first: Try
+looking up IPv6 address, if that fails, try IPv4</p>
+
+<p style="margin-left:17%; margin-top: 1em">ipv6_only: Only
+attempt to resolve hostnames to IPv6 addresses.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+ipv4_first</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dns_resolver_server_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Defines the amount of time (in
+milliseconds) SSSD would try to talk to DNS server before
+trying next DNS server.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The AD provider
+will use this option for the CLDAP ping timeouts as
+well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please see the
+section &ldquo;FAILOVER&rdquo; for more information about
+the service resolution.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+1000</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dns_resolver_op_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Defines the amount of time (in
+seconds) to wait to resolve single DNS query (e.g.
+resolution of a hostname or an SRV record) before try next
+hostname or DNS discovery.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please see the
+section &ldquo;FAILOVER&rdquo; for more information about
+the service resolution.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 3</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dns_resolver_server_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Defines the amount of time (in
+milliseconds) SSSD would try to talk to DNS server before
+trying next DNS server.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please see the
+section &ldquo;FAILOVER&rdquo; for more information about
+the service resolution.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+1000</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dns_resolver_op_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Defines the amount of time (in
+seconds) to wait to resolve single DNS query (e.g.
+resolution of a hostname or an SRV record) before try next
+hostname or DNS discovery.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please see the
+section &ldquo;FAILOVER&rdquo; for more information about
+the service resolution.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 3</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dns_resolver_timeout
+(integer)</p>
+
+<p style="margin-left:17%;">Defines the amount of time (in
+seconds) to wait for a reply from the internal fail over
+service before assuming that the service is unreachable. If
+this timeout is reached, the domain will continue to operate
+in offline mode.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please see the
+section &ldquo;FAILOVER&rdquo; for more information about
+the service resolution.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 6</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dns_discovery_domain
+(string)</p>
+
+<p style="margin-left:17%;">If service discovery is used in
+the back end, specifies the domain part of the service
+discovery DNS query.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Use
+the domain part of machine's hostname</p>
+
+<p style="margin-left:11%; margin-top: 1em">override_gid
+(integer)</p>
+
+<p style="margin-left:17%;">Override the primary GID value
+with the one specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">case_sensitive
+(string)</p>
+
+<p style="margin-left:17%;">Treat user and group names as
+case sensitive. Possible option values are:</p>
+
+<p style="margin-left:17%; margin-top: 1em">True</p>
+
+<p style="margin-left:23%;">Case sensitive. This value is
+invalid for AD provider.</p>
+
+<p style="margin-left:17%; margin-top: 1em">False</p>
+
+<p style="margin-left:23%;">Case insensitive.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Preserving</p>
+
+<p style="margin-left:23%;">Same as False (case
+insensitive), but does not lowercase names in the result of
+NSS operations. Note that name aliases (and in case of
+services also protocol names) are still lowercased in the
+output.</p>
+
+<p style="margin-left:23%; margin-top: 1em">If you want to
+set this value for trusted domain with IPA provider, you
+need to set it on both the client and SSSD on the
+server.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option can
+be also set per subdomain or inherited via
+<i>subdomain_inherit</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: True
+(False for AD provider)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">subdomain_inherit
+(string)</p>
+
+<p style="margin-left:17%;">Specifies a list of
+configuration parameters that should be inherited by a
+subdomain. Please note that only selected parameters can be
+inherited. Currently the following options can be
+inherited:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ignore_group_members</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ldap_purge_cache_timeout</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ldap_use_tokengroups</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ldap_user_principal</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ldap_krb5_keytab
+(the value of krb5_keytab will be used if ldap_krb5_keytab
+is not set explicitly)</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">auto_private_groups</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">case_sensitive</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">subdomain_inherit
+= ldap_purge_cache_timeout</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+none</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This
+option only works with the IPA and AD provider.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">subdomain_homedir
+(string)</p>
+
+<p style="margin-left:17%;">Use this homedir as default
+value for all subdomains within this domain in IPA AD trust.
+See <i>override_homedir</i> for info about possible values.
+In addition to those, the expansion below can only be used
+with <i>subdomain_homedir</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">%F</p>
+
+<p style="margin-left:23%;">flat (NetBIOS) name of a
+subdomain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value can
+be overridden by <i>override_homedir</i> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+/home/%d/%u</p>
+
+<p style="margin-left:11%; margin-top: 1em">realmd_tags
+(string)</p>
+
+<p style="margin-left:17%;">Various tags stored by the
+realmd configuration service for this domain.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">cached_auth_timeout
+(int)</p>
+
+<p style="margin-left:17%;">Specifies time in seconds since
+last successful online authentication for which user will be
+authenticated using cached credentials while SSSD is in the
+online mode. If the credentials are incorrect, SSSD falls
+back to online authentication.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option's
+value is inherited by all trusted domains. At the moment it
+is not possible to set a different value per trusted
+domain.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Special value 0
+implies that this feature is disabled.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that if &ldquo;cached_auth_timeout&rdquo; is longer than
+&ldquo;pam_id_timeout&rdquo; then the back end could be
+called to handle &ldquo;initgroups.&rdquo;</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 0</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">auto_private_groups
+(string)</p>
+
+<p style="margin-left:17%;">This option takes any of three
+available values:</p>
+
+<p style="margin-left:17%; margin-top: 1em">true</p>
+
+<p style="margin-left:23%;">Create user's private group
+unconditionally from user's UID number. The GID number is
+ignored in this case.</p>
+
+<p style="margin-left:23%; margin-top: 1em">NOTE: Because
+the GID number and the user private group are inferred from
+the UID number, it is not supported to have multiple entries
+with the same UID or GID number with this option. In other
+words, enabling this option enforces uniqueness across the
+ID space.</p>
+
+<p style="margin-left:17%; margin-top: 1em">false</p>
+
+<p style="margin-left:23%;">Always use the user's primary
+GID number. The GID number must refer to a group object in
+the LDAP database.</p>
+
+<p style="margin-left:17%; margin-top: 1em">hybrid</p>
+
+<p style="margin-left:23%;">A primary group is
+autogenerated for user entries whose UID and GID numbers
+have the same value and at the same time the GID number does
+not correspond to a real group object in LDAP. If the values
+are the same, but the primary GID in the user entry is also
+used by a group object, the primary GID of the user resolves
+to that group object.</p>
+
+<p style="margin-left:23%; margin-top: 1em">If the UID and
+GID of a user are different, then the GID must correspond to
+a group entry, otherwise the GID is simply not
+resolvable.</p>
+
+<p style="margin-left:23%; margin-top: 1em">This feature is
+useful for environments that wish to stop maintaining a
+separate group objects for the user private groups, but also
+wish to retain the existing user private groups.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For subdomains,
+the default value is False for subdomains that use assigned
+POSIX IDs and True for subdomains that use automatic
+ID-mapping.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value of
+auto_private_groups can either be set per subdomains in a
+subsection, for example:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">[domain/forest.domain/sub.domain]
+<br>
+auto_private_groups = false</p>
+
+<p style="margin-left:17%; margin-top: 1em">or globally for
+all subdomains in the main domain section using the
+subdomain_inherit option:</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">[domain/forest.domain]
+<br>
+subdomain_inherit = auto_private_groups <br>
+auto_private_groups = false</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options valid
+for proxy domains.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">proxy_pam_target
+(string)</p>
+
+<p style="margin-left:17%;">The proxy target PAM proxies
+to.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: not
+set by default, you have to take an existing pam
+configuration or create a new one and add the service name
+here.</p>
+
+<p style="margin-left:11%; margin-top: 1em">proxy_lib_name
+(string)</p>
+
+<p style="margin-left:17%;">The name of the NSS library to
+use in proxy domains. The NSS functions searched for in the
+library are in the form of _nss_$(libName)_$(function), for
+example _nss_files_getpwent.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">proxy_resolver_lib_name
+(string)</p>
+
+<p style="margin-left:17%;">The name of the NSS library to
+use for hosts and networks lookups in proxy domains. The NSS
+functions searched for in the library are in the form of
+_nss_$(libName)_$(function), for example
+_nss_dns_gethostbyname2_r.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">proxy_fast_alias
+(boolean)</p>
+
+<p style="margin-left:17%;">When a user or group is looked
+up by name in the proxy provider, a second lookup by ID is
+performed to &quot;canonicalize&quot; the name in case the
+requested name was an alias. Setting this option to true
+would cause the SSSD to perform the ID lookup from cache for
+performance reasons.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+false</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">proxy_max_children
+(integer)</p>
+
+<p style="margin-left:17%;">This option specifies the
+number of pre-forked proxy children. It is useful for
+high-load SSSD environments where sssd may run out of
+available child slots, which would cause some issues due to
+the requests being queued.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: 10</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Application
+domains</b> <br>
+SSSD, with its D-Bus interface (see <b>sssd-ifp</b>(5)) is
+appealing to applications as a gateway to an LDAP directory
+where users and groups are stored. However, contrary to the
+traditional SSSD deployment where all users and groups
+either have POSIX attributes or those attributes can be
+inferred from the Windows SIDs, in many cases the users and
+groups in the application support scenario have no POSIX
+attributes. Instead of setting a
+&ldquo;[domain/<i>NAME</i>]&rdquo; section, the
+administrator can set up an
+&ldquo;[application/<i>NAME</i>]&rdquo; section that
+internally represents a domain with type
+&ldquo;application&rdquo; optionally inherits settings from
+a tradition SSSD domain.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that the application domain must still be explicitly enabled
+in the &ldquo;domains&rdquo; parameter so that the lookup
+order between the application domain and its POSIX sibling
+domain is set correctly.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Application
+domain parameters</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">inherit_from
+(string)</p>
+
+<p style="margin-left:17%;">The SSSD POSIX-type domain the
+application domain inherits all settings from. The
+application domain can moreover add its own settings to the
+application settings that augment or override the
+&ldquo;sibling&rdquo; domain settings.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: Not
+set</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+example illustrates the use of an application domain. In
+this setup, the POSIX domain is connected to an LDAP server
+and is used by the OS through the NSS responder. In
+addition, the application domain also requests the
+telephoneNumber attribute, stores it as the phone attribute
+in the cache and makes the phone attribute reachable through
+the D-Bus interface.</p>
+
+<p style="margin-left:17%; margin-top: 1em">[sssd] <br>
+domains = appdom, posixdom</p>
+
+<p style="margin-left:17%; margin-top: 1em">[ifp] <br>
+user_attributes = +phone</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[domain/posixdom]
+<br>
+id_provider = ldap <br>
+ldap_uri = ldap://ldap.example.com <br>
+ldap_search_base = dc=example,dc=com</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[application/appdom]
+<br>
+inherit_from = posixdom <br>
+ldap_user_extra_attrs = phone:telephoneNumber</p>
+
+<h2>TRUSTED DOMAIN SECTION
+<a name="TRUSTED DOMAIN SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some options
+used in the domain section can also be used in the trusted
+domain section, that is, in a section called
+&ldquo;[domain/<i>DOMAIN_NAME</i>/<i>TRUSTED_DOMAIN_NAME</i>]&rdquo;.
+Where DOMAIN_NAME is the actual joined-to base domain.
+Please refer to examples below for explanation. Currently
+supported options in the trusted domain section are:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_search_base,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_user_search_base,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_group_search_base,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_netgroup_search_base,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_service_search_base,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_sasl_mech,</p>
+
+<p style="margin-left:11%; margin-top: 1em">ad_server,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ad_backup_server,</p>
+
+<p style="margin-left:11%; margin-top: 1em">ad_site,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">use_fully_qualified_names</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_gssapi_services</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">pam_gssapi_check_upn</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+details about these options see their individual description
+in the manual page.</p>
+
+<h2>CERTIFICATE MAPPING SECTION
+<a name="CERTIFICATE MAPPING SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To allow
+authentication with Smartcards and certificates SSSD must be
+able to map certificates to users. This can be done by
+adding the full certificate to the LDAP object of the user
+or to a local override. While using the full certificate is
+required to use the Smartcard authentication feature of SSH
+(see <b>sss_ssh_authorizedkeys</b>(8) for details) it might
+be cumbersome or not even possible to do this for the
+general case where local services use PAM for
+authentication.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make the
+mapping more flexible mapping and matching rules were added
+to SSSD (see <b>sss-certmap</b>(5) for details).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A mapping and
+matching rule can be added to the SSSD configuration in a
+section on its own with a name like
+&ldquo;[certmap/<i>DOMAIN_NAME</i>/<i>RULE_NAME</i>]&rdquo;.
+In this section the following options are allowed:</p>
+
+<p style="margin-left:11%; margin-top: 1em">matchrule
+(string)</p>
+
+<p style="margin-left:17%;">Only certificates from the
+Smartcard which matches this rule will be processed, all
+others are ignored.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:
+KRB5:&lt;EKU&gt;clientAuth, i.e. only certificates which
+have the Extended Key Usage &ldquo;clientAuth&rdquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em">maprule
+(string)</p>
+
+<p style="margin-left:17%;">Defines how the user is found
+for a given certificate.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+LDAP:(userCertificate;binary={cert!bin}) for LDAP based
+providers like &ldquo;ldap&rdquo;, &ldquo;AD&rdquo; or
+&ldquo;ipa&rdquo;.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; The
+RULE_NAME for the &ldquo;files&rdquo; provider which tries
+to find a user with the same name.</p>
+
+<p style="margin-left:11%; margin-top: 1em">domains
+(string)</p>
+
+<p style="margin-left:17%;">Comma separated list of domain
+names the rule should be applied. By default a rule is only
+valid in the domain configured in sssd.conf. If the provider
+supports subdomains this option can be used to add the rule
+to subdomains as well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: the
+configured domain in sssd.conf</p>
+
+<p style="margin-left:11%; margin-top: 1em">priority
+(integer)</p>
+
+<p style="margin-left:17%;">Unsigned integer value defining
+the priority of the rule. The higher the number the lower
+the priority. &ldquo;0&rdquo; stands for the highest
+priority while &ldquo;4294967295&rdquo; is the lowest.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Default: the
+lowest priority</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make the
+configuration simple and reduce the amount of configuration
+options the &ldquo;files&rdquo; provider has some special
+properties:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; if
+maprule is not set the RULE_NAME name is assumed to be the
+name of the matching user</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; if a
+maprule is used both a single user name or a template like
+&ldquo;{subject_rfc822_name.short_name}&rdquo; must be in
+braces like e.g. &ldquo;(username)&rdquo; or
+&ldquo;({subject_rfc822_name.short_name})&rdquo;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+&ldquo;domains&rdquo; option is ignored</p>
+
+<h2>PROMPTING CONFIGURATION SECTION
+<a name="PROMPTING CONFIGURATION SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If a special
+file (/var/lib/sss/pubconf/pam_preauth_available) exists
+SSSD's PAM module pam_sss will ask SSSD to figure out which
+authentication methods are available for the user trying to
+log in. Based on the results pam_sss will prompt the user
+for appropriate credentials.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the
+growing number of authentication methods and the possibility
+that there are multiple ones for a single user the heuristic
+used by pam_sss to select the prompting might not be
+suitable for all use cases. The following options should
+provide a better flexibility here.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each supported
+authentication method has its own configuration subsection
+under &ldquo;[prompting/...]&rdquo;. Currently there
+are:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[prompting/password]</p>
+
+<p style="margin-left:17%;">to configure password
+prompting, allowed options are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">password_prompt</p>
+
+<p style="margin-left:23%;">to change the string of the
+password prompt</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[prompting/2fa]</p>
+
+<p style="margin-left:17%;">to configure two-factor
+authentication prompting, allowed options are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">first_prompt</p>
+
+<p style="margin-left:23%;">to change the string of the
+prompt for the first factor</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">second_prompt</p>
+
+<p style="margin-left:23%;">to change the string of the
+prompt for the second factor</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">single_prompt</p>
+
+<p style="margin-left:23%;">boolean value, if True there
+will be only a single prompt using the value of first_prompt
+where it is expected that both factors are entered as a
+single string. Please note that both factors have to be
+entered here, even if the second factor is optional.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the second
+factor is optional and it should be possible to log in
+either only with the password or with both factors two-step
+prompting has to be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to add a subsection for specific PAM services, e.g.
+&ldquo;[prompting/password/sshd]&rdquo; to individual change
+the prompting for this service.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">1. The
+following example shows a typical SSSD config. It does not
+describe configuration of the domains themselves - refer to
+documentation on configuring domains for more details.</p>
+
+<p style="margin-left:17%; margin-top: 1em">[sssd] <br>
+domains = LDAP <br>
+services = nss, pam <br>
+config_file_version = 2</p>
+
+<p style="margin-left:17%; margin-top: 1em">[nss] <br>
+filter_groups = root <br>
+filter_users = root</p>
+
+<p style="margin-left:17%; margin-top: 1em">[pam]</p>
+
+<p style="margin-left:17%; margin-top: 1em">[domain/LDAP]
+<br>
+id_provider = ldap <br>
+ldap_uri = ldap://ldap.example.com <br>
+ldap_search_base = dc=example,dc=com</p>
+
+<p style="margin-left:17%; margin-top: 1em">auth_provider =
+krb5 <br>
+krb5_server = kerberos.example.com <br>
+krb5_realm = EXAMPLE.COM <br>
+cache_credentials = true</p>
+
+<p style="margin-left:17%; margin-top: 1em">min_id = 10000
+<br>
+max_id = 20000 <br>
+enumerate = False</p>
+
+<p style="margin-left:11%; margin-top: 1em">2. The
+following example shows configuration of IPA AD trust where
+the AD forest consists of two domains in a parent-child
+structure. Suppose IPA domain (ipa.com) has trust with AD
+domain(ad.com). ad.com has child domain (child.ad.com). To
+enable shortnames in the child domain the following
+configuration should be used.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[domain/ipa.com/child.ad.com]
+<br>
+use_fully_qualified_names = false</p>
+
+<p style="margin-left:11%; margin-top: 1em">3. The
+following example shows the configuration for two
+certificate mapping rules. The first is valid for the
+configured domain &ldquo;my.domain&rdquo; and additionally
+for the subdomains &ldquo;your.domain&rdquo; and uses the
+full certificate in the search filter. The second example is
+valid for the domain &ldquo;files&rdquo; where it is assumed
+the files provider is used for this domain and contains a
+matching rule for the local user &ldquo;myname&rdquo;.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[certmap/my.domain/rule_name]
+<br>
+matchrule = &lt;ISSUER&gt;^CN=My-CA,DC=MY,DC=DOMAIN$ <br>
+maprule = (userCertificate;binary={cert!bin}) <br>
+domains = my.domain, your.domain <br>
+priority = 10</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">[certmap/files/myname]
+<br>
+matchrule =
+&lt;ISSUER&gt;^CN=My-CA,DC=MY,DC=DOMAIN$&lt;SUBJECT&gt;^CN=User.Name,DC=MY,DC=DOMAIN$</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sssd</b>(8),
+<b>sssd.conf</b>(5), <b>sssd-ldap</b>(5),
+<b>sssd-krb5</b>(5), <b>sssd-simple</b>(5),
+<b>sssd-ipa</b>(5), <b>sssd-ad</b>(5), <b>sssd-files</b>(5),
+<b>sssd-sudo</b>(5), <b>sssd-session-recording</b>(5),
+<b>sss_cache</b>(8), <b>sss_debuglevel</b>(8),
+<b>sss_obfuscate</b>(8), <b>sss_seed</b>(8),
+<b>sssd_krb5_locator_plugin</b>(8),
+<b>sss_ssh_authorizedkeys</b>(8),
+<b>sss_ssh_knownhostsproxy</b>(8), <b>sssd-ifp</b>(5),
+<b>pam_sss</b>(8). <b>sss_rpcidmapd</b>(5)
+<b>sssd-systemtap</b>(5)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>The SSSD
+upstream - https://github.com/SSSD/sssd/</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Mail::Field</title>
+
+</head>
+<body>
+
+<h1 align="center">Mail::Field</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INHERITANCE">INHERITANCE</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#DETAILS">DETAILS</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mail::Field -
+base-class for manipulation of mail header fields</p>
+
+<h2>INHERITANCE
+<a name="INHERITANCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mail::Field is
+extended by <br>
+Mail::Field::AddrList <br>
+Mail::Field::Date <br>
+Mail::Field::Generic</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Mail::Field; <br>
+my $field = Mail::Field-&gt;new('Subject', 'some subject
+text'); <br>
+my $field = Mail::Field-&gt;new(Subject =&gt; 'some subject
+text'); <br>
+print $field-&gt;tag,&quot;:
+&quot;,$field-&gt;stringify,&quot;\n&quot;; <br>
+my $field = Mail::Field-&gt;subject('some subject
+text');</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;Mail::Field&quot;
+creates and manipulates fields in <small>MIME</small>
+headers, collected within a Mail::Header object. Different
+field types have their own sub-class (extension), defining
+additional useful accessors to the field content.</p>
+
+<p style="margin-left:11%; margin-top: 1em">People are
+invited to merge their implementation to special fields into
+MailTools, to maintain a consistent set of packages and
+documentation.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Constructors</b>
+<br>
+Mail::Field (and it&rsquo;s sub-classes) define several
+methods which return new objects. These can all be
+categorized as constructor. <br>
+Mail::Field-&gt;<b>combine</b>($fields)</p>
+
+<p style="margin-left:17%;">Take a <small>LIST</small> of
+&quot;Mail::Field&quot; objects (which should all be of the
+same sub-class) and create a new object in that same
+class.</p>
+
+
+<p style="margin-left:11%;">Mail::Field-&gt;<b>extract</b>(
+$tag, $head [, $index ] )</p>
+
+<p style="margin-left:17%;">Takes as arguments the tag
+name, a &quot;Mail::Head&quot; object and optionally an
+index.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the index
+argument is given then &quot;extract&quot; will retrieve the
+given tag from the &quot;Mail::Head&quot; object and create
+a new &quot;Mail::Field&quot; based object. <i>undef</i>
+will be returned in the field does not exist.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the index
+argument is not given the result depends on the context in
+which &quot;extract&quot; is called. If called in a scalar
+context the result will be as if &quot;extract&quot; was
+called with an index value of zero. If called in an array
+context then all tags will be retrieved and a list of
+&quot;Mail::Field&quot; objects will be returned.</p>
+
+<p style="margin-left:11%;">Mail::Field-&gt;<b>new</b>(
+$tag [, <small>STRING</small> | %options] )</p>
+
+<p style="margin-left:17%;">Create an object in the class
+which defines the field specified by the $tag argument.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;Fake&quot;
+constructors</b> <br>
+$obj-&gt;<b>create</b>(%options)</p>
+
+<p style="margin-left:17%;">This constructor is used
+internally with preprocessed field information. When called
+on an existing object, its original content will get
+replaced.</p>
+
+<p style="margin-left:11%;">$obj-&gt;<b>parse</b>()</p>
+
+<p style="margin-left:17%;">Parse a field line.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Accessors</b>
+<br>
+$obj-&gt;<b>set</b>(%options)</p>
+
+<p style="margin-left:17%;">Change the settings (the
+content, but then smart) of this field.</p>
+
+
+<p style="margin-left:11%;">$obj-&gt;<b>stringify</b>()</p>
+
+<p style="margin-left:17%;">Returns the field as a
+string.</p>
+
+<p style="margin-left:11%;">$obj-&gt;<b>tag</b>() <br>
+Mail::Field-&gt;<b>tag</b>()</p>
+
+<p style="margin-left:17%;">Return the tag (in the correct
+case) for this item. Well, actually any casing is
+<small>OK,</small> because the field tags are treated
+case-insensitive; however people have some preferences.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Smart
+accessors</b> <br>
+$obj-&gt;<b>text</b>( [ <small>STRING</small> ] )</p>
+
+<p style="margin-left:17%;">Without arguments, the field is
+returned as <b>stringify()</b> does. Otherwise, the
+<small>STRING</small> is parsed with <b>parse()</b> to
+replace the object&rsquo;s content.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It is more
+clear to call either <b>stringify()</b> or <b>parse()</b>
+directly, because this method does not add additional
+processing.</p>
+
+<h2>DETAILS
+<a name="DETAILS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SUB-CLASS
+<small>PACKAGE NAMES</small></b> <br>
+All sub-classes should be called Mail::Field::<i>name</i>
+where <i>name</i> is derived from the tag using these
+rules.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Consider a tag as being made up of elements separated by
+&rsquo;-&rsquo;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Convert all characters to lowercase except the first in
+each element, which should be uppercase.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><i>name</i> is then created from these elements by using
+the first N characters from each element.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>N is calculated by using the formula :-</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">int((7 +
+#elements) / #elements)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><i>name</i> is then limited to a
+maximum of 8 characters, keeping the first 8 characters.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For an example
+of this take a look at the definition of the
+&quot;_header_pkg_name()&quot; subroutine in
+&quot;Mail::Field&quot;</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Error:
+Undefined subroutine &lt;method&gt; called</p>
+
+<p style="margin-left:17%;">Mail::Field objects use
+autoloading to compile new functionality. Apparently, the
+method called is not implemented for the specific class of
+the field object.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+part of the MailTools distribution,
+<i>http://perl.overmeer.net/mailtools/</i>.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The MailTools
+bundle was developed by Graham Barr. Later, Mark Overmeer
+took over maintenance without commitment to further
+development.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mail::Cap by
+Gisle Aas &lt;aas@oslonett.no&gt;. Mail::Field::AddrList by
+Peter Orbaek &lt;poe@cit.dk&gt;. Mail::Mailer and Mail::Send
+by Tim Bunce &lt;Tim.Bunce@ig.co.uk&gt;. For other
+contributors see ChangeLog.</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyrights
+1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and 2001-2017
+Mark Overmeer &lt;perl@overmeer.net&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself. See
+<i>http://www.perl.com/perl/misc/Artistic.html</i></p>
+<hr>
+</body>
+</html>

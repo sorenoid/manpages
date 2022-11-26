@@ -1,0 +1,1609 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:39 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEM_DATA_TYPES</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEM_DATA_TYPES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">system_data_types
+- overview of system data types</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><i>aiocb</i></p></td>
+<td width="4%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;aio.h&gt;</i>.</p> </td>
+<td width="52%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">struct aiocb {
+<br>
+int aio_fildes; /* File descriptor */ <br>
+off_t aio_offset; /* File offset */ <br>
+volatile void *aio_buf; /* Location of buffer */ <br>
+size_t aio_nbytes; /* Length of transfer */ <br>
+int aio_reqprio; /* Request priority offset */ <br>
+struct sigevent aio_sigevent; /* Signal number and value */
+<br>
+int aio_lio_opcode;/* Operation to be performed */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">For further
+information about this structure, see <b>aio</b>(7).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>aio_cancel</b>(3), <b>aio_error</b>(3),
+<b>aio_fsync</b>(3), <b>aio_read</b>(3),
+<b>aio_return</b>(3), <b>aio_suspend</b>(3),
+<b>aio_write</b>(3), <b>lio_listio</b>(3)</p>
+
+<p style="margin-left:11%;"><i>clock_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;time.h&gt;</i> or <i>&lt;sys/types.h&gt;</i>.
+Alternatively, <i>&lt;sys/time.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used for system
+time in clock ticks or <b>CLOCKS_PER_SEC</b> (defined in
+<i>&lt;time.h&gt;</i>). According to POSIX, it shall be an
+integer type or a real-floating type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>times</b>(2), <b>clock</b>(3)</p>
+
+<p style="margin-left:11%;"><i>clockid_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;time.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used for clock
+ID type in the clock and timer functions. According to
+POSIX, it shall be defined as an arithmetic type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>clock_adjtime</b>(2), <b>clock_getres</b>(2),
+<b>clock_nanosleep</b>(2), <b>timer_create</b>(2),
+<b>clock_getcpuclockid</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>dev_t</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>Include</i>: <i>&lt;sys/types.h&gt;</i>.
+Alternatively, <i>&lt;sys/stat.h&gt;</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Used for device
+IDs. According to POSIX, it shall be an integer type. For
+further details of this type, see <b>makedev</b>(3).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>mknod</b>(2), <b>stat</b>(2)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><i>div_t</i></p></td>
+<td width="4%"></td>
+<td width="30%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;stdlib.h&gt;</i>.</p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+int quot; /* Quotient */ <br>
+int rem; /* Remainder */ <br>
+} div_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is the type
+of the value returned by the <b>div</b>(3) function.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>div</b>(3)</p>
+
+<p style="margin-left:11%;"><i>double_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;math.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+implementation&rsquo;s most efficient floating type at least
+as wide as <i>double</i>. Its type depends on the value of
+the macro <b>FLT_EVAL_METHOD</b> (defined in
+<i>&lt;float.h&gt;</i>):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>0</p></td>
+<td width="9%"></td>
+<td width="37%">
+
+
+<p><i>double_t</i> is <i>double</i>.</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>1</p></td>
+<td width="9%"></td>
+<td width="37%">
+
+
+<p><i>double_t</i> is <i>double</i>.</p></td>
+<td width="31%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="9%"></td>
+<td width="37%">
+
+
+<p><i>double_t</i> is <i>long double</i>.</p></td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">For other
+values of <b>FLT_EVAL_METHOD</b>, the type of
+<i>double_t</i> is implementation-defined.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>float_t</i> type in this page.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>fd_set</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;sys/select.h&gt;</i>. Alternatively,
+<i>&lt;sys/time.h&gt;</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">A structure
+type that can represent a set of file descriptors. According
+to POSIX, the maximum number of file descriptors in an
+<i>fd_set</i> structure is the value of the macro
+<b>FD_SETSIZE</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>select</b>(2)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>fenv_t</i></p></td>
+<td width="2%"></td>
+<td width="27%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;fenv.h&gt;</i>.</p> </td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This type
+represents the entire floating-point environment, including
+control modes and status flags; for further details, see
+<b>fenv</b>(3).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>fenv</b>(3)</p>
+
+<p style="margin-left:11%;"><i>fexcept_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;fenv.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This type
+represents the floating-point status flags collectively; for
+further details see <b>fenv</b>(3).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>fenv</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>FILE</i></p></td>
+<td width="5%"></td>
+<td width="70%">
+
+
+<p><i>Include</i>: <i>&lt;stdio.h&gt;</i>. Alternatively,
+<i>&lt;wchar.h&gt;</i>.</p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">An object type
+used for streams.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>fclose</b>(3), <b>flockfile</b>(3),
+<b>fopen</b>(3), <b>fprintf</b>(3), <b>fread</b>(3),
+<b>fscanf</b>(3), <b>stdin</b>(3), <b>stdio</b>(3)</p>
+
+<p style="margin-left:11%;"><i>float_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;math.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+implementation&rsquo;s most efficient floating type at least
+as wide as <i>float</i>. Its type depends on the value of
+the macro <b>FLT_EVAL_METHOD</b> (defined in
+<i>&lt;float.h&gt;</i>):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>0</p></td>
+<td width="9%"></td>
+<td width="36%">
+
+
+<p><i>float_t</i> is <i>float</i>.</p></td>
+<td width="32%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>1</p></td>
+<td width="9%"></td>
+<td width="36%">
+
+
+<p><i>float_t</i> is <i>double</i>.</p></td>
+<td width="32%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="9%"></td>
+<td width="36%">
+
+
+<p><i>float_t</i> is <i>long double</i>.</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">For other
+values of <b>FLT_EVAL_METHOD</b>, the type of <i>float_t</i>
+is implementation-defined.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>double_t</i> type in this page.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><i>gid_t</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;grp.h&gt;</i>, <i>&lt;pwd.h&gt;</i>,
+<i>&lt;signal.h&gt;</i>, <i>&lt;stropts.h&gt;</i>,
+<i>&lt;sys/ipc.h&gt;</i>, <i>&lt;sys/stat.h&gt;</i>, or
+<i>&lt;unistd.h&gt;</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">A type used to
+hold group IDs. According to POSIX, this shall be an integer
+type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>chown</b>(2), <b>getgid</b>(2),
+<b>getegid</b>(2), <b>getgroups</b>(2), <b>getresgid</b>(2),
+<b>getgrnam</b>(2), <b>credentials</b>(7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>id_t</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;sys/resource.h&gt;</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">A type used to
+hold a general identifier. According to POSIX, this shall be
+an integer type that can be used to contain a <i>pid_t</i>,
+<i>uid_t</i>, or <i>gid_t</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>getpriority</b>(2), <b>waitid</b>(2)</p>
+
+<p style="margin-left:11%;"><i>imaxdiv_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;inttypes.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+intmax_t quot; /* Quotient */ <br>
+intmax_t rem; /* Remainder */ <br>
+} imaxdiv_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is the type
+of the value returned by the <b>imaxdiv</b>(3) function.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>imaxdiv</b>(3)</p>
+
+<p style="margin-left:11%;"><i>intmax_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdint.h&gt;</i>. Alternatively,
+<i>&lt;inttypes.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A signed
+integer type capable of representing any value of any signed
+integer type supported by the implementation. According to
+the C language standard, it shall be capable of storing
+values in the range [<b>INTMAX_MIN</b>,
+<b>INTMAX_MAX</b>].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The macro
+<b>INTMAX_C</b>() expands its argument to an integer
+constant of type <i>intmax_t</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifier for <i>intmax_t</i> for the <b>printf</b>(3) and
+the <b>scanf</b>(3) families of functions is <b>j</b>;
+resulting commonly in <b>%jd</b> or <b>%ji</b> for printing
+<i>intmax_t</i> values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Bugs</i>:
+<i>intmax_t</i> is not large enough to represent values of
+type <i>__int128</i> in implementations where
+<i>__int128</i> is defined and <i>long long</i> is less than
+128 bits wide.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>uintmax_t</i> type in this page.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>int</i>N<i>_t</i></p></td>
+<td width="2%"></td>
+<td width="76%">
+
+
+<p><i>Include</i>: <i>&lt;stdint.h&gt;</i>. Alternatively,
+<i>&lt;inttypes.h&gt;</i>.</p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em"><i>int8_t</i>,
+<i>int16_t</i>, <i>int32_t</i>, <i>int64_t</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">A signed
+integer type of a fixed width of exactly N bits, N being the
+value specified in its type name. According to the C
+language standard, they shall be capable of storing values
+in the range [<b>INT</b>N<b>_MIN</b>,
+<b>INT</b>N<b>_MAX</b>], substituting N by the appropriate
+number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">According to
+POSIX, <i>int8_t</i>, <i>int16_t</i>, and <i>int32_t</i> are
+required; <i>int64_t</i> is only required in implementations
+that provide integer types with width 64; and all other
+types of this form are optional.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifiers for the <i>int</i>N<i>_t</i> types for the
+<b>printf</b>(3) family of functions are expanded by macros
+of the forms <b>PRId</b>N and <b>PRIi</b>N (defined in
+<i>&lt;inttypes.h&gt;</i>); resulting for example in
+<b>%&quot;PRId64&quot;</b> or <b>%&quot;PRIi64&quot;</b> for
+printing <i>int64_t</i> values. The length modifiers for the
+<i>int</i>N<i>_t</i> types for the <b>scanf</b>(3) family of
+functions are expanded by macros of the forms <b>SCNd</b>N
+and <b>SCNi</b>N, (defined in <i>&lt;inttypes.h&gt;</i>);
+resulting for example in <b>%&quot;SCNd8&quot;</b> or
+<b>%&quot;SCNi8&quot;</b> for scanning <i>int8_t</i>
+values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>intmax_t</i>, <i>uint</i>N<i>_t</i>, and
+<i>uintmax_t</i> types in this page.</p>
+
+<p style="margin-left:11%;"><i>intptr_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdint.h&gt;</i>. Alternatively,
+<i>&lt;inttypes.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A signed
+integer type such that any valid (<i>void *</i>) value can
+be converted to this type and back. According to the C
+language standard, it shall be capable of storing values in
+the range [<b>INTPTR_MIN</b>, <b>INTPTR_MAX</b>].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifier for <i>intptr_t</i> for the <b>printf</b>(3) family
+of functions is expanded by the macros <b>PRIdPTR</b> and
+<b>PRIiPTR</b> (defined in <i>&lt;inttypes.h&gt;</i>);
+resulting commonly in <b>%&quot;PRIdPTR&quot;</b> or
+<b>%&quot;PRIiPTR&quot;</b> for printing <i>intptr_t</i>
+values. The length modifier for <i>intptr_t</i> for the
+<b>scanf</b>(3) family of functions is expanded by the
+macros <b>SCNdPTR</b> and <b>SCNiPTR,</b> (defined in
+<i>&lt;inttypes.h&gt;</i>); resulting commonly in
+<b>%&quot;SCNdPTR&quot;</b> or <b>%&quot;SCNiPTR&quot;</b>
+for scanning <i>intptr_t</i> values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>uintptr_t</i> and <i>void *</i> types in
+this page.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>lconv</i></p></td>
+<td width="4%"></td>
+<td width="30%">
+
+
+<p><i>Include</i>: <i>&lt;locale.h&gt;</i>.</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">struct lconv {
+/* Values in the &quot;C&quot; locale: */ <br>
+char *decimal_point; /* &quot;.&quot; */ <br>
+char *thousands_sep; /* &quot;&quot; */ <br>
+char *grouping; /* &quot;&quot; */ <br>
+char *mon_decimal_point; /* &quot;&quot; */ <br>
+char *mon_thousands_sep; /* &quot;&quot; */ <br>
+char *mon_grouping; /* &quot;&quot; */ <br>
+char *positive_sign; /* &quot;&quot; */ <br>
+char *negative_sign; /* &quot;&quot; */ <br>
+char *currency_symbol; /* &quot;&quot; */ <br>
+char frac_digits; /* CHAR_MAX */ <br>
+char p_cs_precedes; /* CHAR_MAX */ <br>
+char n_cs_precedes; /* CHAR_MAX */ <br>
+char p_sep_by_space; /* CHAR_MAX */ <br>
+char n_sep_by_space; /* CHAR_MAX */ <br>
+char p_sign_posn; /* CHAR_MAX */ <br>
+char n_sign_posn; /* CHAR_MAX */ <br>
+char *int_curr_symbol; /* &quot;&quot; */ <br>
+char int_frac_digits; /* CHAR_MAX */ <br>
+char int_p_cs_precedes; /* CHAR_MAX */ <br>
+char int_n_cs_precedes; /* CHAR_MAX */ <br>
+char int_p_sep_by_space; /* CHAR_MAX */ <br>
+char int_n_sep_by_space; /* CHAR_MAX */ <br>
+char int_p_sign_posn; /* CHAR_MAX */ <br>
+char int_n_sign_posn; /* CHAR_MAX */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">Contains
+members related to the formatting of numeric values. In the
+&quot;C&quot; locale, its members have the values shown in
+the comments above.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C11 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>setlocale</b>(3), <b>localeconv</b>(3),
+<b>charsets</b>(5), <b>locale</b>(7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>ldiv_t</i></p></td>
+<td width="2%"></td>
+<td width="30%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;stdlib.h&gt;</i>.</p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+long quot; /* Quotient */ <br>
+long rem; /* Remainder */ <br>
+} ldiv_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is the type
+of the value returned by the <b>ldiv</b>(3) function.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>ldiv</b>(3)</p>
+
+<p style="margin-left:11%;"><i>lldiv_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdlib.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+long long quot; /* Quotient */ <br>
+long long rem; /* Remainder */ <br>
+} lldiv_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is the type
+of the value returned by the <b>lldiv</b>(3) function.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>lldiv</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>off_t</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>Include</i>: <i>&lt;sys/types.h&gt;</i>.
+Alternatively, <i>&lt;aio.h&gt;</i>, <i>&lt;fcntl.h&gt;</i>,
+<i>&lt;stdio.h&gt;</i>, <i>&lt;sys/mman.h&gt;</i>,
+<i>&lt;sys/stat.h.h&gt;</i>, or <i>&lt;unistd.h&gt;</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Used for file
+sizes. According to POSIX, this shall be a signed integer
+type.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Versions</i>:
+<i>&lt;aio.h&gt;</i> and <i>&lt;stdio.h&gt;</i> define
+<i>off_t</i> since POSIX.1-2008.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Notes</i>:
+On some architectures, the width of this type can be
+controlled with the feature test macro
+<b>_FILE_OFFSET_BITS</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>lseek</b>(2), <b>mmap</b>(2),
+<b>posix_fadvise</b>(2), <b>pread</b>(2),
+<b>truncate</b>(2), <b>fseeko</b>(3), <b>lockf</b>(3),
+<b>posix_fallocate</b>(3), <b>feature_test_macros</b>(7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><i>pid_t</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;fcntl.h&gt;</i>, <i>&lt;sched.h&gt;</i>,
+<i>&lt;signal.h&gt;</i>, <i>&lt;spawn.h&gt;</i>,
+<i>&lt;sys/msg.h&gt;</i>, <i>&lt;sys/sem.h&gt;</i>,
+<i>&lt;sys/shm.h&gt;</i>, <i>&lt;sys/wait.h&gt;</i>,
+<i>&lt;termios.h&gt;</i>, <i>&lt;time.h&gt;</i>,
+<i>&lt;unistd.h&gt;</i>, or <i>&lt;utmpx.h&gt;</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This type is
+used for storing process IDs, process group IDs, and session
+IDs. According to POSIX, it shall be a signed integer type,
+and the implementation shall support one or more programming
+environments where the width of <i>pid_t</i> is no greater
+than the width of the type <i>long</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>fork</b>(2), <b>getpid</b>(2),
+<b>getppid</b>(2), <b>getsid</b>(2), <b>gettid</b>(2),
+<b>getpgid</b>(2), <b>kill</b>(2), <b>pidfd_open</b>(2),
+<b>sched_setscheduler</b>(2), <b>waitpid</b>(2),
+<b>sigqueue</b>(3), <b>credentials</b>(7),</p>
+
+<p style="margin-left:11%;"><i>ptrdiff_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stddef.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used for a
+count of elements, and array indices. It is the result of
+subtracting two pointers. According to the C language
+standard, it shall be a signed integer type capable of
+storing values in the range [<b>PTRDIFF_MIN</b>,
+<b>PTRDIFF_MAX</b>].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifier for <i>ptrdiff_t</i> for the <b>printf</b>(3) and
+the <b>scanf</b>(3) families of functions is <b>t</b>;
+resulting commonly in <b>%td</b> or <b>%ti</b> for printing
+<i>ptrdiff_t</i> values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>size_t</i> and <i>ssize_t</i> types in this
+page.</p>
+
+<p style="margin-left:11%;"><i>regex_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;regex.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+size_t re_nsub; /* Number of parenthesized subexpressions.
+*/ <br>
+} regex_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is a
+structure type used in regular expression matching. It holds
+a compiled regular expression, compiled with
+<b>regcomp</b>(3).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>regex</b>(3)</p>
+
+<p style="margin-left:11%;"><i>regmatch_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;regex.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+regoff_t rm_so; /* Byte offset from start of string <br>
+to start of substring */ <br>
+regoff_t rm_eo; /* Byte offset from start of string of <br>
+the first character after the end of <br>
+substring */ <br>
+} regmatch_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is a
+structure type used in regular expression matching.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>regexec</b>(3)</p>
+
+<p style="margin-left:11%;"><i>regoff_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;regex.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">According to
+POSIX, it shall be a signed integer type capable of storing
+the largest value that can be stored in either a
+<i>ptrdiff_t</i> type or a <i>ssize_t</i> type.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Versions</i>:
+Prior to POSIX.1-2008, the type was capable of storing the
+largest value that can be stored in either an <i>off_t</i>
+type or a <i>ssize_t</i> type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>regmatch_t</i> structure and the
+<i>ptrdiff_t</i> and <i>ssize_t</i> types in this page.</p>
+
+<p style="margin-left:11%;"><i>sigevent</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;signal.h&gt;</i>. Alternatively,
+<i>&lt;aio.h&gt;</i>, <i>&lt;mqueue.h&gt;</i>, or
+<i>&lt;time.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">struct sigevent
+{ <br>
+int sigev_notify; /* Notification type */ <br>
+int sigev_signo; /* Signal number */ <br>
+union sigval sigev_value; /* Signal value */ <br>
+void (*sigev_notify_function)(union sigval); <br>
+/* Notification function */ <br>
+pthread_attr_t *sigev_notify_attributes; <br>
+/* Notification attributes */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">For further
+details about this type, see <b>sigevent</b>(7).</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Versions</i>:
+<i>&lt;aio.h&gt;</i> and <i>&lt;time.h&gt;</i> define
+<i>sigevent</i> since POSIX.1-2008.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>timer_create</b>(2), <b>getaddrinfo_a</b>(3),
+<b>lio_listio</b>(3), <b>mq_notify</b>(3)</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also the
+<i>aiocb</i> structure in this page.</p>
+
+<p style="margin-left:11%;"><i>siginfo_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;signal.h&gt;</i>. Alternatively,
+<i>&lt;sys/wait.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">typedef struct
+{ <br>
+int si_signo; /* Signal number */ <br>
+int si_code; /* Signal code */ <br>
+pid_t si_pid; /* Sending process ID */ <br>
+uid_t si_uid; /* Real user ID of sending process */ <br>
+void *si_addr; /* Address of faulting instruction */ <br>
+int si_status; /* Exit value or signal */ <br>
+union sigval si_value; /* Signal value */ <br>
+} siginfo_t;</p>
+
+<p style="margin-left:22%; margin-top: 1em">Information
+associated with a signal. For further details on this
+structure (including additional, Linux-specific fields), see
+<b>sigaction</b>(2).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>pidfd_send_signal</b>(2),
+<b>rt_sigqueueinfo</b>(2), <b>sigaction</b>(2),
+<b>sigwaitinfo</b>(2), <b>psiginfo</b>(3)</p>
+
+<p style="margin-left:11%;"><i>sigset_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;signal.h&gt;</i>. Alternatively,
+<i>&lt;spawn.h&gt;</i>, or <i>&lt;sys/select.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is a type
+that represents a set of signals. According to POSIX, this
+shall be an integer or structure type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>epoll_pwait</b>(2), <b>ppoll</b>(2),
+<b>pselect</b>(2), <b>sigaction</b>(2), <b>signalfd</b>(2),
+<b>sigpending</b>(2), <b>sigprocmask</b>(2),
+<b>sigsuspend</b>(2), <b>sigwaitinfo</b>(2),
+<b>signal</b>(7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>sigval</i></p></td>
+<td width="2%"></td>
+<td width="30%">
+
+
+<p><i>Include</i>: <i>&lt;signal.h&gt;</i>.</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">union sigval {
+<br>
+int sigval_int; /* Integer value */ <br>
+void *sigval_ptr; /* Pointer value */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">Data passed
+with a signal.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>pthread_sigqueue</b>(3), <b>sigqueue</b>(3),
+<b>sigevent</b>(7)</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also the
+<i>sigevent</i> structure and the <i>siginfo_t</i> type in
+this page.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>size_t</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>Include</i>:
+<i>&lt;stddef.h&gt;</i> or <i>&lt;sys/types.h&gt;</i>.
+Alternatively, <i>&lt;aio.h&gt;</i>, <i>&lt;glob.h&gt;</i>,
+<i>&lt;grp.h&gt;</i>, <i>&lt;iconv.h&gt;</i>,
+<i>&lt;monetary.h&gt;</i>, <i>&lt;mqueue.h&gt;</i>,
+<i>&lt;ndbm.h&gt;</i>, <i>&lt;pwd.h&gt;</i>,
+<i>&lt;regex.h&gt;</i>, <i>&lt;search.h&gt;</i>,
+<i>&lt;signal.h&gt;</i>, <i>&lt;stdio.h&gt;</i>,
+<i>&lt;stdlib.h&gt;</i>, <i>&lt;string.h&gt;</i>,
+<i>&lt;strings.h&gt;</i>, <i>&lt;sys/mman.h&gt;</i>,
+<i>&lt;sys/msg.h&gt;</i>, <i>&lt;sys/sem.h&gt;</i>,
+<i>&lt;sys/shm.h&gt;</i>, <i>&lt;sys/socket.h&gt;</i>,
+<i>&lt;sys/uio.h&gt;</i>, <i>&lt;time.h&gt;</i>,
+<i>&lt;unistd.h&gt;</i>, <i>&lt;wchar.h&gt;</i>, or
+<i>&lt;wordexp.h&gt;</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Used for a
+count of bytes. It is the result of the <i>sizeof</i>
+operator. According to the C language standard, it shall be
+an unsigned integer type capable of storing values in the
+range [0, <b>SIZE_MAX</b>]. According to POSIX, the
+implementation shall support one or more programming
+environments where the width of <i>size_t</i> is no greater
+than the width of the type <i>long</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifier for <i>size_t</i> for the <b>printf</b>(3) and the
+<b>scanf</b>(3) families of functions is <b>z</b>; resulting
+commonly in <b>%zu</b> or <b>%zx</b> for printing
+<i>size_t</i> values.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Versions</i>:
+<i>&lt;aio.h&gt;</i>, <i>&lt;glob.h&gt;</i>,
+<i>&lt;grp.h&gt;</i>, <i>&lt;iconv.h&gt;</i>,
+<i>&lt;mqueue.h&gt;</i>, <i>&lt;pwd.h&gt;</i>,
+<i>&lt;signal.h&gt;</i>, and <i>&lt;sys/socket.h&gt;</i>
+define <i>size_t</i> since POSIX.1-2008.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>read</b>(2), <b>write</b>(2), <b>fread</b>(3),
+<b>fwrite</b>(3), <b>memcmp</b>(3), <b>memcpy</b>(3),
+<b>memset</b>(3), <b>offsetof</b>(3)</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also the
+<i>ptrdiff_t</i> and <i>ssize_t</i> types in this page.</p>
+
+<p style="margin-left:11%;"><i>ssize_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;aio.h&gt;</i>, <i>&lt;monetary.h&gt;</i>,
+<i>&lt;mqueue.h&gt;</i>, <i>&lt;stdio.h&gt;</i>,
+<i>&lt;sys/msg.h&gt;</i>, <i>&lt;sys/socket.h&gt;</i>,
+<i>&lt;sys/uio.h&gt;</i>, or <i>&lt;unistd.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used for a
+count of bytes or an error indication. According to POSIX,
+it shall be a signed integer type capable of storing values
+at least in the range [-1, <b>SSIZE_MAX</b>], and the
+implementation shall support one or more programming
+environments where the width of <i>ssize_t</i> is no greater
+than the width of the type <i>long</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Glibc and most
+other implementations provide a length modifier for
+<i>ssize_t</i> for the <b>printf</b>(3) and the
+<b>scanf</b>(3) families of functions, which is <b>z</b>;
+resulting commonly in <b>%zd</b> or <b>%zi</b> for printing
+<i>ssize_t</i> values. Although <b>z</b> works for
+<i>ssize_t</i> on most implementations, portable POSIX
+programs should avoid using it&mdash;for example, by
+converting the value to <i>intmax_t</i> and using its length
+modifier (<b>j</b>).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>read</b>(2), <b>readlink</b>(2),
+<b>readv</b>(2), <b>recv</b>(2), <b>send</b>(2),
+<b>write</b>(2)</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also the
+<i>ptrdiff_t</i> and <i>size_t</i> types in this page.</p>
+
+<p style="margin-left:11%;"><i>suseconds_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;sys/select.h&gt;</i>, or
+<i>&lt;sys/time.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used for time
+in microseconds. According to POSIX, it shall be a signed
+integer type capable of storing values at least in the range
+[-1, 1000000], and the implementation shall support one or
+more programming environments where the width of
+<i>suseconds_t</i> is no greater than the width of the type
+<i>long</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>timeval</i> structure in this page.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>time_t</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>Include</i>: <i>&lt;time.h&gt;</i> or
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;sched.h&gt;</i>, <i>&lt;sys/msg.h&gt;</i>,
+<i>&lt;sys/select.h&gt;</i>, <i>&lt;sys/sem.h&gt;</i>,
+<i>&lt;sys/shm.h&gt;</i>, <i>&lt;sys/stat.h&gt;</i>,
+<i>&lt;sys/time.h&gt;</i>, or <i>&lt;utime.h&gt;</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Used for time
+in seconds. According to POSIX, it shall be an integer
+type.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Versions</i>:
+<i>&lt;sched.h&gt;</i> defines <i>time_t</i> since
+POSIX.1-2008.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>stime</b>(2), <b>time</b>(2), <b>ctime</b>(3),
+<b>difftime</b>(3)</p>
+
+<p style="margin-left:11%;"><i>timer_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;sys/types.h&gt;</i>. Alternatively,
+<i>&lt;time.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used for timer
+ID returned by <b>timer_create</b>(2). According to POSIX,
+there are no defined comparison or assignment operators for
+this type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>timer_create</b>(2), <b>timer_delete</b>(2),
+<b>timer_getoverrun</b>(2), <b>timer_settime</b>(2)</p>
+
+<p style="margin-left:11%;"><i>timespec</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;time.h&gt;</i>. Alternatively, <i>&lt;aio.h&gt;</i>,
+<i>&lt;mqueue.h&gt;</i>, <i>&lt;sched.h&gt;</i>,
+<i>&lt;signal.h&gt;</i>, <i>&lt;sys/select.h&gt;</i>, or
+<i>&lt;sys/stat.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">struct timespec
+{ <br>
+time_t tv_sec; /* Seconds */ <br>
+long tv_nsec; /* Nanoseconds */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">Describes times
+in seconds and nanoseconds.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C11 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>clock_gettime</b>(2),
+<b>clock_nanosleep</b>(2), <b>nanosleep</b>(2),
+<b>timerfd_gettime</b>(2), <b>timer_gettime</b>(2)</p>
+
+<p style="margin-left:11%;"><i>timeval</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;sys/time.h&gt;</i>. Alternatively,
+<i>&lt;sys/resource.h&gt;</i>, <i>&lt;sys/select.h&gt;</i>,
+or <i>&lt;utmpx.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">struct timeval
+{ <br>
+time_t tv_sec; /* Seconds */ <br>
+suseconds_t tv_usec; /* Microseconds */ <br>
+};</p>
+
+<p style="margin-left:22%; margin-top: 1em">Describes times
+in seconds and microseconds.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>gettimeofday</b>(2), <b>select</b>(2),
+<b>utimes</b>(2), <b>adjtime</b>(3), <b>futimes</b>(3),
+<b>timeradd</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>uid_t</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p><i>Include</i>: <i>&lt;sys/types.h&gt;</i>.
+Alternatively, <i>&lt;pwd.h&gt;</i>,
+<i>&lt;signal.h&gt;</i>, <i>&lt;stropts.h&gt;</i>,
+<i>&lt;sys/ipc.h&gt;</i>, <i>&lt;sys/stat.h&gt;</i>, or
+<i>&lt;unistd.h&gt;</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">A type used to
+hold user IDs. According to POSIX, this shall be an integer
+type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>chown</b>(2), <b>getuid</b>(2),
+<b>geteuid</b>(2), <b>getresuid</b>(2), <b>getpwnam</b>(2),
+<b>credentials</b>(7)</p>
+
+<p style="margin-left:11%;"><i>uintmax_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdint.h&gt;</i>. Alternatively,
+<i>&lt;inttypes.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An unsigned
+integer type capable of representing any value of any
+unsigned integer type supported by the implementation.
+According to the C language standard, it shall be capable of
+storing values in the range [0, <b>UINTMAX_MAX</b>].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The macro
+<b>UINTMAX_C</b>() expands its argument to an integer
+constant of type <i>uintmax_t</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifier for <i>uintmax_t</i> for the <b>printf</b>(3) and
+the <b>scanf</b>(3) families of functions is <b>j</b>;
+resulting commonly in <b>%ju</b> or <b>%jx</b> for printing
+<i>uintmax_t</i> values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Bugs</i>:
+<i>uintmax_t</i> is not large enough to represent values of
+type <i>unsigned __int128</i> in implementations where
+<i>unsigned __int128</i> is defined and <i>unsigned long
+long</i> is less than 128 bits wide.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>intmax_t</i> type in this page.</p>
+
+<p style="margin-left:11%;"><i>uint</i>N<i>_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdint.h&gt;</i>. Alternatively,
+<i>&lt;inttypes.h&gt;</i>.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>uint8_t</i>,
+<i>uint16_t</i>, <i>uint32_t</i>, <i>uint64_t</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">An unsigned
+integer type of a fixed width of exactly N bits, N being the
+value specified in its type name. According to the C
+language standard, they shall be capable of storing values
+in the range [0, <b>UINT</b>N<b>_MAX</b>], substituting N by
+the appropriate number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">According to
+POSIX, <i>uint8_t</i>, <i>uint16_t</i>, and <i>uint32_t</i>
+are required; <i>uint64_t</i> is only required in
+implementations that provide integer types with width 64;
+and all other types of this form are optional.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifiers for the <i>uint</i>N<i>_t</i> types for the
+<b>printf</b>(3) family of functions are expanded by macros
+of the forms <b>PRIu</b>N, <b>PRIo</b>N, <b>PRIx</b>N, and
+<b>PRIX</b>N (defined in <i>&lt;inttypes.h&gt;</i>);
+resulting for example in <b>%&quot;PRIu32&quot;</b> or
+<b>%&quot;PRIx32&quot;</b> for printing <i>uint32_t</i>
+values. The length modifiers for the <i>uint</i>N<i>_t</i>
+types for the <b>scanf</b>(3) family of functions are
+expanded by macros of the forms <b>SCNu</b>N, <b>SCNo</b>N,
+<b>SCNx</b>N, and <b>SCNX</b>N (defined in
+<i>&lt;inttypes.h&gt;</i>); resulting for example in
+<b>%&quot;SCNu16&quot;</b> or <b>%&quot;SCNx16&quot;</b> for
+scanning <i>uint16_t</i> values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>intmax_t</i>, <i>int</i>N<i>_t</i>, and
+<i>uintmax_t</i> types in this page.</p>
+
+<p style="margin-left:11%;"><i>uintptr_t</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdint.h&gt;</i>. Alternatively,
+<i>&lt;inttypes.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An unsigned
+integer type such that any valid (<i>void *</i>) value can
+be converted to this type and back. According to the C
+language standard, it shall be capable of storing values in
+the range [0, <b>UINTPTR_MAX</b>].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The length
+modifier for <i>uintptr_t</i> for the <b>printf</b>(3)
+family of functions is expanded by the macros
+<b>PRIuPTR</b>, <b>PRIoPTR</b>, <b>PRIxPTR</b>, and
+<b>PRIXPTR</b> (defined in <i>&lt;inttypes.h&gt;</i>);
+resulting commonly in <b>%&quot;PRIuPTR&quot;</b> or
+<b>%&quot;PRIxPTR&quot;</b> for printing <i>uintptr_t</i>
+values. The length modifier for <i>uintptr_t</i> for the
+<b>scanf</b>(3) family of functions is expanded by the
+macros <b>SCNuPTR, SCNoPTR, SCNxPTR</b>, and <b>SCNXPTR</b>
+(defined in <i>&lt;inttypes.h&gt;</i>); resulting commonly
+in <b>%&quot;SCNuPTR&quot;</b> or
+<b>%&quot;SCNxPTR&quot;</b> for scanning <i>uintptr_t</i>
+values.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: the <i>intptr_t</i> and <i>void *</i> types in
+this page.</p>
+
+<p style="margin-left:11%;"><i>va_list</i></p>
+
+<p style="margin-left:22%;"><i>Include</i>:
+<i>&lt;stdarg&gt;</i>. Alternatively,
+<i>&lt;stdio.h&gt;</i>, or <i>&lt;wchar.h&gt;</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Used by
+functions with a varying number of arguments of varying
+types. The function must declare an object of type
+<i>va_list</i> which is used by the macros
+<b>va_start</b>(3), <b>va_arg</b>(3), <b>va_copy</b>(3), and
+<b>va_end</b>(3) to traverse the list of arguments.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>va_start</b>(3), <b>va_arg</b>(3),
+<b>va_copy</b>(3), <b>va_end</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>void *</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>According to the C language standard, a pointer to any
+object type may be converted to a pointer to <i>void</i> and
+back. POSIX further requires that any pointer, including
+pointers to functions, may be converted to a pointer to
+<i>void</i> and back.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Conversions
+from and to any other pointer type are done implicitly, not
+requiring casts at all. Note that this feature prevents any
+kind of type checking: the programmer should be careful not
+to convert a <i>void *</i> value to a type incompatible to
+that of the underlying data, because that would result in
+undefined behavior.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This type is
+useful in function parameters and return value to allow
+passing values of any type. The function will typically use
+some mechanism to know the real type of the data being
+passed via a pointer to <i>void</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A value of this
+type can&rsquo;t be dereferenced, as it would give a value
+of type <i>void</i>, which is not possible. Likewise,
+pointer arithmetic is not possible with this type. However,
+in GNU C, pointer arithmetic is allowed as an extension to
+the standard; this is done by treating the size of a
+<i>void</i> or of a function as 1. A consequence of this is
+that <i>sizeof</i> is also allowed on <i>void</i> and on
+function types, and returns 1.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The conversion
+specifier for <i>void *</i> for the <b>printf</b>(3) and the
+<b>scanf</b>(3) families of functions is <b>p</b>.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Versions</i>:
+The POSIX requirement about compatibility between <i>void
+*</i> and function pointers was added in POSIX.1-2008
+Technical Corrigendum 1 (2013).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Conforming
+to</i>: C99 and later; POSIX.1-2001 and later.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>See
+also</i>: <b>malloc</b>(3), <b>memcmp</b>(3),
+<b>memcpy</b>(3), <b>memset</b>(3)</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also the
+<i>intptr_t</i> and <i>uintptr_t</i> types in this page.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The structures
+described in this manual page shall contain, at least, the
+members shown in their definition, in no particular
+order.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most of the
+integer types described in this page don&rsquo;t have a
+corresponding length modifier for the <b>printf</b>(3) and
+the <b>scanf</b>(3) families of functions. To print a value
+of an integer type that doesn&rsquo;t have a length
+modifier, it should be converted to <i>intmax_t</i> or
+<i>uintmax_t</i> by an explicit cast. To scan into a
+variable of an integer type that doesn&rsquo;t have a length
+modifier, an intermediate temporary variable of type
+<i>intmax_t</i> or <i>uintmax_t</i> should be used. When
+copying from the temporary variable to the destination
+variable, the value could overflow. If the type has upper
+and lower limits, the user should check that the value is
+within those limits, before actually copying the value. The
+example below shows how these conversions should be
+done.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Conventions
+used in this page</b> <br>
+In &quot;Conforming to&quot; we only concern ourselves with
+C99 and later and POSIX.1-2001 and later. Some types may be
+specified in earlier versions of one of these standards, but
+in the interests of simplicity we omit details from earlier
+standards.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In
+&quot;Include&quot;, we first note the &quot;primary&quot;
+header(s) that define the type according to either the C or
+POSIX.1 standards. Under &quot;Alternatively&quot;, we note
+additional headers that the standards specify shall define
+the type.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+shown below scans from a string and prints a value stored in
+a variable of an integer type that doesn&rsquo;t have a
+length modifier. The appropriate conversions from and to
+<i>intmax_t</i>, and the appropriate range checks, are used
+as explained in the notes section above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;stdint.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;sys/types.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main (void) <br>
+{ <br>
+static const char *const str = &quot;500000 us in half a
+second&quot;; <br>
+suseconds_t us; <br>
+intmax_t tmp;</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Scan the
+number from the string into the temporary variable */</p>
+
+<p style="margin-left:11%; margin-top: 1em">sscanf(str,
+&quot;%jd&quot;, &amp;tmp);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Check that
+the value is within the valid range of suseconds_t */</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (tmp &lt; -1
+|| tmp &gt; 1000000) { <br>
+fprintf(stderr, &quot;Scanned value outside valid
+range!\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Copy the
+value to the suseconds_t variable 'us' */</p>
+
+<p style="margin-left:11%; margin-top: 1em">us = tmp;</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Even though
+suseconds_t can hold the value -1, this isn't <br>
+a sensible number of microseconds */</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (us &lt; 0)
+{ <br>
+fprintf(stderr, &quot;Scanned value shouldn't be
+negative!\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Print the
+value */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;There
+are %jd microseconds in half a second.\n&quot;, <br>
+(intmax_t) us);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">exit(EXIT_SUCCESS);
+<br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>feature_test_macros</b>(7),
+<b>standards</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

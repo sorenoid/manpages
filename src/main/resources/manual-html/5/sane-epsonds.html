@@ -1,0 +1,196 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:13 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>sane-epsonds</title>
+
+</head>
+<body>
+
+<h1 align="center">sane-epsonds</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION FILE">CONFIGURATION FILE</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sane-epsonds -
+SANE backend for EPSON ESC/I-2 scanners</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sane-epsonds</b> library implements a SANE (Scanner
+Access Now Easy) backend that provides access to Epson
+ESC/I-2 scanners.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Valid command
+line options and their syntax can be listed by using</p>
+
+<p style="margin-left:22%; margin-top: 1em">scanimage
+--help -d epsonds</p>
+
+<p style="margin-left:11%; margin-top: 1em">Not all devices
+support all options. <i><br>
+Scan Mode</i></p>
+
+<p style="margin-left:22%;">The <b>--mode</b> switch
+selects the basic mode of operation of the scanner. Valid
+choices are Lineart, Gray and Color. The Lineart mode is
+black and white only, Gray will produce 256 levels of gray
+or more depending on the scanner and Color means 24 bit
+color mode or more depending on the scanner. Some scanners
+will internally use 36 bit color, their external interface
+however may only support 24 bits.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>--depth</b> option selects the bit depth the scanner is
+using. This option is only available for scanners that
+support more than one bit depth. Older scanners will always
+transfer the image in 8bit mode. Newer scanners allow one to
+select either 8 bits, 12 or 14 bits per color channel. For a
+color scan this means an effective color depth of 36 or 42
+bits over all three channels. The valid choices depend on
+the scanner model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>--resolution</b> switch selects the resolution for a
+scan. Some EPSON scanners will scan in any resolution
+between the lowest and highest possible value. The list
+reported by the scanner can be displayed using the
+&quot;--help -d epson&quot; parameters to
+<b>scanimage</b>(1).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The geometry
+options <b>-l -t -x -y</b> control the scan area: <b>-l</b>
+sets the top left x coordinate, <b>-t</b> the top left y
+coordinate, <b>-x</b> selects the width and <b>-y</b> the
+height of the scan area. All parameters are specified in
+millimeters.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>--source</b> option selects the scan source. Valid
+options depend on the installed options. The default is
+&quot;Flatbed&quot;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>--eject</b> option ejects the sheet in the ADF.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>--adf-mode</b> option select the ADF mode
+(simplex/duplex).</p>
+
+<h2>CONFIGURATION FILE
+<a name="CONFIGURATION FILE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration file <i>/etc/sane.d/epsonds.conf</i> specifies
+the device(s) that the backend will use. Possible connection
+types are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>USB</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>For not automatically detected USB scanners, their
+VENDOR and PRODUCT ID can be specified manually in the
+config file. More information about valid syntax for USB
+devices can be found in <b>sane-usb</b>(5).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Network (not yet
+supported)</b></p>
+
+<p style="margin-left:22%;">Network scanners can be
+auto-discovered if <b>autodiscovery</b> is specified after
+<b>net</b> keyword. An IP address to connect to can also be
+used.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/lib/x86_64-linux-gnu/sane/libsane-epsonds.a</i></p>
+
+<p style="margin-left:22%;">The static library implementing
+this backend.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/lib/x86_64-linux-gnu/sane/libsane-epsonds.so</i></p>
+
+<p style="margin-left:22%;">The shared library implementing
+this backend (present on systems that support dynamic
+loading).</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SANE_DEBUG_EPSONDS</b></p>
+
+<p style="margin-left:22%;">If the library was compiled
+with debug support enabled, this environment variable
+controls the debug level for this backend. E.g., a value of
+128 requests all debug output to be printed. Smaller levels
+reduce verbosity. Values around 11-16 will usually be enough
+for a bug report.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sane-usb</b>(5),
+<b>scanimage</b>(1), <b>xscanimage</b>(1),
+<b>xsane</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The backend is
+written by Alessandro Zummo.</p>
+<hr>
+</body>
+</html>

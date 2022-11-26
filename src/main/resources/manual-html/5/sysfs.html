@@ -1,0 +1,401 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:58 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSFS</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSFS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sysfs - a
+filesystem for exporting kernel objects</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sysfs</b> filesystem is a pseudo-filesystem which
+provides an interface to kernel data structures. (More
+precisely, the files and directories in <b>sysfs</b> provide
+a view of the <i>kobject</i> structures defined internally
+within the kernel.) The files under <b>sysfs</b> provide
+information about devices, kernel modules, filesystems, and
+other kernel components.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sysfs</b> filesystem is commonly mounted at <i>/sys</i>.
+Typically, it is mounted automatically by the system, but it
+can also be mounted manually using a command such as:</p>
+
+<p style="margin-left:17%; margin-top: 1em">mount -t sysfs
+sysfs /sys</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many of the
+files in the <b>sysfs</b> filesystem are read-only, but some
+files are writable, allowing kernel variables to be changed.
+To avoid redundancy, symbolic links are heavily used to
+connect entries across the filesystem tree.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Files and
+directories</b> <br>
+The following list describes some of the files and
+directories under the <i>/sys</i> hierarchy. <i><br>
+/sys/block</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains one
+symbolic link for each block device that has been discovered
+on the system. The symbolic links point to corresponding
+directories under <i>/sys/devices</i>.</p>
+
+<p style="margin-left:11%;"><i>/sys/bus</i></p>
+
+<p style="margin-left:22%;">This directory contains one
+subdirectory for each of the bus types in the kernel. Inside
+each of these directories are two subdirectories: <i><br>
+devices</i></p>
+
+<p style="margin-left:32%;">This subdirectory contains
+symbolic links to entries in <i>/sys/devices</i> that
+correspond to the devices discovered on this bus.</p>
+
+<p style="margin-left:22%;"><i>drivers</i></p>
+
+<p style="margin-left:32%;">This subdirectory contains one
+subdirectory for each device driver that is loaded on this
+bus.</p>
+
+<p style="margin-left:11%;"><i>/sys/class</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains a
+single layer of further subdirectories for each of the
+device classes that have been registered on the system
+(e.g., terminals, network devices, block devices, graphics
+devices, sound devices, and so on). Inside each of these
+subdirectories are symbolic links for each of the devices in
+this class. These symbolic links refer to entries in the
+<i>/sys/devices</i> directory.</p>
+
+<p style="margin-left:11%;"><i>/sys/class/net</i></p>
+
+<p style="margin-left:22%;">Each of the entries in this
+directory is a symbolic link representing one of the real or
+virtual networking devices that are visible in the network
+namespace of the process that is accessing the directory.
+Each of these symbolic links refers to entries in the
+<i>/sys/devices</i> directory.</p>
+
+<p style="margin-left:11%;"><i>/sys/dev</i></p>
+
+<p style="margin-left:22%;">This directory contains two
+subdirectories <i>block</i>/ and <i>char/</i>,
+corresponding, respectively, to the block and character
+devices on the system. Inside each of these subdirectories
+are symbolic links with names of the form
+<i>major-ID</i>:<i>minor-ID</i>, where the ID values
+correspond to the major and minor ID of a specific device.
+Each symbolic link points to the <b>sysfs</b> directory for
+a device. The symbolic links inside <i>/sys/dev</i> thus
+provide an easy way to look up the <b>sysfs</b> interface
+using the device IDs returned by a call to <b>stat</b>(2)
+(or similar).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+shell session shows an example from <i>/sys/dev</i>:</p>
+
+<p style="margin-left:28%; margin-top: 1em">$ <b>stat -c
+&quot;%t %T&quot; /dev/null</b> <br>
+1 3 <br>
+$ <b>readlink /sys/dev/char/1\:3</b> <br>
+../../devices/virtual/mem/null <br>
+$ <b>ls -Fd /sys/devices/virtual/mem/null</b> <br>
+/sys/devices/virtual/mem/null/ <br>
+$ <b>ls -d1 /sys/devices/virtual/mem/null/*</b> <br>
+/sys/devices/virtual/mem/null/dev <br>
+/sys/devices/virtual/mem/null/power/ <br>
+/sys/devices/virtual/mem/null/subsystem@ <br>
+/sys/devices/virtual/mem/null/uevent</p>
+
+<p style="margin-left:11%;"><i>/sys/devices</i></p>
+
+<p style="margin-left:22%;">This is a directory that
+contains a filesystem representation of the kernel device
+tree, which is a hierarchy of <i>device</i> structures
+within the kernel.</p>
+
+<p style="margin-left:11%;"><i>/sys/firmware</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains
+interfaces for viewing and manipulating firmware-specific
+objects and attributes.</p>
+
+<p style="margin-left:11%;"><i>/sys/fs</i></p>
+
+<p style="margin-left:22%;">This directory contains
+subdirectories for some filesystems. A filesystem will have
+a subdirectory here only if it chose to explicitly create
+the subdirectory.</p>
+
+<p style="margin-left:11%;"><i>/sys/fs/cgroup</i></p>
+
+<p style="margin-left:22%;">This directory conventionally
+is used as a mount point for a <b>tmpfs</b>(5) filesystem
+containing mount points for <b>cgroups</b>(7)
+filesystems.</p>
+
+<p style="margin-left:11%;"><i>/sys/fs/smackfs</i></p>
+
+<p style="margin-left:22%;">The directory contains
+configuration files for the SMACK LSM. See the kernel source
+file <i>Documentation/admin-guide/LSM/Smack.rst</i>.</p>
+
+<p style="margin-left:11%;"><i>/sys/hypervisor</i></p>
+
+<p style="margin-left:22%;">[To be documented]</p>
+
+<p style="margin-left:11%;"><i>/sys/kernel</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains
+various files and subdirectories that provide information
+about the running kernel.</p>
+
+<p style="margin-left:11%;"><i>/sys/kernel/cgroup/</i></p>
+
+<p style="margin-left:22%;">For information about the files
+in this directory, see <b>cgroups</b>(7).</p>
+
+
+<p style="margin-left:11%;"><i>/sys/kernel/debug/tracing</i></p>
+
+<p style="margin-left:22%;">Mount point for the
+<i>tracefs</i> filesystem used by the kernel&rsquo;s
+<i>ftrace</i> facility. (For information on <i>ftrace</i>,
+see the kernel source file
+<i>Documentation/trace/ftrace.txt</i>.)</p>
+
+<p style="margin-left:11%;"><i>/sys/kernel/mm</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains
+various files and subdirectories that provide information
+about the kernel&rsquo;s memory management subsystem.</p>
+
+
+<p style="margin-left:11%;"><i>/sys/kernel/mm/hugepages</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains one
+subdirectory for each of the huge page sizes that the system
+supports. The subdirectory name indicates the huge page size
+(e.g., <i>hugepages-2048kB</i>). Within each of these
+subdirectories is a set of files that can be used to view
+and (in some cases) change settings associated with that
+huge page size. For further information, see the kernel
+source file
+<i>Documentation/admin-guide/mm/hugetlbpage.rst</i>.</p>
+
+<p style="margin-left:11%;"><i>/sys/module</i></p>
+
+<p style="margin-left:22%;">This subdirectory contains one
+subdirectory for each module that is loaded into the kernel.
+The name of each directory is the name of the module. In
+each of the subdirectories, there may be following files:
+<i><br>
+coresize</i></p>
+
+<p style="margin-left:32%;">[to be documented]</p>
+
+<p style="margin-left:22%;"><i>initsize</i></p>
+
+<p style="margin-left:32%;">[to be documented]</p>
+
+<p style="margin-left:22%;"><i>initstate</i></p>
+
+<p style="margin-left:32%;">[to be documented]</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><i>refcnt</i></p></td>
+<td width="1%"></td>
+<td width="28%">
+
+
+<p>[to be documented]</p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><i>srcversion</i></p>
+
+<p style="margin-left:32%;">[to be documented]</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><i>taint</i></p></td>
+<td width="1%"></td>
+<td width="28%">
+
+
+<p>[to be documented]</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><i>uevent</i></p></td>
+<td width="1%"></td>
+<td width="28%">
+
+
+<p>[to be documented]</p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><i>version</i></p>
+
+<p style="margin-left:32%;">[to be documented]</p>
+
+<p style="margin-left:22%; margin-top: 1em">In each of the
+subdirectories, there may be following subdirectories:
+<i><br>
+drivers</i></p>
+
+<p style="margin-left:32%;">[To be documented]</p>
+
+<p style="margin-left:22%;"><i>holders</i></p>
+
+<p style="margin-left:32%;">[To be documented]</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><i>notes</i></p></td>
+<td width="3%"></td>
+<td width="28%">
+
+
+<p>[To be documented]</p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><i>parameters</i></p>
+
+<p style="margin-left:32%;">This directory contains one
+file for each module parameter, with each file containing
+the value of the corresponding parameter. Some of these
+files are writable, allowing the</p>
+
+<p style="margin-left:22%;"><i>sections</i></p>
+
+<p style="margin-left:32%;">This subdirectories contains
+files with information about module sections. This
+information is mainly used for debugging.</p>
+
+<p style="margin-left:22%;"><i>[To be documented]</i></p>
+
+<p style="margin-left:11%;"><i>/sys/power</i></p>
+
+<p style="margin-left:22%;">[To be documented]</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sysfs</b> filesystem first appeared in Linux 2.6.0.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sysfs</b> filesystem is Linux-specific.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page is incomplete, possibly inaccurate, and is the kind of
+thing that needs to be updated very often.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>proc</b>(5),
+<b>udev</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em">P. Mochel.
+(2005). <i>The sysfs filesystem</i>. Proceedings of the 2005
+Ottawa Linux Symposium.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The kernel
+source file <i>Documentation/filesystems/sysfs.txt</i> and
+various other files in <i>Documentation/ABI</i> and
+<i>Documentation/*/sysfs.txt</i></p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

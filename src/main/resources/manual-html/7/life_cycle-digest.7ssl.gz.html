@@ -1,0 +1,175 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:37 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LIFE_CYCLE-DIGEST</title>
+
+</head>
+<body>
+
+<h1 align="center">LIFE_CYCLE-DIGEST</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">life_cycle-digest
+- The digest algorithm life-cycle</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All message
+digests (MDs) go through a number of stages in their
+life-cycle: <br>
+start</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>MD</small> before it has been allocated. It is the
+starting state for any life-cycle transitions.</p>
+
+<p style="margin-left:11%;">newed</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>MD</small> after it has been allocated.</p>
+
+<p style="margin-left:11%;">initialised</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>MD</small> when it is set up and capable of
+processing input.</p>
+
+<p style="margin-left:11%;">updated</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>MD</small> when it is set up and capable of
+processing additional input or generating output.</p>
+
+<p style="margin-left:11%;">finaled</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>MD</small> when it has generated output.</p>
+
+<p style="margin-left:11%;">freed</p>
+
+<p style="margin-left:17%;">This state is entered when the
+<small>MD</small> is freed. It is the terminal state for all
+life-cycle transitions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>State
+Transition Diagram</b> <br>
+The usual life-cycle of a <small>MD</small> is illustrated:
+<br>
++-------------------+ <br>
+| start | <br>
++-------------------+ <br>
+| <br>
+| EVP_MD_CTX_new <br>
+v <br>
++-------------------+ EVP_MD_CTX_reset <br>
+| newed | &lt;------------------------------+ <br>
++-------------------+ | <br>
+| | <br>
+| EVP_DigestInit | <br>
+v | <br>
++-------------------+ | <br>
++--&gt; | initialised | &lt;+ EVP_DigestInit | <br>
+| +-------------------+ | | <br>
+| | | EVP_DigestUpdate | <br>
+| | EVP_DigestUpdate | +------------------+ | <br>
+| v | v | | <br>
+| +------------------------------------------------+ | <br>
+EVP_DigestInit | | updated | --+ <br>
+| +------------------------------------------------+ | <br>
+| | | | <br>
+| | EVP_DigestFinal | EVP_DigestFinalXOF | <br>
+| v v | <br>
+| +------------------------------------------------+ | <br>
++--- | finaled | --+ <br>
++------------------------------------------------+ <br>
+| <br>
+| EVP_MD_CTX_free <br>
+v <br>
++-------------------+ <br>
+| freed | <br>
++-------------------+</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Formal State
+Transitions</b> <br>
+This section defines all of the legal state transitions.
+This is the canonical list. <br>
+Function Call --------------------- Current State
+---------------------- <br>
+start newed initialised updated finaled freed <br>
+EVP_MD_CTX_new newed <br>
+EVP_DigestInit initialised initialised initialised
+initialised <br>
+EVP_DigestUpdate updated updated <br>
+EVP_DigestFinal finaled <br>
+EVP_DigestFinalXOF finaled <br>
+EVP_MD_CTX_free freed freed freed freed freed <br>
+EVP_MD_CTX_reset newed newed newed newed <br>
+EVP_MD_CTX_get_params newed initialised updated <br>
+EVP_MD_CTX_set_params newed initialised updated <br>
+EVP_MD_CTX_gettable_params newed initialised updated <br>
+EVP_MD_CTX_settable_params newed initialised updated</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">At some point
+the <small>EVP</small> layer will begin enforcing the
+transitions described herein.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider-digest</b>(7),
+<b>EVP_DigestInit</b>(3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2021
+The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

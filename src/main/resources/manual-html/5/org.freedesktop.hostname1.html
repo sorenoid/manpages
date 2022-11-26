@@ -1,0 +1,594 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:17 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ORG.FREEDESKTOP.HOSTNAME1</title>
+
+</head>
+<body>
+
+<h1 align="center">ORG.FREEDESKTOP.HOSTNAME1</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INTRODUCTION">INTRODUCTION</a><br>
+<a href="#THE D-BUS API">THE D-BUS API</a><br>
+<a href="#SEMANTICS">SEMANTICS</a><br>
+<a href="#RECOMMENDATIONS">RECOMMENDATIONS</a><br>
+<a href="#VERSIONING">VERSIONING</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">org.freedesktop.hostname1
+- The D-Bus interface of systemd-hostnamed</p>
+
+<h2>INTRODUCTION
+<a name="INTRODUCTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-hostnamed.service</b>(8)
+is a system service that can be used to control the hostname
+and related machine metadata from user programs. This page
+describes the hostname semantics and the D-Bus
+interface.</p>
+
+<h2>THE D-BUS API
+<a name="THE D-BUS API"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The service
+exposes the following interfaces on the bus:</p>
+
+<p style="margin-left:17%; margin-top: 1em">node
+/org/freedesktop/hostname1 { <br>
+interface org.freedesktop.hostname1 { <br>
+methods: <br>
+SetHostname(in s hostname, <br>
+in b interactive); <br>
+SetStaticHostname(in s hostname, <br>
+in b interactive); <br>
+SetPrettyHostname(in s hostname, <br>
+in b interactive); <br>
+SetIconName(in s icon, <br>
+in b interactive); <br>
+SetChassis(in s chassis, <br>
+in b interactive); <br>
+SetDeployment(in s deployment, <br>
+in b interactive); <br>
+SetLocation(in s location, <br>
+in b interactive); <br>
+GetProductUUID(in b interactive, <br>
+out ay uuid); <br>
+Describe(out s json); <br>
+properties: <br>
+readonly s Hostname = '...'; <br>
+readonly s StaticHostname = '...'; <br>
+readonly s PrettyHostname = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s DefaultHostname = '...'; <br>
+readonly s HostnameSource = '...'; <br>
+readonly s IconName = '...'; <br>
+readonly s Chassis = '...'; <br>
+readonly s Deployment = '...'; <br>
+readonly s Location = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s KernelName = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s KernelRelease = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s KernelVersion = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s OperatingSystemPrettyName = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s OperatingSystemCPEName = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HomeURL = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HardwareVendor = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s HardwareModel = '...'; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">Whenever the
+hostname or other metadata is changed via the daemon,
+<b>PropertyChanged</b> signals are sent out to subscribed
+clients. Changing a hostname using this interface is
+authenticated via <b><font color="#0000FF">polkit</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>SEMANTICS
+<a name="SEMANTICS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>StaticHostname</i> property exposes the
+&quot;static&quot; hostname configured in /etc/hostname. It
+is not always in sync with the current hostname as returned
+by the <b>gethostname</b>(3) system call. If no static
+hostname is configured this property will be the empty
+string.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">When
+<b>systemd</b>(1) or <b>systemd-hostnamed.service</b>(8) set
+the hostname, this static hostname <i>has the highest
+priority</i>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>Hostname</i> property exposes the actual hostname
+configured in the kernel via <b>sethostname</b>(3). It can
+be different from the static hostname. This property is
+never empty.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>PrettyHostname</i> property exposes the <i>pretty
+hostname</i> which is a free-form UTF-8 hostname for
+presentation to the user. User interfaces should ensure that
+the pretty hostname and the static hostname stay in sync.
+E.g. when the former is &quot;Lennart&rsquo;s Computer&quot;
+the latter should be &quot;lennarts-computer&quot;. If no
+pretty hostname is set this setting will be the empty
+string. Applications should then find a suitable fallback,
+such as the dynamic hostname.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>DefaultHostname</i> property exposes the default hostname
+(configured through <b>os-release</b>(5), or a fallback set
+at compilation time).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>HostnameSource</i> property exposes the origin of the
+currently configured hostname. One of &quot;static&quot;
+(set from /etc/hostname), &quot;transient&quot; (a
+non-permanent hostname from an external source),
+&quot;default&quot; (the value from os-release or the
+compiled-in fallback).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>IconName</i> property exposes the <i>icon name</i>
+following the XDG icon naming spec. If not set, information
+such as the chassis type (see below) is used to find a
+suitable fallback icon name (i.e.
+&quot;computer-laptop&quot; vs. &quot;computer-desktop&quot;
+is picked based on the chassis information). If no such data
+is available, the empty string is returned. In that case an
+application should fall back to a replacement icon, for
+example &quot;computer&quot;. If this property is set to the
+empty string, the automatic fallback name selection is
+enabled again.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>Chassis</i> property exposes a <i>chassis type</i>, one
+of the currently defined chassis types: &quot;desktop&quot;,
+&quot;laptop&quot;, &quot;server&quot;, &quot;tablet&quot;,
+&quot;handset&quot;, as well as the special chassis types
+&quot;vm&quot; and &quot;container&quot; for virtualized
+systems. Note that in most cases the chassis type will be
+determined automatically from DMI/SMBIOS/ACPI firmware
+information. Writing to this setting is hence useful only to
+override misdetected chassis types, or to configure the
+chassis type if it could not be auto-detected. Set this
+property to the empty string to reenable the automatic
+detection of the chassis type from firmware
+information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that systemd-hostnamed starts only on request and terminates
+after a short idle period. This effectively means that
+<b>PropertyChanged</b> messages are not sent out for changes
+made directly on the files (as in: administrator edits the
+files with vi). This is the intended behavior: manual
+configuration changes should require manual
+reloading.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+transient (dynamic) hostname exposed by the <i>Hostname</i>
+property maps directly to the kernel hostname. This hostname
+should be assumed to be highly dynamic, and hence should be
+watched directly, without depending on
+<b>PropertyChanged</b> messages from systemd-hostnamed. To
+accomplish this, open /proc/sys/kernel/hostname and
+<b>poll</b>(3) for <b>SIGHUP</b> which is triggered by the
+kernel every time the hostname changes. Again: this is
+special for the transient (dynamic) hostname, and does not
+apply to the configured (fixed) hostname.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Applications
+may read the hostname data directly if hostname change
+notifications are not necessary. Use <b>gethostname</b>(3),
+/etc/hostname (possibly with per-distribution fallbacks),
+and <b>machine-info</b>(3) for that. For more information on
+these files and syscalls see the respective man
+pages.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>KernelName</i>,
+<i>KernelRelease</i>, and <i>KernelVersion</i> expose the
+kernel name (e.g. &quot;Linux&quot;), release (e.g.
+&quot;5.0.0-11&quot;), and version (i.e. the build number,
+e.g. &quot;#11&quot;) as reported by <b>uname</b>(2).
+<i>OperatingSystemPrettyName</i>,
+<i>OperatingSystemCPEName</i>, and <i>HomeURL</i> expose the
+<i>PRETTY_NAME=</i>, <i>CPE_NAME=</i> and <i>HOME_URL=</i>
+fields from <b>os-release</b>(5). The purpose of those
+properties is to allow remote clients to access this
+information over D-Bus. Local clients can access the
+information directly.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Methods
+<br>
+SetHostname()</b> sets the transient (dynamic) hostname,
+which is used if no static hostname is set. This value must
+be an internet-style hostname, 7-bit lowercase ASCII, no
+special chars/spaces. An empty string will unset the
+transient hostname.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetStaticHostname()</b>
+sets the static hostname which is exposed by the
+<i>StaticHostname</i> property. When called with an empty
+argument, the static configuration in /etc/hostname is
+removed. Since the static hostname has the highest priority,
+calling this function usually affects also the
+<i>Hostname</i> property and the effective hostname
+configured in the kernel.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetPrettyHostname()</b>
+sets the pretty hostname which is exposed by the
+<i>PrettyHostname</i> property.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetIconName()</b>,
+<b>SetChassis()</b>, <b>SetDeployment()</b>, and
+<b>SetLocation()</b> set the properties <i>IconName</i> (the
+name of the icon representing for the machine),
+<i>Chassis</i> (the machine form factor), <i>Deployment</i>
+(the system deployment environment), and <i>Location</i>
+(physical system location), respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>PrettyHostname</i>,
+<i>IconName</i>, <i>Chassis</i>, <i>Deployment</i>, and
+<i>Location</i> are stored in /etc/machine-info. See
+<b>machine-info</b>(5) for the semantics of those
+settings.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>GetProductUUID()</b>
+returns the &quot;product UUID&quot; as exposed by the
+kernel based on DMI information in
+/sys/class/dmi/id/product_uuid. Reading the file directly
+requires root privileges, and this method allows access to
+unprivileged clients through the polkit
+framework.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Describe()</b>
+returns a JSON representation of all properties in
+one.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Security</b>
+<br>
+The <i>interactive</i> boolean parameters can be used to
+control whether polkit should interactively ask the user for
+authentication credentials if required.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+polkit action for <b>SetHostname()</b> is
+org.freedesktop.hostname1.set-hostname. For
+<b>SetStaticHostname()</b> and <b>SetPrettyHostname()</b> it
+is org.freedesktop.hostname1.set-static-hostname. For
+<b>SetIconName()</b>, <b>SetChassis()</b>,
+<b>SetDeployment()</b> and <b>SetLocation()</b> it is
+org.freedesktop.hostname1.set-machine-info.</font></p>
+
+<h2>RECOMMENDATIONS
+<a name="RECOMMENDATIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Here
+are three examples that show how the pretty hostname and the
+icon name should be used:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+When registering DNS-SD services: use the pretty hostname in
+the service name, and pass the icon name in the TXT data, if
+there is an icon name. Browsing clients can then show the
+server icon on each service. This is especially useful for
+WebDAV applications or UPnP media sharing.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Set the bluetooth name to the pretty hostname.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+When your file browser has a &quot;Computer&quot; icon,
+replace the name with the pretty hostname if set, and the
+icon with the icon name, if it is set.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">To
+properly handle name lookups with changing local hostnames
+without having to edit /etc/hosts, we recommend using
+systemd-hostnamed in combination with
+<b>nss-myhostname</b>(3).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Here
+are some recommendations to follow when generating a static
+(internet) hostname from a pretty name:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Generate a single DNS label only, not an FQDN. That means no
+dots allowed. Strip them, or replace them with
+&quot;-&quot;.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+It's probably safer to not use any non-ASCII chars, even if
+DNS allows this in some way these days. In fact, restrict
+your charset to &quot;a-zA-Z0-9&quot; and &quot;-&quot;.
+Strip other chars, or try to replace them in some smart way
+with chars from this set, for example
+&quot;&Atilde;&curren;&quot; &acirc; &quot;ae&quot;, and use
+&quot;-&quot; as the replacement for all punctuation
+characters and whitespace.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Try to avoid creating repeated &quot;-&quot;, as well as
+&quot;-&quot; as the first or last char.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Limit the hostname to 63 chars, which is the length of a DNS
+label.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+If after stripping special chars the empty string is the
+result, you can pass this as-is to systemd-hostnamed in
+which case it will automatically use a suitable
+fallback.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+Uppercase charaacters should be replaced with their
+lowercase equivalents.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that while systemd-hostnamed applies some checks to the
+hostname you pass they are much looser than the
+recommendations above. For example, systemd-hostnamed will
+also accept &quot;_&quot; in the hostname, but we recommend
+not using this to avoid clashes with DNS-SD service types.
+Also systemd-hostnamed allows longer hostnames, but because
+of the DNS label limitations, we recommend not making use of
+this.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Here
+are a couple of example conversions:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;Lennart's PC&quot; &acirc;
+&quot;lennarts-pc&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;M&Atilde;&frac14;llers Computer&quot; &acirc;
+&quot;muellers-computer&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;Voran!&quot; &acirc; &quot;voran&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;Es war einmal ein M&Atilde;&curren;nnlein&quot;
+&acirc; &quot;es-war-einmal-ein-maennlein&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;Jawoll. Ist doch wahr!&quot; &acirc;
+&quot;jawoll-ist-doch-wahr&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;&atilde;&not;&atilde;&atilde;&frac14;&atilde;&quot;
+&acirc; &quot;localhost&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+&quot;...zack!!! zack!...&quot; &acirc;
+&quot;zack-zack&quot;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Of
+course, an already valid internet hostname label you enter
+and pass through this conversion should stay unmodified, so
+that users have direct control of it, if they want &mdash;
+by simply ignoring the fact that the pretty hostname is
+pretty and just edit it as if it was the normal internet
+name.</font></p>
+
+<h2>VERSIONING
+<a name="VERSIONING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">These
+D-Bus interfaces follow</font> <b><font color="#0000FF">the
+usual interface versioning guidelines</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;1.&nbsp;Introspect
+org.freedesktop.hostname1 on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system \ <br>
+--dest org.freedesktop.hostname1 \ <br>
+--object-path /org/freedesktop/hostname1</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">David
+Zeuthen's original Fedora</font>
+<b><font color="#0000FF">Feature page about
+xdg-hostname</font></b>
+<small><font color="#000000">[3]</font></small></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="9%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">polkit</font></p> </td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/software/polkit/docs/latest/</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><font color="#000000">the usual
+interface versioning guidelines</font></p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://0pointer.de/blog/projects/versioning-dbus.html</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">3.</font></p> </td>
+<td width="2%"></td>
+<td width="48%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Feature
+page about xdg-hostname</font></p></td>
+<td width="35%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://fedoraproject.org/wiki/Features/BetterHostname</font></p>
+<hr>
+</body>
+</html>

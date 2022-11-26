@@ -1,0 +1,6174 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:34 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MIGRATION_GUIDE</title>
+
+</head>
+<body>
+
+<h1 align="center">MIGRATION_GUIDE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPENSSL 3.0">OPENSSL 3.0</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">migration_guide
+- OpenSSL migration guide</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See the
+individual manual pages for details.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This guide
+details the changes required to migrate to new versions of
+OpenSSL. Currently this covers OpenSSL 3.0. For earlier
+versions refer to
+&lt;https://github.com/openssl/openssl/blob/master/CHANGES.md&gt;.
+For an overview of some of the key concepts introduced in
+OpenSSL 3.0 see <b>crypto</b>(7).</p>
+
+<h2>OPENSSL 3.0
+<a name="OPENSSL 3.0"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Main Changes
+from OpenSSL 1.1.1</b> <i><br>
+Major Release</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">OpenSSL 3.0 is
+a major release and consequently any application that
+currently uses an older version of OpenSSL will at the very
+least need to be recompiled in order to work with the new
+version. It is the intention that the large majority of
+applications will work unchanged with OpenSSL 3.0 if those
+applications previously worked with OpenSSL 1.1.1. However
+this is not guaranteed and some changes may be required in
+some cases. Changes may also be required if applications
+need to take advantage of some of the new features available
+in OpenSSL 3.0 such as the availability of the
+<small>FIPS</small> module.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>License
+Change</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">In previous
+versions, OpenSSL was licensed under the dual OpenSSL and
+SSLeay licenses
+&lt;https://www.openssl.org/source/license-openssl-ssleay.txt&gt;
+(both licenses apply). From OpenSSL 3.0 this is replaced by
+the Apache License v2
+&lt;https://www.openssl.org/source/apache-license-2.0.txt&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Providers
+and <small>FIPS</small> support</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">One of the key
+changes from OpenSSL 1.1.1 is the introduction of the
+Provider concept. Providers collect together and make
+available algorithm implementations. With OpenSSL 3.0 it is
+possible to specify, either programmatically or via a config
+file, which providers you want to use for any given
+application. OpenSSL 3.0 comes with 5 different providers as
+standard. Over time third parties may distribute additional
+providers that can be plugged into OpenSSL. All algorithm
+implementations available via providers are accessed through
+the &quot;high level&quot; APIs (for example those functions
+prefixed with &quot;EVP&quot;). They cannot be accessed
+using the &quot;Low Level APIs&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One of the
+standard providers available is the <small>FIPS</small>
+provider. This makes available <small>FIPS</small> validated
+cryptographic algorithms. The <small>FIPS</small> provider
+is disabled by default and needs to be enabled explicitly at
+configuration time using the &quot;enable-fips&quot; option.
+If it is enabled, the <small>FIPS</small> provider gets
+built and installed in addition to the other standard
+providers. No separate installation procedure is necessary.
+There is however a dedicated &quot;install_fips&quot; make
+target, which serves the special purpose of installing only
+the <small>FIPS</small> provider into an existing OpenSSL
+installation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Not all
+algorithms may be available for the application at a
+particular moment. If the application code uses any digest
+or cipher algorithm via the <small>EVP</small> interface,
+the application should verify the result of the
+<b>EVP_EncryptInit</b>(3), <b>EVP_EncryptInit_ex</b>(3), and
+<b>EVP_DigestInit</b>(3) functions. In case when the
+requested algorithm is not available, these functions will
+fail.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+&quot;Legacy Algorithms&quot; for information on the legacy
+provider.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+&quot;Completing the installation of the <small>FIPS</small>
+Module&quot; and &quot;Using the <small>FIPS</small> Module
+in applications&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Low Level
+APIs</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">OpenSSL has
+historically provided two sets of APIs for invoking
+cryptographic algorithms: the &quot;high level&quot; APIs
+(such as the &quot;EVP&quot; APIs) and the &quot;low
+level&quot; APIs. The high level APIs are typically designed
+to work across all algorithm types. The &quot;low
+level&quot; APIs are targeted at a specific algorithm
+implementation. For example, the <small>EVP</small> APIs
+provide the functions <b>EVP_EncryptInit_ex</b>(3),
+<b>EVP_EncryptUpdate</b>(3) and <b>EVP_EncryptFinal</b>(3)
+to perform symmetric encryption. Those functions can be used
+with the algorithms <small>AES, CHACHA, 3DES</small> etc. On
+the other hand, to do <small>AES</small> encryption using
+the low level APIs you would have to call <small>AES</small>
+specific functions such as <b>AES_set_encrypt_key</b>(3),
+<b>AES_encrypt</b>(3), and so on. The functions for 3DES are
+different. Use of the low level APIs has been informally
+discouraged by the OpenSSL development team for a long time.
+However in OpenSSL 3.0 this is made more formal. All such
+low level APIs have been deprecated. You may still use them
+in your applications, but you may start to see deprecation
+warnings during compilation (dependent on compiler support
+for this). Deprecated APIs may be removed from future
+versions of OpenSSL so you are strongly encouraged to update
+your code to use the high level APIs instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is
+described in more detail in &quot;Deprecation of Low Level
+Functions&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Legacy
+Algorithms</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+cryptographic algorithms such as <b><small>MD2</small></b>
+and <b><small>DES</small></b> that were available via the
+<small>EVP</small> APIs are now considered legacy and their
+use is strongly discouraged. These legacy <small>EVP</small>
+algorithms are still available in OpenSSL 3.0 but not by
+default. If you want to use them then you must load the
+legacy provider. This can be as simple as a config file
+change, or can be done programmatically. See
+<b>OSSL_PROVIDER-legacy</b>(7) for a complete list of
+algorithms. Applications using the <small>EVP</small> APIs
+to access these algorithms should instead use more modern
+algorithms. If that is not possible then these applications
+should ensure that the legacy provider has been loaded. This
+can be achieved either programmatically or via
+configuration. See <b>crypto</b>(7) man page for more
+information about providers.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Engines and
+&quot; <small>METHOD&quot;</small> APIs</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The refactoring
+to support Providers conflicts internally with the APIs used
+to support engines, including the <small>ENGINE API</small>
+and any function that creates or modifies custom &quot;
+<small>METHODS&quot;</small> (for example
+<b>EVP_MD_meth_new</b>(3), <b>EVP_CIPHER_meth_new</b>(3),
+<b>EVP_PKEY_meth_new</b>(3), <b>RSA_meth_new</b>(3),
+<b>EC_KEY_METHOD_new</b>(3), etc.). These functions are
+being deprecated in OpenSSL 3.0, and users of these APIs
+should know that their use can likely bypass provider
+selection and configuration, with unintended consequences.
+This is particularly relevant for applications written to
+use the OpenSSL 3.0 <small>FIPS</small> module, as detailed
+below. Authors and maintainers of external engines are
+strongly encouraged to refactor their code transforming
+engines into providers using the new Provider
+<small>API</small> and avoiding deprecated methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Support of
+legacy engines</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">If openssl is
+not built without engine support or deprecated
+<small>API</small> support, engines will still work.
+However, their applicability will be limited.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New algorithms
+provided via engines will still work.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Engine-backed
+keys can be loaded via custom
+<b><small>OSSL_STORE</small></b> implementation. In this
+case the <b><small>EVP_PKEY</small></b> objects created via
+<b>ENGINE_load_private_key</b>(3) will be concidered legacy
+and will continue to work.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To ensure the
+future compatibility, the engines should be turned to
+providers. To prefer the provider-based hardware offload,
+you can specify the default properties to prefer your
+provider.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Versioning
+Scheme</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The OpenSSL
+versioning scheme has changed with the OpenSSL 3.0 release.
+The new versioning scheme has this format:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>MAJOR.MINOR.PATCH</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">For OpenSSL
+1.1.1 and below, different patch levels were indicated by a
+letter at the end of the release version number. This will
+no longer be used and instead the patch level is indicated
+by the final number in the version. A change in the second (
+<small>MINOR</small> ) number indicates that new features
+may have been added. OpenSSL versions with the same major
+number are <small>API</small> and <small>ABI</small>
+compatible. If the major number changes then
+<small>API</small> and <small>ABI</small> compatibility is
+not guaranteed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information, see <b>OpenSSL_version</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Other major
+new features</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Certificate
+Management Protocol ( <small>CMP, RFC 4210</small> )</p>
+
+<p style="margin-left:11%; margin-top: 1em">This also
+covers <small>CRMF</small> ( <small>RFC 4211</small> ) and
+<small>HTTP</small> transfer ( <small>RFC 6712</small> ) See
+<b>openssl-cmp</b>(1) and <b>OSSL_CMP_exec_certreq</b>(3) as
+starting points.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>HTTP</small>
+(S) client</p>
+
+<p style="margin-left:11%; margin-top: 1em">A proper
+<small>HTTP</small> (S) client that supports
+<small>GET</small> and <small>POST,</small> redirection,
+plain and <small>ASN</small> .1-encoded contents, proxies,
+and timeouts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Key Derivation
+Function <small>API</small> ( <small>EVP_KDF</small> )</p>
+
+<p style="margin-left:11%; margin-top: 1em">This simplifies
+the process of adding new <small>KDF</small> and
+<small>PRF</small> implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Previously
+<small>KDF</small> algorithms had been shoe-horned into
+using the <small>EVP_PKEY</small> object which was not a
+logical mapping. Existing applications that use
+<small>KDF</small> algorithms using <small>EVP_PKEY</small>
+(scrypt, <small>TLS1 PRF</small> and <small>HKDF</small> )
+may be slower as they use an <small>EVP_KDF</small> bridge
+internally. All new applications should use the new
+<b><small>EVP_KDF</small></b> (3) interface. See also
+&quot;Key Derivation Function ( <small>KDF</small> )&quot;
+in <b>OSSL_PROVIDER-default</b>(7) and &quot;Key Derivation
+Function ( <small>KDF</small> )&quot; in
+<b><small>OSSL_PROVIDER-FIPS</small></b> (7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Message
+Authentication Code <small>API</small> (
+<small>EVP_MAC</small> )</p>
+
+<p style="margin-left:11%; margin-top: 1em">This simplifies
+the process of adding <small>MAC</small>
+implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This includes a
+generic <small>EVP_PKEY</small> to <small>EVP_MAC</small>
+bridge, to facilitate the continued use of MACs through raw
+private keys in functionality such as
+<b>EVP_DigestSign</b>(3) and <b>EVP_DigestVerify</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All new
+applications should use the new
+<b><small>EVP_MAC</small></b> (3) interface. See also
+&quot;Message Authentication Code ( <small>MAC</small>
+)&quot; in <b>OSSL_PROVIDER-default</b>(7) and &quot;Message
+Authentication Code ( <small>MAC</small> )&quot; in
+<b><small>OSSL_PROVIDER-FIPS</small></b> (7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Support for
+Linux Kernel <small>TLS</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">In order to use
+<small>KTLS,</small> support for it must be compiled in
+using the &quot;enable-ktls&quot; configuration option. It
+must also be enabled at run time using the
+<b><small>SSL_OP_ENABLE_KTLS</small></b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New
+Algorithms</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="58%">
+
+
+<p><small>KDF</small> algorithms &quot; <small>SINGLE
+STEP&quot;</small> and &quot; <small>SSH&quot;</small></p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b><small>EVP_KDF-SS</small></b> (7) and
+<b><small>EVP_KDF-SSHKDF</small></b> (7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="49%">
+
+
+<p style="margin-top: 1em"><small>MAC</small> Algorithms
+&quot; <small>GMAC&quot;</small> and &quot;
+<small>KMAC&quot;</small></p> </td>
+<td width="34%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b><small>EVP_MAC-GMAC</small></b> (7) and
+<b><small>EVP_MAC-KMAC</small></b> (7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="34%">
+
+
+<p style="margin-top: 1em"><small>KEM</small> Algorithm
+&quot; <small>RSASVE&quot;</small></p></td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b><small>EVP_KEM-RSA</small></b> (7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="40%">
+
+
+<p style="margin-top: 1em">Cipher Algorithm
+&quot;AES-SIV&quot;</p> </td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See &quot;
+<small>SIV</small> Mode&quot; in
+<b>EVP_EncryptInit</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><small>AES</small> Key Wrap
+inverse ciphers supported by <small>EVP</small> layer.</p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The inverse
+ciphers use <small>AES</small> decryption for wrapping, and
+<small>AES</small> encryption for unwrapping. The algorithms
+are: &quot; <small>AES-128-WRAP-INV&quot;,
+&quot;AES-192-WRAP-INV&quot;, &quot;AES-256-WRAP-INV&quot;,
+&quot;AES-128-WRAP-PAD-INV&quot;,
+&quot;AES-192-WRAP-PAD-INV&quot;</small> and &quot;
+<small>AES-256-WRAP-PAD-INV&quot;.</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="48%">
+
+
+<p style="margin-top: 1em"><small>CTS</small> ciphers added
+to <small>EVP</small> layer.</p></td>
+<td width="35%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The algorithms
+are &quot; <small>AES-128-CBC-CTS&quot;,
+&quot;AES-192-CBC-CTS&quot;, &quot;AES-256-CBC-CTS&quot;,
+&quot;CAMELLIA-128-CBC-CTS&quot;,
+&quot;CAMELLIA-192-CBC-CTS&quot;</small> and &quot;
+<small>CAMELLIA-256-CBC-CTS&quot;. CS1, CS2</small> and
+<small>CS3</small> variants are supported.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>CMS</small>
+and PKCS#7 updates</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Added CAdES-BES signature
+verification support.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Added CAdES-BES signature scheme and attributes support
+( <small>RFC 5126</small> ) to <small>CMS API.</small></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Added AuthEnvelopedData content type structure (
+<small>RFC 5083</small> ) using <small>AES_GCM</small></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This uses the
+AES-GCM parameter ( <small>RFC 5084</small> ) for the
+Cryptographic Message Syntax. Its purpose is to support
+encryption and decryption of a digital envelope that is both
+authenticated and encrypted using <small>AES GCM</small>
+mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>PKCS7_get_octet_string</b>(3)
+and <b>PKCS7_type_is_other</b>(3) were made public.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">PKCS#12
+<small>API</small> updates</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+algorithms for pkcs12 creation with the
+<b>PKCS12_create()</b> function were changed to more modern
+<small>PBKDF2</small> and <small>AES</small> based
+algorithms. The default <small>MAC</small> iteration count
+was changed to <small>PKCS12_DEFAULT_ITER</small> to make it
+equal with the password-based encryption iteration count.
+The default digest algorithm for the <small>MAC</small>
+computation was changed to <small>SHA-256.</small> The
+pkcs12 application now supports -legacy option that restores
+the previous default algorithms to support interoperability
+with legacy systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Added enhanced
+PKCS#12 APIs which accept a library context
+<b><small>OSSL_LIB_CTX</small></b> and (where relevant) a
+property query. Other APIs which handle PKCS#7 and PKCS#8
+objects have also been enhanced where required. This
+includes:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PKCS12_add_key_ex</b>(3),
+<b>PKCS12_add_safe_ex</b>(3), <b>PKCS12_add_safes_ex</b>(3),
+<b>PKCS12_create_ex</b>(3),
+<b>PKCS12_decrypt_skey_ex</b>(3), <b>PKCS12_init_ex</b>(3),
+<b>PKCS12_item_decrypt_d2i_ex</b>(3),
+<b>PKCS12_item_i2d_encrypt_ex</b>(3),
+<b>PKCS12_key_gen_asc_ex</b>(3),
+<b>PKCS12_key_gen_uni_ex</b>(3),
+<b>PKCS12_key_gen_utf8_ex</b>(3),
+<b>PKCS12_pack_p7encdata_ex</b>(3),
+<b>PKCS12_pbe_crypt_ex</b>(3),
+<b>PKCS12_PBE_keyivgen_ex</b>(3),
+<b>PKCS12_SAFEBAG_create_pkcs8_encrypt_ex</b>(3),
+<b>PKCS5_pbe2_set_iv_ex</b>(3),
+<b>PKCS5_pbe_set0_algor_ex</b>(3),
+<b>PKCS5_pbe_set_ex</b>(3), <b>PKCS5_pbkdf2_set_ex</b>(3),
+<b>PKCS5_v2_PBE_keyivgen_ex</b>(3),
+<b>PKCS5_v2_scrypt_keyivgen_ex</b>(3),
+<b>PKCS8_decrypt_ex</b>(3), <b>PKCS8_encrypt_ex</b>(3),
+<b>PKCS8_set0_pbe_ex</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">As part of this
+change the EVP_PBE_xxx APIs can also accept a library
+context and property query and will call an extended version
+of the key/IV derivation function which supports these
+parameters. This includes <b>EVP_PBE_CipherInit_ex</b>(3),
+<b>EVP_PBE_find_ex</b>(3) and
+<b>EVP_PBE_scrypt_ex</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Windows thread
+synchronization changes</p>
+
+<p style="margin-left:11%; margin-top: 1em">Windows thread
+synchronization uses read/write primitives (SRWLock) when
+supported by the <small>OS,</small> otherwise
+CriticalSection continues to be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Trace
+<small>API</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">A new generic
+trace <small>API</small> has been added which provides
+support for enabling instrumentation through trace output.
+This feature is mainly intended as an aid for developers and
+is disabled by default. To utilize it, OpenSSL needs to be
+configured with the &quot;enable-trace&quot; option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the tracing
+<small>API</small> is enabled, the application can activate
+trace output by registering BIOs as trace channels for a
+number of tracing and debugging categories. See
+<b>OSSL_trace_enabled</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Key validation
+updates</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_PKEY_public_check</b>(3)
+and <b>EVP_PKEY_param_check</b>(3) now work for more key
+types. This includes <small>RSA, DSA, ED25519, X25519,
+ED448</small> and X448. Previously (in 1.1.1) they would
+return -2. For key types that do not have parameters then
+<b>EVP_PKEY_param_check</b>(3) will always return 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Other
+notable deprecations and changes</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+code part of an OpenSSL error code is no longer relevant</p>
+
+<p style="margin-left:11%; margin-top: 1em">This code is
+now always set to zero. Related functions are
+deprecated.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>STACK</small>
+and <small>HASH</small> macros have been cleaned up</p>
+
+<p style="margin-left:11%; margin-top: 1em">The type-safe
+wrappers are declared everywhere and implemented once. See
+<b><small>DEFINE_STACK_OF</small></b> (3) and
+<b><small>DECLARE_LHASH_OF</small></b> (3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>RAND_DRBG</small> subsystem has been removed</p>
+
+<p style="margin-left:11%; margin-top: 1em">The new
+<b><small>EVP_RAND</small></b> (3) is a partial replacement:
+the <small>DRBG</small> callback framework is absent. The
+<small>RAND_DRBG API</small> did not fit well into the new
+provider concept as implemented by <small>EVP_RAND</small>
+and <small>EVP_RAND_CTX.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">Removed
+<b>FIPS_mode()</b> and <b>FIPS_mode_set()</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+are legacy APIs that are not applicable to the new provider
+model. Applications should instead use
+<b>EVP_default_properties_is_fips_enabled</b>(3) and
+<b>EVP_default_properties_enable_fips</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Key generation
+is slower</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+Miller-Rabin test now uses 64 rounds, which is used for all
+prime generation, including <small>RSA</small> key
+generation. This affects the time for larger keys sizes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default key
+generation method for the regular 2-prime <small>RSA</small>
+keys was changed to the <small>FIPS 186-4 B.3.6</small>
+method (Generation of Probable Primes with Conditions Based
+on Auxiliary Probable Primes). This method is slower than
+the original method.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Change
+<small>PBKDF2</small> to conform to <small>SP800-132</small>
+instead of the older <small>PKCS5 RFC2898</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">This checks
+that the salt length is at least 128 bits, the derived key
+length is at least 112 bits, and that the iteration count is
+at least 1000. For backwards compatibility these checks are
+disabled by default in the default provider, but are enabled
+by default in the fips provider.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To enable or
+disable the checks see
+<b><small>OSSL_KDF_PARAM_PKCS5</small></b> in
+<b><small>EVP_KDF-PBKDF2</small></b> (7). The parameter can
+be set using <b>EVP_KDF_derive</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Enforce a
+minimum <small>DH</small> modulus size of 512 bits</p>
+
+<p style="margin-left:11%; margin-top: 1em">Smaller sizes
+now result in an error.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>SM2</small>
+key changes</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>EC</small>
+EVP_PKEYs with the <small>SM2</small> curve have been
+reworked to automatically become <small>EVP_PKEY_SM2</small>
+rather than <small>EVP_PKEY_EC.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">Unlike in
+previous OpenSSL versions, this means that applications
+cannot call &quot;EVP_PKEY_set_alias_type(pkey,
+EVP_PKEY_SM2)&quot; to get <small>SM2</small>
+computations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Parameter and
+key generation is also reworked to make it possible to
+generate <small>EVP_PKEY_SM2</small> parameters and keys.
+Applications must now generate <small>SM2</small> keys
+directly and must not create an <small>EVP_PKEY_EC</small>
+key first. It is no longer possible to import an
+<small>SM2</small> key with domain parameters other than the
+<small>SM2</small> elliptic curve ones.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Validation of
+<small>SM2</small> keys has been separated from the
+validation of regular <small>EC</small> keys, allowing to
+improve the <small>SM2</small> validation process to reject
+loaded private keys that are not conforming to the
+<small>SM2 ISO</small> standard. In particular, a private
+scalar <i>k</i> outside the range <i>1 &lt;= k &lt; n-1</i>
+is now correctly rejected.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_PKEY_set_alias_type()</b>
+method has been removed</p>
+
+<p style="margin-left:11%; margin-top: 1em">This function
+made a <b><small>EVP_PKEY</small></b> object mutable after
+it had been set up. In OpenSSL 3.0 it was decided that a
+provided key should not be able to change its type, so this
+function has been removed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Functions that
+return an internal key should be treated as read only</p>
+
+<p style="margin-left:11%; margin-top: 1em">Functions such
+as <b>EVP_PKEY_get0_RSA</b>(3) behave slightly differently
+in OpenSSL 3.0. Previously they returned a pointer to the
+low-level key used internally by libcrypto. From OpenSSL 3.0
+this key may now be held in a provider. Calling these
+functions will only return a handle on the internal key
+where the <small>EVP_PKEY</small> was constructed using this
+key in the first place, for example using a function or
+macro such as <b>EVP_PKEY_assign_RSA</b>(3),
+<b>EVP_PKEY_set1_RSA</b>(3), etc. Where the
+<small>EVP_PKEY</small> holds a provider managed key, then
+these functions now return a cached copy of the key. Changes
+to the internal provider key that take place after the first
+time the cached key is accessed will not be reflected back
+in the cached copy. Similarly any changes made to the cached
+copy by application code will not be reflected back in the
+internal provider key.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the above
+reasons the keys returned from these functions should
+typically be treated as read-only. To emphasise this the
+value returned from <b>EVP_PKEY_get0_RSA</b>(3),
+<b>EVP_PKEY_get0_DSA</b>(3), <b>EVP_PKEY_get0_EC_KEY</b>(3)
+and <b>EVP_PKEY_get0_DH</b>(3) have been made const. This
+may break some existing code. Applications broken by this
+change should be modified. The preferred solution is to
+refactor the code to avoid the use of these deprecated
+functions. Failing this the code should be modified to use a
+const pointer instead. The <b>EVP_PKEY_get1_RSA</b>(3),
+<b>EVP_PKEY_get1_DSA</b>(3), <b>EVP_PKEY_get1_EC_KEY</b>(3)
+and <b>EVP_PKEY_get1_DH</b>(3) functions continue to return
+a non-const pointer to enable them to be &quot;freed&quot;.
+However they should also be treated as read-only.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The public key
+check has moved from <b>EVP_PKEY_derive()</b> to
+<b>EVP_PKEY_derive_set_peer()</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This may mean
+result in an error in <b>EVP_PKEY_derive_set_peer</b>(3)
+rather than during <b>EVP_PKEY_derive</b>(3). To disable
+this check use EVP_PKEY_derive_set_peer_ex(dh, peer, 0).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The print
+format has cosmetic changes for some functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output from
+numerous &quot;printing&quot; functions such as
+<b>X509_signature_print</b>(3), <b>X509_print_ex</b>(3),
+<b>X509_CRL_print_ex</b>(3), and other similar functions has
+been amended such that there may be cosmetic differences
+between the output observed in 1.1.1 and 3.0. This also
+applies to the <b>-text</b> output from the <b>openssl
+x509</b> and <b>openssl crl</b> applications.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Interactive
+mode from the <b>openssl</b> program has been removed</p>
+
+<p style="margin-left:11%; margin-top: 1em">From now on,
+running it without arguments is equivalent to <b>openssl
+help</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The error
+return values from some control calls (ctrl) have
+changed</p>
+
+<p style="margin-left:11%; margin-top: 1em">One significant
+change is that controls which used to return -2 for invalid
+inputs, now return -1 indicating a generic error condition
+instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>DH</small>
+and <small>DHX</small> key types have different settable
+parameters</p>
+
+<p style="margin-left:11%; margin-top: 1em">Previously (in
+1.1.1) these conflicting parameters were allowed, but will
+now result in errors. See <b><small>EVP_PKEY-DH</small></b>
+(7) for further details. This affects the behaviour of
+<b>openssl-genpkey</b>(1) for <small>DH</small> parameter
+generation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_CIPHER_CTX_set_flags()</b>
+ordering change</p>
+
+<p style="margin-left:11%; margin-top: 1em">If using a
+cipher from a provider the
+<b><small>EVP_CIPH_FLAG_LENGTH_BITS</small></b> flag can
+only be set <b>after</b> the cipher has been assigned to the
+cipher context. See &quot; <small>FLAGS&quot;</small> in
+<b>EVP_EncryptInit</b>(3) for more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Validation of
+operation context parameters</p>
+
+<p style="margin-left:11%; margin-top: 1em">Due to move of
+the implementation of cryptographic operations to the
+providers, validation of various operation parameters can be
+postponed until the actual operation is executed where
+previously it happened immediately when an operation
+parameter was set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example
+when setting an unsupported curve with
+<b>EVP_PKEY_CTX_set_ec_paramgen_curve_nid()</b> this
+function call will not fail but later keygen operations with
+the <small>EVP_PKEY_CTX</small> will fail.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Removal of
+function code from the error codes</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+code part of the error code is now always set to 0. For that
+reason the <b><small>ERR_GET_FUNC</small> ()</b> macro was
+removed. Applications must resolve the error codes only
+using the library number and the reason code.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Installation
+and Compilation</b> <br>
+Please refer to the <small>INSTALL</small> .md file in the
+top of the distribution for instructions on how to build and
+install OpenSSL 3.0. Please also refer to the various
+platform specific <small>NOTES</small> files for your
+specific platform.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Upgrading
+from OpenSSL 1.1.1</b> <br>
+Upgrading to OpenSSL 3.0 from OpenSSL 1.1.1 should be
+relatively straight forward in most cases. The most likely
+area where you will encounter problems is if you have used
+low level APIs in your code (as discussed above). In that
+case you are likely to start seeing deprecation warnings
+when compiling your application. If this happens you have 3
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Ignore the warnings. They are
+just warnings. The deprecated functions are still present
+and you may still use them. However be aware that they may
+be removed from a future version of OpenSSL.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Suppress the warnings. Refer to your compiler
+documentation on how to do this.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Remove your usage of the low level APIs. In this case
+you will need to rewrite your code to use the high level
+APIs instead</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Error code
+changes</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">As OpenSSL 3.0
+provides a brand new Encoder/Decoder mechanism for working
+with widely used file formats, application code that checks
+for particular error reason codes on key loading failures
+might need an update.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Password-protected
+keys may deserve special attention. If only some errors are
+treated as an indicator that the user should be asked about
+the password again, it&rsquo;s worth testing these scenarios
+and processing the newly relevant codes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There may be
+more cases to treat specially, depending on the calling
+application code.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Upgrading
+from OpenSSL 1.0.2</b> <br>
+Upgrading to OpenSSL 3.0 from OpenSSL 1.0.2 is likely to be
+significantly more difficult. In addition to the issues
+discussed above in the section about &quot;Upgrading from
+OpenSSL 1.1.1&quot;, the main things to be aware of are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The build and installation
+procedure has changed significantly.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Check the file
+<small>INSTALL</small> .md in the top of the installation
+for instructions on how to build and install OpenSSL for
+your platform. Also read the various <small>NOTES</small>
+files in the same directory, as applicable for your
+platform.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">2.</p></td>
+<td width="3%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em">Many structures have been made
+opaque in OpenSSL 3.0.</p></td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The structure
+definitions have been removed from the public header files
+and moved to internal header files. In practice this means
+that you can no longer stack allocate some structures.
+Instead they must be heap allocated through some function
+call (typically those function names have a &quot;_new&quot;
+suffix to them). Additionally you must use
+&quot;setter&quot; or &quot;getter&quot; functions to access
+the fields within those structures.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example
+code that previously looked like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">EVP_MD_CTX
+md_ctx; <br>
+/* This line will now generate compiler errors */ <br>
+EVP_MD_CTX_init(&amp;md_ctx);</p>
+
+<p style="margin-left:17%; margin-top: 1em">The code needs
+to be amended to look like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">EVP_MD_CTX
+*md_ctx; <br>
+md_ctx = EVP_MD_CTX_new(); <br>
+... <br>
+... <br>
+EVP_MD_CTX_free(md_ctx);</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">3.</p></td>
+<td width="3%"></td>
+<td width="54%">
+
+
+<p style="margin-top: 1em">Support for TLSv1.3 has been
+added.</p> </td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This has a
+number of implications for <small>SSL/TLS</small>
+applications. See the <small>TLS1.3</small> page
+&lt;https://wiki.openssl.org/index.php/TLS1.3&gt; for
+further details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">More details
+about the breaking changes between OpenSSL versions 1.0.2
+and 1.1.0 can be found on the OpenSSL 1.1.0 Changes page
+&lt;https://wiki.openssl.org/index.php/OpenSSL_1.1.0_Changes&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Upgrading
+from the OpenSSL 2.0 <small>FIPS</small> Object
+Module</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The OpenSSL 2.0
+<small>FIPS</small> Object Module was a separate download
+that had to be built separately and then integrated into
+your main OpenSSL 1.0.2 build. In OpenSSL 3.0 the
+<small>FIPS</small> support is fully integrated into the
+mainline version of OpenSSL and is no longer a separate
+download. For further information see &quot;Completing the
+installation of the <small>FIPS</small> Module&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+calls <b>FIPS_mode()</b> and <b>FIPS_mode_set()</b> have
+been removed from OpenSSL 3.0. You should rewrite your
+application to not use them. See <b>fips_module</b>(7) and
+<b><small>OSSL_PROVIDER-FIPS</small></b> (7) for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Completing
+the installation of the <small>FIPS</small> Module</b> <br>
+The <small>FIPS</small> Module will be built and installed
+automatically if <small>FIPS</small> support has been
+configured. The current documentation can be found in the
+README-FIPS
+&lt;https://github.com/openssl/openssl/blob/master/README-FIPS.md&gt;
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Programming</b>
+<br>
+Applications written to work with OpenSSL 1.1.1 will mostly
+just work with OpenSSL 3.0. However changes will be required
+if you want to take advantage of some of the new features
+that OpenSSL 3.0 makes available. In order to do that you
+need to understand some new concepts introduced in OpenSSL
+3.0. Read &quot;Library contexts&quot; in <b>crypto</b>(7)
+for further information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Library
+Context</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">A library
+context allows different components of a complex application
+to each use a different library context and have different
+providers loaded with different configuration settings. See
+&quot;Library contexts&quot; in <b>crypto</b>(7) for further
+info.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the user
+creates an <b><small>OSSL_LIB_CTX</small></b> via
+<b>OSSL_LIB_CTX_new</b>(3) then many functions may need to
+be changed to pass additional parameters to handle the
+library context.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using a Library
+Context - Old functions that should be changed</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a library
+context is needed then all EVP_* digest functions that
+return a <b>const <small>EVP_MD</small> *</b> such as
+<b>EVP_sha256()</b> should be replaced with a call to
+<b>EVP_MD_fetch</b>(3). See &quot; <small>ALGORITHM
+FETCHING&quot;</small> in <b>crypto</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a library
+context is needed then all EVP_* cipher functions that
+return a <b>const <small>EVP_CIPHER</small> *</b> such as
+<b>EVP_aes_128_cbc()</b> should be replaced vith a call to
+<b>EVP_CIPHER_fetch</b>(3). See &quot; <small>ALGORITHM
+FETCHING&quot;</small> in <b>crypto</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some functions
+can be passed an object that has already been set up with a
+library context such as <b>d2i_X509</b>(3),
+<b>d2i_X509_CRL</b>(3), <b>d2i_X509_REQ</b>(3) and
+<b>d2i_X509_PUBKEY</b>(3). If <small>NULL</small> is passed
+instead then the created object will be set up with the
+default library context. Use <b>X509_new_ex</b>(3),
+<b>X509_CRL_new_ex</b>(3), <b>X509_REQ_new_ex</b>(3) and
+<b>X509_PUBKEY_new_ex</b>(3) if a library context is
+required.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All functions
+listed below with a <i><small>NAME</small></i> have a
+replacment function <i>NAME_ex</i> that takes
+<b><small>OSSL_LIB_CTX</small></b> as an additional
+argument. Functions that have other mappings are listed
+along with the respective name.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>ASN1_item_new</b>(3),
+<b>ASN1_item_d2i</b>(3), <b>ASN1_item_d2i_fp</b>(3),
+<b>ASN1_item_d2i_bio</b>(3), <b>ASN1_item_sign</b>(3) and
+<b>ASN1_item_verify</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>BIO_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>b2i_RSA_PVK_bio()</b> and <b>i2b_PVK_bio()</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>BN_CTX_new</b>(3) and <b>BN_CTX_secure_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>CMS_AuthEnvelopedData_create</b>(3),
+<b>CMS_ContentInfo_new</b>(3), <b>CMS_data_create</b>(3),
+<b>CMS_digest_create</b>(3),
+<b>CMS_EncryptedData_encrypt</b>(3), <b>CMS_encrypt</b>(3),
+<b>CMS_EnvelopedData_create</b>(3),
+<b>CMS_ReceiptRequest_create0</b>(3) and
+<b>CMS_sign</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>CONF_modules_load_file</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>CTLOG_new</b>(3), <b>CTLOG_new_from_base64</b>(3) and
+<b>CTLOG_STORE_new</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>CT_POLICY_EVAL_CTX_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>d2i_AutoPrivateKey</b>(3), <b>d2i_PrivateKey</b>(3)
+and <b>d2i_PUBKEY</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>d2i_PrivateKey_bio</b>(3) and
+<b>d2i_PrivateKey_fp</b>(3)</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>d2i_PrivateKey_ex_bio</b>(3) and
+<b>d2i_PrivateKey_ex_fp</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>EC_GROUP_new</b>(3)</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EC_GROUP_new_by_curve_name_ex</b>(3) or
+<b>EC_GROUP_new_from_params</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EVP_DigestSignInit</b>(3) and
+<b>EVP_DigestVerifyInit</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_PBE_CipherInit</b>(3), <b>EVP_PBE_find</b>(3) and
+<b>EVP_PBE_scrypt</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PKCS5_PBE_keyivgen</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b><small>EVP_PKCS82PKEY</small></b> (3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_PKEY_CTX_new_id</b>(3)</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EVP_PKEY_CTX_new_from_name</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_derive_set_peer</b>(3),
+<b>EVP_PKEY_new_raw_private_key</b>(3) and
+<b>EVP_PKEY_new_raw_public_key</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_SignFinal</b>(3) and
+<b>EVP_VerifyFinal</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>NCONF_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OCSP_RESPID_match</b>(3) and
+<b>OCSP_RESPID_set_by_key</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OPENSSL_thread_stop</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_STORE_open</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PEM_read_bio_Parameters</b>(3),
+<b>PEM_read_bio_PrivateKey</b>(3),
+<b>PEM_read_bio_PUBKEY</b>(3), <b>PEM_read_PrivateKey</b>(3)
+and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PEM_write_bio_PrivateKey</b>(3),
+<b>PEM_write_bio_PUBKEY</b>(3),
+<b>PEM_write_PrivateKey</b>(3) and
+<b>PEM_write_PUBKEY</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PEM_X509_INFO_read_bio</b>(3) and
+<b>PEM_X509_INFO_read</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PKCS12_add_key</b>(3), <b>PKCS12_add_safe</b>(3),
+<b>PKCS12_add_safes</b>(3), <b>PKCS12_create</b>(3),
+<b>PKCS12_decrypt_skey</b>(3), <b>PKCS12_init</b>(3),
+<b>PKCS12_item_decrypt_d2i</b>(3),
+<b>PKCS12_item_i2d_encrypt</b>(3),
+<b>PKCS12_key_gen_asc</b>(3), <b>PKCS12_key_gen_uni</b>(3),
+<b>PKCS12_key_gen_utf8</b>(3),
+<b>PKCS12_pack_p7encdata</b>(3), <b>PKCS12_pbe_crypt</b>(3),
+<b>PKCS12_PBE_keyivgen</b>(3),
+<b>PKCS12_SAFEBAG_create_pkcs8_encrypt</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PKCS5_pbe_set0_algor</b>(3), <b>PKCS5_pbe_set</b>(3),
+<b>PKCS5_pbe2_set_iv</b>(3), <b>PKCS5_pbkdf2_set</b>(3) and
+<b>PKCS5_v2_scrypt_keyivgen</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PKCS7_encrypt</b>(3), <b>PKCS7_new</b>(3) and
+<b>PKCS7_sign</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>PKCS8_decrypt</b>(3), <b>PKCS8_encrypt</b>(3) and
+<b>PKCS8_set0_pbe</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>RAND_bytes</b>(3) and <b>RAND_priv_bytes</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>SMIME_write_ASN1</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>SSL_load_client_CA_file</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>SSL_CTX_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>TS_RESP_CTX_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_CRL_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_load_cert_crl_file</b>(3) and
+<b>X509_load_cert_file</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_LOOKUP_by_subject</b>(3) and
+<b>X509_LOOKUP_ctrl</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_NAME_hash</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_new</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_REQ_new</b>(3) and <b>X509_REQ_verify</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>X509_STORE_CTX_new</b>(3),
+<b>X509_STORE_set_default_paths</b>(3),
+<b>X509_STORE_load_file</b>(3),
+<b>X509_STORE_load_locations</b>(3) and
+<b>X509_STORE_load_store</b>(3)</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">New functions
+that use a Library context</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+functions can be passed a library context if required.
+Passing <small>NULL</small> will use the default library
+context.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>BIO_new_from_core_bio</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_ASYM_CIPHER_fetch</b>(3) and
+<b>EVP_ASYM_CIPHER_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_CIPHER_fetch</b>(3) and
+<b>EVP_CIPHER_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_default_properties_enable_fips</b>(3) and
+<b>EVP_default_properties_is_fips_enabled</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_KDF_fetch</b>(3) and
+<b>EVP_KDF_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_KEM_fetch</b>(3) and
+<b>EVP_KEM_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_KEYEXCH_fetch</b>(3) and
+<b>EVP_KEYEXCH_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_KEYMGMT_fetch</b>(3) and
+<b>EVP_KEYMGMT_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_MAC_fetch</b>(3) and
+<b>EVP_MAC_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_MD_fetch</b>(3) and
+<b>EVP_MD_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_PKEY_CTX_new_from_pkey</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_PKEY_Q_keygen</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_Q_mac</b>(3) and <b>EVP_Q_digest</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b><small>EVP_RAND</small></b> (3) and
+<b>EVP_RAND_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_set_default_properties</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>EVP_SIGNATURE_fetch</b>(3) and
+<b>EVP_SIGNATURE_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_CMP_CTX_new</b>(3) and
+<b>OSSL_CMP_SRV_CTX_new</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_CRMF_MSG_create_popo</b>(3) and
+<b>OSSL_CRMF_MSGS_verify_popo</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_CRMF_pbm_new</b>(3) and
+<b>OSSL_CRMF_pbmp_new</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_DECODER_CTX_add_extra</b>(3) and
+<b>OSSL_DECODER_CTX_new_for_pkey</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_DECODER_fetch</b>(3) and
+<b>OSSL_DECODER_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_ENCODER_CTX_add_extra</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_ENCODER_fetch</b>(3) and
+<b>OSSL_ENCODER_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_LIB_CTX_free</b>(3),
+<b>OSSL_LIB_CTX_load_config</b>(3) and
+<b>OSSL_LIB_CTX_set0_default</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_PROVIDER_add_builtin</b>(3),
+<b>OSSL_PROVIDER_available</b>(3),
+<b>OSSL_PROVIDER_do_all</b>(3),
+<b>OSSL_PROVIDER_load</b>(3),
+<b>OSSL_PROVIDER_set_default_search_path</b>(3) and
+<b>OSSL_PROVIDER_try_load</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_SELF_TEST_get_callback</b>(3) and
+<b>OSSL_SELF_TEST_set_callback</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_STORE_attach</b>(3)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>OSSL_STORE_LOADER_fetch</b>(3) and
+<b>OSSL_STORE_LOADER_do_all_provided</b>(3)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>RAND_get0_primary</b>(3),
+<b>RAND_get0_private</b>(3), <b>RAND_get0_public</b>(3),
+<b>RAND_set_DRBG_type</b>(3) and
+<b>RAND_set_seed_source_type</b>(3)</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Providers</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Providers are
+described in detail here &quot;Providers&quot; in
+<b>crypto</b>(7). See also &quot; <small>OPENSSL
+PROVIDERS&quot;</small> in <b>crypto</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Fetching
+algorithms and property queries</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Implicit and
+Explicit Fetching is described in detail here &quot;
+<small>ALGORITHM FETCHING&quot;</small> in
+<b>crypto</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Mapping
+<small>EVP</small> controls and flags to provider</i>
+<b><i><small>OSSL_PARAM</small></i></b>
+<i>parameters</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The existing
+functions for controls (such as
+<b>EVP_CIPHER_CTX_ctrl</b>(3)) and manipulating flags (such
+as <b>EVP_MD_CTX_set_flags</b>(3))internally use
+<b><small>OSSL_PARAMS</small></b> to pass information
+to/from provider objects. See
+<b><small>OSSL_PARAM</small></b> (3) for additional
+information related to parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For ciphers see
+&quot; <small>CONTROLS&quot;</small> in
+<b>EVP_EncryptInit</b>(3), &quot; <small>FLAGS&quot;</small>
+in <b>EVP_EncryptInit</b>(3) and &quot;
+<small>PARAMETERS&quot;</small> in
+<b>EVP_EncryptInit</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For digests see
+&quot; <small>CONTROLS&quot;</small> in
+<b>EVP_DigestInit</b>(3), &quot; <small>FLAGS&quot;</small>
+in <b>EVP_DigestInit</b>(3) and &quot;
+<small>PARAMETERS&quot;</small> in
+<b>EVP_DigestInit</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Deprecation
+of Low Level Functions</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">A significant
+number of APIs have been deprecated in OpenSSL 3.0. This
+section describes some common categories of deprecations.
+See &quot;Deprecated function mappings&quot; for the list of
+deprecated functions that refer to these categories.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Providers are a
+replacement for engines and low-level method overrides</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any accessor
+that uses an <small>ENGINE</small> is deprecated (such as
+<b>EVP_PKEY_set1_engine()</b>). Applications using engines
+should instead use providers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before
+providers were added algorithms were overriden by changing
+the methods used by algorithms. All these methods such as
+<b>RSA_new_method()</b> and <b>RSA_meth_new()</b> are now
+deprecated and can be replaced by using providers
+instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated i2d
+and d2i functions for low-level key types</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any i2d and d2i
+functions such as <b>d2i_DHparams()</b> that take a
+low-level key type have been deprecated. Applications should
+instead use the <b><small>OSSL_DECODER</small></b> (3) and
+<b><small>OSSL_ENCODER</small></b> (3) APIs to read and
+write files. See &quot;Migration&quot; in
+<b>d2i_RSAPrivateKey</b>(3) for further details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key object getters and setters</p>
+
+<p style="margin-left:11%; margin-top: 1em">Applications
+that set or get low-level key objects (such as
+<b>EVP_PKEY_set1_DH()</b> or <b>EVP_PKEY_get0()</b>) should
+instead use the <small>OSSL_ENCODER</small> (See
+<b>OSSL_ENCODER_to_bio</b>(3)) or
+<small>OSSL_DECODER</small> (See
+<b>OSSL_DECODER_from_bio</b>(3)) APIs, or alternatively use
+<b>EVP_PKEY_fromdata</b>(3) or
+<b>EVP_PKEY_todata</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key parameter getters</p>
+
+<p style="margin-left:11%; margin-top: 1em">Functions that
+access low-level objects directly such as
+<b>RSA_get0_n</b>(3) are now deprecated. Applications should
+use one of <b>EVP_PKEY_get_bn_param</b>(3),
+<b>EVP_PKEY_get_int_param</b>(3),
+l&lt;<b>EVP_PKEY_get_size_t_param</b>(3)&gt;,
+<b>EVP_PKEY_get_utf8_string_param</b>(3),
+<b>EVP_PKEY_get_octet_string_param</b>(3) or
+<b>EVP_PKEY_get_params</b>(3) to access fields from an
+<small>EVP_PKEY.</small> Gettable parameters are listed in
+&quot;Common <small>RSA</small> parameters&quot; in
+<b><small>EVP_PKEY-RSA</small></b> (7), &quot;
+<small>DH</small> parameters&quot; in
+<b><small>EVP_PKEY-DH</small></b> (7), &quot;
+<small>DSA</small> parameters&quot; in
+<b><small>EVP_PKEY-DSA</small></b> (7), &quot;
+<small>FFC</small> parameters&quot; in
+<b><small>EVP_PKEY-FFC</small></b> (7), &quot;Common
+<small>EC</small> parameters&quot; in
+<b><small>EVP_PKEY-EC</small></b> (7) and &quot;Common
+X25519, X448, <small>ED25519</small> and
+<small>ED448</small> parameters&quot; in
+<b><small>EVP_PKEY-X25519</small></b> (7). Applications may
+also use <b>EVP_PKEY_todata</b>(3) to return all fields.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key parameter setters</p>
+
+<p style="margin-left:11%; margin-top: 1em">Functions that
+access low-level objects directly such as
+<b>RSA_set0_crt_params</b>(3) are now deprecated.
+Applications should use <b>EVP_PKEY_fromdata</b>(3) to
+create new keys from user provided key data. Keys should be
+immutable once they are created, so if required the user may
+use <b>EVP_PKEY_todata</b>(3), <b>OSSL_PARAM_merge</b>(3),
+and <b>EVP_PKEY_fromdata</b>(3) to create a modified key.
+See &quot;Examples&quot; in
+<b><small>EVP_PKEY-DH</small></b> (7) for more information.
+See &quot;Deprecated low-level key generation
+functions&quot; for information on generating a key using
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level object creation</p>
+
+<p style="margin-left:11%; margin-top: 1em">Low-level
+objects were created using methods such as
+<b>RSA_new</b>(3), <b>RSA_up_ref</b>(3) and
+<b>RSA_free</b>(3). Applications should instead use the
+high-level <small>EVP_PKEY</small> APIs, e.g.
+<b>EVP_PKEY_new</b>(3), <b>EVP_PKEY_up_ref</b>(3) and
+<b>EVP_PKEY_free</b>(3). See also
+<b>EVP_PKEY_CTX_new_from_name</b>(3) and
+<b>EVP_PKEY_CTX_new_from_pkey</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_PKEYs may
+be created in a variety of ways: See also &quot;Deprecated
+low-level key generation functions&quot;, &quot;Deprecated
+low-level key reading and writing functions&quot; and
+&quot;Deprecated low-level key parameter setters&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level encryption functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Low-level
+encryption functions such as <b>AES_encrypt</b>(3) and
+<b>AES_decrypt</b>(3) have been informally discouraged from
+use for a long time. Applications should instead use the
+high level <small>EVP</small> APIs
+<b>EVP_EncryptInit_ex</b>(3), <b>EVP_EncryptUpdate</b>(3),
+and <b>EVP_EncryptFinal_ex</b>(3) or
+<b>EVP_DecryptInit_ex</b>(3), <b>EVP_DecryptUpdate</b>(3)
+and <b>EVP_DecryptFinal_ex</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level digest functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use of
+low-level digest functions such as <b>SHA1_Init</b>(3) have
+been informally discouraged from use for a long time.
+Applications should instead use the the high level
+<small>EVP</small> APIs <b>EVP_DigestInit_ex</b>(3),
+<b>EVP_DigestUpdate</b>(3) and <b>EVP_DigestFinal_ex</b>(3),
+or the quick one-shot <b>EVP_Q_digest</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+functions <b><small>SHA1</small></b> (3),
+<b><small>SHA224</small></b> (3),
+<b><small>SHA256</small></b> (3),
+<b><small>SHA384</small></b> (3) and
+<b><small>SHA512</small></b> (3) have changed to macros that
+use <b>EVP_Q_digest</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level signing functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use of
+low-level signing functions such as <b>DSA_sign</b>(3) have
+been informally discouraged for a long time. Instead
+applications should use <b>EVP_DigestSign</b>(3) and
+<b>EVP_DigestVerify</b>(3). See also
+<b><small>EVP_SIGNATURE-RSA</small></b> (7),
+<b><small>EVP_SIGNATURE-DSA</small></b> (7),
+<b><small>EVP_SIGNATURE-ECDSA</small></b> (7) and
+<b><small>EVP_SIGNATURE-ED25519</small></b> (7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level <small>MAC</small> functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Low-level mac
+functions such as <b>CMAC_Init</b>(3) are deprecated.
+Applications should instead use the new
+<b><small>EVP_MAC</small></b> (3) interface, using
+<b>EVP_MAC_CTX_new</b>(3), <b>EVP_MAC_CTX_free</b>(3),
+<b>EVP_MAC_init</b>(3), <b>EVP_MAC_update</b>(3) and
+<b>EVP_MAC_final</b>(3) or the single-shot
+<small>MAC</small> function <b>EVP_Q_mac</b>(3). See
+<b><small>EVP_MAC</small></b> (3),
+<b><small>EVP_MAC-HMAC</small></b> (7),
+<b><small>EVP_MAC-CMAC</small></b> (7),
+<b><small>EVP_MAC-GMAC</small></b> (7),
+<b><small>EVP_MAC-KMAC</small></b> (7),
+<b><small>EVP_MAC-BLAKE2</small></b> (7),
+<b>EVP_MAC-Poly1305</b>(7) and <b>EVP_MAC-Siphash</b>(7) for
+additional information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+one-shot method <b><small>HMAC</small> ()</b> is still
+available for compatability purposes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level validation functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Low-level
+validation functions such as <b>DH_check</b>(3) have been
+informally discouraged from use for a long time.
+Applications should instead use the high-level
+<small>EVP_PKEY</small> APIs such as
+<b>EVP_PKEY_check</b>(3), <b>EVP_PKEY_param_check</b>(3),
+<b>EVP_PKEY_param_check_quick</b>(3),
+<b>EVP_PKEY_public_check</b>(3),
+<b>EVP_PKEY_public_check_quick</b>(3),
+<b>EVP_PKEY_private_check</b>(3), and
+<b>EVP_PKEY_pairwise_check</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key exchange functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many low-level
+functions have been informally discouraged from use for a
+long time. Applications should instead use
+<b>EVP_PKEY_derive</b>(3). See
+<b><small>EVP_KEYEXCH-DH</small></b> (7),
+<b><small>EVP_KEYEXCH-ECDH</small></b> (7) and
+<b><small>EVP_KEYEXCH-X25519</small></b> (7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key generation functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many low-level
+functions have been informally discouraged from use for a
+long time. Applications should instead use
+<b>EVP_PKEY_keygen_init</b>(3) and
+<b>EVP_PKEY_generate</b>(3) as described in
+<b><small>EVP_PKEY-DSA</small></b> (7),
+<b><small>EVP_PKEY-DH</small></b> (7),
+<b><small>EVP_PKEY-RSA</small></b> (7),
+<b><small>EVP_PKEY-EC</small></b> (7) and
+<b><small>EVP_PKEY-X25519</small></b> (7). The
+&rsquo;quick&rsquo; one-shot function
+<b>EVP_PKEY_Q_keygen</b>(3) and macros for the most common
+cases: &lt;<b>EVP_RSA_gen</b>(3)&gt; and
+<b>EVP_EC_gen</b>(3) may also be used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key reading and writing functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use of
+low-level objects (such as <small>DSA</small> ) has been
+informally discouraged from use for a long time. Functions
+to read and write these low-level objects (such as
+<b>PEM_read_DSA_PUBKEY()</b>) should be replaced.
+Applications should instead use
+<b>OSSL_ENCODER_to_bio</b>(3) and
+<b>OSSL_DECODER_from_bio</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+low-level key printing functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use of
+low-level objects (such as <small>DSA</small> ) has been
+informally discouraged from use for a long time. Functions
+to print these low-level objects such as <b>DSA_print()</b>
+should be replaced with the equivalent
+<small>EVP_PKEY</small> functions. Application should use
+one of <b>EVP_PKEY_print_public</b>(3),
+<b>EVP_PKEY_print_private</b>(3),
+<b>EVP_PKEY_print_params</b>(3),
+<b>EVP_PKEY_print_public_fp</b>(3),
+<b>EVP_PKEY_print_private_fp</b>(3) or
+<b>EVP_PKEY_print_params_fp</b>(3). Note that internally
+these use <b>OSSL_ENCODER_to_bio</b>(3) and
+<b>OSSL_DECODER_from_bio</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Deprecated
+function mappings</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+functions have been deprecated in 3.0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="65%">
+
+
+<p style="margin-top: 1em"><b>AES_bi_ige_encrypt()</b> and
+<b>AES_ige_encrypt()</b></p> </td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement for the <small>IGE</small> functions. New code
+should not use these modes. These undocumented functions
+were never integrated into the <small>EVP</small> layer.
+They implemented the <small>AES</small> Infinite Garble
+Extension ( <small>IGE</small> ) mode and <small>AES</small>
+Bi-directional <small>IGE</small> mode. These modes were
+never formally standardised and usage of these functions is
+believed to be very small. In particular
+<b>AES_bi_ige_encrypt()</b> has a known bug. It accepts 2
+<small>AES</small> keys, but only one is ever used. The
+security implications are believed to be minimal, but this
+issue was never fixed for backwards compatibility
+reasons.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>AES_encrypt()</b>,
+<b>AES_decrypt()</b>, <b>AES_set_encrypt_key()</b>,
+<b>AES_set_decrypt_key()</b>, <b>AES_cbc_encrypt()</b>,
+<b>AES_cfb128_encrypt()</b>, <b>AES_cfb1_encrypt()</b>,
+<b>AES_cfb8_encrypt()</b>, <b>AES_ecb_encrypt()</b>,
+<b>AES_ofb128_encrypt()</b></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>AES_unwrap_key()</b>, <b>AES_wrap_key()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>AES_options()</b></p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement. It returned a string indicating if the
+<small>AES</small> code was unrolled.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><b>ASN1_digest()</b>,
+<b>ASN1_sign()</b>, <b>ASN1_verify()</b></p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There are no
+replacements. These old functions are not used, and could be
+disabled with the macro <small>NO_ASN1_OLD</small> since
+OpenSSL 0.9.7.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="37%">
+
+
+
+<p style="margin-top: 1em"><b>ASN1_STRING_length_set()</b></p> </td>
+<td width="46%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>ASN1_STRING_set</b>(3) or <b>ASN1_STRING_set0</b>(3)
+instead. This was a potentially unsafe function that could
+change the bounds of a previously passed in pointer.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>BF_encrypt()</b>,
+<b>BF_decrypt()</b>, <b>BF_set_key()</b>,
+<b>BF_cbc_encrypt()</b>, <b>BF_cfb64_encrypt()</b>,
+<b>BF_ecb_encrypt()</b>, <b>BF_ofb64_encrypt()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;. The
+Blowfish algorithm has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b>BF_options()</b></p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement. This option returned a constant string.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>BIO_get_callback()</b>,
+<b>BIO_set_callback()</b>, <b>BIO_debug_callback()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use the
+respective non-deprecated <b>_ex()</b> functions.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>BN_is_prime_ex()</b>,
+<b>BN_is_prime_fasttest_ex()</b></p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>BN_check_prime</b>(3) which that avoids possible misuse
+and always uses at least 64 rounds of the Miller-Rabin
+primality test.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="61%">
+
+
+<p style="margin-top: 1em"><b>BN_pseudo_rand()</b>,
+<b>BN_pseudo_rand_range()</b></p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>BN_rand</b>(3) and <b>BN_rand_range</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>BN_X931_derive_prime_ex()</b>,
+<b>BN_X931_generate_prime_ex()</b>,
+<b>BN_X931_generate_Xpq()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There are no
+replacements for these low-level functions. They were used
+internally by <b>RSA_X931_derive_ex()</b> and
+<b>RSA_X931_generate_key_ex()</b> which are also deprecated.
+Use <b>EVP_PKEY_keygen</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>Camellia_encrypt()</b>,
+<b>Camellia_decrypt()</b>, <b>Camellia_set_key()</b>,
+<b>Camellia_cbc_encrypt()</b>,
+<b>Camellia_cfb128_encrypt()</b>,
+<b>Camellia_cfb1_encrypt()</b>,
+<b>Camellia_cfb8_encrypt()</b>,
+<b>Camellia_ctr128_encrypt()</b>,
+<b>Camellia_ecb_encrypt()</b>,
+<b>Camellia_ofb128_encrypt()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>CAST_encrypt()</b>,
+<b>CAST_decrypt()</b>, <b>CAST_set_key()</b>,
+<b>CAST_cbc_encrypt()</b>, <b>CAST_cfb64_encrypt()</b>,
+<b>CAST_ecb_encrypt()</b>, <b>CAST_ofb64_encrypt()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;. The
+<small>CAST</small> algorithm has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><b>CMAC_CTX_new()</b>,
+<b>CMAC_CTX_cleanup()</b>, <b>CMAC_CTX_copy()</b>,
+<b>CMAC_CTX_free()</b>,
+<b>CMAC_CTX_get0_cipher_ctx()</b></p> </td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level <small>MAC</small>
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>CMAC_Init()</b>,
+<b>CMAC_Update()</b>, <b>CMAC_Final()</b>,
+<b>CMAC_resume()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level <small>MAC</small>
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>CRYPTO_mem_ctrl()</b>,
+<b>CRYPTO_mem_debug_free()</b>,
+<b>CRYPTO_mem_debug_malloc()</b>,
+<b>CRYPTO_mem_debug_pop()</b>,
+<b>CRYPTO_mem_debug_push()</b>,
+<b>CRYPTO_mem_debug_realloc()</b>,
+<b>CRYPTO_mem_leaks()</b>, <b>CRYPTO_mem_leaks_cb()</b>,
+<b>CRYPTO_mem_leaks_fp()</b>,
+<b>CRYPTO_set_mem_debug()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Memory-leak
+checking has been deprecated in favor of more modern
+development tools, such as compiler memory and leak
+sanitizers or Valgrind.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>CRYPTO_cts128_encrypt_block()</b>,
+<b>CRYPTO_cts128_encrypt()</b>,
+<b>CRYPTO_cts128_decrypt_block()</b>,
+<b>CRYPTO_cts128_decrypt()</b>,
+<b>CRYPTO_nistcts128_encrypt_block()</b>,
+<b>CRYPTO_nistcts128_encrypt()</b>,
+<b>CRYPTO_nistcts128_decrypt_block()</b>,
+<b>CRYPTO_nistcts128_decrypt()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use the higher
+level functions <b>EVP_CipherInit_ex2()</b>,
+<b>EVP_CipherUpdate()</b> and <b>EVP_CipherFinal_ex()</b>
+instead. See the &quot;cts_mode&quot; parameter in
+&quot;Gettable and Settable <small>EVP_CIPHER_CTX</small>
+parameters&quot; in <b>EVP_EncryptInit</b>(3). See &quot;
+<small>EXAMPLES&quot;</small> in <b>EVP_EncryptInit</b>(3)
+for a <small>AES-256-CBC-CTS</small> example.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>d2i_DHparams()</b>,
+<b>d2i_DHxparams()</b>, <b>d2i_DSAparams()</b>,
+<b>d2i_DSAPrivateKey()</b>, <b>d2i_DSAPrivateKey_bio()</b>,
+<b>d2i_DSAPrivateKey_fp()</b>, <b>d2i_DSA_PUBKEY()</b>,
+<b>d2i_DSA_PUBKEY_bio()</b>, <b>d2i_DSA_PUBKEY_fp()</b>,
+<b>d2i_DSAPublicKey()</b>, <b>d2i_ECParameters()</b>,
+<b>d2i_ECPrivateKey()</b>, <b>d2i_ECPrivateKey_bio()</b>,
+<b>d2i_ECPrivateKey_fp()</b>, <b>d2i_EC_PUBKEY()</b>,
+<b>d2i_EC_PUBKEY_bio()</b>, <b>d2i_EC_PUBKEY_fp()</b>,
+<b>o2i_ECPublicKey()</b>, <b>d2i_RSAPrivateKey()</b>,
+<b>d2i_RSAPrivateKey_bio()</b>,
+<b>d2i_RSAPrivateKey_fp()</b>, <b>d2i_RSA_PUBKEY()</b>,
+<b>d2i_RSA_PUBKEY_bio()</b>, <b>d2i_RSA_PUBKEY_fp()</b>,
+<b>d2i_RSAPublicKey()</b>, <b>d2i_RSAPublicKey_bio()</b>,
+<b>d2i_RSAPublicKey_fp()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated i2d and d2i functions for low-level key
+types&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DES_crypt()</b>,
+<b>DES_fcrypt()</b>, <b>DES_encrypt1()</b>,
+<b>DES_encrypt2()</b>, <b>DES_encrypt3()</b>,
+<b>DES_decrypt3()</b>, <b>DES_ede3_cbc_encrypt()</b>,
+<b>DES_ede3_cfb64_encrypt()</b>,
+<b>DES_ede3_cfb_encrypt()</b>,<b>DES_ede3_ofb64_encrypt()</b>,
+<b>DES_ecb_encrypt()</b>, <b>DES_ecb3_encrypt()</b>,
+<b>DES_ofb64_encrypt()</b>, <b>DES_ofb_encrypt()</b>,
+DES_cfb64_encrypt <b>DES_cfb_encrypt()</b>,
+<b>DES_cbc_encrypt()</b>, <b>DES_ncbc_encrypt()</b>,
+<b>DES_pcbc_encrypt()</b>, <b>DES_xcbc_encrypt()</b>,
+<b>DES_cbc_cksum()</b>, <b>DES_quad_cksum()</b>,
+<b>DES_check_key_parity()</b>, <b>DES_is_weak_key()</b>,
+<b>DES_key_sched()</b>, <b>DES_options()</b>,
+<b>DES_random_key()</b>, <b>DES_set_key()</b>,
+<b>DES_set_key_checked()</b>,
+<b>DES_set_key_unchecked()</b>, <b>DES_set_odd_parity()</b>,
+<b>DES_string_to_2keys()</b>, <b>DES_string_to_key()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.
+Algorithms for &quot;DESX-CBC&quot;, &quot;DES-ECB&quot;,
+&quot;DES-CBC&quot;, &quot;DES-OFB&quot;,
+&quot;DES-CFB&quot;, &quot; <small>DES-CFB1&quot;</small>
+and &quot; <small>DES-CFB8&quot;</small> have been moved to
+the Legacy Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="61%">
+
+
+<p style="margin-top: 1em"><b>DH_bits()</b>,
+<b>DH_security_bits()</b>, <b>DH_size()</b></p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EVP_PKEY_get_bits</b>(3),
+<b>EVP_PKEY_get_security_bits</b>(3) and
+<b>EVP_PKEY_get_size</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DH_check()</b>,
+<b>DH_check_ex()</b>, <b>DH_check_params()</b>,
+<b>DH_check_params_ex()</b>, <b>DH_check_pub_key()</b>,
+<b>DH_check_pub_key_ex()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level validation functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>DH_clear_flags()</b>,
+<b>DH_test_flags()</b>, <b>DH_set_flags()</b></p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b><small>DH_FLAG_CACHE_MONT_P</small></b> flag has been
+deprecated without replacement. The
+<b><small>DH_FLAG_TYPE_DH</small></b> and
+<b><small>DH_FLAG_TYPE_DHX</small></b> have been deprecated.
+Use <b>EVP_PKEY_is_a()</b> to determine the type of a key.
+There is no replacement for setting these flags.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="61%">
+
+
+<p style="margin-top: 1em"><b>DH_compute_key()
+DH_compute_key_padded()</b></p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key exchange functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>DH_new()</b>,
+<b>DH_new_by_nid()</b>, <b>DH_free()</b>,
+<b>DH_up_ref()</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level object creation&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>DH_generate_key()</b>,
+<b>DH_generate_parameters_ex()</b></p> </td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key generation
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em"><b>DH_get0_pqg()</b>,
+<b>DH_get0_p()</b>, <b>DH_get0_q()</b>, <b>DH_get0_g()</b>,
+<b>DH_get0_key()</b>, <b>DH_get0_priv_key()</b>,
+<b>DH_get0_pub_key()</b>, <b>DH_get_length()</b>,
+<b>DH_get_nid()</b></p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter getters&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DH_get_1024_160()</b>,
+<b>DH_get_2048_224()</b>, <b>DH_get_2048_256()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should instead set the
+<b><small>OSSL_PKEY_PARAM_GROUP_NAME</small></b> as
+specified in &quot; <small>DH</small> parameters&quot; in
+<b><small>EVP_PKEY-DH</small></b> (7)) to one of
+&quot;dh_1024_160&quot;, &quot;dh_2048_224&quot; or
+&quot;dh_2048_256&quot; when generating a <small>DH</small>
+key.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="21%">
+
+
+<p style="margin-top: 1em"><b><small>DH_KDF_X9_42</small>
+()</b></p> </td>
+<td width="62%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EVP_PKEY_CTX_set_dh_kdf_type</b>(3)
+instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DH_get_default_method()</b>,
+<b>DH_get0_engine()</b>, DH_meth_*(),
+<b>DH_new_method()</b>, <b>DH_OpenSSL()</b>,
+<b>DH_get_ex_data()</b>, <b>DH_set_default_method()</b>,
+<b>DH_set_method()</b>, <b>DH_set_ex_data()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em"><b>DHparams_print()</b>,
+<b>DHparams_print_fp()</b></p> </td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key printing functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="69%">
+
+
+<p style="margin-top: 1em"><b>DH_set0_key()</b>,
+<b>DH_set0_pqg()</b>, <b>DH_set_length()</b></p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter setters&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>DSA_bits()</b>,
+<b>DSA_security_bits()</b>, <b>DSA_size()</b></p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EVP_PKEY_get_bits</b>(3),
+<b>EVP_PKEY_get_security_bits</b>(3) and
+<b>EVP_PKEY_get_size</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="43%">
+
+
+<p style="margin-top: 1em"><b>DHparams_dup()</b>,
+<b>DSA_dup_DH()</b></p> </td>
+<td width="40%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+direct replacement. Applications may use
+<b>EVP_PKEY_copy_parameters</b>(3) and
+<b>EVP_PKEY_dup</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em"><b>DSA_generate_key()</b>,
+<b>DSA_generate_parameters_ex()</b></p> </td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key generation
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DSA_get0_engine()</b>,
+<b>DSA_get_default_method()</b>, <b>DSA_get_ex_data()</b>,
+<b>DSA_get_method()</b>, DSA_meth_*(),
+<b>DSA_new_method()</b>, <b>DSA_OpenSSL()</b>,
+<b>DSA_set_default_method()</b>, <b>DSA_set_ex_data()</b>,
+<b>DSA_set_method()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DSA_get0_p()</b>,
+<b>DSA_get0_q()</b>, <b>DSA_get0_g()</b>,
+<b>DSA_get0_pqg()</b>, <b>DSA_get0_key()</b>,
+<b>DSA_get0_priv_key()</b>, <b>DSA_get0_pub_key()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter getters&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="54%">
+
+
+<p style="margin-top: 1em"><b>DSA_new()</b>,
+<b>DSA_free()</b>, <b>DSA_up_ref()</b></p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level object creation&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>DSAparams_dup()</b></p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+direct replacement. Applications may use
+<b>EVP_PKEY_copy_parameters</b>(3) and
+<b>EVP_PKEY_dup</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em"><b>DSAparams_print()</b>,
+<b>DSAparams_print_fp()</b>, <b>DSA_print()</b>,
+<b>DSA_print_fp()</b></p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key printing functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="46%">
+
+
+<p style="margin-top: 1em"><b>DSA_set0_key()</b>,
+<b>DSA_set0_pqg()</b></p> </td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter setters&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><b>DSA_set_flags()</b>,
+<b>DSA_clear_flags()</b>, <b>DSA_test_flags()</b></p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b><small>DSA_FLAG_CACHE_MONT_P</small></b> flag has been
+deprecated without replacement.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>DSA_sign()</b>,
+<b>DSA_do_sign()</b>, <b>DSA_sign_setup()</b>,
+<b>DSA_verify()</b>, <b>DSA_do_verify()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level signing functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="28%">
+
+
+<p style="margin-top: 1em"><b>ECDH_compute_key()</b></p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key exchange functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="25%">
+
+
+
+<p style="margin-top: 1em"><b><small>ECDH_KDF_X9_62</small>
+()</b></p> </td>
+<td width="58%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+may either set this using the helper function
+<b>EVP_PKEY_CTX_set_ecdh_kdf_type</b>(3) or by setting an
+<b><small>OSSL_PARAM</small></b> using the
+&quot;kdf-type&quot; as shown in &quot;
+<small>EXAMPLES&quot;</small> in
+<b><small>EVP_KEYEXCH-ECDH</small></b> (7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>ECDSA_sign()</b>,
+<b>ECDSA_sign_ex()</b>, <b>ECDSA_sign_setup()</b>,
+<b>ECDSA_do_sign()</b>, <b>ECDSA_do_sign_ex()</b>,
+<b>ECDSA_verify()</b>, <b>ECDSA_do_verify()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level signing functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b>ECDSA_size()</b></p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EVP_PKEY_get_size</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>EC_GF2m_simple_method()</b>,
+<b>EC_GFp_mont_method()</b>, <b>EC_GFp_nist_method()</b>,
+<b>EC_GFp_nistp224_method()</b>,
+<b>EC_GFp_nistp256_method()</b>,
+<b>EC_GFp_nistp521_method()</b>,
+<b>EC_GFp_simple_method()</b></p> </td>
+<td width="5%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There are no
+replacements for these functions. Applications should rely
+on the library automatically assigning a suitable method
+internally when an <small>EC_GROUP</small> is
+constructed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="32%">
+
+
+
+<p style="margin-top: 1em"><b>EC_GROUP_clear_free()</b></p> </td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EC_GROUP_free</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+
+<p style="margin-top: 1em"><b>EC_GROUP_get_curve_GF2m()</b>,
+<b>EC_GROUP_get_curve_GFp()</b>,
+<b>EC_GROUP_set_curve_GF2m()</b>,
+<b>EC_GROUP_set_curve_GFp()</b></p> </td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EC_GROUP_get_curve</b>(3) and
+<b>EC_GROUP_set_curve</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>EC_GROUP_have_precompute_mult()</b>,
+<b>EC_GROUP_precompute_mult()</b>,
+<b>EC_KEY_precompute_mult()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These functions
+are not widely used. Applications should instead switch to
+named curves which OpenSSL has hardcoded lookup tables
+for.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EC_GROUP_new()</b>,
+<b>EC_GROUP_method_of()</b>, <b>EC_POINT_method_of()</b></p></td></tr>
+</table>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>EC_METHOD</small>
+is now an internal-only concept and a suitable
+<small>EC_METHOD</small> is assigned internally without
+application intervention. Users of <b>EC_GROUP_new()</b>
+should switch to a different suitable constructor.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_can_sign()</b></p></td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EVP_PKEY_can_sign</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="28%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_check_key()</b></p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level validation functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_set_flags()</b>,
+<b>EC_KEY_get_flags()</b>, <b>EC_KEY_clear_flags()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Common <small>EC</small> parameters&quot; in
+<b><small>EVP_PKEY-EC</small></b> (7) which handles flags as
+seperate parameters for
+<b><small>OSSL_PKEY_PARAM_EC_POINT_CONVERSION_FORMAT</small></b>
+, <b><small>OSSL_PKEY_PARAM_EC_GROUP_CHECK_TYPE</small></b>
+, <b><small>OSSL_PKEY_PARAM_EC_ENCODING</small></b> ,
+<b><small>OSSL_PKEY_PARAM_USE_COFACTOR_ECDH</small></b> and
+<b><small>OSSL_PKEY_PARAM_EC_INCLUDE_PUBLIC</small></b> .
+See also &quot; <small>EXAMPLES&quot;</small> in
+<b><small>EVP_PKEY-EC</small></b> (7)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_dup()</b>,
+<b>EC_KEY_copy()</b></p> </td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+direct replacement. Applications may use
+<b>EVP_PKEY_copy_parameters</b>(3) and
+<b>EVP_PKEY_dup</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="57%">
+
+
+
+<p style="margin-top: 1em"><b>EC_KEY_decoded_from_explicit_params()</b></p> </td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="32%">
+
+
+
+<p style="margin-top: 1em"><b>EC_KEY_generate_key()</b></p> </td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key generation
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_get0_group()</b>,
+<b>EC_KEY_get0_private_key()</b>,
+<b>EC_KEY_get0_public_key()</b>,
+<b>EC_KEY_get_conv_form()</b>,
+<b>EC_KEY_get_enc_flags()</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter getters&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_get0_engine()</b>,
+<b>EC_KEY_get_default_method()</b>,
+<b>EC_KEY_get_method()</b>, <b>EC_KEY_new_method()</b>,
+<b>EC_KEY_get_ex_data()</b>, <b>EC_KEY_OpenSSL()</b>,
+<b>EC_KEY_set_ex_data()</b>,
+<b>EC_KEY_set_default_method()</b>, EC_KEY_METHOD_*(),
+<b>EC_KEY_set_method()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="40%">
+
+
+
+<p style="margin-top: 1em"><b>EC_METHOD_get_field_type()</b></p> </td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EC_GROUP_get_field_type</b>(3) instead. See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_key2buf()</b>,
+<b>EC_KEY_oct2key()</b>, <b>EC_KEY_oct2priv()</b>,
+<b>EC_KEY_priv2buf()</b>, <b>EC_KEY_priv2oct()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There are no
+replacements for these.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_new()</b>,
+<b>EC_KEY_new_by_curve_name()</b>, <b>EC_KEY_free()</b>,
+<b>EC_KEY_up_ref()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level object creation&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="51%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_print()</b>,
+<b>EC_KEY_print_fp()</b></p> </td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key printing functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_set_asn1_flag()</b>,
+<b>EC_KEY_set_conv_form()</b>,
+<b>EC_KEY_set_enc_flags()</b></p> </td>
+<td width="11%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter setters&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EC_KEY_set_group()</b>,
+<b>EC_KEY_set_private_key()</b>,
+<b>EC_KEY_set_public_key()</b>,
+<b>EC_KEY_set_public_key_affine_coordinates()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter setters&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>ECParameters_print()</b>,
+<b>ECParameters_print_fp()</b>,
+<b>ECPKParameters_print()</b>,
+<b>ECPKParameters_print_fp()</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key printing functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="61%">
+
+
+<p style="margin-top: 1em"><b>EC_POINT_bn2point()</b>,
+<b>EC_POINT_point2bn()</b></p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These functions
+were not particularly useful, since <small>EC</small> point
+serialization formats are not individual big-endian
+integers.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="60%">
+
+
+
+<p style="margin-top: 1em"><b>EC_POINT_get_affine_coordinates_GF2m()</b>,
+<b>EC_POINT_get_affine_coordinates_GFp()</b>,
+<b>EC_POINT_set_affine_coordinates_GF2m()</b>,
+<b>EC_POINT_set_affine_coordinates_GFp()</b></p> </td>
+<td width="23%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EC_POINT_get_affine_coordinates</b>(3) and
+<b>EC_POINT_set_affine_coordinates</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+
+<p style="margin-top: 1em"><b>EC_POINT_get_Jprojective_coordinates_GFp()</b>,
+<b>EC_POINT_set_Jprojective_coordinates_GFp()</b></p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These functions
+are not widely used. Applications should instead use the
+<b>EC_POINT_set_affine_coordinates</b>(3) and
+<b>EC_POINT_get_affine_coordinates</b>(3) functions.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>EC_POINT_make_affine()</b>,
+<b>EC_POINTs_make_affine()</b></p> </td>
+<td width="11%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement. These functions were not widely used, and
+OpenSSL automatically performs this conversion when
+needed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+
+<p style="margin-top: 1em"><b>EC_POINT_set_compressed_coordinates_GF2m()</b>,
+<b>EC_POINT_set_compressed_coordinates_GFp()</b></p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EC_POINT_set_compressed_coordinates</b>(3)
+instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>EC_POINTs_mul()</b></p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This function
+is not widely used. Applications should instead use the
+<b>EC_POINT_mul</b>(3) function.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em"><b>ENGINE_*()</b></p></td>
+<td width="68%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">All engine
+functions are deprecated. An engine should be rewritten as a
+provider. See &quot;Providers are a replacement for engines
+and low-level method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>ERR_load_*()</b>,
+<b>ERR_func_error_string()</b>, <b>ERR_get_error_line()</b>,
+<b>ERR_get_error_line_data()</b>, <b>ERR_get_state()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">OpenSSL now
+loads error strings automatically so these functions are not
+needed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>ERR_peek_error_line_data()</b>,
+<b>ERR_peek_last_error_line_data()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The new
+functions are <b>ERR_peek_error_func</b>(3),
+<b>ERR_peek_last_error_func</b>(3),
+<b>ERR_peek_error_data</b>(3),
+<b>ERR_peek_last_error_data</b>(3),
+<b>ERR_get_error_all</b>(3), <b>ERR_peek_error_all</b>(3)
+and <b>ERR_peek_last_error_all</b>(3). Applications should
+use <b>ERR_get_error_all</b>(3), or pick information with
+ERR_peek functions and finish off with getting the error
+code by using <b>ERR_get_error</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>EVP_CIPHER_CTX_iv()</b>,
+<b>EVP_CIPHER_CTX_iv_noconst()</b>,
+<b>EVP_CIPHER_CTX_original_iv()</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should instead use <b>EVP_CIPHER_CTX_get_updated_iv</b>(3),
+<b>EVP_CIPHER_CTX_get_updated_iv</b>(3) and
+<b>EVP_CIPHER_CTX_get_original_iv</b>(3) respectively. See
+<b>EVP_CIPHER_CTX_get_original_iv</b>(3) for further
+information.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em"><b>EVP_CIPHER_meth_*()</b>,
+<b>EVP_MD_CTX_set_update_fn()</b>,
+<b>EVP_MD_CTX_update_fn()</b>, <b>EVP_MD_meth_*()</b></p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b><small>EVP_PKEY_CTRL_PKCS7_ENCRYPT</small>
+()</b>, <b><small>EVP_PKEY_CTRL_PKCS7_DECRYPT</small>
+()</b>, <b><small>EVP_PKEY_CTRL_PKCS7_SIGN</small> ()</b>,
+<b><small>EVP_PKEY_CTRL_CMS_ENCRYPT</small> ()</b>,
+<b><small>EVP_PKEY_CTRL_CMS_DECRYPT</small> ()</b>, and
+<b><small>EVP_PKEY_CTRL_CMS_SIGN</small> ()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These control
+operations are not invoked by the OpenSSL library anymore
+and are replaced by direct checks of the key operation
+against the key type when the operation is initialized.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_CTX_get0_dh_kdf_ukm()</b>,
+<b>EVP_PKEY_CTX_get0_ecdh_kdf_ukm()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See the
+&quot;kdf-ukm&quot; item in &quot; <small>DH</small> key
+exchange parameters&quot; in
+<b><small>EVP_KEYEXCH-DH</small></b> (7) and &quot;
+<small>ECDH</small> Key Exchange parameters&quot; in
+<b><small>EVP_KEYEXCH-ECDH</small></b> (7). These functions
+are obsolete and should not be required.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="55%">
+
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_CTX_set_rsa_keygen_pubexp()</b></p> </td>
+<td width="28%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EVP_PKEY_CTX_set1_rsa_keygen_pubexp</b>(3)
+instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_cmp()</b>,
+<b>EVP_PKEY_cmp_parameters()</b></p> </td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EVP_PKEY_eq</b>(3) and
+<b>EVP_PKEY_parameters_eq</b>(3) instead. See
+<b>EVP_PKEY_copy_parameters</b>(3) for further details.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_encrypt_old()</b>,
+<b>EVP_PKEY_decrypt_old()</b>,</p> </td>
+<td width="11%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should use <b>EVP_PKEY_encrypt_init</b>(3) and
+<b>EVP_PKEY_encrypt</b>(3) or
+<b>EVP_PKEY_decrypt_init</b>(3) and
+<b>EVP_PKEY_decrypt</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_get0()</b></p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This function
+returns <small>NULL</small> if the key comes from a
+provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_get0_DH()</b>,
+<b>EVP_PKEY_get0_DSA()</b>, <b>EVP_PKEY_get0_EC_KEY()</b>,
+<b>EVP_PKEY_get0_RSA()</b>, <b>EVP_PKEY_get1_DH()</b>,
+<b>EVP_PKEY_get1_DSA()</b>, EVP_PKEY_get1_EC_KEY and
+<b>EVP_PKEY_get1_RSA()</b>, <b>EVP_PKEY_get0_hmac()</b>,
+<b>EVP_PKEY_get0_poly1305()</b>,
+<b>EVP_PKEY_get0_siphash()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Functions that return an internal key should be
+treated as read only&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_meth_*()</b></p></td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_new_CMAC_key()</b></p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level <small>MAC</small>
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_assign()</b>,
+<b>EVP_PKEY_set1_DH()</b>, <b>EVP_PKEY_set1_DSA()</b>,
+<b>EVP_PKEY_set1_EC_KEY()</b>,
+<b>EVP_PKEY_set1_RSA()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key object getters and
+setters&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_set1_tls_encodedpoint()
+EVP_PKEY_get1_tls_encodedpoint()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These functions
+were previously used by libssl to set or get an encoded
+public key into/from an <small>EVP_PKEY</small> object. With
+OpenSSL 3.0 these are replaced by the more generic functions
+<b>EVP_PKEY_set1_encoded_public_key</b>(3) and
+<b>EVP_PKEY_get1_encoded_public_key</b>(3). The old versions
+have been converted to deprecated macros that just call the
+new functions.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_set1_engine()</b>,
+<b>EVP_PKEY_get0_engine()</b></p> </td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="38%">
+
+
+
+<p style="margin-top: 1em"><b>EVP_PKEY_set_alias_type()</b></p> </td>
+<td width="45%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This function
+has been removed. There is no replacement. See
+&quot;<b>EVP_PKEY_set_alias_type()</b> method has been
+removed&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>HMAC_Init_ex()</b>,
+<b>HMAC_Update()</b>, <b>HMAC_Final()</b>,
+<b>HMAC_size()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level <small>MAC</small>
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>HMAC_CTX_new()</b>,
+<b>HMAC_CTX_free()</b>, <b>HMAC_CTX_copy()</b>,
+<b>HMAC_CTX_reset()</b>, <b>HMAC_CTX_set_flags()</b>,
+<b>HMAC_CTX_get_md()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level <small>MAC</small>
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="48%">
+
+
+<p style="margin-top: 1em"><b>i2d_DHparams()</b>,
+<b>i2d_DHxparams()</b></p> </td>
+<td width="35%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key reading and writing
+functions&quot; and &quot;Migration&quot; in
+<b>d2i_RSAPrivateKey</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>i2d_DSAparams()</b>,
+<b>i2d_DSAPrivateKey()</b>, <b>i2d_DSAPrivateKey_bio()</b>,
+<b>i2d_DSAPrivateKey_fp()</b>, <b>i2d_DSA_PUBKEY()</b>,
+<b>i2d_DSA_PUBKEY_bio()</b>, <b>i2d_DSA_PUBKEY_fp()</b>,
+<b>i2d_DSAPublicKey()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key reading and writing
+functions&quot; and &quot;Migration&quot; in
+<b>d2i_RSAPrivateKey</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>i2d_ECParameters()</b>,
+<b>i2d_ECPrivateKey()</b>, <b>i2d_ECPrivateKey_bio()</b>,
+<b>i2d_ECPrivateKey_fp()</b>, <b>i2d_EC_PUBKEY()</b>,
+<b>i2d_EC_PUBKEY_bio()</b>, <b>i2d_EC_PUBKEY_fp()</b>,
+<b>i2o_ECPublicKey()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key reading and writing
+functions&quot; and &quot;Migration&quot; in
+<b>d2i_RSAPrivateKey</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>i2d_RSAPrivateKey()</b>,
+<b>i2d_RSAPrivateKey_bio()</b>,
+<b>i2d_RSAPrivateKey_fp()</b>, <b>i2d_RSA_PUBKEY()</b>,
+<b>i2d_RSA_PUBKEY_bio()</b>, <b>i2d_RSA_PUBKEY_fp()</b>,
+<b>i2d_RSAPublicKey()</b>, <b>i2d_RSAPublicKey_bio()</b>,
+<b>i2d_RSAPublicKey_fp()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key reading and writing
+functions&quot; and &quot;Migration&quot; in
+<b>d2i_RSAPrivateKey</b>(3)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>IDEA_encrypt()</b>,
+<b>IDEA_set_decrypt_key()</b>,
+<b>IDEA_set_encrypt_key()</b>, <b>IDEA_cbc_encrypt()</b>,
+<b>IDEA_cfb64_encrypt()</b>, <b>IDEA_ecb_encrypt()</b>,
+<b>IDEA_ofb64_encrypt()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.
+<small>IDEA</small> has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="21%">
+
+
+<p style="margin-top: 1em"><b>IDEA_options()</b></p></td>
+<td width="62%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement. This function returned a constant string.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em"><b><small>MD2</small> ()</b>,
+<b>MD2_Init()</b>, <b>MD2_Update()</b>,
+<b>MD2_Final()</b></p> </td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.
+<small>MD2</small> has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>MD2_options()</b></p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement. This function returned a constant string.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b><small>MD4</small> ()</b>,
+<b>MD4_Init()</b>, <b>MD4_Update()</b>, <b>MD4_Final()</b>,
+<b>MD4_Transform()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.
+<small>MD4</small> has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em"><b><small>MDC2</small> ()</b>,
+<b>MDC2_Init()</b>, <b>MDC2_Update()</b>,
+<b>MDC2_Final()</b></p> </td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.
+<small>MDC2</small> has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b><small>MD5</small> ()</b>,
+<b>MD5_Init()</b>, <b>MD5_Update()</b>, <b>MD5_Final()</b>,
+<b>MD5_Transform()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b><small>NCONF_WIN32</small>
+()</b></p> </td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This
+undocumented function has no replacement. See &quot;
+<small>HISTORY&quot;</small> in <b>config</b>(5) for more
+details.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="25%">
+
+
+<p style="margin-top: 1em"><b>OCSP_parse_url()</b></p></td>
+<td width="58%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>OSSL_HTTP_parse_url</b>(3) instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="74%">
+
+
+
+<p style="margin-top: 1em"><b><small>OCSP_REQ_CTX</small></b>
+type and <b>OCSP_REQ_CTX_*()</b> functions</p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These methods
+were used to collect all necessary data to form a
+<small>HTTP</small> request, and to perform the
+<small>HTTP</small> transfer with that request. With OpenSSL
+3.0, the type is <b><small>OSSL_HTTP_REQ_CTX</small></b> ,
+and the deprecated functions are replaced with
+<b>OSSL_HTTP_REQ_CTX_*()</b>. See
+<b><small>OSSL_HTTP_REQ_CTX</small></b> (3) for additional
+details.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>OPENSSL_fork_child()</b>,
+<b>OPENSSL_fork_parent()</b>,
+<b>OPENSSL_fork_prepare()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement for these functions. These pthread fork support
+methods were unused by OpenSSL.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>OSSL_STORE_ctrl()</b>,
+<b>OSSL_STORE_do_all_loaders()</b>,
+<b>OSSL_STORE_LOADER_get0_engine()</b>,
+<b>OSSL_STORE_LOADER_get0_scheme()</b>,
+<b>OSSL_STORE_LOADER_new()</b>,
+<b>OSSL_STORE_LOADER_set_attach()</b>,
+<b>OSSL_STORE_LOADER_set_close()</b>,
+<b>OSSL_STORE_LOADER_set_ctrl()</b>,
+<b>OSSL_STORE_LOADER_set_eof()</b>,
+<b>OSSL_STORE_LOADER_set_error()</b>,
+<b>OSSL_STORE_LOADER_set_expect()</b>,
+<b>OSSL_STORE_LOADER_set_find()</b>,
+<b>OSSL_STORE_LOADER_set_load()</b>,
+<b>OSSL_STORE_LOADER_set_open()</b>,
+<b>OSSL_STORE_LOADER_set_open_ex()</b>,
+<b>OSSL_STORE_register_loader()</b>,
+<b>OSSL_STORE_unregister_loader()</b>,
+<b>OSSL_STORE_vctrl()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These functions
+helped applications and engines create loaders for schemes
+they supported. These are all deprecated and discouraged in
+favour of provider implementations, see
+<b>provider-storemgmt</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>PEM_read_DHparams()</b>,
+<b>PEM_read_bio_DHparams()</b>, <b>PEM_read_DSAparams()</b>,
+<b>PEM_read_bio_DSAparams()</b>,
+<b>PEM_read_DSAPrivateKey()</b>,
+<b>PEM_read_DSA_PUBKEY()</b>, PEM_read_bio_DSAPrivateKey and
+<b>PEM_read_bio_DSA_PUBKEY()</b>,
+<b>PEM_read_ECPKParameters()</b>,
+<b>PEM_read_ECPrivateKey()</b>, <b>PEM_read_EC_PUBKEY()</b>,
+<b>PEM_read_bio_ECPKParameters()</b>,
+<b>PEM_read_bio_ECPrivateKey()</b>,
+<b>PEM_read_bio_EC_PUBKEY()</b>,
+<b>PEM_read_RSAPrivateKey()</b>,
+<b>PEM_read_RSA_PUBKEY()</b>,
+<b>PEM_read_RSAPublicKey()</b>,
+<b>PEM_read_bio_RSAPrivateKey()</b>,
+<b>PEM_read_bio_RSA_PUBKEY()</b>,
+<b>PEM_read_bio_RSAPublicKey()</b>,
+<b>PEM_write_bio_DHparams()</b>,
+<b>PEM_write_bio_DHxparams()</b>,
+<b>PEM_write_DHparams()</b>, <b>PEM_write_DHxparams()</b>,
+<b>PEM_write_DSAparams()</b>,
+<b>PEM_write_DSAPrivateKey()</b>,
+<b>PEM_write_DSA_PUBKEY()</b>,
+<b>PEM_write_bio_DSAparams()</b>,
+<b>PEM_write_bio_DSAPrivateKey()</b>,
+<b>PEM_write_bio_DSA_PUBKEY()</b>,
+<b>PEM_write_ECPKParameters()</b>,
+<b>PEM_write_ECPrivateKey()</b>,
+<b>PEM_write_EC_PUBKEY()</b>,
+<b>PEM_write_bio_ECPKParameters()</b>,
+<b>PEM_write_bio_ECPrivateKey()</b>,
+<b>PEM_write_bio_EC_PUBKEY()</b>,
+<b>PEM_write_RSAPrivateKey()</b>,
+<b>PEM_write_RSA_PUBKEY()</b>,
+<b>PEM_write_RSAPublicKey()</b>,
+<b>PEM_write_bio_RSAPrivateKey()</b>,
+<b>PEM_write_bio_RSA_PUBKEY()</b>,
+<b>PEM_write_bio_RSAPublicKey()</b>,</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key reading and writing
+functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b><small>PKCS1_MGF1</small>
+()</b></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>RAND_get_rand_method()</b>,
+<b>RAND_set_rand_method()</b>, <b>RAND_OpenSSL()</b>,
+<b>RAND_set_rand_engine()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Applications
+should instead use <b>RAND_set_DRBG_type</b>(3),
+<b><small>EVP_RAND</small></b> (3) and
+<b><small>EVP_RAND</small></b> (7). See
+<b>RAND_set_rand_method</b>(3) for more details.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>RC2_encrypt()</b>,
+<b>RC2_decrypt()</b>, <b>RC2_set_key()</b>,
+<b>RC2_cbc_encrypt()</b>, <b>RC2_cfb64_encrypt()</b>,
+<b>RC2_ecb_encrypt()</b>, <b>RC2_ofb64_encrypt()</b>,
+<b><small>RC4</small> ()</b>, <b>RC4_set_key()</b>,
+<b>RC4_options()</b>, <b>RC5_32_encrypt()</b>,
+<b>RC5_32_set_key()</b>, <b>RC5_32_decrypt()</b>,
+<b>RC5_32_cbc_encrypt()</b>, <b>RC5_32_cfb64_encrypt()</b>,
+<b>RC5_32_ecb_encrypt()</b>,
+<b>RC5_32_ofb64_encrypt()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;. The
+Algorithms &quot; <small>RC2&quot;, &quot;RC4&quot;</small>
+and &quot; <small>RC5&quot;</small> have been moved to the
+Legacy Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b><small>RIPEMD160</small>
+()</b>, <b>RIPEMD160_Init()</b>, <b>RIPEMD160_Update()</b>,
+<b>RIPEMD160_Final()</b>, <b>RIPEMD160_Transform()</b></p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level digest functions&quot;. The
+<small>RIPE</small> algorithm has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>RSA_bits()</b>,
+<b>RSA_security_bits()</b>, <b>RSA_size()</b></p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>EVP_PKEY_get_bits</b>(3),
+<b>EVP_PKEY_get_security_bits</b>(3) and
+<b>EVP_PKEY_get_size</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="54%">
+
+
+<p style="margin-top: 1em"><b>RSA_check_key()</b>,
+<b>RSA_check_key_ex()</b></p> </td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level validation functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>RSA_clear_flags()</b>,
+<b>RSA_flags()</b>, <b>RSA_set_flags()</b>,
+<b>RSA_test_flags()</b>, <b>RSA_setup_blinding()</b>,
+<b>RSA_blinding_off()</b>, <b>RSA_blinding_on()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">All of these
+<small>RSA</small> flags have been deprecated without
+replacement:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b><small>RSA_FLAG_BLINDING</small></b>
+, <b><small>RSA_FLAG_CACHE_PRIVATE</small></b> ,
+<b><small>RSA_FLAG_CACHE_PUBLIC</small></b> ,
+<b><small>RSA_FLAG_EXT_PKEY</small></b> ,
+<b><small>RSA_FLAG_NO_BLINDING</small></b> ,
+<b><small>RSA_FLAG_THREAD_SAFE
+RSA_METHOD_FLAG_NO_CHECK</small></b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em"><b>RSA_generate_key_ex()</b>,
+<b>RSA_generate_multi_prime_key()</b></p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key generation
+functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>RSA_get0_engine()</b></p></td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>RSA_get0_crt_params()</b>,
+<b>RSA_get0_d()</b>, <b>RSA_get0_dmp1()</b>,
+<b>RSA_get0_dmq1()</b>, <b>RSA_get0_e()</b>,
+<b>RSA_get0_factors()</b>, <b>RSA_get0_iqmp()</b>,
+<b>RSA_get0_key()</b>,
+<b>RSA_get0_multi_prime_crt_params()</b>,
+<b>RSA_get0_multi_prime_factors()</b>, <b>RSA_get0_n()</b>,
+<b>RSA_get0_p()</b>, <b>RSA_get0_pss_params()</b>,
+<b>RSA_get0_q()</b>,
+<b>RSA_get_multi_prime_extra_count()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter getters&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="54%">
+
+
+<p style="margin-top: 1em"><b>RSA_new()</b>,
+<b>RSA_free()</b>, <b>RSA_up_ref()</b></p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level object creation&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>RSA_get_default_method()</b>,
+RSA_get_ex_data and <b>RSA_get_method()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>RSA_get_version()</b></p></td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+replacement.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>RSA_meth_*()</b>,
+<b>RSA_new_method()</b>, RSA_null_method and
+<b>RSA_PKCS1_OpenSSL()</b></p> </td>
+<td width="5%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="65%">
+
+
+<p style="margin-top: 1em"><b>RSA_padding_add_*()</b>,
+<b>RSA_padding_check_*()</b></p> </td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level signing functions&quot; and
+&quot;Deprecated low-level encryption functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em"><b>RSA_print()</b>,
+<b>RSA_print_fp()</b></p> </td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key printing functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>RSA_public_encrypt()</b>,
+<b>RSA_private_decrypt()</b></p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>RSA_private_encrypt()</b>,
+<b>RSA_public_decrypt()</b></p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This is
+equivalent to doing sign and verify recover operations (with
+a padding mode of none). See &quot;Deprecated low-level
+signing functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em"><b>RSAPrivateKey_dup()</b>,
+<b>RSAPublicKey_dup()</b></p> </td>
+<td width="23%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+direct replacement. Applications may use
+<b>EVP_PKEY_dup</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em"><b>RSAPublicKey_it()</b>,
+<b>RSAPrivateKey_it()</b></p> </td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key reading and writing
+functions&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>RSA_set0_crt_params()</b>,
+<b>RSA_set0_factors()</b>, <b>RSA_set0_key()</b>,
+<b>RSA_set0_multi_prime_params()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level key parameter setters&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>RSA_set_default_method()</b>,
+<b>RSA_set_method()</b>, <b>RSA_set_ex_data()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Providers are a replacement for engines and low-level
+method overrides&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>RSA_sign()</b>,
+<b>RSA_sign_ASN1_OCTET_STRING()</b>, <b>RSA_verify()</b>,
+<b>RSA_verify_ASN1_OCTET_STRING()</b>,
+<b>RSA_verify_PKCS1_PSS()</b>,
+<b>RSA_verify_PKCS1_PSS_mgf1()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level signing functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>RSA_X931_derive_ex()</b>,
+<b>RSA_X931_generate_key_ex()</b>,
+<b>RSA_X931_hash_id()</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There are no
+replacements for these functions. X931 padding can be set
+using &quot;Signature Parameters&quot; in
+<b><small>EVP_SIGNATURE-RSA</small></b> (7). See
+<b><small>OSSL_SIGNATURE_PARAM_PAD_MODE</small></b> .</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>SEED_encrypt()</b>,
+<b>SEED_decrypt()</b>, <b>SEED_set_key()</b>,
+<b>SEED_cbc_encrypt()</b>, <b>SEED_cfb128_encrypt()</b>,
+<b>SEED_ecb_encrypt()</b>, <b>SEED_ofb128_encrypt()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level encryption functions&quot;. The
+<small>SEED</small> algorithm has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>SHA1_Init()</b>,
+<b>SHA1_Update()</b>, <b>SHA1_Final()</b>,
+<b>SHA1_Transform()</b>, <b>SHA224_Init()</b>,
+<b>SHA224_Update()</b>, <b>SHA224_Final()</b>,
+<b>SHA256_Init()</b>, <b>SHA256_Update()</b>,
+<b>SHA256_Final()</b>, <b>SHA256_Transform()</b>,
+<b>SHA384_Init()</b>, <b>SHA384_Update()</b>,
+<b>SHA384_Final()</b>, <b>SHA512_Init()</b>,
+<b>SHA512_Update()</b>, <b>SHA512_Final()</b>,
+<b>SHA512_Transform()</b></p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level digest functions&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>SRP_Calc_A()</b>,
+<b>SRP_Calc_B()</b>, <b>SRP_Calc_client_key()</b>,
+<b>SRP_Calc_server_key()</b>, <b>SRP_Calc_u()</b>,
+<b>SRP_Calc_x()</b>, <b>SRP_check_known_gN_param()</b>,
+<b>SRP_create_verifier()</b>,
+<b>SRP_create_verifier_BN()</b>,
+<b>SRP_get_default_gN()</b>, <b>SRP_user_pwd_free()</b>,
+<b>SRP_user_pwd_new()</b>, <b>SRP_user_pwd_set0_sv()</b>,
+<b>SRP_user_pwd_set1_ids()</b>,
+<b>SRP_user_pwd_set_gN()</b>, <b>SRP_VBASE_add0_user()</b>,
+<b>SRP_VBASE_free()</b>, <b>SRP_VBASE_get1_by_user()</b>,
+<b>SRP_VBASE_init()</b>, <b>SRP_VBASE_new()</b>,
+<b>SRP_Verify_A_mod_N()</b>, <b>SRP_Verify_B_mod_N()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">There are no
+replacements for the <small>SRP</small> functions.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>SSL_CTX_set_tmp_dh_callback()</b>,
+<b>SSL_set_tmp_dh_callback()</b>,
+<b>SSL_CTX_set_tmp_dh()</b>, <b>SSL_set_tmp_dh()</b></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These are used
+to set the Diffie-Hellman ( <small>DH</small> ) parameters
+that are to be used by servers requiring ephemeral
+<small>DH</small> keys. Instead applications should consider
+using the built-in <small>DH</small> parameters that are
+available by calling <b>SSL_CTX_set_dh_auto</b>(3) or
+<b>SSL_set_dh_auto</b>(3). If custom parameters are
+necessary then applications can use the alternative
+functions <b>SSL_CTX_set0_tmp_dh_pkey</b>(3) and
+<b>SSL_set0_tmp_dh_pkey</b>(3). There is no direct
+replacement for the &quot;callback&quot; functions. The
+callback was originally useful in order to have different
+parameters for export and non-export ciphersuites. Export
+ciphersuites are no longer supported by OpenSSL. Use of the
+callback functions should be replaced by one of the other
+methods described above.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="52%">
+
+
+
+<p style="margin-top: 1em"><b>SSL_CTX_set_tlsext_ticket_key_cb()</b></p> </td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use the new
+<b>SSL_CTX_set_tlsext_ticket_key_evp_cb</b>(3) function
+instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b><small>WHIRLPOOL</small>
+()</b>, <b>WHIRLPOOL_Init()</b>, <b>WHIRLPOOL_Update()</b>,
+<b>WHIRLPOOL_Final()</b>, <b>WHIRLPOOL_BitUpdate()</b></p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&quot;Deprecated low-level digest functions&quot;. The
+Whirlpool algorithm has been moved to the Legacy
+Provider.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+
+<p style="margin-top: 1em"><b>X509_certificate_type()</b></p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This was an
+undocumented function. Applications can use
+<b>X509_get0_pubkey</b>(3) and <b>X509_get0_signature</b>(3)
+instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="58%">
+
+
+<p style="margin-top: 1em"><b>X509_http_nbio()</b>,
+<b>X509_CRL_http_nbio()</b></p> </td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Use
+<b>X509_load_http</b>(3) and <b>X509_CRL_load_http</b>(3)
+instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using the
+<small>FIPS</small> Module in applications</b> <br>
+See <b>fips_module</b>(7) and
+<b><small>OSSL_PROVIDER-FIPS</small></b> (7) for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>OpenSSL
+command line application changes</b> <i><br>
+New applications</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>openssl
+kdf</b> uses the new <b><small>EVP_KDF</small></b> (3)
+<small>API.</small> <b>openssl kdf</b> uses the new
+<b><small>EVP_MAC</small></b> (3) <small>API.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Added
+options</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-provider_path</b>
+and <b>-provider</b> are available to all apps and can be
+used multiple times to load any providers, such as the
+&rsquo;legacy&rsquo; provider or third party providers. If
+used then the &rsquo;default&rsquo; provider would also need
+to be specified if required. The <b>-provider_path</b> must
+be specified before the <b>-provider</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>list</b>
+app has many new options. See <b>openssl-list</b>(1) for
+more information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-crl_lastupdate</b>
+and <b>-crl_nextupdate</b> used by <b>openssl ca</b> allows
+explicit setting of fields in the generated
+<small>CRL.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Removed
+options</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Interactive
+mode is not longer available.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-crypt</b> option used by <b>openssl passwd</b>. The
+<b>-c</b> option used by <b>openssl x509</b>, <b>openssl
+dhparam</b>, <b>openssl dsaparam</b>, and <b>openssl
+ecparam</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Other
+Changes</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The output of
+Command line applications may have minor changes. These are
+primarily changes in capitalisation and white space.
+However, in some cases, there are additional differences.
+For example, the <small>DH</small> parameters output from
+<b>openssl dhparam</b> now lists &rsquo;P&rsquo;,
+&rsquo;Q&rsquo;, &rsquo;G&rsquo; and &rsquo;pcounter&rsquo;
+instead of &rsquo;prime&rsquo;, &rsquo;generator&rsquo;,
+&rsquo;subgroup order&rsquo; and &rsquo;counter&rsquo;
+respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>openssl</b> commands that read keys, certificates, and
+CRLs now automatically detect the <small>PEM</small> or
+<small>DER</small> format of the input files so it is not
+necessary to explicitly specify the input format anymore.
+However if the input format option is used the specified
+format will be required.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>openssl
+speed</b> no longer uses low-level <small>API</small> calls.
+This implies some of the performance numbers might not be
+comparable with the previous releases due to higher
+overhead. This applies particularly to measuring performance
+on smaller data chunks.</p>
+
+<p style="margin-left:11%; margin-top: 1em">b&lt;openssl
+dhparam&gt;, <b>openssl dsa</b>, <b>openssl gendsa</b>,
+<b>openssl dsaparam</b>, <b>openssl genrsa</b> and
+<b>openssl rsa</b> have been modified to use
+<small>PKEY</small> APIs. <b>openssl genrsa</b> and
+<b>openssl rsa</b> now write <small>PKCS</small> #8 keys by
+default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Default
+settings</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">&quot;
+<small>SHA256&quot;</small> is now the default digest for
+<small>TS</small> query used by <b>openssl ts</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Deprecated
+apps</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>openssl
+rsautl</b> is deprecated, use <b>openssl pkeyutl</b>
+instead. <b>openssl dhparam</b>, <b>openssl dsa</b>,
+<b>openssl gendsa</b>, <b>openssl dsaparam</b>, <b>openssl
+genrsa</b>, <b>openssl rsa</b>, <b>openssl genrsa</b> and
+<b>openssl rsa</b> are now in maintenance mode and no new
+features will be added to them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>TLS</small>
+Changes</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="61%">
+
+
+<p style="margin-top: 1em"><small>TLS 1.3 FFDHE</small> key
+exchange support added</p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This uses
+<small>DH</small> safe prime named groups.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="69%">
+
+
+<p style="margin-top: 1em">Support for fully
+&quot;pluggable&quot; TLSv1.3 groups.</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This means that
+providers may supply their own group implementations (using
+either the &quot;key exchange&quot; or the &quot;key
+encapsulation&quot; methods) which will automatically be
+detected and used by libssl.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><small>SSL</small> and
+<small>SSL_CTX</small> options are now 64 bit instead of 32
+bit.</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The signatures
+of the functions to get and set options on
+<small>SSL</small> and <small>SSL_CTX</small> objects
+changed from &quot;unsigned long&quot; to
+&quot;uint64_t&quot; type.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This may
+require source code changes. For example it is no longer
+possible to use the <b><small>SSL_OP_</small></b> macro
+values in preprocessor &quot;#if&quot; conditions. However
+it is still possible to test whether these macros are
+defined or not.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b>SSL_CTX_get_options</b>(3),
+<b>SSL_CTX_set_options</b>(3), <b>SSL_get_options</b>(3) and
+<b>SSL_set_options</b>(3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>SSL_set1_host()</b> and
+<b>SSL_add1_host()</b> Changes</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">These functions
+now take <small>IP</small> literal addresses as well as
+actual hostnames.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em">Added <small>SSL</small> option
+<small>SSL_OP_CLEANSE_PLAINTEXT</small></p> </td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">If the option
+is set, openssl cleanses (zeroizes) plaintext bytes from
+internal buffers after delivering them to the application.
+Note, the application is still responsible for cleansing
+other copies (e.g.: data received by
+<b>SSL_read</b>(3)).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Client-initiated renegotiation
+is disabled by default.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">To allow it,
+use the <b>-client_renegotiation</b> option, the
+<b><small>SSL_OP_ALLOW_CLIENT_RENEGOTIATION</small></b>
+flag, or the &quot;ClientRenegotiation&quot; config
+parameter as appropriate.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Secure renegotiation is now
+required by default for <small>TLS</small> connections</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Support for
+<small>RFC 5746</small> secure renegotiation is now required
+by default for <small>SSL</small> or <small>TLS</small>
+connections to succeed. Applications that require the
+ability to connect to legacy peers will need to explicitly
+set <small>SSL_OP_LEGACY_SERVER_CONNECT.</small>
+Accordingly, <small>SSL_OP_LEGACY_SERVER_CONNECT</small> is
+no longer set as part of <small>SSL_OP_ALL.</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Combining the Configure options
+no-ec and no-dh no longer disables TLSv1.3</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Typically if
+OpenSSL has no <small>EC</small> or <small>DH</small>
+algorithms then it cannot support connections with TLSv1.3.
+However OpenSSL now supports &quot;pluggable&quot; groups
+through providers. Therefore third party providers may
+supply group implementations even where there are no
+built-in ones. Attempting to create <small>TLS</small>
+connections in such a build without also disabling TLSv1.3
+at run time or using third party provider groups may result
+in handshake failures. TLSv1.3 can be disabled at compile
+time using the &quot;no-tls1_3&quot; Configure option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+
+<p style="margin-top: 1em"><b>SSL_CTX_set_ciphersuites()</b>
+and <b>SSL_set_ciphersuites()</b> changes.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The methods now
+ignore unknown ciphers.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em">Security callback change.</p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The security
+callback, which can be customised by application code,
+supports the security operation
+<small>SSL_SECOP_TMP_DH.</small> This is defined to take an
+<small>EVP_PKEY</small> in the &quot;other&quot; parameter.
+In most places this is what is passed. All these places
+occur server side. However there was one client side call of
+this security operation and it passed a <small>DH</small>
+object instead. This is incorrect according to the
+definition of <small>SSL_SECOP_TMP_DH,</small> and is
+inconsistent with all of the other locations. Therefore this
+client side call has been changed to pass an
+<small>EVP_PKEY</small> instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">New <small>SSL</small> option
+<small>SSL_OP_IGNORE_UNEXPECTED_EOF</small></p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>SSL</small> option
+<small>SSL_OP_IGNORE_UNEXPECTED_EOF</small> is introduced.
+If that option is set, an unexpected <small>EOF</small> is
+ignored, it pretends a close notify was received instead and
+so the returned error becomes
+<small>SSL_ERROR_ZERO_RETURN.</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The security strength of
+<small>SHA1</small> and <small>MD5</small> based signatures
+in <small>TLS</small> has been reduced.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">This results in
+<small>SSL 3, TLS 1.0, TLS 1.1</small> and <small>DTLS
+1.0</small> no longer working at the default security level
+of 1 and instead requires security level 0. The security
+level can be changed either using the cipher string with
+@SECLEVEL, or calling <b>SSL_CTX_set_security_level</b>(3).
+This also means that where the signature algorithms
+extension is missing from a ClientHello then the handshake
+will fail in <small>TLS 1.2</small> at security level 1.
+This is because, although this extension is optional,
+failing to provide one means that OpenSSL will fallback to a
+default set of signature algorithms. This default set
+requires the availability of <small>SHA1.</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">X509 certificates signed using
+<small>SHA1</small> are no longer allowed at security level
+1 and above.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">In
+<small>TLS/SSL</small> the default security level is 1. It
+can be set either using the cipher string with @SECLEVEL, or
+calling <b>SSL_CTX_set_security_level</b>(3). If the leaf
+certificate is signed with <small>SHA-1,</small> a call to
+<b>SSL_CTX_use_certificate</b>(3) will fail if the security
+level is not lowered first. Outside <small>TLS/SSL,</small>
+the default security level is -1 (effectively 0). It can be
+set using <b>X509_VERIFY_PARAM_set_auth_level</b>(3) or
+using the <b>-auth_level</b> options of the commands.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fips_module</b>(7)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2021
+The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

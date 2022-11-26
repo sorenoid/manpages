@@ -1,0 +1,569 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:14 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-src-symbols</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-src-symbols</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-src-symbols
+- Debian&rsquo;s extended shared library template file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debian/</b><i>package</i><b>.symbols.</b><i>arch</i>,
+<b>debian/symbols.</b><i>arch</i>,
+<b>debian/</b><i>package</i><b>.symbols</b>,
+<b>debian/symbols</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The symbol file
+templates are shipped in Debian source packages, and its
+format is a superset of the symbols files shipped in binary
+packages, see <b>deb-symbols</b>(5).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Comments</b>
+<br>
+Comments are supported in template symbol files. Any line
+with &rsquo;#&rsquo; as the first character is a comment
+except if it starts with &rsquo;#include&rsquo; (see section
+<b>Using includes</b>). Lines starting with
+&rsquo;#MISSING:&rsquo; are special comments documenting
+symbols that have disappeared.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using
+#PACKAGE# substitution</b> <br>
+In some rare cases, the name of the library varies between
+architectures. To avoid hardcoding the name of the package
+in the symbols file, you can use the marker
+<i>#PACKAGE#</i>. It will be replaced by the real package
+name during installation of the symbols files. Contrary to
+the <i>#MINVER#</i> marker, <i>#PACKAGE#</i> will never
+appear in a symbols file inside a binary package.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using symbol
+tags</b> <br>
+Symbol tagging is useful for marking symbols that are
+special in some way. Any symbol can have an arbitrary number
+of tags associated with it. While all tags are parsed and
+stored, only some of them are understood by
+<b>dpkg-gensymbols</b> and trigger special handling of the
+symbols. See subsection <b>Standard symbol tags</b> for
+reference of these tags.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tag
+specification comes right before the symbol name (no
+whitespace is allowed in between). It always starts with an
+opening bracket <b>(</b>, ends with a closing bracket
+<b>)</b> and must contain at least one tag. Multiple tags
+are separated by the <b>|</b> character. Each tag can
+optionally have a value which is separated form the tag name
+by the <b>=</b> character. Tag names and values can be
+arbitrary strings except they cannot contain any of the
+special <b>) | =</b> characters. Symbol names following a
+tag specification can optionally be quoted with either
+<b>&rsquo;</b> or <b>&quot;</b> characters to allow
+whitespaces in them. However, if there are no tags specified
+for the symbol, quotes are treated as part of the symbol
+name which continues up until the first space.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(tag1=i am
+marked|tag name with space)&quot;tagged quoted
+symbol&quot;@Base 1.0 <br>
+(optional)tagged_unquoted_symbol@Base 1.0 1 <br>
+untagged_symbol@Base 1.0</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first
+symbol in the example is named <i>tagged quoted symbol</i>
+and has two tags: <i>tag1</i> with value <i>i am marked</i>
+and <i>tag name with space</i> that has no value. The second
+symbol named <i>tagged_unquoted_symbol</i> is only tagged
+with the tag named <i>optional</i>. The last symbol is an
+example of the normal untagged symbol.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since symbol
+tags are an extension of the <b>deb-symbols</b>(5) format,
+they can only be part of the symbols files used in source
+packages (those files should then be seen as templates used
+to build the symbols files that are embedded in binary
+packages). When <b>dpkg-gensymbols</b> is called without the
+<b>-t</b> option, it will output symbols files compatible to
+the <b>deb-symbols</b>(5) format: it fully processes symbols
+according to the requirements of their standard tags and
+strips all tags from the output. On the contrary, in
+template mode (<b>-t</b>) all symbols and their tags (both
+standard and unknown ones) are kept in the output and are
+written in their original form as they were loaded.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Standard
+symbol tags <br>
+optional</b></p>
+
+<p style="margin-left:17%;">A symbol marked as optional can
+disappear from the library at any time and that will never
+cause <b>dpkg-gensymbols</b> to fail. However, disappeared
+optional symbols will continuously appear as
+<small>MISSING</small> in the diff in each new package
+revision. This behaviour serves as a reminder for the
+maintainer that such a symbol needs to be removed from the
+symbol file or readded to the library. When the optional
+symbol, which was previously declared as
+<small>MISSING,</small> suddenly reappears in the next
+revision, it will be upgraded back to the
+&ldquo;existing&rdquo; status with its minimum version
+unchanged.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This tag is
+useful for symbols which are private where their
+disappearance do not cause <small>ABI</small> breakage. For
+example, most of C <small>++</small> template instantiations
+fall into this category. Like any other tag, this one may
+also have an arbitrary value: it could be used to indicate
+why the symbol is considered optional.</p>
+
+
+<p style="margin-left:11%;"><b>arch=</b><i>architecture-list</i>
+<b><br>
+arch-bits=</b><i>architecture-bits</i> <b><br>
+arch-endian=</b><i>architecture-endianness</i></p>
+
+<p style="margin-left:17%;">These tags allow one to
+restrict the set of architectures where the symbol is
+supposed to exist. The <b>arch-bits</b> and
+<b>arch-endian</b> tags are supported since dpkg 1.18.0.
+When the symbols list is updated with the symbols discovered
+in the library, all arch-specific symbols which do not
+concern the current host architecture are treated as if they
+did not exist. If an arch-specific symbol matching the
+current host architecture does not exist in the library,
+normal procedures for missing symbols apply and it may cause
+<b>dpkg-gensymbols</b> to fail. On the other hand, if the
+arch-specific symbol is found when it was not supposed to
+exist (because the current host architecture is not listed
+in the tag or does not match the endianness and bits), it is
+made arch neutral (i.e. the arch, arch-bits and arch-endian
+tags are dropped and the symbol will appear in the diff due
+to this change), but it is not considered as new.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When operating
+in the default non-template mode, among arch-specific
+symbols only those that match the current host architecture
+are written to the symbols file. On the contrary, all
+arch-specific symbols (including those from foreign arches)
+are always written to the symbol file when operating in
+template mode.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The format of
+<i>architecture-list</i> is the same as the one used in the
+<b>Build-Depends</b> field of <i>debian/control</i> (except
+the enclosing square brackets []). For example, the first
+symbol from the list below will be considered only on alpha,
+any-amd64 and ia64 architectures, the second only on linux
+architectures, while the third one anywhere except on
+armel.</p>
+
+<p style="margin-left:17%; margin-top: 1em">(arch=alpha
+any-amd64 ia64)64bit_specific_symbol@Base 1.0 <br>
+(arch=linux-any)linux_specific_symbol@Base 1.0 <br>
+(arch=!armel)symbol_armel_does_not_have@Base 1.0</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>architecture-bits</i> is either <b>32</b> or
+<b>64</b>.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">(arch-bits=32)32bit_specific_symbol@Base
+1.0 <br>
+(arch-bits=64)64bit_specific_symbol@Base 1.0</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>architecture-endianness</i> is either <b>little</b> or
+<b>big</b>.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">(arch-endian=little)little_endian_specific_symbol@Base
+1.0 <br>
+(arch-endian=big)big_endian_specific_symbol@Base 1.0</p>
+
+<p style="margin-left:17%; margin-top: 1em">Multiple
+restrictions can be chained.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">(arch-bits=32|arch-endian=little)32bit_le_symbol@Base
+1.0</p>
+
+<p style="margin-left:11%;"><b>allow-internal</b></p>
+
+<p style="margin-left:17%;">dpkg-gensymbols has a list of
+internal symbols that should not appear in symbols files as
+they are usually only side-effects of implementation details
+of the toolchain (since dpkg 1.20.1). If for some reason,
+you really want one of those symbols to be included in the
+symbols file, you should tag the symbol with
+<b>allow-internal</b>. It can be necessary for some low
+level toolchain libraries like &ldquo;libgcc&rdquo;.</p>
+
+<p style="margin-left:11%;"><b>ignore-blacklist</b></p>
+
+<p style="margin-left:17%;">A deprecated alias for
+<b>allow-internal</b> (since dpkg 1.20.1, supported since
+dpkg 1.15.3).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>c++</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>Denotes <i>c++</i> symbol pattern. See <b>Using symbol
+patterns</b> subsection below.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>symver</b></p>
+
+<p style="margin-left:17%;">Denotes <i>symver</i> (symbol
+version) symbol pattern. See <b>Using symbol patterns</b>
+subsection below.</p>
+
+<p style="margin-left:11%;"><b>regex</b></p>
+
+<p style="margin-left:17%;">Denotes <i>regex</i> symbol
+pattern. See <b>Using symbol patterns</b> subsection
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using symbol
+patterns</b> <br>
+Unlike a standard symbol specification, a pattern may cover
+multiple real symbols from the library.
+<b>dpkg-gensymbols</b> will attempt to match each pattern
+against each real symbol that does <i>not</i> have a
+specific symbol counterpart defined in the symbol file.
+Whenever the first matching pattern is found, all its tags
+and properties will be used as a basis specification of the
+symbol. If none of the patterns matches, the symbol will be
+considered as new.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A pattern is
+considered lost if it does not match any symbol in the
+library. By default this will trigger a
+<b>dpkg-gensymbols</b> failure under <b>-c1</b> or higher
+level. However, if the failure is undesired, the pattern may
+be marked with the <i>optional</i> tag. Then if the pattern
+does not match anything, it will only appear in the diff as
+<small>MISSING.</small> Moreover, like any symbol, the
+pattern may be limited to the specific architectures with
+the <i>arch</i> tag. Please refer to <b>Standard symbol
+tags</b> subsection above for more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Patterns are an
+extension of the <b>deb-symbols</b>(5) format hence they are
+only valid in symbol file templates. Pattern specification
+syntax is not any different from the one of a specific
+symbol. However, symbol name part of the specification
+serves as an expression to be matched against
+<i>name@version</i> of the real symbol. In order to
+distinguish among different pattern types, a pattern will
+typically be tagged with a special tag.</p>
+
+<p style="margin-left:11%; margin-top: 1em">At the moment,
+<b>dpkg-gensymbols</b> supports three basic pattern
+types:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>c++</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>This pattern is denoted by the <i>c++</i> tag. It
+matches only C <small>++</small> symbols by their demangled
+symbol name (as emitted by <b>c++filt</b>(1) utility). This
+pattern is very handy for matching symbols which mangled
+names might vary across different architectures while their
+demangled names remain the same. One group of such symbols
+is <i>non-virtual thunks</i> which have architecture
+specific offsets embedded in their mangled names. A common
+instance of this case is a virtual destructor which under
+diamond inheritance needs a non-virtual thunk symbol. For
+example, even if _ZThn8_N3NSB6ClassDD1Ev@Base on 32bit
+architectures will probably be _ZThn16_N3NSB6ClassDD1Ev@Base
+on 64bit ones, it can be matched with a single <i>c++</i>
+pattern:</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">libdummy.so.1
+libdummy1 #MINVER# <br>
+[...] <br>
+(c++)&quot;non-virtual thunk to
+NSB::ClassD::~ClassD()@Base&quot; 1.0 <br>
+[...]</p>
+
+<p style="margin-left:17%; margin-top: 1em">The demangled
+name above can be obtained by executing the following
+command:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ echo
+'_ZThn8_N3NSB6ClassDD1Ev@Base' | c++filt</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that while mangled name is unique in the library by
+definition, this is not necessarily true for demangled
+names. A couple of distinct real symbols may have the same
+demangled name. For example, that&rsquo;s the case with
+non-virtual thunk symbols in complex inheritance
+configurations or with most constructors and destructors
+(since g++ typically generates two real symbols for them).
+However, as these collisions happen on the
+<small>ABI</small> level, they should not degrade quality of
+the symbol file.</p>
+
+<p style="margin-left:11%;"><b>symver</b></p>
+
+<p style="margin-left:17%;">This pattern is denoted by the
+<i>symver</i> tag. Well maintained libraries have versioned
+symbols where each version corresponds to the upstream
+version where the symbol got added. If that&rsquo;s the
+case, you can use a <i>symver</i> pattern to match any
+symbol associated to the specific version. For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">libc.so.6 libc6
+#MINVER# <br>
+(symver)GLIBC_2.0 2.0 <br>
+[...] <br>
+(symver)GLIBC_2.7 2.7 <br>
+access@GLIBC_2.0 2.2</p>
+
+<p style="margin-left:17%; margin-top: 1em">All symbols
+associated with versions <small>GLIBC_2.0</small> and
+<small>GLIBC_2.7</small> will lead to minimal version of 2.0
+and 2.7 respectively with the exception of the symbol
+access@GLIBC_2.0. The latter will lead to a minimal
+dependency on libc6 version 2.2 despite being in the scope
+of the &quot;(symver)GLIBC_2.0&quot; pattern because
+specific symbols take precedence over patterns.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that while old style wildcard patterns (denoted by
+&quot;*@version&quot; in the symbol name field) are still
+supported, they have been deprecated by new style syntax
+&quot;(symver|optional)version&quot;. For example,
+&quot;*@GLIBC_2.0 2.0&quot; should be written as
+&quot;(symver|optional)GLIBC_2.0 2.0&quot; if the same
+behaviour is needed.</p>
+
+<p style="margin-left:11%;"><b>regex</b></p>
+
+<p style="margin-left:17%;">Regular expression patterns are
+denoted by the <i>regex</i> tag. They match by the perl
+regular expression specified in the symbol name field. A
+regular expression is matched as it is, therefore do not
+forget to start it with the <i>^</i> character or it may
+match any part of the real symbol <i>name@version</i>
+string. For example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">libdummy.so.1
+libdummy1 #MINVER# <br>
+(regex)&quot;^mystack_.*@Base$&quot; 1.0 <br>
+(regex|optional)&quot;private&quot; 1.0</p>
+
+<p style="margin-left:17%; margin-top: 1em">Symbols like
+&quot;mystack_new@Base&quot;, &quot;mystack_push@Base&quot;,
+&quot;mystack_pop@Base&quot; etc. will be matched by the
+first pattern while e.g. &quot;ng_mystack_new@Base&quot;
+won&rsquo;t. The second pattern will match all symbols
+having the string &quot;private&quot; in their names and
+matches will inherit <i>optional</i> tag from the
+pattern.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Basic patterns
+listed above can be combined where it makes sense. In that
+case, they are processed in the order in which the tags are
+specified. For example, both:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">(c++|regex)&quot;^NSA::ClassA::Private::privmethod\d\(int\)@Base&quot;
+1.0 <br>
+(regex|c++)N3NSA6ClassA7Private11privmethod\dEi@Base 1.0</p>
+
+<p style="margin-left:11%; margin-top: 1em">will match
+symbols
+&quot;_ZN3NSA6ClassA7Private11privmethod1Ei@Base&quot; and
+&quot;_ZN3NSA6ClassA7Private11privmethod2Ei@Base&quot;. When
+matching the first pattern, the raw symbol is first
+demangled as C <small>++</small> symbol, then the demangled
+name is matched against the regular expression. On the other
+hand, when matching the second pattern, regular expression
+is matched against the raw symbol name, then the symbol is
+tested if it is C <small>++</small> one by attempting to
+demangle it. A failure of any basic pattern will result in
+the failure of the whole pattern. Therefore, for example,
+&quot;__N3NSA6ClassA7Private11privmethod\dEi@Base&quot; will
+not match either of the patterns because it is not a valid C
+<small>++</small> symbol.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In general, all
+patterns are divided into two groups: aliases (basic
+<i>c++</i> and <i>symver</i>) and generic patterns
+(<i>regex</i>, all combinations of multiple basic patterns).
+Matching of basic alias-based patterns is fast (O(1)) while
+generic patterns are O(N) (N - generic pattern count) for
+each symbol. Therefore, it is recommended not to overuse
+generic patterns.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When multiple
+patterns match the same real symbol, aliases (first
+<i>c++</i>, then <i>symver</i>) are preferred over generic
+patterns. Generic patterns are matched in the order they are
+found in the symbol file template until the first success.
+Please note, however, that manual reordering of template
+file entries is not recommended because
+<b>dpkg-gensymbols</b> generates diffs based on the
+alphanumerical order of their names.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Using
+includes</b> <br>
+When the set of exported symbols differ between
+architectures, it may become inefficient to use a single
+symbol file. In those cases, an include directive may prove
+to be useful in a couple of ways:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>You can factorize the common part in some external file
+and include that file in your
+<i>package</i>.symbols.<i>arch</i> file by using an include
+directive like this:</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">#include
+&quot;I&lt;packages&gt;.symbols.common&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The include directive may also
+be tagged like any symbol:</p></td></tr>
+</table>
+
+
+<p style="margin-left:17%; margin-top: 1em">(tag|...|tagN)#include
+&quot;file-to-include&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">As a result,
+all symbols included from <i>file-to-include</i> will be
+considered to be tagged with <i>tag</i> ... <i>tagN</i> by
+default. You can use this feature to create a common
+<i>package</i>.symbols file which includes architecture
+specific symbol files:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">common_symbol1@Base
+1.0 <br>
+(arch=amd64 ia64 alpha)#include
+&quot;package.symbols.64bit&quot; <br>
+(arch=!amd64 !ia64 !alpha)#include
+&quot;package.symbols.32bit&quot; <br>
+common_symbol2@Base 1.0</p>
+
+<p style="margin-left:11%; margin-top: 1em">The symbols
+files are read line by line, and include directives are
+processed as soon as they are encountered. This means that
+the content of the included file can override any content
+that appeared before the include directive and that any
+content after the directive can override anything contained
+in the included file. Any symbol (or even another #include
+directive) in the included file can specify additional tags
+or override values of the inherited tags in its tag
+specification. However, there is no way for the symbol to
+remove any of the inherited tags.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An included
+file can repeat the header line containing the
+<small>SONAME</small> of the library. In that case, it
+overrides any header line previously read. However, in
+general it&rsquo;s best to avoid duplicating header lines.
+One way to do it is the following:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&quot;libsomething1.symbols.common&quot; <br>
+arch_specific_symbol@Base 1.0</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb-symbols</b>(5),
+<b>dpkg-shlibdeps</b>(1), <b>dpkg-gensymbols</b>(1).</p>
+<hr>
+</body>
+</html>

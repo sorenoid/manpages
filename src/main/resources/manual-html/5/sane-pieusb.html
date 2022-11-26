@@ -1,0 +1,198 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:11 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>sane-pieusb</title>
+
+</head>
+<body>
+
+<h1 align="center">sane-pieusb</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#MULTIPLE SLIDES">MULTIPLE SLIDES</a><br>
+<a href="#DIRT REMOVAL">DIRT REMOVAL</a><br>
+<a href="#KNOWN PROBLEMS">KNOWN PROBLEMS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#CONTACT AND BUG-REPORTS">CONTACT AND BUG-REPORTS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sane-pieusb -
+SANE backend for USB-connected PIE PowerSlide and Reflecta
+DigitDia/CrystalScan/ProScan slide scanners</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sane-pieusb</b> library implements a SANE (Scanner Access
+Now Easy) backend that provides access to USB-connected PIE
+and Reflecta slide scanners. <br>
+At present, the following scanners should work with this
+backend:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Model: Status
+<br>
+------------------------- ------ <br>
+PIE PowerSlide 3600 Untested <br>
+PIE PowerSlide 3650 Untested <br>
+PIE PowerSlide 4000 Untested <br>
+PIE PowerSlide 5000 Untested <br>
+Reflecta CrystalScan 7200 Untested <br>
+Reflecta ProScan 4000 Untested <br>
+Reflecta ProScan 7200 Untested <br>
+Reflecta DigitDia 3600 Untested <br>
+Reflecta DigitDia 4000 Untested <br>
+Reflecta DigitDia 5000 Untested <br>
+Reflecta DigitDia 6000 Ok</p>
+
+<h2>MULTIPLE SLIDES
+<a name="MULTIPLE SLIDES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Support for
+multiple slide scanners (like the PowerSlide or DigitDia
+series) is done by auto-advancing (&rsquo;Advance
+slide&rsquo; setting) the slide after each scan.</p>
+
+<p style="margin-left:11%; margin-top: 1em">However, for
+best results, it is recommended to do a preview for every
+slide since this sets gamma, brightness, and contrast to
+optimal values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Attention: SANE
+does not have an automatic landscape/portrait detection and
+re-orientation when scanning multiple slides. You have to
+put all slides into one orientation first !</p>
+
+<h2>DIRT REMOVAL
+<a name="DIRT REMOVAL"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If available,
+<b>sane-pieusb</b> supports infrared scans for dirt
+detection and removal. This must be enabled via the
+&rsquo;Clean image&rsquo; setting.</p>
+
+<h2>KNOWN PROBLEMS
+<a name="KNOWN PROBLEMS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sane-pieusb</b> backend supports dirt removal based on
+infrared scan information. Since SANE does not provide
+post-processing in the backend, <b>sane-pieusb</b> does the
+scanning and dirt removal during the setup phase. The
+&rsquo;scan&rsquo; phase is only used to transfer the
+completed image. Therefore <b>sane-pieusb</b> does not
+multi-thread making a typical frontend appear as
+&rsquo;blocked&rsquo;. Also cancel requests are only honored
+between scans.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SANE_DEBUG_PIEUSB</b></p>
+
+<p style="margin-left:22%;">If the library was compiled
+with debug support enabled, this environment variable
+controls the debug level for this backend. E.g., a value of
+128 requests all debug output to be printed. Smaller levels
+reduce verbosity.</p>
+
+<p style="margin-left:22%; margin-top: 1em">level debug
+output <br>
+------- ------------------------------ <br>
+0 nothing <br>
+1 errors <br>
+2 warnings &amp; minor errors <br>
+5 additional information <br>
+7 SANE api calls <br>
+9 backend functions <br>
+11 scanner functions <br>
+13 usb functions <br>
+15 image buffer functions</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/sane.d/pieusb.conf</i></p>
+
+<p style="margin-left:22%;">The backend configuration
+file</p>
+
+
+<p style="margin-left:11%;"><i>/usr/lib/x86_64-linux-gnu/sane/libsane-pieusb.a</i></p>
+
+<p style="margin-left:22%;">The static library implementing
+this backend.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/lib/x86_64-linux-gnu/sane/libsane-pieusb.so</i></p>
+
+<p style="margin-left:22%;">The shared library implementing
+this backend (present on systems that support dynamic
+loading).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sane</b>(7)</p>
+
+<h2>CONTACT AND BUG-REPORTS
+<a name="CONTACT AND BUG-REPORTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please send any
+information and bug-reports to: <br>
+Klaus K&Atilde;&curren;mpf
+&lt;<i>kkaempf@suse.com</i>&gt;</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The pieusb
+backend is based on work by Jan Vleeshouwers, Michael
+Rickmann, and Klaus K&Atilde;&curren;mpf</p>
+<hr>
+</body>
+</html>

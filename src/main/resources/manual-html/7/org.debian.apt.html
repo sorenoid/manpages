@@ -1,0 +1,469 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:51 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>org.debian.apt</title>
+
+</head>
+<body>
+
+<h1 align="center">org.debian.apt</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#HOMEPAGE">HOMEPAGE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">org.debian.apt
+- the main interface of aptdaemon</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The daemon is
+accessed through the D-Bus object at <i>/org/debian/apt</i>.
+Which provides the following interface.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>METHODS <br>
+AddRepository</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><b>AddRepository</b></p></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p><b>(in &rsquo;s&rsquo;</b> <i>type</i><b>,</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p><b>in &rsquo;s&rsquo;</b> <i>uri</i><b>,</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p><b>in &rsquo;s&rsquo;</b> <i>dist</i><b>,</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p><b>in &rsquo;as&rsquo;</b> <i>comps</i><b>,</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p><b>in &rsquo;s&rsquo;</b> <i>comment</i><b>,</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p><b>in &rsquo;s&rsquo;</b> <i>sourcesfile</i><b>)</b></p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Add a new
+repository to the sources list file. The repository has to
+define the type (e.g. deb or deb-src), uri (e.g.
+http://archive.debian.org/debian), the distribution (e.g.
+stable) and a list of components (e.g. main).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally a
+comment and an alternative sources.list file can be
+specified.</p>
+
+
+<p style="margin-left:11%;"><b>EnableDistroComponent</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%">
+
+
+<p><b>EnableDistroComponent</b></p></td>
+<td width="30%"></td>
+<td width="8%"></td>
+<td width="54%">
+
+
+<p><b>(in &rsquo;s&rsquo;</b> <i>comp</i><b>)</b></p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Enable a
+component for all distro repositories, e.g. main or
+universe.</p>
+
+
+<p style="margin-left:11%;"><b>GetTrustedVendorKeys</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%">
+
+
+<p><b>GetTrustedVendorKeys</b></p></td>
+<td width="30%"></td>
+<td width="8%"></td>
+<td width="54%">
+
+
+<p><b>(out &rsquo;as&rsquo;</b> <i>keys</i><b>)</b></p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Return the
+GnuPG keys which are used to authenticate packages.</p>
+
+
+<p style="margin-left:11%;"><b>GetAtiveTransactions</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%">
+
+
+<p><b>GetActiveTransactions</b></p></td>
+<td width="30%"></td>
+<td width="8%"></td>
+<td width="54%">
+
+
+<p><b>(out &rsquo;as&rsquo;</b> <i>tids</i><b>)</b></p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Return an array
+of the currently queued transactions.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>Quit</b></p></td>
+<td width="5%"></td>
+<td width="10%">
+
+
+<p><b>Quit ()</b></p></td>
+<td width="68%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Request the
+shutdown of the daemon. The daemon will finish a currently
+running transaction before.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TRANSACTION
+BASED METHODS</b> <br>
+The following methods are handled by transactions. By
+calling the methods a new transaction will be created for
+the task. The return value of the method is the D-Bus object
+path of the corresponding transaction. The transaction can
+be modified, to use an http proxy or to run in a specific
+language by setting the corresponding properties on the
+<b>org.debian.apt.transaction</b>(7) interface. Afterwards
+the transaction has to be queued for processing by calling
+its Run method on the <b>org.debian.apt.transaction</b>(7)
+interface. <b><br>
+UpdateCache</b></p>
+
+<p style="margin-left:22%;"><b>UpdateCache (out
+&rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will fetch the latest
+meta data from the repositories and rebuild the cache of
+available and installed packages.</p>
+
+
+<p style="margin-left:11%;"><b>UpdateCachePartially</b></p>
+
+<p style="margin-left:22%;"><b>UpdateCachePartially (in
+&rsquo;s&rsquo;</b> <i>sources_list</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will fetch the latest
+meta data from the repositories specified in the given
+sources.list snippet only and rebuild the cache of available
+and installed packages.</p>
+
+<p style="margin-left:11%;"><b>InstallPackages</b></p>
+
+<p style="margin-left:22%;"><b>InstallPackages (in
+&rsquo;as&rsquo;</b> <i>package_names</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will install the
+packages of the given names.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally the
+to be installed version can be specified by appending a
+&quot;=&quot; and the version to the package name, e.g.
+&quot;xterm=256-1&quot;.</p>
+
+<p style="margin-left:11%;"><b>InstallFile</b></p>
+
+<p style="margin-left:22%;"><b>InstallFile (in
+&rsquo;s&rsquo;</b> <i>path</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly create transaction which will install a local
+*.deb package file at the given <i>path</i>.</p>
+
+<p style="margin-left:11%;"><b>UpgradePackages</b></p>
+
+<p style="margin-left:22%;"><b>UpgradePackages (in
+&rsquo;as&rsquo;</b> <i>package_names</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will upgrade the
+packages of the given names to their latest version.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally the
+to be installed version can be specified by appending a
+&quot;=&quot; and the version to the package name, e.g.
+&quot;xterm=256-1&quot;.</p>
+
+<p style="margin-left:11%;"><b>RemovePackages</b></p>
+
+<p style="margin-left:22%;"><b>RemovePackages (in
+&rsquo;as&rsquo;</b> <i>package_names</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will remove the
+packages of the given names.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally the
+version of the to be removed packages can be specified by
+appending a &quot;=&quot; and the version to the package
+name, e.g. &quot;xterm=256-1&quot;.</p>
+
+<p style="margin-left:11%;"><b>UpgradeSystem</b></p>
+
+<p style="margin-left:22%;"><b>UpgradeSystem (in
+&rsquo;b&rsquo;</b> <i>safe_mode</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will upgrade the whole
+system.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If in safe mode
+only already installed packages will be updated. Updates
+which require to remove installed packages or to install
+additional packages will be skipped.</p>
+
+<p style="margin-left:11%;"><b>CommitPackages</b></p>
+
+<p style="margin-left:22%;"><b>CommitPackages (in
+&rsquo;as&rsquo;</b> <i>install</i><b>, <br>
+in &rsquo;as&rsquo;</b> <i>reinstall,</i> <b><br>
+in &rsquo;as&rsquo;</b> <i>remove,</i> <b><br>
+in &rsquo;as&rsquo;</b> <i>purge,</i> <b><br>
+in &rsquo;as&rsquo;</b> <i>upgrade</i><b>, <br>
+in &rsquo;as&rsquo;</b> <i>downgrade</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will perform a complex
+install/removal task at once. <i>Install</i>,
+<i>reinstall</i>, <i>remove</i>, <i>purge</i> and
+<i>upgrade</i> are lists of package names.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally the
+version of the to be removed packages or the version of the
+package which should be installed can be specified by
+appending a &quot;=&quot; and the version to the package
+name, e.g. &quot;xterm=256-1&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>AddVendorKeyFromFile</b></p>
+
+<p style="margin-left:22%;"><b>AddVendorKeyFromFile (in
+&rsquo;s&rsquo;</b> <i>path</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will install the public
+GnuPG key at the given <i>path</i> to the list of trusted
+software vendors. The list will be used to authenticate
+packages.</p>
+
+
+<p style="margin-left:11%;"><b>AddVendorKeyFromKeyserver</b></p>
+
+<p style="margin-left:22%;"><b>AddVendorKeyFromKeyserver
+(in &rsquo;s&rsquo;</b> <i>keyid</i><b>, <br>
+in &rsquo;s&rsquo;</b> <i>keyserver,</i> <b><br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will download and
+install the public GnuPG key of the <i>keyid</i> from the
+given <i>keyserver</i> to the list of trusted software
+vendors. The list will be used to authenticate packages.</p>
+
+<p style="margin-left:11%;"><b>RemoveVendorKey</b></p>
+
+<p style="margin-left:22%;"><b>RemoveVendorKey (in
+&rsquo;s&rsquo;</b> <i>fingerprint</i><b>, <br>
+out &rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will remove the public
+GnuPG key with the given <i>fingerprint</i> from the list of
+trusted software vendors. The list will be used to
+authenticate packages.</p>
+
+<p style="margin-left:11%;"><b>FixBrokenDepends</b></p>
+
+<p style="margin-left:22%;"><b>FixBrokenDepends (out
+&rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will try to resolve
+unsatisfied dependencies by installing required packages or
+removing conflicting ones.</p>
+
+
+<p style="margin-left:11%;"><b>FixIncompleteInstall</b></p>
+
+<p style="margin-left:22%;"><b>FixIncompleteInstall (out
+&rsquo;s&rsquo;</b> <i>tid</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Return the id
+of a newly created transaction which will try to complete
+previously failed installations by calling &quot;dpkg
+--configure -a&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SIGNALS <br>
+ActiveTransactionsChanged</b></p>
+
+<p style="margin-left:22%;"><b>ActiveTransactionsChanged
+(&rsquo;s&rsquo;</b> <i>active</i><b>, <br>
+&rsquo;as&rsquo;</b> <i>queued</i><b>)</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The signal is
+used to report changes of the currently running or queued
+transactions. If there&rsquo;s any active transaction active
+will be an empty string.</p>
+
+<h2>HOMEPAGE
+<a name="HOMEPAGE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">https://launchpad.net/aptdaemon</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can report
+bugs at the Launchpad site of aptdaemon:
+https://bugs.launchpad.net/aptdaemon/+filebug</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Sebastian
+Heinlein &lt;devel at glatzor dot de&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>org.debian.apt.transaction</b>(7),
+<b>aptd</b>(2), <b>aptdcon</b>(2)</p>
+<hr>
+</body>
+</html>

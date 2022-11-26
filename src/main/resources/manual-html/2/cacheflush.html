@@ -1,0 +1,289 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CACHEFLUSH</title>
+
+</head>
+<body>
+
+<h1 align="center">CACHEFLUSH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cacheflush -
+flush contents of instruction and/or data cache</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;asm/cachectl.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+cacheflush(char *</b><i>addr</i><b>, int</b>
+<i>nbytes</i><b>, int</b> <i>cache</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Note</i>: On
+some architectures, there is no glibc wrapper for this
+system call; see NOTES.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cacheflush</b>()
+flushes the contents of the indicated cache(s) for the user
+addresses in the range <i>addr</i> to
+<i>(addr+nbytes-1)</i>. <i>cache</i> may be one of:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ICACHE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Flush the instruction cache.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>DCACHE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Write back to memory and invalidate the affected valid
+cache lines.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>BCACHE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Same as <b>(ICACHE|DCACHE)</b>.</p></td></tr>
+</table>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cacheflush</b>()
+returns 0 on success or -1 on error. If errors are detected,
+<i>errno</i> will indicate the error.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Some or all of the address range
+<i>addr</i> to <i>(addr+nbytes-1)</i> is not accessible.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>cache</i> is not one of <b>ICACHE</b>, <b>DCACHE</b>,
+or <b>BCACHE</b> (but see BUGS).</p></td></tr>
+</table>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Historically,
+this system call was available on all MIPS UNIX variants
+including RISC/os, IRIX, Ultrix, NetBSD, OpenBSD, and
+FreeBSD (and also on some non-UNIX MIPS operating systems),
+so that the existence of this call in MIPS operating systems
+is a de-facto standard.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Caveat <br>
+cacheflush</b>() should not be used in programs intended to
+be portable. On Linux, this call first appeared on the MIPS
+architecture, but nowadays, Linux provides a
+<b>cacheflush</b>() system call on some other architectures,
+but with different arguments.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Architecture-specific
+variants</b> <br>
+Glibc provides a wrapper for this system call, with the
+prototype shown in SYNOPSIS, for the following
+architectures: ARC, CSKY, MIPS, and NIOS2.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On some other
+architectures, Linux provides this system call, with
+different arguments:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">M68K:</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>int cacheflush(unsigned
+long</b> <i>addr</i><b>, int</b> <i>scope</i><b>, int</b>
+<i>cache</i><b>,</b></p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>unsigned long</b>
+<i>len</i><b>);</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">SH:</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>int cacheflush(unsigned
+long</b> <i>addr</i><b>, unsigned long</b> <i>len</i><b>,
+int</b> <i>op</i><b>);</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>NDS32:</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><b>int cacheflush(unsigned int</b> <i>start</i><b>,
+unsigned int</b> <i>end</i><b>, int</b>
+<i>cache</i><b>);</b></p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">On the above
+architectures, glibc does not provide a wrapper for this
+system call; call it using <b>syscall</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>GCC
+alternative</b> <br>
+Unless you need the finer grained control that this system
+call provides, you probably want to use the GCC built-in
+function <b>__builtin___clear_cache</b>(), which provides a
+portable interface across platforms supported by GCC and
+compatible compilers:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>void
+__builtin___clear_cache(void *</b><i>begin</i><b>, void
+*</b><i>end</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">On platforms
+that don&rsquo;t require instruction cache flushes,
+<b>__builtin___clear_cache</b>() has no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Note</i>: On
+some GCC-compatible compilers, the prototype for this
+built-in function uses <i>char *</i> instead of <i>void
+*</i> for the parameters.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux kernels
+older than version 2.6.11 ignore the <i>addr</i> and
+<i>nbytes</i> arguments, making this function fairly
+expensive. Therefore, the whole cache is always flushed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This function
+always behaves as if <b>BCACHE</b> has been passed for the
+<i>cache</i> argument and does not do any error checking on
+the <i>cache</i> argument.</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

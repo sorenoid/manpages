@@ -1,0 +1,693 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:58 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ORG.FREEDESKTOP.MACHINE1</title>
+
+</head>
+<body>
+
+<h1 align="center">ORG.FREEDESKTOP.MACHINE1</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INTRODUCTION">INTRODUCTION</a><br>
+<a href="#THE MANAGER OBJECT">THE MANAGER OBJECT</a><br>
+<a href="#MACHINE OBJECTS">MACHINE OBJECTS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#VERSIONING">VERSIONING</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">org.freedesktop.machine1
+- The D-Bus interface of systemd-machined</p>
+
+<h2>INTRODUCTION
+<a name="INTRODUCTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-machined.service</b>(8)
+is a system service that keeps track of locally running
+virtual machines and containers. This page describes the
+D-Bus interface.</p>
+
+<h2>THE MANAGER OBJECT
+<a name="THE MANAGER OBJECT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The service
+exposes the following interfaces on the Manager object on
+the bus:</p>
+
+<p style="margin-left:17%; margin-top: 1em">node
+/org/freedesktop/machine1 { <br>
+interface org.freedesktop.machine1.Manager { <br>
+methods: <br>
+GetMachine(in s name, <br>
+out o machine); <br>
+GetImage(in s name, <br>
+out o image); <br>
+GetMachineByPID(in u pid, <br>
+out o machine); <br>
+ListMachines(out a(ssso) machines); <br>
+ListImages(out a(ssbttto) images); <br>
+CreateMachine(in s name, <br>
+in ay id, <br>
+in s service, <br>
+in s class, <br>
+in u leader, <br>
+in s root_directory, <br>
+in a(sv) scope_properties, <br>
+out o path); <br>
+CreateMachineWithNetwork(in s name, <br>
+in ay id, <br>
+in s service, <br>
+in s class, <br>
+in u leader, <br>
+in s root_directory, <br>
+in ai ifindices, <br>
+in a(sv) scope_properties, <br>
+out o path); <br>
+RegisterMachine(in s name, <br>
+in ay id, <br>
+in s service, <br>
+in s class, <br>
+in u leader, <br>
+in s root_directory, <br>
+out o path); <br>
+RegisterMachineWithNetwork(in s name, <br>
+in ay id, <br>
+in s service, <br>
+in s class, <br>
+in u leader, <br>
+in s root_directory, <br>
+in ai ifindices, <br>
+out o path); <br>
+UnregisterMachine(in s name); <br>
+TerminateMachine(in s id); <br>
+KillMachine(in s name, <br>
+in s who, <br>
+in i signal); <br>
+GetMachineAddresses(in s name, <br>
+out a(iay) addresses); <br>
+GetMachineOSRelease(in s name, <br>
+out a{ss} fields); <br>
+OpenMachinePTY(in s name, <br>
+out h pty, <br>
+out s pty_path); <br>
+OpenMachineLogin(in s name, <br>
+out h pty, <br>
+out s pty_path); <br>
+OpenMachineShell(in s name, <br>
+in s user, <br>
+in s path, <br>
+in as args, <br>
+in as environment, <br>
+out h pty, <br>
+out s pty_path); <br>
+BindMountMachine(in s name, <br>
+in s source, <br>
+in s destination, <br>
+in b read_only, <br>
+in b mkdir); <br>
+CopyFromMachine(in s name, <br>
+in s source, <br>
+in s destination); <br>
+CopyToMachine(in s name, <br>
+in s source, <br>
+in s destination); <br>
+OpenMachineRootDirectory(in s name, <br>
+out h fd); <br>
+GetMachineUIDShift(in s name, <br>
+out u shift); <br>
+RemoveImage(in s name); <br>
+RenameImage(in s name, <br>
+in s new_name); <br>
+CloneImage(in s name, <br>
+in s new_name, <br>
+in b read_only); <br>
+MarkImageReadOnly(in s name, <br>
+in b read_only); <br>
+GetImageHostname(in s name, <br>
+out s hostname); <br>
+GetImageMachineID(in s name, <br>
+out ay id); <br>
+GetImageMachineInfo(in s name, <br>
+out a{ss} machine_info); <br>
+GetImageOSRelease(in s name, <br>
+out a{ss} os_release); <br>
+SetPoolLimit(in t size); <br>
+SetImageLimit(in s name, <br>
+in t size); <br>
+CleanPool(in s mode, <br>
+out a(st) images); <br>
+MapFromMachineUser(in s name, <br>
+in u uid_inner, <br>
+out u uid_outer); <br>
+MapToMachineUser(in u uid_outer, <br>
+out s machine_name, <br>
+out o machine_path, <br>
+out u uid_inner); <br>
+MapFromMachineGroup(in s name, <br>
+in u gid_inner, <br>
+out u gid_outer); <br>
+MapToMachineGroup(in u gid_outer, <br>
+out s machine_name, <br>
+out o machine_path, <br>
+out u gid_inner); <br>
+signals: <br>
+MachineNew(s machine, <br>
+o path); <br>
+MachineRemoved(s machine, <br>
+o path); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s PoolPath = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t PoolUsage = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly t PoolLimit = ...; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Methods <br>
+GetMachine()</b> may be used to get the machine object path
+for the machine with the specified name. Similarly,
+<b>GetMachineByPID()</b> gets the machine object the
+specified PID belongs to if there is any.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>GetImage()</b>
+may be used to get the image object path of the image with
+the specified name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListMachines()</b>
+returns an array of all currently registered machines. The
+structures in the array consist of the following fields:
+machine name, machine class, an identifier for the service
+that registered the machine and the machine object path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ListImages()</b>
+returns an array of all currently known images. The
+structures in the array consist of the following fields:
+image name, type, read-only flag, creation time,
+modification time, current disk space, and image object
+path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CreateMachine()</b>
+may be used to register a new virtual machine or container
+with <b>systemd-machined</b>, creating a scope unit for it.
+It accepts the following arguments: a machine name chosen by
+the registrar, an optional UUID as a 32 byte array, a string
+that identifies the service that registers the machine, a
+class string, the PID of the leader process of the machine,
+an optional root directory of the container, and an array of
+additional properties to use for the scope registration. The
+virtual machine name must be suitable as a hostname, and
+hence should follow the usual DNS hostname rules, as well as
+the Linux hostname restrictions. Specifically, only 7 bit
+ASCII is permitted, a maximum length of 64 characters is
+enforced, only characters from the set
+&quot;a-zA-Z0-9-_.&quot; are allowed, the name may not begin
+with a dot, and it may not contain two dots immediately
+following each other. Container and VM managers should
+ideally use the hostname used internally in the machine for
+this parameter. This recommendation is made in order to make
+the machine name naturally resolvable using
+<b>nss-mymachines</b>(8). If a container manager needs to
+embed characters outside of the indicated range, escaping is
+required, possibly using &quot;_&quot; as the escape
+character. Another (somewhat natural) option would be to
+utilize Internet IDNA encoding. The UUID is passed as a 32
+byte array or, if no suitable UUID is available, an empty
+array (zero length) or zeroed out array shall be passed. The
+UUID should identify the virtual machine/container uniquely
+and should ideally be the same UUID that /etc/machine-id in
+the VM/container is initialized from. The service string can
+be free-form, but it is recommended to pass a short
+lowercase identifier like &quot;systemd-nspawn&quot;,
+&quot;libvirt-lxc&quot; or similar. The class string should
+be either &quot;container&quot; or &quot;vm&quot; indicating
+whether the machine to register is of the respective class.
+The leader PID should be the host PID of the init process of
+the container or the encapsulating process of the VM. If the
+root directory of the container is known and available in
+the host's hierarchy, it should be passed. Otherwise, pass
+the empty string instead. Finally, the scope properties are
+passed as array in the same way as to PID1's
+<b>StartTransientUnit()</b> method. Calling this method will
+internally register a transient scope unit for the calling
+client (utilizing the passed scope_properties) and move the
+leader PID into it. The method returns an object path for
+the registered machine object that implements the
+org.freedesktop.machine1.Machine interface (see below). Also
+see the <b><font color="#0000FF">New Control Group
+Interfaces</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">for details about scope units and how
+to alter resource control settings on the created machine at
+runtime.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>RegisterMachine()</b>
+is similar to <b>CreateMachine()</b>. However, it only
+registers a machine and does not create a scope unit for it.
+Instead, the caller's unit is registered. We recommend to
+only use this method for container or VM managers that are
+run multiple times, one instance for each container/VM they
+manage, and are invoked as system services.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>CreateMachineWithNetwork()</b>
+and <b>RegisterMachineWithNetwork()</b> are similar to
+<b>CreateMachine()</b> and <b>RegisterMachine()</b> but take
+an extra argument: an array of network interface indices
+that point towards the virtual machine or container. The
+interface indices should reference one or more network
+interfaces on the host that can be used to communicate with
+the guest. Commonly, the passed interface index refers to
+the host side of a &quot;veth&quot; link (in case of
+containers), a &quot;tun&quot;/&quot;tap&quot; link (in case
+of VMs), or the host side of a bridge interface that bridges
+access to the VM/container interfaces. Specifying this
+information is useful to enable support for link-local IPv6
+communication to the machines since the scope field of
+sockaddr_in6 can be initialized by the specified ifindex.
+<b>nss-mymachines</b>(8) makes use of this
+information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>KillMachine()</b>
+sends a UNIX signal to the machine's processes. As its
+arguments, it takes a machine name (as originally passed to
+<b>CreateMachine()</b> or returned by
+<b>ListMachines()</b>), an identifier that specifies what
+precisely to send the signal to (either &quot;leader&quot;
+or &quot;all&quot;), and a numeric UNIX signal
+integer.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>TerminateMachine()</b>
+terminates a virtual machine, killing its processes. It
+takes a machine name as its only argument.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>GetMachineAddresses()</b>
+retrieves the IP addresses of a container. This method
+returns an array of pairs consisting of an address family
+specifier (<b>AF_INET</b> or <b>AF_INET6</b>) and a byte
+array containing the addresses. This is only supported for
+containers that make use of network namespacing.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>GetMachineOSRelease()</b>
+retrieves the OS release information of a container. This
+method returns an array of key value pairs read from the
+<b>os-release</b>(5) file in the container and is useful to
+identify the operating system used in a
+container.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>OpenMachinePTY()</b>
+allocates a pseudo TTY in the container and returns a file
+descriptor and its path. This is equivalent to transitioning
+into the container and invoking
+<b>posix_openpt</b>(3).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>OpenMachineLogin()</b>
+allocates a pseudo TTY in the container and ensures that a
+getty login prompt of the container is running on the other
+end. It returns the file descriptor of the PTY and the PTY
+path. This is useful for acquiring a pty with a login prompt
+from the container.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>OpenMachineShell()</b>
+allocates a pseudo TTY in the container, as the specified
+user, and invokes the executable at the specified path with
+a list of arguments (starting from argv[0]) and an
+environment block. It then returns the file descriptor of
+the PTY and the PTY path.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>BindMountMachine()</b>
+bind mounts a file or directory from the host into the
+container. Its arguments consist of a machine name, the
+source directory on the host, the destination directory in
+the container, and two booleans, one indicating whether the
+bind mount shall be read-only, the other indicating whether
+the destination mount point shall be created first, if it is
+missing.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>CopyFromMachine()</b>
+copies files or directories from a container into the host.
+It takes a container name, a source directory in the
+container and a destination directory on the host as
+arguments. <b>CopyToMachine()</b> does the opposite and
+copies files from a source directory on the host into a
+destination directory in the container.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>RemoveImage()</b>
+removes the image with the specified name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>RenameImage()</b>
+renames the specified image.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>CloneImage()</b>
+clones the specified image under a new name. It also takes a
+boolean argument indicating whether the resulting image
+shall be read-only or not.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>MarkImageReadOnly()</b>
+toggles the read-only flag of an image.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetPoolLimit()</b>
+sets an overall quota limit on the pool of
+images.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>SetImageLimit()</b>
+sets a per-image quota limit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>MapFromMachineUser()</b>,
+<b>MapToMachineUser()</b>, <b>MapFromMachineGroup()</b>, and
+<b>MapToMachineGroup()</b> may be used to map UIDs/GIDs from
+the host user namespace to a container user namespace or
+vice versa.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Signals
+<br>
+MachineNew</b> and <b>MachineRemoved</b> are sent whenever a
+new machine is registered or removed. These signals carry
+the machine name and the object path to the corresponding
+org.freedesktop.machine1.Machine interface (see
+below).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Properties</b>
+<i><br>
+PoolPath</i> specifies the file system path where images are
+written to.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>PoolUsage</i>
+specifies the current usage size of the image pool in
+bytes.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>PoolLimit</i>
+specifies the size limit of the image pool in
+bytes.</font></p>
+
+<h2>MACHINE OBJECTS
+<a name="MACHINE OBJECTS"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">node
+/org/freedesktop/machine1/machine/rawhide { <br>
+interface org.freedesktop.machine1.Machine { <br>
+methods: <br>
+Terminate(); <br>
+Kill(in s who, <br>
+in i signal); <br>
+GetAddresses(out a(iay) addresses); <br>
+GetOSRelease(out a{ss} fields); <br>
+GetUIDShift(out u shift); <br>
+OpenPTY(out h pty, <br>
+out s pty_path); <br>
+OpenLogin(out h pty, <br>
+out s pty_path); <br>
+OpenShell(in s user, <br>
+in s path, <br>
+in as args, <br>
+in as environment, <br>
+out h pty, <br>
+out s pty_path); <br>
+BindMount(in s source, <br>
+in s destination, <br>
+in b read_only, <br>
+in b mkdir); <br>
+CopyFrom(in s source, <br>
+in s destination); <br>
+CopyTo(in s source, <br>
+in s destination); <br>
+OpenRootDirectory(out h fd); <br>
+properties: <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Name = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly ay Id = [...]; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t Timestamp = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly t TimestampMonotonic = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Service = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Unit = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly u Leader = ...; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s Class = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly s RootDirectory = '...'; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+<br>
+readonly ai NetworkInterfaces = [...]; <br>
+
+@org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+<br>
+readonly s State = '...'; <br>
+}; <br>
+interface org.freedesktop.DBus.Peer { ... }; <br>
+interface org.freedesktop.DBus.Introspectable { ... }; <br>
+interface org.freedesktop.DBus.Properties { ... }; <br>
+};</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Methods
+<br>
+Terminate()</b> and <b>Kill()</b> terminate/kill the
+machine. These methods take the same arguments as
+<b>TerminateMachine()</b> and <b>KillMachine()</b> on the
+Manager interface, respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>GetAddresses()</b>
+and <b>GetOSRelease()</b> get the IP address and OS release
+information from the machine. These methods take the same
+arguments as <b>GetMachineAddresses()</b> and
+<b>GetMachineOSRelease()</b> of the Manager interface,
+respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Properties</b>
+<i><br>
+Name</i> is the machine name as it was passed in during
+registration with <b>CreateMachine()</b> on the manager
+object.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Id</i>
+is the machine UUID.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Timestamp</i>
+and <i>TimestampMonotonic</i> are the realtime and monotonic
+timestamps when the virtual machines where created in
+microseconds since the epoch.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Service</i>
+contains a short string identifying the registering service
+as passed in during registration of the machine.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Unit</i>
+is the systemd scope or service unit name for the
+machine.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Leader</i>
+is the PID of the leader process of the machine.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Class</i>
+is the class of the machine and is either the string
+&quot;vm&quot; (for real VMs based on virtualized hardware)
+or &quot;container&quot; (for light-weight userspace
+virtualization sharing the same kernel as the
+host).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>RootDirectory</i>
+is the root directory of the container if it is known and
+applicable or the empty string.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>NetworkInterfaces</i>
+contains an array of network interface indices that point
+towards the container, the VM or the host. For details about
+this information see the description of
+<b>CreateMachineWithNetwork()</b> above.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>State</i>
+is the state of the machine and is one of
+&quot;opening&quot;, &quot;running&quot;, or
+&quot;closing&quot;. Note that the state machine is not
+considered part of the API and states might be removed or
+added without this being considered API breakage.</font></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;1.&nbsp;Introspect
+org.freedesktop.machine1.Manager on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system \ <br>
+--dest org.freedesktop.machine1 \ <br>
+--object-path /org/freedesktop/machine1</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;2.&nbsp;Introspect
+org.freedesktop.machine1.Machine on the bus</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+gdbus introspect --system \ <br>
+--dest org.freedesktop.machine1 \ <br>
+--object-path
+/org/freedesktop/machine1/machine/rawhide</font></p>
+
+<h2>VERSIONING
+<a name="VERSIONING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">These
+D-Bus interfaces follow</font> <b><font color="#0000FF">the
+usual interface versioning guidelines</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="43%">
+
+
+<p style="margin-top: 1em"><font color="#000000">New
+Control Group Interfaces</font></p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><font color="#000000">the usual
+interface versioning guidelines</font></p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://0pointer.de/blog/projects/versioning-dbus.html</font></p>
+<hr>
+</body>
+</html>

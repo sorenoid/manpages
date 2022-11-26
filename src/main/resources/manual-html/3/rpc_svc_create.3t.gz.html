@@ -1,0 +1,330 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:32 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>RPC_SVC_CREATE(3) BSD Library Functions Manual
+RPC_SVC_CREATE(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>rpc_svc_create</b>,
+<b>svc_control</b>, <b>svc_create</b>, <b>svc_destroy</b>,
+<b>svc_dg_create</b>, <b>svc_fd_create</b>,
+<b>svc_raw_create</b>, <b>svc_tli_create</b>,
+<b>svc_tp_create</b>, <b>svc_vc_create</b> &mdash; library
+routines for the creation of server handles</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;rpc/rpc.h&gt;</b></p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><i>bool_t</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_control</b>(<i>SVCXPRT&nbsp;*svc</i>,
+<i>const&nbsp;u_int&nbsp;req</i>,
+<i>void&nbsp;*info</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>int</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_create</b>(<i>void&nbsp;(*dispatch)(struct&nbsp;svc_req&nbsp;*,&nbsp;SVCXPRT&nbsp;*)</i>,
+<i>const&nbsp;rpcprog_t&nbsp;prognum</i>,
+<i>const&nbsp;rpcvers_t&nbsp;versnum</i>,
+<i>const&nbsp;char&nbsp;*nettype</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>SVCXPRT
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_dg_create</b>(<i>const&nbsp;int&nbsp;fildes</i>,
+<i>const&nbsp;u_int&nbsp;sendsz</i>,
+<i>const&nbsp;u_int&nbsp;recvsz</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_destroy</b>(<i>SVCXPRT&nbsp;*xprt</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>SVCXPRT
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_fd_create</b>(<i>const&nbsp;int&nbsp;fildes</i>,
+<i>const&nbsp;u_int&nbsp;sendsz</i>,
+<i>const&nbsp;u_int&nbsp;recvsz</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>SVCXPRT
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_raw_create</b>(<i>void</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>SVCXPRT
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_tli_create</b>(<i>const&nbsp;int&nbsp;fildes</i>,
+<i>const&nbsp;struct&nbsp;netconfig&nbsp;*netconf</i>,
+<i>const&nbsp;struct&nbsp;t_bind&nbsp;*bindaddr</i>,
+<i>const&nbsp;u_int&nbsp;sendsz</i>,
+<i>const&nbsp;u_int&nbsp;recvsz</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>SVCXPRT
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_tp_create</b>(<i>void&nbsp;(*dispatch)(struct&nbsp;svc_req&nbsp;*,&nbsp;SVCXPRT&nbsp;*)</i>,
+<i>const&nbsp;rpcprog_t&nbsp;prognum</i>,
+<i>const&nbsp;rpcvers_t&nbsp;versnum</i>,
+<i>const&nbsp;struct&nbsp;netconfig&nbsp;*netconf</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>SVCXPRT
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>svc_vc_create</b>(<i>const&nbsp;int&nbsp;fildes</i>,
+<i>const&nbsp;u_int&nbsp;sendsz</i>,
+<i>const&nbsp;u_int&nbsp;recvsz</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">These routines are part of the
+RPC library which allows C language programs to make
+procedure calls on servers across the network. These
+routines deal with the creation of service handles. Once the
+handle is created, the server can be invoked by calling
+<b>svc_run</b>().</p>
+
+<p style="margin-top: 1em"><b>Routines</b></p>
+
+<p style="margin-left:6%;">See rpc(3) for the definition of
+the <i>SVCXPRT</i> data structure.</p>
+
+<p style="margin-top: 1em"><b>svc_control</b>()</p>
+
+<p style="margin-left:15%;">A function to change or
+retrieve various information about a service object. The
+<i>req</i> argument indicates the type of operation and
+<i>info</i> is a pointer to the information. The supported
+values of <i>req</i>, their argument types, and what they do
+are:</p>
+
+<p style="margin-top: 1em">SVCGET_VERSQUIET</p>
+
+<p style="margin-left:31%;">If a request is received for a
+program number served by this server but the version number
+is outside the range registered with the server, an
+RPC_PROGVERSMISMATCH error will normally be returned. The
+<i>info</i> argument should be a pointer to an integer. Upon
+successful completion of the SVCGET_VERSQUIET request,
+<i>*info</i> contains an integer which describes the
+server&rsquo;s current behavior: 0 indicates normal server
+behavior (that is, an RPC_PROGVERSMISMATCH error will be
+returned); 1 indicates that the out of range request will be
+silently ignored.</p>
+
+<p style="margin-top: 1em">SVCSET_VERSQUIET</p>
+
+<p style="margin-left:31%;">If a request is received for a
+program number served by this server but the version number
+is outside the range registered with the server, an
+RPC_PROGVERSMISMATCH error will normally be returned. It is
+sometimes desirable to change this behavior. The <i>info</i>
+argument should be a pointer to an integer which is either 0
+(indicating normal server behavior - an RPC_PROGVERSMISMATCH
+error will be returned), or 1 (indicating that the out of
+range request should be silently ignored).</p>
+
+<p style="margin-top: 1em"><b>svc_create</b>()</p>
+
+<p style="margin-left:15%;">The <b>svc_create</b>()
+function creates server handles for all the transports
+belonging to the class <i>nettype</i>. The <i>nettype</i>
+argument defines a class of transports which can be used for
+a particular application. The transports are tried in left
+to right order in NETPATH variable or in top to bottom order
+in the netconfig database. If <i>nettype</i> is NULL, it
+defaults to &quot;netpath&quot;.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+<b>svc_create</b>() function registers itself with the
+rpcbind service (see rpcbind(8)). The <i>dispatch</i>
+function is called when there is a remote procedure call for
+the given <i>prognum</i> and <i>versnum</i>; this requires
+calling <b>svc_run</b>() (see <b>svc_run</b>() in
+rpc_svc_reg(3)). If <b>svc_create</b>() succeeds, it returns
+the number of server handles it created, otherwise it
+returns 0 and an error message is logged.</p>
+
+<p style="margin-top: 1em"><b>svc_destroy</b>()</p>
+
+<p style="margin-left:15%;">A function macro that destroys
+the RPC service handle <i>xprt</i>. Destruction usually
+involves deallocation of private data structures, including
+<i>xprt</i> itself. Use of <i>xprt</i> is undefined after
+calling this routine.</p>
+
+<p style="margin-top: 1em"><b>svc_dg_create</b>()</p>
+
+<p style="margin-left:15%;">This routine creates a
+connectionless RPC service handle, and returns a pointer to
+it. This routine returns NULL if it fails, and an error
+message is logged. The <i>sendsz</i> and <i>recvsz</i>
+arguments are arguments used to specify the size of the
+buffers. If they are 0, suitable defaults are chosen. The
+file descriptor <i>fildes</i> should be open and bound. The
+server is not registered with rpcbind(8).</p>
+
+<p style="margin-left:15%; margin-top: 1em">Warning: since
+connectionless-based RPC messages can only hold limited
+amount of encoded data, this transport cannot be used for
+procedures that take large arguments or return huge
+results.</p>
+
+<p style="margin-top: 1em"><b>svc_fd_create</b>()</p>
+
+<p style="margin-left:15%;">This routine creates a service
+on top of an open and bound file descriptor, and returns the
+handle to it. Typically, this descriptor is a connected file
+descriptor for a connection-oriented transport. The
+<i>sendsz</i> and <i>recvsz</i> arguments indicate sizes for
+the send and receive buffers. If they are 0, reasonable
+defaults are chosen. This routine returns NULL if it fails,
+and an error message is logged.</p>
+
+<p style="margin-top: 1em"><b>svc_raw_create</b>()</p>
+
+<p style="margin-left:15%;">This routine creates an RPC
+service handle and returns a pointer to it. The transport is
+really a buffer within the process&rsquo;s address space, so
+the corresponding RPC client should live in the same address
+space; (see <b>clnt_raw_create</b>() in rpc_clnt_create(3)).
+This routine allows simulation of RPC and acquisition of RPC
+overheads (such as round trip times), without any kernel and
+networking interference. This routine returns NULL if it
+fails, and an error message is logged.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Note:
+<b>svc_run</b>() should not be called when the raw interface
+is being used.</p>
+
+<p style="margin-top: 1em"><b>svc_tli_create</b>()</p>
+
+<p style="margin-left:15%;">This routine creates an RPC
+server handle, and returns a pointer to it. The
+<i>fildes</i> argument is the file descriptor on which the
+service is listening. If <i>fildes</i> is RPC_ANYFD, it
+opens a file descriptor on the transport specified by
+<i>netconf</i>. If the file descriptor is unbound and
+<i>bindaddr</i> is not NULL, <i>fildes</i> is bound to the
+address specified by <i>bindaddr</i>, otherwise
+<i>fildes</i> is bound to a default address chosen by the
+transport.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Note: the
+<i>t_bind</i> structure comes from the TLI/XTI SysV
+interface, which NetBSD does not use. The structure is
+defined in &lt;<i>rpc/types.h</i>&gt; for compatibility
+as:</p>
+
+<p style="margin-left:15%; margin-top: 1em">struct t_bind
+{</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+
+
+<p>struct netbuf addr;</p><td width="21%"></td>
+<td width="5%"></td>
+<td width="20%"></td>
+<td width="10%">
+
+
+<p>/* network address, see rpc(3) */ <br>
+unsigned int qlen;</p></td>
+<td width="44%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="21%"></td>
+<td width="5%"></td>
+<td width="20%"></td>
+<td width="10%">
+
+
+<p>/* queue length (for listen(2)) */</p></td>
+<td width="44%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%;">};</p>
+
+<p style="margin-left:15%; margin-top: 1em">In the case
+where the default address is chosen, the number of
+outstanding connect requests is set to 8 for
+connection-oriented transports. The user may specify the
+size of the send and receive buffers with the arguments
+<i>sendsz</i> and <i>recvsz</i>; values of 0 choose suitable
+defaults. This routine returns NULL if it fails, and an
+error message is logged. The server is not registered with
+the rpcbind(8) service.</p>
+
+<p style="margin-top: 1em"><b>svc_tp_create</b>()</p>
+
+<p style="margin-left:15%;">The <b>svc_tp_create</b>()
+function creates a server handle for the network specified
+by <i>netconf</i>, and registers itself with the rpcbind
+service. The <i>dispatch</i> function is called when there
+is a remote procedure call for the given <i>prognum</i> and
+<i>versnum</i>; this requires calling <b>svc_run</b>(). The
+<b>svc_tp_create</b>() function returns the service handle
+if it succeeds, otherwise a NULL is returned and an error
+message is logged.</p>
+
+<p style="margin-top: 1em"><b>svc_vc_create</b>()</p>
+
+<p style="margin-left:15%;">This routine creates a
+connection-oriented RPC service and returns a pointer to it.
+This routine returns NULL if it fails, and an error message
+is logged. The users may specify the size of the send and
+receive buffers with the arguments <i>sendsz</i> and
+<i>recvsz</i>; values of 0 choose suitable defaults. The
+file descriptor <i>fildes</i> should be open and bound. The
+server is not registered with the rpcbind(8) service.</p>
+
+<p style="margin-top: 1em"><b>AVAILABILITY</b></p>
+
+<p style="margin-left:6%;">These functions are part of
+libtirpc.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">rpc(3), rpc_svc_calls(3),
+rpc_svc_err(3), rpc_svc_reg(3), rpcbind(8)</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD May&nbsp;3,
+1993 BSD</p>
+<hr>
+</body>
+</html>

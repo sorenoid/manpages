@@ -1,0 +1,177 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:46 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>File::MimeInfo::Cookbook</title>
+
+</head>
+<body>
+
+<h1 align="center">File::MimeInfo::Cookbook</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">File::MimeInfo::Cookbook
+- various code snippets</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some code
+snippets for non-basic uses of the File::MimeInfo module:
+<b><br>
+Matching an extension</b></p>
+
+<p style="margin-left:17%;">A file does not have to
+actually exist in order to get a mimetype for it. This means
+that the following will work:</p>
+
+<p style="margin-left:17%; margin-top: 1em">my $extension =
+'*.txt'; <br>
+my $mimetype = mimetype( $extension );</p>
+
+<p style="margin-left:11%;"><b>Mimetyping an scalar</b></p>
+
+<p style="margin-left:17%;">If you want to find the
+mimetype of a scalar value you need magic mimetyping; after
+all a scalar doesn&rsquo;t have a filename or inode. What
+you need to do is to use IO::Scalar :</p>
+
+<p style="margin-left:17%; margin-top: 1em">use
+File::MimeInfo::Magic; <br>
+use IO::Scalar; <br>
+my $io_scalar = new IO::Scalar \$data; <br>
+my $mimetype = mimetype( $io_scalar );</p>
+
+<p style="margin-left:17%; margin-top: 1em">In fact most
+other &quot;IO::&quot; will work as long as they support the
+&quot;seek()&quot; and &quot;read()&quot; methods. Of course
+if you want really obscure things to happen you can always
+write your own <small>IO</small> object and feed it in
+there.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Be aware that
+when using a filehandle like this you need to set the
+&quot;:utf8&quot; binmode yourself if appropriate.</p>
+
+<p style="margin-left:11%;"><b>Mimetyping a
+filehandle</b></p>
+
+<p style="margin-left:17%;">Regrettably for non-seekable
+filehandles like <small>STDIN</small> simply using an
+&quot;IO::&quot; object will not work. You will need to
+buffer enough of the data for a proper mimetyping. For
+example you could mimetype data from <small>STDIN</small>
+like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">use
+File::MimeInfo::Magic; <br>
+use IO::Scalar; <br>
+my $data; <br>
+read(STDIN, $data, $File::MimeInfo::Magic::max_buffer); <br>
+my $io_scalar = new IO::Scalar \$data; <br>
+my $mimetype = mimetype( $io_scalar );</p>
+
+<p style="margin-left:17%; margin-top: 1em">Be aware that
+when using a filehandle like this you need to set the
+&quot;:utf8&quot; binmode yourself if appropriate.</p>
+
+<p style="margin-left:11%;"><b>Creating a new
+filename</b></p>
+
+<p style="margin-left:17%;">Say you have a temporary file
+that you want to save with a more proper filename.</p>
+
+<p style="margin-left:17%; margin-top: 1em">use
+File::MimeInfo::Magic qw#mimetype extensions#; <br>
+use File::Copy; <br>
+my $tmpfile = '/tmp/foo'; <br>
+my $mimetype = mimetype($tmpfile); <br>
+my $extension = extensions($mimetype); <br>
+my $newfile = 'untitled1'; <br>
+$newfile .= '.'.$extension if length $extension; <br>
+move($tmpfile, $newfile);</p>
+
+<p style="margin-left:11%;"><b>Force the use of a certain
+database directory</b></p>
+
+<p style="margin-left:17%;">Normally you just need to add
+the dir where your mime database lives to either the
+<small>XDG_DATA_HOME</small> or <small>XDG_DATA_DIRS</small>
+environment variables for it to be found. But in some rare
+cases you may want to by-pass this system all together. Try
+one of the following:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">@File::MimeInfo::DIRS
+= ('/home/me/share/mime'); <br>
+eval 'use File::MimeInfo'; <br>
+die if $@;</p>
+
+<p style="margin-left:17%; margin-top: 1em">or:</p>
+
+<p style="margin-left:17%; margin-top: 1em">use
+File::MimeInfo; <br>
+@File::MimeInfo::DIRS = ('/home/me/share/mime'); <br>
+File::MimeInfo-&gt;rehash();</p>
+
+<p style="margin-left:17%; margin-top: 1em">This can also
+be used for switching between databases at run time while
+leaving other <small>XDG</small> configuration stuff
+alone.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Jaap
+Karssenberg &lt;pardus@cpan.org&gt; Maintained by Michiel
+Beijen &lt;mb@x14.nl&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2005, 2012 Jaap G Karssenberg. All rights reserved. This
+program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">File::MimeInfo</p>
+<hr>
+</body>
+</html>

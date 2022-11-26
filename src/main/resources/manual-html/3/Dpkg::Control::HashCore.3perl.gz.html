@@ -1,0 +1,231 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Control::HashCore</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Control::HashCore</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Control::HashCore
+- parse and manipulate a block of RFC822-like fields</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+Dpkg::Control::Hash class is a hash-like representation of a
+set of RFC822-like fields. The fields names are case
+insensitive and are always capitalized the same when output
+(see field_capitalize function in Dpkg::Control::Fields).
+The order in which fields have been set is remembered and is
+used to be able to dump back the same content. The output
+order can also be overridden if needed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can store
+arbitrary values in the hash, they will always be properly
+escaped in the output to conform to the syntax of control
+files. This is relevant mainly for multilines values: while
+the first line is always output unchanged directly after the
+field name, supplementary lines are modified. Empty lines
+and lines containing only dots are prefixed with &quot;
+.&quot; (space + dot) while other lines are prefixed with a
+single space.</p>
+
+<p style="margin-left:11%; margin-top: 1em">During parsing,
+trailing spaces are stripped on all lines while leading
+spaces are stripped only on the first line of each
+field.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$c =
+Dpkg::Control::Hash-&gt;new(%opts)</p>
+
+<p style="margin-left:17%;">Creates a new object with the
+indicated options. Supported options are: <br>
+allow_pgp</p>
+
+<p style="margin-left:29%;">Configures the parser to accept
+OpenPGP signatures around the control information. Value can
+be 0 (default) or 1.</p>
+
+<p style="margin-left:17%;">allow_duplicate</p>
+
+<p style="margin-left:29%;">Configures the parser to allow
+duplicate fields in the control information. The last value
+overrides any previous values. Value can be 0 (default) or
+1.</p>
+
+<p style="margin-left:17%;">keep_duplicate</p>
+
+<p style="margin-left:29%;">Configure the parser to keep
+values for duplicate fields found in the control information
+(when <b>allow_duplicate</b> is enabled), as array
+references. Value can be 0 (default) or 1.</p>
+
+<p style="margin-left:17%;">drop_empty</p>
+
+<p style="margin-left:29%;">Defines if empty fields are
+dropped during the output. Value can be 0 (default) or
+1.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="6%">
+
+
+<p>name</p></td>
+<td width="6%"></td>
+<td width="71%">
+
+
+<p>The user friendly name of the information stored in the
+object. It might be used in some error messages or warnings.
+A default name might be set depending on the type.</p></td></tr>
+</table>
+
+<p style="margin-left:17%;">is_pgp_signed</p>
+
+<p style="margin-left:29%;">Set by the parser (starting in
+dpkg 1.17.0) if it finds an OpenPGP signature around the
+control information. Value can be 0 (default) or 1, and
+undef when the option is not supported by the code (in
+versions older than dpkg 1.17.0).</p>
+
+<p style="margin-left:11%;">$c-&gt;set_options($option,
+%opts)</p>
+
+<p style="margin-left:17%;">Changes the value of one or
+more options.</p>
+
+<p style="margin-left:11%;">$value =
+$c-&gt;get_option($option)</p>
+
+<p style="margin-left:17%;">Returns the value of the
+corresponding option.</p>
+
+<p style="margin-left:11%;">$c-&gt;parse_error($file, $fmt,
+...)</p>
+
+<p style="margin-left:17%;">Prints an error message and
+dies on syntax parse errors.</p>
+
+<p style="margin-left:11%;">$c-&gt;parse($fh,
+$description)</p>
+
+<p style="margin-left:17%;">Parse a control file from the
+given filehandle. Exits in case of errors. $description is
+used to describe the filehandle, ideally it&rsquo;s a
+filename or a description of where the data comes from.
+It&rsquo;s used in error messages. When called multiple
+times, the parsed fields are accumulated.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns true if
+some fields have been parsed.</p>
+
+<p style="margin-left:11%;">$c-&gt;load($file)</p>
+
+<p style="margin-left:17%;">Parse the content of $file.
+Exits in case of errors. Returns true if some fields have
+been parsed.</p>
+
+
+<p style="margin-left:11%;">$c-&gt;find_custom_field($name)</p>
+
+<p style="margin-left:17%;">Scan the fields and look for a
+user specific field whose name matches the following regex:
+/X[ <small>SBC</small> ]*-$name/i. Return the name of the
+field found or undef if nothing has been found.</p>
+
+
+<p style="margin-left:11%;">$c-&gt;get_custom_field($name)</p>
+
+<p style="margin-left:17%;">Identify a user field and
+retrieve its value.</p>
+
+<p style="margin-left:11%;">$str = $c-&gt;<b>output()</b>
+<br>
+&quot;$c&quot;</p>
+
+<p style="margin-left:17%;">Get a string representation of
+the control information. The fields are sorted in the order
+in which they have been read or set except if the order has
+been overridden with <b>set_output_order()</b>.</p>
+
+<p style="margin-left:11%;">$c-&gt;output($fh)</p>
+
+<p style="margin-left:17%;">Print the string representation
+of the control information to a filehandle.</p>
+
+<p style="margin-left:11%;">$c-&gt;save($filename)</p>
+
+<p style="margin-left:17%;">Write the string representation
+of the control information to a file.</p>
+
+
+<p style="margin-left:11%;">$c-&gt;set_output_order(@fields)</p>
+
+<p style="margin-left:17%;">Define the order in which
+fields will be displayed in the <b>output()</b> method.</p>
+
+
+<p style="margin-left:11%;">$c-&gt;apply_substvars($substvars)</p>
+
+<p style="margin-left:17%;">Update all fields by replacing
+the variables references with the corresponding value stored
+in the Dpkg::Substvars object.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.21.0)</b> <br>
+New option: &quot;keep_duplicate&quot; in <b>new()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.17.2)</b> <br>
+New method: $c-&gt;<b>parse_error()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.17.0)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:53 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTML::Form</title>
+
+</head>
+<body>
+
+<h1 align="center">HTML::Form</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#INPUTS">INPUTS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::Form -
+Class that represents an HTML form element</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">version
+6.07</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use HTML::Form;
+<br>
+$form = HTML::Form-&gt;parse($html, $base_uri); <br>
+$form-&gt;value(query =&gt; &quot;Perl&quot;); <br>
+use LWP::UserAgent; <br>
+$ua = LWP::UserAgent-&gt;new; <br>
+$response = $ua-&gt;request($form-&gt;click);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Objects of the
+&quot;HTML::Form&quot; class represents a single
+<small>HTML</small> &quot;&lt;form&gt; ...
+&lt;/form&gt;&quot; instance. A form consists of a sequence
+of inputs that usually have names, and which can take on
+various values. The state of a form can be tweaked and it
+can then be asked to provide HTTP::Request objects that can
+be passed to the <b>request()</b> method of
+LWP::UserAgent.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods are available: <br>
+@forms = HTML::Form-&gt;parse( $html_document, $base_uri )
+<br>
+@forms = HTML::Form-&gt;parse( $html_document, base =&gt;
+$base_uri, %opt ) <br>
+@forms = HTML::Form-&gt;parse( $response, %opt )</p>
+
+<p style="margin-left:17%;">The <b>parse()</b> class method
+will parse an <small>HTML</small> document and build up
+&quot;HTML::Form&quot; objects for each &lt;form&gt; element
+found. If called in scalar context only returns the first
+&lt;form&gt;. Returns an empty list if there are no forms to
+be found.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The required
+arguments is the <small>HTML</small> document to parse
+($html_document) and the <small>URI</small> used to retrieve
+the document ($base_uri). The base <small>URI</small> is
+needed to resolve relative action URIs. The provided
+<small>HTML</small> document should be a Unicode string (or
+US-ASCII).</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default
+HTML::Form assumes that the original document was
+<small>UTF-8</small> encoded and thus encode forms that
+don&rsquo;t specify an explicit <i>accept-charset</i> as
+<small>UTF-8.</small> The charset assumed can be overridden
+by providing the &quot;charset&quot; option to
+<b>parse()</b>. It&rsquo;s a good idea to be explicit about
+this parameter as well, thus the recommended simplest
+invocation becomes:</p>
+
+<p style="margin-left:17%; margin-top: 1em">my @forms =
+HTML::Form-&gt;parse( <br>
+Encode::decode($encoding, $html_document_bytes), <br>
+base =&gt; $base_uri, <br>
+charset =&gt; $encoding, <br>
+);</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the document
+was retrieved with <small>LWP</small> then the response
+object provide methods to obtain a proper value for
+&quot;base&quot; and &quot;charset&quot;:</p>
+
+<p style="margin-left:17%; margin-top: 1em">my $ua =
+LWP::UserAgent-&gt;new; <br>
+my $response =
+$ua-&gt;get(&quot;http://www.example.com/form.html&quot;);
+<br>
+my @forms =
+HTML::Form-&gt;parse($response-&gt;decoded_content, <br>
+base =&gt; $response-&gt;base, <br>
+charset =&gt; $response-&gt;content_charset, <br>
+);</p>
+
+<p style="margin-left:17%; margin-top: 1em">In fact, the
+<b>parse()</b> method can parse from an HTTP::Response
+object directly, so the example above can be more
+conveniently written as:</p>
+
+<p style="margin-left:17%; margin-top: 1em">my $ua =
+LWP::UserAgent-&gt;new; <br>
+my $response =
+$ua-&gt;get(&quot;http://www.example.com/form.html&quot;);
+<br>
+my @forms = HTML::Form-&gt;parse($response);</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that any
+object that implements a <b>decoded_content()</b>,
+<b>base()</b> and <b>content_charset()</b> method with
+similar behaviour as HTTP::Response will do.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Additional
+options might be passed in to control how the parse method
+behaves. The following are all the options currently
+recognized: <br>
+&quot;base =&gt; $uri&quot;</p>
+
+<p style="margin-left:23%;">This is the <small>URI</small>
+used to retrieve the original document. This option is not
+optional ;-)</p>
+
+<p style="margin-left:17%;">&quot;charset =&gt;
+$str&quot;</p>
+
+<p style="margin-left:23%;">Specify what charset the
+original document was encoded in. This is used as the
+default for accept_charset. If not provided this defaults to
+&quot; <small>UTF-8&quot;.</small></p>
+
+<p style="margin-left:17%;">&quot;verbose =&gt;
+$bool&quot;</p>
+
+<p style="margin-left:23%;">Warn (print messages to
+<small>STDERR</small> ) about any bad <small>HTML</small>
+form constructs found. You can trap these with
+$SIG{__WARN__}. The default is not to issue warnings.</p>
+
+<p style="margin-left:17%;">&quot;strict =&gt;
+$bool&quot;</p>
+
+<p style="margin-left:23%;">Initialize any form objects
+with the given strict attribute. If the strict is turned on
+the methods that change values of the form will croak if you
+try to set illegal values or modify readonly fields. The
+default is not to be strict.</p>
+
+<p style="margin-left:11%;">$form-&gt;push_input( $type,
+\%attr, $verbose )</p>
+
+<p style="margin-left:17%;">This method adds additional
+inputs to the form. The first argument is the type of input
+(e.g. hidden, option, etc.). The second argument is a
+reference to a hash of the input attributes. The third
+argument is optional, and will issue warnings about unknown
+input types.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">push_input(
+'hidden', { <br>
+name =&gt; 'NewFormElement', <br>
+id =&gt; 'NewFormElementId', <br>
+value =&gt; 'some value', <br>
+});</p>
+
+<p style="margin-left:11%;">$method = $form-&gt;method <br>
+$form-&gt;method( $new_method )</p>
+
+<p style="margin-left:17%;">This method is gets/sets the
+<i>method</i> name used for the HTTP::Request generated. It
+is a string like &quot; <small>GET&quot;</small> or &quot;
+<small>POST&quot;.</small></p>
+
+<p style="margin-left:11%;">$action = $form-&gt;action <br>
+$form-&gt;action( $new_action )</p>
+
+<p style="margin-left:17%;">This method gets/sets the
+<small>URI</small> which we want to apply the request
+<i>method</i> to.</p>
+
+<p style="margin-left:11%;">$enctype = $form-&gt;enctype
+<br>
+$form-&gt;enctype( $new_enctype )</p>
+
+<p style="margin-left:17%;">This method gets/sets the
+encoding type for the form data. It is a string like
+&quot;application/x-www-form-urlencoded&quot; or
+&quot;multipart/form-data&quot;.</p>
+
+<p style="margin-left:11%;">$accept =
+$form-&gt;accept_charset <br>
+$form-&gt;accept_charset( $new_accept )</p>
+
+<p style="margin-left:17%;">This method gets/sets the list
+of charset encodings that the server processing the form
+accepts. Current implementation supports only one-element
+lists. Default value is &quot; <small>UNKNOWN&quot;</small>
+which we interpret as a request to use document charset as
+specified by the &rsquo;charset&rsquo; parameter of the
+<b>parse()</b> method.</p>
+
+<p style="margin-left:11%;">$value = $form-&gt;attr( $name
+) <br>
+$form-&gt;attr( $name, $new_value )</p>
+
+<p style="margin-left:17%;">This method give access to the
+original <small>HTML</small> attributes of the &lt;form&gt;
+tag. The $name should always be passed in lower case.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">@f =
+HTML::Form-&gt;parse( $html, $foo ); <br>
+@f = grep $_-&gt;attr(&quot;id&quot;) eq &quot;foo&quot;,
+@f; <br>
+die &quot;No form named 'foo' found&quot; unless @f; <br>
+$foo = shift @f;</p>
+
+<p style="margin-left:11%;">$bool = $form-&gt;strict <br>
+$form-&gt;strict( $bool )</p>
+
+<p style="margin-left:17%;">Gets/sets the strict attribute
+of a form. If the strict is turned on the methods that
+change values of the form will croak if you try to set
+illegal values or modify readonly fields. The default is not
+to be strict.</p>
+
+<p style="margin-left:11%;">@inputs = $form-&gt;inputs</p>
+
+<p style="margin-left:17%;">This method returns the list of
+inputs in the form. If called in scalar context it returns
+the number of inputs contained in the form. See &quot;
+<small>INPUTS&quot;</small> for what methods are available
+for the input objects returned.</p>
+
+<p style="margin-left:11%;">$input = $form-&gt;find_input(
+$selector ) <br>
+$input = $form-&gt;find_input( $selector, $type ) <br>
+$input = $form-&gt;find_input( $selector, $type, $index )
+<br>
+@inputs = $form-&gt;find_input( $selector ) <br>
+@inputs = $form-&gt;find_input( $selector, $type )</p>
+
+<p style="margin-left:17%;">This method is used to locate
+specific inputs within the form. All inputs that match the
+arguments given are returned. In scalar context only the
+first is returned, or &quot;undef&quot; if none match.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If $selector is
+not &quot;undef&quot;, then the input&rsquo;s name, id,
+class attribute must match. A selector prefixed with
+&rsquo;#&rsquo; must match the id attribute of the input. A
+selector prefixed with &rsquo;.&rsquo; matches the class
+attribute. A selector prefixed with &rsquo;^&rsquo; or with
+no prefix matches the name attribute.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If $type is not
+&quot;undef&quot;, then the input must have the specified
+type. The following type names are used: &quot;text&quot;,
+&quot;password&quot;, &quot;hidden&quot;,
+&quot;textarea&quot;, &quot;file&quot;, &quot;image&quot;,
+&quot;submit&quot;, &quot;radio&quot;, &quot;checkbox&quot;
+and &quot;option&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The $index is
+the sequence number of the input matched where 1 is the
+first. If combined with $name and/or $type, then it selects
+the <i>n</i>th input with the given name and/or type.</p>
+
+<p style="margin-left:11%;">$value = $form-&gt;value(
+$selector ) <br>
+$form-&gt;value( $selector, $new_value )</p>
+
+<p style="margin-left:17%;">The <b>value()</b> method can
+be used to get/set the value of some input. If strict is
+enabled and no input has the indicated name, then this
+method will croak.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If multiple
+inputs have the same name, only the first one will be
+affected.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The call:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$form-&gt;value('foo')</p>
+
+<p style="margin-left:17%; margin-top: 1em">is basically a
+short-hand for:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$form-&gt;find_input('foo')-&gt;value;</p>
+
+<p style="margin-left:11%;">@names = $form-&gt;param <br>
+@values = $form-&gt;param( $name ) <br>
+$form-&gt;param( $name, $value, ... ) <br>
+$form-&gt;param( $name, \@values )</p>
+
+<p style="margin-left:17%;">Alternative interface to
+examining and setting the values of the form.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If called
+without arguments then it returns the names of all the
+inputs in the form. The names will not repeat even if
+multiple inputs have the same name. In scalar context the
+number of different names is returned.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If called with
+a single argument then it returns the value or values of
+inputs with the given name. If called in scalar context only
+the first value is returned. If no input exists with the
+given name, then &quot;undef&quot; is returned.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If called with
+2 or more arguments then it will set values of the named
+inputs. This form will croak if no inputs have the given
+name or if any of the values provided does not fit. Values
+can also be provided as a reference to an array. This form
+will allow unsetting all values with the given name as
+well.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This interface
+resembles that of the <b>param()</b> function of the
+<small>CGI</small> module.</p>
+
+<p style="margin-left:11%;">$form-&gt;try_others(
+\&amp;callback )</p>
+
+<p style="margin-left:17%;">This method will iterate over
+all permutations of unvisited enumerated values
+(&lt;select&gt;, &lt;radio&gt;, &lt;checkbox&gt;) and invoke
+the callback for each. The callback is passed the $form as
+argument. The return value from the callback is ignored and
+the <b>try_others()</b> method itself does not return
+anything.</p>
+
+<p style="margin-left:11%;">$request =
+$form-&gt;make_request</p>
+
+<p style="margin-left:17%;">Will return an HTTP::Request
+object that reflects the current setting of the form. You
+might want to use the <b>click()</b> method instead.</p>
+
+<p style="margin-left:11%;">$request = $form-&gt;click <br>
+$request = $form-&gt;click( $selector ) <br>
+$request = $form-&gt;click( $x, $y ) <br>
+$request = $form-&gt;click( $selector, $x, $y )</p>
+
+<p style="margin-left:17%;">Will &quot;click&quot; on the
+first clickable input (which will be of type
+&quot;submit&quot; or &quot;image&quot;). The result of
+clicking is an HTTP::Request object that can then be passed
+to LWP::UserAgent if you want to obtain the server
+response.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If a $selector
+is specified, we will click on the first clickable input
+matching the selector, and the method will croak if no
+matching clickable input is found. If $selector is
+<i>not</i> specified, then it is ok if the form contains no
+clickable inputs. In this case the <b>click()</b> method
+returns the same request as the <b>make_request()</b> method
+would do. See description of the <b>find_input()</b> method
+above for how the $selector is specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If there are
+multiple clickable inputs with the same name, then there is
+no way to get the <b>click()</b> method of the
+&quot;HTML::Form&quot; to click on any but the first. If you
+need this you would have to locate the input with
+<b>find_input()</b> and invoke the <b>click()</b> method on
+the given input yourself.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A click
+coordinate pair can also be provided, but this only makes a
+difference if you clicked on an image. The default
+coordinate is (1,1). The upper-left corner of the image is
+(0,0), but some badly coded <small>CGI</small> scripts are
+known to not recognize this. Therefore (1,1) was selected as
+a safer default.</p>
+
+<p style="margin-left:11%;">@kw = $form-&gt;form</p>
+
+<p style="margin-left:17%;">Returns the current setting as
+a sequence of key/value pairs. Note that keys might be
+repeated, which means that some values might be lost if the
+return values are assigned to a hash.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In scalar
+context this method returns the number of key/value pairs
+generated.</p>
+
+<p style="margin-left:11%;">$form-&gt;dump</p>
+
+<p style="margin-left:17%;">Returns a textual
+representation of current state of the form. Mainly useful
+for debugging. If called in void context, then the dump is
+printed on <small>STDERR.</small></p>
+
+<h2>INPUTS
+<a name="INPUTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">An
+&quot;HTML::Form&quot; objects contains a sequence of
+<i>inputs</i>. References to the inputs can be obtained with
+the $form-&gt;inputs or $form-&gt;find_input methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+is <i>not</i> a one-to-one correspondence between input
+<i>objects</i> and &lt;input&gt; <i>elements</i> in the
+<small>HTML</small> document. An input object basically
+represents a name/value pair, so when multiple
+<small>HTML</small> elements contribute to the same
+name/value pair in the submitted form they are combined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input
+elements that are mapped one-to-one are &quot;text&quot;,
+&quot;textarea&quot;, &quot;password&quot;,
+&quot;hidden&quot;, &quot;file&quot;, &quot;image&quot;,
+&quot;submit&quot; and &quot;checkbox&quot;. For the
+&quot;radio&quot; and &quot;option&quot; inputs the story is
+not as simple: All &lt;input type=&quot;radio&quot;&gt;
+elements with the same name will contribute to the same
+input radio object. The number of radio input objects will
+be the same as the number of distinct names used for the
+&lt;input type=&quot;radio&quot;&gt; elements. For a
+&lt;select&gt; element without the &quot;multiple&quot;
+attribute there will be one input object of type of
+&quot;option&quot;. For a &lt;select multiple&gt; element
+there will be one input object for each contained
+&lt;option&gt; element. Each one of these option objects
+will have the same name.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods are available for the <i>input</i> objects: <br>
+$input-&gt;type</p>
+
+<p style="margin-left:17%;">Returns the type of this input.
+The type is one of the following strings: &quot;text&quot;,
+&quot;password&quot;, &quot;hidden&quot;,
+&quot;textarea&quot;, &quot;file&quot;, &quot;image&quot;,
+&quot;submit&quot;, &quot;radio&quot;, &quot;checkbox&quot;
+or &quot;option&quot;.</p>
+
+<p style="margin-left:11%;">$name = $input-&gt;name <br>
+$input-&gt;name( $new_name )</p>
+
+<p style="margin-left:17%;">This method can be used to
+get/set the current name of the input.</p>
+
+<p style="margin-left:11%;">$input-&gt;id <br>
+$input-&gt;class</p>
+
+<p style="margin-left:17%;">These methods can be used to
+get/set the current id or class attribute for the input.</p>
+
+<p style="margin-left:11%;">$input-&gt;selected( $selector
+)</p>
+
+<p style="margin-left:17%;">Returns <small>TRUE</small> if
+the given selector matched the input. See the description of
+the <b>find_input()</b> method above for a description of
+the selector syntax.</p>
+
+<p style="margin-left:11%;">$value = $input-&gt;value <br>
+$input-&gt;value( $new_value )</p>
+
+<p style="margin-left:17%;">This method can be used to
+get/set the current value of an input.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If strict is
+enabled and the input only can take an enumerated list of
+values, then it is an error to try to set it to something
+else and the method will croak if you try.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You will also
+be able to set the value of read-only inputs, but a warning
+will be generated if running under &quot;perl -w&quot;.</p>
+
+<p style="margin-left:11%;">$autocomplete =
+$input-&gt;autocomplete <br>
+$input-&gt;autocomplete( $new_autocomplete )</p>
+
+<p style="margin-left:17%;">This method can be used to
+get/set the current value (if any) of
+&quot;autcomplete&quot; for the input.</p>
+
+<p style="margin-left:11%;">$input-&gt;possible_values</p>
+
+<p style="margin-left:17%;">Returns a list of all values
+that an input can take. For inputs that do not have discrete
+values, this returns an empty list.</p>
+
+
+<p style="margin-left:11%;">$input-&gt;other_possible_values</p>
+
+<p style="margin-left:17%;">Returns a list of all values
+not tried yet.</p>
+
+<p style="margin-left:11%;">$input-&gt;value_names</p>
+
+<p style="margin-left:17%;">For some inputs the values can
+have names that are different from the values themselves.
+The number of names returned by this method will match the
+number of values reported by $input-&gt;possible_values.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When setting
+values using the <b>value()</b> method it is also possible
+to use the value names in place of the value itself.</p>
+
+<p style="margin-left:11%;">$bool = $input-&gt;readonly
+<br>
+$input-&gt;readonly( $bool )</p>
+
+<p style="margin-left:17%;">This method is used to get/set
+the value of the readonly attribute. You are allowed to
+modify the value of readonly inputs, but setting the value
+will generate some noise when warnings are enabled. Hidden
+fields always start out readonly.</p>
+
+<p style="margin-left:11%;">$bool = $input-&gt;disabled
+<br>
+$input-&gt;disabled( $bool )</p>
+
+<p style="margin-left:17%;">This method is used to get/set
+the value of the disabled attribute. Disabled inputs do not
+contribute any key/value pairs for the form value.</p>
+
+<p style="margin-left:11%;">$input-&gt;form_name_value</p>
+
+<p style="margin-left:17%;">Returns a (possible empty) list
+of key/value pairs that should be incorporated in the form
+value from this input.</p>
+
+<p style="margin-left:11%;">$input-&gt;check</p>
+
+<p style="margin-left:17%;">Some input types represent
+toggles that can be turned on/off. This includes
+&quot;checkbox&quot; and &quot;option&quot; inputs. Calling
+this method turns this input on without having to know the
+value name. If the input is already on, then nothing
+happens.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This has the
+same effect as:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$input-&gt;value($input-&gt;possible_values[1]);</p>
+
+<p style="margin-left:17%; margin-top: 1em">The input can
+be turned off with:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$input-&gt;value(undef);</p>
+
+<p style="margin-left:11%;">$input-&gt;click($form, $x,
+$y)</p>
+
+<p style="margin-left:17%;">Some input types (currently
+&quot;submit&quot; buttons and &quot;images&quot;) can be
+clicked to submit the form. The <b>click()</b> method
+returns the corresponding HTTP::Request object.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input is
+of type &quot;file&quot;, then it has these additional
+methods: <br>
+$input-&gt;file</p>
+
+<p style="margin-left:17%;">This is just an alias for the
+<b>value()</b> method. It sets the filename to read data
+from.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For security
+reasons this field will never be initialized from the
+parsing of a form. This prevents the server from triggering
+stealth uploads of arbitrary files from the client
+machine.</p>
+
+<p style="margin-left:11%;">$filename = $input-&gt;filename
+<br>
+$input-&gt;filename( $new_filename )</p>
+
+<p style="margin-left:17%;">This get/sets the filename
+reported to the server during file upload. This attribute
+defaults to the value reported by the <b>file()</b>
+method.</p>
+
+<p style="margin-left:11%;">$content = $input-&gt;content
+<br>
+$input-&gt;content( $new_content )</p>
+
+<p style="margin-left:17%;">This get/sets the file content
+provided to the server during file upload. This method can
+be used if you do not want the content to be read from an
+actual file.</p>
+
+<p style="margin-left:11%;">@headers = $input-&gt;headers
+<br>
+input-&gt;headers($key =&gt; $value, .... )</p>
+
+<p style="margin-left:17%;">This get/set additional header
+fields describing the file uploaded. This can for instance
+be used to set the &quot;Content-Type&quot; reported for the
+file.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>LWP</small>
+, LWP::UserAgent, HTML::Parser</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gisle Aas
+&lt;gisle@activestate.com&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is copyright (c) 1998 by Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; you can redistribute it and/or modify it under the
+same terms as the Perl 5 programming language system
+itself.</p>
+<hr>
+</body>
+</html>

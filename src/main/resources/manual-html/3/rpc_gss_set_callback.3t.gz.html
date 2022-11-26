@@ -1,0 +1,140 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:27 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>RPC_GSS_SET_CALLBACK(3) BSD Library Functions Manual
+RPC_GSS_SET_CALLBACK(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>rpc_gss_set_callback</b>
+&mdash; Register a security context creation callback</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;rpc/rpcsec_gss.h&gt;</b></p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><i>bool_t</i></p>
+
+
+<p><b>(*callback)</b>(<i>struct&nbsp;svc_req&nbsp;*req</i>,
+<i>gss_cred_id_t&nbsp;deleg</i>,
+<i>gss_ctx_id_t&nbsp;gss_context</i>,
+<i>rpc_gss_lock_t&nbsp;*lock</i>,
+<i>void&nbsp;**cookie</i>);</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><i>bool_t</i></p>
+
+
+<p style="margin-left:12%;"><b>rpc_gss_set_callback</b>(<i>rpc_gss_callback_t&nbsp;*cb</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">Register a function which will
+be called when new security contexts are created on a
+server. This function will be called on the first RPC
+request which uses that context and has the opportunity of
+rejecting the request (for instance after matching the
+request credentials to an access control list). To accept
+the new security context, the callback should return TRUE,
+otherwise FALSE. If the callback accepts a context, it
+becomes responsible for the lifetime of the delegated client
+credentials (if any).</p>
+
+<p style="margin-left:6%; margin-top: 1em">It is also
+possible to &rsquo;lock&rsquo; the values of service and
+quality of protection used by the context. If a context is
+locked, any subsequent requests which use different values
+for service and quality of protection will be rejected.</p>
+
+<p style="margin-top: 1em"><b>PARAMETERS</b> <br>
+cb</p>
+
+<p style="margin-left:23%; margin-top: 1em">A structure
+containing the RPC program and version for this callback and
+a function which will be called when new contexts are
+created for the given RPC program and version</p>
+
+<p style="margin-top: 1em">req</p>
+
+<p style="margin-left:23%; margin-top: 1em">The RPC request
+using the new context</p>
+
+<p style="margin-top: 1em">deleg</p>
+
+<p style="margin-left:23%; margin-top: 1em">GSS-API
+delegated credentials (if any)</p>
+
+<p style="margin-top: 1em">gss_context</p>
+
+<p style="margin-left:23%; margin-top: 1em">The GSS-API
+context</p>
+
+<p style="margin-top: 1em">lock</p>
+
+<p style="margin-left:23%; margin-top: 1em">A structure
+used to enforce a particular QOP and service. Set
+<i>lock-&gt;locked</i> to TRUE to lock the service and QOP
+values</p>
+
+<p style="margin-top: 1em">cookie</p>
+
+<p style="margin-left:23%; margin-top: 1em">The callback
+function may set <i>*cookie</i> to any pointer sized value.
+This value can be accessed during the lifetime of the
+context via <b>rpc_gss_getcred</b>().</p>
+
+<p style="margin-top: 1em"><b>RETURN VALUES</b></p>
+
+<p style="margin-left:6%;">Returns TRUE if the callback was
+registered successfully or FALSE otherwise</p>
+
+<p style="margin-top: 1em"><b>AVAILABILITY</b></p>
+
+<p style="margin-left:6%;">The
+<b>rpc_gss_set_callback</b>() function is part of
+libtirpc.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">rpc(3), gssapi(3),
+rpc_gss_getcred(3) rpcsec_gss(3)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">This manual page was written by
+Doug Rabson &lt;dfr@FreeBSD.org&gt;.</p>
+
+<p style="margin-top: 1em"><b>BUGS</b></p>
+
+<p style="margin-left:6%;">There is no mechanism for
+informing a server when a security context has been deleted.
+This makes it difficult to allocate resources (e.g. to
+return via the callback&rsquo;s <i>cookie</i> argument).</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+January&nbsp;26, 2010 BSD</p>
+<hr>
+</body>
+</html>

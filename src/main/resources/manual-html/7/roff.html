@@ -1,0 +1,949 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ROFF</title>
+
+</head>
+<body>
+
+<h1 align="center">ROFF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#USING ROFF">USING ROFF</a><br>
+<a href="#ROFF PROGRAMMING">ROFF PROGRAMMING</a><br>
+<a href="#FILE NAME EXTENSIONS">FILE NAME EXTENSIONS</a><br>
+<a href="#EDITING ROFF">EDITING ROFF</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">roff - concepts
+and history of roff typesetting</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>roff</i> is
+the general name for a set of text formatting programs,
+known under names like <b>troff</b>, <b>nroff</b>,
+<b>ditroff</b>, <b>groff</b>, etc. A <i>roff</i> system
+consists of an extensible text formatting language and a set
+of programs for printing and converting to other text
+formats. Unix-like operating systems distribute a
+<i>roff</i> system as a core package.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The most common
+<i>roff</i> system today is the free software implementation
+GNU <i>roff</i>, <b>groff</b>(1). <i>groff</i> implements
+the look-and-feel and functionality of its ancestors, with
+many extensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The ancestry of
+<i>roff</i> is described in section &ldquo;History&rdquo;
+below. In this document, the term <i>roff</i> always refers
+to the general class of roff programs, not to the
+<b>roff</b> command provided in early Unix systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In spite of its
+age, <i>roff</i> is in wide use today, for example, the
+manual pages on Unix systems (<i>man&nbsp;pages</i>), many
+software books, system documentation, standards, and
+corporate documents are written in roff. The <i>roff</i>
+output for text devices is still unmatched, and its
+graphical output has the same quality as other free
+type-setting programs and is better than some of the
+commercial systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>roff</i> is
+used to format Unix <i>manual pages</i>, (or <i>man
+pages</i>), the standard documentation system on many
+Unix-derived operating systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This document
+describes the history of the development of the <i>roff
+system</i>; some usage aspects common to all <i>roff</i>
+versions, details on the <i>roff</i> pipeline, which is
+usually hidden behind front-ends like <b>groff</b>(1); a
+general overview of the formatting language; some tips for
+editing <i>roff</i> files; and many pointers to further
+readings.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Document
+formatting by computer dates back to the 1960s. The
+<i>roff</i> system itself is intimately connected to the
+Unix operating system, but its roots go back to the earlier
+operating systems CTSS and Multics.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+Predecessor RUNOFF <br>
+roff</b>&rsquo;s ancestor <b>RUNOFF</b> was written in the
+MAD language by <i>Jerry Saltzer</i> for the <i>Compatible
+Time Sharing System (CTSS)</i>, a project of the
+Massachusetts Institute of Technology (MIT), in 1963 and
+1964&mdash;note that CTSS commands were all uppercase.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In 1965,
+MIT&rsquo;s Project MAC teamed with Bell Telephone
+Laboratories (BTL) and General Electric to begin the
+<a href="http://www.multicians.org"><i>Multics</i>
+system</a>. A command called <b>runoff</b> was written for
+Multics in the late 60s in the BCPL language, by <i>Bob
+Morris</i>, <i>Doug McIlroy</i>, and other members of the
+Multics team.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Like its CTSS
+ancestor, Multics <b>runoff</b> formatted an input file
+consisting of text and command lines; commands began with a
+period and were two letters. Output from these commands was
+to terminal devices such as IBM Selectric terminals. Multics
+<b>runoff</b> had additional features added, such as the
+ability to do two-pass formatting; it became the main format
+for Multics documentation and text processing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BCPL and
+<b>runoff</b> were ported to the GCOS system at Bell Labs
+when BTL left the development of Multics.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is a free
+archive about <i>historical RUNOFF</i> documents. You can
+get it anonymously by the shell command</p>
+
+<p style="margin-left:22%;">$git clone
+https://github.com/bwarken/RUNOFF_historical.git</p>
+
+<p style="margin-left:11%; margin-top: 1em">As well, there
+is a new project for writing a program that can read
+<i>RUNOFF files ,</i> but it does not yet work so far. You
+can get an early version anonymously by the shell
+command</p>
+
+<p style="margin-left:22%;">$git clone
+https://github.com/bwarken/runoff.git</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+Classical nroff/troff System</b> <br>
+At BTL, there was a need to drive the <i>Graphic Systems
+CAT</i> typesetter, a graphical output device from a PDP-11
+computer running Unix. As <b>runoff</b> was too limited for
+this task it was further developed into a more powerful text
+formatting system by <i>Joseph F. Ossanna</i>, who already
+programmed several runoff ports.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The name
+<i>runoff</i> was shortened to <i>roff</i>. The greatly
+enlarged language of Ossanna&rsquo;s version already
+included all elements of a full <i>roff system</i>. All
+modern <i>roff</i> systems try to implement compatibility to
+this system. So Joe Ossanna can be called the father of all
+<i>roff</i> systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This first
+<i>roff system</i> had three formatter programs.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>troff</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>(<i>typesetter roff</i>) generated a graphical output
+for the <i>CAT</i> typesetter as its only device.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>nroff</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>produced text output suitable for terminals and line
+printers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>roff</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>was the reimplementation of the former <b>runoff</b>
+program with its limited features; this program was
+abandoned in later versions. Today, the name <i>roff</i> is
+used to refer to a <i>troff/nroff</i> system as a whole.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em">Ossanna&rsquo;s
+first version was written in the PDP-11 assembly language
+and released in 1973. <i>Brian Kernighan</i> joined the
+<i>roff</i> development by rewriting it in the
+C&nbsp;programming language. The C&nbsp;version was released
+in 1975.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The syntax of
+the formatting language of the <b>nroff</b>/<b>troff</b>
+programs was documented in the famous <i>Troff User&rsquo;s
+Manual</i> [CSTR&nbsp;#54], first published in 1976, with
+further revisions up to 1992 by Brian Kernighan. This
+document is the specification of the <i>classical troff</i>.
+All later <i>roff</i> systems tried to establish
+compatibility with this specification.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After
+Ossanna&rsquo;s death in 1977, Kernighan went on with
+developing <i>troff</i>. In the late 1970s, Kernighan
+equipped <i>troff</i> with a general interface to support
+more devices, the intermediate output format, and the
+postprocessor system. This completed the structure of a
+<i>roff system</i> as it is still in use today; see section
+&ldquo;Using Roff&rdquo; below. In 1979, these novelties
+were described in the paper [CSTR&nbsp;#97]. This new
+<i>troff</i> version is the basis for all existing newer
+troff systems, including <i>groff</i>. On some systems, this
+<i>device independent troff</i> got a binary of its own,
+called <b>ditroff</b>(7). All modern <b>troff</b> programs
+already provide the full <b>ditroff</b> capabilities
+automatically.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Availability</b>
+<br>
+The source code of both the ancient Unix and classical
+<i>troff</i> weren&rsquo;t available for two decades.
+Nowadays, it is accessible again (on-line) for
+non-commercial use; see <b>SEE ALSO</b>, below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff
+&mdash; free GNU roff</b> <br>
+The most important free <i>roff</i> project was the GNU
+implementation of <i>troff</i>, written from scratch by
+<i>James Clark</i> and put under the
+<a href="http://www.gnu.org/copyleft">GNU Public
+License</a>. It was called <i>groff</i> (GNU <i>roff</i>).
+See <b>groff</b>(1) for an overview.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>groff</i> system is still actively developed. It is
+compatible to the classical <i>troff</i>, but many
+extensions were added. It is the first <i>roff</i> system
+that is available on almost all operating systems &mdash;
+and it is free. This makes <i>groff</i> the de facto
+<i>roff</i> standard today.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Free
+Heirloom roff</b> <br>
+An alternative is
+<a href="https://github.com/n-t-roff/heirloom-doctools"><i>Gunnar
+Ritter&rsquo;s Heirloom roff project</i></a> project,
+started in 2005, which provides enhanced versions of the
+various roff tools found in the OpenSolaris and Plan&nbsp;9
+operating systems, now available under free licenses. You
+can get this package with the shell command:</p>
+
+<p style="margin-left:22%;">$ git clone
+https://github.com/n-t-roff/heirloom-doctools</p>
+
+<p style="margin-left:11%; margin-top: 1em">Moreover, one
+finds there the
+<a href="https://github.com/n-t-roff/DWB3.3"><i>Original
+Documenter&rsquo;s Workbench Release 3.3</i></a>.</p>
+
+<h2>USING ROFF
+<a name="USING ROFF"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Most people
+won&rsquo;t even notice that they are actually using
+<i>roff</i>. When you read a system manual page (man page)
+<i>roff</i> is working in the background. But using
+<i>roff</i> explicitly isn&rsquo;t difficult either.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+<i>roff</i> implementations provide wrapper programs that
+make it easy to use the <i>roff</i> system on the shell
+command line. For example, the GNU <i>roff</i>
+implementation <b>groff</b>(1) provides command-line options
+to avoid the long command pipes of classical <i>troff</i>; a
+program <b>grog</b>(1) tries to guess from the document
+which arguments should be used for a run of <b>groff</b>;
+people who do not like specifying command-line options
+should try the <b>groffer</b>(1) program for graphically
+displaying <i>groff</i> files and man pages.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The roff
+Pipe</b> <br>
+Each <i>roff</i> system consists of preprocessors,
+<i>roff</i> formatter programs, and a set of device
+postprocessors. This concept makes heavy use of the
+<i>piping</i> mechanism, that is, a series of programs is
+called one after the other, where the output of each program
+in the queue is taken as the input for the next program.</p>
+
+<p style="margin-left:22%; margin-top: 1em">cat <i>file</i>
+| ... | <i>preproc</i> | ... | troff <i>options</i> |
+<i>postproc</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+preprocessors generate <i>roff</i> code that is fed into a
+<i>roff</i> formatter (e.g. <b>troff</b>), which in turn
+generates <i>intermediate output</i> that is fed into a
+device postprocessor program for printing or final
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All of these
+parts use programming languages of their own; each language
+is totally unrelated to the other parts. Moreover,
+<i>roff</i> macro packages that were tailored for special
+purposes can be included.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most
+<i>roff</i> documents use the macros of some package,
+intermixed with code for one or more preprocessors, spiced
+with some elements from the plain <i>roff</i> language. The
+full power of the <i>roff</i> formatting language is seldom
+needed by users; only programmers of macro packages need to
+know about the gory details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Preprocessors</b>
+<br>
+A <i>roff</i> preprocessor is any program that generates
+output that syntactically obeys the rules of the <i>roff</i>
+formatting language. Each preprocessor defines a language of
+its own that is translated into <i>roff</i> code when run
+through the preprocessor program. Parts written in these
+languages may be included within a <i>roff</i> document;
+they are identified by special <i>roff</i> requests or
+macros. Each document that is enhanced by preprocessor code
+must be run through all corresponding preprocessors before
+it is fed into the actual <i>roff</i> formatter program, for
+the formatter just ignores all alien code. The preprocessor
+programs extract and transform only the document parts that
+are determined for them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are a lot
+of free and commercial <i>roff</i> preprocessors. Some of
+them aren&rsquo;t available on each system, but there is a
+small set of preprocessors that are considered as an
+integral part of each <i>roff</i> system. The classical
+preprocessors are</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3504631.png" alt="Image grohtml-3504631.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Other known
+preprocessors that are not available on all systems
+include</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3504632.png" alt="Image grohtml-3504632.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Formatter
+Programs</b> <br>
+A <i>roff formatter</i> is a program that parses documents
+written in the <i>roff</i> formatting language or uses some
+of the <i>roff</i> macro packages. It generates
+<i>intermediate output</i>, which is intended to be fed into
+a single device postprocessor that must be specified by a
+command-line option to the formatter program. The documents
+must have been run through all necessary preprocessors
+before.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+produced by a <i>roff</i> formatter is represented in yet
+another language, the <i>intermediate output format</i> or
+<i>troff output</i>. This language was first specified in
+[CSTR&nbsp;#97]; its GNU extension is documented in
+<b>groff_out</b>(5). The intermediate output language is a
+kind of assembly language compared to the high-level
+<i>roff</i> language. The generated intermediate output is
+optimized for a special device, but the language is the same
+for every device.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>roff</i>
+formatter is the heart of the <i>roff</i> system. The
+traditional <i>roff</i> had two formatters, <b>nroff</b> for
+text devices and <b>troff</b> for graphical devices.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Often, the name
+<i>troff</i> is used as a general term to refer to both
+formatters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Devices and
+Postprocessors</b> <br>
+Devices are hardware interfaces like printers, text or
+graphical terminals, etc., or software interfaces such as a
+conversion into a different text or graphical format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A <i>roff</i>
+postprocessor is a program that transforms <i>troff</i>
+output into a form suitable for a special device. The
+<i>roff</i> postprocessors are like device drivers for the
+output target.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each device
+there is a postprocessor program that fits the device
+optimally. The postprocessor parses the generated
+intermediate output and generates device-specific code that
+is sent directly to the device.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The names of
+the devices and the postprocessor programs are not fixed
+because they greatly depend on the software and hardware
+abilities of the actual computer. For example, the classical
+devices mentioned in [CSTR&nbsp;#54] have greatly changed
+since the classical times. The old hardware doesn&rsquo;t
+exist any longer and the old graphical conversions were
+quite imprecise when compared to their modern
+counterparts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+the PostScript device <i>post</i> in classical <i>troff</i>
+had a resolution of 720 units per inch, while
+<i>groff</i>&rsquo;s <i>ps</i> device has 72000, a
+refinement of factor 100.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Today the
+operating systems provide device drivers for most
+printer-like hardware, so it isn&rsquo;t necessary to write
+a special hardware postprocessor for each printer.</p>
+
+<h2>ROFF PROGRAMMING
+<a name="ROFF PROGRAMMING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Documents using
+<i>roff</i> are normal text files decorated by <i>roff</i>
+formatting elements. The <i>roff</i> formatting language is
+quite powerful; it is almost a full programming language and
+provides elements to enlarge the language. With these, it
+became possible to develop macro packages that are tailored
+for special applications. Such macro packages are much
+handier than plain <i>roff</i>. So most people will choose a
+macro package without worrying about the internals of the
+<i>roff</i> language.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Macro
+Packages</b> <br>
+Macro packages are collections of macros that are suitable
+to format a special kind of documents in a convenient way.
+This greatly eases the usage of <i>roff</i>. The macro
+definitions of a package are kept in a file called
+<i>name</i><b>.tmac</b> (classically
+<b>tmac.</b><i>name</i>). All tmac files are stored in one
+or more directories at standardized positions. Details on
+the naming of macro packages and their placement is found in
+<b>groff_tmac</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A macro package
+that is to be used in a document can be announced to the
+formatter by the command-line option <b>-m</b>, see
+<b>troff</b>(1), or it can be specified within a document
+using the file inclusion requests of the <i>roff</i>
+language, see <b>groff</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Famous
+classical macro packages are <i>man</i> for traditional man
+pages, <i>mdoc</i> for BSD-style manual pages; the macro
+sets for books, articles, and letters are <i>me</i>
+(probably from the first name of its creator <i>Eric</i>
+Allman), <i>ms</i> (from <i>Manuscript Macros</i>), and
+<i>mm</i> (from <i>Memorandum Macros</i>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The roff
+Formatting Language</b> <br>
+The classical <i>roff</i> formatting language is documented
+in the <i>Troff User&rsquo;s Manual</i> [CSTR&nbsp;#54]. The
+<i>roff</i> language is a full programming language
+providing requests, definition of macros, escape sequences,
+string variables, number or size registers, and flow
+controls.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Requests</i>
+are the predefined basic formatting commands similar to the
+commands at the shell prompt. The user can define
+request-like elements using predefined <i>roff</i> elements.
+These are then called <i>macros</i>. A document writer will
+not note any difference in usage for requests or macros;
+both are written on a line on their own starting with a
+dot.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Escape
+sequences</i> are <i>roff</i> elements starting with a
+backslash &rsquo;<b>\</b>&rsquo;. They can be inserted
+anywhere, also in the midst of text in a line. They are used
+to implement various features, including the insertion of
+non-ASCII characters with <b>\(</b>, font changes with
+<b>\f</b>, in-line comments with <b>\&quot;</b>, the
+escaping of special control characters like <b>\\</b>, and
+many other features.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Strings</i>
+are variables that can store a string. A string is stored by
+the <b>.ds</b> request. The stored string can be retrieved
+later by the <b>\*</b> escape sequence.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Registers</i>
+store numbers and sizes. A register can be set with the
+request <b>.nr</b> and its value can be retrieved by the
+escape sequence <b>\n</b>.</p>
+
+<h2>FILE NAME EXTENSIONS
+<a name="FILE NAME EXTENSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Manual pages
+(man pages) take the section number as a file name
+extension, e.g., the filename for this document is
+<i>roff.7</i>, i.e., it is kept in section&nbsp;7 of the man
+pages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The classical
+macro packages take the package name as an extension, e.g.
+<i>file.</i><b>me</b> for a document using the <i>me</i>
+macro package, <i>file.</i><b>mm</b> for <i>mm</i>,
+<i>file.</i><b>ms</b> for <i>ms</i>, <i>file.</i><b>pic</b>
+for <i>pic</i> files, etc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But there is no
+general naming scheme for <i>roff</i> documents, though
+<i>file.</i><b>tr</b> for <i>troff file</i> is seen now and
+then. Maybe there should be a standardization for the
+filename extensions of <i>roff</i> files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">File name
+extensions can be very handy in conjunction with the
+<b>less</b>(1) pager. It provides the possibility to feed
+all input into a command-line pipe that is specified in the
+shell environment variable <b>LESSOPEN</b>. This process is
+not well documented, so here an example:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">LESSOPEN=&rsquo;|lesspipe
+%s&rsquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em">where
+<b>lesspipe</b> is either a system supplied command or a
+shell script of your own.</p>
+
+<p style="margin-left:11%; margin-top: 1em">More details
+for <i>file name extensions</i> can be found at
+<b>groff_filenames</b>(5).</p>
+
+<h2>EDITING ROFF
+<a name="EDITING ROFF"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All <i>roff</i>
+formatters provide automated line breaks and horizontal and
+vertical spacing. In order to not disturb this, the
+following tips can be helpful.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Never include empty or blank
+lines in a <i>roff</i> document. Instead, use the empty
+request (a line consisting of a dot only) or a line comment
+<b>.\&quot;</b> if a structuring element is needed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Never start a line with whitespace because this can lead
+to unexpected behavior. Indented paragraphs can be
+constructed in a controlled way by <i>roff</i> requests.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Start each sentence on a line of its own, for the
+spacing after a dot is handled differently depending on
+whether it terminates an abbreviation or a sentence. To
+distinguish both cases, do a line break after each
+sentence.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>To additionally use the auto-fill mode in Emacs, it is
+best to insert an empty <i>roff</i> request (a line
+consisting of a dot only) after each sentence.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+example shows judicious line breaking in a <i>roff</i> input
+file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is an
+example of a <br>
+.I roff <br>
+document that you can type into your text editor. <br>
+. <br>
+This is the next sentence in the same paragraph. <br>
+. <br>
+This is a longer sentence stretching over several input
+lines; <br>
+abbreviations like cf. are easily identified because the dot
+is <br>
+not followed by a line break. <br>
+. <br>
+In the output, this sentence continues the same
+paragraph.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Editing with
+Emacs</b> <br>
+The best program for editing a <i>roff</i> document is Emacs
+(or XEmacs); see <b>emacs</b>(1). It provides an
+<i>nroff</i> mode that is suitable for all kinds of
+<i>roff</i> dialects. This mode can be activated by the
+following methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When editing a
+file within Emacs the mode can be changed by typing
+&rsquo;<i>M-x nroff-mode</i>&rsquo;, where <b>M-x</b> means
+to hold down the <b>Meta</b> key (or <b>Alt</b>) and press
+the <b>x&nbsp;</b>key at the same time.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But it is also
+possible to have the mode automatically selected when the
+file is loaded into the editor.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The most general method is to
+include the following 3 comment lines at the end of the
+file.</p> </td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">.\&quot; Local
+Variables: <br>
+.\&quot; mode: nroff <br>
+.\&quot; End:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">There is a set of file name
+extensions, e.g. the man pages that trigger the automatic
+activation of the <i>nroff</i> mode.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Theoretically, it is possible to write the sequence</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">.\&quot;
+-*-&nbsp;nroff&nbsp;-*-</p>
+
+<p style="margin-left:22%; margin-top: 1em">as the first
+line of a file to have it started in <i>nroff</i> mode when
+loaded. Unfortunately, some applications such as the
+<b>man</b> program are confused by this; so this is
+deprecated.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Editing with
+Vim</b> <br>
+Besides Emacs, some other editors provide <i>nroff</i> style
+files too, e.g. <b>vim</b>(1), an extension of the
+<b>vi</b>(1) program. Vim&rsquo;s highlighting can be made
+to recognize <i>roff</i> files by setting the
+<i>filetype</i> option in a Vim <i>modeline</i>. For this
+feature to work, your copy of <b>vim</b> must be built with
+support for, and configured to enable, several features;
+consult the editor&rsquo;s online help topics
+&ldquo;auto-setting&rdquo;, &ldquo;filetype&rdquo;, and
+&ldquo;syntax&rdquo;. Then put the following at the end of
+your <i>roff</i> files, after any Emacs configuration:</p>
+
+<p style="margin-left:32%; margin-top: 1em">.\&quot; vim:
+set filetype=groff:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Replace
+&ldquo;groff&rdquo; in the above with &ldquo;nroff&rdquo; if
+you want highlighing that does <i>not</i> recognize many of
+the GNU extensions to <i>roff</i>, such as request,
+register, and string names longer than two characters.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This document
+was written by
+<a href="mailto:groff-bernd.warken-72@web.de">Bernd
+Warken</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is a lot
+of documentation on <i>roff</i>. The original papers on
+classical <i>troff</i> are still available, and all aspects
+of <i>groff</i> are documented in great detail.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Internet
+sites</b> <br>
+History of Unix Manpages</p>
+
+
+<p style="margin-left:22%;"><a href="http://manpages.bsd.lv/history.html">The
+history page</a> of the mdocml project provides an overview
+of <i>roff</i> development up to date, with links to
+original documentation and comments of the original
+authors.</p>
+
+<p style="margin-left:11%;">troff.org</p>
+
+
+<p style="margin-left:22%;"><a href="http://www.troff.org">The
+historical troff site</a> provides an overview and pointers
+to the historical aspects of <i>roff</i>.</p>
+
+<p style="margin-left:11%;">Multics</p>
+
+
+<p style="margin-left:22%;"><a href="http://www.multicians.org">The
+Multics site</a> contains a lot of information on the MIT
+projects, CTSS, Multics, early Unix, including
+<i>runoff</i>; especially useful are a glossary and the many
+links to ancient documents.</p>
+
+<p style="margin-left:11%;">Unix Archive</p>
+
+
+<p style="margin-left:22%;"><a href="http://www.tuhs.org/Archive/">The
+Ancient Unixes Archive</a> provides the source code and some
+binaries of the ancient Unixes (including the source code of
+<i>troff</i> and its documentation) that were made public by
+Caldera since 2001, e.g. of the famous Unix version&nbsp;7
+for PDP-11 at the
+<a href="http://www.tuhs.org/Archive/PDP-11/Trees/V7">Unix
+V7 site</a>.</p>
+
+<p style="margin-left:11%;">Developers at AT&amp;T Bell
+Labs</p>
+
+
+<p style="margin-left:22%;"><a href="http://www.bell-labs.com/">Bell
+Labs Computing and Mathematical Sciences Research</a>
+provides a search facility for tracking information on the
+early developers.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>Plan 9</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><a href="http://plan9.bell-labs.com">The Plan&nbsp;9
+operating system</a> by AT&amp;T Bell Labs.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>runoff</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+
+<p><a href="http://web.mit.edu/Saltzer/www/publications/pubs.html">Jerry
+Saltzer&rsquo;s home page</a> stores some documents using
+the ancient RUNOFF formatting language.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">CSTR Papers</p>
+
+
+<p style="margin-left:22%;"><a href="https://www.alcatel-lucent.com/bell-labs-journals">The
+Bell Labs (now Alcatel) CSTR site</a> stores the original
+<i>troff</i> manuals (CSTR #54, #97, #114, #116, #122) and
+famous historical documents on programming.</p>
+
+<p style="margin-left:11%;">GNU <i>roff</i></p>
+
+
+<p style="margin-left:22%;"><a href="http://www.gnu.org/software/groff">The
+groff web site</a> provides the free <i>roff</i>
+implementation <i>groff</i>, the actual standard
+<i>roff</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Historical
+roff Documentation</b> <br>
+Many classical <b>troff</b> documents are still available
+on-line. The two main manuals of the <i>troff</i> language
+are <br>
+[CSTR&nbsp;#54]</p>
+
+<p style="margin-left:22%;">J. F. Ossanna,
+<a href="http://www.troff.org/54.pdf"><i>Nroff/Troff
+User&rsquo;s Manual</i></a>; Bell Labs, 1976; revised by
+Brian Kernighan, 1992.</p>
+
+<p style="margin-left:11%;">[CSTR&nbsp;#97]</p>
+
+<p style="margin-left:22%;">Brian Kernighan,
+<a href="http://cm.bell-labs.com/cm/cs/cstr/97.ps.gz"><i>A
+Typesetter-independent TROFF</i></a>, Bell Labs, 1981,
+revised March 1982.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&ldquo;little language&rdquo; <i>roff</i> papers are <br>
+[CSTR&nbsp;#114]</p>
+
+<p style="margin-left:22%;">Jon L. Bentley and Brian W.
+Kernighan,
+<a href="http://cm.bell-labs.com/cm/cs/cstr/114.ps.gz"><i>GRAP
+&ndash; A Language for Typesetting Graphs</i></a>; Bell
+Labs, August 1984.</p>
+
+<p style="margin-left:11%;">[CSTR&nbsp;#116]</p>
+
+<p style="margin-left:22%;">Brian W. Kernighan,
+<a href="http://cm.bell-labs.com/cm/cs/cstr/116.ps.gz"><i>PIC
+&ndash; A Graphics Language for Typesetting</i></a>; Bell
+Labs, December 1984.</p>
+
+<p style="margin-left:11%;">[CSTR&nbsp;#122]</p>
+
+<p style="margin-left:22%;">J. L. Bentley, L. W. Jelinski,
+and B. W. Kernighan,
+<a href="http://cm.bell-labs.com/cm/cs/cstr/122.ps.gz"><i>CHEM
+&ndash; A Program for Typesetting Chemical Structure
+Diagrams, Computers and Chemistry</i></a>; Bell Labs, April
+1986.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can get an
+archive with most <i>classical roff documentation</i> as
+reasonable <i>PDF files</i> at <i>github</i> using the
+<i>shell command</i></p>
+
+<p style="margin-left:22%;">$ git clone
+https://github.com/bwarken/roff_classical.git</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Manual
+Pages</b> <br>
+Due to its complex structure, a full <i>roff</i> system has
+many man pages, each describing a single aspect of
+<i>roff</i>. Unfortunately, there is no general naming
+scheme for the documentation among the different <i>roff</i>
+implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In
+<i>groff</i>, the man page <b>groff</b>(1) contains a survey
+of all documentation available in <i>groff</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On other
+systems, you are on your own, but <b>troff</b>(1) might be a
+good starting point.</p>
+<hr>
+</body>
+</html>

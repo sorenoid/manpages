@@ -1,0 +1,384 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:06 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SSSD-SYSTEMTAP</title>
+
+</head>
+<body>
+
+<h1 align="center">SSSD-SYSTEMTAP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PROBE POINTS">PROBE POINTS</a><br>
+<a href="#SAMPLE SYSTEMTAP SCRIPTS">SAMPLE SYSTEMTAP SCRIPTS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sssd-systemtap
+- SSSD systemtap information</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page provides information about the systemtap functionality
+in <b>sssd</b>(8).</p>
+
+<p style="margin-left:11%; margin-top: 1em">SystemTap Probe
+points have been added into various locations in SSSD code
+to assist in troubleshooting and analyzing performance
+related issues.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Sample
+SystemTap scripts are provided in
+/usr/share/sssd/systemtap/</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Probes
+and miscellaneous functions are defined in
+/usr/share/systemtap/tapset/sssd.stp and
+/usr/share/systemtap/tapset/sssd_functions.stp
+respectively.</p>
+
+<h2>PROBE POINTS
+<a name="PROBE POINTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The information
+below lists the probe points and arguments available in the
+following format:</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe $name</p>
+
+<p style="margin-left:17%;">Description of probe point</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">variable1:datatype
+<br>
+variable2:datatype <br>
+variable3:datatype <br>
+...</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Database
+Transaction Probes</b> <br>
+probe sssd_transaction_start</p>
+
+<p style="margin-left:17%;">Start of a sysdb transaction,
+probes the sysdb_transaction_start() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">nesting:integer
+<br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sssd_transaction_cancel</p>
+
+<p style="margin-left:17%;">Cancellation of a sysdb
+transaction, probes the sysdb_transaction_cancel()
+function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">nesting:integer
+<br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sssd_transaction_commit_before</p>
+
+<p style="margin-left:17%;">Probes the
+sysdb_transaction_commit_before() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">nesting:integer
+<br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sssd_transaction_commit_after</p>
+
+<p style="margin-left:17%;">Probes the
+sysdb_transaction_commit_after() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">nesting:integer
+<br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>LDAP Search
+Probes</b> <br>
+probe sdap_search_send</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_get_generic_ext_send() function.</p>
+
+<p style="margin-left:23%; margin-top: 1em">base:string
+<br>
+scope:integer <br>
+filter:string <br>
+attrs:string <br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_search_recv</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_get_generic_ext_recv() function.</p>
+
+<p style="margin-left:23%; margin-top: 1em">base:string
+<br>
+scope:integer <br>
+filter:string <br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_parse_entry</p>
+
+<p style="margin-left:17%;">Probes the sdap_parse_entry()
+function. It is called repeatedly with every received
+attribute.</p>
+
+<p style="margin-left:23%; margin-top: 1em">attr:string
+<br>
+value:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_parse_entry_done</p>
+
+<p style="margin-left:17%;">Probes the sdap_parse_entry()
+function. It is called when parsing of received object is
+finished.</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_deref_send</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_deref_search_send() function.</p>
+
+<p style="margin-left:23%; margin-top: 1em">base_dn:string
+<br>
+deref_attr:string <br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_deref_recv</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_deref_search_recv() function.</p>
+
+<p style="margin-left:23%; margin-top: 1em">base:string
+<br>
+scope:integer <br>
+filter:string <br>
+probestr:string</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>LDAP Account
+Request Probes</b> <br>
+probe sdap_acct_req_send</p>
+
+<p style="margin-left:17%;">Probes the sdap_acct_req_send()
+function.</p>
+
+<p style="margin-left:23%; margin-top: 1em">entry_type:int
+<br>
+filter_type:int <br>
+filter_value:string <br>
+extra_value:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_acct_req_recv</p>
+
+<p style="margin-left:17%;">Probes the sdap_acct_req_recv()
+function.</p>
+
+<p style="margin-left:23%; margin-top: 1em">entry_type:int
+<br>
+filter_type:int <br>
+filter_value:string <br>
+extra_value:string</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>LDAP User
+Search Probes</b> <br>
+probe sdap_search_user_send</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_search_user_send() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">filter:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_search_user_recv</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_search_user_recv() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">filter:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_search_user_save_begin</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_search_user_save_begin() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">filter:string</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+sdap_search_user_save_end</p>
+
+<p style="margin-left:17%;">Probes the
+sdap_search_user_save_end() function.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">filter:string</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Data
+Provider Request Probes</b> <br>
+probe dp_req_send</p>
+
+<p style="margin-left:17%;">A Data Provider request is
+submitted.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">dp_req_domain:string
+<br>
+dp_req_name:string <br>
+dp_req_target:int <br>
+dp_req_method:int</p>
+
+<p style="margin-left:11%; margin-top: 1em">probe
+dp_req_done</p>
+
+<p style="margin-left:17%;">A Data Provider request is
+completed.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">dp_req_name:string
+<br>
+dp_req_target:int <br>
+dp_req_method:int <br>
+dp_ret:int <br>
+dp_errorstr:string</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MISCELLANEOUS
+FUNCTIONS</b> <br>
+The information below lists the probe points and arguments
+available in the following format:</p>
+
+<p style="margin-left:11%; margin-top: 1em">function
+acct_req_desc(entry_type)</p>
+
+<p style="margin-left:17%;">Convert entry_type to string
+and return string</p>
+
+<p style="margin-left:11%; margin-top: 1em">function
+sssd_acct_req_probestr(fc_name, entry_type, filter_type,
+filter_value, extra_value)</p>
+
+<p style="margin-left:17%;">Create probe string based on
+filter type</p>
+
+<p style="margin-left:11%; margin-top: 1em">function
+dp_target_str(target)</p>
+
+<p style="margin-left:17%;">Convert target to string and
+return string</p>
+
+<p style="margin-left:11%; margin-top: 1em">function
+dp_method_str(target)</p>
+
+<p style="margin-left:17%;">Convert method to string and
+return string</p>
+
+<h2>SAMPLE SYSTEMTAP SCRIPTS
+<a name="SAMPLE SYSTEMTAP SCRIPTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Start the
+SystemTap script (<b>stap
+/usr/share/sssd/systemtap/&lt;script_name&gt;.stp</b>), then
+perform an identity operation and the script will collect
+information from probes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Provided
+SystemTap scripts are:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dp_request.stp</p>
+
+<p style="margin-left:17%;">Monitoring of data provider
+request performance.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">id_perf.stp</p>
+
+<p style="margin-left:17%;">Monitoring of <b>id</b> command
+performance.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">ldap_perf.stp</p>
+
+<p style="margin-left:17%;">Monitoring of LDAP queries.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">nested_group_perf.stp</p>
+
+<p style="margin-left:17%;">Performance of nested groups
+resolving.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sssd</b>(8),
+<b>sssd.conf</b>(5), <b>sssd-ldap</b>(5),
+<b>sssd-krb5</b>(5), <b>sssd-simple</b>(5),
+<b>sssd-ipa</b>(5), <b>sssd-ad</b>(5), <b>sssd-files</b>(5),
+<b>sssd-sudo</b>(5), <b>sssd-session-recording</b>(5),
+<b>sss_cache</b>(8), <b>sss_debuglevel</b>(8),
+<b>sss_obfuscate</b>(8), <b>sss_seed</b>(8),
+<b>sssd_krb5_locator_plugin</b>(8),
+<b>sss_ssh_authorizedkeys</b>(8),
+<b>sss_ssh_knownhostsproxy</b>(8), <b>sssd-ifp</b>(5),
+<b>pam_sss</b>(8). <b>sss_rpcidmapd</b>(5)
+<b>sssd-systemtap</b>(5)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>The SSSD
+upstream - https://github.com/SSSD/sssd/</b></p>
+<hr>
+</body>
+</html>

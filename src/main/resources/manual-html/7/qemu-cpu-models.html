@@ -1,0 +1,1017 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>QEMU-CPU-MODELS</title>
+
+</head>
+<body>
+
+<h1 align="center">QEMU-CPU-MODELS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">qemu-cpu-models
+- QEMU CPU Models</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">QEMU CPU
+Modelling Infrastructure manual</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Recommendations
+for KVM CPU model configuration on x86 hosts</b> <br>
+The information that follows provides recommendations for
+configuring CPU models on x86 hosts. The goals are to
+maximise performance, while protecting guest OS against
+various CPU hardware flaws, and optionally enabling live
+migration between hosts with heterogeneous CPU models.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Two ways to
+configure CPU models with QEMU / KVM</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="25%">
+
+
+<p><b>Host passthrough</b></p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">This passes the
+host CPU model features, model, stepping, exactly to the
+guest. Note that KVM may filter out some host CPU model
+features if they cannot be supported with virtualization.
+Live migration is unsafe when this mode is used as libvirt /
+QEMU cannot guarantee a stable CPU is exposed to the guest
+across hosts. This is the recommended CPU to use, provided
+live migration is not required.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">2.</p></td>
+<td width="1%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em"><b>Named model</b></p></td>
+<td width="68%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">QEMU comes with
+a number of predefined named CPU models, that typically
+refer to specific generations of hardware released by Intel
+and AMD. These allow the guest VMs to have a degree of
+isolation from the host CPU, allowing greater flexibility in
+live migrating between hosts with differing hardware. @end
+table</p>
+
+<p style="margin-left:11%; margin-top: 1em">In both cases,
+it is possible to optionally add or remove individual CPU
+features, to alter what is presented to the guest by
+default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Libvirt
+supports a third way to configure CPU models known as
+&quot;Host model&quot;. This uses the QEMU &quot;Named
+model&quot; feature, automatically picking a CPU model that
+is similar the host CPU, and then adding extra features to
+approximate the host model as closely as possible. This does
+not guarantee the CPU family, stepping, etc will precisely
+match the host CPU, as they would with &quot;Host
+passthrough&quot;, but gives much of the benefit of
+passthrough, while making live migration safe.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ABI
+compatibility levels for CPU models</b> <br>
+The x86_64 architecture has a number of <i>ABI compatibility
+levels</i> defined. Traditionally most operating systems and
+toolchains would only target the original baseline ABI. It
+is expected that in future OS and toolchains are likely to
+target newer ABIs. The table that follows illustrates which
+ABI compatibility levels can be satisfied by the QEMU CPU
+models. Note that the table only lists the long term stable
+CPU model versions (eg Haswell-v4). In addition to what is
+listed, there are also many CPU model aliases which resolve
+to a different CPU model version, depending on the machine
+type is in use.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>x86-64 ABI
+compatibility levels</b></p>
+
+
+<p align="center"><img src="grohtml-3530081.png" alt="Image grohtml-3530081.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Preferred
+CPU models for Intel x86 hosts</b> <br>
+The following CPU models are preferred for use on Intel
+hosts. Administrators / applications are recommended to use
+the CPU model that matches the generation of the host CPUs
+in use. In a deployment with a mixture of host CPU models
+between machines, if live migration compatibility is
+required, use the newest CPU model that is compatible across
+all desired hosts. <b><br>
+Cascadelake-Server, Cascadelake-Server-noTSX</b></p>
+
+<p style="margin-left:22%;">Intel Xeon Processor (Cascade
+Lake, 2019), with &quot;stepping&quot; levels 6 or 7 only.
+(The Cascade Lake Xeon processor with <i>stepping 5 is
+vulnerable to MDS variants</i>.)</p>
+
+<p style="margin-left:11%;"><b>Skylake-Server,
+Skylake-Server-IBRS, Skylake-Server-IBRS-noTSX</b></p>
+
+<p style="margin-left:22%;">Intel Xeon Processor (Skylake,
+2016)</p>
+
+<p style="margin-left:11%;"><b>Skylake-Client,
+Skylake-Client-IBRS, Skylake-Client-noTSX-IBRS}</b></p>
+
+<p style="margin-left:22%;">Intel Core Processor (Skylake,
+2015)</p>
+
+<p style="margin-left:11%;"><b>Broadwell, Broadwell-IBRS,
+Broadwell-noTSX, Broadwell-noTSX-IBRS</b></p>
+
+<p style="margin-left:22%;">Intel Core Processor
+(Broadwell, 2014)</p>
+
+<p style="margin-left:11%;"><b>Haswell, Haswell-IBRS,
+Haswell-noTSX, Haswell-noTSX-IBRS</b></p>
+
+<p style="margin-left:22%;">Intel Core Processor (Haswell,
+2013)</p>
+
+<p style="margin-left:11%;"><b>IvyBridge,
+IvyBridge-IBR</b></p>
+
+<p style="margin-left:22%;">Intel Xeon E3-12xx v2 (Ivy
+Bridge, 2012)</p>
+
+<p style="margin-left:11%;"><b>SandyBridge,
+SandyBridge-IBRS</b></p>
+
+<p style="margin-left:22%;">Intel Xeon E312xx (Sandy
+Bridge, 2011)</p>
+
+<p style="margin-left:11%;"><b>Westmere,
+Westmere-IBRS</b></p>
+
+<p style="margin-left:22%;">Westmere E56xx/L56xx/X56xx
+(Nehalem-C, 2010)</p>
+
+<p style="margin-left:11%;"><b>Nehalem,
+Nehalem-IBRS</b></p>
+
+<p style="margin-left:22%;">Intel Core i7 9xx (Nehalem
+Class Core i7, 2008)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Penryn</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Intel Core 2 Duo P9xxx (Penryn Class Core 2, 2007)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Conroe</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Intel Celeron_4x0 (Conroe/Merom Class Core 2, 2006)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Important
+CPU features for Intel x86 hosts</b> <br>
+The following are important CPU features that should be used
+on Intel x86 hosts, when available in the host CPU. Some of
+them require explicit configuration to enable, as they are
+not included by default in some, or all, of the named CPU
+models listed above. In general all of these features are
+included if using &quot;Host passthrough&quot; or &quot;Host
+model&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>pcid</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Recommended to mitigate the cost
+of the Meltdown (CVE-2017-5754) fix.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Included by
+default in Haswell, Broadwell &amp; Skylake Intel CPU
+models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Should be
+explicitly turned on for Westmere, SandyBridge, and
+IvyBridge Intel CPU models. Note that some desktop/mobile
+Westmere CPUs cannot support this feature.</p>
+
+<p style="margin-left:11%;"><b>spec-ctrl</b></p>
+
+<p style="margin-left:22%;">Required to enable the Spectre
+v2 (CVE-2017-5715) fix.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Included by
+default in Intel CPU models with -IBRS suffix.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for Intel CPU models without -IBRS
+suffix.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Requires the
+host CPU microcode to support this feature before it can be
+used for guest CPUs.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>stibp</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Required to enable stronger Spectre v2 (CVE-2017-5715)
+fixes in some operating systems.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for all Intel CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Requires the
+host CPU microcode to support this feature before it can be
+used for guest CPUs.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>ssbd</b></p></td>
+<td width="5%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em">Required to enable the
+CVE-2018-3639 fix.</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any Intel CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for all Intel CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Requires the
+host CPU microcode to support this feature before it can be
+used for guest CPUs.</p>
+
+<p style="margin-left:11%;"><b>pdpe1gb</b></p>
+
+<p style="margin-left:22%;">Recommended to allow guest OS
+to use 1GB size pages.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any Intel CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Should be
+explicitly turned on for all Intel CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that not
+all CPU hardware will support this feature.</p>
+
+<p style="margin-left:11%;"><b>md-clear</b></p>
+
+<p style="margin-left:22%;">Required to confirm the MDS
+(CVE-2018-12126, CVE-2018-12127, CVE-2018-12130,
+CVE-2019-11091) fixes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any Intel CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for all Intel CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Requires the
+host CPU microcode to support this feature before it can be
+used for guest CPUs.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>mds-no</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Recommended to inform the guest OS that the host is
+<i>not</i> vulnerable to any of the MDS variants ([MFBDS]
+CVE-2018-12130, [MLPDS] CVE-2018-12127, [MSBDS]
+CVE-2018-12126).</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This is an MSR
+(Model-Specific Register) feature rather than a CPUID
+feature, so it will not appear in the Linux
+<b>/proc/cpuinfo</b> in the host or guest. Instead, the host
+kernel uses it to populate the MDS vulnerability file in
+<b>sysfs</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">So it should
+only be enabled for VMs if the host reports @code{Not
+affected} in the
+<b>/sys/devices/system/cpu/vulnerabilities/mds</b> file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>taa-no</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Recommended to inform that the
+guest that the host is <b>not</b> vulnerable to
+CVE-2019-11135, TSX Asynchronous Abort (TAA).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This too is an
+MSR feature, so it does not show up in the Linux
+<b>/proc/cpuinfo</b> in the host or guest.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It should only
+be enabled for VMs if the host reports <b>Not affected</b>
+in the
+<b>/sys/devices/system/cpu/vulnerabilities/tsx_async_abort</b>
+file.</p>
+
+<p style="margin-left:11%;"><b>tsx-ctrl</b></p>
+
+<p style="margin-left:22%;">Recommended to inform the guest
+that it can disable the Intel TSX (Transactional
+Synchronization Extensions) feature; or, if the processor is
+vulnerable, use the Intel VERW instruction (a
+processor-level instruction that performs checks on memory
+access) as a mitigation for the TAA vulnerability. (For
+details, refer to Intel's <i>deep dive into MDS</i>.)</p>
+
+<p style="margin-left:22%; margin-top: 1em">Expose this to
+the guest OS if and only if: (a) the host has TSX enabled;
+<i>and</i> (b) the guest has <b>rtm</b> CPU flag
+enabled.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By disabling
+TSX, KVM-based guests can avoid paying the price of
+mitigating TSX-based attacks.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that
+<b>tsx-ctrl</b> too is an MSR feature, so it does not show
+up in the Linux <b>/proc/cpuinfo</b> in the host or
+guest.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To validate
+that Intel TSX is indeed disabled for the guest, there are
+two ways: (a) check for the <i>absence</i> of <b>rtm</b> in
+the guest's <b>/proc/cpuinfo</b>; or (b) the
+<b>/sys/devices/system/cpu/vulnerabilities/tsx_async_abort</b>
+file in the guest should report <b>Mitigation: TSX
+disabled</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Preferred
+CPU models for AMD x86 hosts</b> <br>
+The following CPU models are preferred for use on AMD hosts.
+Administrators / applications are recommended to use the CPU
+model that matches the generation of the host CPUs in use.
+In a deployment with a mixture of host CPU models between
+machines, if live migration compatibility is required, use
+the newest CPU model that is compatible across all desired
+hosts. <b><br>
+EPYC, EPYC-IBPB</b></p>
+
+<p style="margin-left:22%;">AMD EPYC Processor (2017)</p>
+
+<p style="margin-left:11%;"><b>Opteron_G5</b></p>
+
+<p style="margin-left:22%;">AMD Opteron 63xx class CPU
+(2012)</p>
+
+<p style="margin-left:11%;"><b>Opteron_G4</b></p>
+
+<p style="margin-left:22%;">AMD Opteron 62xx class CPU
+(2011)</p>
+
+<p style="margin-left:11%;"><b>Opteron_G3</b></p>
+
+<p style="margin-left:22%;">AMD Opteron 23xx (Gen 3 Class
+Opteron, 2009)</p>
+
+<p style="margin-left:11%;"><b>Opteron_G2</b></p>
+
+<p style="margin-left:22%;">AMD Opteron 22xx (Gen 2 Class
+Opteron, 2006)</p>
+
+<p style="margin-left:11%;"><b>Opteron_G1</b></p>
+
+<p style="margin-left:22%;">AMD Opteron 240 (Gen 1 Class
+Opteron, 2004)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Important
+CPU features for AMD x86 hosts</b> <br>
+The following are important CPU features that should be used
+on AMD x86 hosts, when available in the host CPU. Some of
+them require explicit configuration to enable, as they are
+not included by default in some, or all, of the named CPU
+models listed above. In general all of these features are
+included if using &quot;Host passthrough&quot; or &quot;Host
+model&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>ibpb</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Required to enable the Spectre v2 (CVE-2017-5715)
+fix.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Included by
+default in AMD CPU models with -IBPB suffix.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for AMD CPU models without -IBPB
+suffix.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Requires the
+host CPU microcode to support this feature before it can be
+used for guest CPUs.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>stibp</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Required to enable stronger
+Spectre v2 (CVE-2017-5715) fixes in some operating
+systems.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for all AMD CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Requires the
+host CPU microcode to support this feature before it can be
+used for guest CPUs.</p>
+
+<p style="margin-left:11%;"><b>virt-ssbd</b></p>
+
+<p style="margin-left:22%;">Required to enable the
+CVE-2018-3639 fix</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any AMD CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for all AMD CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This should be
+provided to guests, even if amd-ssbd is also provided, for
+maximum guest compatibility.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note for some
+QEMU / libvirt versions, this must be force enabled when
+when using &quot;Host model&quot;, because this is a virtual
+feature that doesn't exist in the physical host CPUs.</p>
+
+<p style="margin-left:11%;"><b>amd-ssbd</b></p>
+
+<p style="margin-left:22%;">Required to enable the
+CVE-2018-3639 fix</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any AMD CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Must be
+explicitly turned on for all AMD CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This provides
+higher performance than <b>virt-ssbd</b> so should be
+exposed to guests whenever available in the host.
+<b>virt-ssbd</b> should none the less also be exposed for
+maximum guest compatibility as some kernels only know about
+<b>virt-ssbd</b>.</p>
+
+<p style="margin-left:11%;"><b>amd-no-ssb</b></p>
+
+<p style="margin-left:22%;">Recommended to indicate the
+host is not vulnerable CVE-2018-3639</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any AMD CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Future hardware
+generations of CPU will not be vulnerable to CVE-2018-3639,
+and thus the guest should be told not to enable its
+mitigations, by exposing amd-no-ssb. This is mutually
+exclusive with virt-ssbd and amd-ssbd.</p>
+
+<p style="margin-left:11%;"><b>pdpe1gb</b></p>
+
+<p style="margin-left:22%;">Recommended to allow guest OS
+to use 1GB size pages</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not included by
+default in any AMD CPU model.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Should be
+explicitly turned on for all AMD CPU models.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that not
+all CPU hardware will support this feature.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default x86
+CPU models</b> <br>
+The default QEMU CPU models are designed such that they can
+run on all hosts. If an application does not wish to do
+perform any host compatibility checks before launching
+guests, the default is guaranteed to work.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default CPU
+models will, however, leave the guest OS vulnerable to
+various CPU hardware flaws, so their use is strongly
+discouraged. Applications should follow the earlier guidance
+to setup a better CPU configuration, with host passthrough
+recommended if live migration is not needed. <b><br>
+qemu32, qemu64</b></p>
+
+<p style="margin-left:22%;">QEMU Virtual CPU version 2.5+
+(32 &amp; 64 bit variants)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>qemu64</b>
+is used for x86_64 guests and <b>qemu32</b> is used for i686
+guests, when no <b>-cpu</b> argument is given to QEMU, or no
+<b>&lt;cpu&gt;</b> is provided in libvirt XML.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+non-recommended x86 CPUs</b> <br>
+The following CPUs models are compatible with most AMD and
+Intel x86 hosts, but their usage is discouraged, as they
+expose a very limited featureset, which prevents guests
+having optimal performance. <b><br>
+kvm32, kvm64</b></p>
+
+<p style="margin-left:22%;">Common KVM processor (32 &amp;
+64 bit variants).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Legacy models
+just for historical compatibility with ancient QEMU
+versions.</p>
+
+<p style="margin-left:11%;"><b>486, athlon, phenom,
+coreduo, core2duo, n270, pentium, pentium2, <br>
+pentium3</b></p>
+
+<p style="margin-left:22%;">Various very old x86 CPU
+models, mostly predating the introduction of hardware
+assisted virtualization, that should thus not be required
+for running virtual machines.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Syntax for
+configuring CPU models</b> <br>
+The examples below illustrate the approach to configuring
+the various CPU models / features in QEMU and libvirt.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>QEMU command
+line</b> <br>
+Host passthrough:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">qemu-system-x86_64 -cpu host</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Host
+passthrough with feature customization:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">qemu-system-x86_64 -cpu host,vmx=off,...</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Named CPU
+models:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">qemu-system-x86_64 -cpu Westmere</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Named CPU
+models with feature customization:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">qemu-system-x86_64 -cpu Westmere,pcid=on,...</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Libvirt
+guest XML</b> <br>
+Host passthrough:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">&lt;cpu mode='host-passthrough'/&gt;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Host
+passthrough with feature customization:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">&lt;cpu mode='host-passthrough'&gt;
+    &lt;feature name=&quot;vmx&quot; policy=&quot;disable&quot;/&gt;
+    ...
+&lt;/cpu&gt;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Host model:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">&lt;cpu mode='host-model'/&gt;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Host model with
+feature customization:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">&lt;cpu mode='host-model'&gt;
+    &lt;feature name=&quot;vmx&quot; policy=&quot;disable&quot;/&gt;
+    ...
+&lt;/cpu&gt;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Named
+model:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">&lt;cpu mode='custom'&gt;
+    &lt;model name=&quot;Westmere&quot;/&gt;
+&lt;/cpu&gt;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Named model
+with feature customization:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">&lt;cpu mode='custom'&gt;
+    &lt;model name=&quot;Westmere&quot;/&gt;
+    &lt;feature name=&quot;pcid&quot; policy=&quot;require&quot;/&gt;
+    ...
+&lt;/cpu&gt;</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+CPU model configurations on MIPS hosts</b> <br>
+QEMU supports variety of MIPS CPU models:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+CPU models for MIPS32 hosts</b> <br>
+The following CPU models are supported for use on MIPS32
+hosts. Administrators / applications are recommended to use
+the CPU model that matches the generation of the host CPUs
+in use. In a deployment with a mixture of host CPU models
+between machines, if live migration compatibility is
+required, use the newest CPU model that is compatible across
+all desired hosts. <b><br>
+mips32r6-generic</b></p>
+
+<p style="margin-left:22%;">MIPS32 Processor (Release 6,
+2015)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>P5600</b></p></td>
+<td width="4%"></td>
+<td width="46%">
+
+
+<p>MIPS32 Processor (P5600, 2014)</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>M14K, M14Kc</b></p>
+
+<p style="margin-left:22%;">MIPS32 Processor (M14K,
+2009)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>74Kf</b></p></td>
+<td width="5%"></td>
+<td width="43%">
+
+
+<p>MIPS32 Processor (74K, 2007)</p></td>
+<td width="35%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>34Kf</b></p></td>
+<td width="5%"></td>
+<td width="43%">
+
+
+<p>MIPS32 Processor (34K, 2006)</p></td>
+<td width="35%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>24Kc, 24KEc, 24Kf</b></p>
+
+<p style="margin-left:22%;">MIPS32 Processor (24K,
+2003)</p>
+
+<p style="margin-left:11%;"><b>4Kc, 4Km, 4KEcR1, 4KEmR1,
+4KEc, 4KEm</b></p>
+
+<p style="margin-left:22%;">MIPS32 Processor (4K, 1999)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+CPU models for MIPS64 hosts</b> <br>
+The following CPU models are supported for use on MIPS64
+hosts. Administrators / applications are recommended to use
+the CPU model that matches the generation of the host CPUs
+in use. In a deployment with a mixture of host CPU models
+between machines, if live migration compatibility is
+required, use the newest CPU model that is compatible across
+all desired hosts.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>I6400</b></p></td>
+<td width="4%"></td>
+<td width="52%">
+
+
+<p>MIPS64 Processor (Release 6, 2014)</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>Loongson-2E</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (Loongson 2,
+2006)</p>
+
+<p style="margin-left:11%;"><b>Loongson-2F</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (Loongson 2,
+2008)</p>
+
+<p style="margin-left:11%;"><b>Loongson-3A1000</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (Loongson 3,
+2010)</p>
+
+<p style="margin-left:11%;"><b>Loongson-3A4000</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (Loongson 3,
+2018)</p>
+
+<p style="margin-left:11%;"><b>mips64dspr2</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (Release 2,
+2006)</p>
+
+<p style="margin-left:11%;"><b>MIPS64R2-generic, 5KEc,
+5KEf</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (Release 2,
+2002)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>20Kc</b></p></td>
+<td width="5%"></td>
+<td width="41%">
+
+
+<p>MIPS64 Processor (20K, 2000</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>5Kc, 5Kf</b></p>
+
+<p style="margin-left:22%;">MIPS64 Processor (5K, 1999)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>VR5432</b></p></td>
+<td width="2%"></td>
+<td width="50%">
+
+
+<p>MIPS64 Processor (VR, 1998)</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>R4000</b></p></td>
+<td width="2%"></td>
+<td width="50%">
+
+
+<p>MIPS64 Processor (MIPS III, 1991)</p></td>
+<td width="28%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+CPU models for nanoMIPS hosts</b> <br>
+The following CPU models are supported for use on nanoMIPS
+hosts. Administrators / applications are recommended to use
+the CPU model that matches the generation of the host CPUs
+in use. In a deployment with a mixture of host CPU models
+between machines, if live migration compatibility is
+required, use the newest CPU model that is compatible across
+all desired hosts.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>I7200</b></p></td>
+<td width="4%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em">MIPS I7200 (nanoMIPS, 2018)</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Preferred
+CPU models for MIPS hosts</b> <br>
+The following CPU models are preferred for use on different
+MIPS hosts: <b><br>
+MIPS III</b></p>
+
+<p style="margin-left:22%;">R4000</p>
+
+<p style="margin-left:11%;"><b>MIPS32R2</b></p>
+
+<p style="margin-left:22%;">34Kf</p>
+
+<p style="margin-left:11%;"><b>MIPS64R6</b></p>
+
+<p style="margin-left:22%;">I6400</p>
+
+<p style="margin-left:11%;"><b>nanoMIPS</b></p>
+
+<p style="margin-left:22%;">I7200</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The HTML
+documentation of QEMU for more precise information and Linux
+user mode emulator invocation.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The QEMU
+Project developers</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">2022, The QEMU
+Project Developers</p>
+<hr>
+</body>
+</html>

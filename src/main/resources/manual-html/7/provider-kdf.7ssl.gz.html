@@ -1,0 +1,570 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROVIDER-KDF</title>
+
+</head>
+<body>
+
+<h1 align="center">PROVIDER-KDF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUES">RETURN VALUES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">provider-kdf -
+The KDF library &lt;-&gt; provider functions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/core_dispatch.h&gt; <br>
+#include &lt;openssl/core_names.h&gt; <br>
+/* <br>
+* None of these are actual functions, but are displayed like
+this for <br>
+* the function signatures for functions that are offered as
+function <br>
+* pointers in OSSL_DISPATCH arrays. <br>
+*/ <br>
+/* Context management */ <br>
+void *OSSL_FUNC_kdf_newctx(void *provctx); <br>
+void OSSL_FUNC_kdf_freectx(void *kctx); <br>
+void *OSSL_FUNC_kdf_dupctx(void *src); <br>
+/* Encryption/decryption */ <br>
+int OSSL_FUNC_kdf_reset(void *kctx); <br>
+int OSSL_FUNC_kdf_derive(void *kctx, unsigned char *key,
+size_t keylen, <br>
+const OSSL_PARAM params[]); <br>
+/* KDF parameter descriptors */ <br>
+const OSSL_PARAM *OSSL_FUNC_kdf_gettable_params(void
+*provctx); <br>
+const OSSL_PARAM *OSSL_FUNC_kdf_gettable_ctx_params(void
+*kcxt, void *provctx); <br>
+const OSSL_PARAM *OSSL_FUNC_kdf_settable_ctx_params(void
+*kcxt, void *provctx); <br>
+/* KDF parameters */ <br>
+int OSSL_FUNC_kdf_get_params(OSSL_PARAM params[]); <br>
+int OSSL_FUNC_kdf_get_ctx_params(void *kctx, OSSL_PARAM
+params[]); <br>
+int OSSL_FUNC_kdf_set_ctx_params(void *kctx, const
+OSSL_PARAM params[]);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+documentation is primarily aimed at provider authors. See
+<b>provider</b>(7) for further information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>KDF</small> operation enables providers to implement
+<small>KDF</small> algorithms and make them available to
+applications via the <small>API</small> functions
+<b>EVP_KDF_CTX_reset</b>(3), and
+<b>EVP_KDF_derive</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+&quot;functions&quot; mentioned here are passed as function
+pointers between <i>libcrypto</i> and the provider in
+<b><small>OSSL_DISPATCH</small></b> arrays via
+<b><small>OSSL_ALGORITHM</small></b> arrays that are
+returned by the provider&rsquo;s
+<b>provider_query_operation()</b> function (see
+&quot;Provider Functions&quot; in
+<b>provider-base</b>(7)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All these
+&quot;functions&quot; have a corresponding function type
+definition named <b>OSSL_FUNC_{name}_fn</b>, and a helper
+function to retrieve the function pointer from an
+<b><small>OSSL_DISPATCH</small></b> element named
+<b>OSSL_FUNC_{name}</b>. For example, the
+&quot;function&quot; <b>OSSL_FUNC_kdf_newctx()</b> has
+these:</p>
+
+<p style="margin-left:11%; margin-top: 1em">typedef void
+*(OSSL_OSSL_FUNC_kdf_newctx_fn)(void *provctx); <br>
+static ossl_inline OSSL_OSSL_FUNC_kdf_newctx_fn <br>
+OSSL_FUNC_kdf_newctx(const OSSL_DISPATCH *opf);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OSSL_DISPATCH</small></b>
+array entries are identified by numbers that are provided as
+macros in <b>openssl-core_dispatch.h</b>(7), as follows:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_FUNC_kdf_newctx
+OSSL_FUNC_KDF_NEWCTX <br>
+OSSL_FUNC_kdf_freectx OSSL_FUNC_KDF_FREECTX <br>
+OSSL_FUNC_kdf_dupctx OSSL_FUNC_KDF_DUPCTX <br>
+OSSL_FUNC_kdf_reset OSSL_FUNC_KDF_RESET <br>
+OSSL_FUNC_kdf_derive OSSL_FUNC_KDF_DERIVE <br>
+OSSL_FUNC_kdf_get_params OSSL_FUNC_KDF_GET_PARAMS <br>
+OSSL_FUNC_kdf_get_ctx_params OSSL_FUNC_KDF_GET_CTX_PARAMS
+<br>
+OSSL_FUNC_kdf_set_ctx_params OSSL_FUNC_KDF_SET_CTX_PARAMS
+<br>
+OSSL_FUNC_kdf_gettable_params OSSL_FUNC_KDF_GETTABLE_PARAMS
+<br>
+OSSL_FUNC_kdf_gettable_ctx_params
+OSSL_FUNC_KDF_GETTABLE_CTX_PARAMS <br>
+OSSL_FUNC_kdf_settable_ctx_params
+OSSL_FUNC_KDF_SETTABLE_CTX_PARAMS</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+<small>KDF</small> algorithm implementation may not
+implement all of these functions. In order to be a
+consistent set of functions, at least the following
+functions must be implemented:
+<b>OSSL_FUNC_kdf_newctx()</b>,
+<b>OSSL_FUNC_kdf_freectx()</b>,
+<b>OSSL_FUNC_kdf_set_ctx_params()</b>,
+<b>OSSL_FUNC_kdf_derive()</b>. All other functions are
+optional.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Context
+Management Functions <br>
+OSSL_FUNC_kdf_newctx()</b> should create and return a
+pointer to a provider side structure for holding context
+information during a <small>KDF</small> operation. A pointer
+to this context will be passed back in a number of the other
+<small>KDF</small> operation function calls. The parameter
+<i>provctx</i> is the provider context generated during
+provider initialisation (see <b>provider</b>(7)).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_freectx()</b>
+is passed a pointer to the provider side <small>KDF</small>
+context in the <i>kctx</i> parameter. If it receives
+<small>NULL</small> as <i>kctx</i> value, it should not do
+anything other than return. This function should free any
+resources associated with that context.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_dupctx()</b>
+should duplicate the provider side <small>KDF</small>
+context in the <i>kctx</i> parameter and return the
+duplicate copy.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Encryption/Decryption
+Functions <br>
+OSSL_FUNC_kdf_reset()</b> initialises a <small>KDF</small>
+operation given a provider side <small>KDF</small> context
+in the <i>kctx</i> parameter.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_derive()</b>
+performs the <small>KDF</small> operation after processing
+the <i>params</i> as per
+<b>OSSL_FUNC_kdf_set_ctx_params()</b>. The <i>kctx</i>
+parameter contains a pointer to the provider side context.
+The resulting key of the desired <i>keylen</i> should be
+written to <i>key</i>. If the algorithm does not support the
+requested <i>keylen</i> the function must return error.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>KDF</small>
+Parameters</b> <br>
+See <b><small>OSSL_PARAM</small></b> (3) for further details
+on the parameters structure used by these functions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_get_params()</b>
+gets details of parameter values associated with the
+provider algorithm and stores them in <i>params</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_set_ctx_params()</b>
+sets <small>KDF</small> parameters associated with the given
+provider side <small>KDF</small> context <i>kctx</i> to
+<i>params</i>. Any parameter settings are additional to any
+that were previously set. Passing <small>NULL</small> for
+<i>params</i> should return true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_get_ctx_params()</b>
+retrieves gettable parameter values associated with the
+given provider side <small>KDF</small> context <i>kctx</i>
+and stores them in <i>params</i>. Passing
+<small>NULL</small> for <i>params</i> should return
+true.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_gettable_params()</b>,
+<b>OSSL_FUNC_kdf_gettable_ctx_params()</b>, and
+<b>OSSL_FUNC_kdf_settable_ctx_params()</b> all return
+constant <b><small>OSSL_PARAM</small></b> arrays as
+descriptors of the parameters that
+<b>OSSL_FUNC_kdf_get_params()</b>,
+<b>OSSL_FUNC_kdf_get_ctx_params()</b>, and
+<b>OSSL_FUNC_kdf_set_ctx_params()</b> can handle,
+respectively. <b>OSSL_FUNC_kdf_gettable_ctx_params()</b> and
+<b>OSSL_FUNC_kdf_settable_ctx_params()</b> will return the
+parameters associated with the provider side context
+<i>kctx</i> in its current state if it is not
+<small>NULL.</small> Otherwise, they return the parameters
+associated with the provider side algorithm
+<i>provctx</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Parameters
+currently recognised by built-in KDFs are as follows. Not
+all parameters are relevant to, or are understood by all
+KDFs: <br>
+&quot;size&quot; ( <b><small>OSSL_KDF_PARAM_SIZE</small></b>
+) &lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">Gets the output size from the
+associated <small>KDF</small> ctx. If the algorithm produces
+a variable amount of output, <small>SIZE_MAX</small> should
+be returned. If the input parameters required to calculate
+the fixed output size have not yet been supplied, 0 should
+be returned indicating an error.</p>
+
+<p style="margin-left:11%;">&quot;key&quot; (
+<b><small>OSSL_KDF_PARAM_KEY</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the key in the associated
+<small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;secret&quot; (
+<b><small>OSSL_KDF_PARAM_SECRET</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the secret in the
+associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;pass&quot; (
+<b><small>OSSL_KDF_PARAM_PASSWORD</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the password in the
+associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;cipher&quot; (
+<b><small>OSSL_KDF_PARAM_CIPHER</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;digest&quot; (
+<b><small>OSSL_KDF_PARAM_DIGEST</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;mac&quot; ( <b><small>OSSL_KDF_PARAM_MAC</small></b> )
+&lt; <small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Sets the name of the underlying
+cipher, digest or <small>MAC</small> to be used. It must
+name a suitable algorithm for the <small>KDF</small>
+that&rsquo;s being used.</p>
+
+<p style="margin-left:11%;">&quot;maclen&quot; (
+<b><small>OSSL_KDF_PARAM_MAC_SIZE</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the length of the
+<small>MAC</small> in the associated <small>KDF</small>
+ctx.</p>
+
+<p style="margin-left:11%;">&quot;properties&quot; (
+<b><small>OSSL_KDF_PARAM_PROPERTIES</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Sets the properties to be
+queried when trying to fetch the underlying algorithm. This
+must be given together with the algorithm naming parameter
+to be considered valid.</p>
+
+<p style="margin-left:11%;">&quot;iter&quot; (
+<b><small>OSSL_KDF_PARAM_ITER</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the number of iterations
+in the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;mode&quot; (
+<b><small>OSSL_KDF_PARAM_MODE</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Sets the mode in the associated
+<small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;pkcs5&quot; (
+<b><small>OSSL_KDF_PARAM_PKCS5</small></b> )
+&lt;integer&gt;</p>
+
+<p style="margin-left:17%;">Enables or diables the
+<small>SP800-132</small> compliance checks. A mode of 0
+enables the compliance checks.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The checks
+performed are: <br>
+- the iteration count is at least 1000. <br>
+- the salt length is at least 128 bits. <br>
+- the derived key length is at least 112 bits.</p>
+
+<p style="margin-left:11%;">&quot;ukm&quot; (
+<b><small>OSSL_KDF_PARAM_UKM</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets an optional random string
+that is provided by the sender called
+&quot;partyAInfo&quot;. In <small>CMS</small> this is the
+user keying material.</p>
+
+<p style="margin-left:11%;">&quot;cekalg&quot; (
+<b><small>OSSL_KDF_PARAM_CEK_ALG</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Sets the <small>CEK</small>
+wrapping algorithm name in the associated <small>KDF</small>
+ctx.</p>
+
+<p style="margin-left:11%;">&quot;n&quot; (
+<b><small>OSSL_KDF_PARAM_SCRYPT_N</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the scrypt work factor
+parameter N in the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;r&quot; (
+<b><small>OSSL_KDF_PARAM_SCRYPT_R</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the scrypt work factor
+parameter r in the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;p&quot; (
+<b><small>OSSL_KDF_PARAM_SCRYPT_P</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the scrypt work factor
+parameter p in the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;maxmem_bytes&quot; (
+<b><small>OSSL_KDF_PARAM_SCRYPT_MAXMEM</small></b> )
+&lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the scrypt work factor
+parameter maxmem in the associated <small>KDF</small>
+ctx.</p>
+
+<p style="margin-left:11%;">&quot;prefix&quot; (
+<b><small>OSSL_KDF_PARAM_PREFIX</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the prefix string using by
+the <small>TLS 1.3</small> version of <small>HKDF</small> in
+the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;label&quot; (
+<b><small>OSSL_KDF_PARAM_LABEL</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the label string using by
+the <small>TLS 1.3</small> version of <small>HKDF</small> in
+the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;data&quot; (
+<b><small>OSSL_KDF_PARAM_DATA</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the context string using
+by the <small>TLS 1.3</small> version of <small>HKDF</small>
+in the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;info&quot; (
+<b><small>OSSL_KDF_PARAM_INFO</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the optional shared info
+in the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;seed&quot; (
+<b><small>OSSL_KDF_PARAM_SEED</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the <small>IV</small> in
+the associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;xcghash&quot; (
+<b><small>OSSL_KDF_PARAM_SSHKDF_XCGHASH</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">Sets the xcghash in the
+associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;session_id&quot; (
+<b><small>OSSL_KDF_PARAM_SSHKDF_SESSION_ID</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">Sets the session
+<small>ID</small> in the associated <small>KDF</small>
+ctx.</p>
+
+<p style="margin-left:11%;">&quot;type&quot; (
+<b><small>OSSL_KDF_PARAM_SSHKDF_TYPE</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">Sets the <small>SSH KDF</small>
+type parameter in the associated <small>KDF</small> ctx.
+There are six supported types: <small><br>
+EVP_KDF_SSHKDF_TYPE_INITIAL_IV_CLI_TO_SRV</small></p>
+
+<p style="margin-left:23%;">The Initial <small>IV</small>
+from client to server. A single char of value 65 (
+<small>ASCII</small> char &rsquo;A&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_INITIAL_IV_SRV_TO_CLI</small></p>
+
+<p style="margin-left:23%;">The Initial <small>IV</small>
+from server to client A single char of value 66 (
+<small>ASCII</small> char &rsquo;B&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_ENCRYPTION_KEY_CLI_TO_SRV</small></p>
+
+<p style="margin-left:23%;">The Encryption Key from client
+to server A single char of value 67 ( <small>ASCII</small>
+char &rsquo;C&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_ENCRYPTION_KEY_SRV_TO_CLI</small></p>
+
+<p style="margin-left:23%;">The Encryption Key from server
+to client A single char of value 68 ( <small>ASCII</small>
+char &rsquo;D&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_INTEGRITY_KEY_CLI_TO_SRV</small></p>
+
+<p style="margin-left:23%;">The Integrity Key from client
+to server A single char of value 69 ( <small>ASCII</small>
+char &rsquo;E&rsquo;).</p>
+
+
+<p style="margin-left:17%;"><small>EVP_KDF_SSHKDF_TYPE_INTEGRITY_KEY_SRV_TO_CLI</small></p>
+
+<p style="margin-left:23%;">The Integrity Key from client
+to server A single char of value 70 ( <small>ASCII</small>
+char &rsquo;F&rsquo;).</p>
+
+<p style="margin-left:11%;">&quot;constant&quot; (
+<b><small>OSSL_KDF_PARAM_CONSTANT</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the constant value in the
+associated <small>KDF</small> ctx.</p>
+
+<p style="margin-left:11%;">&quot;id&quot; (
+<b><small>OSSL_KDF_PARAM_PKCS12_ID</small></b> )
+&lt;integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the intended usage of the
+output bits in the associated <small>KDF</small> ctx. It is
+defined as per <small>RFC 7292</small> section B.3.</p>
+
+<h2>RETURN VALUES
+<a name="RETURN VALUES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_newctx()</b>
+and <b>OSSL_FUNC_kdf_dupctx()</b> should return the newly
+created provider side <small>KDF</small> context, or
+<small>NULL</small> on failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_derive()</b>,
+<b>OSSL_FUNC_kdf_get_params()</b>,
+<b>OSSL_FUNC_kdf_get_ctx_params()</b> and
+<b>OSSL_FUNC_kdf_set_ctx_params()</b> should return 1 for
+success or 0 on error.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_kdf_gettable_params()</b>,
+<b>OSSL_FUNC_kdf_gettable_ctx_params()</b> and
+<b>OSSL_FUNC_kdf_settable_ctx_params()</b> should return a
+constant <b><small>OSSL_PARAM</small></b> array, or
+<small>NULL</small> if none is offered.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>KDF</small> life-cycle is described in
+<b>life_cycle-kdf</b>(7). Providers should ensure that the
+various transitions listed there are supported. At some
+point the <small>EVP</small> layer will begin enforcing the
+listed transitions.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider</b>(7),
+<b>life_cycle-kdf</b>(7), <b><small>EVP_KDF</small></b>
+(3).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The provider
+<small>KDF</small> interface was introduced in OpenSSL
+3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

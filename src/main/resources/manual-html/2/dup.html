@@ -1,0 +1,376 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:10 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DUP</title>
+
+</head>
+<body>
+
+<h1 align="center">DUP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dup, dup2, dup3
+- duplicate a file descriptor</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;unistd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+dup(int</b> <i>oldfd</i><b>); <br>
+int dup2(int</b> <i>oldfd</i><b>, int</b>
+<i>newfd</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>#define
+_GNU_SOURCE</b> /* See feature_test_macros(7) */ <b><br>
+#include &lt;fcntl.h&gt;</b> /* Obtain O_* constant
+definitions */ <b><br>
+#include &lt;unistd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+dup3(int</b> <i>oldfd</i><b>, int</b> <i>newfd</i><b>,
+int</b> <i>flags</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>dup</b>() system call creates a copy of the file
+descriptor <i>oldfd</i>, using the lowest-numbered unused
+file descriptor for the new descriptor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After a
+successful return, the old and new file descriptors may be
+used interchangeably. They refer to the same open file
+description (see <b>open</b>(2)) and thus share file offset
+and file status flags; for example, if the file offset is
+modified by using <b>lseek</b>(2) on one of the file
+descriptors, the offset is also changed for the other.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The two file
+descriptors do not share file descriptor flags (the
+close-on-exec flag). The close-on-exec flag
+(<b>FD_CLOEXEC</b>; see <b>fcntl</b>(2)) for the duplicate
+descriptor is off.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dup2()</b>
+<br>
+The <b>dup2</b>() system call performs the same task as
+<b>dup</b>(), but instead of using the lowest-numbered
+unused file descriptor, it uses the file descriptor number
+specified in <i>newfd</i>. If the file descriptor
+<i>newfd</i> was previously open, it is silently closed
+before being reused.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The steps of
+closing and reusing the file descriptor <i>newfd</i> are
+performed <i>atomically</i>. This is important, because
+trying to implement equivalent functionality using
+<b>close</b>(2) and <b>dup</b>() would be subject to race
+conditions, whereby <i>newfd</i> might be reused between the
+two steps. Such reuse could happen because the main program
+is interrupted by a signal handler that allocates a file
+descriptor, or because a parallel thread allocates a file
+descriptor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note the
+following points:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>If <i>oldfd</i> is not a valid file descriptor, then the
+call fails, and <i>newfd</i> is not closed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>If <i>oldfd</i> is a valid file descriptor, and
+<i>newfd</i> has the same value as <i>oldfd</i>, then
+<b>dup2</b>() does nothing, and returns <i>newfd</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dup3() <br>
+dup3</b>() is the same as <b>dup2</b>(), except that:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">The caller can force the
+close-on-exec flag to be set for the new file descriptor by
+specifying <b>O_CLOEXEC</b> in <i>flags</i>. See the
+description of the same flag in <b>open</b>(2) for reasons
+why this may be useful.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>If <i>oldfd</i> equals <i>newfd</i>, then <b>dup3</b>()
+fails with the error <b>EINVAL</b>.</p></td></tr>
+</table>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+these system calls return the new file descriptor. On error,
+-1 is returned, and <i>errno</i> is set appropriately.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EBADF</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>oldfd</i> isn&rsquo;t an open
+file descriptor.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EBADF</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>newfd</i> is out of the allowed range for file
+descriptors (see the discussion of <b>RLIMIT_NOFILE</b> in
+<b>getrlimit</b>(2)).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EBUSY</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(Linux only) This may be returned by <b>dup2</b>() or
+<b>dup3</b>() during a race condition with <b>open</b>(2)
+and <b>dup</b>().</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINTR</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The <b>dup2</b>() or <b>dup3</b>() call was interrupted
+by a signal; see <b>signal</b>(7).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>dup3</b>()) <i>flags</i> contain an invalid
+value.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>dup3</b>()) <i>oldfd</i> was equal to
+<i>newfd</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EMFILE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The per-process limit on the number of open file
+descriptors has been reached (see the discussion of
+<b>RLIMIT_NOFILE</b> in <b>getrlimit</b>(2)).</p></td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dup3</b>()
+was added to Linux in version 2.6.27; glibc support is
+available starting with version 2.9.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dup</b>(),
+<b>dup2</b>(): POSIX.1-2001, POSIX.1-2008, SVr4, 4.3BSD.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dup3</b>()
+is Linux-specific.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The error
+returned by <b>dup2</b>() is different from that returned by
+<b>fcntl(</b>..., <b>F_DUPFD</b>, ...<b>)</b> when
+<i>newfd</i> is out of range. On some systems, <b>dup2</b>()
+also sometimes returns <b>EINVAL</b> like
+<b>F_DUPFD</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>newfd</i>
+was open, any errors that would have been reported at
+<b>close</b>(2) time are lost. If this is of concern,
+then&mdash;unless the program is single-threaded and does
+not allocate file descriptors in signal handlers&mdash;the
+correct approach is <i>not</i> to close <i>newfd</i> before
+calling <b>dup2</b>(), because of the race condition
+described above. Instead, code something like the following
+could be used:</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* Obtain a
+duplicate of 'newfd' that can subsequently <br>
+be used to check for close() errors; an EBADF error <br>
+means that 'newfd' was not open. */</p>
+
+<p style="margin-left:17%; margin-top: 1em">tmpfd =
+dup(newfd); <br>
+if (tmpfd == -1 &amp;&amp; errno != EBADF) { <br>
+/* Handle unexpected dup() error */ <br>
+}</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* Atomically
+duplicate 'oldfd' on 'newfd' */</p>
+
+<p style="margin-left:17%; margin-top: 1em">if (dup2(oldfd,
+newfd) == -1) { <br>
+/* Handle dup2() error */ <br>
+}</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* Now check
+for close() errors on the file originally <br>
+referred to by 'newfd' */</p>
+
+<p style="margin-left:17%; margin-top: 1em">if (tmpfd !=
+-1) { <br>
+if (close(tmpfd) == -1) { <br>
+/* Handle errors from close */ <br>
+} <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2),
+<b>fcntl</b>(2), <b>open</b>(2), <b>pidfd_getfd</b>(2)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

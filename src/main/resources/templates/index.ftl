@@ -1,20 +1,12 @@
 <#-- @ftlvariable name="articles" type="kotlin.collections.List<com.bandor.models.Manual>" -->
 <#import "_layout.ftl" as layout />
+<#import "_index.ftl" as index />
 <!DOCTYPE html>
 <html lang="en">
 <@layout.head/>
 <body>
 <@layout.header/>
-<@layout.body>
-<#list manuals?reverse as manual>
-<div>
-    <h3>
-        <a href="/${manual.name}">${manual.name}</a>
-    </h3>
-</div>
-</#list>
-<hr>
-</@layout.body>
+<@index.body/>
 <p><i>Powered by Ktor</i></p>
 </body>
 </html>

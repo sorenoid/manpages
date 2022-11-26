@@ -1,0 +1,321 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:23 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-buildinfo</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-buildinfo</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FIELDS">FIELDS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-buildinfo -
+Debian build information file format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>filename</i><b>.buildinfo</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each Debian
+source package build can record the build information in a
+<b>.buildinfo</b> control file, which contains a number of
+fields in <b>deb822</b>(5) format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each field
+begins with a tag, such as <b>Source</b> or <b>Binary</b>
+(case insensitive), followed by a colon, and the body of the
+field (case sensitive unless stated otherwise). Fields are
+delimited only by field tags. In other words, field text may
+be multiple lines in length, but the installation tools will
+generally join lines when processing the body of the field
+(except in case of the multiline fields
+<b>Binary-Only-Changes</b>, <b>Installed-Build-Depends</b>,
+<b>Environment</b>, <b>Checksums-Md5</b>,
+<b>Checksums-Sha1</b> and <b>Checksums-Sha256</b>, see
+below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The control
+data might be enclosed in an OpenPGP <small>ASCII</small>
+Armored signature, as specified in
+<small>RFC4880.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">The name of the
+<b>.buildinfo</b> file will depend on the type of build and
+will be as specific as necessary but not more; for a build
+that includes <b>any</b> the name will be
+<i>source-name</i><b>_</b><i>binary-version</i><b>_</b><i>arch</i><b>.buildinfo</b>,
+or otherwise for a build that includes <b>all</b> the name
+will be
+<i>source-name</i><b>_</b><i>binary-version</i><b>_all.buildinfo</b>,
+or otherwise for a build that includes <b>source</b> the
+name will be
+<i>source-name</i><b>_</b><i>source-version</i><b>_source.buildinfo</b>.</p>
+
+<h2>FIELDS
+<a name="FIELDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Format:</b>
+<i>format-version</i> (required)</p>
+
+<p style="margin-left:17%;">The value of this field
+declares the format version of the file. The syntax of the
+field value is a version number with a major and minor
+component. Backward incompatible changes to the format will
+bump the major version, and backward compatible changes
+(such as field additions) will bump the minor version. The
+current format version is <b>1.0</b>.</p>
+
+<p style="margin-left:11%;"><b>Source:</b>
+<i>source-name</i> [<b>(</b><i>source-version</i><b>)</b>]
+(required)</p>
+
+<p style="margin-left:17%;">The name of the source package.
+If the source version differs from the binary version, then
+the <i>source-name</i> will be followed by a
+<i>source-version</i> in parenthesis. This can happen when
+the build is for a binary-only non-maintainer upload.</p>
+
+<p style="margin-left:11%;"><b>Binary:</b>
+<i>binary-package-list</i> (required in context)</p>
+
+<p style="margin-left:17%;">This folded field is a
+space-separated list of binary packages built. If the build
+is source-only, then the field is omitted (since dpkg
+1.20.0).</p>
+
+<p style="margin-left:11%;"><b>Architecture:</b>
+<i>arch-list</i> (required)</p>
+
+<p style="margin-left:17%;">This space-separated field
+lists the architectures of the files currently being built.
+Common architectures are <b>amd64</b>, <b>armel</b>,
+<b>i386</b>, etc. Note that the <b>all</b> value is meant
+for packages that are architecture independent. If the
+source for the package is also being built, the special
+entry <b>source</b> is also present. Architecture wildcards
+must never be present in the list.</p>
+
+<p style="margin-left:11%;"><b>Version:</b>
+<i>version-string</i> (required)</p>
+
+<p style="margin-left:17%;">Typically, this is the original
+package&rsquo;s version number in whatever form the
+program&rsquo;s author uses. It may also include a Debian
+revision number (for non-native packages). The exact format
+and sorting algorithm are described in
+<b>deb-version</b>(7).</p>
+
+<p style="margin-left:11%;"><b>Binary-Only-Changes:</b>
+<br>
+&Acirc;&nbsp;<i>changelog-entry</i></p>
+
+<p style="margin-left:17%;">This multiline field contains
+the concatenated text of the changelog entry for a
+binary-only non-maintainer upload (binNMU) if that is the
+case. To make this a valid multiline field empty lines are
+replaced with a single full stop (&rsquo;.&rsquo;) and all
+lines are indented by one space character. The exact content
+depends on the changelog format.</p>
+
+<p style="margin-left:11%;"><b>Checksums-Md5:</b>
+(required) <b><br>
+Checksums-Sha1:</b> (required) <b><br>
+Checksums-Sha256:</b> (required) <br>
+&Acirc;&nbsp;<i>checksum size filename</i></p>
+
+<p style="margin-left:17%;">These multiline fields contain
+a list of files with a checksum and size for each one. These
+fields have the same syntax and differ only in the checksum
+algorithm used: <small>MD5</small> for <b>Checksums-Md5</b>,
+<small>SHA-1</small> for <b>Checksums-Sha1</b> and
+<small>SHA-256</small> for <b>Checksums-Sha256</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The first line
+of the field value (the part on the same line as the field
+name followed by a colon) is always empty. The content of
+the field is expressed as continuation lines, one line per
+file. Each line consists of space-separated entries
+describing the file: the checksum, the file size, and the
+file name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">These fields
+list all files that make up the build.</p>
+
+<p style="margin-left:11%;"><b>Build-Origin:</b>
+<i>name</i></p>
+
+<p style="margin-left:17%;">The name of the distribution
+this package is originating from.</p>
+
+<p style="margin-left:11%;"><b>Build-Architecture:</b>
+<i>arch</i> (required)</p>
+
+<p style="margin-left:17%;">The Debian architecture for the
+installation the packages is being built in. Common
+architectures are <b>amd64</b>, <b>armel</b>, <b>i386</b>,
+etc.</p>
+
+<p style="margin-left:11%;"><b>Build-Date:</b>
+<i>build-date</i></p>
+
+<p style="margin-left:17%;">The date the package was built.
+It must be in the same format as the date in a
+<b>deb-changelog</b>(5) entry.</p>
+
+<p style="margin-left:11%;"><b>Build-Kernel-Version:</b>
+<i>build-kernel-version</i></p>
+
+<p style="margin-left:17%;">The release and version (in an
+unspecified format) of the kernel running on the build
+system. This field is only going to be present if the
+builder has explicitly requested it, to avoid leaking
+possibly sensitive information.</p>
+
+<p style="margin-left:11%;"><b>Build-Path:</b>
+<i>build-path</i></p>
+
+<p style="margin-left:17%;">The absolute build path, which
+correspond to the unpacked source tree. This field is only
+going to be present if the vendor has allowed it via some
+pattern match to avoid leaking possibly sensitive
+information.</p>
+
+<p style="margin-left:17%; margin-top: 1em">On Debian and
+derivatives only build paths starting with <i>/build/</i>
+will emit this field.</p>
+
+<p style="margin-left:11%;"><b>Build-Tainted-By:</b> <br>
+&Acirc;&nbsp;<i>taint-reason-list</i></p>
+
+<p style="margin-left:17%;">This folded field contains a
+space-separated list of non-exhaustive reason tags (formed
+by alphanumeric and dash characters) which identify why the
+current build has been tainted (since dpkg 1.19.5).</p>
+
+<p style="margin-left:17%; margin-top: 1em">On Debian and
+derivatives the following reason tags can be emitted:
+<b><br>
+merged-usr-via-aliased-dirs</b></p>
+
+<p style="margin-left:23%;">The system has a merged
+<i>/usr</i> via aliased directories (previously known as
+<b>merged-usr-via-symlinks</b>). This will confuse
+<b>dpkg-query</b>, <b>dpkg-statoverride</b>,
+<b>dpkg-trigger</b>, <b>update-alternatives</b> and any
+other tool using pathnames as keys into their databases, as
+it creates filesystem aliasing problems, and messes with the
+understanding of the filesystem that <b>dpkg</b> has
+recorded in its database. For build systems that hardcode
+pathnames to specific binaries or libraries on the resulting
+artifacts, it can also produce packages that will be
+incompatible with non-/usr-merged filesystems.</p>
+
+
+<p style="margin-left:17%;"><b>usr-local-has-configs</b></p>
+
+<p style="margin-left:23%;">The system has configuration
+files under <i>/usr/local/etc</i>.</p>
+
+
+<p style="margin-left:17%;"><b>usr-local-has-includes</b></p>
+
+<p style="margin-left:23%;">The system has header files
+under <i>/usr/local/include</i>.</p>
+
+
+<p style="margin-left:17%;"><b>usr-local-has-programs</b></p>
+
+<p style="margin-left:23%;">The system has programs under
+<i>/usr/local/bin</i> or <i>/usr/local/sbin</i>.</p>
+
+
+<p style="margin-left:17%;"><b>usr-local-has-libraries</b></p>
+
+<p style="margin-left:23%;">The system has libraries,
+either static or shared under <i>/usr/local/lib</i>.</p>
+
+
+<p style="margin-left:11%;"><b>Installed-Build-Depends:</b>
+(required) <br>
+&Acirc;&nbsp;<i>package-list</i></p>
+
+<p style="margin-left:17%;">The list of installed and
+configured packages that might affect the package build
+process.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The list
+consists of each package name, optionally arch-qualified for
+foreign architectures, with an exact version restriction,
+separated by commas.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The list
+includes all essential packages, packages listed in
+<b>Build-Depends</b>, <b>Build-Depends-Arch</b>,
+<b>Build-Depends-Indep</b> source control fields, any vendor
+specific builtin dependencies, and all their recursive
+dependencies. On Debian and derivatives the dependency
+builtin is <b>build-essential</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+dependencies coming from the source control fields, all
+dependency alternatives and all providers of virtual
+packages depended on will be included.</p>
+
+<p style="margin-left:11%;"><b>Environment:</b> <br>
+&Acirc;&nbsp;<i>variable-list</i></p>
+
+<p style="margin-left:17%;">The list of environment
+variables that are known to affect the package build
+process, with each environment variable followed by an equal
+sign (&rsquo;=&rsquo;) and the variable&rsquo;s quoted
+value, using double quotes (&rsquo;&quot;&rsquo;), and
+backslashes escaped (&rsquo;\\&rsquo;).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb822</b>(5),
+<b>deb-changes</b>(5), <b>deb-version</b>(7),
+<b>dpkg-genbuildinfo</b>(1).</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,942 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:45 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UDEV</title>
+
+</head>
+<body>
+
+<h1 align="center">UDEV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RULES FILES">RULES FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">udev - Dynamic
+device management</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">udev supplies
+the system software with device events, manages permissions
+of device nodes and may create additional symlinks in the
+/dev/ directory, or renames network interfaces. The kernel
+usually just assigns unpredictable device names based on the
+order of discovery. Meaningful symlinks or network device
+names provide a way to reliably identify devices based on
+their properties or current configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The udev
+daemon, <b>systemd-udevd.service</b>(8), receives device
+uevents directly from the kernel whenever a device is added
+or removed from the system, or it changes its state. When
+udev receives a device event, it matches its configured set
+of rules against various device attributes to identify the
+device. Rules that match may provide additional device
+information to be stored in the udev database or to be used
+to create meaningful symlink names.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All device
+information udev processes is stored in the udev database
+and sent out to possible event subscribers. Access to all
+stored data and the event sources is provided by the library
+libudev.</p>
+
+<h2>RULES FILES
+<a name="RULES FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The udev rules
+are read from the files located in the system rules
+directories /lib/udev/rules.d and
+/usr/local/lib/udev/rules.d, the volatile runtime directory
+/run/udev/rules.d and the local administration directory
+/etc/udev/rules.d. All rules files are collectively sorted
+and processed in lexical order, regardless of the
+directories in which they live. However, files with
+identical filenames replace each other. Files in /etc/ have
+the highest priority, files in /run/ take precedence over
+files with the same name under /usr/. This can be used to
+override a system-supplied rules file with a local file if
+needed; a symlink in /etc/ with the same name as a rules
+file in /lib/, pointing to /dev/null, disables the rules
+file entirely. Rule files must have the extension .rules;
+other extensions are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Every line in
+the rules file contains at least one key-value pair. Except
+for empty lines or lines beginning with &quot;#&quot;, which
+are ignored. There are two kinds of keys: match and
+assignment. If all match keys match against their values,
+the rule gets applied and the assignment keys get the
+specified values assigned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A matching rule
+may rename a network interface, add symlinks pointing to the
+device node, or run a specified program as part of the event
+handling.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A rule consists
+of a comma-separated list of one or more key-operator-value
+expressions. Each expression has a distinct effect,
+depending on the key and operator used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operators</b>
+<br>
+&quot;==&quot;</p>
+
+<p style="margin-left:17%;">Compare for equality. (The
+specified key has the specified value.)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;!=&quot;</p>
+
+<p style="margin-left:17%;">Compare for inequality. (The
+specified key doesn't have the specified value, or the
+specified key is not present at all.)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;=&quot;</p>
+
+<p style="margin-left:17%;">Assign a value to a key. Keys
+that represent a list are reset and only this single value
+is assigned.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;+=&quot;</p>
+
+<p style="margin-left:17%;">Add the value to a key that
+holds a list of entries.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;-=&quot;</p>
+
+<p style="margin-left:17%;">Remove the value from a key
+that holds a list of entries.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;:=&quot;</p>
+
+<p style="margin-left:17%;">Assign a value to a key
+finally; disallow any later changes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Values</b>
+<br>
+Values are written as double quoted strings, such as
+(&quot;string&quot;). To include a quotation mark (&quot;)
+in the value, precede it by a backslash (\&quot;). Any other
+occurrences of a backslash followed by a character are not
+unescaped. That is, &quot;\t\n&quot; is treated as four
+characters: backslash, lowercase t, backslash, lowercase
+n.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The string can
+be prefixed with a lowercase e (e&quot;string\n&quot;) to
+mark the string as <b><font color="#0000FF">C-style
+escaped</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">. For example, e&quot;string\n&quot;
+is parsed as 7 characters: 6 lowercase letters and a
+newline. This can be useful for writing special characters
+when a kernel driver requires them.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Please
+note that <b>NUL</b> is not allowed in either string
+variant.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Keys</b>
+<br>
+The following key names can be used to match against device
+properties. Some of the keys also match against properties
+of the parent devices in sysfs, not only the device that has
+generated the event. If multiple keys that match a parent
+device are specified in a single rule, all these keys must
+match at one and the same parent device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ACTION</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+name of the event action.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>DEVPATH</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+devpath of the event device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>KERNEL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+name of the event device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>KERNELS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Search
+the devpath upwards for a matching device name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>NAME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+name of a network interface. It can be used once the NAME
+key has been set in one of the preceding rules.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SYMLINK</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+name of a symlink targeting the node. It can be used once a
+SYMLINK key has been set in one of the preceding rules.
+There may be multiple symlinks; only one needs to
+match.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SUBSYSTEM</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+subsystem of the event device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SUBSYSTEMS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Search
+the devpath upwards for a matching device subsystem
+name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>DRIVER</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+driver name of the event device. Only set this key for
+devices which are bound to a driver at the time the event is
+generated.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>DRIVERS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Search
+the devpath upwards for a matching device driver
+name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ATTR{filename}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match
+sysfs attribute value of the event device.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Trailing
+whitespace in the attribute values is ignored unless the
+specified match value itself contains trailing
+whitespace.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ATTRS{filename}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Search
+the devpath upwards for a device with matching sysfs
+attribute values. If multiple <i>ATTRS</i> matches are
+specified, all of them must match on the same
+device.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Trailing
+whitespace in the attribute values is ignored unless the
+specified match value itself contains trailing
+whitespace.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SYSCTL{kernel
+parameter}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match a
+kernel parameter value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ENV{key}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match
+against a device property value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>CONST{key}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match
+against a system-wide constant. Supported keys
+are:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;arch&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">System's
+architecture. See <b>ConditionArchitecture=</b> in
+<b>systemd.unit</b>(5) for possible values.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;virt&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">System's
+virtualization environment. See
+<b>systemd-detect-virt</b>(1) for possible
+values.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Unknown
+keys will never match.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>TAG</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match
+against a device tag.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>TAGS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Search
+the devpath upwards for a device with matching
+tag.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>TEST{octal
+mode mask}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Test the
+existence of a file. An octal mode mask can be specified if
+needed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>PROGRAM</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute a
+program to determine whether there is a match; the key is
+true if the program returns successfully. The device
+properties are made available to the executed program in the
+environment. The program's standard output is available in
+the <i>RESULT</i> key.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+can only be used for very short-running foreground tasks.
+For details, see <i>RUN</i>.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that multiple <i>PROGRAM</i> keys may be specified in one
+rule, and &quot;=&quot;, &quot;:=&quot;, and &quot;+=&quot;
+have the same effect as &quot;==&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>RESULT</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Match the
+returned string of the last <i>PROGRAM</i> call. This key
+can be used in the same or in any later rule after a
+<i>PROGRAM</i> call.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Most
+of the fields support shell glob pattern matching and
+alternate patterns. The following special characters are
+supported:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;*&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Matches
+zero or more characters.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;?&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Matches
+any single character.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;[]&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Matches
+any single character specified within the brackets. For
+example, the pattern string &quot;tty[SR]&quot; would match
+either &quot;ttyS&quot; or &quot;ttyR&quot;. Ranges are also
+supported via the &quot;-&quot; character. For example, to
+match on the range of all digits, the pattern
+&quot;[0-9]&quot; could be used. If the first character
+following the &quot;[&quot; is a &quot;!&quot;, any
+characters not enclosed are matched.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;|&quot;</font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Separates
+alternative patterns. For example, the pattern string
+&quot;abc|x*&quot; would match either &quot;abc&quot; or
+&quot;x*&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following keys can get values assigned:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>NAME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The name
+to use for a network interface. See <b>systemd.link</b>(5)
+for a higher-level mechanism for setting the interface name.
+The name of a device node cannot be changed by udev, only
+additional symlinks can be created.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SYMLINK</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The name
+of a symlink targeting the node. Every matching rule adds
+this value to the list of symlinks to be created.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">The
+set of characters to name a symlink is limited. Allowed
+characters are &quot;0-9A-Za-z#+-.:=@_/&quot;, valid UTF-8
+character sequences, and &quot;\x00&quot; hex encoding. All
+other characters are replaced by a &quot;_&quot;
+character.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Multiple
+symlinks may be specified by separating the names by the
+space character. In case multiple devices claim the same
+name, the link always points to the device with the highest
+link_priority. If the current device goes away, the links
+are re-evaluated and the device with the next highest
+link_priority becomes the owner of the link. If no
+link_priority is specified, the order of the devices (and
+which one of them owns the link) is undefined.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Symlink
+names must never conflict with the kernel's default device
+node names, as that would result in unpredictable
+behavior.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>OWNER</i>,
+<i>GROUP</i>, <i>MODE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+permissions for the device node. Every specified value
+overrides the compiled-in default value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SECLABEL{module}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Applies
+the specified Linux Security Module label to the device
+node.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ATTR{key}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The value
+that should be written to a sysfs attribute of the event
+device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SYSCTL{kernel
+parameter}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The value
+that should be written to kernel parameter.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ENV{key}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Set a
+device property value. Property names with a leading
+&quot;.&quot; are neither stored in the database nor
+exported to events or external tools (run by, for example,
+the <i>PROGRAM</i> match key).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>TAG</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Attach a
+tag to a device. This is used to filter events for users of
+libudev's monitor functionality, or to enumerate a group of
+tagged devices. The implementation can only work efficiently
+if only a few tags are attached to a device. It is only
+meant to be used in contexts with specific device filter
+requirements, and not as a general-purpose flag. Excessive
+use might result in inefficient event handling.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>RUN{type}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Specify a
+program to be executed after processing of all the rules for
+the event. With &quot;+=&quot;, this invocation is added to
+the list, and with &quot;=&quot; or &quot;:=&quot;, it
+replaces any previous contents of the list. Please note that
+both &quot;program&quot; and &quot;builtin&quot; types
+described below share a common list, so clearing the list
+with &quot;:=&quot; and &quot;=&quot; affects both
+types.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><i>type</i>
+may be:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;program&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Execute
+an external program specified as the assigned value. If no
+absolute path is given, the program is expected to live in
+/lib/udev; otherwise, the absolute path must be
+specified.</font></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><font color="#000000">This
+is the default if no <i>type</i> is specified.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;builtin&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">As
+<i>program</i>, but use one of the built-in programs rather
+than an external one.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">The
+program name and following arguments are separated by
+spaces. Single quotes can be used to specify arguments with
+spaces.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+can only be used for very short-running foreground tasks.
+Running an event process for a long period of time may block
+all further events for this or a dependent
+device.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that running programs that access the network or
+mount/unmount filesystems is not allowed inside of udev
+rules, due to the default sandbox that is enforced on
+systemd-udevd.service.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Starting
+daemons or other long-running processes is not allowed; the
+forked processes, detached or not, will be unconditionally
+killed after the event handling has finished. In order to
+activate long-running processes from udev rules, provide a
+service unit and pull it in from a udev device using the
+<i>SYSTEMD_WANTS</i> device property. See
+<b>systemd.device</b>(5) for details.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>LABEL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A named
+label to which a <i>GOTO</i> may jump.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>GOTO</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Jumps to
+the next <i>LABEL</i> with a matching name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>IMPORT{type}</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Import a
+set of variables as device properties, depending on
+<i>type</i>:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;program&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Execute
+an external program specified as the assigned value and, if
+it returns successfully, import its output, which must be in
+environment key format. Path specification, command/argument
+separation, and quoting work like in <i>RUN</i>.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;builtin&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Similar
+to &quot;program&quot;, but use one of the built-in programs
+rather than an external one.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;file&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Import a
+text file specified as the assigned value, the content of
+which must be in environment key format.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;db&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Import a
+single property specified as the assigned value from the
+current device database. This works only if the database is
+already populated by an earlier event.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;cmdline&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Import a
+single property from the kernel command line. For simple
+flags the value of the property is set to
+&quot;1&quot;.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;parent&quot;</font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Import
+the stored keys from the parent device by reading the
+database entry of the parent device. The value assigned to
+<b>IMPORT{parent}</b> is used as a filter of key names to
+import (with the same shell glob pattern matching used for
+comparisons).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+can only be used for very short-running foreground tasks.
+For details see <b>RUN</b>.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that multiple <i>IMPORT{}</i> keys may be specified in one
+rule, and &quot;=&quot;, &quot;:=&quot;, and &quot;+=&quot;
+have the same effect as &quot;==&quot;. The key is true if
+the import is successful, unless &quot;!=&quot; is used as
+the operator which causes the key to be true if the import
+failed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>OPTIONS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Rule and
+device options:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>link_priority=</b><i>value</i></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Specify
+the priority of the created symlinks. Devices with higher
+priorities overwrite existing symlinks of other devices. The
+default is 0.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>string_escape=</b><i>none|replace</i></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">When
+&quot;replace&quot;, possibly unsafe characters in strings
+assigned to <i>NAME</i>, <i>SYMLINK</i>, and <i>ENV{key}</i>
+are replaced. When &quot;none&quot;, no replacement is
+performed. When unset, the replacement is performed for
+<i>NAME</i>, <i>SYMLINK</i>, but not for <i>ENV{key}</i>.
+Defaults to unset.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>static_node=</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Apply the
+permissions specified in this rule to the static device node
+with the specified name. Also, for every tag specified in
+this rule, create a symlink in the directory
+/run/udev/static_node-tags/<i>tag</i> pointing at the static
+device node with the specified name. Static device node
+creation is performed by systemd-tmpfiles before
+systemd-udevd is started. The static nodes might not have a
+corresponding kernel device; they are used to trigger
+automatic kernel module loading when they are
+accessed.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>watch</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Watch the
+device node with inotify; when the node is closed after
+being opened for writing, a change uevent is
+synthesized.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>nowatch</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Disable
+the watching of a device node with inotify.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>db_persist</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Set the
+flag (sticky bit) on the udev database entry of the event
+device. Device properties are then kept in the database even
+when <b>udevadm info --cleanup-db</b> is called. This option
+can be useful in certain cases (e.g. Device Mapper devices)
+for persisting device state on the transition from
+initramfs.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>log_level=</b><i>level</i></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">Takes a
+log level name like &quot;debug&quot; or &quot;info&quot;,
+or a special value &quot;reset&quot;. When a log level name
+is specified, the maximum log level is changed to that
+level. When &quot;reset&quot; is set, then the previously
+specified log level is revoked. Defaults to the log level of
+the main process of <b>systemd-udevd</b>.</font></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><font color="#000000">This
+may be useful when debugging events for certain devices.
+Note that the log level is applied when the line including
+this rule is processed. So, for debugging, it is recommended
+that this is specified at earlier place, e.g., the first
+line of 00-debug.rules.</font></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><font color="#000000">Example
+for debugging uevent processing for network
+interfaces.</font></p>
+
+
+<p style="margin-left:29%; margin-top: 1em"><font color="#000000">#
+/etc/udev/rules.d/00-debug-net.rules <br>
+SUBSYSTEM==&quot;net&quot;,
+OPTIONS=&quot;log_level=debug&quot;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<i>NAME</i>, <i>SYMLINK</i>, <i>PROGRAM</i>, <i>OWNER</i>,
+<i>GROUP</i>, <i>MODE</i>, <i>SECLABEL</i>, and <i>RUN</i>
+fields support simple string substitutions. The <i>RUN</i>
+substitutions are performed after all rules have been
+processed, right before the program is executed, allowing
+for the use of device properties set by earlier matching
+rules. For all other fields, substitutions are performed
+while the individual rule is being processed. The available
+substitutions are:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$kernel</b>,
+<b>%k</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+kernel name for this device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$number</b>,
+<b>%n</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+kernel number for this device. For example, &quot;sda3&quot;
+has kernel number 3.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$devpath</b>,
+<b>%p</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+devpath of the device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$id</b>,
+<b>%b</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The name
+of the device matched while searching the devpath upwards
+for <b>SUBSYSTEMS</b>, <b>KERNELS</b>, <b>DRIVERS</b>, and
+<b>ATTRS</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$driver</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+driver name of the device matched while searching the
+devpath upwards for <b>SUBSYSTEMS</b>, <b>KERNELS</b>,
+<b>DRIVERS</b>, and <b>ATTRS</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$attr{</b><i>file</i><b>}</b>,
+<b>%s{</b><i>file</i><b>}</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The value
+of a sysfs attribute found at the device where all keys of
+the rule have matched. If the matching device does not have
+such an attribute, and a previous <b>KERNELS</b>,
+<b>SUBSYSTEMS</b>, <b>DRIVERS</b>, or <b>ATTRS</b> test
+selected a parent device, then the attribute from that
+parent device is used.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">If
+the attribute is a symlink, the last element of the symlink
+target is returned as the value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$env{</b><i>key</i><b>}</b>,
+<b>%E{</b><i>key</i><b>}</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A device
+property value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$major</b>,
+<b>%M</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+kernel major number for the device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$minor</b>,
+<b>%m</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+kernel minor number for the device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$result</b>,
+<b>%c</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+string returned by the external program requested with
+<i>PROGRAM</i>. A single part of the string, separated by a
+space character, may be selected by specifying the part
+number as an attribute: &quot;%c{N}&quot;. If the number is
+followed by the &quot;+&quot; character, this part plus all
+remaining parts of the result string are substituted:
+&quot;%c{N+}&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$parent</b>,
+<b>%P</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The node
+name of the parent device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$name</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+current name of the device. If not changed by a rule, it is
+the name of the kernel device.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$links</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+space-separated list of the current symlinks. The value is
+only set during a remove event or if an earlier rule
+assigned a value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$root</b>,
+<b>%r</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+udev_root value.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$sys</b>,
+<b>%S</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The sysfs
+mount point.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$devnode</b>,
+<b>%N</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The name
+of the device node.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>%%</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+&quot;%&quot; character itself.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>$$</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+&quot;$&quot; character itself.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd-udevd.service</b>(8),
+<b>udevadm</b>(8), <b>systemd.link</b>(5)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><font color="#000000">C-style
+escaped</font></p> </td>
+<td width="60%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://en.wikipedia.org/wiki/Escape_sequences_in_C#Table_of_escape_sequences</font></p>
+<hr>
+</body>
+</html>

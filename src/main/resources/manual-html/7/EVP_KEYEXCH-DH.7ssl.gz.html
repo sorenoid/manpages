@@ -1,0 +1,215 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:45 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EVP_KEYEXCH-DH</title>
+
+</head>
+<body>
+
+<h1 align="center">EVP_KEYEXCH-DH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KEYEXCH-DH
+- DH Key Exchange algorithm support</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Key exchange
+support for the <b><small>DH</small></b> key type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DH</small>
+key exchange parameters</b> <br>
+&quot;pad&quot; (
+<b><small>OSSL_EXCHANGE_PARAM_PAD</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the padding mode for the
+associated key exchange ctx. Setting a value of 1 will turn
+padding on. Setting a value of 0 will turn padding off. If
+padding is off then the derived shared secret may be smaller
+than the largest possible secret size. If padding is on then
+the derived shared secret will have its first bytes filled
+with zeros where necessary to make the shared secret the
+same size as the largest possible secret size. The padding
+mode parameter is ignored (and padding implicitly enabled)
+when the <small>KDF</small> type is set to
+&quot;X942KDF-ASN1&quot; (
+<b><small>OSSL_KDF_NAME_X942KDF_ASN1</small></b> ).</p>
+
+<p style="margin-left:11%;">&quot;kdf-type&quot; (
+<b><small>OSSL_EXCHANGE_PARAM_KDF_TYPE</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">See &quot;Common Key Exchange
+parameters&quot; in <b>provider-keyexch</b>(7).</p>
+
+<p style="margin-left:11%;">&quot;kdf-digest&quot; (
+<b><small>OSSL_EXCHANGE_PARAM_KDF_DIGEST</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">See &quot;Common Key Exchange
+parameters&quot; in <b>provider-keyexch</b>(7).</p>
+
+<p style="margin-left:11%;">&quot;kdf-digest-props&quot; (
+<b><small>OSSL_EXCHANGE_PARAM_KDF_DIGEST_PROPS</small></b> )
+&lt; <small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">See &quot;Common Key Exchange
+parameters&quot; in <b>provider-keyexch</b>(7).</p>
+
+<p style="margin-left:11%;">&quot;kdf-outlen&quot; (
+<b><small>OSSL_EXCHANGE_PARAM_KDF_OUTLEN</small></b> )
+&lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">See &quot;Common Key Exchange
+parameters&quot; in <b>provider-keyexch</b>(7).</p>
+
+<p style="margin-left:11%;">&quot;kdf-ukm&quot; (
+<b><small>OSSL_EXCHANGE_PARAM_KDF_UKM</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">See &quot;Common Key Exchange
+parameters&quot; in <b>provider-keyexch</b>(7).</p>
+
+<p style="margin-left:11%;">&quot;cekalg&quot; (
+<b><small>OSSL_KDF_PARAM_CEK_ALG</small></b> ) &lt;octet
+string ptr&gt;</p>
+
+<p style="margin-left:17%;">See &quot; <small>KDF</small>
+Parameters&quot; in <b>provider-kdf</b>(7).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The examples
+assume a host and peer both generate keys using the same
+named group (or domain parameters). See &quot;Examples&quot;
+in <b><small>EVP_PKEY-DH</small></b> (7). Both the host and
+peer transfer their public key to each other.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert the
+peer&rsquo;s generated key pair to a public key in
+<small>DER</small> format in order to transfer to the
+host:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_PKEY
+*peer_key; /* It is assumed this contains the peers
+generated key */ <br>
+unsigned char *peer_pub_der = NULL; <br>
+int peer_pub_der_len; <br>
+peer_pub_der_len = i2d_PUBKEY(peer_key, &amp;peer_pub_der);
+<br>
+... <br>
+OPENSSL_free(peer_pub_der);</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert the
+received peer&rsquo;s public key from <small>DER</small>
+format on the host:</p>
+
+<p style="margin-left:11%; margin-top: 1em">const unsigned
+char *pd = peer_pub_der; <br>
+EVP_PKEY *peer_pub_key = d2i_PUBKEY(NULL, &amp;pd,
+peer_pub_der_len); <br>
+... <br>
+EVP_PKEY_free(peer_pub_key);</p>
+
+<p style="margin-left:11%; margin-top: 1em">To derive a
+shared secret on the host using the host&rsquo;s key and the
+peer&rsquo;s public key:</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* It is
+assumed that the host_key and peer_pub_key are set up */
+<br>
+void derive_secret(EVP_KEY *host_key, EVP_PKEY
+*peer_pub_key) <br>
+{ <br>
+unsigned int pad = 1; <br>
+OSSL_PARAM params[2]; <br>
+unsigned char *secret = NULL; <br>
+size_t secret_len = 0; <br>
+EVP_PKEY_CTX *dctx = EVP_PKEY_CTX_new_from_pkey(NULL,
+host_key, NULL); <br>
+EVP_PKEY_derive_init(dctx); <br>
+/* Optionally set the padding */ <br>
+params[0] =
+OSSL_PARAM_construct_uint(OSSL_EXCHANGE_PARAM_PAD,
+&amp;pad); <br>
+params[1] = OSSL_PARAM_construct_end(); <br>
+EVP_PKEY_CTX_set_params(dctx, params); <br>
+EVP_PKEY_derive_set_peer(dctx, peer_pub_key); <br>
+/* Get the size by passing NULL as the buffer */ <br>
+EVP_PKEY_derive(dctx, NULL, &amp;secret_len); <br>
+secret = OPENSSL_zalloc(secret_len); <br>
+EVP_PKEY_derive(dctx, secret, &amp;secret_len); <br>
+... <br>
+OPENSSL_clear_free(secret, secret_len); <br>
+EVP_PKEY_CTX_free(dctx); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Very similar
+code can be used by the peer to derive the same shared
+secret using the host&rsquo;s public key and the
+peer&rsquo;s generated key pair.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>EVP_PKEY-DH</small></b>
+(7), <b><small>EVP_PKEY-FFC</small></b> (7),
+<b><small>EVP_PKEY</small></b> (3),
+<b>provider-keyexch</b>(7), <b>provider-keymgmt</b>(7),
+<b>OSSL_PROVIDER-default</b>(7),
+<b><small>OSSL_PROVIDER-FIPS</small></b> (7),</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2020-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

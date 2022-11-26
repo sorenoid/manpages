@@ -1,0 +1,129 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:17 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-src-rules</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-src-rules</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-src-rules -
+Debian source package rules file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debian/rules</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This file
+contains the instructions necessary to build the binary
+packages from the source package.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>debian/rules</i> file is an executable Makefile, with a
+shebang that is usually set to &quot;#!/usr/bin/make
+-f&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It must support
+the following make targets: <b><br>
+clean</b></p>
+
+<p style="margin-left:17%;">Clean up the source tree, by
+undoing any change done by any of the build and binary
+targets. This target will be called with root
+privileges.</p>
+
+<p style="margin-left:11%;"><b>build-indep</b></p>
+
+<p style="margin-left:17%;">Build architecture independent
+files required to build any architecture independent binary
+package. If there are no architecture independent binary
+packages to generate, the target must still exist but do
+nothing. This target must not require root privileges.</p>
+
+<p style="margin-left:11%;"><b>build-arch</b></p>
+
+<p style="margin-left:17%;">Build architecture dependent
+files required to build any architecture dependent binary
+package. If there are no architecture dependent binary
+packages to generate, the target must still exist but do
+nothing. This target must not require root privileges.</p>
+
+<p style="margin-left:11%;"><b>build</b></p>
+
+<p style="margin-left:17%;">Build architecture independent
+and dependent files, either by depending (at least
+transitively) on <b>build-indep</b> and/or <b>build-arch</b>
+or by inlining what those targets would do. This target must
+not require root privileges.</p>
+
+<p style="margin-left:11%;"><b>binary-indep</b></p>
+
+<p style="margin-left:17%;">Build architecture independent
+binary packages. This target must depend (at least
+transitively) on either <b>build-indep</b> or <b>build</b>.
+This target will be called with root privileges.</p>
+
+<p style="margin-left:11%;"><b>binary-arch</b></p>
+
+<p style="margin-left:17%;">Build architecture dependent
+binary packages. This target must depend (at least
+transitively) on either <b>build-arch</b> or <b>build</b>.
+This target will be called with root privileges.</p>
+
+<p style="margin-left:11%;"><b>binary</b></p>
+
+<p style="margin-left:17%;">Build architecture independent
+and dependent binary packages, either by depending (at least
+transitively) on <b>binary-indep</b> and/or
+<b>binary-arch</b> or by inlining what those targets would
+do. This target will be called with root privileges.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-architecture</b>(1),
+<b>dpkg-vendor</b>(1), <b>dpkg-buildflags</b>(1),
+<b>dpkg-parsechangelog</b>(1), <b>dpkg-shlibdeps</b>(1),
+<b>dpkg-gencontrol</b>(1), <b>dpkg-deb</b>(1),
+<b>dpkg-distaddfile</b>(1).</p>
+<hr>
+</body>
+</html>

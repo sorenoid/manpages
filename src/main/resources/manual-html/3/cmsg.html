@@ -1,0 +1,343 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:14 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CMSG</title>
+
+</head>
+<body>
+
+<h1 align="center">CMSG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">CMSG_ALIGN,
+CMSG_SPACE, CMSG_NXTHDR, CMSG_FIRSTHDR - access ancillary
+data</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/socket.h&gt; <br>
+struct cmsghdr *CMSG_FIRSTHDR(struct msghdr
+*</b><i>msgh</i><b>); <br>
+struct cmsghdr *CMSG_NXTHDR(struct msghdr
+*</b><i>msgh</i><b>, <br>
+struct cmsghdr *</b>cmsg<b>); <br>
+size_t CMSG_ALIGN(size_t</b> <i>length</i><b>); <br>
+size_t CMSG_SPACE(size_t</b> <i>length</i><b>); <br>
+size_t CMSG_LEN(size_t</b> <i>length</i><b>); <br>
+unsigned char *CMSG_DATA(struct cmsghdr
+*</b><i>cmsg</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These macros
+are used to create and access control messages (also called
+ancillary data) that are not a part of the socket payload.
+This control information may include the interface the
+packet was received on, various rarely used header fields,
+an extended error description, a set of file descriptors, or
+UNIX credentials. For instance, control messages can be used
+to send additional header fields such as IP options.
+Ancillary data is sent by calling <b>sendmsg</b>(2) and
+received by calling <b>recvmsg</b>(2). See their manual
+pages for more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Ancillary data
+is a sequence of <i>cmsghdr</i> structures with appended
+data. See the specific protocol man pages for the available
+control message types. The maximum ancillary buffer size
+allowed per socket can be set using
+<i>/proc/sys/net/core/optmem_max</i>; see
+<b>socket</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>cmsghdr</i> structure is defined as follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct cmsghdr
+{ <br>
+size_t cmsg_len; /* Data byte count, including header <br>
+(type is socklen_t in POSIX) */ <br>
+int cmsg_level; /* Originating protocol */ <br>
+int cmsg_type; /* Protocol-specific type */ <br>
+/* followed by <br>
+unsigned char cmsg_data[]; */ <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">The sequence of
+<i>cmsghdr</i> structures should never be accessed directly.
+Instead, use only the following macros:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>CMSG_FIRSTHDR</b>() returns a pointer to the first
+<i>cmsghdr</i> in the ancillary data buffer associated with
+the passed <i>msghdr</i>. It returns NULL if there
+isn&rsquo;t enough space for a <i>cmsghdr</i> in the
+buffer.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>CMSG_NXTHDR</b>() returns the next valid
+<i>cmsghdr</i> after the passed <i>cmsghdr</i>. It returns
+NULL when there isn&rsquo;t enough space left in the
+buffer.</p> </td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">When
+initializing a buffer that will contain a series of
+<i>cmsghdr</i> structures (e.g., to be sent with
+<b>sendmsg</b>(2)), that buffer should first be
+zero-initialized to ensure the correct operation of
+<b>CMSG_NXTHDR</b>().</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em"><b>CMSG_ALIGN</b>(), given a
+length, returns it including the required alignment. This is
+a constant expression.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>CMSG_SPACE</b>() returns the number of bytes an
+ancillary element with payload of the passed data length
+occupies. This is a constant expression.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>CMSG_DATA</b>() returns a pointer to the data portion
+of a <i>cmsghdr</i>. The pointer returned cannot be assumed
+to be suitably aligned for accessing arbitrary payload data
+types. Applications should not cast it to a pointer type
+matching the payload, but should instead use
+<b>memcpy</b>(3) to copy data to or from a suitably declared
+object.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><b>CMSG_LEN</b>() returns the value to store in the
+<i>cmsg_len</i> member of the <i>cmsghdr</i> structure,
+taking into account any necessary alignment. It takes the
+data length as an argument. This is a constant
+expression.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">To create
+ancillary data, first initialize the <i>msg_controllen</i>
+member of the <i>msghdr</i> with the length of the control
+message buffer. Use <b>CMSG_FIRSTHDR</b>() on the
+<i>msghdr</i> to get the first control message and
+<b>CMSG_NXTHDR</b>() to get all subsequent ones. In each
+control message, initialize <i>cmsg_len</i> (with
+<b>CMSG_LEN</b>()), the other <i>cmsghdr</i> header fields,
+and the data portion using <b>CMSG_DATA</b>(). Finally, the
+<i>msg_controllen</i> field of the <i>msghdr</i> should be
+set to the sum of the <b>CMSG_SPACE</b>() of the length of
+all control messages in the buffer. For more information on
+the <i>msghdr</i>, see <b>recvmsg</b>(2).</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This ancillary
+data model conforms to the POSIX.1g draft, 4.4BSD-Lite, the
+IPv6 advanced API described in RFC&nbsp;2292 and SUSv2.
+<b>CMSG_FIRSTHDR</b>(), <b>CMSG_NXTHDR</b>(), and
+<b>CMSG_DATA</b>() are specified in POSIX.1-2008.
+<b>CMSG_SPACE</b>() and <b>CMSG_LEN</b>() will be included
+in the next POSIX release (Issue 8).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CMSG_ALIGN</b>()
+is a Linux extension.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For
+portability, ancillary data should be accessed using only
+the macros described here. <b>CMSG_ALIGN</b>() is a Linux
+extension and should not be used in portable programs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Linux,
+<b>CMSG_LEN</b>(), <b>CMSG_DATA</b>(), and
+<b>CMSG_ALIGN</b>() are constant expressions (assuming their
+argument is constant), meaning that these values can be used
+to declare the size of global variables. This may not be
+portable, however.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This code looks
+for the <b>IP_TTL</b> option in a received ancillary
+buffer:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct msghdr
+msgh; <br>
+struct cmsghdr *cmsg; <br>
+int received_ttl;</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* Receive
+auxiliary data in msgh */</p>
+
+<p style="margin-left:17%; margin-top: 1em">for (cmsg =
+CMSG_FIRSTHDR(&amp;msgh); cmsg != NULL; <br>
+cmsg = CMSG_NXTHDR(&amp;msgh, cmsg)) { <br>
+if (cmsg-&gt;cmsg_level == IPPROTO_IP <br>
+&amp;&amp; cmsg-&gt;cmsg_type == IP_TTL) { <br>
+memcpy(&amp;receive_ttl, CMSG_DATA(cmsg),
+sizeof(received_ttl)); <br>
+break; <br>
+} <br>
+}</p>
+
+<p style="margin-left:17%; margin-top: 1em">if (cmsg ==
+NULL) { <br>
+/* Error: IP_TTL not enabled or small buffer or I/O error */
+<br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">The code below
+passes an array of file descriptors over a UNIX domain
+socket using <b>SCM_RIGHTS</b>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct msghdr
+msg = { 0 }; <br>
+struct cmsghdr *cmsg; <br>
+int myfds[NUM_FD]; /* Contains the file descriptors to pass
+*/ <br>
+char iobuf[1]; <br>
+struct iovec io = { <br>
+.iov_base = iobuf, <br>
+.iov_len = sizeof(iobuf) <br>
+}; <br>
+union { /* Ancillary data buffer, wrapped in a union <br>
+in order to ensure it is suitably aligned */ <br>
+char buf[CMSG_SPACE(sizeof(myfds))]; <br>
+struct cmsghdr align; <br>
+} u;</p>
+
+<p style="margin-left:17%; margin-top: 1em">msg.msg_iov =
+&amp;io; <br>
+msg.msg_iovlen = 1; <br>
+msg.msg_control = u.buf; <br>
+msg.msg_controllen = sizeof(u.buf); <br>
+cmsg = CMSG_FIRSTHDR(&amp;msg); <br>
+cmsg-&gt;cmsg_level = SOL_SOCKET; <br>
+cmsg-&gt;cmsg_type = SCM_RIGHTS; <br>
+cmsg-&gt;cmsg_len = CMSG_LEN(sizeof(myfds)); <br>
+memcpy(CMSG_DATA(cmsg), myfds, sizeof(myfds));</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>recvmsg</b>(2),
+<b>sendmsg</b>(2)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">RFC&nbsp;2292</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

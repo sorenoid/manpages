@@ -1,0 +1,225 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:42 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>CRYPT_GENSALT(3) BSD Library Functions Manual
+CRYPT_GENSALT(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>crypt_gensalt</b>,
+<b>crypt_gensalt_rn</b>, <b>crypt_gensalt_ra</b> &mdash;
+encode settings for passphrase hashing</p>
+
+<p style="margin-top: 1em"><b>LIBRARY</b></p>
+
+<p style="margin-left:6%;">Crypt Library (libcrypt,
+-lcrypt)</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;crypt.h&gt;</b></p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>char
+*</i></p>
+
+
+<p><b>crypt_gensalt</b>(<i>const&nbsp;char&nbsp;*prefix</i>,
+<i>unsigned&nbsp;long&nbsp;count</i>,
+<i>const&nbsp;char&nbsp;*rbytes</i>,
+<i>int&nbsp;nrbytes</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>char
+*</i></p>
+
+
+<p><b>crypt_gensalt_rn</b>(<i>const&nbsp;char&nbsp;*&nbsp;prefix</i>,
+<i>unsigned&nbsp;long&nbsp;count</i>,
+<i>const&nbsp;char&nbsp;*rbytes</i>,
+<i>int&nbsp;nrbytes</i>, <i>char&nbsp;*&nbsp;output</i>,
+<i>int&nbsp;output_size</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>char
+*</i></p>
+
+
+<p><b>crypt_gensalt_ra</b>(<i>const&nbsp;char&nbsp;*prefix</i>,
+<i>unsigned&nbsp;long&nbsp;count</i>,
+<i>const&nbsp;char&nbsp;*rbytes</i>,
+<i>int&nbsp;nrbytes</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The <b>crypt_gensalt</b>,
+<b>crypt_gensalt_rn</b>, and <b>crypt_gensalt_ra</b>
+functions compile a string for use as the <i>setting</i>
+argument to <b>crypt</b>, <b>crypt_r</b>, <b>crypt_rn</b>,
+and <b>crypt_ra</b>. <i>prefix</i> selects the hashing
+method to use. <i>count</i> controls the CPU time cost of
+the hash; the valid range for <i>count</i> and the exact
+meaning of &ldquo;CPU time cost&rdquo; depends on the
+hashing method, but larger numbers correspond to more costly
+hashes. <i>rbytes</i> should point to <i>nrbytes</i>
+cryptographically random bytes for use as
+&ldquo;salt.&rdquo;</p>
+
+<p style="margin-left:6%; margin-top: 1em">If <i>prefix</i>
+is a null pointer, the best available hashing method will be
+selected. (</p>
+
+<p><b>CAUTION</b>: if <i>prefix</i> is an empty string, the
+&ldquo;traditional&rdquo; DES-based hashing method will be
+selected; this method is unacceptably weak by modern
+standards. ) If <i>count</i> is 0, a low default cost will
+be selected. If <i>rbytes</i> is a null pointer, an
+appropriate number of random bytes will be obtained from the
+operating system, and <i>nrbytes</i> is ignored.</p>
+
+<p style="margin-left:6%; margin-top: 1em">See crypt(5) for
+other strings that can be used as <i>prefix</i>, and valid
+values of <i>count</i> for each.</p>
+
+<p style="margin-top: 1em"><b>RETURN VALUES</b></p>
+
+<p style="margin-left:6%;"><b>crypt_gensalt</b>,
+<b>crypt_gensalt_rn</b>, and <b>crypt_gensalt_ra</b> return
+a pointer to an encoded setting string. This string will be
+entirely printable ASCII, and will not contain whitespace or
+the characters &rsquo;:&rsquo;, &rsquo;;&rsquo;,
+&rsquo;*&rsquo;, &rsquo;!&rsquo;, or &rsquo;\&rsquo;. See
+crypt(5) for more detail on the format of this string. Upon
+error, they return a null pointer and set <i>errno</i> to an
+appropriate error code.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>crypt_gensalt</b>
+places its result in a static storage area, which will be
+overwritten by subsequent calls to <b>crypt_gensalt</b>. It
+is not safe to call <b>crypt_gensalt</b> from multiple
+threads simultaneously. However, it <i>is</i> safe to pass
+the string returned by <b>crypt_gensalt</b> directly to
+<b>crypt</b> without copying it; each function has its own
+static storage area.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>crypt_gensalt_rn</b>
+places its result in the supplied <i>output</i> buffer,
+which has <i>output_size</i> bytes of storage available.
+<i>output_size</i> should be greater than or equal to
+CRYPT_GENSALT_OUTPUT_SIZE.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>crypt_gensalt_ra</b>
+allocates memory for its result using malloc(3). It should
+be freed with free(3) after use.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Upon error, in
+addition to returning a null pointer, <b>crypt_gensalt</b>
+and <b>crypt_gensalt_rn</b> will write an invalid setting
+string to their output buffer, if there is enough space;
+this string will begin with a &rsquo;*&rsquo; and will not
+be equal to <i>prefix</i>.</p>
+
+<p style="margin-top: 1em"><b>ERRORS</b> <br>
+EINVAL</p>
+
+<p style="margin-left:31%; margin-top: 1em"><i>prefix</i>
+is invalid or not supported by this implementation;
+<i>count</i> is invalid for the requested <i>prefix</i>; the
+input <i>nrbytes</i> is insufficient for the smallest valid
+salt with the requested <i>prefix</i>.</p>
+
+<p style="margin-top: 1em">ERANGE</p>
+
+
+<p style="margin-left:31%; margin-top: 1em"><b>crypt_gensalt_rn</b>
+only: <i>output_size</i> is too small to hold the compiled
+<i>setting</i> string.</p>
+
+<p style="margin-top: 1em">ENOMEM</p>
+
+<p style="margin-left:31%; margin-top: 1em">Failed to
+allocate internal scratch memory. <b><br>
+crypt_gensalt_ra</b> only: failed to allocate memory for the
+compiled <i>setting</i> string.</p>
+
+<p style="margin-top: 1em">ENOSYS, EACCES, EIO, etc.</p>
+
+<p style="margin-left:31%;">Obtaining random bytes from the
+operating system failed. This can only happen when
+<i>rbytes</i> is a null pointer.</p>
+
+<p style="margin-top: 1em"><b>FEATURE TEST MACROS</b></p>
+
+<p style="margin-left:6%;">The following macros are defined
+by &lt;<i>crypt.h</i>&gt;:</p>
+
+
+<p style="margin-top: 1em">CRYPT_GENSALT_IMPLEMENTS_DEFAULT_PREFIX</p>
+
+<p style="margin-left:17%;">A null pointer can be specified
+as the <i>prefix</i> argument.</p>
+
+
+<p style="margin-top: 1em">CRYPT_GENSALT_IMPLEMENTS_AUTO_ENTROPY</p>
+
+<p style="margin-left:17%;">A null pointer can be specified
+as the <i>rbytes</i> argument.</p>
+
+<p style="margin-top: 1em"><b>PORTABILITY NOTES</b></p>
+
+<p style="margin-left:6%;">The functions
+<b>crypt_gensalt</b>, <b>crypt_gensalt_rn</b>, and
+<b>crypt_gensalt_ra</b> are not part of any standard. They
+originate with the Openwall project. A function with the
+name <b>crypt_gensalt</b> also exists on Solaris 10 and
+newer, but its prototype and semantics differ.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The default
+prefix and auto entropy features are available since
+libxcrypt version 4.0.0. Portable software can use feature
+test macros to find out whether null pointers can be used
+for the <i>prefix</i> and <i>rbytes</i> arguments.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The set of
+supported hashing methods varies considerably from system to
+system.</p>
+
+<p style="margin-top: 1em"><b>ATTRIBUTES</b></p>
+
+<p style="margin-left:6%;">For an explanation of the terms
+used in this section, see attributes(7).</p>
+
+
+<p align="center"><img src="grohtml-3335721.png" alt="Image grohtml-3335721.png"></p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">crypt(3), getpass(3),
+getpwent(3), shadow(3), login(1), passwd(1), crypt(5),
+passwd(5), shadow(5), pam(8)</p>
+
+<p style="margin-left:6%; margin-top: 1em">Openwall Project
+October&nbsp;11, 2017 Openwall Project</p>
+<hr>
+</body>
+</html>

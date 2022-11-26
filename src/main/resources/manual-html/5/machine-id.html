@@ -1,0 +1,294 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:22 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MACHINE-ID</title>
+
+</head>
+<body>
+
+<h1 align="center">MACHINE-ID</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#INITIALIZATION">INITIALIZATION</a><br>
+<a href="#FIRST BOOT SEMANTICS">FIRST BOOT SEMANTICS</a><br>
+<a href="#RELATION TO OSF UUIDS">RELATION TO OSF UUIDS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">machine-id -
+Local machine ID configuration file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/machine-id</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+/etc/machine-id file contains the unique machine ID of the
+local system that is set during installation or boot. The
+machine ID is a single newline-terminated, hexadecimal,
+32-character, lowercase ID. When decoded from hexadecimal,
+this corresponds to a 16-byte/128-bit value. This ID may not
+be all zeros.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The machine ID
+is usually generated from a random source during system
+installation or first boot and stays constant for all
+subsequent boots. Optionally, for stateless systems, it is
+generated during runtime during early boot if necessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The machine ID
+may be set, for example when network booting, with the
+<i>systemd.machine_id=</i> kernel command line parameter or
+by passing the option <b>--machine-id=</b> to systemd. An ID
+specified in this manner has higher priority and will be
+used instead of the ID stored in /etc/machine-id.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The machine ID
+does not change based on local or network configuration or
+when hardware is replaced. Due to this and its greater
+length, it is a more useful replacement for the
+<b>gethostid</b>(3) call that POSIX specifies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This machine ID
+adheres to the same format and logic as the D-Bus machine
+ID.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This ID
+uniquely identifies the host. It should be considered
+&quot;confidential&quot;, and must not be exposed in
+untrusted environments, in particular on the network. If a
+stable unique identifier that is tied to the machine is
+needed for some application, the machine ID or any part of
+it must not be used directly. Instead the machine ID should
+be hashed with a cryptographic, keyed hash function, using a
+fixed, application-specific key. That way the ID will be
+properly unique, and derived in a constant way from the
+machine ID but there will be no way to retrieve the original
+machine ID from the application-specific one. The
+<b>sd_id128_get_machine_app_specific</b>(3) API provides an
+implementation of such an algorithm.</p>
+
+<h2>INITIALIZATION
+<a name="INITIALIZATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each machine
+should have a non-empty ID in normal operation. The ID of
+each machine should be unique. To achieve those objectives,
+/etc/machine-id can be initialized in a few different
+ways.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For normal
+operating system installations, where a custom image is
+created for a specific machine, /etc/machine-id should be
+populated during installation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-machine-id-setup</b>(1)
+may be used by installer tools to initialize the machine ID
+at install time, but /etc/machine-id may also be written
+using any other means.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For operating
+system images which are created once and used on multiple
+machines, for example for containers or in the cloud,
+/etc/machine-id should be either missing or an empty file in
+the generic file system image (the difference between the
+two options is described under &quot;First Boot
+Semantics&quot; below). An ID will be generated during boot
+and saved to this file if possible. Having an empty file in
+place is useful because it allows a temporary file to be
+bind-mounted over the real file, in case the image is used
+read-only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-firstboot</b>(1)
+may be used to initialize /etc/machine-id on mounted (but
+not booted) system images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a machine
+is booted with <b>systemd</b>(1) the ID of the machine will
+be established. If <i>systemd.machine_id=</i> or
+<b>--machine-id=</b> options (see first section) are
+specified, this value will be used. Otherwise, the value in
+/etc/machine-id will be used. If this file is empty or
+missing, systemd will attempt to use the D-Bus machine ID
+from /var/lib/dbus/machine-id, the value of the kernel
+command line option <i>container_uuid</i>, the KVM DMI
+product_uuid or the devicetree vm,uuid (on KVM systems), and
+finally a randomly generated UUID.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After the
+machine ID is established, <b>systemd</b>(1) will attempt to
+save it to /etc/machine-id. If this fails, it will attempt
+to bind-mount a temporary file over /etc/machine-id. It is
+an error if the file system is read-only and does not
+contain a (possibly empty) /etc/machine-id file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-machine-id-commit.service</b>(8)
+will attempt to write the machine ID to the file system if
+/etc/machine-id or /etc/ are read-only during early boot but
+become writable later on.</p>
+
+<h2>FIRST BOOT SEMANTICS
+<a name="FIRST BOOT SEMANTICS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/machine-id
+is used to decide whether a boot is the first one. The rules
+are as follows:</p>
+
+<p style="margin-left:17%; margin-top: 1em">1. If
+/etc/machine-id does not exist, this is a first boot. During
+early boot, <b>systemd</b> will write
+&quot;uninitialized\n&quot; to this file and overmount a
+temporary file which contains the actual machine ID. Later
+(after first-boot-complete.target has been reached), the
+real machine ID will be written to disk.</p>
+
+<p style="margin-left:17%; margin-top: 1em">2. If
+/etc/machine-id contains the string
+&quot;uninitialized&quot;, a boot is also considered the
+first boot. The same mechanism as above applies.</p>
+
+<p style="margin-left:17%; margin-top: 1em">3. If
+/etc/machine-id exists and is empty, a boot is <i>not</i>
+considered the first boot. <b>systemd</b> will still
+bind-mount a file containing the actual machine-id over it
+and later try to commit it to disk (if /etc/ is
+writable).</p>
+
+<p style="margin-left:17%; margin-top: 1em">4. If
+/etc/machine-id already contains a valid machine-id, this is
+not a first boot.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If by any of
+the above rules, a first boot is detected, units with
+<i>ConditionFirstBoot=yes</i> will be run.</p>
+
+<h2>RELATION TO OSF UUIDS
+<a name="RELATION TO OSF UUIDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+machine ID historically is not an OSF UUID as defined by
+<b><font color="#0000FF">RFC 4122</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">, nor a Microsoft GUID; however,
+starting with systemd v30, newly generated machine IDs do
+qualify as Variant 1 Version 4 UUIDs, as per RFC
+4122.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">In
+order to maintain compatibility with existing installations,
+an application requiring a strictly RFC 4122 compliant UUID
+should decode the machine ID, and then (non-reversibly)
+apply the following operations to turn it into a valid RFC
+4122 Variant 1 Version 4 UUID. With &quot;id&quot; being an
+unsigned character array:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">/*
+Set UUID version to 4 --- truly random generation */ <br>
+id[6] = (id[6] &amp; 0x0F) | 0x40; <br>
+/* Set the UUID variant to DCE */ <br>
+id[8] = (id[8] &amp; 0x3F) | 0x80;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">(This
+code is inspired by &quot;generate_random_uuid()&quot; of
+drivers/char/random.c from the Linux kernel
+sources.)</font></p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+simple configuration file format of /etc/machine-id
+originates in the /var/lib/dbus/machine-id file introduced
+by D-Bus. In fact, this latter file might be a symlink to
+/etc/machine-id.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<b>systemd-machine-id-setup</b>(1), <b>gethostid</b>(3),
+<b>hostname</b>(5), <b>machine-info</b>(5),
+<b>os-release</b>(5), <b>sd-id128</b>(3),
+<b>sd_id128_get_machine</b>(3),
+<b>systemd-firstboot</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><font color="#000000">RFC
+4122</font></p> </td>
+<td width="71%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://tools.ietf.org/html/rfc4122</font></p>
+<hr>
+</body>
+</html>

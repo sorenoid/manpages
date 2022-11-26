@@ -1,0 +1,1085 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:24 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTTP::Daemon</title>
+
+</head>
+<body>
+
+<h1 align="center">HTTP::Daemon</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#IPv6 SUPPORT">IPv6 SUPPORT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#SUPPORT">SUPPORT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#CONTRIBUTORS">CONTRIBUTORS</a><br>
+<a href="#COPYRIGHT AND LICENCE">COPYRIGHT AND LICENCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::Daemon -
+A simple http server class</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">version
+6.13</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+HTTP::Daemon; <br>
+use HTTP::Status; <br>
+my $d = HTTP::Daemon-&gt;new || die; <br>
+print &quot;Please contact me at: &lt;URL:&quot;,
+$d-&gt;url, &quot;&gt;\n&quot;; <br>
+while (my $c = $d-&gt;accept) { <br>
+while (my $r = $c-&gt;get_request) { <br>
+if ($r-&gt;method eq 'GET' and $r-&gt;uri-&gt;path eq
+&quot;/xyzzy&quot;) { <br>
+# remember, this is *not* recommended practice :-) <br>
+$c-&gt;send_file_response(&quot;/etc/passwd&quot;); <br>
+} <br>
+else { <br>
+$c-&gt;send_error(RC_FORBIDDEN) <br>
+} <br>
+} <br>
+$c-&gt;close; <br>
+undef($c); <br>
+}</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Instances of
+the &quot;HTTP::Daemon&quot; class are
+<small>HTTP/1.1</small> servers that listen on a socket for
+incoming requests. The &quot;HTTP::Daemon&quot; is a
+subclass of &quot;IO::Socket::IP&quot;, so you can perform
+socket operations directly on it too.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that &quot;HTTP::Daemon&quot; used to be a subclass of
+&quot;IO::Socket::INET&quot;. To support IPv6, it switched
+the parent class to &quot;IO::Socket::IP&quot; at version
+6.05. See &quot;IPv6 <small>SUPPORT&quot;</small> for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>accept()</b> method will return when a connection from a
+client is available. The returned value will be an
+&quot;HTTP::Daemon::ClientConn&quot; object which is another
+&quot;IO::Socket::IP&quot; subclass. Calling the
+<b>get_request()</b> method on this object will read data
+from the client and return an &quot;HTTP::Request&quot;
+object. The ClientConn object also provide methods to send
+back various responses.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This
+<small>HTTP</small> daemon does not <b>fork</b>(2) for you.
+Your application, i.e. the user of the
+&quot;HTTP::Daemon&quot; is responsible for forking if that
+is desirable. Also note that the user is responsible for
+generating responses that conform to the
+<small>HTTP/1.1</small> protocol.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods of &quot;HTTP::Daemon&quot; are new (or enhanced)
+relative to the &quot;IO::Socket::IP&quot; base class: <br>
+$d = HTTP::Daemon-&gt;new <br>
+$d = HTTP::Daemon-&gt;new( %opts )</p>
+
+<p style="margin-left:17%;">The constructor method takes
+the same arguments as the &quot;IO::Socket::IP&quot;
+constructor, but unlike its base class it can also be called
+without any arguments. The daemon will then set up a listen
+queue of 5 connections and allocate some random port
+number.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A server that
+wants to bind to some specific address on the standard
+<small>HTTP</small> port will be constructed like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$d =
+HTTP::Daemon-&gt;new( <br>
+LocalAddr =&gt; 'www.thisplace.com', <br>
+LocalPort =&gt; 80, <br>
+);</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+IO::Socket::IP for a description of other arguments that can
+be used to configure the daemon during construction.</p>
+
+<p style="margin-left:11%;">$c = $d-&gt;accept <br>
+$c = $d-&gt;accept( $pkg ) <br>
+($c, $peer_addr) = $d-&gt;accept</p>
+
+<p style="margin-left:17%;">This method works the same as
+the one provided by the base class, but it returns an
+&quot;HTTP::Daemon::ClientConn&quot; reference by default.
+If a package name is provided as argument, then the returned
+object will be blessed into the given class. It is probably
+a good idea to make that class a subclass of
+&quot;HTTP::Daemon::ClientConn&quot;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The accept
+method will return &quot;undef&quot; if timeouts have been
+enabled and no connection is made within the given time. The
+<b>timeout()</b> method is described in IO::Socket::IP.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In list context
+both the client object and the peer address will be
+returned; see the description of the accept method of
+IO::Socket for details.</p>
+
+<p style="margin-left:11%;">$d-&gt;url</p>
+
+<p style="margin-left:17%;">Returns a <small>URL</small>
+string that can be used to access the server root.</p>
+
+<p style="margin-left:11%;">$d-&gt;product_tokens</p>
+
+<p style="margin-left:17%;">Returns the name that this
+server will use to identify itself. This is the string that
+is sent with the &quot;Server&quot; response header. The
+main reason to have this method is that subclasses can
+override it if they want to use another product name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+the string &quot;libwww-perl-daemon/#.##&quot; where
+&quot;#.##&quot; is replaced with the version number of this
+module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;HTTP::Daemon::ClientConn&quot; is a subclass of
+&quot;IO::Socket::IP&quot;. Instances of this class are
+returned by the <b>accept()</b> method of
+&quot;HTTP::Daemon&quot;. The following methods are
+provided: <br>
+$c-&gt;get_request <br>
+$c-&gt;get_request( $headers_only )</p>
+
+<p style="margin-left:17%;">This method reads data from the
+client and turns it into an &quot;HTTP::Request&quot; object
+which is returned. It returns &quot;undef&quot; if reading
+fails. If it fails, then the
+&quot;HTTP::Daemon::ClientConn&quot; object ($c) should be
+discarded, and you should not try to call this method again
+on it. The $c-&gt;reason method might give you some
+information about why $c-&gt;get_request failed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>get_request()</b> method will normally not return until
+the whole request has been received from the client. This
+might not be what you want if the request is an upload of a
+large file (and with chunked transfer encoding
+<small>HTTP</small> can even support infinite request
+messages - uploading live audio for instance). If you pass a
+<small>TRUE</small> value as the $headers_only argument,
+then <b>get_request()</b> will return immediately after
+parsing the request headers and you are responsible for
+reading the rest of the request content. If you are going to
+call $c-&gt;get_request again on the same connection you
+better read the correct number of bytes.</p>
+
+<p style="margin-left:11%;">$c-&gt;read_buffer <br>
+$c-&gt;read_buffer( $new_value )</p>
+
+<p style="margin-left:17%;">Bytes read by
+$c-&gt;get_request, but not used are placed in the <i>read
+buffer</i>. The next time $c-&gt;get_request is called it
+will consume the bytes in this buffer before reading more
+data from the network connection itself. The read buffer is
+invalid after $c-&gt;get_request has failed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you handle
+the reading of the request content yourself you need to
+empty this buffer before you read more and you need to place
+unconsumed bytes here. You also need this buffer if you
+implement services like <i>101 Switching Protocols</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This method
+always returns the old buffer content and can optionally
+replace the buffer content if you pass it an argument.</p>
+
+<p style="margin-left:11%;">$c-&gt;reason</p>
+
+<p style="margin-left:17%;">When $c-&gt;get_request returns
+&quot;undef&quot; you can obtain a short string describing
+why it happened by calling $c-&gt;reason.</p>
+
+<p style="margin-left:11%;">$c-&gt;proto_ge( $proto )</p>
+
+<p style="margin-left:17%;">Return <small>TRUE</small> if
+the client announced a protocol with version number greater
+or equal to the given argument. The $proto argument can be a
+string like &quot; <small>HTTP/1.1&quot;</small> or just
+&quot;1.1&quot;.</p>
+
+<p style="margin-left:11%;">$c-&gt;antique_client</p>
+
+<p style="margin-left:17%;">Return <small>TRUE</small> if
+the client speaks the <small>HTTP/0.9</small> protocol. No
+status code and no headers should be returned to such a
+client. This should be the same as !$c-&gt;proto_ge(&quot;
+<small>HTTP/1.0&quot;</small> ).</p>
+
+<p style="margin-left:11%;">$c-&gt;head_request</p>
+
+<p style="margin-left:17%;">Return <small>TRUE</small> if
+the last request was a &quot;HEAD&quot; request. No content
+body must be generated for these requests.</p>
+
+<p style="margin-left:11%;">$c-&gt;force_last_request</p>
+
+<p style="margin-left:17%;">Make sure that
+$c-&gt;get_request will not try to read more requests off
+this connection. If you generate a response that is not
+self-delimiting, then you should signal this fact by calling
+this method.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This attribute
+is turned on automatically if the client announces protocol
+<small>HTTP/1.0</small> or worse and does not include a
+&quot;Connection: Keep-Alive&quot; header. It is also turned
+on automatically when <small>HTTP/1.1</small> or better
+clients send the &quot;Connection: close&quot; request
+header.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_status_line <br>
+$c-&gt;send_status_line( $code ) <br>
+$c-&gt;send_status_line( $code, $mess ) <br>
+$c-&gt;send_status_line( $code, $mess, $proto )</p>
+
+<p style="margin-left:17%;">Send the status line back to
+the client. If $code is omitted 200 is assumed. If $mess is
+omitted, then a message corresponding to $code is inserted.
+If $proto is missing the content of the $HTTP::Daemon::PROTO
+variable is used.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_crlf</p>
+
+<p style="margin-left:17%;">Send the <small>CRLF</small>
+sequence to the client.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_basic_header <br>
+$c-&gt;send_basic_header( $code ) <br>
+$c-&gt;send_basic_header( $code, $mess ) <br>
+$c-&gt;send_basic_header( $code, $mess, $proto )</p>
+
+<p style="margin-left:17%;">Send the status line and the
+&quot;Date:&quot; and &quot;Server:&quot; headers back to
+the client. This header is assumed to be continued and does
+not end with an empty <small>CRLF</small> line.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See the
+description of <b>send_status_line()</b> for the description
+of the accepted arguments.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_header( $field,
+$value ) <br>
+$c-&gt;send_header( $field1, $value1, $field2, $value2, ...
+)</p>
+
+<p style="margin-left:17%;">Send one or more header
+lines.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_response( $res
+)</p>
+
+<p style="margin-left:17%;">Write an
+&quot;HTTP::Response&quot; object to the client as a
+response. We try hard to make sure that the response is
+self-delimiting so that the connection can stay persistent
+for further request/response exchanges.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The content
+attribute of the &quot;HTTP::Response&quot; object can be a
+normal string or a subroutine reference. If it is a
+subroutine, then whatever this callback routine returns is
+written back to the client as the response content. The
+routine will be called until it returns an undefined or
+empty value. If the client is <small>HTTP/1.1</small> aware
+then we will use chunked transfer encoding for the
+response.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_redirect( $loc )
+<br>
+$c-&gt;send_redirect( $loc, $code ) <br>
+$c-&gt;send_redirect( $loc, $code, $entity_body )</p>
+
+<p style="margin-left:17%;">Send a redirect response back
+to the client. The location ($loc) can be an absolute or
+relative <small>URL.</small> The $code must be one of the
+redirect status codes, and defaults to &quot;301 Moved
+Permanently&quot;</p>
+
+<p style="margin-left:11%;">$c-&gt;send_error <br>
+$c-&gt;send_error( $code ) <br>
+$c-&gt;send_error( $code, $error_message )</p>
+
+<p style="margin-left:17%;">Send an error response back to
+the client. If the $code is missing a &quot;Bad
+Request&quot; error is reported. The $error_message is a
+string that is incorporated in the body of the
+<small>HTML</small> entity.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_file_response(
+$filename )</p>
+
+<p style="margin-left:17%;">Send back a response with the
+specified $filename as content. If the file is a directory
+we try to generate an <small>HTML</small> index of it.</p>
+
+<p style="margin-left:11%;">$c-&gt;send_file( $filename )
+<br>
+$c-&gt;send_file( $fd )</p>
+
+<p style="margin-left:17%;">Copy the file to the client.
+The file can be a string (which will be interpreted as a
+filename) or a reference to an &quot;IO::Handle&quot; or
+glob.</p>
+
+<p style="margin-left:11%;">$c-&gt;daemon</p>
+
+<p style="margin-left:17%;">Return a reference to the
+corresponding &quot;HTTP::Daemon&quot; object.</p>
+
+<h2>IPv6 SUPPORT
+<a name="IPv6 SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Since version
+6.05, &quot;HTTP::Daemon&quot; is a subclass of
+&quot;IO::Socket::IP&quot; rather than
+&quot;IO::Socket::INET&quot;, so that it supports IPv6.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For some
+reasons, you may want to force &quot;HTTP::Daemon&quot; to
+listen on IPv4 addresses only. Then pass &quot;Family&quot;
+argument to &quot;HTTP::Daemon-&gt;new&quot;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+HTTP::Daemon; <br>
+use Socket 'AF_INET'; <br>
+my $d = HTTP::Daemon-&gt;new(Family =&gt; AF_INET);</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>RFC
+2616</small></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">IO::Socket::IP,
+IO::Socket</p>
+
+<h2>SUPPORT
+<a name="SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Bugs may be
+submitted through
+&lt;https://github.com/libwww-perl/HTTP-Daemon/issues&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is also a
+mailing list available for users of this distribution, at
+&lt;mailto:libwww@perl.org&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is also
+an irc channel available for users of this distribution, at
+&quot;#lwp&quot; on &quot;irc.perl.org&quot;
+&lt;irc://irc.perl.org/#lwp&gt;.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gisle Aas
+&lt;gisle@activestate.com&gt;</p>
+
+<h2>CONTRIBUTORS
+<a name="CONTRIBUTORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em">Olaf Alders
+&lt;olaf@wundersolutions.com&gt;</p> </td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Ville Skyttae &lt;ville.skytta@iki.fi&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Karen Etheridge &lt;ether@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Mark Stosberg &lt;MARKSTOS@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Shoichi Kaji &lt;skaji@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Chase Whitener &lt;capoeirab@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Slaven Rezic &lt;slaven@rezic.de&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Petr PisaX &lt;ppisar@redhat.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Zefram &lt;zefram@fysh.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Alexey Tourbin &lt;at@altlinux.ru&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Bron Gondwana &lt;brong@fastmail.fm&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Mike Schilli &lt;mschilli@yahoo-inc.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Tom Hukins &lt;tom@eborcom.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Adam Kennedy &lt;adamk@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Adam Sjogren &lt;asjo@koldfront.dk&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Alex Kapranoff &lt;ka@nadoby.ru&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>amire80 &lt;amir.aharoni@gmail.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Andreas J. Koenig &lt;andreas.koenig@anima.de&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Bill Mann &lt;wfmann@alum.mit.edu&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Daniel Hedlund &lt;Daniel.Hedlund@eprize.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>David E. Wheeler &lt;david@justatheory.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p><small>DAVIDRW</small> &lt;davidrw@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Father Chrysostomos &lt;sprout@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Ferenc Erki &lt;erkiferenc@gmail.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p><small>FWILES</small> &lt;FWILES@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Gavin Peters &lt;gpeters@deepsky.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Graeme Thompson
+&lt;Graeme.Thompson@mobilecohesion.com&gt;</p> </td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Hans-H. Froehlich &lt;hfroehlich@co-de-co.de&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Ian Kilgore &lt;iank@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Jacob J &lt;waif@chaos2.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>jefflee &lt;shaohua@gmail.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>john9art &lt;john9art@yahoo.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>murphy &lt;murphy@genome.chop.edu&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Ondrej Hanak &lt;ondrej.hanak@ubs.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Perlover &lt;perlover@perlover.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Peter Rabbitson &lt;ribasushi@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>phrstbrn &lt;phrstbrn@gmail.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Robert Stone &lt;talby@trap.mtview.ca.us&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Rolf Grossmann &lt;rg@progtech.net&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>ruff &lt;ruff@ukrpost.net&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>sasao &lt;sasao@yugen.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Sean M. Burke &lt;sburke@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Spiros Denaxas &lt;s.denaxas@gmail.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Steve Hay &lt;SteveHay@planit.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Todd Lipcon &lt;todd@amiestreet.com&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Tony Finch &lt;dot@dotat.at&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Toru Yamaguchi &lt;zigorou@cpan.org&gt;</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="80%">
+
+
+<p>Yuri Karaban &lt;tech@askold.net&gt;</p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<h2>COPYRIGHT AND LICENCE
+<a name="COPYRIGHT AND LICENCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is copyright (c) 1995 by Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; you can redistribute it and/or modify it under the
+same terms as the Perl 5 programming language system
+itself.</p>
+<hr>
+</body>
+</html>

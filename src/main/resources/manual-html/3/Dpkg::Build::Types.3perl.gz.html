@@ -1,0 +1,175 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Build::Types</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Build::Types</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONSTANTS">CONSTANTS</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Build::Types
+- track build types</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+Dpkg::Build::Types module is used by various tools to track
+and decide what artifacts need to be built.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The build types
+are bit constants that are exported by default. Multiple
+types can be ORed.</p>
+
+<h2>CONSTANTS
+<a name="CONSTANTS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>BUILD_DEFAULT</small></p>
+
+<p style="margin-left:17%;">This build is the default.</p>
+
+
+<p style="margin-left:11%;"><small>BUILD_SOURCE</small></p>
+
+<p style="margin-left:17%;">This build includes source
+artifacts.</p>
+
+
+<p style="margin-left:11%;"><small>BUILD_ARCH_DEP</small></p>
+
+<p style="margin-left:17%;">This build includes
+architecture dependent binary artifacts.</p>
+
+
+<p style="margin-left:11%;"><small>BUILD_ARCH_INDEP</small></p>
+
+<p style="margin-left:17%;">This build includes
+architecture independent binary artifacts.</p>
+
+
+<p style="margin-left:11%;"><small>BUILD_BINARY</small></p>
+
+<p style="margin-left:17%;">This build includes binary
+artifacts.</p>
+
+<p style="margin-left:11%;"><small>BUILD_FULL</small></p>
+
+<p style="margin-left:17%;">This build includes source and
+binary artifacts.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">build_has_any($bits)</p>
+
+<p style="margin-left:17%;">Return a boolean indicating
+whether the current build type has any of the specified
+$bits.</p>
+
+<p style="margin-left:11%;">build_has_all($bits)</p>
+
+<p style="margin-left:17%;">Return a boolean indicating
+whether the current build type has all the specified
+$bits.</p>
+
+<p style="margin-left:11%;">build_has_none($bits)</p>
+
+<p style="margin-left:17%;">Return a boolean indicating
+whether the current build type has none of the specified
+$bits.</p>
+
+<p style="margin-left:11%;">build_is($bits)</p>
+
+<p style="margin-left:17%;">Return a boolean indicating
+whether the current build type is the specified set of
+$bits.</p>
+
+<p style="margin-left:11%;">set_build_type($build_type,
+$build_option, %opts)</p>
+
+<p style="margin-left:17%;">Set the current build type to
+$build_type, which was specified via the $build_option
+command-line option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The function
+will check and abort on incompatible build type assignments,
+this behavior can be disabled by using the boolean option
+&quot;nocheck&quot;.</p>
+
+
+<p style="margin-left:11%;">set_build_type_from_options($build_types,
+$build_option, %opts)</p>
+
+<p style="margin-left:17%;">Set the current build type from
+a list of comma-separated build type components.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The function
+will check and abort on incompatible build type assignments,
+this behavior can be disabled by using the boolean option
+&quot;nocheck&quot;.</p>
+
+
+<p style="margin-left:11%;">set_build_type_from_targets($build_targets,
+$build_option, %opts)</p>
+
+<p style="margin-left:17%;">Set the current build type from
+a list of comma-separated build target components.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The function
+will check and abort on incompatible build type assignments,
+this behavior can be disabled by using the boolean option
+&quot;nocheck&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>get_build_options_from_type()</b></p>
+
+<p style="margin-left:17%;">Get the current build type as a
+set of comma-separated string options.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version
+0.xx</b> <br>
+This is a private module.</p>
+<hr>
+</body>
+</html>

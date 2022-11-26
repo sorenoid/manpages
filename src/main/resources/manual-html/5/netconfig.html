@@ -1,0 +1,174 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>NETCONFIG(5) BSD File Formats Manual NETCONFIG(5)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>netconfig</b> &mdash; network
+configuration data base</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><i>/etc/netconfig</i></p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The <b>netconfig</b> file
+defines a list of &ldquo;transport names&rdquo;, describing
+their semantics and protocol. In FreeBSD, this file is only
+used by the RPC library code.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Entries have the
+following format:</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>network_id
+semantics flags family protoname device libraries</i></p>
+
+<p style="margin-left:6%; margin-top: 1em">Entries consist
+of the following fields:</p>
+
+<p style="margin-top: 1em"><i>network_id</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">The name of the
+transport described.</p>
+
+<p style="margin-top: 1em"><i>semantics</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Describes the
+semantics of the transport. This can be one of:</p>
+
+<p style="margin-top: 1em"><b>tpi_clts</b></p>
+
+<p style="margin-left:47%; margin-top: 1em">Connectionless
+transport.</p>
+
+<p style="margin-top: 1em"><b>tpi_cots</b></p>
+
+
+<p style="margin-left:47%; margin-top: 1em">Connection-oriented
+transport</p>
+
+<p style="margin-top: 1em"><b>tpi_cots_ord</b></p>
+
+
+<p style="margin-left:47%; margin-top: 1em">Connection-oriented,
+ordered transport.</p>
+
+<p style="margin-top: 1em"><b>tpi_raw</b></p>
+
+<p style="margin-left:47%; margin-top: 1em">A raw
+connection.</p>
+
+<p style="margin-top: 1em"><i>flags</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This field is
+either blank (specified by &ldquo;-&rdquo;), or contains a
+&ldquo;v&rdquo;, meaning visible to the getnetconfig(3)
+function.</p>
+
+<p style="margin-top: 1em"><i>family</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">The protocol
+family of the transport. This is currently one of:</p>
+
+<p style="margin-top: 1em"><b>inet6</b></p>
+
+<p style="margin-left:42%; margin-top: 1em">The IPv6
+(PF_INET6) family of protocols.</p>
+
+<p style="margin-top: 1em"><b>inet</b></p>
+
+<p style="margin-left:42%; margin-top: 1em">The IPv4
+(PF_INET) family of protocols.</p>
+
+<p style="margin-top: 1em"><b>loopback</b></p>
+
+<p style="margin-left:42%; margin-top: 1em">The PF_LOCAL
+protocol family.</p>
+
+<p style="margin-top: 1em"><i>protoname</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">The name of the
+protocol used for this transport. Can currently be either
+<b>udp</b>, <b>tcp</b> or empty.</p>
+
+<p style="margin-top: 1em"><i>device</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This field is
+always empty in FreeBSD.</p>
+
+<p style="margin-top: 1em"><i>libraries</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This field is
+always empty in FreeBSD.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The order of
+entries in this file will determine which transport will be
+preferred by the RPC library code, given a match on a
+specified network type. For example, if a sample network
+config file would look like this:</p>
+
+<p style="margin-left:14%; margin-top: 1em">udp6 tpi_clts v
+inet6 udp - - <br>
+tcp6 tpi_cots_ord v inet6 tcp - - <br>
+udp tpi_clts v inet udp - - <br>
+tcp tpi_cots_ord v inet tcp - - <br>
+rawip tpi_raw - inet - - - <br>
+local tpi_cots_ord - loopback - - -</p>
+
+<p style="margin-left:6%; margin-top: 1em">then using the
+network type <b>udp</b> in calls to the RPC library function
+(see rpc(3)) will make the code first try <b>udp6</b>, and
+then <b>udp</b>.</p>
+
+<p style="margin-left:6%; margin-top: 1em">getnetconfig(3)
+and associated functions will parse this file and return
+structures of the following format:</p>
+
+<p style="margin-left:6%; margin-top: 1em">struct netconfig
+{ <br>
+char *nc_netid; /* Network ID */ <br>
+unsigned long nc_semantics; /* Semantics (see below) */ <br>
+unsigned long nc_flag; /* Flags (see below) */ <br>
+char *nc_protofmly; /* Protocol family */ <br>
+char *nc_proto; /* Protocol name */ <br>
+char *nc_device; /* Network device pathname (unused) */ <br>
+unsigned long nc_nlookups; /* Number of lookup libs (unused)
+*/ <br>
+char **nc_lookups; /* Names of the libraries (unused) */
+<br>
+unsigned long nc_unused[9]; /* reserved */ <br>
+};</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+/etc/netconfig <b><br>
+SEE ALSO</b></p>
+
+<p style="margin-left:6%;">getnetconfig(3),
+getnetpath(3)</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+November&nbsp;17, 2000 BSD</p>
+<hr>
+</body>
+</html>

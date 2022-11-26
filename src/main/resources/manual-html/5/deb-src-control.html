@@ -1,0 +1,629 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:57 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-src-control</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-src-control</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SOURCE FIELDS">SOURCE FIELDS</a><br>
+<a href="#BINARY FIELDS">BINARY FIELDS</a><br>
+<a href="#USER-DEFINED FIELDS">USER-DEFINED FIELDS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-src-control
+- Debian source packages&rsquo; master control file
+format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debian/control</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each Debian
+source package contains the master
+&laquo;<b>debian/control</b>&raquo; file, and its
+<b>deb822</b>(5) format is a superset of the <b>control</b>
+file shipped in Debian binary packages, see
+<b>deb-control</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This file
+contains at least 2 paragraphs, separated by a blank line.
+The first paragraph lists all information about the source
+package in general, while each following paragraph describes
+exactly one binary package. Each paragraph consists of at
+least one field. A field starts with a fieldname, such as
+<b>Package</b> or <b>Section</b> (case insensitive),
+followed by a colon, the body of the field (case sensitive
+unless stated otherwise) and a newline. Multi-line fields
+are also allowed, but each supplementary line, without a
+fieldname, should start with at least one space. The content
+of the multi-line fields is generally joined to a single
+line by the tools (except in the case of the
+<b>Description</b> field, see below). To insert empty lines
+into a multi-line field, insert a dot after the space. Lines
+starting with a &rsquo;<b>#</b>&rsquo; are treated as
+comments.</p>
+
+<h2>SOURCE FIELDS
+<a name="SOURCE FIELDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Source:</b>
+<i>source-package-name</i> (required)</p>
+
+<p style="margin-left:17%;">The value of this field is the
+name of the source package, and should match the name of the
+source package in the debian/changelog file. A package name
+must consist only of lowercase letters (a-z), digits (0-9),
+plus (+) and minus (-) signs, and periods (.). Package names
+must be at least two characters long and must start with a
+lowercase alphanumeric character (a-z0-9).</p>
+
+<p style="margin-left:11%;"><b>Maintainer:</b>
+<i>fullname-email</i> (recommended)</p>
+
+<p style="margin-left:17%;">Should be in the format
+&laquo;Joe Bloggs &lt;jbloggs@foo.com&gt;&raquo;, and
+references the person who currently maintains the package,
+as opposed to the author of the software or the original
+packager.</p>
+
+<p style="margin-left:11%;"><b>Uploaders:</b>
+<i>fullname-email</i></p>
+
+<p style="margin-left:17%;">Lists all the names and email
+addresses of co-maintainers of the package, in the same
+format as the <b>Maintainer</b> field. Multiple
+co-maintainers should be separated by a comma.</p>
+
+<p style="margin-left:11%;"><b>Standards-Version:</b>
+<i>version-string</i></p>
+
+<p style="margin-left:17%;">This documents the most recent
+version of the distribution policy standards this package
+complies with.</p>
+
+<p style="margin-left:11%;"><b>Description</b>
+<i>short-description <br>
+long-description</i></p>
+
+<p style="margin-left:17%;">The format for the source
+package description is a short brief summary on the first
+line (after the <b>Description</b> field). The following
+lines should be used as a longer, more detailed description.
+Each line of the long description must be preceded by a
+space, and blank lines in the long description must contain
+a single &rsquo;<b>.</b>&rsquo; following the preceding
+space.</p>
+
+<p style="margin-left:11%;"><b>Homepage:</b> <i>url</i></p>
+
+<p style="margin-left:17%;">The upstream project home page
+<small>URL.</small></p>
+
+<p style="margin-left:11%;"><b>Bugs:</b> <i>url</i></p>
+
+<p style="margin-left:17%;">The <i>url</i> of the bug
+tracking system for this package. The current used format is
+<i>bts-type</i><b>://</b><i>bts-address</i>, like
+<b>debbugs://bugs.debian.org</b>. This field is usually not
+needed.</p>
+
+<p style="margin-left:11%;"><b>Rules-Requires-Root:
+no</b>|<b>binary-targets</b>|<i>impl-keywords</i></p>
+
+<p style="margin-left:17%;">This field is used to indicate
+whether the <b>debian/rules</b> file requires (fake)root
+privileges to run some of its targets, and if so when.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="3%">
+
+
+<p><b>no</b></p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>The binary targets will not require (fake)root at
+all.</p> </td></tr>
+</table>
+
+<p style="margin-left:17%;"><b>binary-targets</b></p>
+
+<p style="margin-left:23%;">The binary targets must always
+be run under (fake)root. This value is the default when the
+field is omitted; adding the field with an explicit
+<b>binary-targets</b> while not strictly needed, marks it as
+having been analyzed for this requirement.</p>
+
+<p style="margin-left:17%;"><i>impl-keywords</i></p>
+
+<p style="margin-left:23%;">This is a space-separated list
+of keywords which define when (fake)root is required.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Keywords
+consist of <i>namespace</i>/<i>cases</i>. The
+<i>namespace</i> part cannot contain &quot;/&quot; or
+whitespace. The <i>cases</i> part cannot contain whitespace.
+Furthermore, both parts must consist entirely of printable
+<small>ASCII</small> characters.</p>
+
+<p style="margin-left:23%; margin-top: 1em">Each
+tool/package will define a namespace named after itself and
+provide a number of cases where (fake)root is required. (See
+&quot;Implementation provided keywords&quot; in
+<i>rootless-builds.txt</i>).</p>
+
+<p style="margin-left:23%; margin-top: 1em">When the field
+is set to one of the <i>impl-keywords</i>, the builder will
+expose an interface that is used to run a command under
+(fake)root. (See &quot;Gain Root <small>API&quot;</small> in
+<i>rootless-builds.txt</i>.)</p>
+
+<p style="margin-left:11%;"><b>Testsuite:</b>
+<i>name-list</i> <b><br>
+Testsuite-Triggers:</b> <i>package-list</i></p>
+
+<p style="margin-left:17%;">These fields are described in
+the <b>dsc</b>(5) manual page, as they are generated from
+information inferred from <b>debian/tests/control</b> or
+copied literally to the source control file.</p>
+
+<p style="margin-left:11%;"><b>Vcs-Arch:</b> <i>url</i>
+<b><br>
+Vcs-Bzr:</b> <i>url</i> <b><br>
+Vcs-Cvs:</b> <i>url</i> <b><br>
+Vcs-Darcs:</b> <i>url</i> <b><br>
+Vcs-Git:</b> <i>url</i> <b><br>
+Vcs-Hg:</b> <i>url</i> <b><br>
+Vcs-Mtn:</b> <i>url</i> <b><br>
+Vcs-Svn:</b> <i>url</i></p>
+
+<p style="margin-left:17%;">The <i>url</i> of the Version
+Control System repository used to maintain this package.
+Currently supported are <b>Arch</b>, <b>Bzr</b> (Bazaar),
+<b>Cvs</b>, <b>Darcs</b>, <b>Git</b>, <b>Hg</b> (Mercurial),
+<b>Mtn</b> (Monotone) and <b>Svn</b> (Subversion). Usually
+this field points to the latest version of the package, such
+as the main branch or the trunk.</p>
+
+<p style="margin-left:11%;"><b>Vcs-Browser:</b>
+<i>url</i></p>
+
+<p style="margin-left:17%;">The <i>url</i> of a
+webinterface to browse the Version Control System
+repository.</p>
+
+<p style="margin-left:11%;"><b>Origin:</b> <i>name</i></p>
+
+<p style="margin-left:17%;">The name of the distribution
+this package is originating from. This field is usually not
+needed.</p>
+
+<p style="margin-left:11%;"><b>Section:</b>
+<i>section</i></p>
+
+<p style="margin-left:17%;">This is a general field that
+gives the package a category based on the software that it
+installs. Some common sections are <b>utils</b>, <b>net</b>,
+<b>mail</b>, <b>text</b>, <b>x11</b>, etc.</p>
+
+<p style="margin-left:11%;"><b>Priority:</b>
+<i>priority</i></p>
+
+<p style="margin-left:17%;">Sets the importance of this
+package in relation to the system as a whole. Common
+priorities are <b>required</b>, <b>standard</b>,
+<b>optional</b>, <b>extra</b>, etc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>Section</b> and <b>Priority</b> fields usually have a
+defined set of accepted values based on the specific
+distribution policy.</p>
+
+<p style="margin-left:11%;"><b>Build-Depends:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">A list of packages that need to
+be installed and configured to be able to build from source
+package. These dependencies need to be satisfied when
+building binary architecture dependent or independent
+packages and source packages. Including a dependency in this
+field does not have the exact same effect as including it in
+both <b>Build-Depends-Arch</b> and
+<b>Build-Depends-Indep</b>, because the dependency also
+needs to be satisfied when building the source package.</p>
+
+<p style="margin-left:11%;"><b>Build-Depends-Arch:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">Same as <b>Build-Depends</b>,
+but they are only needed when building the architecture
+dependent packages. The <b>Build-Depends</b> are also
+installed in this case. This field is supported since dpkg
+1.16.4; in order to build with older dpkg versions,
+<b>Build-Depends</b> should be used instead.</p>
+
+<p style="margin-left:11%;"><b>Build-Depends-Indep:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">Same as <b>Build-Depends</b>,
+but they are only needed when building the architecture
+independent packages. The <b>Build-Depends</b> are also
+installed in this case.</p>
+
+<p style="margin-left:11%;"><b>Build-Conflicts:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">A list of packages that should
+not be installed when the package is built, for example
+because they interfere with the build system used. Including
+a dependency in this list has the same effect as including
+it in both <b>Build-Conflicts-Arch</b> and
+<b>Build-Conflicts-Indep</b>, with the additional effect of
+being used for source-only builds.</p>
+
+<p style="margin-left:11%;"><b>Build-Conflicts-Arch:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">Same as <b>Build-Conflicts</b>,
+but only when building the architecture dependent packages.
+This field is supported since dpkg 1.16.4; in order to build
+with older dpkg versions, <b>Build-Conflicts</b> should be
+used instead.</p>
+
+<p style="margin-left:11%;"><b>Build-Conflicts-Indep:</b>
+<i>package-list</i></p>
+
+<p style="margin-left:17%;">Same as <b>Build-Conflicts</b>,
+but only when building the architecture independent
+packages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The syntax of
+the <b>Build-Depends</b>, <b>Build-Depends-Arch</b> and
+<b>Build-Depends-Indep</b> fields is a list of groups of
+alternative packages. Each group is a list of packages
+separated by vertical bar (or &ldquo;pipe&rdquo;) symbols,
+&rsquo;<b>|</b>&rsquo;. The groups are separated by commas
+&rsquo;<b>,</b>&rsquo;, and can end with a trailing comma
+that will be eliminated when generating the fields for
+<b>deb-control</b>(5) (since dpkg 1.10.14). Commas are to be
+read as &ldquo;AND&rdquo;, and pipes as &ldquo;OR&rdquo;,
+with pipes binding more tightly. Each package name is
+optionally followed by an architecture qualifier appended
+after a colon &rsquo;<b>:</b>&rsquo;, optionally followed by
+a version number specification in parentheses
+&rsquo;<b>(</b>&rsquo; and &rsquo;<b>)</b>&rsquo;, an
+architecture specification in square brackets
+&rsquo;<b>[</b>&rsquo; and &rsquo;<b>]</b>&rsquo;, and a
+restriction formula consisting of one or more lists of
+profile names in angle brackets &rsquo;<b>&lt;</b>&rsquo;
+and &rsquo;<b>&gt;</b>&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The syntax of
+the <b>Build-Conflicts</b>, <b>Build-Conflicts-Arch</b> and
+<b>Build-Conflicts-Indep</b> fields is a list of
+comma-separated package names, where the comma is read as an
+&ldquo;AND&rdquo;, and where the list can end with a
+trailing comma that will be eliminated when generating the
+fields for <b>deb-control</b>(5) (since dpkg 1.10.14).
+Specifying alternative packages using a &ldquo;pipe&rdquo;
+is not supported. Each package name is optionally followed
+by a version number specification in parentheses, an
+architecture specification in square brackets, and a
+restriction formula consisting of one or more lists of
+profile names in angle brackets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An architecture
+qualifier name can be a real Debian architecture name (since
+dpkg 1.16.5), <b>any</b> (since dpkg 1.16.2) or
+<b>native</b> (since dpkg 1.16.5). If omitted, the default
+for <b>Build-Depends</b> fields is the current host
+architecture, the default for <b>Build-Conflicts</b> fields
+is <b>any</b>. A real Debian architecture name will match
+exactly that architecture for that package name, <b>any</b>
+will match any architecture for that package name if the
+package is marked with <b>Multi-Arch: allowed</b>, and
+<b>native</b> will match the current build architecture if
+the package is not marked with <b>Multi-Arch:
+foreign</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A version
+number may start with a &rsquo;<b>&gt;&gt;</b>&rsquo;, in
+which case any later version will match, and may specify or
+omit the Debian packaging revision (separated by a hyphen).
+Accepted version relationships are
+&rsquo;<b>&gt;&gt;</b>&rsquo; for greater than,
+&rsquo;<b>&lt;&lt;</b>&rsquo; for less than,
+&rsquo;<b>&gt;=</b>&rsquo; for greater than or equal to,
+&rsquo;<b>&lt;=</b>&rsquo; for less than or equal to, and
+&rsquo;<b>=</b>&rsquo; for equal to.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An architecture
+specification consists of one or more architecture names,
+separated by whitespace. Exclamation marks may be prepended
+to each of the names, meaning &ldquo;NOT&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A restriction
+formula consists of one or more restriction lists, separated
+by whitespace. Each restriction list is enclosed in angle
+brackets. Items in the restriction list are build profile
+names, separated by whitespace and can be prefixed with an
+exclamation mark, meaning &ldquo;NOT&rdquo;. A restriction
+formula represents a disjunctive normal form expression.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+dependencies on packages in the <b>build-essential</b> set
+can be omitted and that declaring build conflicts against
+them is impossible. A list of these packages is in the
+build-essential package.</p>
+
+<h2>BINARY FIELDS
+<a name="BINARY FIELDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+<b>Priority</b>, <b>Section</b> and <b>Homepage</b> fields
+can also be in a binary paragraph to override the global
+value from the source package. <b><br>
+Package:</b> <i>binary-package-name</i> (required)</p>
+
+<p style="margin-left:17%;">This field is used to name the
+binary package name. The same restrictions as to a source
+package name apply.</p>
+
+<p style="margin-left:11%;"><b>Package-Type:
+deb</b>|<b>udeb</b>|<i>type</i></p>
+
+<p style="margin-left:17%;">This field defines the type of
+the package. <b>udeb</b> is for size-constrained packages
+used by the debian installer. <b>deb</b> is the default
+value, it is assumed if the field is absent. More types
+might be added in the future.</p>
+
+<p style="margin-left:11%;"><b>Architecture:</b>
+<i>arch</i>|<b>all</b>|<b>any</b> (required)</p>
+
+<p style="margin-left:17%;">The architecture specifies on
+which type of hardware this package runs. For packages that
+run on all architectures, use the <b>any</b> value. For
+packages that are architecture independent, such as shell
+and Perl scripts or documentation, use the <b>all</b> value.
+To restrict the packages to a certain set of architectures,
+specify the architecture names, separated by a space.
+It&rsquo;s also possible to put architecture wildcards in
+that list (see <b>dpkg-architecture</b>(1) for more
+information about them).</p>
+
+<p style="margin-left:11%;"><b>Build-Profiles:</b>
+<i>restriction-formula</i></p>
+
+<p style="margin-left:17%;">This field specifies the
+conditions for which this binary package does or does not
+build. To express that condition, the same restriction
+formula syntax from the <b>Build-Depends</b> field is
+used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If a binary
+package paragraph does not contain this field, then it
+implicitly means that it builds with all build profiles
+(including none at all).</p>
+
+<p style="margin-left:17%; margin-top: 1em">In other words,
+if a binary package paragraph is annotated with a non-empty
+<b>Build-Profiles</b> field, then this binary package is
+generated if and only if the condition expressed by the
+conjunctive normal form expression evaluates to true.</p>
+
+<p style="margin-left:11%;"><b>Protected: Byes</b>|<b>no
+<br>
+Essential: yes</b>|<b>no <br>
+Build-Essential: yes</b>|<b>no <br>
+Multi-Arch: same</b>|<b>foreign</b>|<b>allowed</b>|<b>no
+<br>
+Tag:</b> <i>tag-list</i> <b><br>
+Description:</b> <i>short-description</i> (recommended)</p>
+
+<p style="margin-left:17%;">These fields are described in
+the <b>deb-control</b>(5) manual page, as they are copied
+literally to the control file of the binary package.</p>
+
+<p style="margin-left:11%;"><b>Depends:</b>
+<i>package-list</i> <b><br>
+Pre-Depends:</b> <i>package-list</i> <b><br>
+Recommends:</b> <i>package-list</i> <b><br>
+Suggests:</b> <i>package-list</i> <b><br>
+Breaks:</b> <i>package-list</i> <b><br>
+Enhances:</b> <i>package-list</i> <b><br>
+Replaces:</b> <i>package-list</i> <b><br>
+Conflicts:</b> <i>package-list</i> <b><br>
+Provides:</b> <i>package-list</i> <b><br>
+Built-Using:</b> <i>package-list</i></p>
+
+<p style="margin-left:17%;">These fields declare
+relationships between packages. They are discussed in the
+<b>deb-control</b>(5) manpage. When these fields are found
+in <i>debian/control</i> they can also end with a trailing
+comma (since dpkg 1.10.14), have architecture specifications
+and restriction formulas which will all get reduced when
+generating the fields for <b>deb-control</b>(5).</p>
+
+<p style="margin-left:11%;"><b>Subarchitecture:</b>
+<i>value</i> <b><br>
+Kernel-Version:</b> <i>value</i> <b><br>
+Installer-Menu-Item:</b> <i>value</i></p>
+
+<p style="margin-left:17%;">These fields are used by the
+debian-installer in <b>udeb</b>s and are usually not needed.
+See /usr/share/doc/debian-installer/devel/modules.txt from
+the <b>debian-installer</b> package for more details about
+them.</p>
+
+<h2>USER-DEFINED FIELDS
+<a name="USER-DEFINED FIELDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is allowed
+to add additional user-defined fields to the control file.
+The tools will ignore these fields. If you want the fields
+to be copied over to the output files, such as the binary
+packages, you need to use a custom naming scheme: the fields
+should start with an <b>X</b>, followed by zero or more of
+the letters <b><small>SBC</small></b> and a hyphen.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>S</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The field will appear in the source package control
+file, see <b>dsc</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>B</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The field will appear in the control file in the binary
+package, see <b>deb-control</b>(5).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>C</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The field will appear in the upload control (.changes)
+file, see <b>deb-changes</b>(5).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+<b>X</b>[ <b><small>SBC</small></b> ]<b>-</b> prefixes are
+stripped when the fields are copied over to the output
+files. A field <b>XC-Approved-By</b> will appear as
+<b>Approved-By</b> in the changes file and will not appear
+in the binary or source package control files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Take into
+account that these user-defined fields will be using the
+global namespace, which might at some point in the future
+collide with officially recognized fields. To avoid such
+potential situation you can prefix those fields with
+<b>Private-</b>, such as <b>XB-Private-New-Field</b>.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"># Comment <br>
+Source: dpkg <br>
+Section: admin <br>
+Priority: required <br>
+Maintainer: Dpkg Developers
+&lt;debian-dpkg@lists.debian.org&gt; <br>
+# this field is copied to the binary and source packages
+<br>
+XBS-Upstream-Release-Status: stable <br>
+Homepage: https://wiki.debian.org/Teams/Dpkg <br>
+Vcs-Browser: https://git.dpkg.org/cgit/dpkg/dpkg.git <br>
+Vcs-Git: https://git.dpkg.org/git/dpkg/dpkg.git <br>
+Standards-Version: 3.7.3 <br>
+Build-Depends: pkg-config, debhelper (&gt;= 4.1.81), <br>
+libselinux1-dev (&gt;= 1.28-4) [!linux-any] <br>
+Package: dpkg-dev <br>
+Section: utils <br>
+Priority: optional <br>
+Architecture: all <br>
+# this is a custom field in the binary package <br>
+XB-Mentoring-Contact: Raphael Hertzog
+&lt;hertzog@debian.org&gt; <br>
+Depends: dpkg (&gt;= 1.14.6), perl5, perl-modules, cpio
+(&gt;= 2.4.2-2), <br>
+bzip2, lzma, patch (&gt;= 2.2-1), make, binutils,
+libtimedate-perl <br>
+Recommends: gcc | c-compiler, build-essential <br>
+Suggests: gnupg, debian-keyring <br>
+Conflicts: dpkg-cross (&lt;&lt; 2.0.0), devscripts (&lt;&lt;
+2.10.26) <br>
+Replaces: manpages-pl (&lt;= 20051117-1) <br>
+Description: Debian package development tools <br>
+This package provides the development tools (including
+dpkg-source) <br>
+required to unpack, build and upload Debian source packages.
+<br>
+. <br>
+Most Debian source packages will require additional tools to
+build; <br>
+for example, most packages need make and the C compiler
+gcc.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb822</b>(5),
+<b>deb-control</b>(5), <b>deb-version</b>(7),
+<b>dpkg-source</b>(1)</p>
+<hr>
+</body>
+</html>

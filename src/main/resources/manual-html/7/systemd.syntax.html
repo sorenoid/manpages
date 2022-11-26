@@ -1,0 +1,232 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:44 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD.SYNTAX</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD.SYNTAX</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#INTRODUCTION">INTRODUCTION</a><br>
+<a href="#QUOTING">QUOTING</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd.syntax
+- General syntax of systemd configuration files</p>
+
+<h2>INTRODUCTION
+<a name="INTRODUCTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page
+describes the basic principles of configuration files used
+by <b>systemd</b>(1) and related programs for:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; systemd
+unit files, see <b>systemd.unit</b>(5),
+<b>systemd.service</b>(5), <b>systemd.socket</b>(5),
+<b>systemd.device</b>(5), <b>systemd.mount</b>(5),
+<b>systemd.automount</b>(5), <b>systemd.swap</b>(5),
+<b>systemd.target</b>(5), <b>systemd.path</b>(5),
+<b>systemd.timer</b>(5), <b>systemd.slice</b>(5),
+<b>systemd.scope</b>(5), <b>systemd.nspawn</b>(5)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; link
+files, see <b>systemd.link</b>(5)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; netdev
+and network files, see <b>systemd.netdev</b>(5),
+<b>systemd.network</b>(5)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; daemon
+config files, see <b>systemd-system.conf</b>(5),
+<b>systemd-user.conf</b>(5), <b>logind.conf</b>(5),
+<b>journald.conf</b>(5), <b>journal-remote.conf</b>(5),
+<b>journal-upload.conf</b>(5), <b>systemd-sleep.conf</b>(5),
+<b>timesyncd.conf</b>(5)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The syntax is
+inspired by <b><font color="#0000FF">XDG Desktop Entry
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.desktop files, which are in turn
+inspired by Microsoft Windows .ini files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Each
+file is a plain text file divided into sections, with
+configuration entries in the style <i>key</i>=<i>value</i>.
+Whitespace immediately before or after the &quot;=&quot; is
+ignored. Empty lines and lines starting with &quot;#&quot;
+or &quot;;&quot; are ignored, which may be used for
+commenting.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Lines
+ending in a backslash are concatenated with the following
+line while reading and the backslash is replaced by a space
+character. This may be used to wrap long lines. The limit on
+line length is very large (currently 1 MB), but it is
+recommended to avoid such long lines and use multiple
+directives, variable substitution, or other mechanism as
+appropriate for the given file type. When a comment line or
+lines follow a line ending with a backslash, the comment
+block is ignored, so the continued line is concatenated with
+whatever follows the comment block.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;1.&nbsp;</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Section
+A] <br>
+KeyOne=value 1 <br>
+KeyTwo=value 2</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#
+a comment</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Section
+B] <br>
+Setting=&quot;something&quot; &quot;some thing&quot;
+&quot;...&quot; <br>
+KeyTwo=value 2 \ <br>
+value 2 continued</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Section
+C] <br>
+KeyThree=value 3\ <br>
+# this line is ignored <br>
+; this line is ignored too <br>
+value 3 continued</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Boolean
+arguments used in configuration files can be written in
+various formats. For positive settings the strings <b>1</b>,
+<b>yes</b>, <b>true</b> and <b>on</b> are equivalent. For
+negative settings, the strings <b>0</b>, <b>no</b>,
+<b>false</b> and <b>off</b> are equivalent.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Time
+span values encoded in configuration files can be written in
+various formats. A stand-alone number specifies a time in
+seconds. If suffixed with a time unit, the unit is honored.
+A concatenation of multiple values with units is supported,
+in which case the values are added up. Example:
+&quot;50&quot; refers to 50 seconds;
+&quot;2min&nbsp;200ms&quot; refers to 2 minutes and 200
+milliseconds, i.e. 120200&nbsp;ms. The following time units
+are understood: &quot;s&quot;, &quot;min&quot;,
+&quot;h&quot;, &quot;d&quot;, &quot;w&quot;, &quot;ms&quot;,
+&quot;us&quot;. For details see
+<b>systemd.time</b>(7).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Various
+settings are allowed to be specified more than once, in
+which case the interpretation depends on the setting. Often,
+multiple settings form a list, and setting to an empty value
+&quot;resets&quot;, which means that previous assignments
+are ignored. When this is allowed, it is mentioned in the
+description of the setting. Note that using multiple
+assignments to the same value makes the file incompatible
+with parsers for the XDG .desktop file format.</font></p>
+
+<h2>QUOTING
+<a name="QUOTING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
+settings where quoting is allowed, the following general
+rules apply: double quotes (&quot;...&quot;) and single
+quotes ('...') may be used to wrap a whole item (the opening
+quote may appear only at the beginning or after whitespace
+that is not quoted, and the closing quote must be followed
+by whitespace or the end of line), in which case everything
+until the next matching quote becomes part of the same item.
+Quotes themselves are removed. C-style escapes are
+supported. The table below contains the list of known escape
+patterns. Only escape patterns which match the syntax in the
+table are allowed; other patterns may be added in the future
+and unknown patterns will result in a warning. In
+particular, any backslashes should be doubled. Finally, a
+trailing backslash (&quot;\&quot;) may be used to merge
+lines, as described above. UTF-8 is accepted, and hence
+typical unicode characters do not need to be
+escaped.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Table&nbsp;1.&nbsp;Supported
+escapes</b></font></p>
+
+
+<p align="center"><font color="#000000"><b><img src="grohtml-3514531.png" alt="Image grohtml-3514531.png"></b></font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd.time</b>(7)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="48%">
+
+
+<p style="margin-top: 1em"><font color="#000000">XDG
+Desktop Entry Specification</font></p></td>
+<td width="35%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://standards.freedesktop.org/desktop-entry-spec/latest/</font></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:23 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Vendor</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Vendor</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Vendor -
+get access to some vendor specific information</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The files in
+$Dpkg::CONFDIR/origins/ can provide information about
+various vendors who are providing Debian packages. Currently
+those files look like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Vendor: Debian
+<br>
+Vendor-URL: https://www.debian.org/ <br>
+Bugs: debbugs://bugs.debian.org</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the vendor
+derives from another vendor, the file should document the
+relationship by listing the base distribution in the Parent
+field:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Parent:
+Debian</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file should
+be named according to the vendor name. The usual convention
+is to name the vendor file using the vendor name in all
+lowercase, but some variation is permitted. Namely, spaces
+are mapped to dashes (&rsquo;-&rsquo;), and the file can
+have the same casing as the Vendor field, or it can be
+capitalized.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$dir =
+<b>get_vendor_dir()</b></p>
+
+<p style="margin-left:17%;">Returns the current dpkg
+origins directory name, where the vendor files are
+stored.</p>
+
+<p style="margin-left:11%;">$fields =
+get_vendor_info($name)</p>
+
+<p style="margin-left:17%;">Returns a Dpkg::Control object
+with the information parsed from the corresponding vendor
+file in $Dpkg::CONFDIR/origins/. If $name is omitted, it
+will use $Dpkg::CONFDIR/origins/default which is supposed to
+be a symlink to the vendor of the currently installed
+operating system. Returns undef if there&rsquo;s no file for
+the given vendor.</p>
+
+<p style="margin-left:11%;">$name =
+get_vendor_file($name)</p>
+
+<p style="margin-left:17%;">Check if there&rsquo;s a file
+for the given vendor and returns its name.</p>
+
+<p style="margin-left:11%;">$name =
+<b>get_current_vendor()</b></p>
+
+<p style="margin-left:17%;">Returns the name of the current
+vendor. If <small>DEB_VENDOR</small> is set, it uses that
+first, otherwise it falls back to parsing
+$Dpkg::CONFDIR/origins/default. If that file doesn&rsquo;t
+exist, it returns undef.</p>
+
+<p style="margin-left:11%;">$object =
+get_vendor_object($name)</p>
+
+<p style="margin-left:17%;">Return the Dpkg::Vendor::*
+object of the corresponding vendor. If $name is omitted,
+return the object of the current vendor. If no vendor can be
+identified, then return the Dpkg::Vendor::Default
+object.</p>
+
+<p style="margin-left:11%;">run_vendor_hook($hookid,
+@params)</p>
+
+<p style="margin-left:17%;">Run a hook implemented by the
+current vendor object.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.17.0)</b> <br>
+New function: <b>get_vendor_dir()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.16.1)</b> <br>
+Mark the module as public.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb-origin</b>(5).</p>
+<hr>
+</body>
+</html>

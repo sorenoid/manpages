@@ -1,0 +1,170 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:01 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MEMCPY</title>
+
+</head>
+<body>
+
+<h1 align="center">MEMCPY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">memcpy - copy
+memory area</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;string.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>void
+*memcpy(void *</b><i>dest</i><b>, const void
+*</b><i>src</i><b>, size_t</b> <i>n</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>memcpy</b>() function copies <i>n</i> bytes from memory
+area <i>src</i> to memory area <i>dest</i>. The memory areas
+must not overlap. Use <b>memmove</b>(3) if the memory areas
+do overlap.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>memcpy</b>() function returns a pointer to
+<i>dest</i>.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3371201.png" alt="Image grohtml-3371201.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2001,
+POSIX.1-2008, C89, C99, SVr4, 4.3BSD.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Failure to
+observe the requirement that the memory areas do not overlap
+has been the source of significant bugs. (POSIX and the C
+standards are explicit that employing <b>memcpy</b>() with
+overlapping areas produces undefined behavior.) Most
+notably, in glibc 2.13 a performance optimization of
+<b>memcpy</b>() on some platforms (including x86-64)
+included changing the order in which bytes were copied from
+<i>src</i> to <i>dest</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This change
+revealed breakages in a number of applications that
+performed copying with overlapping areas. Under the previous
+implementation, the order in which the bytes were copied had
+fortuitously hidden the bug, which was revealed when the
+copying order was reversed. In glibc 2.14, a versioned
+symbol was added so that old binaries (i.e., those linked
+against glibc versions earlier than 2.14) employed a
+<b>memcpy</b>() implementation that safely handles the
+overlapping buffers case (by providing an &quot;older&quot;
+<b>memcpy</b>() implementation that was aliased to
+<b>memmove</b>(3)).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcopy</b>(3),
+<b>bstring</b>(3), <b>memccpy</b>(3), <b>memmove</b>(3),
+<b>mempcpy</b>(3), <b>strcpy</b>(3), <b>strncpy</b>(3),
+<b>wmemcpy</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

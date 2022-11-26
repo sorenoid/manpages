@@ -1,0 +1,162 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>deb-triggers</title>
+
+</head>
+<body>
+
+<h1 align="center">deb-triggers</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-triggers -
+package triggers</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debian/triggers</b>,
+<b>debian/</b><i>binary-package</i><b>.triggers</b>,
+<b>DEBIAN/triggers</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A package
+declares its relationship to some trigger(s) by including a
+<i>triggers</i> file in its control archive (i.e.
+<i>DEBIAN/triggers</i> during package creation).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This file
+contains directives, one per line. Leading and trailing
+whitespace and everything after the first <b>#</b> on any
+line will be trimmed, and empty lines will be ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The trigger
+control directives currently supported are: <b><br>
+interest</b> <i>trigger-name</i> <b><br>
+interest-await</b> <i>trigger-name</i> <b><br>
+interest-noawait</b> <i>trigger-name</i></p>
+
+<p style="margin-left:17%;">Specifies that the package is
+interested in the named trigger. All triggers in which a
+package is interested must be listed using this directive in
+the triggers control file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&ldquo;await&rdquo; variants put the triggering package in
+triggers-awaited state depending on how the trigger was
+activated. The &ldquo;noawait&rdquo; variant does not put
+the triggering packages in triggers-awaited state, even if
+the triggering package declared an &ldquo;await&rdquo;
+activation (either with an <b>activate-await</b> or
+<b>activate</b> directive, or by using the <b>dpkg-trigger
+--no-await</b> command-line option). The
+&ldquo;noawait&rdquo; variant should be used when the
+functionality provided by the trigger is not crucial.</p>
+
+<p style="margin-left:11%;"><b>activate</b>
+<i>trigger-name</i> <b><br>
+activate-await</b> <i>trigger-name</i> <b><br>
+activate-noawait</b> <i>trigger-name</i></p>
+
+<p style="margin-left:17%;">Arranges that changes to this
+package&rsquo;s state will activate the specified trigger.
+The trigger will be activated at the start of the following
+operations: unpack, configure, remove (including for the
+benefit of a conflicting package), purge and
+deconfigure.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&ldquo;await&rdquo; variants only put the triggering package
+in triggers-awaited state if the interest directive is also
+&ldquo;await&rdquo;. The &ldquo;noawait&rdquo; variant never
+puts the triggering packages in triggers-awaited state. The
+&ldquo;noawait&rdquo; variant should be used when the
+functionality provided by the trigger is not crucial.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If this package
+disappears during the unpacking of another package the
+trigger will be activated when the disappearance is noted
+towards the end of the unpack. Trigger processing, and
+transition from triggers-awaited to installed, does not
+cause activations. In the case of unpack, triggers mentioned
+in both the old and new versions of the package will be
+activated.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unknown
+directives are an error which will prevent installation of
+the package.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&ldquo;-noawait&rdquo; variants should always be favored
+when possible since triggering packages are not put in
+triggers-awaited state and can thus be immediately
+configured without requiring the processing of the trigger.
+If the triggering packages are dependencies of other
+upgraded packages, it will avoid an early trigger processing
+run and make it possible to run the trigger only once as one
+of the last steps of the upgrade.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&ldquo;-noawait&rdquo; variants are supported since dpkg
+1.16.1, and will lead to errors if used with an older
+dpkg.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&ldquo;-await&rdquo; alias variants are supported since dpkg
+1.17.21, and will lead to errors if used with an older
+dpkg.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a package
+provides an <b>interest-noawait</b> directive, any
+activation will set the triggering package into
+&ldquo;noawait&rdquo; mode, regardless of the awaiting mode
+requested by the activation (either &ldquo;await&rdquo; or
+&ldquo;noawait&rdquo;). When a package provides an
+<b>interest</b> or <b>interest-await</b> directive, any
+activation will set the triggering package into
+&ldquo;await&rdquo; or &ldquo;noawait&ldquo; depending on
+how it was activated.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-trigger</b>(1),
+<b>dpkg</b>(1),
+<b>/usr/share/doc/dpkg/triggers.txt.gz</b>.</p>
+<hr>
+</body>
+</html>

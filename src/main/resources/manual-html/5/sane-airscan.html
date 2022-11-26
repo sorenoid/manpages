@@ -1,0 +1,427 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:04 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SANE-AIRSCAN</title>
+
+</head>
+<body>
+
+<h1 align="center">SANE-AIRSCAN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#CONFIGURATION OF DEVICES">CONFIGURATION OF DEVICES</a><br>
+<a href="#CONFIGURATION OPTIONS">CONFIGURATION OPTIONS</a><br>
+<a href="#BLACKLISTING DEVICES">BLACKLISTING DEVICES</a><br>
+<a href="#DEBUGGING">DEBUGGING</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#BUGS AND SUPPORT">BUGS AND SUPPORT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sane-airscan</b>
+- SANE backend for AirScan (eSCL) and WSD scanners and
+MFP</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sane-airscan</b> is the universal backend for
+&quot;driverless&quot; document scanning. Currently it
+supports two protocols:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="72%">
+
+
+<p>1. eSCL, also known as AirScan or AirPrint scan</p></td>
+<td width="11%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">2. WSD, also known as
+WS-Scan</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+sane-airscan loads its configuration files from the
+following places:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="41%">
+
+
+<p>1. /etc/sane.d/airscan.conf</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">2. /etc/sane.d/airscan.d/*</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration file syntax is very similar to the .INI file
+syntax. It consist of sections, each section contains some
+variables. Comments are started from # or ; characters and
+continies until end of line</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="29%">
+
+
+<p># This is a comment</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">[section 1] <br>
+variable 1 = value 1 ; and another comment <br>
+variable 2 = value 2</p>
+
+<p style="margin-left:11%; margin-top: 1em">Leading and
+trailing spaces of variable name and value are striped. If
+you want to preserve them, put name or value into quotes
+(&quot;like this&quot;).</p>
+
+<h2>CONFIGURATION OF DEVICES
+<a name="CONFIGURATION OF DEVICES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If scanner and
+computer are connected to the same LAN segment, everything
+expected to &quot;just work&quot; out of box, without any
+need of manual configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">However, in
+some cases manual configuration can be useful. For
+example:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="83%">
+
+
+<p>1. If computer and scanner are connected via IP
+router</p> </td></tr>
+</table>
+
+<p style="margin-left:17%;">2. There are a lot of devices
+on a corporate network, but <br>
+only few of them are interesting <br>
+3. Automatic discovery works unreliable</p>
+
+<p style="margin-left:11%; margin-top: 1em">To manually
+configure a device, add the following section to the
+configuration file:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="14%">
+
+
+<p>[devices]</p></td>
+<td width="69%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">&quot;Kyocera eSCL&quot; =
+http://192.168.1.102:9095/eSCL, eSCL <br>
+&quot;Kyocera WSD&quot; =
+http://192.168.1.102:5358/WSDScanner, WSD <br>
+&quot;Device I do not want to see&quot; = disable</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>[devices]</b> section contains all manually configured
+devices, one line per device, and each line contains a
+device name on a left side of equation and device URL on a
+rights side, followed by protocol (eSCL or WSD). If protocol
+is omitted, eSCL is assumed. You may also disable particular
+device by using the <b>disable</b> keyword instead of
+URL.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition,
+you can manually configure a device by directly passing its
+URL in a device name without adding it to the configuration
+file. This takes the format <b>protocol:Device Name:URL</b>.
+The examples above could be written as <b>escl:Kyocera
+eSCL:http://192.168.1.102:9095/eSCL</b> and <b>wsd:Kyocera
+WSD:http://192.168.1.102:5358/WSDScanner</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To figure out
+URLs of available devices, the simplest way is to run a
+supplied <b>airscan-discover</b> tool on a computer
+connected with scanner to the same LAN segment. On success,
+this program will dump to its standard output a list of
+discovered devices in a format suitable for inclusion into
+the configuration file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If running
+<b>airscan-discover</b> on same LAN segment as a scanner is
+not possible, you will have to follow a hard way. Your
+administrator must know device IP address, consult your
+device manual for the eSCL port, and the URL path component
+most likely is the &quot;/eSCL&quot;, though on some devices
+it may differ. Discovering WSD URLs doing this way is much
+harder, because it is very difficult to guess TCP port and
+URL path, that in a case of eSCL.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For eSCL
+devices, the URL can also use the unix:// scheme, such as
+unix://scanner.sock/eSCL. The &quot;host&quot; from the URL
+is a file name that will be searched for in the directory
+specified by socket_dir (see below). When connecting to the
+scanner, all traffic will be sent to the specified UNIX
+socket instead of a TCP connection.</p>
+
+<h2>CONFIGURATION OPTIONS
+<a name="CONFIGURATION OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Miscellaneous
+options all goes to the <b>[options]</b> section. Currently
+the following options are supported:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="14%">
+
+
+<p>[options]</p></td>
+<td width="69%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">; If there are a lot of
+scanners around and you are only <br>
+; interested in few of them, disable auto discovery and <br>
+; configure scanners manually <br>
+discovery = enable | disable</p>
+
+<p style="margin-left:17%; margin-top: 1em">; Choose what
+SANE apps will show in a list of devices: <br>
+; scanner network name (the default) or hardware model name
+<br>
+model = network | hardware</p>
+
+<p style="margin-left:17%; margin-top: 1em">; If device
+supports both eSCL and WSD protocol, sane-airscan <br>
+; may either choose the &quot;best&quot; protocol
+automatically, or <br>
+; expose all variants for user, allowing manual protocol
+selection. <br>
+; The default is &quot;auto&quot; <br>
+protocol = auto | manual</p>
+
+<p style="margin-left:17%; margin-top: 1em">; Discovery of
+WSD devices may be &quot;fast&quot; or &quot;full&quot;. The
+&quot;fast&quot; <br>
+; mode works as fast as DNS-SD discovery, but in some cases
+<br>
+; may be unreliable. The &quot;full&quot; mode is slow and
+reliable. <br>
+; This is also possible to disable automatic discovery <br>
+; of WSD devices. The default is &quot;fast&quot;. <br>
+ws-discovery = fast | full | off</p>
+
+<p style="margin-left:17%; margin-top: 1em">; Scanners that
+use the unix:// schema in their URL can only specify a <br>
+; socket name (not a full path). The name will be searched
+for in the <br>
+; directory specified here. The default is /var/run. <br>
+socket_dir = /path/to/directory</p>
+
+<h2>BLACKLISTING DEVICES
+<a name="BLACKLISTING DEVICES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This feature
+can be useful, if you are on a very big network and have a
+lot of devices around you, while interesting only in a few
+of them.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="17%">
+
+
+<p>[blacklist]</p></td>
+<td width="66%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">model = &quot;Xerox*&quot; ;
+blacklist by model name <br>
+name = &quot;HP*&quot; ; blacklist by network name <br>
+ip = 192.168.0.1 ; blacklist by address <br>
+ip = 192.168.0.0/24 ; blacklist the whole subnet</p>
+
+<p style="margin-left:11%; margin-top: 1em">Network names
+come from DNS-SD, WS-Discovery doesn&acute;t provide this
+information. For filtering by network name to work, Avahi
+must be enabled and device must be discoverable via DNS-SD
+(not necessarily as a scanner, it&acute;s enough if WSD
+scanner is discoverable as a printer via DNS-SD).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Blacklisting
+only affects automatic discovery, and doesn&acute;t affect
+manually configured devices</p>
+
+<h2>DEBUGGING
+<a name="DEBUGGING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sane-airscan
+provides very good instrumentation for troubleshooting
+without physical access to the problemmatic device.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Debugging
+facilities can be controlled using the <b>[debug]</b>
+section of the configuration file:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="11%">
+
+
+<p>[debug]</p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">; Enable or disable console
+logging <br>
+enable = false | true</p>
+
+<p style="margin-left:17%; margin-top: 1em">; Enable
+protocol trace and configure output directory <br>
+; for trace files. Like in shell, to specify path relative
+to <br>
+; the home directory, start it with tilda character,
+followed <br>
+; by slash, i.e., &quot;~/airscan/trace&quot;. The directory
+will <br>
+; be created automatically. <br>
+trace = path</p>
+
+<p style="margin-left:17%; margin-top: 1em">; Hex dump all
+traffic to the trace file (very verbose!) <br>
+hexdump = false | true</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/etc/sane.d/airscan.conf</b>,
+<b>/etc/sane.d/airscan.d/*</b></p>
+
+<p style="margin-left:22%;">The backend configuration
+files</p>
+
+
+<p style="margin-left:11%;"><b>/usr/LIBDIR/sane/libsane-airscan.so</b></p>
+
+<p style="margin-left:22%;">The shared library implementing
+this backend</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SANE_DEBUG_AIRSCAN</b></p>
+
+<p style="margin-left:22%;">This variable if set to
+<b>true</b> or non-zero numerical value, enables debug
+messages, that are printed to stdout</p>
+
+<p style="margin-left:11%;"><b>SANE_CONFIG_DIR</b></p>
+
+<p style="margin-left:22%;">This variable alters the search
+path for configuration files. This is a colon-separated list
+of directories. These directories are searched for the
+airscan.conf configuration file and for the airscan.d
+subdirectory, before the standard path (/etc/sane.d) is
+searched.</p>
+
+<h2>BUGS AND SUPPORT
+<a name="BUGS AND SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you have
+found a bug, please file a GitHub issue on a GitHub project
+page: <b>https://github.com/alexpevzner/sane-airscan</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sane(7),
+scanimage(1), xsane(1), airscan-discover(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Alexander
+Pevzner &lt;pzz@apevzner.com&gt;</p>
+<hr>
+</body>
+</html>

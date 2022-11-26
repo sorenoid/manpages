@@ -1,0 +1,185 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:19 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DebianNet</title>
+
+</head>
+<body>
+
+<h1 align="center">DebianNet</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#VARIABLES">VARIABLES</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">DebianNet -
+create, remove, enable or disable entry in /etc/inetd.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+functions in <b>DebianNet</b> to to add, remove, enable or
+disable entries in the <i>/etc/inetd.conf</i> file. After
+the <i>/etc/inetd.conf</i> file has been changed, a
+<b><small>SIGHUP</small></b> signal will be sent to the
+inetd process to make sure that inetd will use the new
+<i>/etc/inetd.conf</i> file. The functions can also be used
+to add entries that are commented out by default. They will
+be treated like normal entries. That also means that if you
+already have an entry that is commented out you can&rsquo;t
+add an entry for the same service without removing the old
+one first.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>DebianNet</b> functions treat entries that are commented
+out by a single &rsquo;<b>#</b>&rsquo; character as entries
+that have been commented out by a user. It will not change
+such entries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For shell
+scripts you can also use the <b>update-inetd</b> command.
+See <b>update-inetd</b>(8) for further information.</p>
+
+<h2>VARIABLES
+<a name="VARIABLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">$DebianNet::INETD_CONF</p>
+
+<p style="margin-left:17%;">Contains a scalar filename to
+use as the inetd config file (e.g. for testing
+purposes).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Defaults to
+<i>/etc/inetd.conf</i>.</p>
+
+<p style="margin-left:11%;">$DebianNet::SEP</p>
+
+<p style="margin-left:17%;">Contains the entry comment
+characters. This is only necessary if you have to deal with
+two (or more) services of the same name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Defaults to
+&quot;<b>#&lt;off&gt;#</b> &quot; as the comment
+characters.</p>
+
+<p style="margin-left:11%;">$DebianNet::MULTI</p>
+
+<p style="margin-left:17%;">Contains a boolean that decides
+whether to disable/remove more than one entry at a time. If
+you try to remove more than one entry at a time without
+using this option the program will show a warning and will
+ask the user whether to continue.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Defaults to
+false.</p>
+
+<p style="margin-left:11%;">$DebianNet::VERBOSE</p>
+
+<p style="margin-left:17%;">Contains a boolean to select
+whether to explain verbosely what is being done.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Defaults to
+false.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$rc =
+DebianNet::add_service($newentry, $group)</p>
+
+<p style="margin-left:17%;">Add $newentry to the group
+$group of the <i>/etc/inetd.conf</i> file. If the entry
+already exist it will be enabled (it will also detect
+entries with different program options). Using $group is
+optional (the default group is the group
+<small>OTHER</small> ). If the group does not exist the
+entry will be placed at the end of the file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns 1 on
+success, and -1 on failure. This function might call
+<b>exit</b>() due to debconf prompt answers.</p>
+
+<p style="margin-left:11%;">$rc =
+DebianNet::remove_service($entry)</p>
+
+<p style="margin-left:17%;">Remove $entry from
+<i>/etc/inetd.conf</i>. You can use a regular expression to
+remove the entry.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns 1 on
+success, and -1 on failure.</p>
+
+<p style="margin-left:11%;">$rc =
+DebianNet::disable_service($service, $pattern)</p>
+
+<p style="margin-left:17%;">Disable $service (e.g.
+&quot;<i>ftp</i>&quot;) in <i>/etc/inetd.conf</i>. Using
+$pattern is optional (see <b>enable_service()</b>).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns 1 on
+success, and -1 on failure.</p>
+
+<p style="margin-left:11%;">$rc =
+DebianNet::enable_service($service, $pattern)</p>
+
+<p style="margin-left:17%;">Enable $service (e.g.
+&quot;<i>ftp</i>&quot;) in <i>/etc/inetd.conf</i>. Using
+$pattern is optional. It can be used to select a service.
+You only need this option if you have two (or more) services
+of the same name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">An example: you
+have three <i>ftp</i> entries in the <i>/etc/inetd.conf</i>
+file (all disabled by default) and you want to enable the
+entry which uses the <i>vsftpd</i> daemon. To do this, use
+the pattern &quot;<i>vsftpd</i>&quot; (or any other regular
+expression that matches this entry).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns 1 on
+success, and -1 on failure.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version
+1.13</b> <br>
+New variables: $VERSION, $VERBOSE, $MULTI, $SEP,
+$INETD_CONF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+variables: $version, $verbose, $multi, $sep, $inetdcf.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:33 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GETLINE</title>
+
+</head>
+<body>
+
+<h1 align="center">GETLINE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">getline,
+getdelim - delimited string input</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;stdio.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ssize_t
+getline(char **</b><i>lineptr</i><b>, size_t
+*</b><i>n</i><b>, FILE *</b><i>stream</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ssize_t
+getdelim(char **</b><i>lineptr</i><b>, size_t
+*</b><i>n</i><b>, int</b> <i>delim</i><b>, FILE
+*</b><i>stream</i><b>);</b></p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>getline</b>(),
+<b>getdelim</b>():</p>
+
+<p style="margin-left:17%;">Since glibc 2.10:</p>
+
+
+<p style="margin-left:23%;">_POSIX_C_SOURCE&nbsp;&gt;=&nbsp;200809L</p>
+
+<p style="margin-left:17%;">Before glibc 2.10:</p>
+
+<p style="margin-left:23%;">_GNU_SOURCE</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>getline</b>()
+reads an entire line from <i>stream</i>, storing the address
+of the buffer containing the text into <i>*lineptr</i>. The
+buffer is null-terminated and includes the newline
+character, if one was found.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<i>*lineptr</i> is set to NULL and <i>*n</i> is set 0 before
+the call, then <b>getline</b>() will allocate a buffer for
+storing the line. This buffer should be freed by the user
+program even if <b>getline</b>() failed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Alternatively,
+before calling <b>getline</b>(), <i>*lineptr</i> can contain
+a pointer to a <b>malloc</b>(3)-allocated buffer <i>*n</i>
+bytes in size. If the buffer is not large enough to hold the
+line, <b>getline</b>() resizes it with <b>realloc</b>(3),
+updating <i>*lineptr</i> and <i>*n</i> as necessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In either case,
+on a successful call, <i>*lineptr</i> and <i>*n</i> will be
+updated to reflect the buffer address and allocated size
+respectively.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>getdelim</b>()
+works like <b>getline</b>(), except that a line delimiter
+other than newline can be specified as the <i>delimiter</i>
+argument. As with <b>getline</b>(), a delimiter character is
+not added if one was not present in the input before end of
+file was reached.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>getline</b>() and <b>getdelim</b>() return the number of
+characters read, including the delimiter character, but not
+including the terminating null byte ('\0'). This value can
+be used to handle embedded null bytes in the line read.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Both functions
+return -1 on failure to read a line (including end-of-file
+condition). In the event of an error, <i>errno</i> is set to
+indicate the cause.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Bad arguments (<i>n</i> or
+<i>lineptr</i> is NULL, or <i>stream</i> is not valid).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Allocation or reallocation of the line buffer
+failed.</p> </td></tr>
+</table>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3429911.png" alt="Image grohtml-3429911.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Both
+<b>getline</b>() and <b>getdelim</b>() were originally GNU
+extensions. They were standardized in POSIX.1-2008.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#define
+_GNU_SOURCE <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+FILE *stream; <br>
+char *line = NULL; <br>
+size_t len = 0; <br>
+ssize_t nread;</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (argc != 2)
+{ <br>
+fprintf(stderr, &quot;Usage: %s &lt;file&gt;\n&quot;,
+argv[0]); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">stream =
+fopen(argv[1], &quot;r&quot;); <br>
+if (stream == NULL) { <br>
+perror(&quot;fopen&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">while ((nread =
+getline(&amp;line, &amp;len, stream)) != -1) { <br>
+printf(&quot;Retrieved line of length %zd:\n&quot;, nread);
+<br>
+fwrite(line, nread, 1, stdout); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">free(line);
+<br>
+fclose(stream); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>read</b>(2),
+<b>fgets</b>(3), <b>fopen</b>(3), <b>fread</b>(3),
+<b>scanf</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

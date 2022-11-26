@@ -1,0 +1,377 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Net::SSLeay::Handle</title>
+
+</head>
+<body>
+
+<h1 align="center">Net::SSLeay::Handle</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#TODO">TODO</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::SSLeay::Handle
+- Perl module that lets SSL (HTTPS) sockets be handled as
+standard file handles.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Net::SSLeay::Handle qw/shutdown/; <br>
+my ($host, $port) = (&quot;localhost&quot;, 443); <br>
+tie(*SSL, &quot;Net::SSLeay::Handle&quot;, $host, $port);
+<br>
+print SSL &quot;GET / HTTP/1.0\r\n&quot;; <br>
+shutdown(\*SSL, 1); <br>
+print while (&lt;SSL&gt;); <br>
+close SSL;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::SSLeay::Handle
+allows you to request and receive <small>HTTPS</small> web
+pages using &quot;old-fashion&quot; file handles as in:</p>
+
+<p style="margin-left:11%; margin-top: 1em">print SSL
+&quot;GET / HTTP/1.0\r\n&quot;;</p>
+
+<p style="margin-left:11%; margin-top: 1em">and</p>
+
+<p style="margin-left:11%; margin-top: 1em">print while
+(&lt;SSL&gt;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you export
+the shutdown routine, then the only extra code that you need
+to add to your program is the tie function as in:</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $socket;
+<br>
+if ($scheme eq &quot;https&quot;) { <br>
+tie(*S2, &quot;Net::SSLeay::Handle&quot;, $host, $port);
+<br>
+$socket = \*S2; <br>
+else { <br>
+$socket = Net::SSLeay::Handle-&gt;make_socket($host, $port);
+<br>
+} <br>
+print $socket $request_headers; <br>
+...</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">shutdown</p>
+
+<p style="margin-left:17%;">shutdown(\*SOCKET, $mode)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Calls to the
+main <b>shutdown()</b> don&rsquo;t work with tied sockets
+created with this module. This shutdown should be able to
+distinquish between tied and untied sockets and do the right
+thing.</p>
+
+<p style="margin-left:11%;">debug</p>
+
+<p style="margin-left:17%;">my $debug =
+Net::SSLeay::Handle-&gt;debug() <br>
+Net::SSLeay::Handle-&gt;debug(1)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Get/set
+debugging mode. Always returns the debug value before the
+function call. if an additional argument is given the debug
+option will be set to this value.</p>
+
+<p style="margin-left:11%;">make_socket</p>
+
+<p style="margin-left:17%;">my $sock =
+Net::SSLeay::Handle-&gt;make_socket($host, $port);</p>
+
+<p style="margin-left:17%; margin-top: 1em">Creates a
+socket that is connected to $post using $port. It uses
+$Net::SSLeay::proxyhost and proxyport if set and
+authentificates itself against this proxy depending on
+$Net::SSLeay::proxyauth. It also turns autoflush on for the
+created socket.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>USING
+EXISTING SOCKETS</small></b> <br>
+One of the motivations for writing this module was to avoid
+duplicating socket creation code (which is mostly error
+handling). The calls to <b>tie()</b> above where it is
+passed a $host and $port is provided for convenience
+testing. If you already have a socket connected to the right
+host and port, S1, then you can do something like:</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $socket
+\*S1; <br>
+if ($scheme eq &quot;https&quot;) { <br>
+tie(*S2, &quot;Net::SSLeay::Handle&quot;, $socket); <br>
+$socket = \*S2; <br>
+} <br>
+my $last_sel = select($socket); $| = 1; select($last_sel);
+<br>
+print $socket $request_headers; <br>
+...</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: As far as
+I know you must be careful with the globs in the
+<b>tie()</b> function. The first parameter must be a glob
+(*SOMETHING) and the last parameter must be a reference to a
+glob (\*SOMETHING_ELSE) or a scaler that was assigned to a
+reference to a glob (as in the example above)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Also, the two
+globs must be different. When I tried to use the same glob,
+I got a core dump.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>EXPORT</small></b>
+<br>
+None by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can export
+the <b>shutdown()</b> function.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is suggested
+that you do export <b>shutdown()</b> or use the fully
+qualified <b>Net::SSLeay::Handle::shutdown()</b> function to
+shutdown <small>SSL</small> sockets. It should be smart
+enough to distinguish between <small>SSL</small> and non-SSL
+sockets and do the right thing.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Net::SSLeay::Handle qw/shutdown/; <br>
+my ($host, $port) = (&quot;localhost&quot;, 443); <br>
+tie(*SSL, &quot;Net::SSLeay::Handle&quot;, $host, $port);
+<br>
+print SSL &quot;GET / HTTP/1.0\r\n&quot;; <br>
+shutdown(\*SSL, 1); <br>
+print while (&lt;SSL&gt;); <br>
+close SSL;</p>
+
+<h2>TODO
+<a name="TODO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Better error
+handling. Callback routine?</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Tying to a file
+handle is a little tricky (for me at least).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first
+parameter to <b>tie()</b> must be a glob (*SOMETHING) and
+the last parameter must be a reference to a glob
+(\*SOMETHING_ELSE) or a scaler that was assigned to a
+reference to a glob ($s = \*SOMETHING_ELSE). Also, the two
+globs must be different. When I tried to use the same glob,
+I got a core dump.</p>
+
+<p style="margin-left:11%; margin-top: 1em">I was able to
+associate attributes to globs created by this module (like
+*SSL above) by making a hash of hashes keyed by the file
+head1.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please see
+Net-SSLeay-Handle-0.50/Changes file.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you
+encounter a problem with this module that you believe is a
+bug, please create a new issue
+&lt;https://github.com/radiator-software/p5-net-ssleay/issues/new&gt;
+in the Net-SSLeay GitHub repository. Please make sure your
+bug report includes the following information:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>the code you are trying to run;</p></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>your operating system name and version;</p></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>the output of &quot;perl -V&quot;;</p></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>the version of OpenSSL or LibreSSL you are using.</p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Originally
+written by Jim Bowlin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Maintained by
+Sampo Kellom&Atilde;&curren;ki between July 2001 and August
+2003.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Maintained by
+Florian Ragwitz between November 2005 and January 2010.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Maintained by
+Mike McCauley between November 2005 and June 2018.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Maintained by
+Chris Novakovic, Tuure Vartiainen and Heikki Vatiainen since
+June 2018.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2001 Jim Bowlin &lt;jbowlin@linklint.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2001-2003 Sampo Kellom&Atilde;&curren;ki
+&lt;sampo@iki.fi&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2005-2010 Florian Ragwitz &lt;rafl@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2005-2018 Mike McCauley &lt;mikem@airspayce.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2018- Chris Novakovic &lt;chris@chrisn.me.uk&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2018- Tuure Vartiainen
+&lt;vartiait@radiatorsoftware.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2018- Heikki Vatiainen &lt;hvn@radiatorsoftware.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">All rights
+reserved.</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+released under the terms of the Artistic License 2.0. For
+details, see the &quot;LICENSE&quot; file distributed with
+Net-SSLeay&rsquo;s source code.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::SSLeay,
+<b>perl</b>(1), http://openssl.org/</p>
+<hr>
+</body>
+</html>

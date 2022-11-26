@@ -1,0 +1,606 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:14 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>POOLSET</title>
+
+</head>
+<body>
+
+<h1 align="center">POOLSET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#REPLICAS">REPLICAS</a><br>
+<a href="#POOL SET OPTIONS">POOL SET OPTIONS</a><br>
+<a href="#DIRECTORIES">DIRECTORIES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">poolset -
+persistent memory pool configuration file format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<pre style="margin-left:22%; margin-top: 1em">mypool.set</pre>
+
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Depending on
+the configuration of the system, the available non-volatile
+memory space may be divided into multiple memory devices. In
+such case, the maximum size of the transactional object
+store could be limited by the capacity of a single memory
+device. Therefore, <b>libpmemobj</b>(7),
+<b>libpmemblk</b>(7) and <b>libpmemlog</b>(7) allow building
+object stores spanning multiple memory devices by creation
+of persistent memory pools consisting of multiple files,
+where each part of such a <i>pool set</i> may be stored on a
+different pmem-aware filesystem.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To improve
+reliability and eliminate single point of failure,
+<b>libpmemobj</b>(7) also allows all the data written to a
+persistent memory pool to be copied to local or remote pool
+<i>replicas</i>, thereby providing backup for the persistent
+memory pool by producing a <i>mirrored pool set</i>. In
+practice, the pool replicas may be considered as binary
+copies of the &ldquo;master&rdquo; pool set. Data
+replication is not supported in <b>libpmemblk</b>(7) and
+<b>libpmemlog</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>set</i>
+file for each type of pool is a plain text file. Lines in
+the file are formatted as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The first line of the file must be the literal string
+&ldquo;PMEMPOOLSET&rdquo;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The pool parts are specified, one per line, in the
+format:</p> </td></tr>
+</table>
+
+<p style="margin-left:14%; margin-top: 1em"><i>size
+pathname</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em"><i>Replica</i> sections, if any,
+start with the literal string &ldquo;REPLICA&rdquo;. See
+<b>REPLICAS</b>, below, for further details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Pool set options, if any, start with literal string
+<i>OPTION</i>. See <b>POOL SET OPTIONS</b> below for
+details.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Lines starting with &ldquo;#&rdquo; are considered
+comments and are ignored.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>size</i>
+must be compliant with the format specified in IEC 80000-13,
+IEEE 1541 or the Metric Interchange Format. These standards
+accept SI units with obligatory B - kB, MB, GB, ...
+(multiplier by 1000) suffixes, and IEC units with optional
+&ldquo;iB&rdquo; - KiB, MiB, GiB, ..., K, M, G, ... -
+(multiplier by 1024) suffixes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>pathname</i>
+must be an absolute pathname.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>pathname</i> of a part can point to a Device DAX. Device
+DAX is the device-centric analogue of Filesystem DAX. It
+allows memory ranges to be allocated and mapped without need
+of an intervening file system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pools created
+on Device DAX have additional options and restrictions:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">The <i>size</i> may be set to
+&ldquo;AUTO&rdquo;, in which case the size of the device
+will be automatically resolved at pool creation time.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>To concatenate more than one Device DAX device into a
+single pool set, the configured internal alignment of the
+devices must be 4KiB, unless the <i>SINGLEHDR</i> or
+<i>NOHDRS</i> option is used in the pool set file. See
+<b>POOL SET OPTIONS</b> below for details.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Please see
+<b>ndctl-create-namespace</b>(1) for more information on
+Device DAX, including how to configure desired
+alignment.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The minimum
+file size of each part of the pool set is defined as
+follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="84%">
+
+
+<p style="margin-top: 1em">For block pools, as
+<b>PMEMBLK_MIN_PART</b> in <b>&lt;libpmemblk.h&gt;</b></p></td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="84%">
+
+
+<p>For object pools, as <b>PMEMOBJ_MIN_PART</b> in
+<b>&lt;libpmemobj.h&gt;</b></p> </td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="84%">
+
+
+<p>For log pools, as <b>PMEMLOG_MIN_PART</b> in
+<b>&lt;libpmemlog.h&gt;</b></p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The net pool
+size of the pool set is equal to:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">net_pool_size&nbsp;=&nbsp;sum_over_all_parts(page_aligned_part_size&nbsp;-&nbsp;4KiB)&nbsp;+&nbsp;4KiB</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">where</p>
+
+<pre style="margin-left:22%; margin-top: 1em">page_aligned_part_size&nbsp;=&nbsp;part_size&nbsp;&amp;&nbsp;~(page_size&nbsp;-&nbsp;1)</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that page
+size is OS specific. For more information please see
+<b>sysconf</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The minimum net
+pool size of a pool set is defined as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="84%">
+
+
+<p style="margin-top: 1em">For block pools, as
+<b>PMEMBLK_MIN_POOL</b> in <b>&lt;libpmemblk.h&gt;</b></p></td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="84%">
+
+
+<p>For object pools, as <b>PMEMOBJ_MIN_POOL</b> in
+<b>&lt;libpmemobj.h&gt;</b></p> </td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="84%">
+
+
+<p>For log pools, as <b>PMEMLOG_MIN_POOL</b> in
+<b>&lt;libpmemlog.h&gt;</b></p> </td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example &ldquo;mypool.set&rdquo; file:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">PMEMPOOLSET
+OPTION&nbsp;NOHDRS
+100G&nbsp;/mountpoint0/myfile.part0
+200G&nbsp;/mountpoint1/myfile.part1
+400G&nbsp;/mountpoint2/myfile.part2</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">The files in
+the set may be created by running one of the following
+commands. To create a block pool:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">$&nbsp;pmempool&nbsp;create&nbsp;blk&nbsp;&lt;bsize&gt;&nbsp;mypool.set</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">To create a log
+pool:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">$&nbsp;pmempool&nbsp;create&nbsp;log&nbsp;mypool.set</pre>
+
+
+<h2>REPLICAS
+<a name="REPLICAS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Sections
+defining replica sets are optional. There may be multiple
+replica sections.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Local replica
+sections begin with a line containing only the literal
+string &ldquo;REPLICA&rdquo;, followed by one or more pool
+part lines as described above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Remote replica
+sections consist of the <i>REPLICA</i> keyword, followed on
+the same line by the address of a remote host and a relative
+path to a remote pool set file:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">REPLICA&nbsp;[&lt;user&gt;@]&lt;hostname&gt;&nbsp;[&lt;relative-path&gt;/]&lt;remote-pool-set-file&gt;</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em"><i>hostname</i> must be in the
+format recognized by the <b>ssh</b>(1) remote login
+client</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p><i>pathname</i> is relative to the root config directory
+on the target node - see <b>librpmem</b>(7)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+other lines in the remote replica section - the REPLICA line
+defines a remote replica entirely.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example &ldquo;myobjpool.set&rdquo; file with replicas:</p>
+<pre style="margin-left:22%; margin-top: 1em">PMEMPOOLSET
+100G&nbsp;/mountpoint0/myfile.part0
+200G&nbsp;/mountpoint1/myfile.part1
+400G&nbsp;/mountpoint2/myfile.part2
+
+#&nbsp;local&nbsp;replica
+REPLICA
+500G&nbsp;/mountpoint3/mymirror.part0
+200G&nbsp;/mountpoint4/mymirror.part1&nbsp;
+
+
+#&nbsp;remote&nbsp;replica
+REPLICA&nbsp;user@example.com&nbsp;remote-objpool.set</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">The files in
+the object pool set may be created by running the following
+command:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">$&nbsp;pmempool&nbsp;create&nbsp;--layout=&quot;mylayout&quot;&nbsp;obj&nbsp;myobjpool.set</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Remote replica
+cannot have replicas, i.e.&nbsp;a remote pool set file
+cannot define any replicas.</p>
+
+<h2>POOL SET OPTIONS
+<a name="POOL SET OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Pool set
+options can appear anywhere after the line with
+<i>PMEMPOOLSET</i> string. Pool set file can contain several
+pool set options. The following options are supported:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><i>SINGLEHDR</i></p></td>
+<td width="72%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="14%">
+
+
+<p><i>NOHDRS</i></p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>SINGLEHDR</i> option is used, only the first part in each
+replica contains the pool part internal metadata. In that
+case the effective size of a replica is the sum of sizes of
+all its part files decreased once by 4096 bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>NOHDRS</i> option can appear only in the remote pool set
+file, when <b>librpmem</b> does not serve as a means of
+replication for <b>libpmemobj</b> pool. In that case none of
+the pool parts contains internal metadata. The effective
+size of such a replica is the sum of sizes of all its part
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options
+<i>SINGLEHDR</i> and <i>NOHDRS</i> are mutually exclusive.
+If both are specified in a pool set file, creating or
+opening the pool will fail with an error.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using the
+<i>SINGLEHDR</i> or <i>NOHDRS</i> option, one can
+concatenate more than one Device DAX devices with any
+internal alignments in one replica.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>SINGLEHDR</i> option concerns only replicas that are
+local to the pool set file. That is if one wants to create a
+pool set with the <i>SINGLEHDR</i> option and with remote
+replicas, one has to add this option to the local pool set
+file as well as to every single remote pool set file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using the
+<i>SINGLEHDR</i> and <i>NOHDRS</i> options has important
+implications for data integrity checking and recoverability
+in case of a pool set damage. See <b>pmempool_sync</b>() API
+for more information about pool set recovery.</p>
+
+<h2>DIRECTORIES
+<a name="DIRECTORIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Providing a
+directory as a part&rsquo;s <i>pathname</i> allows the pool
+to dynamically create files and consequently removes the
+user-imposed limit on the size of the pool.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>size</i>
+argument of a part in a directory poolset becomes the size
+of the address space reservation required for the pool. In
+other words, the size argument is the maximum theoretical
+size of the mapping. This value can be freely increased
+between instances of the application, but decreasing it
+below the real required space will result in an error when
+attempting to open the pool.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The directory
+must NOT contain user created files with extension
+<i>.pmem</i>, otherwise the behavior is undefined. If a file
+created by the library within the directory is in any way
+altered (resized, renamed) the behavior is undefined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A directory
+poolset must exclusively use directories to specify paths -
+combining files and directories will result in an error. A
+single replica can consist of one or more directories. If
+there are multiple directories, the address space
+reservation is equal to the sum of the sizes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The order in
+which the files are created is unspecified, but the library
+will try to maintain equal usage of the directories.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default
+pools grow in 128 megabyte increments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Only poolsets
+with the <i>SINGLEHDR</i> option can safely use
+directories.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Creation of all
+the parts of the pool set and the associated replica sets
+can be done with the <b>pmemobj_create</b>(3),
+<b>pmemblk_create</b>(3) or <b>pmemlog_create</b>(3)
+function, or by using the <b>pmempool</b>(1) utility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Restoring data
+from a local or remote replica can be done by using the
+<b>pmempool-sync</b>(1) command or the
+<b>pmempool_sync</b>() API from the <b>libpmempool</b>(7)
+library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Modifications
+of a pool set file configuration can be done by using the
+<b>pmempool-transform</b>(1) command or the
+<b>pmempool_transform</b>() API from the
+<b>libpmempool</b>(7) library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When creating a
+pool set consisting of multiple files, or when creating a
+replicated pool set, the <i>path</i> argument passed to
+<b>pmemobj_create</b>(3), <b>pmemblk_create</b>(3) or
+<b>pmemlog_create</b>(3) must point to the special
+<i>set</i> file that defines the pool layout and the
+location of all the parts of the pool set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When opening a
+pool set consisting of multiple files, or when opening a
+replicated pool set, the <i>path</i> argument passed to
+<b>pmemobj_open</b>(3), <b>pmemblk_open</b>(3) or
+<b>pmemlog_open</b>(3) must point to the same <i>set</i>
+file that was used for pool set creation.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ndctl-create-namespace</b>(1),
+<b>pmemblk_create</b>(3), <b>pmemlog_create</b>(3),
+<b>pmemobj_create</b>(3), <b>sysconf</b>(3),
+<b>libpmemblk</b>(7), <b>libpmemlog</b>(7),
+<b>libpmemobj</b>(7) and <b>&lt;https://pmem.io&gt;</b></p>
+<hr>
+</body>
+</html>

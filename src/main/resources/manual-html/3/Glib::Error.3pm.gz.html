@@ -1,0 +1,324 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:13 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Glib::Error</title>
+
+</head>
+<body>
+
+<h1 align="center">Glib::Error</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#HIERARCHY">HIERARCHY</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Glib::Error -
+Exception Objects based on GError</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">eval { <br>
+my $pixbuf = Gtk2::Gdk::Pixbuf-&gt;new_from_file
+($filename); <br>
+$image-&gt;set_from_pixbuf ($pixbuf); <br>
+}; <br>
+if ($@) { <br>
+print &quot;$@\n&quot;; <br>
+if (Glib::Error::matches ($@, 'Gtk2::Gdk::Pixbuf::Error',
+<br>
+'unknown-format')) { <br>
+change_format_and_try_again (); <br>
+} elsif (Glib::Error::matches ($@, 'Glib::File::Error',
+'noent')) { <br>
+change_source_dir_and_try_again (); <br>
+} else { <br>
+# don't know how to handle this <br>
+die $@; <br>
+} <br>
+}</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gtk2-Perl
+translates GLib&rsquo;s GError runtime errors into Perl
+exceptions, by creating exception objects based on
+Glib::Error. Glib::Error overloads the stringification
+operator, so a Glib::Error object will act like a string if
+used with <b>print()</b> or <b>warn()</b>, so most code
+using $@ will not even know the difference.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The point of
+having exception objects, however, is that the error
+messages in GErrors are often localized with
+<small>NLS</small> translation. Thus, it&rsquo;s not good
+for your code to attempt to handle errors by string matching
+on the the error message. Glib::Error provides a way to get
+to the deterministic error code.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You will
+typically deal with objects that inherit from Glib::Error,
+such as Glib::Convert::Error, Glib::File::Error,
+Gtk2::Gdk::Pixbuf::Error, etc; these classes are provided by
+the libraries that define the error domains. However, it is
+possible to get a base Glib::Error when the bindings
+encounter an unknown or unbound error domain. The interface
+used here degrades nicely in such a situation, but in
+general you should submit a bug report to the binding
+maintainer if you get such an exception.</p>
+
+<h2>HIERARCHY
+<a name="HIERARCHY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Glib::Boxed
+<br>
++----Glib::Error</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>scalar =
+Glib::Error::new ($class, $code, $message) <br>
+scalar = $class-&gt;new ($code, $message)</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>$code (Glib::Enum) an enumeration value, depends on
+<i>$class</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>$message (string)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Create a new
+exception object of type <i>$class</i>, where <i>$class</i>
+is associated with a GError domain. <i>$code</i> should be a
+value from the enumeration type associated with this error
+domain. <i>$message</i> can be anything you like, but should
+explain what happened from the point of view of a user.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>integer =
+$error-&gt;code</b> <br>
+This is the numeric error code. Normally, you&rsquo;ll want
+to use &quot;value&quot; instead, for readability.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>string =
+$error-&gt;domain</b> <br>
+The error domain. You normally do not need this, as the
+object will be blessed into a corresponding class.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>string =
+$error-&gt;location</b> <br>
+The source line and file closest to the emission of the
+exception, in the same format that you&rsquo;d get from
+<b>croak()</b> or <b>die()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+there&rsquo;s non-ascii characters in the filename Perl
+leaves them as raw bytes, so you may have to put the string
+through Glib::filename_display_name for a wide-char
+form.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>boolean =
+$error-&gt;matches ($domain, $code)</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="25%">
+
+
+<p style="margin-top: 1em">$domain (string)</p></td>
+<td width="58%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="25%">
+
+
+<p>$code (scalar)</p></td>
+<td width="58%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Returns true if
+the exception in <i>$error</i> matches the given
+<i>$domain</i> and <i>$code</i>. <i>$domain</i> may be a
+class name or domain quark (that is, the real string used in
+C). <i>$code</i> may be an integer value or an enum
+nickname; the enum type depends on the value of
+<i>$domain</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>string =
+$error-&gt;message</b> <br>
+The error message. This may be localized, as it is intended
+to be shown to a user.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Glib::Error::register
+($package, $enum_package)</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">$package (string) class name to
+register as a Glib::Error.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>$enum_package (string) class name of the enum type to
+use for this domain&rsquo;s error codes.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Register a new
+error domain. Glib::Error will be added @<i>package</i>::ISA
+for you. <i>enum_package</i> must be a valid Glib::Enum
+type, either from a C library or registered with
+&quot;Glib::Type::register_enum&quot;. After registering an
+error domain, you can create or throw exceptions of this
+type.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>scalar =
+Glib::Error::throw ($class, $code, $message) <br>
+scalar = $class-&gt;throw ($code, $message)</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">$code (Glib::Enum) an
+enumeration value, depends on <i>$class</i></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>$message (string)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Throw an
+exception with a Glib::Error exception object. Equivalent to
+&quot;croak (Glib::Error::new ($class, $code,
+$message));&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>string =
+$error-&gt;value</b> <br>
+The enumeration value nickname of the integer value in
+&quot;$error-&gt;code&quot;, according to this error domain.
+This will not be available if the error object is a base
+Glib::Error, because the bindings will have no idea how to
+get to the correct nickname.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Glib,
+Glib::Boxed</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2003-2011 by the gtk2-perl team.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is licensed under the <small>LGPL.</small> See Glib for a
+full notice.</p>
+<hr>
+</body>
+</html>

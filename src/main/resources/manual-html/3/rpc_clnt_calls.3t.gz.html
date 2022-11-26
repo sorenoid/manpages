@@ -1,0 +1,312 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:54 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>RPC_CLNT_CALLS(3) BSD Library Functions Manual
+RPC_CLNT_CALLS(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>rpc_clnt_calls</b>,
+<b>clnt_call</b>, <b>clnt_freeres</b>, <b>clnt_geterr</b>,
+<b>clnt_perrno</b>, <b>clnt_perror</b>, <b>clnt_sperrno</b>,
+<b>clnt_sperror</b>, <b>rpc_broadcast</b>,
+<b>rpc_broadcast_exp</b>, <b>rpc_call</b> &mdash; library
+routines for client side calls</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;rpc/rpc.h&gt;</b></p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>enum
+clnt_stat</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_call</b>(<i>CLIENT&nbsp;*clnt</i>,
+<i>const&nbsp;rpcproc_t&nbsp;procnum</i>,
+<i>const&nbsp;xdrproc_t&nbsp;inproc</i>,
+<i>const&nbsp;caddr_t&nbsp;in</i>,
+<i>const&nbsp;xdrproc_t&nbsp;outproc</i>,
+<i>caddr_t&nbsp;out</i>,
+<i>const&nbsp;struct&nbsp;timeval&nbsp;tout</i>);</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><i>bool_t</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_freeres</b>(<i>CLIENT&nbsp;*clnt</i>,
+<i>const&nbsp;xdrproc_t&nbsp;outproc</i>,
+<i>caddr_t&nbsp;out</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_geterr</b>(<i>const&nbsp;CLIENT&nbsp;*&nbsp;clnt</i>,
+<i>struct&nbsp;rpc_err&nbsp;*&nbsp;errp</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_perrno</b>(<i>const&nbsp;enum&nbsp;clnt_stat&nbsp;stat</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_perror</b>(<i>CLIENT&nbsp;*clnt</i>,
+<i>const&nbsp;char&nbsp;*s</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>char
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_sperrno</b>(<i>const&nbsp;enum&nbsp;clnt_stat&nbsp;stat</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>char
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>clnt_sperror</b>(<i>CLIENT&nbsp;*clnt</i>,
+<i>const&nbsp;char&nbsp;*&nbsp;s</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>enum
+clnt_stat</i></p>
+
+
+<p><b>rpc_broadcast</b>(<i>const&nbsp;rpcprog_t&nbsp;prognum</i>,
+<i>const&nbsp;rpcvers_t&nbsp;versnum</i>,
+<i>const&nbsp;rpcproc_t&nbsp;procnum</i>,
+<i>const&nbsp;xdrproc_t&nbsp;inproc</i>,
+<i>const&nbsp;caddr_t&nbsp;in</i>,
+<i>const&nbsp;xdrproc_t&nbsp;outproc</i>,
+<i>caddr_t&nbsp;out</i>,
+<i>const&nbsp;resultproc_t&nbsp;eachresult</i>,
+<i>const&nbsp;char&nbsp;*nettype</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>enum
+clnt_stat</i></p>
+
+
+<p><b>rpc_broadcast_exp</b>(<i>const&nbsp;rpcprog_t&nbsp;prognum</i>,
+<i>const&nbsp;rpcvers_t&nbsp;versnum</i>,
+<i>const&nbsp;rpcproc_t&nbsp;procnum</i>,
+<i>const&nbsp;xdrproc_t&nbsp;xargs</i>,
+<i>caddr_t&nbsp;argsp</i>,
+<i>const&nbsp;xdrproc_t&nbsp;xresults</i>,
+<i>caddr_t&nbsp;resultsp</i>,
+<i>const&nbsp;resultproc_t&nbsp;eachresult</i>,
+<i>const&nbsp;int&nbsp;inittime</i>,
+<i>const&nbsp;int&nbsp;waittime</i>,
+<i>const&nbsp;char&nbsp;*&nbsp;nettype</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>enum
+clnt_stat</i></p>
+
+<p><b>rpc_call</b>(<i>const&nbsp;char&nbsp;*host</i>,
+<i>const&nbsp;rpcprog_t&nbsp;prognum</i>,
+<i>const&nbsp;rpcvers_t&nbsp;versnum</i>,
+<i>const&nbsp;rpcproc_t&nbsp;procnum</i>,
+<i>const&nbsp;xdrproc_t&nbsp;inproc</i>,
+<i>const&nbsp;char&nbsp;*in</i>,
+<i>const&nbsp;xdrproc_t&nbsp;outproc</i>,
+<i>char&nbsp;*out</i>,
+<i>const&nbsp;char&nbsp;*nettype</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">RPC library routines allow C
+language programs to make procedure calls on other machines
+across the network. First, the client calls a procedure to
+send a request to the server. Upon receipt of the request,
+the server calls a dispatch routine to perform the requested
+service, and then sends back a reply.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>clnt_call</b>(), <b>rpc_call</b>(), and
+<b>rpc_broadcast</b>() routines handle the client side of
+the procedure call. The remaining routines deal with error
+handling in the case of errors.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Some of the
+routines take a <i>CLIENT</i> handle as one of the
+arguments. A <i>CLIENT</i> handle can be created by an RPC
+creation routine such as <b>clnt_create</b>() (see
+rpc_clnt_create(3)).</p>
+
+<p style="margin-left:6%; margin-top: 1em">These routines
+are safe for use in multithreaded applications.
+<i>CLIENT</i> handles can be shared between threads, however
+in this implementation requests by different threads are
+serialized (that is, the first request will receive its
+results before the second request is sent).</p>
+
+<p style="margin-top: 1em"><b>Routines</b></p>
+
+<p style="margin-left:6%;">See rpc(3) for the definition of
+the <i>CLIENT</i> data structure.</p>
+
+<p style="margin-top: 1em"><b>clnt_call</b>()</p>
+
+<p style="margin-left:15%;">A function macro that calls the
+remote procedure <i>procnum</i> associated with the client
+handle, <i>clnt</i>, which is obtained with an RPC client
+creation routine such as <b>clnt_create</b>() (see
+rpc_clnt_create(3)). The <i>inproc</i> argument is the XDR
+function used to encode the procedure&rsquo;s arguments, and
+<i>outproc</i> is the XDR function used to decode the
+procedure&rsquo;s results; <i>in</i> is the address of the
+procedure&rsquo;s argument(s), and <i>out</i> is the address
+of where to place the result(s). The <i>tout</i> argument is
+the time allowed for results to be returned, which is
+overridden by a time-out set explicitly through
+<b>clnt_control</b>(), see rpc_clnt_create(3). If the remote
+call succeeds, the status returned is RPC_SUCCESS, otherwise
+an appropriate status is returned.</p>
+
+<p style="margin-top: 1em"><b>clnt_freeres</b>()</p>
+
+<p style="margin-left:15%;">A function macro that frees any
+data allocated by the RPC/XDR system when it decoded the
+results of an RPC call. The <i>out</i> argument is the
+address of the results, and <i>outproc</i> is the XDR
+routine describing the results. This routine returns 1 if
+the results were successfully freed, and 0 otherwise.</p>
+
+<p style="margin-top: 1em"><b>clnt_geterr</b>()</p>
+
+<p style="margin-left:15%;">A function macro that copies
+the error structure out of the client handle to the
+structure at address <i>errp</i>.</p>
+
+<p style="margin-top: 1em"><b>clnt_perrno</b>()</p>
+
+<p style="margin-left:15%;">Print a message to standard
+error corresponding to the condition indicated by
+<i>stat</i>. A newline is appended. Normally used after a
+procedure call fails for a routine for which a client handle
+is not needed, for instance <b>rpc_call</b>().</p>
+
+<p style="margin-top: 1em"><b>clnt_perror</b>()</p>
+
+<p style="margin-left:15%;">Print a message to the standard
+error indicating why an RPC call failed; <i>clnt</i> is the
+handle used to do the call. The message is prepended with
+string <i>s</i> and a colon. A newline is appended. Normally
+used after a remote procedure call fails for a routine which
+requires a client handle, for instance
+<b>clnt_call</b>().</p>
+
+<p style="margin-top: 1em"><b>clnt_sperrno</b>()</p>
+
+<p style="margin-left:15%;">Take the same arguments as
+<b>clnt_perrno</b>(), but instead of sending a message to
+the standard error indicating why an RPC call failed, return
+a pointer to a string which contains the message. The
+<b>clnt_sperrno</b>() function is normally used instead of
+<b>clnt_perrno</b>() when the program does not have a
+standard error (as a program running as a server quite
+likely does not), or if the programmer does not want the
+message to be output with <b>printf</b>() (see printf(3)),
+or if a message format different than that supported by
+<b>clnt_perrno</b>() is to be used. Note: unlike
+<b>clnt_sperror</b>() and <b>clnt_spcreateerror</b>() (see
+rpc_clnt_create(3)), <b>clnt_sperrno</b>() does not return
+pointer to static data so the result will not get
+overwritten on each call.</p>
+
+<p style="margin-top: 1em"><b>clnt_sperror</b>()</p>
+
+<p style="margin-left:15%;">Like <b>clnt_perror</b>(),
+except that (like <b>clnt_sperrno</b>()) it returns a string
+instead of printing to standard error. However,
+<b>clnt_sperror</b>() does not append a newline at the end
+of the message. Warning: returns pointer to a buffer that is
+overwritten on each call.</p>
+
+<p style="margin-top: 1em"><b>rpc_broadcast</b>()</p>
+
+<p style="margin-left:15%;">Like <b>rpc_call</b>(), except
+the call message is broadcast to all the connectionless
+transports specified by <i>nettype</i>. If <i>nettype</i> is
+NULL, it defaults to &quot;netpath&quot;. Each time it
+receives a response, this routine calls <b>eachresult</b>(),
+whose form is: <i>bool_t</i> <b>eachresult</b>(<i>caddr_t
+out</i>, <i>const struct netbuf * addr</i>, <i>const struct
+netconfig * netconf</i>) where <i>out</i> is the same as
+<i>out</i> passed to <b>rpc_broadcast</b>(), except that the
+remote procedure&rsquo;s output is decoded there;
+<i>addr</i> points to the address of the machine that sent
+the results, and <i>netconf</i> is the netconfig structure
+of the transport on which the remote server responded. If
+<b>eachresult</b>() returns 0, <b>rpc_broadcast</b>() waits
+for more replies; otherwise it returns with appropriate
+status. Warning: broadcast file descriptors are limited in
+size to the maximum transfer size of that transport. For
+Ethernet, this value is 1500 bytes. The
+<b>rpc_broadcast</b>() function uses AUTH_SYS credentials by
+default (see rpc_clnt_auth(3)).</p>
+
+<p style="margin-top: 1em"><b>rpc_broadcast_exp</b>()</p>
+
+<p style="margin-left:15%;">Like <b>rpc_broadcast</b>(),
+except that the initial timeout, <i>inittime</i> and the
+maximum timeout, <i>waittime</i> are specified in
+milliseconds. The <i>inittime</i> argument is the initial
+time that <b>rpc_broadcast_exp</b>() waits before resending
+the request. After the first resend, the re-transmission
+interval increases exponentially until it exceeds
+<i>waittime</i>.</p>
+
+<p style="margin-top: 1em"><b>rpc_call</b>()</p>
+
+<p style="margin-left:15%;">Call the remote procedure
+associated with <i>prognum</i>, <i>versnum</i>, and
+<i>procnum</i> on the machine, <i>host</i>. The
+<i>inproc</i> argument is used to encode the
+procedure&rsquo;s arguments, and <i>outproc</i> is used to
+decode the procedure&rsquo;s results; <i>in</i> is the
+address of the procedure&rsquo;s argument(s), and <i>out</i>
+is the address of where to place the result(s). The
+<i>nettype</i> argument can be any of the values listed on
+rpc(3). This routine returns RPC_SUCCESS if it succeeds, or
+an appropriate status is returned. Use the
+<b>clnt_perrno</b>() routine to translate failure status
+into error messages. Warning: <b>rpc_call</b>() uses the
+first available transport belonging to the class
+<i>nettype</i>, on which it can create a connection. You do
+not have control of timeouts or authentication using this
+routine.</p>
+
+<p style="margin-top: 1em"><b>AVAILABILITY</b></p>
+
+<p style="margin-left:6%;">These functions are part of
+libtirpc.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">printf(3), rpc(3),
+rpc_clnt_auth(3), rpc_clnt_create(3)</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD May&nbsp;7,
+1993 BSD</p>
+<hr>
+</body>
+</html>

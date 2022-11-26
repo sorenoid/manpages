@@ -1,0 +1,1112 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:32 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROVIDER-BASE</title>
+
+</head>
+<body>
+
+<h1 align="center">PROVIDER-BASE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CAPABILITIES">CAPABILITIES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">provider-base -
+The basic OpenSSL library &lt;-&gt; provider functions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/core_dispatch.h&gt; <br>
+/* <br>
+* None of these are actual functions, but are displayed like
+this for <br>
+* the function signatures for functions that are offered as
+function <br>
+* pointers in OSSL_DISPATCH arrays. <br>
+*/ <br>
+/* Functions offered by libcrypto to the providers */ <br>
+const OSSL_ITEM *core_gettable_params(const OSSL_CORE_HANDLE
+*handle); <br>
+int core_get_params(const OSSL_CORE_HANDLE *handle,
+OSSL_PARAM params[]); <br>
+typedef void (*OSSL_thread_stop_handler_fn)(void *arg); <br>
+int core_thread_start(const OSSL_CORE_HANDLE *handle, <br>
+OSSL_thread_stop_handler_fn handfn, <br>
+void *arg); <br>
+OPENSSL_CORE_CTX *core_get_libctx(const OSSL_CORE_HANDLE
+*handle); <br>
+void core_new_error(const OSSL_CORE_HANDLE *handle); <br>
+void core_set_error_debug(const OSSL_CORE_HANDLE *handle,
+<br>
+const char *file, int line, const char *func); <br>
+void core_vset_error(const OSSL_CORE_HANDLE *handle, <br>
+uint32_t reason, const char *fmt, va_list args); <br>
+int core_obj_add_sigid(const OSSL_CORE_HANDLE *prov, const
+char *sign_name, <br>
+const char *digest_name, const char *pkey_name); <br>
+int core_obj_create(const OSSL_CORE_HANDLE *handle, const
+char *oid, <br>
+const char *sn, const char *ln); <br>
+/* <br>
+* Some OpenSSL functionality is directly offered to
+providers via <br>
+* dispatch <br>
+*/ <br>
+void *CRYPTO_malloc(size_t num, const char *file, int line);
+<br>
+void *CRYPTO_zalloc(size_t num, const char *file, int line);
+<br>
+void CRYPTO_free(void *ptr, const char *file, int line);
+<br>
+void CRYPTO_clear_free(void *ptr, size_t num, <br>
+const char *file, int line); <br>
+void *CRYPTO_realloc(void *addr, size_t num, <br>
+const char *file, int line); <br>
+void *CRYPTO_clear_realloc(void *addr, size_t old_num,
+size_t num, <br>
+const char *file, int line); <br>
+void *CRYPTO_secure_malloc(size_t num, const char *file, int
+line); <br>
+void *CRYPTO_secure_zalloc(size_t num, const char *file, int
+line); <br>
+void CRYPTO_secure_free(void *ptr, const char *file, int
+line); <br>
+void CRYPTO_secure_clear_free(void *ptr, size_t num, <br>
+const char *file, int line); <br>
+int CRYPTO_secure_allocated(const void *ptr); <br>
+void OPENSSL_cleanse(void *ptr, size_t len); <br>
+unsigned char *OPENSSL_hexstr2buf(const char *str, long
+*buflen); <br>
+OSSL_CORE_BIO *BIO_new_file(const char *filename, const char
+*mode); <br>
+OSSL_CORE_BIO *BIO_new_membuf(const void *buf, int len);
+<br>
+int BIO_read_ex(OSSL_CORE_BIO *bio, void *data, size_t
+data_len, <br>
+size_t *bytes_read); <br>
+int BIO_write_ex(OSSL_CORE_BIO *bio, const void *data,
+size_t data_len, <br>
+size_t *written); <br>
+int BIO_up_ref(OSSL_CORE_BIO *bio); <br>
+int BIO_free(OSSL_CORE_BIO *bio); <br>
+int BIO_vprintf(OSSL_CORE_BIO *bio, const char *format,
+va_list args); <br>
+int BIO_vsnprintf(char *buf, size_t n, const char *fmt,
+va_list args); <br>
+void OSSL_SELF_TEST_set_callback(OSSL_LIB_CTX *libctx,
+OSSL_CALLBACK *cb, <br>
+void *cbarg); <br>
+size_t get_entropy(const OSSL_CORE_HANDLE *handle, <br>
+unsigned char **pout, int entropy, <br>
+size_t min_len, size_t max_len); <br>
+void cleanup_entropy(const OSSL_CORE_HANDLE *handle, <br>
+unsigned char *buf, size_t len); <br>
+size_t get_nonce(const OSSL_CORE_HANDLE *handle, <br>
+unsigned char **pout, size_t min_len, size_t max_len, <br>
+const void *salt, size_t salt_len); <br>
+void cleanup_nonce(const OSSL_CORE_HANDLE *handle, <br>
+unsigned char *buf, size_t len); <br>
+/* Functions for querying the providers in the application
+library context */ <br>
+int provider_register_child_cb(const OSSL_CORE_HANDLE
+*handle, <br>
+int (*create_cb)(const OSSL_CORE_HANDLE *provider, <br>
+void *cbdata), <br>
+int (*remove_cb)(const OSSL_CORE_HANDLE *provider, <br>
+void *cbdata), <br>
+int (*global_props_cb)(const char *props, void *cbdata),
+<br>
+void *cbdata); <br>
+void provider_deregister_child_cb(const OSSL_CORE_HANDLE
+*handle); <br>
+const char *provider_name(const OSSL_CORE_HANDLE *prov);
+<br>
+void *provider_get0_provider_ctx(const OSSL_CORE_HANDLE
+*prov); <br>
+const OSSL_DISPATCH *provider_get0_dispatch(const
+OSSL_CORE_HANDLE *prov); <br>
+int provider_up_ref(const OSSL_CORE_HANDLE *prov, int
+activate); <br>
+int provider_free(const OSSL_CORE_HANDLE *prov, int
+deactivate); <br>
+/* Functions offered by the provider to libcrypto */ <br>
+void provider_teardown(void *provctx); <br>
+const OSSL_ITEM *provider_gettable_params(void *provctx);
+<br>
+int provider_get_params(void *provctx, OSSL_PARAM params[]);
+<br>
+const OSSL_ALGORITHM *provider_query_operation(void
+*provctx, <br>
+int operation_id, <br>
+const int *no_store); <br>
+void provider_unquery_operation(void *provctx, int
+operation_id, <br>
+const OSSL_ALGORITHM *algs); <br>
+const OSSL_ITEM *provider_get_reason_strings(void *provctx);
+<br>
+int provider_get_capabilities(void *provctx, const char
+*capability, <br>
+OSSL_CALLBACK *cb, void *arg); <br>
+int provider_self_test(void *provctx);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All
+&quot;functions&quot; mentioned here are passed as function
+pointers between <i>libcrypto</i> and the provider in
+<b><small>OSSL_DISPATCH</small></b> arrays, in the call of
+the provider initialization function. See
+&quot;Provider&quot; in <b>provider</b>(7) for a description
+of the initialization function. They are known as
+&quot;upcalls&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All these
+&quot;functions&quot; have a corresponding function type
+definition named <b>OSSL_FUNC_{name}_fn</b>, and a helper
+function to retrieve the function pointer from a
+<b><small>OSSL_DISPATCH</small></b> element named
+<b>OSSL_FUNC_{name}</b>. For example, the
+&quot;function&quot; <b>core_gettable_params()</b> has
+these:</p>
+
+<p style="margin-left:11%; margin-top: 1em">typedef
+OSSL_PARAM * <br>
+(OSSL_FUNC_core_gettable_params_fn)(const OSSL_CORE_HANDLE
+*handle); <br>
+static ossl_inline OSSL_NAME_core_gettable_params_fn <br>
+OSSL_FUNC_core_gettable_params(const OSSL_DISPATCH
+*opf);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OSSL_DISPATCH</small></b>
+arrays are indexed by numbers that are provided as macros in
+<b>openssl-core_dispatch.h</b>(7), as follows:</p>
+
+<p style="margin-left:11%; margin-top: 1em">For <i>in</i>
+(the <b><small>OSSL_DISPATCH</small></b> array passed from
+<i>libcrypto</i> to the provider):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">core_gettable_params
+OSSL_FUNC_CORE_GETTABLE_PARAMS <br>
+core_get_params OSSL_FUNC_CORE_GET_PARAMS <br>
+core_thread_start OSSL_FUNC_CORE_THREAD_START <br>
+core_get_libctx OSSL_FUNC_CORE_GET_LIBCTX <br>
+core_new_error OSSL_FUNC_CORE_NEW_ERROR <br>
+core_set_error_debug OSSL_FUNC_CORE_SET_ERROR_DEBUG <br>
+core_vset_error OSSL_FUNC_CORE_VSET_ERROR <br>
+core_obj_add_sigid OSSL_FUNC_CORE_OBJ_ADD_SIGID <br>
+core_obj_create OSSL_FUNC_CORE_OBJ_CREATE <br>
+CRYPTO_malloc OSSL_FUNC_CRYPTO_MALLOC <br>
+CRYPTO_zalloc OSSL_FUNC_CRYPTO_ZALLOC <br>
+CRYPTO_free OSSL_FUNC_CRYPTO_FREE <br>
+CRYPTO_clear_free OSSL_FUNC_CRYPTO_CLEAR_FREE <br>
+CRYPTO_realloc OSSL_FUNC_CRYPTO_REALLOC <br>
+CRYPTO_clear_realloc OSSL_FUNC_CRYPTO_CLEAR_REALLOC <br>
+CRYPTO_secure_malloc OSSL_FUNC_CRYPTO_SECURE_MALLOC <br>
+CRYPTO_secure_zalloc OSSL_FUNC_CRYPTO_SECURE_ZALLOC <br>
+CRYPTO_secure_free OSSL_FUNC_CRYPTO_SECURE_FREE <br>
+CRYPTO_secure_clear_free OSSL_FUNC_CRYPTO_SECURE_CLEAR_FREE
+<br>
+CRYPTO_secure_allocated OSSL_FUNC_CRYPTO_SECURE_ALLOCATED
+<br>
+BIO_new_file OSSL_FUNC_BIO_NEW_FILE <br>
+BIO_new_mem_buf OSSL_FUNC_BIO_NEW_MEMBUF <br>
+BIO_read_ex OSSL_FUNC_BIO_READ_EX <br>
+BIO_write_ex OSSL_FUNC_BIO_WRITE_EX <br>
+BIO_up_ref OSSL_FUNC_BIO_UP_REF <br>
+BIO_free OSSL_FUNC_BIO_FREE <br>
+BIO_vprintf OSSL_FUNC_BIO_VPRINTF <br>
+BIO_vsnprintf OSSL_FUNC_BIO_VSNPRINTF <br>
+BIO_puts OSSL_FUNC_BIO_PUTS <br>
+BIO_gets OSSL_FUNC_BIO_GETS <br>
+BIO_ctrl OSSL_FUNC_BIO_CTRL <br>
+OPENSSL_cleanse OSSL_FUNC_OPENSSL_CLEANSE <br>
+OSSL_SELF_TEST_set_callback OSSL_FUNC_SELF_TEST_CB <br>
+ossl_rand_get_entropy OSSL_FUNC_GET_ENTROPY <br>
+ossl_rand_cleanup_entropy OSSL_FUNC_CLEANUP_ENTROPY <br>
+ossl_rand_get_nonce OSSL_FUNC_GET_NONCE <br>
+ossl_rand_cleanup_nonce OSSL_FUNC_CLEANUP_NONCE <br>
+provider_register_child_cb
+OSSL_FUNC_PROVIDER_REGISTER_CHILD_CB <br>
+provider_deregister_child_cb
+OSSL_FUNC_PROVIDER_DEREGISTER_CHILD_CB <br>
+provider_name OSSL_FUNC_PROVIDER_NAME <br>
+provider_get0_provider_ctx
+OSSL_FUNC_PROVIDER_GET0_PROVIDER_CTX <br>
+provider_get0_dispatch OSSL_FUNC_PROVIDER_GET0_DISPATCH <br>
+provider_up_ref OSSL_FUNC_PROVIDER_UP_REF <br>
+provider_free OSSL_FUNC_PROVIDER_FREE</p>
+
+<p style="margin-left:11%; margin-top: 1em">For <i>*out</i>
+(the <b><small>OSSL_DISPATCH</small></b> array passed from
+the provider to <i>libcrypto</i>):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">provider_teardown
+OSSL_FUNC_PROVIDER_TEARDOWN <br>
+provider_gettable_params OSSL_FUNC_PROVIDER_GETTABLE_PARAMS
+<br>
+provider_get_params OSSL_FUNC_PROVIDER_GET_PARAMS <br>
+provider_query_operation OSSL_FUNC_PROVIDER_QUERY_OPERATION
+<br>
+provider_unquery_operation
+OSSL_FUNC_PROVIDER_UNQUERY_OPERATION <br>
+provider_get_reason_strings
+OSSL_FUNC_PROVIDER_GET_REASON_STRINGS <br>
+provider_get_capabilities
+OSSL_FUNC_PROVIDER_GET_CAPABILITIES <br>
+provider_self_test OSSL_FUNC_PROVIDER_SELF_TEST</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Core
+functions <br>
+core_gettable_params()</b> returns a constant array of
+descriptor <b><small>OSSL_PARAM</small></b> , for parameters
+that <b>core_get_params()</b> can handle.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>core_get_params()</b>
+retrieves parameters from the core for the given
+<i>handle</i>. See &quot;Core parameters&quot; below for a
+description of currently known parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>core_thread_start()</b> function informs the core that
+the provider has stated an interest in the current thread.
+The core will inform the provider when the thread eventually
+stops. It must be passed the <i>handle</i> for this
+provider, as well as a callback <i>handfn</i> which will be
+called when the thread stops. The callback will subsequently
+be called, with the supplied argument <i>arg</i>, from the
+thread that is stopping and gets passed the provider context
+as an argument. This may be useful to perform thread
+specific clean up such as freeing thread local
+variables.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>core_get_libctx()</b>
+retrieves the core context in which the library object for
+the current provider is stored, accessible through the
+<i>handle</i>. This function is useful only for built-in
+providers such as the default provider. Never cast this to
+<small>OSSL_LIB_CTX</small> in a provider that is not
+built-in as the <small>OSSL_LIB_CTX</small> of the library
+loading the provider might be a completely different
+structure than the <small>OSSL_LIB_CTX</small> of the
+library the provider is linked to. Use
+<b>OSSL_LIB_CTX_new_child</b>(3) instead to obtain a proper
+library context that is linked to the application library
+context.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>core_new_error()</b>,
+<b>core_set_error_debug()</b> and <b>core_vset_error()</b>
+are building blocks for reporting an error back to the core,
+with reference to the <i>handle</i>. <b><br>
+core_new_error()</b></p>
+
+<p style="margin-left:17%;">allocates a new thread specific
+error record.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This
+corresponds to the OpenSSL function <b>ERR_new</b>(3).</p>
+
+
+<p style="margin-left:11%;"><b>core_set_error_debug()</b></p>
+
+<p style="margin-left:17%;">sets debugging information in
+the current thread specific error record. The debugging
+information includes the name of the file <i>file</i>, the
+line <i>line</i> and the function name <i>func</i> where the
+error occurred.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This
+corresponds to the OpenSSL function
+<b>ERR_set_debug</b>(3).</p>
+
+<p style="margin-left:11%;"><b>core_vset_error()</b></p>
+
+<p style="margin-left:17%;">sets the <i>reason</i> for the
+error, along with any addition data. The <i>reason</i> is a
+number defined by the provider and used to index the reason
+strings table that&rsquo;s returned by
+<b>provider_get_reason_strings()</b>. The additional data is
+given as a format string <i>fmt</i> and a set of arguments
+<i>args</i>, which are treated in the same manner as with
+<b>BIO_vsnprintf()</b>. <i>file</i> and <i>line</i> may also
+be passed to indicate exactly where the error occurred or
+was reported.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This
+corresponds to the OpenSSL function
+<b>ERR_vset_error</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>core_obj_create()</b> function registers a new
+<small>OID</small> and associated short name <i>sn</i> and
+long name <i>ln</i> for the given <i>handle</i>. It is
+similar to the OpenSSL function <b>OBJ_create</b>(3) except
+that it returns 1 on success or 0 on failure. It will treat
+as success the case where the <small>OID</small> already
+exists (even if the short name <i>sn</i> or long name
+<i>ln</i> provided as arguments differ from those associated
+with the existing <small>OID,</small> in which case the new
+names are not associated). This function is not thread
+safe.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>core_obj_add_sigid()</b> function registers a new
+composite signature algorithm (<i>sign_name</i>) consisting
+of an underlying signature algorithm (<i>pkey_name</i>) and
+digest algorithm (<i>digest_name</i>) for the given
+<i>handle</i>. It assumes that the OIDs for the composite
+signature algorithm as well as for the underlying signature
+and digest algorithms are either already known to OpenSSL or
+have been registered via a call to <b>core_obj_create()</b>.
+It corresponds to the OpenSSL function
+<b>OBJ_add_sigid</b>(3), except that the objects are
+identified by name rather than a numeric <small>NID.</small>
+Any name ( <small>OID,</small> short name or long name) can
+be used to identify the object. It will treat as success the
+case where the composite signature algorithm already exists
+(even if registered against a different underlying signature
+or digest algorithm). For <i>digest_name</i>,
+<small>NULL</small> or an empty string is permissible for
+signature algorithms that do not need a digest to operate
+correctly. The function returns 1 on success or 0 on
+failure. This function is not thread safe.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CRYPTO_malloc()</b>,
+<b>CRYPTO_zalloc()</b>, <b>CRYPTO_free()</b>,
+<b>CRYPTO_clear_free()</b>, <b>CRYPTO_realloc()</b>,
+<b>CRYPTO_clear_realloc()</b>,
+<b>CRYPTO_secure_malloc()</b>,
+<b>CRYPTO_secure_zalloc()</b>, <b>CRYPTO_secure_free()</b>,
+<b>CRYPTO_secure_clear_free()</b>,
+<b>CRYPTO_secure_allocated()</b>, <b>BIO_new_file()</b>,
+<b>BIO_new_mem_buf()</b>, <b>BIO_read_ex()</b>,
+<b>BIO_write_ex()</b>, <b>BIO_up_ref()</b>,
+<b>BIO_free()</b>, <b>BIO_vprintf()</b>,
+<b>BIO_vsnprintf()</b>, <b>BIO_gets()</b>,
+<b>BIO_puts()</b>, <b>BIO_ctrl()</b>,
+<b>OPENSSL_cleanse()</b> and <b>OPENSSL_hexstr2buf()</b>
+correspond exactly to the public functions with the same
+name. As a matter of fact, the pointers in the
+<b><small>OSSL_DISPATCH</small></b> array are typically
+direct pointers to those public functions. Note that the
+<small>BIO</small> functions take an
+<b><small>OSSL_CORE_BIO</small></b> type rather than the
+standard <b><small>BIO</small></b> type. This is to ensure
+that a provider does not mix BIOs from the core with BIOs
+used on the provider side (the two are not compatible).
+<b>OSSL_SELF_TEST_set_callback()</b> is used to set an
+optional callback that can be passed into a provider. This
+may be ignored by a provider.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_entropy()</b>
+retrieves seeding material from the operating system. The
+seeding material will have at least <i>entropy</i> bytes of
+randomness and the output will have at least <i>min_len</i>
+and at most <i>max_len</i> bytes. The buffer address is
+stored in <i>*pout</i> and the buffer length is returned to
+the caller. On error, zero is returned.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cleanup_entropy()</b>
+is used to clean up and free the buffer returned by
+<b>get_entropy()</b>. The entropy pointer returned by
+<b>get_entropy()</b> is passed in <b>buf</b> and its length
+in <b>len</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_nonce()</b>
+retrieves a nonce using the passed <i>salt</i> parameter of
+length <i>salt_len</i> and operating system specific
+information. The <i>salt</i> should contain uniquely
+identifying information and this is included, in an
+unspecified manner, as part of the output. The output is
+stored in a buffer which contrains at least <i>min_len</i>
+and at most <i>max_len</i> bytes. The buffer address is
+stored in <i>*pout</i> and the buffer length returned to the
+caller. On error, zero is returned.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cleanup_nonce()</b>
+is used to clean up and free the buffer returned by
+<b>get_nonce()</b>. The nonce pointer returned by
+<b>get_nonce()</b> is passed in <b>buf</b> and its length in
+<b>len</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_register_child_cb()</b>
+registers callbacks for being informed about the loading and
+unloading of providers in the application&rsquo;s library
+context. <i>handle</i> is this provider&rsquo;s handle and
+<i>cbdata</i> is this provider&rsquo;s data that will be
+passed back to the callbacks. It returns 1 on success or 0
+otherwise. These callbacks may be called while holding locks
+in libcrypto. In order to avoid deadlocks the callback
+implementation must not be long running and must not call
+other OpenSSL <small>API</small> functions or upcalls.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>create_cb</i>
+is a callback that will be called when a new provider is
+loaded into the application&rsquo;s library context. It is
+also called for any providers that are already loaded at the
+point that this callback is registered. The callback is
+passed the handle being used for the new provider being
+loadded and this provider&rsquo;s data in <i>cbdata</i>. It
+should return 1 on success or 0 on failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>remove_cb</i>
+is a callback that will be called when a new provider is
+unloaded from the application&rsquo;s library context. It is
+passed the handle being used for the provider being unloaded
+and this provider&rsquo;s data in <i>cbdata</i>. It should
+return 1 on success or 0 on failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>global_props_cb</i>
+is a callback that will be called when the global properties
+from the parent library context are changed. It should
+return 1 on success or 0 on failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_deregister_child_cb()</b>
+unregisters callbacks previously registered via
+<b>provider_register_child_cb()</b>. If
+<b>provider_register_child_cb()</b> has been called then
+<b>provider_deregister_child_cb()</b> should be called at or
+before the point that this provider&rsquo;s teardown
+function is called.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_name()</b>
+returns a string giving the name of the provider identified
+by <i>handle</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_get0_provider_ctx()</b>
+returns the provider context that is associated with the
+provider identified by <i>prov</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_get0_dispatch()</b>
+gets the dispatch table registered by the provider
+identified by <i>prov</i> when it initialised.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_up_ref()</b>
+increments the reference count on the provider <i>prov</i>.
+If <i>activate</i> is nonzero then the provider is also
+loaded if it is not already loaded. It returns 1 on success
+or 0 on failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_free()</b>
+decrements the reference count on the provider <i>prov</i>.
+If <i>deactivate</i> is nonzero then the provider is also
+unloaded if it is not already loaded. It returns 1 on
+success or 0 on failure.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Provider
+functions <br>
+provider_teardown()</b> is called when a provider is shut
+down and removed from the core&rsquo;s provider store. It
+must free the passed <i>provctx</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_gettable_params()</b>
+should return a constant array of descriptor
+<b><small>OSSL_PARAM</small></b> , for parameters that
+<b>provider_get_params()</b> can handle.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_get_params()</b>
+should process the <b><small>OSSL_PARAM</small></b> array
+<i>params</i>, setting the values of the parameters it
+understands.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_query_operation()</b>
+should return a constant
+<b><small>OSSL_ALGORITHM</small></b> that corresponds to the
+given <i>operation_id</i>. It should indicate if the core
+may store a reference to this array by setting
+<i>*no_store</i> to 0 (core may store a reference) or 1
+(core may not store a reference).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_unquery_operation()</b>
+informs the provider that the result of a
+<b>provider_query_operation()</b> is no longer directly
+required and that the function pointers have been copied.
+The <i>operation_id</i> should match that passed to
+<b>provider_query_operation()</b> and <i>algs</i> should be
+its return value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_get_reason_strings()</b>
+should return a constant <b><small>OSSL_ITEM</small></b>
+array that provides reason strings for reason codes the
+provider may use when reporting errors using
+<b>core_put_error()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>provider_get_capabilities()</b> function should call the
+callback <i>cb</i> passing it a set of
+<b><small>OSSL_PARAM</small></b> s and the caller supplied
+argument <i>arg</i>. The <b><small>OSSL_PARAM</small></b> s
+should provide details about the capability with the name
+given in the <i>capability</i> argument relevant for the
+provider context <i>provctx</i>. If a provider supports
+multiple capabilities with the given name then it may call
+the callback multiple times (one for each capability).
+Capabilities can be useful for describing the services that
+a provider can offer. For further details see the &quot;
+<small>CAPABILITIES&quot;</small> section below. It should
+return 1 on success or 0 on error.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>provider_self_test()</b> function should perform known
+answer tests on a subset of the algorithms that it uses, and
+may also verify the integrity of the provider module. It
+should return 1 on success or 0 on error. It will return 1
+if this function is not used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">None of these
+functions are mandatory, but a provider is fairly useless
+without at least <b>provider_query_operation()</b>, and
+<b>provider_gettable_params()</b> is fairly useless if not
+accompanied by <b>provider_get_params()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Provider
+parameters <br>
+provider_get_params()</b> can return the following provider
+parameters to the core: <br>
+&quot;name&quot; (
+<b><small>OSSL_PROV_PARAM_NAME</small></b> ) &lt;
+<small>UTF8</small> string ptr&gt;</p>
+
+<p style="margin-left:17%;">This points to a string that
+should give a unique name for the provider.</p>
+
+<p style="margin-left:11%;">&quot;version&quot; (
+<b><small>OSSL_PROV_PARAM_VERSION</small></b> ) &lt;
+<small>UTF8</small> string ptr&gt;</p>
+
+<p style="margin-left:17%;">This points to a string that is
+a version number associated with this provider. OpenSSL
+in-built providers use <small>OPENSSL_VERSION_STR,</small>
+but this may be different for any third party provider. This
+string is for informational purposes only.</p>
+
+<p style="margin-left:11%;">&quot;buildinfo&quot; (
+<b><small>OSSL_PROV_PARAM_BUILDINFO</small></b> ) &lt;
+<small>UTF8</small> string ptr&gt;</p>
+
+<p style="margin-left:17%;">This points to a string that is
+a build information associated with this provider. OpenSSL
+in-built providers use
+<small>OPENSSL_FULL_VERSION_STR,</small> but this may be
+different for any third party provider.</p>
+
+<p style="margin-left:11%;">&quot;status&quot; (
+<b><small>OSSL_PROV_PARAM_STATUS</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">This returns 0 if the provider
+has entered an error state, otherwise it returns 1.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider_gettable_params()</b>
+should return the above parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Core
+parameters <br>
+core_get_params()</b> can retrieve the following core
+parameters for each provider: <br>
+&quot;openssl-version&quot; (
+<b><small>OSSL_PROV_PARAM_CORE_VERSION</small></b> ) &lt;
+<small>UTF8</small> string ptr&gt;</p>
+
+<p style="margin-left:17%;">This points to the OpenSSL
+libraries&rsquo; full version string, i.e. the string
+expanded from the macro
+<b><small>OPENSSL_VERSION_STR</small></b> .</p>
+
+<p style="margin-left:11%;">&quot;provider-name&quot; (
+<b><small>OSSL_PROV_PARAM_CORE_PROV_NAME</small></b> ) &lt;
+<small>UTF8</small> string ptr&gt;</p>
+
+<p style="margin-left:17%;">This points to the OpenSSL
+libraries&rsquo; idea of what the calling provider is
+named.</p>
+
+<p style="margin-left:11%;">&quot;module-filename&quot; (
+<b><small>OSSL_PROV_PARAM_CORE_MODULE_FILENAME</small></b> )
+&lt; <small>UTF8</small> string <br>
+ptr&gt;</p>
+
+<p style="margin-left:17%;">This points to a string
+containing the full filename of the providers module
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additionally,
+provider specific configuration parameters from the config
+file are available, in dotted name form. The dotted name
+form is a concatenation of section names and final config
+command name separated by periods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+let&rsquo;s say we have the following config example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">config_diagnostics
+= 1 <br>
+openssl_conf = openssl_init <br>
+[openssl_init] <br>
+providers = providers_sect <br>
+[providers_sect] <br>
+foo = foo_sect <br>
+[foo_sect] <br>
+activate = 1 <br>
+data1 = 2 <br>
+data2 = str <br>
+more = foo_more <br>
+[foo_more] <br>
+data3 = foo,bar</p>
+
+<p style="margin-left:11%; margin-top: 1em">The provider
+will have these additional parameters available: <br>
+&quot;activate&quot;</p>
+
+<p style="margin-left:17%;">pointing at the string
+&quot;1&quot;</p>
+
+<p style="margin-left:11%;">&quot;data1&quot;</p>
+
+<p style="margin-left:17%;">pointing at the string
+&quot;2&quot;</p>
+
+<p style="margin-left:11%;">&quot;data2&quot;</p>
+
+<p style="margin-left:17%;">pointing at the string
+&quot;str&quot;</p>
+
+<p style="margin-left:11%;">&quot;more.data3&quot;</p>
+
+<p style="margin-left:17%;">pointing at the string
+&quot;foo,bar&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information on handling parameters, see
+<b><small>OSSL_PARAM</small></b> (3) as
+<b>OSSL_PARAM_int</b>(3).</p>
+
+<h2>CAPABILITIES
+<a name="CAPABILITIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Capabilities
+describe some of the services that a provider can offer.
+Applications can query the capabilities to discover those
+services.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>&quot;TLS-GROUP&quot;
+Capability</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;TLS-GROUP&quot; capability can be queried by libssl to
+discover the list of <small>TLS</small> groups that a
+provider can support. Each group supported can be used for
+<i>key exchange</i> ( <small>KEX</small> ) or <i>key
+encapsulation method</i> ( <small>KEM</small> ) during a
+<small>TLS</small> handshake. <small>TLS</small> clients can
+advertise the list of <small>TLS</small> groups they support
+in the supported_groups extension, and <small>TLS</small>
+servers can select a group from the offered list that they
+also support. In this way a provider can add to the list of
+groups that libssl already supports with additional
+ones.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each
+<small>TLS</small> group that a provider supports should be
+described via the callback passed in through the
+provider_get_capabilities function. Each group should have
+the following details supplied (all are mandatory, except
+<b><small>OSSL_CAPABILITY_TLS_GROUP_IS_KEM</small></b> ):
+<br>
+&quot;tls-group-name&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_NAME</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">The name of the group as given
+in the <small>IANA TLS</small> Supported Groups registry
+&lt;https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-8&gt;.</p>
+
+
+<p style="margin-left:11%;">&quot;tls-group-name-internal&quot;
+(
+<b><small>OSSL_CAPABILITY_TLS_GROUP_NAME_INTERNAL</small></b>
+) <br>
+&lt; <small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">The name of the group as known
+by the provider. This could be the same as the
+&quot;tls-group-name&quot;, but does not have to be.</p>
+
+<p style="margin-left:11%;">&quot;tls-group-id&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_ID</small></b> )
+&lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">The <small>TLS</small> group id
+value as given in the <small>IANA TLS</small> Supported
+Groups registry.</p>
+
+<p style="margin-left:11%;">&quot;tls-group-alg&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_ALG</small></b> ) &lt;
+<small>UTF8</small> string&gt;</p>
+
+<p style="margin-left:17%;">The name of a Key Management
+algorithm that the provider offers and that should be used
+with this group. Keys created should be able to support
+<i>key exchange</i> or <i>key encapsulation method</i> (
+<small>KEM</small> ), as implied by the optional
+<b><small>OSSL_CAPABILITY_TLS_GROUP_IS_KEM</small></b> flag.
+The algorithm must support key and parameter generation as
+well as the key/parameter generation parameter,
+<b><small>OSSL_PKEY_PARAM_GROUP_NAME</small></b> . The group
+name given via &quot;tls-group-name-internal&quot; above
+will be passed via
+<b><small>OSSL_PKEY_PARAM_GROUP_NAME</small></b> when libssl
+wishes to generate keys/parameters.</p>
+
+<p style="margin-left:11%;">&quot;tls-group-sec-bits&quot;
+(
+<b><small>OSSL_CAPABILITY_TLS_GROUP_SECURITY_BITS</small></b>
+) <br>
+&lt;unsigned integer&gt;</p>
+
+<p style="margin-left:17%;">The number of bits of security
+offered by keys in this group. The number of bits should be
+comparable with the ones given in table 2 and 3 of the
+<small>NIST SP800-57</small> document.</p>
+
+<p style="margin-left:11%;">&quot;tls-group-is-kem&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_IS_KEM</small></b> )
+&lt;unsigned <br>
+integer&gt;</p>
+
+<p style="margin-left:17%;">Boolean flag to describe if the
+group should be used in <i>key exchange</i> (
+<small>KEX</small> ) mode (0, default) or in <i>key
+encapsulation method</i> ( <small>KEM</small> ) mode
+(1).</p>
+
+<p style="margin-left:17%; margin-top: 1em">This parameter
+is optional: if not specified, <small>KEX</small> mode is
+assumed as the default mode for the group.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In
+<small>KEX</small> mode, in a typical Diffie-Hellman
+fashion, both sides execute <i>keygen</i> then <i>derive</i>
+against the peer public key. To operate in
+<small>KEX</small> mode, the group implementation must
+support the provider functions as described in
+<b>provider-keyexch</b>(7).</p>
+
+<p style="margin-left:17%; margin-top: 1em">In
+<small>KEM</small> mode, the client executes <i>keygen</i>
+and sends its public key, the server executes
+<i>encapsulate</i> using the client&rsquo;s public key and
+sends back the resulting <i>ciphertext</i>, finally the
+client executes <i>decapsulate</i> to retrieve the same
+<i>shared secret</i> generated by the server&rsquo;s
+<i>encapsulate</i>. To operate in <small>KEM</small> mode,
+the group implementation must support the provider functions
+as described in <b>provider-kem</b>(7).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Both in
+<small>KEX</small> and <small>KEM</small> mode, the
+resulting <i>shared secret</i> is then used according to the
+protocol specification.</p>
+
+<p style="margin-left:11%;">&quot;tls-min-tls&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_MIN_TLS</small></b> )
+&lt;integer&gt; <br>
+&quot;tls-max-tls&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_MAX_TLS</small></b> )
+&lt;integer&gt; <br>
+&quot;tls-min-dtls&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_MIN_DTLS</small></b> )
+&lt;integer&gt; <br>
+&quot;tls-max-dtls&quot; (
+<b><small>OSSL_CAPABILITY_TLS_GROUP_MAX_DTLS</small></b> )
+&lt;integer&gt;</p>
+
+<p style="margin-left:17%;">These parameters can be used to
+describe the minimum and maximum <small>TLS</small> and
+<small>DTLS</small> versions supported by the group. The
+values equate to the on-the-wire encoding of the various
+<small>TLS</small> versions. For example TLSv1.3 is 0x0304
+(772 decimal), and TLSv1.2 is 0x0303 (771 decimal). A 0
+indicates that there is no defined minimum or maximum. A -1
+indicates that the group should not be used in that
+protocol.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is an
+example of a simple provider made available as a dynamically
+loadable module. It implements the fictitious algorithm
+&quot;FOO&quot; for the fictitious operation
+&quot;BAR&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;malloc.h&gt; <br>
+#include &lt;openssl/core.h&gt; <br>
+#include &lt;openssl/core_dispatch.h&gt; <br>
+/* Errors used in this provider */ <br>
+#define E_MALLOC 1 <br>
+static const OSSL_ITEM reasons[] = { <br>
+{ E_MALLOC, &quot;memory allocation failure&quot; }. <br>
+{ 0, NULL } /* Termination */ <br>
+}; <br>
+/* <br>
+* To ensure we get the function signature right, forward
+declare <br>
+* them using function types provided by
+openssl/core_dispatch.h <br>
+*/ <br>
+OSSL_FUNC_bar_newctx_fn foo_newctx; <br>
+OSSL_FUNC_bar_freectx_fn foo_freectx; <br>
+OSSL_FUNC_bar_init_fn foo_init; <br>
+OSSL_FUNC_bar_update_fn foo_update; <br>
+OSSL_FUNC_bar_final_fn foo_final; <br>
+OSSL_FUNC_provider_query_operation_fn p_query; <br>
+OSSL_FUNC_provider_get_reason_strings_fn p_reasons; <br>
+OSSL_FUNC_provider_teardown_fn p_teardown; <br>
+OSSL_provider_init_fn OSSL_provider_init; <br>
+OSSL_FUNC_core_put_error *c_put_error = NULL; <br>
+/* Provider context */ <br>
+struct prov_ctx_st { <br>
+OSSL_CORE_HANDLE *handle; <br>
+} <br>
+/* operation context for the algorithm FOO */ <br>
+struct foo_ctx_st { <br>
+struct prov_ctx_st *provctx; <br>
+int b; <br>
+}; <br>
+static void *foo_newctx(void *provctx) <br>
+{ <br>
+struct foo_ctx_st *fooctx = malloc(sizeof(*fooctx)); <br>
+if (fooctx != NULL) <br>
+fooctx-&gt;provctx = provctx; <br>
+else <br>
+c_put_error(provctx-&gt;handle, E_MALLOC, __FILE__,
+__LINE__); <br>
+return fooctx; <br>
+} <br>
+static void foo_freectx(void *fooctx) <br>
+{ <br>
+free(fooctx); <br>
+} <br>
+static int foo_init(void *vfooctx) <br>
+{ <br>
+struct foo_ctx_st *fooctx = vfooctx; <br>
+fooctx-&gt;b = 0x33; <br>
+} <br>
+static int foo_update(void *vfooctx, unsigned char *in,
+size_t inl) <br>
+{ <br>
+struct foo_ctx_st *fooctx = vfooctx; <br>
+/* did you expect something serious? */ <br>
+if (inl == 0) <br>
+return 1; <br>
+for (; inl-- &gt; 0; in++) <br>
+*in ^= fooctx-&gt;b; <br>
+return 1; <br>
+} <br>
+static int foo_final(void *vfooctx) <br>
+{ <br>
+struct foo_ctx_st *fooctx = vfooctx; <br>
+fooctx-&gt;b = 0x66; <br>
+} <br>
+static const OSSL_DISPATCH foo_fns[] = { <br>
+{ OSSL_FUNC_BAR_NEWCTX, (void (*)(void))foo_newctx }, <br>
+{ OSSL_FUNC_BAR_FREECTX, (void (*)(void))foo_freectx }, <br>
+{ OSSL_FUNC_BAR_INIT, (void (*)(void))foo_init }, <br>
+{ OSSL_FUNC_BAR_UPDATE, (void (*)(void))foo_update }, <br>
+{ OSSL_FUNC_BAR_FINAL, (void (*)(void))foo_final }, <br>
+{ 0, NULL } <br>
+}; <br>
+static const OSSL_ALGORITHM bars[] = { <br>
+{ &quot;FOO&quot;, &quot;provider=chumbawamba&quot;, foo_fns
+}, <br>
+{ NULL, NULL, NULL } <br>
+}; <br>
+static const OSSL_ALGORITHM *p_query(void *provctx, int
+operation_id, <br>
+int *no_store) <br>
+{ <br>
+switch (operation_id) { <br>
+case OSSL_OP_BAR: <br>
+return bars; <br>
+} <br>
+return NULL; <br>
+} <br>
+static const OSSL_ITEM *p_reasons(void *provctx) <br>
+{ <br>
+return reasons; <br>
+} <br>
+static void p_teardown(void *provctx) <br>
+{ <br>
+free(provctx); <br>
+} <br>
+static const OSSL_DISPATCH prov_fns[] = { <br>
+{ OSSL_FUNC_PROVIDER_TEARDOWN, (void (*)(void))p_teardown },
+<br>
+{ OSSL_FUNC_PROVIDER_QUERY_OPERATION, (void
+(*)(void))p_query }, <br>
+{ OSSL_FUNC_PROVIDER_GET_REASON_STRINGS, (void
+(*)(void))p_reasons }, <br>
+{ 0, NULL } <br>
+}; <br>
+int OSSL_provider_init(const OSSL_CORE_HANDLE *handle, <br>
+const OSSL_DISPATCH *in, <br>
+const OSSL_DISPATCH **out, <br>
+void **provctx) <br>
+{ <br>
+struct prov_ctx_st *pctx = NULL; <br>
+for (; in-&gt;function_id != 0; in++) <br>
+switch (in-&gt;function_id) { <br>
+case OSSL_FUNC_CORE_PUT_ERROR: <br>
+c_put_error = OSSL_FUNC_core_put_error(in); <br>
+break; <br>
+} <br>
+*out = prov_fns; <br>
+if ((pctx = malloc(sizeof(*pctx))) == NULL) { <br>
+/* <br>
+* ALEA IACTA EST, if the core retrieves the reason table
+<br>
+* regardless, that string will be displayed, otherwise not.
+<br>
+*/ <br>
+c_put_error(handle, E_MALLOC, __FILE__, __LINE__); <br>
+return 0; <br>
+} <br>
+pctx-&gt;handle = handle; <br>
+return 1; <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">This relies on
+a few things existing in <i>openssl/core_dispatch.h</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#define
+OSSL_OP_BAR 4711 <br>
+#define OSSL_FUNC_BAR_NEWCTX 1 <br>
+typedef void *(OSSL_FUNC_bar_newctx_fn)(void *provctx); <br>
+static ossl_inline OSSL_FUNC_bar_newctx(const OSSL_DISPATCH
+*opf) <br>
+{ return (OSSL_FUNC_bar_newctx_fn *)opf-&gt;function; } <br>
+#define OSSL_FUNC_BAR_FREECTX 2 <br>
+typedef void (OSSL_FUNC_bar_freectx_fn)(void *ctx); <br>
+static ossl_inline OSSL_FUNC_bar_newctx(const OSSL_DISPATCH
+*opf) <br>
+{ return (OSSL_FUNC_bar_freectx_fn *)opf-&gt;function; }
+<br>
+#define OSSL_FUNC_BAR_INIT 3 <br>
+typedef void *(OSSL_FUNC_bar_init_fn)(void *ctx); <br>
+static ossl_inline OSSL_FUNC_bar_init(const OSSL_DISPATCH
+*opf) <br>
+{ return (OSSL_FUNC_bar_init_fn *)opf-&gt;function; } <br>
+#define OSSL_FUNC_BAR_UPDATE 4 <br>
+typedef void *(OSSL_FUNC_bar_update_fn)(void *ctx, <br>
+unsigned char *in, size_t inl); <br>
+static ossl_inline OSSL_FUNC_bar_update(const OSSL_DISPATCH
+*opf) <br>
+{ return (OSSL_FUNC_bar_update_fn *)opf-&gt;function; } <br>
+#define OSSL_FUNC_BAR_FINAL 5 <br>
+typedef void *(OSSL_FUNC_bar_final_fn)(void *ctx); <br>
+static ossl_inline OSSL_FUNC_bar_final(const OSSL_DISPATCH
+*opf) <br>
+{ return (OSSL_FUNC_bar_final_fn *)opf-&gt;function; }</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider</b>(7)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The concept of
+providers and everything surrounding them was introduced in
+OpenSSL 3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2019-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

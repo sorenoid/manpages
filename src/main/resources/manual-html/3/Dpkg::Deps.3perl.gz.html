@@ -1,0 +1,280 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:27 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Deps</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Deps</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CLASSES - Dpkg::Deps::*">CLASSES - Dpkg::Deps::*</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Deps -
+parse and manipulate dependencies of Debian packages</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Dpkg::Deps
+module provides classes implementing various types of
+dependencies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The most
+important function is <b>deps_parse()</b>, it turns a
+dependency line in a set of
+Dpkg::Deps::{Simple,AND,OR,Union} objects depending on the
+case.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All the deps_*
+functions are exported by default. <br>
+deps_eval_implication($rel_p, $v_p, $rel_q, $v_q)</p>
+
+<p style="margin-left:17%;">($rel_p, $v_p) and ($rel_q,
+$v_q) express two dependencies as (relation, version). The
+relation variable can have the following values that are
+exported by Dpkg::Version: <small>REL_EQ, REL_LT, REL_LE,
+REL_GT, REL_GT.</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">This functions
+returns 1 if the &quot;p&quot; dependency implies the
+&quot;q&quot; dependency. It returns 0 if the &quot;p&quot;
+dependency implies that &quot;q&quot; is not satisfied. It
+returns undef when there&rsquo;s no implication.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The $v_p and
+$v_q parameter should be Dpkg::Version objects.</p>
+
+<p style="margin-left:11%;">$dep =
+deps_concat(@dep_list)</p>
+
+<p style="margin-left:17%;">This function concatenates
+multiple dependency lines into a single line, joining them
+with &quot;, &quot; if appropriate, and always returning a
+valid string.</p>
+
+<p style="margin-left:11%;">$dep = deps_parse($line,
+%options)</p>
+
+<p style="margin-left:17%;">This function parses the
+dependency line and returns an object, either a
+Dpkg::Deps::AND or a Dpkg::Deps::Union. Various options can
+alter the behaviour of that function. <br>
+use_arch (defaults to 1)</p>
+
+<p style="margin-left:23%;">Take into account the
+architecture restriction part of the dependencies. Set to 0
+to completely ignore that information.</p>
+
+<p style="margin-left:17%;">host_arch (defaults to the
+current architecture)</p>
+
+<p style="margin-left:23%;">Define the host architecture.
+By default it uses <b>Dpkg::Arch::get_host_arch()</b> to
+identify the proper architecture.</p>
+
+<p style="margin-left:17%;">build_arch (defaults to the
+current architecture)</p>
+
+<p style="margin-left:23%;">Define the build architecture.
+By default it uses <b>Dpkg::Arch::get_build_arch()</b> to
+identify the proper architecture.</p>
+
+<p style="margin-left:17%;">reduce_arch (defaults to 0)</p>
+
+<p style="margin-left:23%;">If set to 1, ignore
+dependencies that do not concern the current host
+architecture. This implicitly strips off the architecture
+restriction list so that the resulting dependencies are
+directly applicable to the current architecture.</p>
+
+<p style="margin-left:17%;">use_profiles (defaults to
+1)</p>
+
+<p style="margin-left:23%;">Take into account the profile
+restriction part of the dependencies. Set to 0 to completely
+ignore that information.</p>
+
+<p style="margin-left:17%;">build_profiles (defaults to no
+profile)</p>
+
+<p style="margin-left:23%;">Define the active build
+profiles. By default no profile is defined.</p>
+
+<p style="margin-left:17%;">reduce_profiles (defaults to
+0)</p>
+
+<p style="margin-left:23%;">If set to 1, ignore
+dependencies that do not concern the current build profile.
+This implicitly strips off the profile restriction formula
+so that the resulting dependencies are directly applicable
+to the current profiles.</p>
+
+<p style="margin-left:17%;">reduce_restrictions (defaults
+to 0)</p>
+
+<p style="margin-left:23%;">If set to 1, ignore
+dependencies that do not concern the current set of
+restrictions. This implicitly strips off any architecture
+restriction list or restriction formula so that the
+resulting dependencies are directly applicable to the
+current restriction. This currently implies
+&quot;reduce_arch&quot; and &quot;reduce_profiles&quot;, and
+overrides them if set.</p>
+
+<p style="margin-left:17%;">union (defaults to 0)</p>
+
+<p style="margin-left:23%;">If set to 1, returns a
+Dpkg::Deps::Union instead of a Dpkg::Deps::AND. Use this
+when parsing non-dependency fields like Conflicts.</p>
+
+<p style="margin-left:17%;">virtual (defaults to 0)</p>
+
+<p style="margin-left:23%;">If set to 1, allow only virtual
+package version relations, that is none, or &acirc;=&acirc;.
+This should be set whenever working with Provides
+fields.</p>
+
+<p style="margin-left:17%;">build_dep (defaults to 0)</p>
+
+<p style="margin-left:23%;">If set to 1, allow build-dep
+only arch qualifiers, that is &acirc;:native&acirc;. This
+should be set whenever working with build-deps.</p>
+
+<p style="margin-left:17%;">tests_dep (defaults to 0)</p>
+
+<p style="margin-left:23%;">If set to 1, allow
+tests-specific package names in dependencies, that is
+&quot;@&quot; and &quot;@builddeps@&quot; (since dpkg
+1.18.7). This should be set whenever working with dependency
+fields from <i>debian/tests/control</i>.</p>
+
+<p style="margin-left:11%;">$bool = deps_iterate($deps,
+$callback_func)</p>
+
+<p style="margin-left:17%;">This function visits all
+elements of the dependency object, calling the callback
+function for each element.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The callback
+function is expected to return true when everything is fine,
+or false if something went wrong, in which case the
+iteration will stop.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Return the same
+value as the callback function.</p>
+
+<p style="margin-left:11%;">deps_compare($a, $b)</p>
+
+<p style="margin-left:17%;">Implements a comparison
+operator between two dependency objects. This function is
+mainly used to implement the <b>sort()</b> method.</p>
+
+<h2>CLASSES - Dpkg::Deps::*
+<a name="CLASSES - Dpkg::Deps::*"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+several kind of dependencies. A Dpkg::Deps::Simple
+dependency represents a single dependency statement (it
+relates to one package only). Dpkg::Deps::Multiple
+dependencies are built on top of this class and combine
+several dependencies in different manners. Dpkg::Deps::AND
+represents the logical &quot; <small>AND&quot;</small>
+between dependencies while Dpkg::Deps::OR represents the
+logical &quot; <small>OR&quot;.</small> Dpkg::Deps::Multiple
+objects can contain Dpkg::Deps::Simple object as well as
+other Dpkg::Deps::Multiple objects.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In practice,
+the code is only meant to handle the realistic cases which,
+given Debian&rsquo;s dependencies structure, imply those
+restrictions: <small>AND</small> can contain Simple or
+<small>OR</small> objects, <small>OR</small> can only
+contain Simple objects.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Deps::KnownFacts
+is a special class that is used while evaluating
+dependencies and while trying to simplify them. It
+represents a set of installed packages along with the
+virtual packages that they might provide.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.07
+(dpkg 1.20.0)</b> <br>
+New option: Add virtual option to
+<b>Dpkg::Deps::deps_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.06
+(dpkg 1.18.7; module version bumped on dpkg 1.18.24)</b>
+<br>
+New option: Add tests_dep option to
+<b>Dpkg::Deps::deps_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.05
+(dpkg 1.17.14)</b> <br>
+New function: <b>Dpkg::Deps::deps_iterate()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.04
+(dpkg 1.17.10)</b> <br>
+New options: Add use_profiles, build_profiles,
+reduce_profiles and reduce_restrictions to
+<b>Dpkg::Deps::deps_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.17.0)</b> <br>
+New option: Add build_arch option to
+<b>Dpkg::Deps::deps_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.17.0)</b> <br>
+New function: <b>Dpkg::Deps::deps_concat()</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.16.1)</b> <br>
+&lt;Used to document changes to Dpkg::Deps::* modules before
+they were split.&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

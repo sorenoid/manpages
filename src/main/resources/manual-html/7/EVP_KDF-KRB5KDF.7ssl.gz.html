@@ -1,0 +1,204 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:39 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EVP_KDF-KRB5KDF</title>
+
+</head>
+<body>
+
+<h1 align="center">EVP_KDF-KRB5KDF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KDF-KRB5KDF
+- The RFC3961 Krb5 KDF EVP_KDF implementation</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Support for
+computing the <b><small>KRB5KDF</small></b>
+<small>KDF</small> through the <b><small>EVP_KDF</small></b>
+<small>API.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>EVP_KDF-KRB5KDF</small> algorithm implements the key
+derivation function defined in <small>RFC 3961,</small>
+section 5.1 and is used by Krb5 to derive session keys.
+Three inputs are required to perform key derivation: a
+cipher, (for example <small>AES-128-CBC</small> ), the
+initial key, and a constant.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Identity</b>
+<br>
+&quot; <small>KRB5KDF&quot;</small> is the name for this
+implementation; it can be used with the
+<b>EVP_KDF_fetch()</b> function.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+parameters</b> <br>
+The supported parameters are: <br>
+&quot;properties&quot; (
+<b><small>OSSL_KDF_PARAM_PROPERTIES</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;cipher&quot; (
+<b><small>OSSL_KDF_PARAM_CIPHER</small></b> ) &lt;
+<small>UTF8</small> string&gt; <br>
+&quot;key&quot; ( <b><small>OSSL_KDF_PARAM_KEY</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">These parameters work as
+described in &quot; <small>PARAMETERS&quot;</small> in
+<b><small>EVP_KDF</small></b> (3).</p>
+
+<p style="margin-left:11%;">&quot;constant&quot; (
+<b><small>OSSL_KDF_PARAM_CONSTANT</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">This parameter sets the
+constant value for the <small>KDF.</small> If a value is
+already set, the contents are replaced.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A context for
+<small>KRB5KDF</small> can be obtained by calling:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KDF *kdf =
+EVP_KDF_fetch(NULL, &quot;KRB5KDF&quot;, NULL); <br>
+EVP_KDF_CTX *kctx = EVP_KDF_CTX_new(kdf);</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+length of the <small>KRB5KDF</small> derivation is specified
+via the <i>keylen</i> parameter to the
+<b>EVP_KDF_derive</b>(3) function, and <small>MUST</small>
+match the key length for the chosen cipher or an error is
+returned. Moreover, the constant&rsquo;s length must not
+exceed the block size of the cipher. Since the
+<small>KRB5KDF</small> output length depends on the chosen
+cipher, calling <b>EVP_KDF_CTX_get_kdf_size</b>(3) to obtain
+the requisite length returns the correct length only after
+the cipher is set. Prior to that
+<b><small>EVP_MAX_KEY_LENGTH</small></b> is returned. The
+caller must allocate a buffer of the correct length for the
+chosen cipher, and pass that buffer to the
+<b>EVP_KDF_derive</b>(3) function along with that
+length.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This example
+derives a key using the <small>AES-128-CBC</small>
+cipher:</p>
+
+<p style="margin-left:11%; margin-top: 1em">EVP_KDF *kdf;
+<br>
+EVP_KDF_CTX *kctx; <br>
+unsigned char key[16] = &quot;01234...&quot;; <br>
+unsigned char constant[] = &quot;I'm a constant&quot;; <br>
+unsigned char out[16]; <br>
+size_t outlen = sizeof(out); <br>
+OSSL_PARAM params[4], *p = params; <br>
+kdf = EVP_KDF_fetch(NULL, &quot;KRB5KDF&quot;, NULL); <br>
+kctx = EVP_KDF_CTX_new(kdf); <br>
+EVP_KDF_free(kdf); <br>
+*p++ =
+OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_CIPHER, <br>
+SN_aes_128_cbc, <br>
+strlen(SN_aes_128_cbc)); <br>
+*p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_KEY,
+<br>
+key, (size_t)16); <br>
+*p++ =
+OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_CONSTANT,
+<br>
+constant, strlen(constant)); <br>
+*p = OSSL_PARAM_construct_end(); <br>
+if (EVP_KDF_derive(kctx, out, outlen, params) &lt;= 0) <br>
+/* Error */ <br>
+EVP_KDF_CTX_free(kctx);</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>RFC
+3961</small></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small><b>EVP_KDF</b></small>
+(3), <b>EVP_KDF_CTX_free</b>(3),
+<b>EVP_KDF_CTX_get_kdf_size</b>(3),
+<b>EVP_KDF_derive</b>(3), &quot;
+<small>PARAMETERS&quot;</small> in
+<b><small>EVP_KDF</small></b> (3)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+functionality was added to OpenSSL 3.0.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2016-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>GETNETCONFIG(3) BSD Library Functions Manual
+GETNETCONFIG(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>getnetconfig</b>,
+<b>setnetconfig</b>, <b>endnetconfig</b>,
+<b>getnetconfigent</b>, <b>freenetconfigent</b>,
+<b>nc_perror</b>, <b>nc_sperror</b> &mdash; get network
+configuration database entry</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;netconfig.h&gt;</b></p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>struct
+netconfig *</i></p>
+
+
+<p style="margin-left:12%;"><b>getnetconfig</b>(<i>void&nbsp;*handlep</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>setnetconfig</b>(<i>void</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>int</i></p>
+
+
+<p style="margin-left:12%;"><b>endnetconfig</b>(<i>void&nbsp;*handlep</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>struct
+netconfig *</i></p>
+
+
+<p style="margin-left:12%;"><b>getnetconfigent</b>(<i>const&nbsp;char&nbsp;*netid</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void</i></p>
+
+
+<p style="margin-left:12%;"><b>freenetconfigent</b>(<i>struct&nbsp;netconfig&nbsp;*netconfigp</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>void</i></p>
+
+
+<p style="margin-left:12%;"><b>nc_perror</b>(<i>const&nbsp;char&nbsp;*msg</i>);</p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>char
+*</i></p>
+
+
+<p style="margin-left:12%;"><b>nc_sperror</b>(<i>void</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The library routines described
+on this page provide the application access to the system
+network configuration database, <i>/etc/netconfig</i>. The
+<b>getnetconfig</b>() function returns a pointer to the
+current entry in the netconfig database, formatted as a
+<i>struct netconfig</i>. Successive calls will return
+successive netconfig entries in the netconfig database. The
+<b>getnetconfig</b>() function can be used to search the
+entire netconfig file. The <b>getnetconfig</b>() function
+returns NULL at the end of the file. The <i>handlep</i>
+argument is the handle obtained through
+<b>setnetconfig</b>().</p>
+
+<p style="margin-left:6%; margin-top: 1em">A call to
+<b>setnetconfig</b>() has the effect of
+&ldquo;binding&rdquo; to or &ldquo;rewinding&rdquo; the
+netconfig database. The <b>setnetconfig</b>() function must
+be called before the first call to <b>getnetconfig</b>() and
+may be called at any other time. The <b>setnetconfig</b>()
+function need not be called before a call to
+<b>getnetconfigent</b>(). The <b>setnetconfig</b>() function
+returns a unique handle to be used by
+<b>getnetconfig</b>().</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>endnetconfig</b>() function should be called when
+processing is complete to release resources for reuse. The
+<i>handlep</i> argument is the handle obtained through
+<b>setnetconfig</b>(). Programmers should be aware, however,
+that the last call to <b>endnetconfig</b>() frees all memory
+allocated by <b>getnetconfig</b>() for the <i>struct
+netconfig</i> data structure. The <b>endnetconfig</b>()
+function may not be called before <b>setnetconfig</b>().</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>getnetconfigent</b>() function returns a pointer to the
+netconfig structure corresponding to <i>netid</i>. It
+returns NULL if <i>netid</i> is invalid (that is, does not
+name an entry in the netconfig database).</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>freenetconfigent</b>() function frees the netconfig
+structure pointed to by <i>netconfigp</i> (previously
+returned by <b>getnetconfigent</b>()).</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>nc_perror</b>() function prints a message to the standard
+error indicating why any of the above routines failed. The
+message is prepended with the string <i>msg</i> and a colon.
+A newline character is appended at the end of the
+message.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>nc_sperror</b>() function is similar to
+<b>nc_perror</b>() but instead of sending the message to the
+standard error, will return a pointer to a string that
+contains the error message.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>nc_perror</b>() and <b>nc_sperror</b>() functions can
+also be used with the NETPATH access routines defined in
+getnetpath(3).</p>
+
+<p style="margin-top: 1em"><b>RETURN VALUES</b></p>
+
+<p style="margin-left:6%;">The <b>setnetconfig</b>()
+function returns a unique handle to be used by
+<b>getnetconfig</b>(). In the case of an error,
+<b>setnetconfig</b>() returns NULL and <b>nc_perror</b>() or
+<b>nc_sperror</b>() can be used to print the reason for
+failure.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>getnetconfig</b>() function returns a pointer to the
+current entry in the netconfig database, formatted as a
+<i>struct netconfig</i>. The <b>getnetconfig</b>() function
+returns NULL at the end of the file, or upon failure.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>endnetconfig</b>() function returns 0 on success and -1
+on failure (for example, if <b>setnetconfig</b>() was not
+called previously).</p>
+
+<p style="margin-left:6%; margin-top: 1em">On success,
+<b>getnetconfigent</b>() returns a pointer to the <i>struct
+netconfig</i> structure corresponding to <i>netid</i>;
+otherwise it returns NULL.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>nc_sperror</b>() function returns a pointer to a buffer
+which contains the error message string. This buffer is
+overwritten on each call. In multithreaded applications,
+this buffer is implemented as thread-specific data.</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+/etc/netconfig <b><br>
+AVAILABILITY</b></p>
+
+<p style="margin-left:6%;">These functions are part of
+libtirpc.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">getnetpath(3), netconfig(5)</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+April&nbsp;22, 2000 BSD</p>
+<hr>
+</body>
+</html>

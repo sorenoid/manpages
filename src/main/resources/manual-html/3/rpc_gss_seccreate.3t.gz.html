@@ -1,0 +1,146 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:33 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>RPC_GSS_SECCREATE(3) BSD Library Functions Manual
+RPC_GSS_SECCREATE(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>rpc_gss_seccreate</b> &mdash;
+create a security context using the RPCSEC_GSS protocol</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;rpc/rpcsec_gss.h&gt;</b></p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>AUTH
+*</i></p>
+
+<p><b>rpc_gss_seccreate</b>(<i>CLIENT&nbsp;*clnt</i>,
+<i>const&nbsp;char&nbsp;*principal</i>,
+<i>const&nbsp;char&nbsp;*mechanism</i>,
+<i>rpc_gss_service_t&nbsp;service</i>,
+<i>const&nbsp;char&nbsp;*qop</i>,
+<i>rpc_gss_options_req_t&nbsp;*options_req</i>,
+<i>rpc_gss_options_ret_t&nbsp;*options_ret</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">This function is used to
+establish a security context between an application and a
+remote peer using the RPSEC_GSS protocol.</p>
+
+<p style="margin-top: 1em"><b>PARAMETERS</b> <br>
+clnt</p>
+
+<p style="margin-left:23%; margin-top: 1em">An RPC handle
+which is connected to the remote peer</p>
+
+<p style="margin-top: 1em">principal</p>
+
+<p style="margin-left:23%; margin-top: 1em">The name of the
+service principal on the remote peer. For instance, a
+principal such as &quot;nfs@server.example.com&quot; might
+be used by an application which needs to contact an NFS
+server</p>
+
+<p style="margin-top: 1em">mechanism</p>
+
+<p style="margin-left:23%; margin-top: 1em">The name of the
+GSS_API mechanism to use for the new security context.
+&quot;kerberos_v5&quot; is currently the only supported
+mechanism.</p>
+
+<p style="margin-top: 1em">service</p>
+
+<p style="margin-left:23%; margin-top: 1em">Type of service
+requested.</p>
+
+<p style="margin-top: 1em">rpc_gss_svc_default</p>
+
+<p style="margin-left:53%; margin-top: 1em">The default -
+typically the same as rpc_gss_svc_none.</p>
+
+<p style="margin-top: 1em">rpc_gss_svc_none</p>
+
+<p style="margin-left:53%; margin-top: 1em">RPC headers
+only are integrity protected by a checksum.</p>
+
+<p style="margin-top: 1em">rpc_gss_svc_integrity</p>
+
+<p style="margin-left:53%; margin-top: 1em">RPC headers and
+data are integrity protected by a checksum.</p>
+
+<p style="margin-top: 1em">rpc_gss_svc_privacy</p>
+
+<p style="margin-left:53%; margin-top: 1em">RPC headers are
+integrity protected by a checksum and data is encrypted.</p>
+
+<p style="margin-top: 1em">qop</p>
+
+<p style="margin-left:23%; margin-top: 1em">The name of the
+Quality of Protection to use for the new security context,
+or NULL to use the default QOP.
+&quot;GSS_C_QOP_DEFAULT&quot; is currently the only
+supported QOP.</p>
+
+<p style="margin-top: 1em">options_req</p>
+
+<p style="margin-left:23%; margin-top: 1em">Extra security
+context options to be passed to the underlying GSS-API
+mechanism. Pass NULL to supply default values.</p>
+
+<p style="margin-top: 1em">options_ret</p>
+
+<p style="margin-left:23%; margin-top: 1em">Various values
+returned by the underlying GSS-API mechanism. Pass NULL if
+these values are not required.</p>
+
+<p style="margin-top: 1em"><b>RETURN VALUES</b></p>
+
+<p style="margin-left:6%;">If the security context was
+created successfully, a pointer to an <i>AUTH</i> structure
+that represents the context is returned. To use this
+security context for subsequent RPC calls, set
+<i>clnt-&gt;cl_auth</i> to this value.</p>
+
+<p style="margin-top: 1em"><b>AVAILABILITY</b></p>
+
+<p style="margin-left:6%;">The <b>rpc_gss_seccreate</b>()
+function is part of libtirpc.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">rpc(3), gssapi(3), mech(5),
+qop(5), rpcsec_gss(3)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">This manual page was written by
+Doug Rabson &lt;dfr@FreeBSD.org&gt;.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+January&nbsp;26, 2010 BSD</p>
+<hr>
+</body>
+</html>

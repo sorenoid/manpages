@@ -1,0 +1,360 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:55 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CAPGET</title>
+
+</head>
+<body>
+
+<h1 align="center">CAPGET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">capget, capset
+- set/get capabilities of thread(s)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/capability.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+capget(cap_user_header_t</b> <i>hdrp</i><b>,
+cap_user_data_t</b> <i>datap</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+capset(cap_user_header_t</b> <i>hdrp</i><b>, const
+cap_user_data_t</b> <i>datap</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These two
+system calls are the raw kernel interface for getting and
+setting thread capabilities. Not only are these system calls
+specific to Linux, but the kernel API is likely to change
+and use of these system calls (in particular the format of
+the <i>cap_user_*_t</i> types) is subject to extension with
+each kernel revision, but old programs will keep
+working.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The portable
+interfaces are <b>cap_set_proc</b>(3) and
+<b>cap_get_proc</b>(3); if possible, you should use those
+interfaces in applications.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Current
+details</b> <br>
+Now that you have been warned, some current kernel details.
+The structures are defined as follows.</p>
+
+<p style="margin-left:17%; margin-top: 1em">#define
+_LINUX_CAPABILITY_VERSION_1 0x19980330 <br>
+#define _LINUX_CAPABILITY_U32S_1 1</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* V2 added in
+Linux 2.6.25; deprecated */ <br>
+#define _LINUX_CAPABILITY_VERSION_2 0x20071026 <br>
+#define _LINUX_CAPABILITY_U32S_2 2</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* V3 added in
+Linux 2.6.26 */ <br>
+#define _LINUX_CAPABILITY_VERSION_3 0x20080522 <br>
+#define _LINUX_CAPABILITY_U32S_3 2</p>
+
+<p style="margin-left:17%; margin-top: 1em">typedef struct
+__user_cap_header_struct { <br>
+__u32 version; <br>
+int pid; <br>
+} *cap_user_header_t;</p>
+
+<p style="margin-left:17%; margin-top: 1em">typedef struct
+__user_cap_data_struct { <br>
+__u32 effective; <br>
+__u32 permitted; <br>
+__u32 inheritable; <br>
+} *cap_user_data_t;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>effective</i>, <i>permitted</i>, and <i>inheritable</i>
+fields are bit masks of the capabilities defined in
+<b>capabilities</b>(7). Note that the <b>CAP_*</b> values
+are bit indexes and need to be bit-shifted before ORing into
+the bit fields. To define the structures for passing to the
+system call, you have to use the <i>struct
+__user_cap_header_struct</i> and <i>struct
+__user_cap_data_struct</i> names because the typedefs are
+only pointers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Kernels prior
+to 2.6.25 prefer 32-bit capabilities with version
+<b>_LINUX_CAPABILITY_VERSION_1</b>. Linux 2.6.25 added
+64-bit capability sets, with version
+<b>_LINUX_CAPABILITY_VERSION_2</b>. There was, however, an
+API glitch, and Linux 2.6.26 added
+<b>_LINUX_CAPABILITY_VERSION_3</b> to fix the problem.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+64-bit capabilities use <i>datap[0]</i> and <i>datap[1]</i>,
+whereas 32-bit capabilities use only <i>datap[0]</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On kernels that
+support file capabilities (VFS capabilities support), these
+system calls behave slightly differently. This support was
+added as an option in Linux 2.6.24, and became fixed
+(nonoptional) in Linux 2.6.33.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+<b>capget</b>() calls, one can probe the capabilities of any
+process by specifying its process ID with the
+<i>hdrp-&gt;pid</i> field value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For details on
+the data, see <b>capabilities</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>With VFS
+capabilities support</b> <br>
+VFS capabilities employ a file extended attribute (see
+<b>xattr</b>(7)) to allow capabilities to be attached to
+executables. This privilege model obsoletes kernel support
+for one process asynchronously setting the capabilities of
+another. That is, on kernels that have VFS capabilities
+support, when calling <b>capset</b>(), the only permitted
+values for <i>hdrp-&gt;pid</i> are 0 or, equivalently, the
+value returned by <b>gettid</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Without VFS
+capabilities support</b> <br>
+On older kernels that do not provide VFS capabilities
+support <b>capset</b>() can, if the caller has the
+<b>CAP_SETPCAP</b> capability, be used to change not only
+the caller&rsquo;s own capabilities, but also the
+capabilities of other threads. The call operates on the
+capabilities of the thread specified by the <i>pid</i> field
+of <i>hdrp</i> when that is nonzero, or on the capabilities
+of the calling thread if <i>pid</i> is 0. If <i>pid</i>
+refers to a single-threaded process, then <i>pid</i> can be
+specified as a traditional process ID; operating on a thread
+of a multithreaded process requires a thread ID of the type
+returned by <b>gettid</b>(2). For <b>capset</b>(),
+<i>pid</i> can also be: -1, meaning perform the change on
+all threads except the caller and <b>init</b>(1); or a value
+less than -1, in which case the change is applied to all
+members of the process group whose ID is -<i>pid</i>.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+zero is returned. On error, -1 is returned, and <i>errno</i>
+is set appropriately.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The calls fail
+with the error <b>EINVAL</b>, and set the <i>version</i>
+field of <i>hdrp</i> to the kernel preferred value of
+<b>_LINUX_CAPABILITY_VERSION_?</b> when an unsupported
+<i>version</i> value is specified. In this way, one can
+probe what the current preferred capability revision is.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Bad memory address. <i>hdrp</i>
+must not be NULL. <i>datap</i> may be NULL only when the
+user is trying to determine the preferred capability version
+format supported by the kernel.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>One of the arguments was invalid.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>An attempt was made to add a capability to the permitted
+set, or to set a capability in the effective set that is not
+in the permitted set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>An attempt was made to add a capability to the
+inheritable set, and either:</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">*</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%"></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">that capability was not in the
+caller&rsquo;s bounding set; or</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>the capability was not in the caller&rsquo;s permitted
+set and the caller lacked the <b>CAP_SETPCAP</b> capability
+in its effective set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="3%"></td>
+<td width="74%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The caller
+attempted to use <b>capset</b>() to modify the capabilities
+of a thread other than itself, but lacked sufficient
+privilege. For kernels supporting VFS capabilities, this is
+never permitted. For kernels lacking VFS support, the
+<b>CAP_SETPCAP</b> capability is required. (A bug in kernels
+before 2.6.11 meant that this error could also occur if a
+thread without this capability tried to change its own
+capabilities by specifying the <i>pid</i> field as a nonzero
+value (i.e., the value returned by <b>getpid</b>(2)) instead
+of 0.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>ESRCH</b></p></td>
+<td width="4%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em">No such thread.</p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These system
+calls are Linux-specific.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The portable
+interface to the capability querying and setting functions
+is provided by the <i>libcap</i> library and is available
+here: <br>
+
+<a href="http://git.kernel.org/cgit/linux/kernel/git/morgan/libcap.git">http://git.kernel.org/cgit/linux/kernel/git/morgan/libcap.git</a></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
+<b>gettid</b>(2), <b>capabilities</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,850 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:18 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NMCLI-EXAMPLES</title>
+
+</head>
+<body>
+
+<h1 align="center">NMCLI-EXAMPLES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">nmcli-examples
+- usage examples of nmcli</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="27%">
+
+
+<p style="margin-top: 1em"><b>nmcli</b> [OPTIONS...]</p></td>
+<td width="62%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>nmcli</i> is
+a command-line client for NetworkManager. It allows
+controlling NetworkManager and reporting its status. For
+more information please refer to <b>nmcli</b>(1) manual
+page.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The purpose of
+this manual page is to provide you with various examples and
+usage scenarios of <i>nmcli</i>.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Listing
+available Wi-Fi APs</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+device wifi list</b> <br>
+* SSID MODE CHAN RATE SIGNAL BARS SECURITY <br>
+netdatacomm_local Infra 6 54 Mbit/s 37 &acirc;&acirc;__ WEP
+<br>
+* F1 Infra 11 54 Mbit/s 98 &acirc;&acirc;&acirc;&acirc; WPA1
+<br>
+LoremCorp Infra 1 54 Mbit/s 62 &acirc;&acirc;&acirc;_ WPA2
+802.1X <br>
+Internet Infra 6 54 Mbit/s 29 &acirc;___ WPA1 <br>
+HPB110a.F2672A Ad-Hoc 6 54 Mbit/s 22 &acirc;___ -- <br>
+Jozinet Infra 1 54 Mbit/s 19 &acirc;___ WEP <br>
+VOIP Infra 1 54 Mbit/s 20 &acirc;___ WEP <br>
+MARTINA Infra 4 54 Mbit/s 32 &acirc;&acirc;__ WPA2 <br>
+N24PU1 Infra 7 11 Mbit/s 22 &acirc;___ -- <br>
+alfa Infra 1 54 Mbit/s 67 &acirc;&acirc;&acirc;_ WPA2 <br>
+bertnet Infra 5 54 Mbit/s 20 &acirc;___ WPA1 WPA2</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+shows how to list available Wi-Fi networks (APs). You can
+also use <i>--fields</i> option for displaying different
+columns. <b>nmcli -f all dev wifi list</b> will show all of
+them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;2.&nbsp;Connect
+to a password-protected wifi network</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+device wifi connect &quot;$SSID&quot; password
+&quot;$PASSWORD&quot;</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+--ask device wifi connect &quot;$SSID&quot;</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;3.&nbsp;Showing
+general information and properties for a Wi-Fi
+interface</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli -p
+-f general,wifi-properties device show wlan0</b> <br>
+
+===========================================================================
+<br>
+Device details (wlan0) <br>
+
+===========================================================================
+<br>
+GENERAL.DEVICE: wlan0 <br>
+GENERAL.TYPE: wifi <br>
+GENERAL.VENDOR: Intel Corporation <br>
+GENERAL.PRODUCT: PRO/Wireless 5100 AGN [Shiloh] Network
+Connection <br>
+GENERAL.DRIVER: iwlwifi <br>
+GENERAL.DRIVER-VERSION: 3.8.13-100.fc17.x86_64 <br>
+GENERAL.FIRMWARE-VERSION: 8.83.5.1 build 33692 <br>
+GENERAL.HWADDR: 00:1E:65:37:A1:D3 <br>
+GENERAL.MTU: 1500 <br>
+GENERAL.STATE: 100 (connected) <br>
+GENERAL.REASON: 0 (No reason given) <br>
+GENERAL.UDI: /sys/devices/pci0000:00/0000:00:1c.1/net/wlan0
+<br>
+GENERAL.IP-IFACE: wlan0 <br>
+GENERAL.IS-SOFTWARE: no <br>
+GENERAL.NM-MANAGED: yes <br>
+GENERAL.AUTOCONNECT: yes <br>
+GENERAL.FIRMWARE-MISSING: no <br>
+GENERAL.CONNECTION: My Alfa WiFi <br>
+GENERAL.CON-UUID: 85194f4c-d496-4eec-bae0-d880b4cbcf26 <br>
+GENERAL.CON-PATH:
+/org/freedesktop/NetworkManager/ActiveConnection/ <br>
+10 <br>
+
+---------------------------------------------------------------------------
+<br>
+WIFI-PROPERTIES.WEP: yes <br>
+WIFI-PROPERTIES.WPA: yes <br>
+WIFI-PROPERTIES.WPA2: yes <br>
+WIFI-PROPERTIES.TKIP: yes <br>
+WIFI-PROPERTIES.CCMP: yes <br>
+WIFI-PROPERTIES.AP: no <br>
+WIFI-PROPERTIES.ADHOC: yes <br>
+
+---------------------------------------------------------------------------</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+shows information about a Wi-Fi device.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;4.&nbsp;Listing
+NetworkManager polkit permissions</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+general permissions</b> <br>
+PERMISSION VALUE <br>
+org.freedesktop.NetworkManager.enable-disable-network yes
+<br>
+org.freedesktop.NetworkManager.enable-disable-wifi yes <br>
+org.freedesktop.NetworkManager.enable-disable-wwan yes <br>
+org.freedesktop.NetworkManager.enable-disable-wimax yes <br>
+org.freedesktop.NetworkManager.sleep-wake no <br>
+org.freedesktop.NetworkManager.network-control yes <br>
+org.freedesktop.NetworkManager.wifi.share.protected yes <br>
+org.freedesktop.NetworkManager.wifi.share.open yes <br>
+org.freedesktop.NetworkManager.settings.modify.system yes
+<br>
+org.freedesktop.NetworkManager.settings.modify.own yes <br>
+org.freedesktop.NetworkManager.settings.modify.hostname auth
+<br>
+org.freedesktop.NetworkManager.settings.modify.global-dns
+auth <br>
+org.freedesktop.NetworkManager.reload auth</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+shows configured polkit permissions for various
+NetworkManager operations. These permissions or actions
+(using polkit language) are configured by a system
+administrator and are not meant to be changed by users. The
+usual place for the polkit configuration is
+/usr/share/polkit-1/actions/org.freedesktop.NetworkManager.policy.
+<i>pkaction</i> command can display description for polkit
+actions.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>pkaction
+--action-id org.freedesktop.NetworkManager.network-control
+--verbose</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">More
+information about polkit can be found at
+http://www.freedesktop.org/wiki/Software/polkit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;5.&nbsp;Listing
+NetworkManager log level and domains</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+general logging</b> <br>
+LEVEL DOMAINS <br>
+INFO
+PLATFORM,RFKILL,ETHER,WIFI,BT,MB,DHCP4,DHCP6,PPP,WIFI_SCAN,IP4,IP6,A
+<br>
+
+UTOIP4,DNS,VPN,SHARING,SUPPLICANT,AGENTS,SETTINGS,SUSPEND,CORE,DEVICE,OLPC,
+<br>
+
+WIMAX,INFINIBAND,FIREWALL,ADSL,BOND,VLAN,BRIDGE,DBUS_PROPS,TEAM,CONCHECK,DC
+<br>
+B,DISPATCH</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+shows current NetworkManager logging status.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;6.&nbsp;Changing
+NetworkManager logging</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli g
+log level DEBUG domains CORE,ETHER,IP</b> <br>
+$ <b>nmcli g log level INFO domains DEFAULT</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The first
+command makes NetworkManager log in DEBUG level, and only
+for CORE, ETHER and IP domains. The second command restores
+the default logging state. Please refer to the
+<b>NetworkManager.conf</b>(5) manual page for available
+logging levels and domains.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;7.&nbsp;Activating
+a VPN connection profile requiring interactive password
+input</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+--ask con up my-vpn-con</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+activates a VPN connection profile enabling nmcli to
+interact with the user ('--ask'): this will allow nmcli to
+prompt for the VPN password on the command line when the
+<i>password-flags</i> are set to '0x02' ('always ask', see
+<b>nm-settings</b>(5) ). This is particularly useful for OTP
+based VPNs, as the user needs to be prompted for the
+password each time the connection is activated.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;8.&nbsp;Adding
+a bonding master and two slave connection profiles</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli con
+add type bond ifname mybond0 mode active-backup</b> <br>
+$ <b>nmcli con add type ethernet ifname eth1 master
+mybond0</b> <br>
+$ <b>nmcli con add type ethernet ifname eth2 master
+mybond0</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+demonstrates adding a bond master connection and two slaves.
+The first command adds a master bond connection, naming the
+bonding interface <i>mybond0</i> and using
+<i>active-backup</i> mode. The next two commands add slaves
+connections, both enslaved to <i>mybond0</i>. The first
+slave will be bound to <i>eth1</i> interface, the second to
+<i>eth2</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;9.&nbsp;Adding
+a team master and two slave connection profiles</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli con
+add type team con-name Team1 ifname Team1 config
+team1-master-json.conf</b> <br>
+$ <b>nmcli con add type ethernet con-name Team1-slave1
+ifname em1 master Team1</b> <br>
+$ <b>nmcli con add type ethernet con-name Team1-slave2
+ifname em2 master Team1</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+demonstrates adding a team master connection profile and two
+slaves. It is very similar to the bonding example. The first
+command adds a master team profile, naming the team
+interface and the profile <i>Team1</i>. The team
+configuration for the master is read from
+<i>team1-master-json.conf</i> file. Later, you can change
+the configuration with <i>modify</i> command (<b>nmcli con
+modify Team1 team.config
+team1-master-another-json.conf</b>). The last two commands
+add slaves profiles, both enslaved to <i>Team1</i>. The
+first slave will be bound to the <i>em1</i> interface, the
+second to <i>em2</i>. The slaves don't specify <i>config</i>
+and thus <i>teamd</i> will use its default configuration.
+You will activate the whole setup by activating both
+slaves:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli con
+up Team1-slave1</b> <br>
+$ <b>nmcli con up Team1-slave2</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+created profiles are marked for auto-activation. But if
+another connection has been activated on the device, the new
+profile won't activate automatically and you need to
+activate it manually.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;10.&nbsp;Adding
+a bridge and two slave profiles</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli con
+add type bridge con-name TowerBridge ifname TowerBridge</b>
+<br>
+$ <b>nmcli con add type ethernet con-name br-slave-1 ifname
+ens3 master TowerBridge</b> <br>
+$ <b>nmcli con add type ethernet con-name br-slave-2 ifname
+ens4 master TowerBridge</b> <br>
+$ <b>nmcli con modify TowerBridge bridge.stp no</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+demonstrates adding a bridge master connection and two
+slaves. The first command adds a master bridge connection,
+naming the bridge interface and the profile as
+<i>TowerBridge</i>. The next two commands add slaves
+profiles, both will be enslaved to <i>TowerBridge</i>. The
+first slave will be tied to <i>ens3</i> interface, the
+second to <i>ens4</i>. The last command will disable 802.1D
+STP for the TowerBridge profile.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;11.&nbsp;Adding
+an ethernet connection profile with manual IP
+configuration</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli con
+add con-name my-con-em1 ifname em1 type ethernet \ <br>
+ip4 192.168.100.100/24 gw4 192.168.100.1 ip4 1.2.3.4 ip6
+abbe::cafe</b> <br>
+$ <b>nmcli con mod my-con-em1 ipv4.dns &quot;8.8.8.8
+8.8.4.4&quot;</b> <br>
+$ <b>nmcli con mod my-con-em1 +ipv4.dns 1.2.3.4</b> <br>
+$ <b>nmcli con mod my-con-em1 ipv6.dns
+&quot;2001:4860:4860::8888 2001:4860:4860::8844&quot;</b>
+<br>
+$ <b>nmcli -p con show my-con-em1</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The first
+command adds an Ethernet connection profile named
+<i>my-con-em1</i> that is bound to interface name
+<i>em1</i>. The profile is configured with static IP
+addresses. Three addresses are added, two IPv4 addresses and
+one IPv6. The first IP 192.168.100.100 has a prefix of 24
+(netmask equivalent of 255.255.255.0). Gateway entry will
+become the default route if this profile is activated on em1
+interface (and there is no connection with higher priority).
+The next two addresses do not specify a prefix, so a default
+prefix will be used, i.e. 32 for IPv4 and 128 for IPv6. The
+second, third and fourth commands modify DNS parameters of
+the new connection profile. The last <i>con show</i> command
+displays the profile so that all parameters can be
+reviewed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;12.&nbsp;Convenient
+field values retrieval for scripting</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli -g
+ip4.address connection show my-con-eth0</b> <br>
+192.168.1.12/24</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli -g
+ip4.address,ip4.dns connection show my-con-eth0</b> <br>
+192.168.1.12/24 <br>
+192.168.1.1</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli -g
+ip4 connection show my-con-eth0</b> <br>
+IP4:192.168.1.12/24:192.168.1.1::192.168.1.1::</p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+shows retrieval of ip4 connection field values via the
+--get-values option. Multiple comma separated fields can be
+provided: they will be printed one per line. If a whole
+section is provided instead of a single field, the name of
+the section will be printed followed by all the related
+field values on the same line. See also --terse, --mode,
+--fields and --escape options in <b>nmcli</b>(1) manual page
+for more customized output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;13.&nbsp;Adding
+an Ethernet connection and configuring SR-IOV VFs</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli con
+add type ethernet con-name EthernetPF ifname em1</b> <br>
+$ <b>nmcli con modify EthernetPF sriov.total-vfs 3
+sriov.autoprobe-drivers false</b> <br>
+$ <b>nmcli con modify EthernetPF sriov.vfs '0
+mac=00:11:22:33:44:55 vlans=10, 1 trust=true
+spoof-check=false'</b> <br>
+$ <b>nmcli con modify EthernetPF +sriov.vfs '2
+max-tx-rate=20'</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+demonstrates adding an Ethernet connection for physical
+function (PF) <i>ens4</i> and configuring 3 SR-IOV virtual
+functions (VFs) on it. The first VF is configured with MAC
+address 00:11:22:33:44:55 and VLAN 10, the second one has
+the <i>trust</i> and <i>spoof-check</i> features
+respectively enabled and disabled. VF number 2 has a maximum
+transmission rate of 20Mbps. The kernel is instructed to not
+automatically instantiate a network interface for the
+VFs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;14.&nbsp;Escaping
+colon characters in tabular mode</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli -t
+-f general -e yes -m tab dev show eth0</b> <br>
+GENERAL:eth0:ethernet:Intel Corporation:82567LM Gigabit
+Network Connection: <br>
+e1000e:2.1.4-k:1.8-3:00\:22\:68\:15\:29\:21:1500:100
+(connected):0 (No reas <br>
+on
+given):/sys/devices/pci0000\:00/0000\:00\:19.0/net/eth0:eth0:yes:yes:no:
+<br>
+
+ethernet-13:89cbcbc6-dc85-456c-9c8b-bd828fee3917:/org/freedesktop/NetworkMa
+<br>
+nager/ActiveConnection/9</p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+shows escaping colon characters in tabular mode. It may be
+useful for script processing, because ':' is used as a field
+separator.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;15.&nbsp;nmcli
+usage in a NetworkManager dispatcher script to make Ethernet
+and Wi-Fi mutually exclusive</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#!/bin/bash
+<br>
+export LC_ALL=C</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">enable_disable_wifi
+() <br>
+{ <br>
+result=$(nmcli dev | grep &quot;ethernet&quot; | grep -w
+&quot;connected&quot;) <br>
+if [ -n &quot;$result&quot; ]; then <br>
+nmcli radio wifi off <br>
+else <br>
+nmcli radio wifi on <br>
+fi <br>
+}</p>
+
+<p style="margin-left:17%; margin-top: 1em">if [
+&quot;$2&quot; = &quot;up&quot; ]; then <br>
+enable_disable_wifi <br>
+fi</p>
+
+<p style="margin-left:17%; margin-top: 1em">if [
+&quot;$2&quot; = &quot;down&quot; ]; then <br>
+enable_disable_wifi <br>
+fi</p>
+
+<p style="margin-left:11%; margin-top: 1em">This dispatcher
+script makes Wi-Fi mutually exclusive with wired networking.
+When a wired interface is connected, Wi-Fi will be set to
+airplane mode (rfkilled). When the wired interface is
+disconnected, Wi-Fi will be turned back on. Name this script
+e.g. 70-wifi-wired-exclusive.sh and put it into
+/etc/NetworkManager/dispatcher.d/ directory. See
+<b>NetworkManager</b>(8) manual page for more information
+about NetworkManager dispatcher scripts.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+sessions of interactive connection editor</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;16.&nbsp;Adding
+an ethernet connection profile in interactive editor
+(a)</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+connection edit type ethernet</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">===| nmcli
+interactive connection editor |===</p>
+
+<p style="margin-left:17%; margin-top: 1em">Adding a new
+'802-3-ethernet' connection</p>
+
+<p style="margin-left:17%; margin-top: 1em">Type 'help' or
+'?' for available commands. <br>
+Type 'describe [&lt;setting&gt;.&lt;prop&gt;]' for detailed
+property description.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You may edit
+the following settings: connection, 802-3-ethernet
+(ethernet), <br>
+802-1x, ipv4, ipv6, dcb <br>
+nmcli&gt; <b>print</b> <br>
+
+===========================================================================
+<br>
+Connection details <br>
+
+===========================================================================
+<br>
+connection.id: ethernet-4 <br>
+connection.uuid: de89cdeb-a3e1-4d53-8fa0-c22546c775f4 <br>
+connection.interface-name: -- <br>
+connection.type: 802-3-ethernet <br>
+connection.autoconnect: yes <br>
+connection.autoconnect-priority: 0 <br>
+connection.timestamp: 0 <br>
+connection.read-only: no <br>
+connection.permissions: <br>
+connection.zone: -- <br>
+connection.master: -- <br>
+connection.slave-type: -- <br>
+connection.secondaries: <br>
+connection.gateway-ping-timeout: 0 <br>
+
+---------------------------------------------------------------------------
+<br>
+802-3-ethernet.port: -- <br>
+802-3-ethernet.speed: 0 <br>
+802-3-ethernet.duplex: -- <br>
+802-3-ethernet.auto-negotiate: yes <br>
+802-3-ethernet.mac-address: -- <br>
+802-3-ethernet.cloned-mac-address: -- <br>
+802-3-ethernet.mac-address-blacklist: <br>
+802-3-ethernet.mtu: auto <br>
+802-3-ethernet.s390-subchannels: <br>
+802-3-ethernet.s390-nettype: -- <br>
+802-3-ethernet.s390-options: <br>
+
+---------------------------------------------------------------------------
+<br>
+ipv4.method: auto <br>
+ipv4.dns: <br>
+ipv4.dns-search: <br>
+ipv4.addresses: <br>
+ipv4.gateway: -- <br>
+ipv4.routes: <br>
+ipv4.route-metric: -1 <br>
+ipv4.ignore-auto-routes: no <br>
+ipv4.ignore-auto-dns: no <br>
+ipv4.dhcp-client-id: -- <br>
+ipv4.dhcp-send-hostname: yes <br>
+ipv4.dhcp-hostname: -- <br>
+ipv4.never-default: no <br>
+ipv4.may-fail: yes <br>
+
+---------------------------------------------------------------------------
+<br>
+ipv6.method: auto <br>
+ipv6.dns: <br>
+ipv6.dns-search: <br>
+ipv6.addresses: <br>
+ipv6.gateway: -- <br>
+ipv6.routes: <br>
+ipv6.route-metric: -1 <br>
+ipv6.ignore-auto-routes: no <br>
+ipv6.ignore-auto-dns: no <br>
+ipv6.never-default: no <br>
+ipv6.may-fail: yes <br>
+ipv6.ip6-privacy: -1 (unknown) <br>
+ipv6.dhcp-hostname: -- <br>
+
+---------------------------------------------------------------------------
+<br>
+nmcli&gt; <b>goto ethernet</b> <br>
+You may edit the following properties: port, speed, duplex,
+auto-negotiate, <br>
+mac-address, cloned-mac-address, mac-address-blacklist, mtu,
+s390-subchann <br>
+els, s390-nettype, s390-options <br>
+nmcli 802-3-ethernet&gt; set mtu 1492 <br>
+nmcli 802-3-ethernet&gt; b <br>
+nmcli&gt; <b>goto ipv4.addresses</b> <br>
+nmcli ipv4.addresses&gt; desc</p>
+
+<p style="margin-left:17%; margin-top: 1em">=== [addresses]
+=== <br>
+[NM property description] <br>
+Array of IP addresses.</p>
+
+<p style="margin-left:17%; margin-top: 1em">[nmcli specific
+description] <br>
+Enter a list of IPv4 addresses formatted as: <br>
+ip[/prefix], ip[/prefix],... <br>
+Missing prefix is regarded as prefix of 32.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:
+192.168.1.5/24, 10.0.0.11/24</p>
+
+<p style="margin-left:17%; margin-top: 1em">nmcli
+ipv4.addresses&gt; set 192.168.1.100/24 <br>
+Do you also want to set 'ipv4.method' to 'manual'? [yes]:
+yes <br>
+nmcli ipv4.addresses&gt; <br>
+nmcli ipv4.addresses&gt; print <br>
+addresses: 192.168.1.100/24 <br>
+nmcli ipv4.addresses&gt; back <br>
+nmcli ipv4&gt; b <br>
+nmcli&gt; <b>set ipv4.gateway 192.168.1.1</b> <br>
+nmcli&gt; <b>verify</b> <br>
+Verify connection: OK <br>
+nmcli&gt; <b>print</b> <br>
+
+===========================================================================
+<br>
+Connection details <br>
+
+===========================================================================
+<br>
+connection.id: ethernet-4 <br>
+connection.uuid: de89cdeb-a3e1-4d53-8fa0-c22546c775f4 <br>
+connection.interface-name: -- <br>
+connection.type: 802-3-ethernet <br>
+connection.autoconnect: yes <br>
+connection.autoconnect-priority: 0 <br>
+connection.timestamp: 0 <br>
+connection.read-only: no <br>
+connection.permissions: <br>
+connection.zone: -- <br>
+connection.master: -- <br>
+connection.slave-type: -- <br>
+connection.secondaries: <br>
+connection.gateway-ping-timeout: 0 <br>
+
+---------------------------------------------------------------------------
+<br>
+802-3-ethernet.port: -- <br>
+802-3-ethernet.speed: 0 <br>
+802-3-ethernet.duplex: -- <br>
+802-3-ethernet.auto-negotiate: yes <br>
+802-3-ethernet.mac-address: -- <br>
+802-3-ethernet.cloned-mac-address: -- <br>
+802-3-ethernet.mac-address-blacklist: <br>
+802-3-ethernet.mtu: 1492 <br>
+802-3-ethernet.s390-subchannels: <br>
+802-3-ethernet.s390-nettype: -- <br>
+802-3-ethernet.s390-options: <br>
+
+---------------------------------------------------------------------------
+<br>
+ipv4.method: manual <br>
+ipv4.dns: <br>
+ipv4.dns-search: <br>
+ipv4.addresses: 192.168.1.100/24 <br>
+ipv4.gateway: 192.168.1.1 <br>
+ipv4.routes: <br>
+ipv4.route-metric: -1 <br>
+ipv4.ignore-auto-routes: no <br>
+ipv4.ignore-auto-dns: no <br>
+ipv4.dhcp-client-id: -- <br>
+ipv4.dhcp-send-hostname: yes <br>
+ipv4.dhcp-hostname: -- <br>
+ipv4.never-default: no <br>
+ipv4.may-fail: yes <br>
+
+---------------------------------------------------------------------------
+<br>
+ipv6.method: auto <br>
+ipv6.dns: <br>
+ipv6.dns-search: <br>
+ipv6.addresses: <br>
+ipv6.routes: <br>
+ipv6.route-metric: -1 <br>
+ipv6.ignore-auto-routes: no <br>
+ipv6.ignore-auto-dns: no <br>
+ipv6.never-default: no <br>
+ipv6.may-fail: yes <br>
+ipv6.ip6-privacy: -1 (unknown) <br>
+ipv6.dhcp-hostname: -- <br>
+
+---------------------------------------------------------------------------
+<br>
+nmcli&gt; <b>set ipv4.dns 8.8.8.8 8.8.4.4</b> <br>
+nmcli&gt; <b>print</b> <br>
+
+===========================================================================
+<br>
+Connection details <br>
+
+===========================================================================
+<br>
+connection.id: ethernet-4 <br>
+connection.uuid: de89cdeb-a3e1-4d53-8fa0-c22546c775f4 <br>
+connection.interface-name: -- <br>
+connection.type: 802-3-ethernet <br>
+connection.autoconnect: yes <br>
+connection.autoconnect-priority: 0 <br>
+connection.timestamp: 0 <br>
+connection.read-only: no <br>
+connection.permissions: <br>
+connection.zone: -- <br>
+connection.master: -- <br>
+connection.slave-type: -- <br>
+connection.secondaries: <br>
+connection.gateway-ping-timeout: 0 <br>
+
+---------------------------------------------------------------------------
+<br>
+802-3-ethernet.port: -- <br>
+802-3-ethernet.speed: 0 <br>
+802-3-ethernet.duplex: -- <br>
+802-3-ethernet.auto-negotiate: yes <br>
+802-3-ethernet.mac-address: -- <br>
+802-3-ethernet.cloned-mac-address: -- <br>
+802-3-ethernet.mac-address-blacklist: <br>
+802-3-ethernet.mtu: 1492 <br>
+802-3-ethernet.s390-subchannels: <br>
+802-3-ethernet.s390-nettype: -- <br>
+802-3-ethernet.s390-options: <br>
+
+---------------------------------------------------------------------------
+<br>
+ipv4.method: manual <br>
+ipv4.dns: 8.8.8.8,8.8.4.4 <br>
+ipv4.dns-search: <br>
+ipv4.addresses: 192.168.1.100/24 <br>
+ipv4.gateway: 192.168.1.1 <br>
+ipv4.routes: <br>
+ipv4.route-metric: -1 <br>
+ipv4.ignore-auto-routes: no <br>
+ipv4.ignore-auto-dns: no <br>
+ipv4.dhcp-client-id: -- <br>
+ipv4.dhcp-send-hostname: yes <br>
+ipv4.dhcp-hostname: -- <br>
+ipv4.never-default: no <br>
+ipv4.may-fail: yes <br>
+
+---------------------------------------------------------------------------
+<br>
+ipv6.method: auto <br>
+ipv6.dns: <br>
+ipv6.dns-search: <br>
+ipv6.addresses: <br>
+ipv6.gateway: -- <br>
+ipv6.routes: <br>
+ipv6.route-metric: -1 <br>
+ipv6.ignore-auto-routes: no <br>
+ipv6.ignore-auto-dns: no <br>
+ipv6.never-default: no <br>
+ipv6.may-fail: yes <br>
+ipv6.ip6-privacy: -1 (unknown) <br>
+ipv6.dhcp-hostname: -- <br>
+
+---------------------------------------------------------------------------
+<br>
+nmcli&gt; <b>verify</b> <br>
+Verify connection: OK <br>
+nmcli&gt; <b>save</b> <br>
+Connection 'ethernet-4'
+(de89cdeb-a3e1-4d53-8fa0-c22546c775f4) successfully <br>
+saved. <br>
+nmcli&gt; <b>quit</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Example session
+in the nmcli interactive connection editor. The scenario
+creates an Ethernet connection profile with static
+addressing (IPs and DNS).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;17.&nbsp;Bluetooth
+connection profiles</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">NetworkManger
+supports both connecting to NAP and DUN devices as a client.
+It also supports sharing the network via a NAP server.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For NAP client
+connections, NetworkManager automatically creates a suitable
+in-memory profile for paired devices if none is available.
+You may use that generated profile directly, but you may
+also modify and persist it, which will prevent to
+automatically re-create it. You may also create a profile
+from scratch. For example, the following uses DHCP and IPv6
+autoconf for address configuration:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+connection add type bluetooth con-name &quot;Profile for My
+Bluetooth Device (NAP)&quot; autoconnect no bluetooth.type
+panu bluetooth.bdaddr &quot;$BDADDR&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">For DUN
+connections, the user needs to configure modem settings and
+hence no profile gets created automatically. The modem
+settings depend on your device and you either need a
+&quot;gsm&quot; or a &quot;csma&quot; section. For
+example,</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+connection add type bluetooth con-name &quot;Profile for My
+Bluetooth Device (DUN)&quot; autoconnect no bluetooth.type
+dun bluetooth.bdaddr &quot;$BDADDR&quot; gsm.apn
+apn.com</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally, you
+can create a bluetooth hotspot. BlueZ implements those as a
+bridge device, so such profiles also have a bridge section.
+Also, you probably want to set IP methods as
+&quot;shared&quot;, so that clients get automatic IP
+addressing. Note that the &quot;shared&quot; IPv4 method
+requires dnsmasq to be available.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>nmcli
+connection add type bluetooth con-name &quot;My Bluetooth
+Hotspot&quot; autoconnect no ifname btnap0 bluetooth.type
+nap ipv4.method shared ipv6.method shared</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nmcli</b>(1),
+<b>NetworkManager</b>(8), <b>NetworkManager.conf</b>(5),
+<b>nm-settings</b>(5), <b>nm-online</b>(1),
+<b>nm-applet</b>(1), <b>nm-connection-editor</b>(1)</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,2272 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:13 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>netplan</title>
+
+</head>
+<body>
+
+<h1 align="center">netplan</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">netplan - YAML
+network configuration abstraction for various backends</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>netplan</b>
+[ <i>COMMAND</i> | help ]</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See <b>netplan
+help</b> for a list of available commands on this
+system.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Introduction</b>
+<br>
+Distribution installers, cloud instantiation, image builds
+for particular devices, or any other way to deploy an
+operating system put its desired network configuration into
+YAML configuration file(s). During early boot, the netplan
+&ldquo;network renderer&rdquo; runs which reads
+<tt>/{lib,etc,run}/netplan/*.yaml</tt> and writes
+configuration to <tt>/run</tt> to hand off control of
+devices to the specified networking daemon.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Configured devices get handled by systemd-networkd by
+default, unless explicitly marked as managed by a specific
+renderer (NetworkManager)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Devices not covered by the network config do not get
+touched at all.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Usable in initramfs (few dependencies and fast)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>No persistent generated config, only original YAML
+config</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Parser supports multiple config files to allow
+applications like libvirt or lxd to package up expected
+network config (<tt>virbr0</tt>, <tt>lxdbr0</tt>), or to
+change the global default policy to use NetworkManager for
+everything.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Retains the flexibility to change backends/policy later
+or adjust to removing NetworkManager, as generated
+configuration is ephemeral.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>General
+structure</b> <br>
+netplan&rsquo;s configuration files use the YAML
+(http://yaml.org/spec/1.1/current.html) format. All
+<tt>/{lib,etc,run}/netplan/*.yaml</tt> are considered.
+Lexicographically later files (regardless of in which
+directory they are) amend (new mapping keys) or override
+(same mapping keys) previous ones. A file in
+<tt>/run/netplan</tt> completely shadows a file with same
+name in <tt>/etc/netplan</tt>, and a file in either of those
+directories shadows a file with the same name in
+<tt>/lib/netplan</tt>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The top-level
+node in a netplan configuration file is a <tt>network:</tt>
+mapping that contains <tt>version: 2</tt> (the YAML
+currently being used by curtin, MaaS, etc. is version 1),
+and then device definitions grouped by their type, such as
+<tt>ethernets:</tt>, <tt>modems:</tt>, <tt>wifis:</tt>, or
+<tt>bridges:</tt>. These are the types that our renderer can
+understand and are supported by our backends.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each type block
+contains device definitions as a map where the keys (called
+&ldquo;configuration IDs&rdquo;) are defined as below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Device
+configuration IDs</b> <br>
+The key names below the per-device-type definition maps
+(like <tt>ethernets:</tt>) are called &ldquo;ID&rdquo;s.
+They must be unique throughout the entire set of
+configuration files. Their primary purpose is to serve as
+anchor names for composite devices, for example to enumerate
+the members of a bridge that is currently being defined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(Since 0.97) If
+an interface is defined with an ID in a configuration file;
+it will be brought up by the applicable renderer. To not
+have netplan touch an interface at all, it should be
+completely omitted from the netplan configuration files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+physically/structurally different classes of device
+definitions, and the ID field has a different interpretation
+for each: <br>
+Physical devices</p>
+
+<p style="margin-left:22%;">(Examples: ethernet, modem,
+wifi) These can dynamically come and go between reboots and
+even during runtime (hotplugging). In the generic case, they
+can be selected by <tt>match:</tt> rules on desired
+properties, such as name/name pattern, MAC address, driver,
+or device paths. In general these will match any number of
+devices (unless they refer to properties which are unique
+such as the full path or MAC address), so without further
+knowledge about the hardware these will always be considered
+as a group.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is valid to
+specify no match rules at all, in which case the ID field is
+simply the interface name to be matched. This is mostly
+useful if you want to keep simple cases simple, and
+it&rsquo;s how network device configuration has been done
+for a long time.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If there are
+<tt>match</tt>: rules, then the ID field is a purely opaque
+name which is only being used for references from
+definitions of compound devices in the config.</p>
+
+<p style="margin-left:11%;">Virtual devices</p>
+
+<p style="margin-left:22%;">(Examples: veth, bridge, bond)
+These are fully under the control of the config file(s) and
+the network stack. I. e. these devices are being created
+instead of matched. Thus <tt>match:</tt> and
+<tt>set-name:</tt> are not applicable for these, and the ID
+field is the name of the created virtual device.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+properties for physical device types <br>
+Note:</b> Some options will not work reliably for devices
+matched by name only and rendered by networkd, due to
+interactions with device renaming in udev. Match devices by
+MAC when setting options like: <tt>wakeonlan</tt> or
+<tt>*-offload</tt>. <b><br>
+match</b> (mapping)</p>
+
+<p style="margin-left:22%;">This selects a subset of
+available physical devices by various hardware properties.
+The following configuration will then apply to all matching
+devices, as soon as they appear. <i>All</i> specified
+properties must match. <b><br>
+name</b> (scalar)</p>
+
+<p style="margin-left:32%;">Current interface name. Globs
+are supported, and the primary use case for matching on
+names, as selecting one fixed name can be more easily
+achieved with having no <tt>match:</tt> at all and just
+using the ID (see above). (<tt>NetworkManager</tt>: as of
+v1.14.0)</p>
+
+<p style="margin-left:22%;"><b>macaddress</b> (scalar)</p>
+
+<p style="margin-left:32%;">Device&rsquo;s MAC address in
+the form &ldquo;XX:XX:XX:XX:XX:XX&rdquo;. Globs are not
+allowed.</p>
+
+<p style="margin-left:22%;"><b>driver</b> (scalar or
+sequence of scalars) &ndash; sequence since <b>0.104</b></p>
+
+<p style="margin-left:32%;">Kernel driver name,
+corresponding to the <tt>DRIVER</tt> udev property. A
+sequence of globs is supported, any of which must match.
+Matching on driver is <i>only</i> supported with
+networkd.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Examples:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="43%">
+
+
+<p>all cards on second PCI bus:</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<pre style="margin-left:35%; margin-top: 1em"> match:
+   name: enp2*</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="27%">
+
+
+<p style="margin-top: 1em">fixed MAC address:</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<pre style="margin-left:35%; margin-top: 1em"> match:
+   macaddress: 11:22:33:AA:BB:FF</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em">first card of driver
+<tt>ixgbe</tt>:</p> </td>
+<td width="34%">
+</td></tr>
+</table>
+
+<pre style="margin-left:35%; margin-top: 1em"> match:
+   driver: ixgbe
+   name: en*s0</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em">first card with a driver
+matching <tt>bcmgenet</tt> or <tt>smsc*</tt>:</p></td></tr>
+</table>
+
+<pre style="margin-left:35%; margin-top: 1em"> match:
+   driver: [&quot;bcmgenet&quot;, &quot;smsc*&quot;]
+   name: en*</pre>
+
+
+<p style="margin-left:11%;"><b>set-name</b> (scalar)</p>
+
+<p style="margin-left:22%;">When matching on unique
+properties such as path or MAC, or with additional
+assumptions such as &ldquo;there will only ever be one wifi
+device&rdquo;, match rules can be written so that they only
+match one device. Then this property can be used to give
+that device a more specific/desirable/nicer name than the
+default from udev&rsquo;s ifnames. Any additional device
+that satisfies the match rules will then fail to get renamed
+and keep the original kernel name (and dmesg will show an
+error).</p>
+
+<p style="margin-left:11%;"><b>wakeonlan</b> (bool)</p>
+
+<p style="margin-left:22%;">Enable wake on LAN. Off by
+default.</p>
+
+<p style="margin-left:11%;"><b>emit-lldp</b> (bool) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) Whether
+to emit LLDP packets. Off by default.</p>
+
+
+<p style="margin-left:11%;"><b>receive-checksum-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the hardware offload for checksumming of
+ingress network packets is enabled (disabled). When unset,
+the kernel&rsquo;s default will be used.</p>
+
+
+<p style="margin-left:11%;"><b>transmit-checksum-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the hardware offload for checksumming of
+egress network packets is enabled (disabled). When unset,
+the kernel&rsquo;s default will be used.</p>
+
+
+<p style="margin-left:11%;"><b>tcp-segmentation-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the TCP Segmentation Offload (TSO) is
+enabled (disabled). When unset, the kernel&rsquo;s default
+will be used.</p>
+
+
+<p style="margin-left:11%;"><b>tcp6-segmentation-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the TCP6 Segmentation Offload
+(tx-tcp6-segmentation) is enabled (disabled). When unset,
+the kernel&rsquo;s default will be used.</p>
+
+
+<p style="margin-left:11%;"><b>generic-segmentation-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the Generic Segmentation Offload (GSO) is
+enabled (disabled). When unset, the kernel&rsquo;s default
+will be used.</p>
+
+<p style="margin-left:11%;"><b>generic-receive-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the Generic Receive Offload (GRO) is
+enabled (disabled). When unset, the kernel&rsquo;s default
+will be used.</p>
+
+<p style="margin-left:11%;"><b>large-receive-offload</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) If set
+to true (false), the Large Receive Offload (LRO) is enabled
+(disabled). When unset, the kernel&rsquo;s default will be
+used.</p>
+
+<p style="margin-left:11%;"><b>openvswitch</b> (mapping)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">This provides additional
+configuration for the network device for openvswitch. If
+openvswitch is not available on the system, netplan treats
+the presence of openvswitch configuration as an error.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Any supported
+network device that is declared with the
+<tt>openvswitch</tt> mapping (or any bond/bridge that
+includes an interface with an openvswitch configuration)
+will be created in openvswitch instead of the defined
+renderer. In the case of a <tt>vlan</tt> definition declared
+the same way, netplan will create a fake VLAN bridge in
+openvswitch with the requested vlan properties. <b><br>
+external-ids</b> (mapping) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Passed-through directly to
+OpenVSwitch</p>
+
+<p style="margin-left:22%;"><b>other-config</b> (mapping)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Passed-through directly to
+OpenVSwitch</p>
+
+<p style="margin-left:22%;"><b>lacp</b> (scalar) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for bond interfaces.
+Accepts <tt>active</tt>, <tt>passive</tt> or <tt>off</tt>
+(the default).</p>
+
+<p style="margin-left:22%;"><b>fail-mode</b> (scalar)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for bridge interfaces.
+Accepts <tt>secure</tt> or <tt>standalone</tt> (the
+default).</p>
+
+<p style="margin-left:22%;"><b>mcast-snooping</b> (bool)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for bridge interfaces.
+False by default.</p>
+
+<p style="margin-left:22%;"><b>protocols</b> (sequence of
+scalars) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for bridge interfaces or
+the network section. List of protocols to be used when
+negotiating a connection with the controller. Accepts
+<tt>OpenFlow10</tt>, <tt>OpenFlow11</tt>,
+<tt>OpenFlow12</tt>, <tt>OpenFlow13</tt>,
+<tt>OpenFlow14</tt>, <tt>OpenFlow15</tt> and
+<tt>OpenFlow16</tt>.</p>
+
+<p style="margin-left:22%;"><b>rstp</b> (bool) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for bridge interfaces.
+False by default.</p>
+
+<p style="margin-left:22%;"><b>controller</b> (mapping)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for bridge interfaces.
+Specify an external OpenFlow controller. <b><br>
+addresses</b> (sequence of scalars)</p>
+
+<p style="margin-left:43%;">Set the list of addresses to
+use for the controller targets. The syntax of these
+addresses is as defined in ovs-vsctl(8). Example: addresses:
+<tt>[tcp:127.0.0.1:6653,
+&quot;ssl:[fe80::1234%eth0]:6653&quot;]</tt></p>
+
+<p style="margin-left:32%;"><b>connection-mode</b>
+(scalar)</p>
+
+<p style="margin-left:43%;">Set the connection mode for the
+controller. Supported options are <tt>in-band</tt> and
+<tt>out-of-band</tt>. The default is <tt>in-band</tt>.</p>
+
+<p style="margin-left:22%;"><b>ports</b> (sequence of
+sequence of scalars) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">OpenvSwitch patch ports. Each
+port is declared as a pair of names which can be referenced
+as interfaces in dependent virtual devices (bonds,
+bridges).</p>
+
+<p style="margin-left:32%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:43%; margin-top: 1em"> openvswitch:
+   ports:
+     - [patch0-1, patch1-0]</pre>
+
+
+<p style="margin-left:22%;"><b>ssl</b> (mapping) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Valid for global
+<tt>openvswitch</tt> settings. Options for configuring SSL
+server endpoint for the switch. <b><br>
+ca-cert</b> (scalar)</p>
+
+<p style="margin-left:43%;">Path to a file containing the
+CA certificate to be used.</p>
+
+<p style="margin-left:32%;"><b>certificate</b> (scalar)</p>
+
+<p style="margin-left:43%;">Path to a file containing the
+server certificate.</p>
+
+<p style="margin-left:32%;"><b>private-key</b> (scalar)</p>
+
+<p style="margin-left:43%;">Path to a file containing the
+private key for the server.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+properties for all device types <br>
+renderer</b> (scalar)</p>
+
+<p style="margin-left:22%;">Use the given networking
+backend for this definition. Currently supported are
+<tt>networkd</tt> and <tt>NetworkManager</tt>. This property
+can be specified globally in <tt>network:</tt>, for a device
+type (in e. g. <tt>ethernets:</tt>) or for a particular
+device definition. Default is <tt>networkd</tt>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">(Since 0.99)
+The <tt>renderer</tt> property has one additional acceptable
+value for vlan objects (i. e. defined in <tt>vlans:</tt>):
+<tt>sriov</tt>. If a vlan is defined with the <tt>sriov</tt>
+renderer for an SR-IOV Virtual Function interface, this
+causes netplan to set up a hardware VLAN filter for it.
+There can be only one defined per VF.</p>
+
+<p style="margin-left:11%;"><b>dhcp4</b> (bool)</p>
+
+<p style="margin-left:22%;">Enable DHCP for IPv4. Off by
+default.</p>
+
+<p style="margin-left:11%;"><b>dhcp6</b> (bool)</p>
+
+<p style="margin-left:22%;">Enable DHCP for IPv6. Off by
+default. This covers both stateless DHCP - where the DHCP
+server supplies information like DNS nameservers but not the
+IP address - and stateful DHCP, where the server provides
+both the address and the other information.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you are in
+an IPv6-only environment with completely stateless
+autoconfiguration (SLAAC with RDNSS), this option can be set
+to cause the interface to be brought up. (Setting accept-ra
+alone is not sufficient.) Autoconfiguration will still
+honour the contents of the router advertisement and only use
+DHCP if requested in the RA.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that
+<b>rdnssd</b>(8) is required to use RDNSS with networkd. No
+extra software is required for NetworkManager.</p>
+
+<p style="margin-left:11%;"><b>ipv6-mtu</b> (scalar)
+&ndash; since <b>0.98</b></p>
+
+<p style="margin-left:22%;">Set the IPv6 MTU (only
+supported with <tt>networkd</tt> backend). Note that needing
+to set this is an unusual requirement.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Requires
+feature: ipv6-mtu</b></p>
+
+<p style="margin-left:11%;"><b>ipv6-privacy</b> (bool)</p>
+
+<p style="margin-left:22%;">Enable IPv6 Privacy Extensions
+(RFC 4941) for the specified interface, and prefer temporary
+addresses. Defaults to false - no privacy extensions. There
+is currently no way to have a private address but prefer the
+public address.</p>
+
+<p style="margin-left:11%;"><b>link-local</b> (sequence of
+scalars)</p>
+
+<p style="margin-left:22%;">Configure the link-local
+addresses to bring up. Valid options are &rsquo;ipv4&rsquo;
+and &rsquo;ipv6&rsquo;, which respectively allow enabling
+IPv4 and IPv6 link local addressing. If this field is not
+defined, the default is to enable only IPv6 link-local
+addresses. If the field is defined but configured as an
+empty set, IPv6 link-local addresses are disabled as well as
+IPv4 link- local addresses.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This feature
+enables or disables link-local addresses for a protocol, but
+the actual implementation differs per backend. On networkd,
+this directly changes the behavior and may add an extra
+address on an interface. When using the NetworkManager
+backend, enabling link-local has no effect if the interface
+also has DHCP enabled.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example to
+enable only IPv4 link-local: <tt>link-local: [ ipv4 ]</tt>
+Example to enable all link-local addresses: <tt>link-local:
+[ ipv4, ipv6 ]</tt> Example to disable all link-local
+addresses: <tt>link-local: [ ]</tt></p>
+
+<p style="margin-left:11%;"><b>ignore-carrier</b> (bool)
+&ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(networkd backend only) Allow
+the specified interface to be configured even if it has no
+carrier.</p>
+
+<p style="margin-left:11%;"><b>critical</b> (bool)</p>
+
+<p style="margin-left:22%;">Designate the connection as
+&ldquo;critical to the system&rdquo;, meaning that special
+care will be taken by to not release the assigned IP when
+the daemon is restarted. (not recognized by
+NetworkManager)</p>
+
+<p style="margin-left:11%;"><b>dhcp-identifier</b>
+(scalar)</p>
+
+<p style="margin-left:22%;">(networkd backend only) Sets
+the source of DHCPv4 client identifier. If <tt>mac</tt> is
+specified, the MAC address of the link is used. If this
+option is omitted, or if <tt>duid</tt> is specified,
+networkd will generate an RFC4361-compliant client
+identifier for the interface by combining the link&rsquo;s
+IAID and DUID.</p>
+
+<p style="margin-left:11%;"><b>dhcp4-overrides</b>
+(mapping)</p>
+
+<p style="margin-left:22%;">(networkd backend only)
+Overrides default DHCP behavior; see the <tt>DHCP
+Overrides</tt> section below.</p>
+
+<p style="margin-left:11%;"><b>dhcp6-overrides</b>
+(mapping)</p>
+
+<p style="margin-left:22%;">(networkd backend only)
+Overrides default DHCP behavior; see the <tt>DHCP
+Overrides</tt> section below.</p>
+
+<p style="margin-left:11%;"><b>accept-ra</b> (bool)</p>
+
+<p style="margin-left:22%;">Accept Router Advertisement
+that would have the kernel configure IPv6 by itself. When
+enabled, accept Router Advertisements. When disabled, do not
+respond to Router Advertisements. If unset use the host
+kernel default setting.</p>
+
+<p style="margin-left:11%;"><b>addresses</b> (sequence of
+scalars and mappings)</p>
+
+<p style="margin-left:22%;">Add static addresses to the
+interface in addition to the ones received through DHCP or
+RA. Each sequence entry is in CIDR notation, i. e. of the
+form <tt>addr/prefixlen</tt>. <tt>addr</tt> is an IPv4 or
+IPv6 address as recognized by <b>inet_pton</b>(3) and
+<tt>prefixlen</tt> the number of bits of the subnet.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For virtual
+devices (bridges, bonds, vlan) if there is no address
+configured and DHCP is disabled, the interface may still be
+brought online, but will not be addressable from the
+network.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In addition to
+the addresses themselves one can specify configuration
+parameters as mappings. Current supported options are:
+<b><br>
+lifetime</b> (scalar) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Default: <tt>forever</tt>. This
+can be <tt>forever</tt> or <tt>0</tt> and corresponds to the
+<tt>PreferredLifetime</tt> option in
+<tt>systemd-networkd</tt>&rsquo;s Address section. Currently
+supported on the <tt>networkd</tt> backend only.</p>
+
+<p style="margin-left:22%;"><b>label</b> (scalar) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">An IP address label, equivalent
+to the <tt>ip address label</tt> command. Currently
+supported on the <tt>networkd</tt> backend only.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:
+<tt>addresses: [192.168.14.2/24,
+&quot;2001:1::1/64&quot;]</tt></p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">ethernets:
+  eth0:
+    addresses:
+      - 10.0.0.15/24:
+          lifetime: 0
+          label: &quot;maas&quot;
+      - &quot;2001:1::1/64&quot;</pre>
+
+
+<p style="margin-left:11%;"><b>ipv6-address-generation</b>
+(scalar) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Configure method for creating
+the address for use with RFC4862 IPv6 Stateless Address
+Autoconfiguration (only supported with
+<tt>NetworkManager</tt> backend). Possible values are
+<tt>eui64</tt> or <tt>stable-privacy</tt>.</p>
+
+<p style="margin-left:11%;"><b>ipv6-address-token</b>
+(scalar) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">Define an IPv6 address token
+for creating a static interface identifier for IPv6
+Stateless Address Autoconfiguration. This is mutually
+exclusive with <tt>ipv6-address-generation</tt>.</p>
+
+<p style="margin-left:11%;"><b>gateway4</b>,
+<b>gateway6</b> (scalar)</p>
+
+<p style="margin-left:22%;">Deprecated, see <tt>Default
+routes</tt>. Set default gateway for IPv4/6, for manual
+address configuration. This requires setting
+<tt>addresses</tt> too. Gateway IPs must be in a form
+recognized by <b>inet_pton</b>(3). There should only be a
+single gateway per IP address family set in your global
+config, to make it unambiguous. If you need multiple default
+routes, please define them via <tt>routing-policy</tt>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example for
+IPv4: <tt>gateway4: 172.16.0.1</tt> Example for IPv6:
+<tt>gateway6: &quot;2001:4::1&quot;</tt></p>
+
+<p style="margin-left:11%;"><b>nameservers</b>
+(mapping)</p>
+
+<p style="margin-left:22%;">Set DNS servers and search
+domains, for manual address configuration. There are two
+supported fields: <tt>addresses:</tt> is a list of IPv4 or
+IPv6 addresses similar to <tt>gateway*</tt>, and
+<tt>search:</tt> is a list of search domains.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">ethernets:
+  id0:
+    [...]
+    nameservers:
+      search: [lab, home]
+      addresses: [8.8.8.8, &quot;FEDC::1&quot;]</pre>
+
+
+<p style="margin-left:11%;"><b>macaddress</b> (scalar)</p>
+
+<p style="margin-left:22%;">Set the device&rsquo;s MAC
+address. The MAC address must be in the form
+&ldquo;XX:XX:XX:XX:XX:XX&rdquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note:</b>
+This will not work reliably for devices matched by name only
+and rendered by networkd, due to interactions with device
+renaming in udev. Match devices by MAC when setting MAC
+addresses.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">ethernets:
+  id0:
+    match:
+      macaddress: 52:54:00:6b:3c:58
+    [...]
+    macaddress: 52:54:00:6b:3c:59</pre>
+
+
+<p style="margin-left:11%;"><b>mtu</b> (scalar)</p>
+
+<p style="margin-left:22%;">Set the Maximum Transmission
+Unit for the interface. The default is 1500. Valid values
+depend on your network interface.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note:</b>
+This will not work reliably for devices matched by name only
+and rendered by networkd, due to interactions with device
+renaming in udev. Match devices by MAC when setting MTU.</p>
+
+<p style="margin-left:11%;"><b>optional</b> (bool)</p>
+
+<p style="margin-left:22%;">An optional device is not
+required for booting. Normally, networkd will wait some time
+for device to become configured before proceeding with
+booting. However, if a device is marked as optional,
+networkd will not wait for it. This is <i>only</i> supported
+by networkd, and the default is false.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">ethernets:
+  eth7:
+    # this is plugged into a test network that is often
+    # down - don't wait for it to come up during boot.
+    dhcp4: true
+    optional: true</pre>
+
+
+<p style="margin-left:11%;"><b>optional-addresses</b>
+(sequence of scalars)</p>
+
+<p style="margin-left:22%;">Specify types of addresses that
+are not required for a device to be considered online. This
+changes the behavior of backends at boot time to avoid
+waiting for addresses that are marked optional, and thus
+consider the interface as &ldquo;usable&rdquo; sooner. This
+does not disable these addresses, which will be brought up
+anyway.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">ethernets:
+  eth7:
+    dhcp4: true
+    dhcp6: true
+    optional-addresses: [ ipv4-ll, dhcp6 ]</pre>
+
+
+<p style="margin-left:11%;"><b>activation-mode</b> (scalar)
+&ndash; since <b>0.103</b></p>
+
+<p style="margin-left:22%;">Allows specifying the
+management policy of the selected interface. By default,
+netplan brings up any configured interface if possible.
+Using the <tt>activation-mode</tt> setting users can
+override that behavior by either specifying <tt>manual</tt>,
+to hand over control over the interface state to the
+administrator or (for networkd backend <i>only</i>)
+<tt>off</tt> to force the link in a down state at all times.
+Any interface with <tt>activation-mode</tt> defined is
+implicitly considered <tt>optional</tt>. Supported
+officially as of <tt>networkd</tt> v248+.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">ethernets:
+  eth1:
+    # this interface will not be put into an UP state automatically
+    dhcp4: true
+    activation-mode: manual</pre>
+
+
+<p style="margin-left:11%;"><b>routes</b> (sequence of
+mappings)</p>
+
+<p style="margin-left:22%;">Configure static routing for
+the device; see the <tt>Routing</tt> section below.</p>
+
+<p style="margin-left:11%;"><b>routing-policy</b> (sequence
+of mappings)</p>
+
+<p style="margin-left:22%;">Configure policy routing for
+the device; see the <tt>Routing</tt> section below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DHCP
+Overrides</b> <br>
+Several DHCP behavior overrides are available. Most
+currently only have any effect when using the
+<tt>networkd</tt> backend, with the exception of
+<tt>use-routes</tt> and <tt>route-metric</tt>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Overrides only
+have an effect if the corresponding <tt>dhcp4</tt> or
+<tt>dhcp6</tt> is set to <tt>true</tt>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If both
+<tt>dhcp4</tt> and <tt>dhcp6</tt> are <tt>true</tt>, the
+<tt>networkd</tt> backend requires that
+<tt>dhcp4-overrides</tt> and <tt>dhcp6-overrides</tt>
+contain the same keys and values. If the values do not
+match, an error will be shown and the network configuration
+will not be applied.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using the
+NetworkManager backend, different values may be specified
+for <tt>dhcp4-overrides</tt> and <tt>dhcp6-overrides</tt>,
+and will be applied to the DHCP client processes as
+specified in the netplan YAML. <b><br>
+dhcp4-overrides</b>, <b>dhcp6-overrides</b> (mapping)</p>
+
+<p style="margin-left:22%;">The <tt>dhcp4-overrides</tt>
+and <tt>dhcp6-overrides</tt> mappings override the default
+DHCP behavior. <b><br>
+use-dns</b> (bool)</p>
+
+<p style="margin-left:32%;">Default: <tt>true</tt>. When
+<tt>true</tt>, the DNS servers received from the DHCP server
+will be used and take precedence over any statically
+configured ones. Currently only has an effect on the
+<tt>networkd</tt> backend.</p>
+
+<p style="margin-left:22%;"><b>use-ntp</b> (bool)</p>
+
+<p style="margin-left:32%;">Default: <tt>true</tt>. When
+<tt>true</tt>, the NTP servers received from the DHCP server
+will be used by systemd-timesyncd and take precedence over
+any statically configured ones. Currently only has an effect
+on the <tt>networkd</tt> backend.</p>
+
+<p style="margin-left:22%;"><b>send-hostname</b> (bool)</p>
+
+<p style="margin-left:32%;">Default: <tt>true</tt>. When
+<tt>true</tt>, the machine&rsquo;s hostname will be sent to
+the DHCP server. Currently only has an effect on the
+<tt>networkd</tt> backend.</p>
+
+<p style="margin-left:22%;"><b>use-hostname</b> (bool)</p>
+
+<p style="margin-left:32%;">Default: <tt>true</tt>. When
+<tt>true</tt>, the hostname received from the DHCP server
+will be set as the transient hostname of the system.
+Currently only has an effect on the <tt>networkd</tt>
+backend.</p>
+
+<p style="margin-left:22%;"><b>use-mtu</b> (bool)</p>
+
+<p style="margin-left:32%;">Default: <tt>true</tt>. When
+<tt>true</tt>, the MTU received from the DHCP server will be
+set as the MTU of the network interface. When
+<tt>false</tt>, the MTU advertised by the DHCP server will
+be ignored. Currently only has an effect on the
+<tt>networkd</tt> backend.</p>
+
+<p style="margin-left:22%;"><b>hostname</b> (scalar)</p>
+
+<p style="margin-left:32%;">Use this value for the hostname
+which is sent to the DHCP server, instead of machine&rsquo;s
+hostname. Currently only has an effect on the
+<tt>networkd</tt> backend.</p>
+
+<p style="margin-left:22%;"><b>use-routes</b> (bool)</p>
+
+<p style="margin-left:32%;">Default: <tt>true</tt>. When
+<tt>true</tt>, the routes received from the DHCP server will
+be installed in the routing table normally. When set to
+<tt>false</tt>, routes from the DHCP server will be ignored:
+in this case, the user is responsible for adding static
+routes if necessary for correct network operation. This
+allows users to avoid installing a default gateway for
+interfaces configured via DHCP. Available for both the
+<tt>networkd</tt> and <tt>NetworkManager</tt> backends.</p>
+
+<p style="margin-left:22%;"><b>route-metric</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Use this value for default
+metric for automatically-added routes. Use this to
+prioritize routes for devices by setting a lower metric on a
+preferred interface. Available for both the
+<tt>networkd</tt> and <tt>NetworkManager</tt> backends.</p>
+
+<p style="margin-left:22%;"><b>use-domains</b> (scalar)
+&ndash; since <b>0.98</b></p>
+
+<p style="margin-left:32%;">Takes a boolean, or the special
+value &ldquo;route&rdquo;. When true, the domain name
+received from the DHCP server will be used as DNS search
+domain over this link, similar to the effect of the Domains=
+setting. If set to &ldquo;route&rdquo;, the domain name
+received from the DHCP server will be used for routing DNS
+queries only, but not for searching, similar to the effect
+of the Domains= setting when the argument is prefixed with
+&ldquo;~&rdquo;.</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>Requires
+feature: dhcp-use-domains</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Routing</b>
+<br>
+Complex routing is possible with netplan. Standard static
+routes as well as policy routing using routing tables are
+supported via the <tt>networkd</tt> backend.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These options
+are available for all types of interfaces.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default
+routes</b> <br>
+The most common need for routing concerns the definition of
+default routes to reach the wider Internet. Those default
+routes can only defined once per IP family and routing
+table. A typical example would look like the following:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">eth0:
+  [...]
+  routes:
+  - to: default # could be 0/0 or 0.0.0.0/0 optionally
+    via: 10.0.0.1
+    metric: 100
+    on-link: true
+  - to: default # could be ::/0 optionally
+    via: cf02:de:ad:be:ef::2
+eth1:
+  [...]
+  routes:
+  - to: default
+    via: 172.134.67.1
+    metric: 100
+    on-link: true
+    table: 76 # Not on the main routing table, does not conflict with the eth0 default route</pre>
+
+
+<p style="margin-left:11%;"><b>routes</b> (mapping)</p>
+
+<p style="margin-left:22%;">The <tt>routes</tt> block
+defines standard static routes for an interface. At least
+<tt>to</tt> must be specified. If type is <tt>local</tt> or
+<tt>nat</tt> a default scope of <tt>host</tt> is assumed. If
+type is <tt>unicast</tt> and no gateway (<tt>via</tt>) is
+given or type is <tt>broadcast</tt>, <tt>multicast</tt> or
+<tt>anycast</tt> a default scope of <tt>link</tt> is
+assumend. Otherwise, a <tt>global</tt> scope is the default
+setting.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For
+<tt>from</tt>, <tt>to</tt>, and <tt>via</tt>, both IPv4 and
+IPv6 addresses are recognized, and must be in the form
+<tt>addr/prefixlen</tt> or <tt>addr</tt>. <b><br>
+from</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set a source IP address for
+traffic going through the route. (<tt>NetworkManager</tt>:
+as of v1.8.0)</p>
+
+<p style="margin-left:22%;"><b>to</b> (scalar)</p>
+
+<p style="margin-left:32%;">Destination address for the
+route.</p>
+
+<p style="margin-left:22%;"><b>via</b> (scalar)</p>
+
+<p style="margin-left:32%;">Address to the gateway to use
+for this route.</p>
+
+<p style="margin-left:22%;"><b>on-link</b> (bool)</p>
+
+<p style="margin-left:32%;">When set to &ldquo;true&rdquo;,
+specifies that the route is directly connected to the
+interface. (<tt>NetworkManager</tt>: as of v1.12.0 for IPv4
+and v1.18.0 for IPv6)</p>
+
+<p style="margin-left:22%;"><b>metric</b> (scalar)</p>
+
+<p style="margin-left:32%;">The relative priority of the
+route. Must be a positive integer value.</p>
+
+<p style="margin-left:22%;"><b>type</b> (scalar)</p>
+
+<p style="margin-left:32%;">The type of route. Valid
+options are &ldquo;unicast&rdquo; (default),
+&ldquo;anycast&rdquo;, &ldquo;blackhole&rdquo;,
+&ldquo;broadcast&rdquo;, &ldquo;local&rdquo;,
+&ldquo;multicast&rdquo;, &ldquo;nat&rdquo;,
+&ldquo;prohibit&rdquo;, &ldquo;throw&rdquo;,
+&ldquo;unreachable&rdquo; or &ldquo;xresolve&rdquo;.</p>
+
+<p style="margin-left:22%;"><b>scope</b> (scalar)</p>
+
+<p style="margin-left:32%;">The route scope, how
+wide-ranging it is to the network. Possible values are
+&ldquo;global&rdquo;, &ldquo;link&rdquo;, or
+&ldquo;host&rdquo;.</p>
+
+<p style="margin-left:22%;"><b>table</b> (scalar)</p>
+
+<p style="margin-left:32%;">The table number to use for the
+route. In some scenarios, it may be useful to set routes in
+a separate routing table. It may also be used to refer to
+routing policy rules which also accept a <tt>table</tt>
+parameter. Allowed values are positive integers starting
+from 1. Some values are already in use to refer to specific
+routing tables: see <tt>/etc/iproute2/rt_tables</tt>.
+(<tt>NetworkManager</tt>: as of v1.10.0)</p>
+
+<p style="margin-left:22%;"><b>mtu</b> (scalar) &ndash;
+since <b>0.101</b></p>
+
+<p style="margin-left:32%;">The MTU to be used for the
+route, in bytes. Must be a positive integer value.</p>
+
+<p style="margin-left:22%;"><b>congestion-window</b>
+(scalar) &ndash; since <b>0.102</b></p>
+
+<p style="margin-left:32%;">The congestion window to be
+used for the route, represented by number of segments. Must
+be a positive integer value.</p>
+
+
+<p style="margin-left:22%;"><b>advertised-receive-window</b>
+(scalar) &ndash; since <b>0.102</b></p>
+
+<p style="margin-left:32%;">The receive window to be
+advertised for the route, represented by number of segments.
+Must be a positive integer value.</p>
+
+<p style="margin-left:11%;"><b>routing-policy</b>
+(mapping)</p>
+
+<p style="margin-left:22%;">The <tt>routing-policy</tt>
+block defines extra routing policy for a network, where
+traffic may be handled specially based on the source IP,
+firewall marking, etc.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For
+<tt>from</tt>, <tt>to</tt>, both IPv4 and IPv6 addresses are
+recognized, and must be in the form <tt>addr/prefixlen</tt>
+or <tt>addr</tt>. <b><br>
+from</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set a source IP address to
+match traffic for this policy rule.</p>
+
+<p style="margin-left:22%;"><b>to</b> (scalar)</p>
+
+<p style="margin-left:32%;">Match on traffic going to the
+specified destination.</p>
+
+<p style="margin-left:22%;"><b>table</b> (scalar)</p>
+
+<p style="margin-left:32%;">The table number to match for
+the route. In some scenarios, it may be useful to set routes
+in a separate routing table. It may also be used to refer to
+routes which also accept a <tt>table</tt> parameter. Allowed
+values are positive integers starting from 1. Some values
+are already in use to refer to specific routing tables: see
+<tt>/etc/iproute2/rt_tables</tt>.</p>
+
+<p style="margin-left:22%;"><b>priority</b> (scalar)</p>
+
+<p style="margin-left:32%;">Specify a priority for the
+routing policy rule, to influence the order in which routing
+rules are processed. A higher number means lower priority:
+rules are processed in order by increasing priority
+number.</p>
+
+<p style="margin-left:22%;"><b>mark</b> (scalar)</p>
+
+<p style="margin-left:32%;">Have this routing policy rule
+match on traffic that has been marked by the iptables
+firewall with this value. Allowed values are positive
+integers starting from 1.</p>
+
+<p style="margin-left:22%;"><b>type-of-service</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Match this policy rule based on
+the type of service number applied to the traffic.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Authentication</b>
+<br>
+Netplan supports advanced authentication settings for
+ethernet and wifi interfaces, as well as individual wifi
+networks, by means of the <tt>auth</tt> block. <b><br>
+auth</b> (mapping)</p>
+
+<p style="margin-left:22%;">Specifies authentication
+settings for a device of type <tt>ethernets:</tt>, or an
+<tt>access-points:</tt> entry on a <tt>wifis:</tt>
+device.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<tt>auth</tt> block supports the following properties:
+<b><br>
+key-management</b> (scalar)</p>
+
+<p style="margin-left:32%;">The supported key management
+modes are <tt>none</tt> (no key management); <tt>psk</tt>
+(WPA with pre-shared key, common for home wifi);
+<tt>eap</tt> (WPA with EAP, common for enterprise wifi); and
+<tt>802.1x</tt> (used primarily for wired Ethernet
+connections).</p>
+
+<p style="margin-left:22%;"><b>password</b> (scalar)</p>
+
+<p style="margin-left:32%;">The password string for EAP, or
+the pre-shared key for WPA-PSK.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+properties can be used if <tt>key-management</tt> is
+<tt>eap</tt> or <tt>802.1x</tt>: <b><br>
+method</b> (scalar)</p>
+
+<p style="margin-left:32%;">The EAP method to use. The
+supported EAP methods are <tt>tls</tt> (TLS), <tt>peap</tt>
+(Protected EAP), and <tt>ttls</tt> (Tunneled TLS).</p>
+
+<p style="margin-left:22%;"><b>identity</b> (scalar)</p>
+
+<p style="margin-left:32%;">The identity to use for
+EAP.</p>
+
+<p style="margin-left:22%;"><b>anonymous-identity</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">The identity to pass over the
+unencrypted channel if the chosen EAP method supports
+passing a different tunnelled identity.</p>
+
+<p style="margin-left:22%;"><b>ca-certificate</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Path to a file with one or more
+trusted certificate authority (CA) certificates.</p>
+
+<p style="margin-left:22%;"><b>client-certificate</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Path to a file containing the
+certificate to be used by the client during
+authentication.</p>
+
+<p style="margin-left:22%;"><b>client-key</b> (scalar)</p>
+
+<p style="margin-left:32%;">Path to a file containing the
+private key corresponding to
+<tt>client-certificate</tt>.</p>
+
+<p style="margin-left:22%;"><b>client-key-password</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Password to use to decrypt the
+private key specified in <tt>client-key</tt> if it is
+encrypted.</p>
+
+<p style="margin-left:22%;"><b>phase2-auth</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Phase 2 authentication
+mechanism.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>ethernets:</tt> <br>
+Ethernet device definitions, beyond common ones described
+above, also support some additional properties that can be
+used for SR-IOV devices. <b><br>
+link</b> (scalar) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">(SR-IOV devices only) The
+<tt>link</tt> property declares the device as a Virtual
+Function of the selected Physical Function device, as
+identified by the given netplan id.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">ethernets:
+  enp1: {...}
+  enp1s16f1:
+    link: enp1</pre>
+
+
+<p style="margin-left:11%;"><b>virtual-function-count</b>
+(scalar) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">(SR-IOV devices only) In
+certain special cases VFs might need to be configured
+outside of netplan. For such configurations
+<tt>virtual-function-count</tt> can be optionally used to
+set an explicit number of Virtual Functions for the given
+Physical Function. If unset, the default is to create only
+as many VFs as are defined in the netplan configuration.
+This should be used for special cases only.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Requires
+feature: sriov</b></p>
+
+<p style="margin-left:11%;"><b>embedded-switch-mode</b>
+(scalar) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(SR-IOV devices only) Change
+the operational mode of the embedded switch of a supported
+SmartNIC PCI device (e.g.&nbsp;Mellanox ConnectX-5).
+Possible values are <tt>switchdev</tt> or <tt>legacy</tt>,
+if unspecified the vendor&rsquo;s default configuration is
+used.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Requires
+feature: eswitch-mode</b></p>
+
+
+<p style="margin-left:11%;"><b>delay-virtual-functions-rebind</b>
+(bool) &ndash; since <b>0.104</b></p>
+
+<p style="margin-left:22%;">(SR-IOV devices only) Delay
+rebinding of SR-IOV virtual functions to its driver after
+changing the embedded-switch-mode setting to a later stage.
+Can be enabled when bonding/VF LAG is in use. Defaults to
+<tt>false</tt>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Requires
+feature: eswitch-mode</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>modems:</tt> <br>
+GSM/CDMA modem configuration is only supported for the
+<tt>NetworkManager</tt> backend. <tt>systemd-networkd</tt>
+does not support modems.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Requires
+feature: modems <br>
+apn</b> (scalar) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Set the carrier APN (Access
+Point Name). This can be omitted if <tt>auto-config</tt> is
+enabled.</p>
+
+<p style="margin-left:11%;"><b>auto-config</b> (bool)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify whether to try and
+autoconfigure the modem by doing a lookup of the carrier
+against the Mobile Broadband Provider database. This may not
+work for all carriers.</p>
+
+<p style="margin-left:11%;"><b>device-id</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the device ID (as given
+by the WWAN management service) of the modem to match. This
+can be found using <tt>mmcli</tt>.</p>
+
+<p style="margin-left:11%;"><b>network-id</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the Network ID (GSM LAI
+format). If this is specified, the device will not roam
+networks.</p>
+
+<p style="margin-left:11%;"><b>number</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:22%;">The number to dial to establish
+the connection to the mobile broadband network. (Deprecated
+for GSM)</p>
+
+<p style="margin-left:11%;"><b>password</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the password used to
+authenticate with the carrier network. This can be omitted
+if <tt>auto-config</tt> is enabled.</p>
+
+<p style="margin-left:11%;"><b>pin</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the SIM PIN to allow it
+to operate if a PIN is set.</p>
+
+<p style="margin-left:11%;"><b>sim-id</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the SIM unique
+identifier (as given by the WWAN management service) which
+this connection applies to. If given, the connection will
+apply to any device also allowed by <tt>device-id</tt> which
+contains a SIM card matching the given identifier.</p>
+
+<p style="margin-left:11%;"><b>sim-operator-id</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the MCC/MNC string
+(such as &ldquo;310260&rdquo; or &ldquo;21601&rdquo;) which
+identifies the carrier that this connection should apply to.
+If given, the connection will apply to any device also
+allowed by <tt>device-id</tt> and <tt>sim-id</tt> which
+contains a SIM card provisioned by the given operator.</p>
+
+<p style="margin-left:11%;"><b>username</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Specify the username used to
+authentiate with the carrier network. This can be omitted if
+<tt>auto-config</tt> is enabled.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>wifis:</tt> <br>
+Note that <tt>systemd-networkd</tt> does not natively
+support wifi, so you need wpasupplicant installed if you let
+the <tt>networkd</tt> renderer handle wifi. <b><br>
+access-points</b> (mapping)</p>
+
+<p style="margin-left:22%;">This provides pre-configured
+connections to NetworkManager. Note that users can of course
+select other access points/SSIDs. The keys of the mapping
+are the SSIDs, and the values are mappings with the
+following supported properties: <b><br>
+password</b> (scalar)</p>
+
+<p style="margin-left:32%;">Enable WPA2 authentication and
+set the passphrase for it. If neither this nor an
+<tt>auth</tt> block are given, the network is assumed to be
+open. The setting</p>
+
+<pre style="margin-left:43%; margin-top: 1em">  password: &quot;S3kr1t&quot;</pre>
+
+
+<p style="margin-left:32%; margin-top: 1em">is equivalent
+to</p>
+
+<pre style="margin-left:43%; margin-top: 1em">  auth:
+    key-management: psk
+    password: &quot;S3kr1t&quot;</pre>
+
+
+<p style="margin-left:22%;"><b>mode</b> (scalar)</p>
+
+<p style="margin-left:32%;">Possible access point modes are
+<tt>infrastructure</tt> (the default), <tt>ap</tt> (create
+an access point to which other devices can connect), and
+<tt>adhoc</tt> (peer to peer networks without a central
+access point). <tt>ap</tt> is only supported with
+NetworkManager.</p>
+
+<p style="margin-left:22%;"><b>bssid</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:32%;">If specified, directs the
+device to only associate with the given access point.</p>
+
+<p style="margin-left:22%;"><b>band</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Possible bands are
+<tt>5GHz</tt> (for 5GHz 802.11a) and <tt>2.4GHz</tt> (for
+2.4GHz 802.11), do not restrict the 802.11 frequency band of
+the network if unset (the default).</p>
+
+<p style="margin-left:22%;"><b>channel</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Wireless channel to use for the
+Wi-Fi connection. Because channel numbers overlap between
+bands, this property takes effect only if the <tt>band</tt>
+property is also set.</p>
+
+<p style="margin-left:22%;"><b>hidden</b> (bool) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">Set to <tt>true</tt> to change
+the SSID scan technique for connecting to hidden WiFi
+networks. Note this may have slower performance compared to
+<tt>false</tt> (the default) when connecting to publicly
+broadcast SSIDs.</p>
+
+<p style="margin-left:11%;"><b>wakeonwlan</b> (sequence of
+scalars) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">This enables WakeOnWLan on
+supported devices. Not all drivers support all options. May
+be any combination of <tt>any</tt>, <tt>disconnect</tt>,
+<tt>magic_pkt</tt>, <tt>gtk_rekey_failure</tt>,
+<tt>eap_identity_req</tt>, <tt>four_way_handshake</tt>,
+<tt>rfkill_release</tt> or <tt>tcp</tt> (NetworkManager
+only). Or the exclusive <tt>default</tt> flag (the
+default).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>bridges:</tt> <b><br>
+interfaces</b> (sequence of scalars)</p>
+
+<p style="margin-left:22%;">All devices matching this ID
+list will be added to the bridge. This may be an empty list,
+in which case the bridge will be brought online with no
+member interfaces.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">  ethernets:
+    switchports:
+      match: {name: &quot;enp2*&quot;}
+  [...]
+  bridges:
+    br0:
+      interfaces: [switchports]</pre>
+
+
+<p style="margin-left:11%;"><b>parameters</b> (mapping)</p>
+
+<p style="margin-left:22%;">Customization parameters for
+special bridging options. Time intervals may need to be
+expressed as a number of seconds or milliseconds: the
+default value type is specified below. If necessary, time
+intervals can be qualified using a time suffix (such as
+&ldquo;s&rdquo; for seconds, &ldquo;ms&rdquo; for
+milliseconds) to allow for more control over its behavior.
+<b><br>
+ageing-time</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the period of time to keep
+a MAC address in the forwarding database after a packet is
+received. This maps to the AgeingTimeSec= property when the
+networkd renderer is used. If no time suffix is specified,
+the value will be interpreted as seconds.</p>
+
+<p style="margin-left:22%;"><b>priority</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the priority value for the
+bridge. This value should be a number between <tt>0</tt> and
+<tt>65535</tt>. Lower values mean higher priority. The
+bridge with the higher priority will be elected as the root
+bridge.</p>
+
+<p style="margin-left:22%;"><b>port-priority</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Set the port priority to . The
+priority value is a number between <tt>0</tt> and
+<tt>63</tt>. This metric is used in the designated port and
+root port selection algorithms.</p>
+
+<p style="margin-left:22%;"><b>forward-delay</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Specify the period of time the
+bridge will remain in Listening and Learning states before
+getting to the Forwarding state. This field maps to the
+ForwardDelaySec= property for the networkd renderer. If no
+time suffix is specified, the value will be interpreted as
+seconds.</p>
+
+<p style="margin-left:22%;"><b>hello-time</b> (scalar)</p>
+
+<p style="margin-left:32%;">Specify the interval between
+two hello packets being sent out from the root and
+designated bridges. Hello packets communicate information
+about the network topology. When the networkd renderer is
+used, this maps to the HelloTimeSec= property. If no time
+suffix is specified, the value will be interpreted as
+seconds.</p>
+
+<p style="margin-left:22%;"><b>max-age</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the maximum age of a hello
+packet. If the last hello packet is older than that value,
+the bridge will attempt to become the root bridge. This maps
+to the MaxAgeSec= property when the networkd renderer is
+used. If no time suffix is specified, the value will be
+interpreted as seconds.</p>
+
+<p style="margin-left:22%;"><b>path-cost</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the cost of a path on the
+bridge. Faster interfaces should have a lower cost. This
+allows a finer control on the network topology so that the
+fastest paths are available whenever possible.</p>
+
+<p style="margin-left:22%;"><b>stp</b> (bool)</p>
+
+<p style="margin-left:32%;">Define whether the bridge
+should use Spanning Tree Protocol. The default value is
+&ldquo;true&rdquo;, which means that Spanning Tree should be
+used.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>bonds:</tt> <b><br>
+interfaces</b> (sequence of scalars)</p>
+
+<p style="margin-left:22%;">All devices matching this ID
+list will be added to the bond.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">  ethernets:
+    switchports:
+      match: {name: &quot;enp2*&quot;}
+  [...]
+  bonds:
+    bond0:
+      interfaces: [switchports]</pre>
+
+
+<p style="margin-left:11%;"><b>parameters</b> (mapping)</p>
+
+<p style="margin-left:22%;">Customization parameters for
+special bonding options. Time intervals may need to be
+expressed as a number of seconds or milliseconds: the
+default value type is specified below. If necessary, time
+intervals can be qualified using a time suffix (such as
+&ldquo;s&rdquo; for seconds, &ldquo;ms&rdquo; for
+milliseconds) to allow for more control over its behavior.
+<b><br>
+mode</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the bonding mode used for
+the interfaces. The default is <tt>balance-rr</tt> (round
+robin). Possible values are <tt>balance-rr</tt>,
+<tt>active-backup</tt>, <tt>balance-xor</tt>,
+<tt>broadcast</tt>, <tt>802.3ad</tt>, <tt>balance-tlb</tt>,
+and <tt>balance-alb</tt>. For OpenVSwitch
+<tt>active-backup</tt> and the additional modes
+<tt>balance-tcp</tt> and <tt>balance-slb</tt> are
+supported.</p>
+
+<p style="margin-left:22%;"><b>lacp-rate</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the rate at which LACPDUs
+are transmitted. This is only useful in 802.3ad mode.
+Possible values are <tt>slow</tt> (30 seconds, default), and
+<tt>fast</tt> (every second).</p>
+
+<p style="margin-left:22%;"><b>mii-monitor-interval</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Specifies the interval for MII
+monitoring (verifying if an interface of the bond has
+carrier). The default is <tt>0</tt>; which disables MII
+monitoring. This is equivalent to the MIIMonitorSec= field
+for the networkd backend. If no time suffix is specified,
+the value will be interpreted as milliseconds.</p>
+
+<p style="margin-left:22%;"><b>min-links</b> (scalar)</p>
+
+<p style="margin-left:32%;">The minimum number of links up
+in a bond to consider the bond interface to be up.</p>
+
+<p style="margin-left:22%;"><b>transmit-hash-policy</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Specifies the transmit hash
+policy for the selection of slaves. This is only useful in
+balance-xor, 802.3ad and balance-tlb modes. Possible values
+are <tt>layer2</tt>, <tt>layer3+4</tt>, <tt>layer2+3</tt>,
+<tt>encap2+3</tt>, and <tt>encap3+4</tt>.</p>
+
+<p style="margin-left:22%;"><b>ad-select</b> (scalar)</p>
+
+<p style="margin-left:32%;">Set the aggregation selection
+mode. Possible values are <tt>stable</tt>,
+<tt>bandwidth</tt>, and <tt>count</tt>. This option is only
+used in 802.3ad mode.</p>
+
+<p style="margin-left:22%;"><b>all-slaves-active</b>
+(bool)</p>
+
+<p style="margin-left:32%;">If the bond should drop
+duplicate frames received on inactive ports, set this option
+to <tt>false</tt>. If they should be delivered, set this
+option to <tt>true</tt>. The default value is false, and is
+the desirable behavior in most situations.</p>
+
+<p style="margin-left:22%;"><b>arp-interval</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Set the interval value for how
+frequently ARP link monitoring should happen. The default
+value is <tt>0</tt>, which disables ARP monitoring. For the
+networkd backend, this maps to the ARPIntervalSec= property.
+If no time suffix is specified, the value will be
+interpreted as milliseconds.</p>
+
+<p style="margin-left:22%;"><b>arp-ip-targets</b> (sequence
+of scalars)</p>
+
+<p style="margin-left:32%;">IPs of other hosts on the link
+which should be sent ARP requests in order to validate that
+a slave is up. This option is only used when
+<tt>arp-interval</tt> is set to a value other than
+<tt>0</tt>. At least one IP address must be given for ARP
+link monitoring to function. Only IPv4 addresses are
+supported. You can specify up to 16 IP addresses. The
+default value is an empty list.</p>
+
+<p style="margin-left:22%;"><b>arp-validate</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Configure how ARP replies are
+to be validated when using ARP link monitoring. Possible
+values are <tt>none</tt>, <tt>active</tt>, <tt>backup</tt>,
+and <tt>all</tt>.</p>
+
+<p style="margin-left:22%;"><b>arp-all-targets</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Specify whether to use any ARP
+IP target being up as sufficient for a slave to be
+considered up; or if all the targets must be up. This is
+only used for <tt>active-backup</tt> mode when
+<tt>arp-validate</tt> is enabled. Possible values are
+<tt>any</tt> and <tt>all</tt>.</p>
+
+<p style="margin-left:22%;"><b>up-delay</b> (scalar)</p>
+
+<p style="margin-left:32%;">Specify the delay before
+enabling a link once the link is physically up. The default
+value is <tt>0</tt>. This maps to the UpDelaySec= property
+for the networkd renderer. This option is only valid for the
+miimon link monitor. If no time suffix is specified, the
+value will be interpreted as milliseconds.</p>
+
+<p style="margin-left:22%;"><b>down-delay</b> (scalar)</p>
+
+<p style="margin-left:32%;">Specify the delay before
+disabling a link once the link has been lost. The default
+value is <tt>0</tt>. This maps to the DownDelaySec= property
+for the networkd renderer. This option is only valid for the
+miimon link monitor. If no time suffix is specified, the
+value will be interpreted as milliseconds.</p>
+
+<p style="margin-left:22%;"><b>fail-over-mac-policy</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Set whether to set all slaves
+to the same MAC address when adding them to the bond, or how
+else the system should handle MAC addresses. The possible
+values are <tt>none</tt>, <tt>active</tt>, and
+<tt>follow</tt>.</p>
+
+<p style="margin-left:22%;"><b>gratuitous-arp</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Specify how many ARP packets to
+send after failover. Once a link is up on a new slave, a
+notification is sent and possibly repeated if this value is
+set to a number greater than <tt>1</tt>. The default value
+is <tt>1</tt> and valid values are between <tt>1</tt> and
+<tt>255</tt>. This only affects <tt>active-backup</tt>
+mode.</p>
+
+<p style="margin-left:32%; margin-top: 1em">For historical
+reasons, the misspelling <tt>gratuitious-arp</tt> is also
+accepted and has the same function.</p>
+
+<p style="margin-left:22%;"><b>packets-per-slave</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">In <tt>balance-rr</tt> mode,
+specifies the number of packets to transmit on a slave
+before switching to the next. When this value is set to
+<tt>0</tt>, slaves are chosen at random. Allowable values
+are between <tt>0</tt> and <tt>65535</tt>. The default value
+is <tt>1</tt>. This setting is only used in
+<tt>balance-rr</tt> mode.</p>
+
+<p style="margin-left:22%;"><b>primary-reselect-policy</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Set the reselection policy for
+the primary slave. On failure of the active slave, the
+system will use this policy to decide how the new active
+slave will be chosen and how recovery will be handled. The
+possible values are <tt>always</tt>, <tt>better</tt>, and
+<tt>failure</tt>.</p>
+
+<p style="margin-left:22%;"><b>resend-igmp</b> (scalar)</p>
+
+<p style="margin-left:32%;">In modes <tt>balance-rr</tt>,
+<tt>active-backup</tt>, <tt>balance-tlb</tt> and
+<tt>balance-alb</tt>, a failover can switch IGMP traffic
+from one slave to another.</p>
+
+<p style="margin-left:32%; margin-top: 1em">This parameter
+specifies how many IGMP membership reports are issued on a
+failover event. Values range from 0 to 255. 0 disables
+sending membership reports. Otherwise, the first membership
+report is sent on failover and subsequent reports are sent
+at 200ms intervals.</p>
+
+<p style="margin-left:22%;"><b>learn-packet-interval</b>
+(scalar)</p>
+
+<p style="margin-left:32%;">Specify the interval between
+sending learning packets to each slave. The value range is
+between <tt>1</tt> and <tt>0x7fffffff</tt>. The default
+value is <tt>1</tt>. This option only affects
+<tt>balance-tlb</tt> and <tt>balance-alb</tt> modes. Using
+the networkd renderer, this field maps to the
+LearnPacketIntervalSec= property. If no time suffix is
+specified, the value will be interpreted as seconds.</p>
+
+<p style="margin-left:22%;"><b>primary</b> (scalar)</p>
+
+<p style="margin-left:32%;">Specify a device to be used as
+a primary slave, or preferred device to use as a slave for
+the bond (ie. the preferred device to send data through),
+whenever it is available. This only affects
+<tt>active-backup</tt>, <tt>balance-alb</tt>, and
+<tt>balance-tlb</tt> modes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>tunnels:</tt> <br>
+Tunnels allow traffic to pass as if it was between systems
+on the same local network, although systems may be far from
+each other but reachable via the Internet. They may be used
+to support IPv6 traffic on a network where the ISP does not
+provide the service, or to extend and &ldquo;connect&rdquo;
+separate local networks. Please see
+https://en.wikipedia.org/wiki/Tunneling_protocol for more
+general information about tunnels. <b><br>
+mode</b> (scalar)</p>
+
+<p style="margin-left:22%;">Defines the tunnel mode. Valid
+options are <tt>sit</tt>, <tt>gre</tt>, <tt>ip6gre</tt>,
+<tt>ipip</tt>, <tt>ipip6</tt>, <tt>ip6ip6</tt>,
+<tt>vti</tt>, <tt>vti6</tt> and <tt>wireguard</tt>.
+Additionally, the <tt>networkd</tt> backend also supports
+<tt>gretap</tt> and <tt>ip6gretap</tt> modes. In addition,
+the <tt>NetworkManager</tt> backend supports <tt>isatap</tt>
+tunnels.</p>
+
+<p style="margin-left:11%;"><b>local</b> (scalar)</p>
+
+<p style="margin-left:22%;">Defines the address of the
+local endpoint of the tunnel.</p>
+
+<p style="margin-left:11%;"><b>remote</b> (scalar)</p>
+
+<p style="margin-left:22%;">Defines the address of the
+remote endpoint of the tunnel.</p>
+
+<p style="margin-left:11%;"><b>ttl</b> (scalar) &ndash;
+since <b>0.103</b></p>
+
+<p style="margin-left:22%;">Defines the TTL of the
+tunnel.</p>
+
+<p style="margin-left:11%;"><b>key</b> (scalar or
+mapping)</p>
+
+<p style="margin-left:22%;">Define keys to use for the
+tunnel. The key can be a number or a dotted quad (an IPv4
+address). For <tt>wireguard</tt> it can be a base64-encoded
+private key or (as of <tt>networkd</tt> v242+) an absolute
+path to a file, containing the private key (since 0.100). It
+is used for identification of IP transforms. This is only
+required for <tt>vti</tt> and <tt>vti6</tt> when using the
+networkd backend, and for <tt>gre</tt> or <tt>ip6gre</tt>
+tunnels when using the NetworkManager backend.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This field may
+be used as a scalar (meaning that a single key is specified
+and to be used for input, output and private key), or as a
+mapping, where you can further specify
+<tt>input</tt>/<tt>output</tt>/<tt>private</tt>. <b><br>
+input</b> (scalar)</p>
+
+<p style="margin-left:32%;">The input key for the
+tunnel</p>
+
+<p style="margin-left:22%;"><b>output</b> (scalar)</p>
+
+<p style="margin-left:32%;">The output key for the
+tunnel</p>
+
+<p style="margin-left:22%;"><b>private</b> (scalar) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">A base64-encoded private key
+required for WireGuard tunnels. When the
+<tt>systemd-networkd</tt> backend (v242+) is used, this can
+also be an absolute path to a file containing the private
+key.</p>
+
+<p style="margin-left:11%;"><b>keys</b> (scalar or
+mapping)</p>
+
+<p style="margin-left:22%;">Alternate name for the
+<tt>key</tt> field. See above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+<pre style="margin-left:22%; margin-top: 1em">tunnels:
+  tun0:
+    mode: gre
+    local: ...
+    remote: ...
+    keys:
+      input: 1234
+      output: 5678
+
+tunnels:
+  tun0:
+    mode: vti6
+    local: ...
+    remote: ...
+    key: 59568549
+
+tunnels:
+  wg0:
+    mode: wireguard
+    addresses: [...]
+    peers:
+      - keys:
+          public: rlbInAj0qV69CysWPQY7KEBnKxpYCpaWqOs/dLevdWc=
+          shared: /path/to/shared.key
+        ...
+    key: mNb7OIIXTdgW4khM7OFlzJ+UPs7lmcWHV7xjPgakMkQ=
+
+
+tunnels:
+  wg0:
+    mode: wireguard
+    addresses: [...]
+    peers:
+      - keys:
+          public: rlbInAj0qV69CysWPQY7KEBnKxpYCpaWqOs/dLevdWc=
+        ...
+    keys:
+      private: /path/to/priv.key</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">WireGuard
+specific keys: <b><br>
+mark</b> (scalar) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">Firewall mark for outgoing
+WireGuard packets from this interface, optional.</p>
+
+<p style="margin-left:11%;"><b>port</b> (scalar) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:22%;">UDP port to listen at or
+<tt>auto</tt>. Optional, defaults to <tt>auto</tt>.</p>
+
+<p style="margin-left:11%;"><b>peers</b> (sequence of
+mappings) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">A list of peers, each having
+keys documented below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">tunnels:
+    wg0:
+        mode: wireguard
+        key: /path/to/private.key
+        mark: 42
+        port: 5182
+        peers:
+            - keys:
+                  public: rlbInAj0qV69CysWPQY7KEBnKxpYCpaWqOs/dLevdWc=
+              allowed-ips: [0.0.0.0/0, &quot;2001:fe:ad:de:ad:be:ef:1/24&quot;]
+              keepalive: 23
+              endpoint: 1.2.3.4:5
+            - keys:
+                  public: M9nt4YujIOmNrRmpIRTmYSfMdrpvE7u6WkG8FY8WjG4=
+                  shared: /some/shared.key
+              allowed-ips: [10.10.10.20/24]
+              keepalive: 22
+              endpoint: 5.4.3.2:1</pre>
+
+
+<p style="margin-left:11%;"><b>endpoint</b> (scalar)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">Remote endpoint IPv4/IPv6
+address or a hostname, followed by a colon and a port
+number.</p>
+
+<p style="margin-left:11%;"><b>allowed-ips</b> (sequence of
+scalars) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">A list of IP (v4 or v6)
+addresses with CIDR masks from which this peer is allowed to
+send incoming traffic and to which outgoing traffic for this
+peer is directed. The catch-all 0.0.0.0/0 may be specified
+for matching all IPv4 addresses, and ::/0 may be specified
+for matching all IPv6 addresses.</p>
+
+<p style="margin-left:11%;"><b>keepalive</b> (scalar)
+&ndash; since <b>0.100</b></p>
+
+<p style="margin-left:22%;">An interval in seconds, between
+1 and 65535 inclusive, of how often to send an authenticated
+empty packet to the peer for the purpose of keeping a
+stateful firewall or NAT mapping valid persistently.
+Optional.</p>
+
+<p style="margin-left:11%;"><b>keys</b> (mapping) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:22%;">Define keys to use for the
+WireGuard peers.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This field can
+be used as a mapping, where you can further specify the
+<tt>public</tt> and <tt>shared</tt> keys. <b><br>
+public</b> (scalar) &ndash; since <b>0.100</b></p>
+
+<p style="margin-left:32%;">A base64-encoded public key,
+required for WireGuard peers.</p>
+
+<p style="margin-left:22%;"><b>shared</b> (scalar) &ndash;
+since <b>0.100</b></p>
+
+<p style="margin-left:32%;">A base64-encoded preshared key.
+Optional for WireGuard peers. When the
+<tt>systemd-networkd</tt> backend (v242+) is used, this can
+also be an absolute path to a file containing the preshared
+key.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>vlans:</tt> <b><br>
+id</b> (scalar)</p>
+
+<p style="margin-left:22%;">VLAN ID, a number between 0 and
+4094.</p>
+
+<p style="margin-left:11%;"><b>link</b> (scalar)</p>
+
+<p style="margin-left:22%;">netplan ID of the underlying
+device definition on which this VLAN gets created.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">ethernets:
+  eno1: {...}
+vlans:
+  en-intra:
+    id: 1
+    link: eno1
+    dhcp4: yes
+  en-vpn:
+    id: 2
+    link: eno1
+    addresses: ...</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties
+for device type</b> <tt>nm-devices:</tt> <br>
+The <tt>nm-devices</tt> device type is for internal use only
+and should not be used in normal configuration files. It
+enables a fallback mode for unsupported settings, using the
+<tt>passthrough</tt> mapping.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Backend-specific
+configuration parameters</b> <br>
+In addition to the other fields available to configure
+interfaces, some backends may require to record some of
+their own parameters in netplan, especially if the netplan
+definitions are generated automatically by the consumer of
+that backend. Currently, this is only used with
+<tt>NetworkManager</tt>. <b><br>
+networkmanager</b> (mapping) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:22%;">Keeps the
+NetworkManager-specific configuration parameters used by the
+daemon to recognize connections. <b><br>
+name</b> (scalar) &ndash; since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Set the display name for the
+connection.</p>
+
+<p style="margin-left:22%;"><b>uuid</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Defines the UUID (unique
+identifier) for this connection, as generated by
+NetworkManager itself.</p>
+
+<p style="margin-left:22%;"><b>stable-id</b> (scalar)
+&ndash; since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Defines the stable ID (a
+different form of a connection name) used by NetworkManager
+in case the name of the connection might otherwise change,
+such as when sharing connections between users.</p>
+
+<p style="margin-left:22%;"><b>device</b> (scalar) &ndash;
+since <b>0.99</b></p>
+
+<p style="margin-left:32%;">Defines the interface name for
+which this connection applies.</p>
+
+<p style="margin-left:22%;"><b>passthrough</b> (mapping)
+&ndash; since <b>0.102</b></p>
+
+<p style="margin-left:32%;">Can be used as a fallback
+mechanism to missing keyfile settings.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Examples</b>
+<br>
+Configure an ethernet device with networkd, identified by
+its name, and enable DHCP:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">network:
+  version: 2
+  ethernets:
+    eno1:
+      dhcp4: true</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is an
+example of a static-configured interface with multiple IPv4
+addresses and multiple gateways with networkd, with equal
+route metric levels, and static DNS nameservers (Google DNS
+for this example):</p>
+
+<pre style="margin-left:22%; margin-top: 1em">network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eno1:
+      addresses:
+      - 10.0.0.10/24
+      - 11.0.0.11/24
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+      routes:
+      - to: 0.0.0.0/0
+        via: 10.0.0.1
+        metric: 100
+      - to: 0.0.0.0/0
+        via: 11.0.0.1
+        metric: 100</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is a
+complex example which shows most available features:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">network:
+  version: 2
+  # if specified, can only realistically have that value, as networkd cannot
+  # render wifi/3G.
+  renderer: NetworkManager
+  ethernets:
+    # opaque ID for physical interfaces, only referred to by other stanzas
+    id0:
+      match:
+        macaddress: 00:11:22:33:44:55
+      wakeonlan: true
+      dhcp4: true
+      addresses:
+        - 192.168.14.2/24
+        - 192.168.14.3/24
+        - &quot;2001:1::1/64&quot;
+      nameservers:
+        search: [foo.local, bar.local]
+        addresses: [8.8.8.8]
+      routes:
+        - to: default
+          via: 192.168.14.1
+        - to: default
+          via: &quot;2001:1::2&quot;
+        - to: 0.0.0.0/0
+          via: 11.0.0.1
+          table: 70
+          on-link: true
+          metric: 3
+      routing-policy:
+        - to: 10.0.0.0/8
+          from: 192.168.14.2/24
+          table: 70
+          priority: 100
+        - to: 20.0.0.0/8
+          from: 192.168.14.3/24
+          table: 70
+          priority: 50
+      # only networkd can render on-link routes and routing policies
+      renderer: networkd
+    lom:
+      match:
+        driver: ixgbe
+      # you are responsible for setting tight enough match rules
+      # that only match one device if you use set-name
+      set-name: lom1
+      dhcp6: true
+    switchports:
+      # all cards on second PCI bus unconfigured by
+      # themselves, will be added to br0 below
+      match:
+        name: enp2*
+      mtu: 1280
+  wifis:
+    all-wlans:
+      # useful on a system where you know there is
+      # only ever going to be one device
+      match: {}
+      access-points:
+        &quot;Joe's home&quot;:
+          # mode defaults to &quot;infrastructure&quot; (client)
+          password: &quot;s3kr1t&quot;
+    # this creates an AP on wlp1s0 using hostapd
+    # no match rules, thus the ID is the interface name
+    wlp1s0:
+      access-points:
+        &quot;guest&quot;:
+           mode: ap
+           # no WPA config implies default of open
+  bridges:
+    # the key name is the name for virtual (created) interfaces
+    # no match: and set-name: allowed
+    br0:
+      # IDs of the components; switchports expands into multiple interfaces
+      interfaces: [wlp1s0, switchports]
+      dhcp4: true</pre>
+
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>netplan-generate</b>(8),
+<b>netplan-apply</b>(8), <b>netplan-try</b>(8),
+<b>netplan-get</b>(8), <b>netplan-set</b>(8),
+<b>netplan-dbus</b>(8), <b>systemd-networkd</b>(8),
+<b>NetworkManager</b>(8)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mathieu
+Trudel-Lapierre (&lt;cyphermox@ubuntu.com&gt;); Martin Pitt
+(&lt;martin.pitt@ubuntu.com&gt;).</p>
+<hr>
+</body>
+</html>

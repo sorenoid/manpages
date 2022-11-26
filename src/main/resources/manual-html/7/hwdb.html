@@ -1,0 +1,205 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:41 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HWDB</title>
+
+</head>
+<body>
+
+<h1 align="center">HWDB</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#HARDWARE DATABASE FILES">HARDWARE DATABASE FILES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hwdb - Hardware
+Database</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The hardware
+database is a key-value store for associating modalias-like
+keys to udev-property-like values. It is used primarily by
+udev to add the relevant properties to matching devices, but
+it can also be queried directly.</p>
+
+<h2>HARDWARE DATABASE FILES
+<a name="HARDWARE DATABASE FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The hwdb files
+are read from the files located in the system hwdb directory
+/lib/udev/hwdb.d and the local administration directory
+/etc/udev/hwdb.d. All hwdb files are collectively sorted and
+processed in lexical order, regardless of the directories in
+which they live. However, files with identical filenames
+replace each other. Files in /etc/ have the highest priority
+and take precedence over files with the same name in /lib/.
+This can be used to override a system-supplied hwdb file
+with a local file if needed; a symlink in /etc/ with the
+same name as a hwdb file in /lib/, pointing to /dev/null,
+disables that hwdb file entirely. hwdb files must have the
+extension .hwdb; other extensions are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each hwdb file
+contains data records consisting of matches and associated
+key-value pairs. Every record in the hwdb starts with one or
+more match strings, specifying a shell glob to compare the
+lookup string against. Multiple match lines are specified in
+consecutive lines. Every match line is compared
+individually, and they are combined by OR. Every match line
+must start at the first character of the line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Match patterns
+consist of literal characters, and shell-style
+wildcards:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Asterisk
+&quot;*&quot; matches any number of characters</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; Question
+mark &quot;?&quot; matches a single character</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+Character list &quot;[<i>chars</i>]&quot; matches one of the
+characters <i>chars</i> listed between &quot;[&quot; and
+&quot;]&quot;. A range may be specified as with a dash as
+&quot;[<i>first</i>-<i>last</i>]&quot;. The match may be
+inverted with a caret &quot;[^...]&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The match lines
+are followed by one or more key-value pair lines, which are
+recognized by a leading space character. The key name and
+value are separated by &quot;=&quot;. An empty line
+signifies the end of a record. Lines beginning with
+&quot;#&quot; are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In case
+multiple records match a given lookup string, the key-value
+pairs from all records are combined. If a key is specified
+multiple times, the value from the record with the highest
+priority is used (each key can have only a single value).
+The priority is higher when the record is in a file that
+sorts later lexicographically, and in case of records in the
+same file, later records have higher priority.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The content of
+all hwdb files is read by <b>systemd-hwdb</b>(8) and
+compiled to a binary database located at /etc/udev/hwdb.bin,
+or alternatively /lib/udev/hwdb.bin if you want ship the
+compiled database in an immutable image. During runtime,
+only the binary database is used.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;General
+syntax of hwdb files</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/lib/udev/hwdb.d/example.hwdb <br>
+# Comments can be placed before any records. This is a good
+spot <br>
+# to describe what that file is used for, what kind of
+properties <br>
+# it defines, and the ordering convention.</p>
+
+<p style="margin-left:17%; margin-top: 1em"># A record with
+three matches and one property <br>
+mouse:*:name:*Trackball*:* <br>
+mouse:*:name:*trackball*:* <br>
+mouse:*:name:*TrackBall*:* <br>
+ID_INPUT_TRACKBALL=1</p>
+
+<p style="margin-left:17%; margin-top: 1em"># The rule
+above could be also be written in a form that <br>
+# matches Tb, tb, TB, tB: <br>
+mouse:*:name:*[tT]rack[bB]all*:* <br>
+ID_INPUT_TRACKBALL=1</p>
+
+<p style="margin-left:17%; margin-top: 1em"># A record with
+a single match and five properties <br>
+mouse:usb:v046dp4041:name:Logitech MX Master:* <br>
+MOUSE_DPI=1000@166 <br>
+MOUSE_WHEEL_CLICK_ANGLE=15 <br>
+MOUSE_WHEEL_CLICK_ANGLE_HORIZONTAL=26 <br>
+MOUSE_WHEEL_CLICK_COUNT=24 <br>
+MOUSE_WHEEL_CLICK_COUNT_HORIZONTAL=14</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;2.&nbsp;Overriding
+of properties</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/lib/udev/hwdb.d/60-keyboard.hwdb <br>
+evdev:atkbd:dmi:bvn*:bvr*:bd*:svnAcer*:pn*:* <br>
+KEYBOARD_KEY_a1=help <br>
+KEYBOARD_KEY_a2=setup <br>
+KEYBOARD_KEY_a3=battery</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Match vendor
+name &quot;Acer&quot; and any product name starting with
+&quot;X123&quot; <br>
+evdev:atkbd:dmi:bvn*:bvr*:bd*:svnAcer:pnX123*:* <br>
+KEYBOARD_KEY_a2=wlan</p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/etc/udev/hwdb.d/70-keyboard.hwdb <br>
+# disable wlan key on all at keyboards <br>
+evdev:atkbd:* <br>
+KEYBOARD_KEY_a2=reserved <br>
+PROPERTY_WITH_SPACES=some string</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the hwdb
+consists of those two files, a keyboard with the lookup
+string
+&quot;evdev:atkbd:dmi:bvnAcer:bdXXXXX:bd08/05/2010:svnAcer:pnX123&quot;
+will match all three records, and end up with the following
+properties:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">KEYBOARD_KEY_a1=help
+<br>
+KEYBOARD_KEY_a2=reserved <br>
+KEYBOARD_KEY_a3=battery <br>
+PROPERTY_WITH_SPACES=some string</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-hwdb</b>(8)</p>
+<hr>
+</body>
+</html>

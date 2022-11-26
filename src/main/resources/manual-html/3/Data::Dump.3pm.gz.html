@@ -1,0 +1,266 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:11 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Data::Dump</title>
+
+</head>
+<body>
+
+<h1 align="center">Data::Dump</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Data::Dump -
+Pretty printing of data structures</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use Data::Dump
+qw(dump); <br>
+$str = dump(@list); <br>
+@copy_of_list = eval $str; <br>
+# or use it for easy debug printout <br>
+use Data::Dump; dd localtime;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+provides a few functions that traverse their argument list
+and return a string containing Perl code that, when
+&quot;eval&quot;ed, produces a deep copy of the original
+arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The main
+feature of the module is that it strives to produce output
+that is easy to read. Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">@a = (1, [2,
+3], {4 =&gt; 5}); <br>
+dump(@a);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Produces:</p>
+
+<p style="margin-left:11%; margin-top: 1em">&quot;(1, [2,
+3], { 4 =&gt; 5 })&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you dump
+just a little data, it is output on a single line. If you
+dump data that is more complex or there is a lot of it, line
+breaks are automatically added to keep it easy to read.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+functions are provided (only the dd* functions are exported
+by default): <br>
+dump( ... ) <br>
+pp( ... )</p>
+
+<p style="margin-left:17%;">Returns a string containing a
+Perl expression. If you pass this string to Perl&rsquo;s
+built-in <b>eval()</b> function it should return a copy of
+the arguments you passed to <b>dump()</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you call the
+function with multiple arguments then the output will be
+wrapped in parenthesis &quot;( ..., ... )&quot;. If you call
+the function with a single argument the output will not have
+the wrapping. If you call the function with a single scalar
+(non-reference) argument it will just return the scalar
+quoted if needed, but never break it into multiple lines. If
+you pass multiple arguments or references to arrays of
+hashes then the return value might contain line breaks to
+format it for easier reading. The returned string will never
+be &quot;\n&quot; terminated, even if contains multiple
+lines. This allows code like this to place the semicolon in
+the expected place:</p>
+
+<p style="margin-left:17%; margin-top: 1em">print '$obj =
+', dump($obj), &quot;;\n&quot;;</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<b>dump()</b> is called in void context, then the dump is
+printed on <small>STDERR</small> and then &quot;\n&quot;
+terminated. You might find this useful for quick debug
+printouts, but the dd*() functions might be better
+alternatives for this.</p>
+
+<p style="margin-left:17%; margin-top: 1em">There is no
+difference between <b>dump()</b> and <b>pp()</b>, except
+that <b>dump()</b> shares its name with a not-so-useful perl
+builtin. Because of this some might want to avoid using that
+name.</p>
+
+<p style="margin-left:11%;">quote( $string )</p>
+
+<p style="margin-left:17%;">Returns a quoted version of the
+provided string.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It differs from
+&quot;dump($string)&quot; in that it will quote even numbers
+and not try to come up with clever expressions that might
+shorten the output. If a non-scalar argument is provided
+then it&rsquo;s just stringified instead of traversed.</p>
+
+<p style="margin-left:11%;">dd( ... ) <br>
+ddx( ... )</p>
+
+<p style="margin-left:17%;">These functions will call
+<b>dump()</b> on their argument and print the result to
+<small>STDOUT</small> (actually, it&rsquo;s the currently
+selected output handle, but <small>STDOUT</small> is the
+default for that).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The difference
+between them is only that <b>ddx()</b> will prefix the lines
+it prints with &quot;# &quot; and mark the first line with
+the file and line number where it was called. This is meant
+to be useful for debug printouts of state within
+programs.</p>
+
+<p style="margin-left:11%;">dumpf( ..., \&amp;filter )</p>
+
+<p style="margin-left:17%;">Short hand for calling the
+<b>dump_filtered()</b> function of Data::Dump::Filtered.
+This works like <b>dump()</b>, but the last argument should
+be a filter callback function. As objects are visited the
+filter callback is invoked and it can modify how the objects
+are dumped.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are a few
+global variables that can be set to modify the output
+generated by the dump functions. It&rsquo;s wise to localize
+the setting of these. <br>
+$Data::Dump::INDENT</p>
+
+<p style="margin-left:17%;">This holds the string
+that&rsquo;s used for indenting multiline data structures.
+It&rsquo;s default value is &quot; &quot; (two spaces). Set
+it to &quot;&quot; to suppress indentation. Setting it to
+&quot;| &quot; makes for nice visuals even if the dump
+output then fails to be valid Perl.</p>
+
+<p style="margin-left:11%;">$Data::Dump::TRY_BASE64</p>
+
+<p style="margin-left:17%;">How long must a binary string
+be before we try to use the base64 encoding for the dump
+output. The default is 50. Set it to 0 to disable base64
+dumps.</p>
+
+<p style="margin-left:11%;">$Data::Dump::LINEWIDTH</p>
+
+<p style="margin-left:17%;">This controls how wide the
+string should before we add a line break. The default is
+60.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Code references
+will be dumped as &quot;sub { ... }&quot;. Thus,
+&quot;eval&quot;ing them will not reproduce the original
+routine. The &quot;...&quot;-operator used will also require
+perl-5.12 or better to be evaled.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you forget
+to explicitly import the &quot;dump&quot; function, your
+code will core dump. That&rsquo;s because you just called
+the builtin &quot;dump&quot; function by accident, which
+intentionally dumps core. Because of this you can also
+import the same function as &quot;pp&quot;, mnemonic for
+&quot;pretty-print&quot;.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;Data::Dump&quot; module grew out of frustration with
+Sarathy&rsquo;s in-most-cases-excellent
+&quot;Data::Dumper&quot;. Basic ideas and some code are
+shared with Sarathy&rsquo;s module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;Data::Dump&quot; module provides a much simpler
+interface than &quot;Data::Dumper&quot;. No
+<small>OO</small> interface is available and there are fewer
+configuration options to worry about. The other benefit is
+that the dump produced does not try to set any variables. It
+only returns what is needed to produce a copy of the
+arguments. This means that &quot;dump(&quot;foo&quot;)&quot;
+simply returns '&quot;foo&quot;', and &quot;dump(1..3)&quot;
+simply returns '(1, 2, 3)'.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Data::Dump::Filtered,
+Data::Dump::Trace, Data::Dumper, <small>JSON</small> ,
+Storable</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;Data::Dump&quot; module is written by Gisle Aas
+&lt;gisle@aas.no&gt;, based on &quot;Data::Dumper&quot; by
+Gurusamy Sarathy &lt;gsar@umich.edu&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1998-2010 Gisle Aas. <br>
+Copyright 1996-1998 Gurusamy Sarathy.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This
+distribution is currenly maintained by Breno G. de
+Oliveira.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

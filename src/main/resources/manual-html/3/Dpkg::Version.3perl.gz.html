@@ -1,0 +1,262 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Version</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Version</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Version -
+handling and comparing dpkg-style version numbers</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+Dpkg::Version module provides pure-Perl routines to compare
+dpkg-style version numbers (as used in Debian packages) and
+also an object oriented interface overriding perl operators
+to do the right thing when you compare Dpkg::Version object
+between them.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$v =
+Dpkg::Version-&gt;new($version, %opts)</p>
+
+<p style="margin-left:17%;">Create a new Dpkg::Version
+object corresponding to the version indicated in the string
+(scalar) $version. By default it will accepts any string and
+consider it as a valid version. If you pass the option
+&quot;check =&gt; 1&quot;, it will return undef if the
+version is invalid (see version_check for details).</p>
+
+<p style="margin-left:17%; margin-top: 1em">You can always
+call $v-&gt;<b>is_valid()</b> later on to verify that the
+version is valid.</p>
+
+<p style="margin-left:11%;">boolean evaluation</p>
+
+<p style="margin-left:17%;">When the Dpkg::Version object
+is used in a boolean evaluation (for example in &quot;if
+($v)&quot; or &quot;$v ? \&quot;$v\&quot; :
+&rsquo;default&rsquo;&quot;) it returns true if the version
+stored is valid ($v-&gt;<b>is_valid()</b>) and false
+otherwise.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Notice</b>:
+Between dpkg 1.15.7.2 and 1.19.1 this overload used to
+return $v-&gt;<b>as_string()</b> if
+$v-&gt;<b>is_valid()</b>, a breaking change in behavior that
+caused &quot;0&quot; versions to be evaluated as false. To
+catch any possibly intended code that relied on those
+semantics, this overload will emit a warning with category
+&quot;Dpkg::Version::semantic_change::overload::bool&quot;
+until dpkg 1.20.x. Once fixed, or for already valid code the
+warning can be quiesced with</p>
+
+<p style="margin-left:17%; margin-top: 1em">no if
+$Dpkg::Version::VERSION ge '1.02', <br>
+warnings =&gt;
+qw(Dpkg::Version::semantic_change::overload::bool);</p>
+
+<p style="margin-left:17%; margin-top: 1em">added after the
+&quot;use Dpkg::Version&quot;.</p>
+
+<p style="margin-left:11%;">$v-&gt;<b>is_valid()</b></p>
+
+<p style="margin-left:17%;">Returns true if the version is
+valid, false otherwise.</p>
+
+<p style="margin-left:11%;">$v-&gt;<b>epoch()</b>,
+$v-&gt;<b>version()</b>, $v-&gt;<b>revision()</b></p>
+
+<p style="margin-left:17%;">Returns the corresponding part
+of the full version string.</p>
+
+<p style="margin-left:11%;">$v-&gt;<b>is_native()</b></p>
+
+<p style="margin-left:17%;">Returns true if the version is
+native, false if it has a revision.</p>
+
+<p style="margin-left:11%;">$v1 &lt;=&gt; $v2, $v1 &lt;
+$v2, $v1 &lt;= $v2, $v1 &gt; $v2, $v1 &gt;= $v2</p>
+
+<p style="margin-left:17%;">Numerical comparison of various
+versions numbers. One of the two operands needs to be a
+Dpkg::Version, the other one can be anything provided that
+its string representation is a version number.</p>
+
+<p style="margin-left:11%;">&quot;$v&quot;,
+$v-&gt;<b>as_string()</b>, $v-&gt;as_string(%options)</p>
+
+<p style="margin-left:17%;">Accepts an optional option hash
+reference, affecting the string conversion.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Options: <br>
+omit_epoch (defaults to 0)</p>
+
+<p style="margin-left:29%;">Omit the epoch, if present, in
+the output string.</p>
+
+<p style="margin-left:17%;">omit_revision (defaults to
+0)</p>
+
+<p style="margin-left:29%;">Omit the revision, if present,
+in the output string.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Returns the
+string representation of the version number.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All the
+functions are exported by default. <br>
+version_compare($a, $b)</p>
+
+<p style="margin-left:17%;">Returns -1 if $a is earlier
+than $b, 0 if they are equal and 1 if $a is later than
+$b.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If $a or $b are
+not valid version numbers, it dies with an error.</p>
+
+<p style="margin-left:11%;">version_compare_relation($a,
+$rel, $b)</p>
+
+<p style="margin-left:17%;">Returns the result (0 or 1) of
+the given comparison operation. This function is implemented
+on top of <b>version_compare()</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Allowed values
+for $rel are the exported constants <small>REL_GT, REL_GE,
+REL_EQ, REL_LE, REL_LT.</small> Use
+<b>version_normalize_relation()</b> if you have an input
+string containing the operator.</p>
+
+<p style="margin-left:11%;">$rel =
+version_normalize_relation($rel_string)</p>
+
+<p style="margin-left:17%;">Returns the normalized constant
+of the relation $rel (a value among <small>REL_GT, REL_GE,
+REL_EQ, REL_LE</small> and <small>REL_LT</small> ).
+Supported relations names in input are: &quot;gt&quot;,
+&quot;ge&quot;, &quot;eq&quot;, &quot;le&quot;,
+&quot;lt&quot;, &quot;&gt;&gt;&quot;, &quot;&gt;=&quot;,
+&quot;=&quot;, &quot;&lt;=&quot;, &quot;&lt;&lt;&quot;.
+&quot;&gt;&quot; and &quot;&lt;&quot; are also supported but
+should not be used as they are obsolete aliases of
+&quot;&gt;=&quot; and &quot;&lt;=&quot;.</p>
+
+<p style="margin-left:11%;">version_compare_string($a,
+$b)</p>
+
+<p style="margin-left:17%;">String comparison function used
+for comparing non-numerical parts of version numbers.
+Returns -1 if $a is earlier than $b, 0 if they are equal and
+1 if $a is later than $b.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&quot;~&quot; character always sort lower than anything
+else. Digits sort lower than non-digits. Among remaining
+characters alphabetic characters (A-Z, a-z) sort lower than
+the other ones. Within each range, the <small>ASCII</small>
+decimal value of the character is used to sort between
+characters.</p>
+
+<p style="margin-left:11%;">version_compare_part($a,
+$b)</p>
+
+<p style="margin-left:17%;">Compare two corresponding
+sub-parts of a version number (either upstream version or
+debian revision).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each parameter
+is split by <b>version_split_digits()</b> and resulting
+items are compared together. As soon as a difference
+happens, it returns -1 if $a is earlier than $b, 0 if they
+are equal and 1 if $a is later than $b.</p>
+
+<p style="margin-left:11%;">@items =
+version_split_digits($version)</p>
+
+<p style="margin-left:17%;">Splits a string in items that
+are each entirely composed either of digits or of
+non-digits. For instance for &quot;1.024~beta1+svn234&quot;
+it would return (&quot;1&quot;, &quot;.&quot;,
+&quot;024&quot;, &quot;~beta&quot;, &quot;1&quot;,
+&quot;+svn&quot;, &quot;234&quot;).</p>
+
+<p style="margin-left:11%;">($ok, $msg) =
+version_check($version) <br>
+$ok = version_check($version)</p>
+
+<p style="margin-left:17%;">Checks the validity of $version
+as a version number. Returns 1 in $ok if the version is
+valid, 0 otherwise. In the latter case, $msg contains a
+description of the problem with the $version scalar.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.20.0)</b> <br>
+Remove deprecation warning from semantic change in 1.02.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.19.1)</b> <br>
+Semantic change: bool evaluation semantics restored to their
+original behavior.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.17.0)</b> <br>
+New argument: Accept an options argument in
+$v-&gt;<b>as_string()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New method:
+$v-&gt;<b>is_native()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.15.6)</b> <br>
+Mark the module as public.</p>
+<hr>
+</body>
+</html>

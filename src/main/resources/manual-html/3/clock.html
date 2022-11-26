@@ -1,0 +1,173 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:36 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CLOCK</title>
+
+</head>
+<body>
+
+<h1 align="center">CLOCK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">clock -
+determine processor time</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;time.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>clock_t
+clock(void);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>clock</b>() function returns an approximation of
+processor time used by the program.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The value
+returned is the CPU time used so far as a <i>clock_t</i>; to
+get the number of seconds used, divide by
+<b>CLOCKS_PER_SEC</b>. If the processor time used is not
+available or its value cannot be represented, the function
+returns the value <i>(clock_t)&nbsp;-1</i>.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3323761.png" alt="Image grohtml-3323761.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2001,
+POSIX.1-2008, C89, C99. XSI requires that
+<b>CLOCKS_PER_SEC</b> equals 1000000 independent of the
+actual resolution.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The C standard
+allows for arbitrary values at the start of the program;
+subtract the value returned from a call to <b>clock</b>() at
+the start of the program to get maximum portability.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+time can wrap around. On a 32-bit system where
+<b>CLOCKS_PER_SEC</b> equals 1000000 this function will
+return the same value approximately every 72 minutes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On several
+other implementations, the value returned by <b>clock</b>()
+also includes the times of any children whose status has
+been collected via <b>wait</b>(2) (or another wait-type
+call). Linux does not include the times of waited-for
+children in the value returned by <b>clock</b>(). The
+<b>times</b>(2) function, which explicitly returns
+(separate) information about the caller and its children,
+may be preferable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In glibc 2.17
+and earlier, <b>clock</b>() was implemented on top of
+<b>times</b>(2). For improved accuracy, since glibc 2.18, it
+is implemented on top of <b>clock_gettime</b>(2) (using the
+<b>CLOCK_PROCESS_CPUTIME_ID</b> clock).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clock_gettime</b>(2),
+<b>getrusage</b>(2), <b>times</b>(2)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

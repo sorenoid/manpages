@@ -1,0 +1,239 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:03 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LIFE_CYCLE-CIPHER</title>
+
+</head>
+<body>
+
+<h1 align="center">LIFE_CYCLE-CIPHER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">life_cycle-cipher
+- The cipher algorithm life-cycle</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All symmetric
+ciphers (CIPHERs) go through a number of stages in their
+life-cycle: <br>
+start</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>CIPHER</small> before it has been allocated. It is
+the starting state for any life-cycle transitions.</p>
+
+<p style="margin-left:11%;">newed</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>CIPHER</small> after it has been allocated.</p>
+
+<p style="margin-left:11%;">initialised</p>
+
+<p style="margin-left:17%;">These states represent the
+<small>CIPHER</small> when it is set up and capable of
+processing input. There are three possible initialised
+states: <br>
+initialised using EVP_CipherInit <br>
+initialised for decryption using EVP_DecryptInit <br>
+initialised for encryption using EVP_EncryptInit</p>
+
+<p style="margin-left:11%;">updated</p>
+
+<p style="margin-left:17%;">These states represent the
+<small>CIPHER</small> when it is set up and capable of
+processing additional input or generating output. The three
+possible states directly correspond to those for initialised
+above. The three different streams should not be mixed.</p>
+
+<p style="margin-left:11%;">finaled</p>
+
+<p style="margin-left:17%;">This state represents the
+<small>CIPHER</small> when it has generated output.</p>
+
+<p style="margin-left:11%;">freed</p>
+
+<p style="margin-left:17%;">This state is entered when the
+<small>CIPHER</small> is freed. It is the terminal state for
+all life-cycle transitions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>State
+Transition Diagram</b> <br>
+The usual life-cycle of a <small>CIPHER</small> is
+illustrated: <br>
++---------------------------+ <br>
+| | <br>
+| start | <br>
+| | <br>
++---------------------------+ + - - - - - - - - - - - - - +
+<br>
+| &rsquo; any of the initialised &rsquo; <br>
+| EVP_CIPHER_CTX_new &rsquo; updated or finaled states
+&rsquo; <br>
+v &rsquo; &rsquo; <br>
++---------------------------+ + - - - - - - - - - - - - - +
+<br>
+| | | <br>
+| newed | | EVP_CIPHER_CTX_reset <br>
+| | &lt;----+ <br>
++---------------------------+ <br>
+| | | <br>
++---------+ | +---------+ <br>
+EVP_DecryptInit | | EVP_CipherInit | EVP_EncryptInit <br>
+v v v <br>
++---------------------------+ +---------------------------+
++---------------------------+ <br>
+| | | | | | <br>
+| initialised | | initialised | | initialised | <br>
+| for decryption | | | | for encryption | <br>
++---------------------------+ +---------------------------+
++---------------------------+ <br>
+| | | <br>
+| EVP_DecryptUpdate | EVP_CipherUpdate EVP_EncryptUpdate |
+<br>
+| v | <br>
+| +---------------------------+ | <br>
+| | |--------------------+ | <br>
+| | updated | EVP_CipherUpdate | | <br>
+| | | &lt;------------------+ | <br>
+v +---------------------------+ v <br>
++---------------------------+ |
++---------------------------+ <br>
+| |---------------------+ | | | <br>
+| updated | EVP_DecryptUpdate | | | updated |------+ <br>
+| for decryption | &lt;-------------------+ | | for
+encryption | | <br>
++---------------------------+ |
++---------------------------+ | <br>
+| EVP_CipherFinal | | ^ | <br>
++-------+ | +--------+ | | <br>
+EVP_DecryptFinal | | | EVP_EncryptFinal
++-------------------+ <br>
+v v v EVP_EncryptUpdate <br>
++---------------------------+ <br>
+| |-----------------------------+ <br>
+| finaled | | <br>
+| | &lt;---------------------------+ <br>
++---------------------------+ EVP_CIPHER_CTX_get_params <br>
+| (AEAD encryption) <br>
+| EVP_CIPHER_CTX_free <br>
+v <br>
++---------------------------+ <br>
+| | <br>
+| freed | <br>
+| | <br>
++---------------------------+</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Formal State
+Transitions</b> <br>
+This section defines all of the legal state transitions.
+This is the canonical list. <br>
+Function Call ----------------------------------------------
+Current State
+----------------------------------------------- <br>
+start newed initialised updated finaled initialised updated
+initialised updated freed <br>
+decryption decryption encryption encryption <br>
+EVP_CIPHER_CTX_new newed <br>
+EVP_CipherInit initialised initialised initialised
+initialised initialised initialised initialised initialised
+<br>
+EVP_DecryptInit initialised initialised initialised
+initialised initialised initialised initialised initialised
+<br>
+decryption decryption decryption decryption decryption
+decryption decryption decryption <br>
+EVP_EncryptInit initialised initialised initialised
+initialised initialised initialised initialised initialised
+<br>
+encryption encryption encryption encryption encryption
+encryption encryption encryption <br>
+EVP_CipherUpdate updated updated <br>
+EVP_DecryptUpdate updated updated <br>
+decryption decryption <br>
+EVP_EncryptUpdate updated updated <br>
+encryption encryption <br>
+EVP_CipherFinal finaled <br>
+EVP_DecryptFinal finaled <br>
+EVP_EncryptFinal finaled <br>
+EVP_CIPHER_CTX_free freed freed freed freed freed freed
+freed freed freed <br>
+EVP_CIPHER_CTX_reset newed newed newed newed newed newed
+newed newed <br>
+EVP_CIPHER_CTX_get_params newed initialised updated
+initialised updated initialised updated <br>
+decryption decryption encryption encryption <br>
+EVP_CIPHER_CTX_set_params newed initialised updated
+initialised updated initialised updated <br>
+decryption decryption encryption encryption <br>
+EVP_CIPHER_CTX_gettable_params newed initialised updated
+initialised updated initialised updated <br>
+decryption decryption encryption encryption <br>
+EVP_CIPHER_CTX_settable_params newed initialised updated
+initialised updated initialised updated <br>
+decryption decryption encryption encryption</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">At some point
+the <small>EVP</small> layer will begin enforcing the
+transitions described herein.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>provider-cipher</b>(7),
+<b>EVP_EncryptInit</b>(3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2021
+The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

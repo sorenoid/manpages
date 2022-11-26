@@ -1,0 +1,229 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:51 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TOUPPER</title>
+
+</head>
+<body>
+
+<h1 align="center">TOUPPER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">toupper,
+tolower, toupper_l, tolower_l - convert uppercase or
+lowercase</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;ctype.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+toupper(int</b> <i>c</i><b>); <br>
+int tolower(int</b> <i>c</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+toupper_l(int</b> <i>c</i><b>, locale_t</b>
+<i>locale</i><b>); <br>
+int tolower_l(int</b> <i>c</i><b>, locale_t</b>
+<i>locale</i><b>);</b></p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>toupper_l</b>(),
+<b>tolower_l</b>():</p>
+
+<p style="margin-left:17%;">Since glibc 2.10:</p>
+
+
+<p style="margin-left:28%;">_XOPEN_SOURCE&nbsp;&gt;=&nbsp;700</p>
+
+<p style="margin-left:17%;">Before glibc 2.10:</p>
+
+<p style="margin-left:28%;">_GNU_SOURCE</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These functions
+convert lowercase letters to uppercase, and vice versa.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>c</i> is
+a lowercase letter, <b>toupper</b>() returns its uppercase
+equivalent, if an uppercase representation exists in the
+current locale. Otherwise, it returns <i>c</i>. The
+<b>toupper_l</b>() function performs the same task, but uses
+the locale referred to by the locale handle
+<i>locale</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>c</i> is
+an uppercase letter, <b>tolower</b>() returns its lowercase
+equivalent, if a lowercase representation exists in the
+current locale. Otherwise, it returns <i>c</i>. The
+<b>tolower_l</b>() function performs the same task, but uses
+the locale referred to by the locale handle
+<i>locale</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>c</i> is
+neither an <i>unsigned char</i> value nor <b>EOF</b>, the
+behavior of these functions is undefined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The behavior of
+<b>toupper_l</b>() and <b>tolower_l</b>() is undefined if
+<i>locale</i> is the special locale object
+<b>LC_GLOBAL_LOCALE</b> (see <b>duplocale</b>(3)) or is not
+a valid locale object handle.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The value
+returned is that of the converted letter, or <i>c</i> if the
+conversion was not possible.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-3350971.png" alt="Image grohtml-3350971.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>toupper</b>(),
+<b>tolower</b>(): C89, C99, 4.3BSD, POSIX.1-2001,
+POSIX.1-2008.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>toupper_l</b>(),
+<b>tolower_l</b>(): POSIX.1-2008.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The standards
+require that the argument <i>c</i> for these functions is
+either <b>EOF</b> or a value that is representable in the
+type <i>unsigned char</i>. If the argument <i>c</i> is of
+type <i>char</i>, it must be cast to <i>unsigned char</i>,
+as in the following example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">char c; <br>
+... <br>
+res = toupper((unsigned char) c);</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is
+necessary because <i>char</i> may be the equivalent
+<i>signed char</i>, in which case a byte where the top bit
+is set would be sign extended when converting to <i>int</i>,
+yielding a value that is outside the range of <i>unsigned
+char</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The details of
+what constitutes an uppercase or lowercase letter depend on
+the locale. For example, the default <b>&quot;C&quot;</b>
+locale does not know about umlauts, so no conversion is done
+for them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In some
+non-English locales, there are lowercase letters with no
+corresponding uppercase equivalent; the German sharp s is
+one example.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>isalpha</b>(3),
+<b>newlocale</b>(3), <b>setlocale</b>(3),
+<b>towlower</b>(3), <b>towupper</b>(3), <b>uselocale</b>(3),
+<b>locale</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

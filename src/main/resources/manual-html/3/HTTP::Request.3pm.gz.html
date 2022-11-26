@@ -1,0 +1,287 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:35 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTTP::Request</title>
+
+</head>
+<body>
+
+<h1 align="center">HTTP::Request</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::Request -
+HTTP style request message</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">version
+6.36</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">require
+HTTP::Request; <br>
+$request = HTTP::Request-&gt;new(GET =&gt;
+'http://www.example.com/');</p>
+
+<p style="margin-left:11%; margin-top: 1em">and usually
+used like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ua =
+LWP::UserAgent-&gt;new; <br>
+$response = $ua-&gt;request($request);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;HTTP::Request&quot;
+is a class encapsulating <small>HTTP</small> style requests,
+consisting of a request line, some headers, and a content
+body. Note that the <small>LWP</small> library uses
+<small>HTTP</small> style requests even for non-HTTP
+protocols. Instances of this class are usually passed to the
+<b>request()</b> method of an &quot;LWP::UserAgent&quot;
+object.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;HTTP::Request&quot;
+is a subclass of &quot;HTTP::Message&quot; and therefore
+inherits its methods. The following additional methods are
+available: <br>
+$r = HTTP::Request-&gt;new( $method, $uri ) <br>
+$r = HTTP::Request-&gt;new( $method, $uri, $header ) <br>
+$r = HTTP::Request-&gt;new( $method, $uri, $header, $content
+)</p>
+
+<p style="margin-left:17%;">Constructs a new
+&quot;HTTP::Request&quot; object describing a request on the
+object $uri using method $method. The $method argument must
+be a string. The $uri argument can be either a string, or a
+reference to a &quot;URI&quot; object. The optional $header
+argument should be a reference to an
+&quot;HTTP::Headers&quot; object or a plain array reference
+of key/value pairs. The optional $content argument should be
+a string of bytes.</p>
+
+<p style="margin-left:11%;">$r = HTTP::Request-&gt;parse(
+$str )</p>
+
+<p style="margin-left:17%;">This constructs a new request
+object by parsing the given string.</p>
+
+<p style="margin-left:11%;">$r-&gt;method <br>
+$r-&gt;method( $val )</p>
+
+<p style="margin-left:17%;">This is used to get/set the
+method attribute. The method should be a short string like
+&quot; <small>GET&quot;, &quot;HEAD&quot;, &quot;PUT&quot;,
+&quot;PATCH&quot;</small> or &quot;
+<small>POST&quot;.</small></p>
+
+<p style="margin-left:11%;">$r-&gt;uri <br>
+$r-&gt;uri( $val )</p>
+
+<p style="margin-left:17%;">This is used to get/set the uri
+attribute. The $val can be a reference to a
+<small>URI</small> object or a plain string. If a string is
+given, then it should be parsable as an absolute
+<small>URI.</small></p>
+
+<p style="margin-left:11%;">$r-&gt;header( $field ) <br>
+$r-&gt;header( $field =&gt; $value )</p>
+
+<p style="margin-left:17%;">This is used to get/set header
+values and it is inherited from &quot;HTTP::Headers&quot;
+via &quot;HTTP::Message&quot;. See HTTP::Headers for details
+and other similar methods that can be used to access the
+headers.</p>
+
+<p style="margin-left:11%;">$r-&gt;accept_decodable</p>
+
+<p style="margin-left:17%;">This will set the
+&quot;Accept-Encoding&quot; header to the list of encodings
+that <b>decoded_content()</b> can decode.</p>
+
+<p style="margin-left:11%;">$r-&gt;content <br>
+$r-&gt;content( $bytes )</p>
+
+<p style="margin-left:17%;">This is used to get/set the
+content and it is inherited from the
+&quot;HTTP::Message&quot; base class. See HTTP::Message for
+details and other methods that can be used to access the
+content.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+content should be a string of bytes. Strings in perl can
+contain characters outside the range of a byte. The
+&quot;Encode&quot; module can be used to turn such strings
+into a string of bytes.</p>
+
+<p style="margin-left:11%;">$r-&gt;as_string <br>
+$r-&gt;as_string( $eol )</p>
+
+<p style="margin-left:17%;">Method returning a textual
+representation of the request.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Creating
+requests to be sent with LWP::UserAgent or others can be
+easy. Here are a few examples.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Simple
+<small>POST</small></b> <br>
+Here, we&rsquo;ll create a simple <small>POST</small>
+request that could be used to send <small>JSON</small> data
+to an endpoint.</p>
+
+<p style="margin-left:11%; margin-top: 1em">#!/usr/bin/env
+perl <br>
+use strict; <br>
+use warnings; <br>
+use HTTP::Request (); <br>
+use JSON::MaybeXS qw(encode_json); <br>
+my $url = 'https://www.example.com/api/user/123'; <br>
+my $header = ['Content-Type' =&gt; 'application/json;
+charset=UTF-8']; <br>
+my $data = {foo =&gt; 'bar', baz =&gt; 'quux'}; <br>
+my $encoded_data = encode_json($data); <br>
+my $r = HTTP::Request-&gt;new('POST', $url, $header,
+$encoded_data); <br>
+# at this point, we could send it via LWP::UserAgent <br>
+# my $ua = LWP::UserAgent-&gt;new(); <br>
+# my $res = $ua-&gt;request($r);</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Batch
+<small>POST</small> Request</b> <br>
+Some services, like Google, allow multiple requests to be
+sent in one batch.
+&lt;https://developers.google.com/drive/v3/web/batch&gt; for
+example. Using the &quot;add_part&quot; method from
+HTTP::Message makes this simple.</p>
+
+<p style="margin-left:11%; margin-top: 1em">#!/usr/bin/env
+perl <br>
+use strict; <br>
+use warnings; <br>
+use HTTP::Request (); <br>
+use JSON::MaybeXS qw(encode_json); <br>
+my $auth_token = 'auth_token'; <br>
+my $batch_url = 'https://www.googleapis.com/batch'; <br>
+my $url =
+'https://www.googleapis.com/drive/v3/files/fileId/permissions?fields=id';
+<br>
+my $url_no_email =
+'https://www.googleapis.com/drive/v3/files/fileId/permissions?fields=id&amp;sendNotificationEmail=false';
+<br>
+# generate a JSON post request for one of the batch entries
+<br>
+my $req1 = build_json_request($url, { <br>
+emailAddress =&gt; 'example@appsrocks.com', <br>
+role =&gt; &quot;writer&quot;, <br>
+type =&gt; &quot;user&quot;, <br>
+}); <br>
+# generate a JSON post request for one of the batch entries
+<br>
+my $req2 = build_json_request($url_no_email, { <br>
+domain =&gt; &quot;appsrocks.com&quot;, <br>
+role =&gt; &quot;reader&quot;, <br>
+type =&gt; &quot;domain&quot;, <br>
+}); <br>
+# generate a multipart request to send all of the other
+requests <br>
+my $r = HTTP::Request-&gt;new('POST', $batch_url, [ <br>
+'Accept-Encoding' =&gt; 'gzip', <br>
+# if we don't provide a boundary here, HTTP::Message will
+generate <br>
+# one for us. We could use UUID::uuid() here if we wanted.
+<br>
+'Content-Type' =&gt; 'multipart/mixed; boundary=END_OF_PART'
+<br>
+]); <br>
+# add the two POST requests to the main request <br>
+$r-&gt;add_part($req1, $req2); <br>
+# at this point, we could send it via LWP::UserAgent <br>
+# my $ua = LWP::UserAgent-&gt;new(); <br>
+# my $res = $ua-&gt;request($r); <br>
+exit(); <br>
+sub build_json_request { <br>
+my ($url, $href) = @_; <br>
+my $header = ['Authorization' =&gt; &quot;Bearer
+$auth_token&quot;, 'Content-Type' =&gt; 'application/json;
+charset=UTF-8']; <br>
+return HTTP::Request-&gt;new('POST', $url, $header,
+encode_json($href)); <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTTP::Headers,
+HTTP::Message, HTTP::Request::Common, HTTP::Response</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Gisle Aas
+&lt;gisle@activestate.com&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is copyright (c) 1994 by Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; you can redistribute it and/or modify it under the
+same terms as the Perl 5 programming language system
+itself.</p>
+<hr>
+</body>
+</html>

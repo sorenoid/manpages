@@ -1,0 +1,266 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:40 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LWP::Simple</title>
+
+</head>
+<body>
+
+<h1 align="center">LWP::Simple</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#STATUS CONSTANTS">STATUS CONSTANTS</a><br>
+<a href="#CLASSIFICATION FUNCTIONS">CLASSIFICATION FUNCTIONS</a><br>
+<a href="#CAVEAT">CAVEAT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">LWP::Simple -
+simple procedural interface to LWP</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">perl
+-MLWP::Simple -e 'getprint &quot;http://www.sn.no&quot;'
+<br>
+use LWP::Simple; <br>
+$content = get(&quot;http://www.sn.no/&quot;); <br>
+die &quot;Couldn't get it!&quot; unless defined $content;
+<br>
+if (mirror(&quot;http://www.sn.no/&quot;, &quot;foo&quot;)
+== RC_NOT_MODIFIED) { <br>
+... <br>
+} <br>
+if (is_success(getprint(&quot;http://www.sn.no/&quot;))) {
+<br>
+... <br>
+}</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+meant for people who want a simplified view of the
+libwww-perl library. It should also be suitable for
+one-liners. If you need more control or access to the header
+fields in the requests sent and responses received, then you
+should use the full object-oriented interface provided by
+the LWP::UserAgent module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The module will
+also export the LWP::UserAgent object as $ua if you ask for
+it explicitly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The user agent
+created by this module will identify itself as
+&quot;LWP::Simple/#.##&quot; and will initialize its proxy
+defaults from the environment (by calling
+&quot;$ua-&gt;env_proxy&quot;).</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+functions are provided (and exported) by this module:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>get</b> <br>
+my $res = get($url);</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>get()</b> function will fetch the document identified by
+the given <small>URL</small> and return it. It returns
+&quot;undef&quot; if it fails. The $url argument can be
+either a string or a reference to a <small>URI</small>
+object.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You will not be
+able to examine the response code or response headers (like
+&quot;Content-Type&quot;) when you are accessing the web
+using this function. If you need that information you should
+use the full <small>OO</small> interface (see
+LWP::UserAgent).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>head</b>
+<br>
+my $res = head($url);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get document
+headers. Returns the following 5 values if successful:
+($content_type, $document_length, $modified_time, $expires,
+$server)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Returns an
+empty list if it fails. In scalar context returns
+<small>TRUE</small> if successful.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>getprint</b>
+<br>
+my $code = getprint($url);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get and print a
+document identified by a <small>URL.</small> The document is
+printed to the selected default filehandle for output
+(normally <small>STDOUT</small> ) as data is received from
+the network. If the request fails, then the status code and
+message are printed on <small>STDERR.</small> The return
+value is the <small>HTTP</small> response code.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>getstore</b>
+<br>
+my $code = getstore($url, $file)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Gets a document
+identified by a <small>URL</small> and stores it in the
+file. The return value is the <small>HTTP</small> response
+code.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mirror</b>
+<br>
+my $code = mirror($url, $file);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get and store a
+document identified by a <small>URL,</small> using
+<i>If-modified-since</i>, and checking the
+<i>Content-Length</i>. Returns the <small>HTTP</small>
+response code.</p>
+
+<h2>STATUS CONSTANTS
+<a name="STATUS CONSTANTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+also exports the HTTP::Status constants and procedures. You
+can use them when you check the response code from
+&quot;getprint&quot; in LWP::Simple, &quot;getstore&quot; in
+LWP::Simple or &quot;mirror&quot; in LWP::Simple. The
+constants are:</p>
+
+<p style="margin-left:11%; margin-top: 1em">RC_CONTINUE
+<br>
+RC_SWITCHING_PROTOCOLS <br>
+RC_OK <br>
+RC_CREATED <br>
+RC_ACCEPTED <br>
+RC_NON_AUTHORITATIVE_INFORMATION <br>
+RC_NO_CONTENT <br>
+RC_RESET_CONTENT <br>
+RC_PARTIAL_CONTENT <br>
+RC_MULTIPLE_CHOICES <br>
+RC_MOVED_PERMANENTLY <br>
+RC_MOVED_TEMPORARILY <br>
+RC_SEE_OTHER <br>
+RC_NOT_MODIFIED <br>
+RC_USE_PROXY <br>
+RC_BAD_REQUEST <br>
+RC_UNAUTHORIZED <br>
+RC_PAYMENT_REQUIRED <br>
+RC_FORBIDDEN <br>
+RC_NOT_FOUND <br>
+RC_METHOD_NOT_ALLOWED <br>
+RC_NOT_ACCEPTABLE <br>
+RC_PROXY_AUTHENTICATION_REQUIRED <br>
+RC_REQUEST_TIMEOUT <br>
+RC_CONFLICT <br>
+RC_GONE <br>
+RC_LENGTH_REQUIRED <br>
+RC_PRECONDITION_FAILED <br>
+RC_REQUEST_ENTITY_TOO_LARGE <br>
+RC_REQUEST_URI_TOO_LARGE <br>
+RC_UNSUPPORTED_MEDIA_TYPE <br>
+RC_INTERNAL_SERVER_ERROR <br>
+RC_NOT_IMPLEMENTED <br>
+RC_BAD_GATEWAY <br>
+RC_SERVICE_UNAVAILABLE <br>
+RC_GATEWAY_TIMEOUT <br>
+RC_HTTP_VERSION_NOT_SUPPORTED</p>
+
+<h2>CLASSIFICATION FUNCTIONS
+<a name="CLASSIFICATION FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+HTTP::Status classification functions are:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>is_success</b>
+<br>
+my $bool = is_success($rc);</p>
+
+<p style="margin-left:11%; margin-top: 1em">True if
+response code indicated a successful request.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>is_error</b>
+<br>
+my $bool = is_error($rc)</p>
+
+<p style="margin-left:11%; margin-top: 1em">True if
+response code indicated that an error occurred.</p>
+
+<h2>CAVEAT
+<a name="CAVEAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that if
+you are using both LWP::Simple and the very popular
+<small>CGI</small> module, you may be importing a
+&quot;head&quot; function from each module, producing a
+warning like &quot;Prototype mismatch: sub main::head ($) vs
+none&quot;. Get around this problem by just not importing
+LWP::Simple&rsquo;s &quot;head&quot; function, like so:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use LWP::Simple
+qw(!head); <br>
+use CGI qw(:standard); # then only CGI.pm defines a
+head()</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then if you do
+need LWP::Simple&rsquo;s &quot;head&quot; function, you can
+just call it as &quot;LWP::Simple::head($url)&quot;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>LWP</small>
+, lwpcook, LWP::UserAgent, HTTP::Status, lwp-request,
+lwp-mirror</p>
+<hr>
+</body>
+</html>

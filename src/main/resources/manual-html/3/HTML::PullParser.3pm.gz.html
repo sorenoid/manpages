@@ -1,0 +1,170 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:05 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTML::PullParser</title>
+
+</head>
+<body>
+
+<h1 align="center">HTML::PullParser</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::PullParser
+- Alternative HTML::Parser interface</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+HTML::PullParser; <br>
+$p = HTML::PullParser-&gt;new(file =&gt;
+&quot;index.html&quot;, <br>
+start =&gt; 'event, tagname, @attr', <br>
+end =&gt; 'event, tagname', <br>
+ignore_elements =&gt; [qw(script style)], <br>
+) || die &quot;Can't open: $!&quot;; <br>
+while (my $token = $p-&gt;get_token) { <br>
+#...do something with $token <br>
+}</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+HTML::PullParser is an alternative interface to the
+HTML::Parser class. It basically turns the HTML::Parser
+inside out. You associate a file (or any IO::Handle object
+or string) with the parser at construction time and then
+repeatedly call $parser-&gt;get_token to obtain the tags and
+text found in the parsed document.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods are provided: <br>
+$p = HTML::PullParser-&gt;new( file =&gt; $file, %options )
+<br>
+$p = HTML::PullParser-&gt;new( doc =&gt; \$doc, %options
+)</p>
+
+<p style="margin-left:17%;">A &quot;HTML::PullParser&quot;
+can be made to parse from either a file or a literal
+document based on whether the &quot;file&quot; or
+&quot;doc&quot; option is passed to the parser&rsquo;s
+constructor.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&quot;file&quot; passed in can either be a file name or a
+file handle object. If a file name is passed, and it
+can&rsquo;t be opened for reading, then the constructor will
+return an undefined value and $! will tell you why it
+failed. Otherwise the argument is taken to be some object
+that the &quot;HTML::PullParser&quot; can <b>read()</b> from
+when it needs more data. The stream will be <b>read()</b>
+until <small>EOF,</small> but not closed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A
+&quot;doc&quot; can be passed plain or as a reference to a
+scalar. If a reference is passed then the value of this
+scalar should not be changed before all tokens have been
+extracted.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Next the
+information to be returned for the different token types
+must be set up. This is done by simply associating an
+argspec (as defined in HTML::Parser) with the events you
+have an interest in. For instance, if you want
+&quot;start&quot; tokens to be reported as the string 'S'
+followed by the tagname and the attributes you might pass an
+&quot;start&quot;-option like this:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$p =
+HTML::PullParser-&gt;new( <br>
+doc =&gt; $document_to_parse, <br>
+start =&gt; '&quot;S&quot;, tagname, @attr', <br>
+end =&gt; '&quot;E&quot;, tagname', <br>
+);</p>
+
+<p style="margin-left:17%; margin-top: 1em">At last other
+&quot;HTML::Parser&quot; options, like
+&quot;ignore_tags&quot;, and &quot;unbroken_text&quot;, can
+be passed in. Note that you should not use the
+<i>event</i>_h options to set up parser handlers. That would
+confuse the inner logic of &quot;HTML::PullParser&quot;.</p>
+
+<p style="margin-left:11%;">$token = $p-&gt;get_token</p>
+
+<p style="margin-left:17%;">This method will return the
+next <i>token</i> found in the <small>HTML</small> document,
+or &quot;undef&quot; at the end of the document. The token
+is returned as an array reference. The content of this array
+match the argspec set up during &quot;HTML::PullParser&quot;
+construction.</p>
+
+<p style="margin-left:11%;">$p-&gt;unget_token( @tokens
+)</p>
+
+<p style="margin-left:17%;">If you find out you have read
+too many tokens you can push them back, so that they are
+returned again the next time $p-&gt;get_token is called.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&rsquo;eg/hform&rsquo; script shows how we might parse the
+form section of HTML::Documents using HTML::PullParser.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::Parser,
+HTML::TokeParser</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1998-2001 Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

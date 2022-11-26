@@ -1,0 +1,228 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EVP_MAC-KMAC</title>
+
+</head>
+<body>
+
+<h1 align="center">EVP_MAC-KMAC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">EVP_MAC-KMAC,
+EVP_MAC-KMAC128, EVP_MAC-KMAC256 - The KMAC EVP_MAC
+implementations</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Support for
+computing <small>KMAC</small> MACs through the
+<b><small>EVP_MAC</small></b> <small>API.</small></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Identity</b>
+<br>
+These implementations are identified with one of these names
+and properties, to be used with <b>EVP_MAC_fetch()</b>: <br>
+&quot; <small>KMAC-128&quot;,</small>
+&quot;provider=default&quot; or &quot;provider=fips&quot;
+<br>
+&quot; <small>KMAC-256&quot;,</small>
+&quot;provider=default&quot; or
+&quot;provider=fips&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Supported
+parameters</b> <br>
+The general description of these parameters can be found in
+&quot; <small>PARAMETERS&quot;</small> in
+<b><small>EVP_MAC</small></b> (3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All these
+parameters can be set with <b>EVP_MAC_CTX_set_params()</b>.
+Furthermore, the &quot;size&quot; parameter can be retrieved
+with <b>EVP_MAC_CTX_get_params()</b>, or with
+<b>EVP_MAC_CTX_get_mac_size()</b>. The length of the
+&quot;size&quot; parameter should not exceed that of a
+<b>size_t</b>. Likewise, the &quot;block-size&quot;
+parameter can be retrieved with
+<b>EVP_MAC_CTX_get_params()</b>, or with
+<b>EVP_MAC_CTX_get_block_size()</b>. <br>
+&quot;key&quot; ( <b><small>OSSL_MAC_PARAM_KEY</small></b> )
+&lt;octet string&gt;</p>
+
+<p style="margin-left:17%;">Sets the <small>MAC</small>
+key. Setting this parameter is identical to passing a
+<i>key</i> to <b>EVP_MAC_init</b>(3).</p>
+
+<p style="margin-left:11%;">&quot;custom&quot; (
+<b><small>OSSL_MAC_PARAM_CUSTOM</small></b> ) &lt;octet
+string&gt;</p>
+
+<p style="margin-left:17%;">Sets the custom value. It is an
+optional value of at most 256 bytes, and is empty by
+default.</p>
+
+<p style="margin-left:11%;">&quot;size&quot; (
+<b><small>OSSL_MAC_PARAM_SIZE</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Sets the <small>MAC</small>
+size. By default, it is 16 for &quot;KMAC-128&quot; and 32
+for &quot;KMAC-256&quot;.</p>
+
+<p style="margin-left:11%;">&quot;block-size&quot; (
+<b><small>OSSL_MAC_PARAM_SIZE</small></b> ) &lt;unsigned
+integer&gt;</p>
+
+<p style="margin-left:17%;">Gets the <small>MAC</small>
+block size. By default, it is 168 for &quot;KMAC-128&quot;
+and 136 for &quot;KMAC-256&quot;.</p>
+
+<p style="margin-left:11%;">&quot;xof&quot; (
+<b><small>OSSL_MAC_PARAM_XOF</small></b> )
+&lt;integer&gt;</p>
+
+<p style="margin-left:17%;">The &quot;xof&quot; parameter
+value is expected to be 1 or 0. Use 1 to enable
+<small>XOF</small> mode. The default value is 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;custom&quot; parameter must be set as part of or
+before the <b>EVP_MAC_init()</b> call. The &quot;xof&quot;
+and &quot;size&quot; parameters can be set at any time
+before <b>EVP_MAC_final()</b>. The &quot;key&quot; parameter
+is set as part of the <b>EVP_MAC_init()</b> call, but can be
+set before it instead.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;openssl/evp.h&gt; <br>
+#include &lt;openssl/params.h&gt; <br>
+static int do_kmac(const unsigned char *in, size_t in_len,
+<br>
+const unsigned char *key, size_t key_len, <br>
+const unsigned char *custom, size_t custom_len, <br>
+int xof_enabled, unsigned char *out, int out_len) <br>
+{ <br>
+EVP_MAC_CTX *ctx = NULL; <br>
+EVP_MAC *mac = NULL; <br>
+OSSL_PARAM params[4], *p; <br>
+int ret = 0; <br>
+size_t l = 0; <br>
+mac = EVP_MAC_fetch(NULL, &quot;KMAC-128&quot;, NULL); <br>
+if (mac == NULL) <br>
+goto err; <br>
+ctx = EVP_MAC_CTX_new(mac); <br>
+/* The mac can be freed after it is used by EVP_MAC_CTX_new
+*/ <br>
+EVP_MAC_free(mac); <br>
+if (ctx == NULL) <br>
+goto err; <br>
+/* <br>
+* Setup parameters required before calling EVP_MAC_init()
+<br>
+* The parameters OSSL_MAC_PARAM_XOF and OSSL_MAC_PARAM_SIZE
+may also be <br>
+* used at this point. <br>
+*/ <br>
+p = params; <br>
+*p++ = OSSL_PARAM_construct_octet_string(OSSL_MAC_PARAM_KEY,
+<br>
+(void *)key, key_len); <br>
+if (custom != NULL &amp;&amp; custom_len != 0) <br>
+*p++ =
+OSSL_PARAM_construct_octet_string(OSSL_MAC_PARAM_CUSTOM,
+<br>
+(void *)custom, custom_len); <br>
+*p = OSSL_PARAM_construct_end(); <br>
+if (!EVP_MAC_CTX_set_params(ctx, params)) <br>
+goto err; <br>
+if (!EVP_MAC_init(ctx)) <br>
+goto err; <br>
+/* <br>
+* Note: the following optional parameters can be set any
+time <br>
+* before EVP_MAC_final(). <br>
+*/ <br>
+p = params; <br>
+*p++ = OSSL_PARAM_construct_int(OSSL_MAC_PARAM_XOF,
+&amp;xof_enabled); <br>
+*p++ = OSSL_PARAM_construct_int(OSSL_MAC_PARAM_SIZE,
+&amp;out_len); <br>
+*p = OSSL_PARAM_construct_end(); <br>
+if (!EVP_MAC_CTX_set_params(ctx, params)) <br>
+goto err; <br>
+/* The update may be called multiple times here for streamed
+input */ <br>
+if (!EVP_MAC_update(ctx, in, in_len)) <br>
+goto err; <br>
+if (!EVP_MAC_final(ctx, out, &amp;l, out_len)) <br>
+goto err; <br>
+ret = 1; <br>
+err: <br>
+EVP_MAC_CTX_free(ctx); <br>
+return ret; <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_MAC_CTX_get_params</b>(3),
+<b>EVP_MAC_CTX_set_params</b>(3), &quot;
+<small>PARAMETERS&quot;</small> in
+<b><small>EVP_MAC</small></b> (3),
+<b><small>OSSL_PARAM</small></b> (3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2018-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:23 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Auth</title>
+
+</head>
+<body>
+
+<h1 align="center">Auth</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#COMPATIBILITY">COMPATIBILITY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X11::Auth -
+Perl module to read X11 authority files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">require
+X11::Auth; <br>
+$a = new X11::Auth; <br>
+($auth_type, $auth_data) = $a-&gt;get_by_host($host,
+$disp_num);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+an approximate perl replacement for the libXau C library and
+the <b>xauth</b>(1) program. It reads and interprets the
+files (usually &rsquo;~/.Xauthority&rsquo;) that hold
+authorization data used in connecting to X servers. Since it
+was written mainly for the use of X11::Protocol, its
+functionality is currently restricted to reading, not
+writing, of these files.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>new</b> <br>
+$auth = X11::Auth-&gt;new; <br>
+$auth = X11::Auth-&gt;open($filename);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Open an
+authority file, and create an object to handle it. The
+filename will be taken from the <small>XAUTHORITY</small>
+environment variable, if present, or
+&rsquo;.Xauthority&rsquo; in the user&rsquo;s home
+directory, or it may be overridden by an argument.
+&rsquo;open&rsquo; may be used as a synonym.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_one</b>
+<br>
+($family, $host_addr, $display_num, $auth_name, $auth_data)
+<br>
+= $auth-&gt;get_one;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Read one entry
+from the file. Returns a null list at end of file. $family
+is usually &rsquo;Internet&rsquo; or &rsquo;Local&rsquo;,
+and $display_num can be any string.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_all</b>
+<br>
+@auth_data = $auth-&gt;get_all;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Read all of the
+entries in the file. Each member of the array returned is an
+array ref similar to the list returned by
+<b>get_one()</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_by_host</b>
+<br>
+($auth_name, $auth_data) <br>
+= $auth-&gt;get_by_host($host, $family, $display_num);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get
+authentication data for a connection of type $family to
+display $display_num on $host. If $family is
+&rsquo;Internet&rsquo;, the host will be translated into an
+appropriate address by <b>gethostbyname()</b>. If no data is
+found, returns an empty list.</p>
+
+<h2>COMPATIBILITY
+<a name="COMPATIBILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+table shows the (rough) correspondence between libXau calls
+and X11::Auth methods:</p>
+
+<p style="margin-left:11%; margin-top: 1em">libXau
+X11::Auth <br>
+------ --------- <br>
+XauFileName $ENV{XAUTHORITY} <br>
+|| &quot;$ENV{HOME}/.Xauthority&quot; <br>
+fopen(XauFileName(), &quot;rb&quot;) $auth = new X11::Auth
+<br>
+XauReadAuth $auth-&gt;get_one <br>
+XauWriteAuth <br>
+XauGetAuthByAddr $auth-&gt;get_by_host <br>
+XauGetBestAuthByAddr <br>
+XauLockAuth <br>
+XauUnlockAuth <br>
+XauDisposeAuth</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Stephen
+McCamant &lt;SMCCAM@cpan.org&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>perl</b>(1),
+X11::Protocol, <b>Xau</b>(3), <b>xauth</b>(1),
+lib/Xau/README in the X11 source distribution.</p>
+<hr>
+</body>
+</html>

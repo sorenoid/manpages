@@ -1,0 +1,139 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:19 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>APPARMOR_XATTRS</title>
+
+</head>
+<body>
+
+<h1 align="center">APPARMOR_XATTRS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#KNOWN ISSUES">KNOWN ISSUES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">apparmor_xattrs
+- AppArmor profile xattr(7) matching</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">AppArmor
+profiles can conditionally match files based on the presence
+and value of extended attributes in addition to file path.
+The following profile applies to any file under
+&quot;/usr/bin&quot; where the &quot;security.apparmor&quot;
+extended attribute has the value &quot;trusted&quot;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">profile trusted
+/usr/bin/* xattrs=(security.apparmor=&quot;trusted&quot;) {
+<br>
+# ... <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+&quot;security.apparmor&quot; and &quot;trusted&quot; are
+arbitrary, and profiles can match based on the value of any
+attribute.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The xattrs
+value may also contain a path regex:</p>
+
+<p style="margin-left:11%; margin-top: 1em">profile trusted
+/usr/bin/* xattrs=(user.trust=&quot;tier/*&quot;) { <br>
+# ... <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>getfattr</b>(1) and <b>setfattr</b>(1) tools can be used
+to view and manage xattr values:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ setfattr -n
+'security.apparmor' -v 'trusted' /usr/bin/example-tool <br>
+$ getfattr --absolute-names -d -m - /usr/bin/example-tool
+<br>
+# file: usr/bin/example-tool <br>
+security.apparmor=&quot;trusted&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The priority of
+each profile is determined by the length of the path, then
+the number of xattrs specified. A more specific path is
+preferred over xattr matches:</p>
+
+<p style="margin-left:11%; margin-top: 1em"># Highest
+priority, longest path. <br>
+profile example1 /usr/bin/example-tool { <br>
+# ... <br>
+} <br>
+# Lower priority than the longer path, but higher priority
+than a rule <br>
+# with fewer xattr matches. <br>
+profile example2 /usr/** xattrs=( <br>
+security.apparmor=&quot;trusted&quot; <br>
+user.domain=&quot;**&quot; <br>
+) { <br>
+# ... <br>
+} <br>
+# Lowest priority. Same path length as the second profile,
+but has <br>
+# fewer xattr matches. <br>
+profile example2 /usr/** { <br>
+# ... <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">xattr matching
+requires the following kernel feature:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/sys/kernel/security/apparmor/features/domain/attach_conditions/xattr</p>
+
+<h2>KNOWN ISSUES
+<a name="KNOWN ISSUES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">AppArmor
+profiles currently can&rsquo;t reliably match extended
+attributes with binary values such as security.evm and
+security.ima. In the future AppArmor may gain the ability to
+match based on the presence of certain attributes while
+ignoring their values.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apparmor</b>(8),
+<b>apparmor_parser</b>(8), <b>apparmor.d</b>(5),
+<b>xattr</b>(7), <b>aa-autodep</b>(1), <b>clean</b>(1),
+<b>auditd</b>(8), <b>getfattr</b>(1), <b>setfattr</b>(1),
+and &lt;https://wiki.apparmor.net&gt;.</p>
+<hr>
+</body>
+</html>

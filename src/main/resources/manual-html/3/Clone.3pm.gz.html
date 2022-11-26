@@ -1,0 +1,131 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:17 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Clone</title>
+
+</head>
+<body>
+
+<h1 align="center">Clone</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Clone -
+recursively copy Perl datatypes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use Clone
+'clone'; <br>
+my $data = { <br>
+set =&gt; [ 1 .. 50 ], <br>
+foo =&gt; { <br>
+answer =&gt; 42, <br>
+object =&gt; SomeObject-&gt;new, <br>
+}, <br>
+}; <br>
+my $cloned_data = clone($data); <br>
+$cloned_data-&gt;{foo}{answer} = 1; <br>
+print $cloned_data-&gt;{foo}{answer}; # '1' <br>
+print $data-&gt;{foo}{answer}; # '42'</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+add it to your class:</p>
+
+<p style="margin-left:11%; margin-top: 1em">package Foo;
+<br>
+use parent 'Clone'; <br>
+sub new { bless {}, shift } <br>
+package main; <br>
+my $obj = Foo-&gt;new; <br>
+my $copy = $obj-&gt;clone;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+provides a &quot;clone()&quot; method which makes recursive
+copies of nested hash, array, scalar and reference types,
+including tied variables and objects.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;clone()&quot;
+takes a scalar argument and duplicates it. To duplicate
+lists, arrays or hashes, pass them in by reference, e.g.</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $copy =
+clone (\@array); <br>
+# or <br>
+my %copy = %{ clone (\%hash) };</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Storable&rsquo;s
+&quot;dclone()&quot; is a flexible solution for cloning
+variables, albeit slower for average-sized data structures.
+Simple and naive benchmarks show that Clone is faster for
+data structures with 3 or fewer levels, while
+&quot;dclone()&quot; can be faster for structures 4 or more
+levels deep.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2001-2019 Ray Finch. All Rights Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Ray Finch
+&quot;&lt;rdf@cpan.org&gt;&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Breno G. de
+Oliveira &quot;&lt;garu@cpan.org&gt;&quot; and Florian
+Ragwitz &quot;&lt;rafl@debian.org&gt;&quot; perform routine
+maintenance releases since 2012.</p>
+<hr>
+</body>
+</html>

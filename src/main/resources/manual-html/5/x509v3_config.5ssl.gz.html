@@ -1,0 +1,815 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:41 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>X509V3_CONFIG</title>
+
+</head>
+<body>
+
+<h1 align="center">X509V3_CONFIG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#STANDARD EXTENSIONS">STANDARD EXTENSIONS</a><br>
+<a href="#DEPRECATED EXTENSIONS">DEPRECATED EXTENSIONS</a><br>
+<a href="#ARBITRARY EXTENSIONS">ARBITRARY EXTENSIONS</a><br>
+<a href="#WARNINGS">WARNINGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">x509v3_config -
+X509 V3 certificate extension configuration format</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Several OpenSSL
+commands can add extensions to a certificate or certificate
+request based on the contents of a configuration file and
+<small>CLI</small> options such as <b>-addext</b>. The
+syntax of configuration files is described in
+<b>config</b>(5). The commands typically have an option to
+specify the name of the configuration file, and a section
+within that file; see the documentation of the individual
+command for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This page uses
+<b>extensions</b> as the name of the section, when needed in
+examples.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each entry in
+the extension section takes the form:</p>
+
+<p style="margin-left:11%; margin-top: 1em">name =
+[critical, ]value(s)</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>critical</b> is present then the extension will be marked
+as critical.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If multiple
+entries are processed for the same extension name, later
+entries override earlier ones with the same name.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The format of
+<b>values</b> depends on the value of <b>name</b>, many have
+a type-value pairing where the type and value are separated
+by a colon. There are four main types of extension:</p>
+
+<p style="margin-left:11%; margin-top: 1em">string <br>
+multi-valued <br>
+raw <br>
+arbitrary</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each is
+described in the following paragraphs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">String
+extensions simply have a string which contains either the
+value itself or how it is obtained.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Multi-valued
+extensions have a short form and a long form. The short form
+is a comma-separated list of names and values:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">basicConstraints
+= critical, CA:true, pathlen:1</p>
+
+<p style="margin-left:11%; margin-top: 1em">The long form
+allows the values to be placed in a separate section:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+basicConstraints = critical, @basic_constraints <br>
+[basic_constraints] <br>
+CA = true <br>
+pathlen = 1</p>
+
+<p style="margin-left:11%; margin-top: 1em">Both forms are
+equivalent.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an extension
+is multi-value and a field value must contain a comma the
+long form must be used otherwise the comma would be
+misinterpreted as a field separator. For example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">subjectAltName
+= URI:ldap://somehost.com/CN=foo,OU=bar</p>
+
+<p style="margin-left:11%; margin-top: 1em">will produce an
+error but the equivalent form:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+subjectAltName = @subject_alt_section <br>
+[subject_alt_section] <br>
+subjectAltName = URI:ldap://somehost.com/CN=foo,OU=bar</p>
+
+<p style="margin-left:11%; margin-top: 1em">is valid.</p>
+
+<p style="margin-left:11%; margin-top: 1em">OpenSSL does
+not support multiple occurrences of the same field within a
+section. In this example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+subjectAltName = @alt_section <br>
+[alt_section] <br>
+email = steve@example.com <br>
+email = steve@example.org</p>
+
+<p style="margin-left:11%; margin-top: 1em">will only
+recognize the last value. To specify multiple values append
+a numeric identifier, as shown here:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+subjectAltName = @alt_section <br>
+[alt_section] <br>
+email.1 = steve@example.com <br>
+email.2 = steve@example.org</p>
+
+<p style="margin-left:11%; margin-top: 1em">The syntax of
+raw extensions is defined by the source code that parses the
+extension but should be documened. See &quot;Certificate
+Policies&quot; for an example of a raw extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an extension
+type is unsupported, then the <i>arbitrary</i> extension
+syntax must be used, see the &quot; <small>ARBITRARY
+EXTENSIONS&quot;</small> section for more details.</p>
+
+<h2>STANDARD EXTENSIONS
+<a name="STANDARD EXTENSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+sections describe the syntax of each supported extension.
+They do not define the semantics of the extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Basic
+Constraints</b> <br>
+This is a multi-valued extension which indicates whether a
+certificate is a <small>CA</small> certificate. The first
+value is <b><small>CA</small></b> followed by
+<b><small>TRUE</small></b> or <b><small>FALSE</small></b> .
+If <b><small>CA</small></b> is <b><small>TRUE</small></b>
+then an optional <b>pathlen</b> name followed by a
+nonnegative value can be included.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">basicConstraints
+= CA:TRUE <br>
+basicConstraints = CA:FALSE <br>
+basicConstraints = critical, CA:TRUE, pathlen:1</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+<small>CA</small> certificate <i>must</i> include the
+<b>basicConstraints</b> name with the
+<b><small>CA</small></b> parameter set to
+<b><small>TRUE</small></b> . An end-user certificate must
+either have <b><small>CA:FALSE</small></b> or omit the
+extension entirely. The <b>pathlen</b> parameter specifies
+the maximum number of CAs that can appear below this one in
+a chain. A <b>pathlen</b> of zero means the
+<small>CA</small> cannot sign any sub-CA&rsquo;s, and can
+only sign end-entity certificates.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Key
+Usage</b> <br>
+Key usage is a multi-valued extension consisting of a list
+of names of the permitted key usages. The defined values
+are: &quot;digitalSignature&quot;,
+&quot;nonRepudiation&quot;, &quot;keyEncipherment&quot;,
+&quot;dataEncipherment&quot;, &quot;keyAgreement&quot;,
+&quot;keyCertSign&quot;, &quot;cRLSign&quot;,
+&quot;encipherOnly&quot;, and &quot;decipherOnly&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+<p style="margin-left:11%; margin-top: 1em">keyUsage =
+digitalSignature, nonRepudiation <br>
+keyUsage = critical, keyCertSign</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extended Key
+Usage</b> <br>
+This extension consists of a list of values indicating
+purposes for which the certificate public key can be used.
+Each value can be either a short text name or an
+<small>OID.</small> The following text names, and their
+intended meaning, are known:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Value Meaning
+according to RFC 5280 etc. <br>
+----- ---------------------------------- <br>
+serverAuth SSL/TLS WWW Server Authentication <br>
+clientAuth SSL/TLS WWW Client Authentication <br>
+codeSigning Code Signing <br>
+emailProtection E-mail Protection (S/MIME) <br>
+timeStamping Trusted Timestamping <br>
+OCSPSigning OCSP Signing <br>
+ipsecIKE ipsec Internet Key Exchange <br>
+msCodeInd Microsoft Individual Code Signing (authenticode)
+<br>
+msCodeCom Microsoft Commercial Code Signing (authenticode)
+<br>
+msCTLSign Microsoft Trust List Signing <br>
+msEFS Microsoft Encrypted File System</p>
+
+<p style="margin-left:11%; margin-top: 1em">While
+<small>IETF RFC 5280</small> says that
+<b>id-kp-serverAuth</b> and <b>id-kp-clientAuth</b> are only
+for <small>WWW</small> use, in practice they are used for
+all kinds of <small>TLS</small> clients and servers, and
+this is what OpenSSL assumes as well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">extendedKeyUsage
+= critical, codeSigning, 1.2.3.4 <br>
+extendedKeyUsage = serverAuth, clientAuth</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Subject Key
+Identifier</b> <br>
+The <small>SKID</small> extension specification has a value
+with three choices. If the value is the word <b>none</b>
+then no <small>SKID</small> extension will be included. If
+the value is the word <b>hash</b>, or by default for the
+<b>x509</b>, <b>req</b>, and <b>ca</b> apps, the process
+specified in <small>RFC 5280</small> section 4.2.1.2. (1) is
+followed: The keyIdentifier is composed of the 160-bit
+<small>SHA-1</small> hash of the value of the <small>BIT
+STRING</small> subjectPublicKey (excluding the tag, length,
+and number of unused bits).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Otherwise, the
+value must be a hex string (possibly with &quot;:&quot;
+separating bytes) to output directly, however, this is
+strongly discouraged.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">subjectKeyIdentifier
+= hash</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Authority
+Key Identifier</b> <br>
+The <small>AKID</small> extension specification may have the
+value <b>none</b> indicating that no <small>AKID</small>
+shall be included. Otherwise it may have the value
+<b>keyid</b> or <b>issuer</b> or both of them, separated by
+&quot;,&quot;. Either or both can have the option
+<b>always</b>, indicated by putting a colon &quot;:&quot;
+between the value and this option. For self-signed
+certificates the <small>AKID</small> is suppressed unless
+<b>always</b> is present. By default the <b>x509</b>,
+<b>req</b>, and <b>ca</b> apps behave as if &quot;none&quot;
+was given for self-signed certificates and &quot;keyid,
+issuer&quot; otherwise.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>keyid</b>
+is present, an attempt is made to copy the subject key
+identifier ( <small>SKID</small> ) from the issuer
+certificate except if the issuer certificate is the same as
+the current one and it is not self-signed. The hash of the
+public key related to the signing key is taken as fallback
+if the issuer certificate is the same as the current
+certificate. If <b>always</b> is present but no value can be
+obtained, an error is returned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>issuer</b> is present, and in addition it has the option
+<b>always</b> specified or <b>keyid</b> is not present, then
+the issuer <small>DN</small> and serial number are copied
+from the issuer certificate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">authorityKeyIdentifier
+= keyid, issuer <br>
+authorityKeyIdentifier = keyid, issuer:always</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Subject
+Alternative Name</b> <br>
+This is a multi-valued extension that supports several types
+of name identifier, including <b>email</b> (an email
+address), <b><small>URI</small></b> (a uniform resource
+indicator), <b><small>DNS</small></b> (a <small>DNS</small>
+domain name), <b><small>RID</small></b> (a registered
+<small>ID: OBJECT IDENTIFIER</small> ),
+<b><small>IP</small></b> (an <small>IP</small> address),
+<b>dirName</b> (a distinguished name), and <b>otherName</b>.
+The syntax of each is described in the following
+paragraphs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>email</b> option has two special values. &quot;copy&quot;
+will automatically include any email addresses contained in
+the certificate subject name in the extension.
+&quot;move&quot; will automatically move any email addresses
+from the certificate subject name to the extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>IP</small> address used in the
+<b><small>IP</small></b> option can be in either IPv4 or
+IPv6 format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value of
+<b>dirName</b> is specifies the configuration section
+containing the distinguished name to use, as a set of
+name-value pairs. Multi-valued AVAs can be formed by
+prefacing the name with a <b>+</b> character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value of
+<b>otherName</b> can include arbitrary data associated with
+an <small>OID</small> ; the value should be the
+<small>OID</small> followed by a semicolon and the content
+in specified using the syntax in
+<b>ASN1_generate_nconf</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+<p style="margin-left:11%; margin-top: 1em">subjectAltName
+= email:copy, email:my@example.com,
+URI:http://my.example.com/ <br>
+subjectAltName = IP:192.168.7.1 <br>
+subjectAltName = IP:13::17 <br>
+subjectAltName = email:my@example.com, RID:1.2.3.4 <br>
+subjectAltName = otherName:1.2.3.4;UTF8:some other
+identifier <br>
+[extensions] <br>
+subjectAltName = dirName:dir_sect <br>
+[dir_sect] <br>
+C = UK <br>
+O = My Organization <br>
+OU = My Unit <br>
+CN = My Name</p>
+
+<p style="margin-left:11%; margin-top: 1em">Non-ASCII Email
+Address conforming the syntax defined in Section 3.3 of
+<small>RFC 6531</small> are provided as
+otherName.SmtpUTF8Mailbox. According to <small>RFC
+8398,</small> the email address should be provided as
+UTF8String. To enforce the valid representation in the
+certificate, the SmtpUTF8Mailbox should be provided as
+follows</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">subjectAltName=@alts
+<br>
+[alts] <br>
+otherName =
+1.3.6.1.5.5.7.8.9;FORMAT:UTF8,UTF8String:nonasciiname.example.com</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Issuer
+Alternative Name</b> <br>
+This extension supports most of the options of subject
+alternative name; it does not support <b>email:copy</b>. It
+also adds <b>issuer:copy</b> as an allowed value, which
+copies any subject alternative names from the issuer
+certificate, if possible.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">issuerAltName =
+issuer:copy</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Authority
+Info Access</b> <br>
+This extension gives details about how to retrieve
+information that related to the certificate that the
+<small>CA</small> makes available. The syntax is
+<b>access_id;location</b>, where <b>access_id</b> is an
+object identifier (although only a few values are
+well-known) and <b>location</b> has the same syntax as
+subject alternative name (except that <b>email:copy</b> is
+not supported).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Possible values
+for access_id include <b><small>OCSP</small></b> (
+<small>OCSP</small> responder), <b>caIssuers</b> (
+<small>CA</small> Issuers), <b>ad_timestamping</b> (
+<small>AD</small> Time Stamping),
+<b><small>AD_DVCS</small></b> (ad dvcs), <b>caRepository</b>
+( <small>CA</small> Repository).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">authorityInfoAccess
+=
+OCSP;URI:http://ocsp.example.com/,caIssuers;URI:http://myca.example.com/ca.cer
+<br>
+authorityInfoAccess = OCSP;URI:http://ocsp.example.com/</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>CRL</small>
+distribution points</b> <br>
+This is a multi-valued extension whose values can be either
+a name-value pair using the same form as subject alternative
+name or a single value specifying the section name
+containing all the distribution point values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a
+name-value pair is used, a DistributionPoint extension will
+be set with the given value as the fullName field as the
+distributionPoint value, and the reasons and cRLIssuer
+fields will be omitted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a single
+option is used, the value specifies the section, and that
+section can have the following items: <br>
+fullname</p>
+
+<p style="margin-left:17%;">The full name of the
+distribution point, in the same format as the subject
+alternative name.</p>
+
+<p style="margin-left:11%;">relativename</p>
+
+<p style="margin-left:17%;">The value is taken as a
+distinguished name fragment that is set as the value of the
+nameRelativeToCRLIssuer field.</p>
+
+<p style="margin-left:11%;">CRLIssuer</p>
+
+<p style="margin-left:17%;">The value must in the same
+format as the subject alternative name.</p>
+
+<p style="margin-left:11%;">reasons</p>
+
+<p style="margin-left:17%;">A multi-value field that
+contains the reasons for revocation. The recognized values
+are: &quot;keyCompromise&quot;, &quot;CACompromise&quot;,
+&quot;affiliationChanged&quot;, &quot;superseded&quot;,
+&quot;cessationOfOperation&quot;,
+&quot;certificateHold&quot;, &quot;privilegeWithdrawn&quot;,
+and &quot;AACompromise&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Only one of
+<b>fullname</b> or <b>relativename</b> should be
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Simple
+examples:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">crlDistributionPoints
+= URI:http://example.com/myca.crl <br>
+crlDistributionPoints = URI:http://example.com/myca.crl,
+URI:http://example.org/my.crl</p>
+
+<p style="margin-left:11%; margin-top: 1em">Full
+distribution point example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+crlDistributionPoints = crldp1_section <br>
+[crldp1_section] <br>
+fullname = URI:http://example.com/myca.crl <br>
+CRLissuer = dirName:issuer_sect <br>
+reasons = keyCompromise, CACompromise <br>
+[issuer_sect] <br>
+C = UK <br>
+O = Organisation <br>
+CN = Some Name</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Issuing
+Distribution Point</b> <br>
+This extension should only appear in CRLs. It is a
+multi-valued extension whose syntax is similar to the
+&quot;section&quot; pointed to by the <small>CRL</small>
+distribution points extension. The following names have
+meaning: <br>
+fullname</p>
+
+<p style="margin-left:17%;">The full name of the
+distribution point, in the same format as the subject
+alternative name.</p>
+
+<p style="margin-left:11%;">relativename</p>
+
+<p style="margin-left:17%;">The value is taken as a
+distinguished name fragment that is set as the value of the
+nameRelativeToCRLIssuer field.</p>
+
+<p style="margin-left:11%;">onlysomereasons</p>
+
+<p style="margin-left:17%;">A multi-value field that
+contains the reasons for revocation. The recognized values
+are: &quot;keyCompromise&quot;, &quot;CACompromise&quot;,
+&quot;affiliationChanged&quot;, &quot;superseded&quot;,
+&quot;cessationOfOperation&quot;,
+&quot;certificateHold&quot;, &quot;privilegeWithdrawn&quot;,
+and &quot;AACompromise&quot;.</p>
+
+<p style="margin-left:11%;">onlyuser, onlyCA, onlyAA,
+indirectCRL</p>
+
+<p style="margin-left:17%;">The value for each of these
+names is a boolean.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+issuingDistributionPoint = critical, @idp_section <br>
+[idp_section] <br>
+fullname = URI:http://example.com/myca.crl <br>
+indirectCRL = TRUE <br>
+onlysomereasons = keyCompromise, CACompromise</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Certificate
+Policies</b> <br>
+This is a <i>raw</i> extension that supports all of the
+defined fields of the certificate extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Policies
+without qualifiers are specified by giving the
+<small>OID.</small> Multiple policies are comma-separated.
+For example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">certificatePolicies
+= 1.2.4.5, 1.1.3.4</p>
+
+<p style="margin-left:11%; margin-top: 1em">To include
+policy qualifiers, use the &quot;@section&quot; syntax to
+point to a section that specifies all the information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The section
+referred to must include the policy <small>OID</small> using
+the name <b>policyIdentifier</b>. cPSuri qualifiers can be
+included using the syntax:</p>
+
+<p style="margin-left:11%; margin-top: 1em">CPS.nnn =
+value</p>
+
+<p style="margin-left:11%; margin-top: 1em">where
+&quot;nnn&quot; is a number.</p>
+
+<p style="margin-left:11%; margin-top: 1em">userNotice
+qualifiers can be set using the syntax:</p>
+
+<p style="margin-left:11%; margin-top: 1em">userNotice.nnn
+= @notice</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value of
+the userNotice qualifier is specified in the relevant
+section. This section can include <b>explicitText</b>,
+<b>organization</b>, and <b>noticeNumbers</b> options.
+explicitText and organization are text strings,
+noticeNumbers is a comma separated list of numbers. The
+organization and noticeNumbers options (if included) must
+<small>BOTH</small> be present. Some software might require
+the <b>ia5org</b> option at the top level; this changes the
+encoding from Displaytext to IA5String.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+certificatePolicies = ia5org, 1.2.3.4, 1.5.6.7.8, @polsect
+<br>
+[polsect] <br>
+policyIdentifier = 1.3.5.8 <br>
+CPS.1 = &quot;http://my.host.example.com/&quot; <br>
+CPS.2 = &quot;http://my.your.example.com/&quot; <br>
+userNotice.1 = @notice <br>
+[notice] <br>
+explicitText = &quot;Explicit Text Here&quot; <br>
+organization = &quot;Organisation Name&quot; <br>
+noticeNumbers = 1, 2, 3, 4</p>
+
+<p style="margin-left:11%; margin-top: 1em">The character
+encoding of explicitText can be specified by prefixing the
+value with <b><small>UTF8</small></b> ,
+<b><small>BMP</small></b> , or <b><small>VISIBLE</small></b>
+followed by colon. For example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[notice] <br>
+explicitText = &quot;UTF8:Explicit Text Here&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Policy
+Constraints</b> <br>
+This is a multi-valued extension which consisting of the
+names <b>requireExplicitPolicy</b> or
+<b>inhibitPolicyMapping</b> and a non negative integer
+value. At least one component must be present.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">policyConstraints
+= requireExplicitPolicy:3</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Inhibit Any
+Policy</b> <br>
+This is a string extension whose value must be a non
+negative integer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">inhibitAnyPolicy
+= 2</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Name
+Constraints</b> <br>
+This is a multi-valued extension. The name should begin with
+the word <b>permitted</b> or <b>excluded</b> followed by a
+<b>;</b>. The rest of the name and the value follows the
+syntax of subjectAltName except <b>email:copy</b> is not
+supported and the <b><small>IP</small></b> form should
+consist of an <small>IP</small> addresses and subnet mask
+separated by a <b>/</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">nameConstraints
+= permitted;IP:192.168.0.0/255.255.0.0 <br>
+nameConstraints = permitted;email:.example.com <br>
+nameConstraints = excluded;email:.com</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OCSP</small>
+No Check</b> <br>
+This is a string extension. It is parsed, but ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">noCheck =
+ignored</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>TLS</small>
+Feature (aka Must Staple)</b> <br>
+This is a multi-valued extension consisting of a list of
+<small>TLS</small> extension identifiers. Each identifier
+may be a number (0..65535) or a supported name. When a
+<small>TLS</small> client sends a listed extension, the
+<small>TLS</small> server is expected to include that
+extension in its reply.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The supported
+names are: <b>status_request</b> and
+<b>status_request_v2</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">tlsfeature =
+status_request</p>
+
+<h2>DEPRECATED EXTENSIONS
+<a name="DEPRECATED EXTENSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+extensions are non standard, Netscape specific and largely
+obsolete. Their use in new applications is discouraged.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netscape
+String extensions</b> <br>
+Netscape Comment (<b>nsComment</b>) is a string extension
+containing a comment which will be displayed when the
+certificate is viewed in some browsers. Other extensions of
+this type are: <b>nsBaseUrl</b>, <b>nsRevocationUrl</b>,
+<b>nsCaRevocationUrl</b>, <b>nsRenewalUrl</b>,
+<b>nsCaPolicyUrl</b> and <b>nsSslServerName</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netscape
+Certificate Type</b> <br>
+This is a multi-valued extensions which consists of a list
+of flags to be included. It was used to indicate the
+purposes for which a certificate could be used. The
+basicConstraints, keyUsage and extended key usage extensions
+are now used instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Acceptable
+values for nsCertType are: <b>client</b>, <b>server</b>,
+<b>email</b>, <b>objsign</b>, <b>reserved</b>, <b>sslCA</b>,
+<b>emailCA</b>, <b>objCA</b>.</p>
+
+<h2>ARBITRARY EXTENSIONS
+<a name="ARBITRARY EXTENSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If an extension
+is not supported by the OpenSSL code then it must be encoded
+using the arbitrary extension format. It is also possible to
+use the arbitrary format for supported extensions. Extreme
+care should be taken to ensure that the data is formatted
+correctly for the given extension type.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+ways to encode arbitrary extensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first way
+is to use the word <small>ASN1</small> followed by the
+extension content using the same syntax as
+<b>ASN1_generate_nconf</b>(3). For example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[extensions]
+<br>
+1.2.3.4 = critical, ASN1:UTF8String:Some random data <br>
+1.2.3.4.1 = ASN1:SEQUENCE:seq_sect <br>
+[seq_sect] <br>
+field1 = UTF8:field1 <br>
+field2 = UTF8:field2</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is also
+possible to use the word <small>DER</small> to include the
+raw encoded data in any extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em">1.2.3.4 =
+critical, DER:01:02:03:04 <br>
+1.2.3.4.1 = DER:01020304</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value
+following <small>DER</small> is a hex dump of the
+<small>DER</small> encoding of the extension Any extension
+can be placed in this form to override the default
+behaviour. For example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">basicConstraints
+= critical, DER:00:01:02:03</p>
+
+<h2>WARNINGS
+<a name="WARNINGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+guarantee that a specific implementation will process a
+given extension. It may therefore be sometimes possible to
+use certificates for purposes prohibited by their extensions
+because a specific application does not recognize or honour
+the values of the relevant extensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<small>DER</small> and <small>ASN1</small> options should be
+used with caution. It is possible to create invalid
+extensions if they are not used carefully.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>openssl-req</b>(1),
+<b>openssl-ca</b>(1), <b>openssl-x509</b>(1),
+<b>ASN1_generate_nconf</b>(3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2004-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

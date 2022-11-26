@@ -1,0 +1,146 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:33 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Net::DBus::Dumper</title>
+
+</head>
+<body>
+
+<h1 align="center">Net::DBus::Dumper</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus::Dumper
+- Stringify Net::DBus objects suitable for printing</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+Net::DBus::Dumper; <br>
+use Net::DBus; <br>
+# Dump out info about the bus <br>
+my $bus = Net::DBus-&gt;find; <br>
+print dbus_dump($bus); <br>
+# Dump out info about a service <br>
+my $service =
+$bus-&gt;get_service(&quot;org.freedesktop.DBus&quot;); <br>
+print dbus_dump($service); <br>
+# Dump out info about an object <br>
+my $object =
+$service-&gt;get_object(&quot;/org/freedesktop/DBus&quot;);
+<br>
+print dbus_dump($object);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+serves as a debugging aid, providing a means to stringify a
+DBus related object in a form suitable for printing out. It
+can stringify any of the Net::DBus:* objects, generating the
+following information for each <br>
+Net::DBus</p>
+
+<p style="margin-left:17%;">A list of services registered
+with the bus</p>
+
+<p style="margin-left:11%;">Net::DBus::Service =item
+Net::DBus::RemoteService</p>
+
+<p style="margin-left:17%;">The service name</p>
+
+<p style="margin-left:11%;">Net::DBus::Object =item
+Net::DBus::RemoteObject</p>
+
+<p style="margin-left:17%;">The list of all exported
+methods, and signals, along with their parameter and return
+types.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">my @data =
+dbus_dump($object);</p>
+
+<p style="margin-left:17%;">Generates a stringified
+representation of an object. The object passed in as the
+parameter must be an instance of one of Net::DBus,
+Net::DBus::RemoteService, Net::DBus::Service,
+Net::DBus::RemoteObject, Net::DBus::Object. The stringified
+representation will be returned as a list of strings, with
+newlines in appropriate places, such that it can be passed
+string to the &quot;print&quot; method.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It should print
+out a list of object paths registered against a service, but
+this only currently works for service implemented in
+Perl</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Daniel P.
+Berrange</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2005-2011 Daniel P. Berrange</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Net::DBus,
+Net::DBus::RemoteService, Net::DBus::Service,
+Net::DBus::RemoteObject, Net::DBus::Object,
+Data::Dumper.</p>
+<hr>
+</body>
+</html>

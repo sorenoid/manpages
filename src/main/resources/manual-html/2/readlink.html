@@ -1,0 +1,476 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:00 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>READLINK</title>
+
+</head>
+<body>
+
+<h1 align="center">READLINK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">readlink,
+readlinkat - read value of a symbolic link</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;unistd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ssize_t
+readlink(const char *</b><i>pathname</i><b>, char
+*</b><i>buf</i><b>, size_t</b> <i>bufsiz</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;fcntl.h&gt;</b> /* Definition of AT_* constants */
+<b><br>
+#include &lt;unistd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ssize_t
+readlinkat(int</b> <i>dirfd</i><b>, const char
+*</b><i>pathname</i><b>, <br>
+char *</b><i>buf</i><b>, size_t</b>
+<i>bufsiz</i><b>);</b></p>
+
+<p style="margin-left:5%; margin-top: 1em">Feature Test
+Macro Requirements for glibc (see
+<b>feature_test_macros</b>(7)):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlink</b>():</p>
+
+
+<p style="margin-left:17%;">_XOPEN_SOURCE&nbsp;&gt;=&nbsp;500
+|| _POSIX_C_SOURCE&nbsp;&gt;=&nbsp;200112L <br>
+|| /* Glibc versions &lt;= 2.19: */ _BSD_SOURCE</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlinkat</b>():</p>
+
+<p style="margin-left:17%;">Since glibc 2.10:</p>
+
+
+<p style="margin-left:23%;">_POSIX_C_SOURCE&nbsp;&gt;=&nbsp;200809L</p>
+
+<p style="margin-left:17%;">Before glibc 2.10:</p>
+
+<p style="margin-left:23%;">_ATFILE_SOURCE</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlink</b>()
+places the contents of the symbolic link <i>pathname</i> in
+the buffer <i>buf</i>, which has size <i>bufsiz</i>.
+<b>readlink</b>() does not append a null byte to <i>buf</i>.
+It will (silently) truncate the contents (to a length of
+<i>bufsiz</i> characters), in case the buffer is too small
+to hold all of the contents.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlinkat()</b>
+<br>
+The <b>readlinkat</b>() system call operates in exactly the
+same way as <b>readlink</b>(), except for the differences
+described here.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the pathname
+given in <i>pathname</i> is relative, then it is interpreted
+relative to the directory referred to by the file descriptor
+<i>dirfd</i> (rather than relative to the current working
+directory of the calling process, as is done by
+<b>readlink</b>() for a relative pathname).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<i>pathname</i> is relative and <i>dirfd</i> is the special
+value <b>AT_FDCWD</b>, then <i>pathname</i> is interpreted
+relative to the current working directory of the calling
+process (like <b>readlink</b>()).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<i>pathname</i> is absolute, then <i>dirfd</i> is
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since Linux
+2.6.39, <i>pathname</i> can be an empty string, in which
+case the call operates on the symbolic link referred to by
+<i>dirfd</i> (which should have been obtained using
+<b>open</b>(2) with the <b>O_PATH</b> and <b>O_NOFOLLOW</b>
+flags).</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>openat</b>(2) for an explanation of the need for
+<b>readlinkat</b>().</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+these calls return the number of bytes placed in <i>buf</i>.
+(If the returned value equals <i>bufsiz</i>, then truncation
+may have occurred.) On error, -1 is returned and
+<i>errno</i> is set to indicate the error.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EACCES</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Search permission is denied for
+a component of the path prefix. (See also
+<b>path_resolution</b>(7).)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EFAULT</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>buf</i> extends outside the process&rsquo;s allocated
+address space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>bufsiz</i> is not positive.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The named file (i.e., the final filename component of
+<i>pathname</i>) is not a symbolic link.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EIO</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>An I/O error occurred while reading from the
+filesystem.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ELOOP</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Too many symbolic links were encountered in translating
+the pathname.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENAMETOOLONG</b></p>
+
+<p style="margin-left:22%;">A pathname, or a component of a
+pathname, was too long.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOENT</b></p></td>
+<td width="2%"></td>
+<td width="63%">
+
+
+<p>The named file does not exist.</p></td>
+<td width="15%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="63%">
+
+
+<p>Insufficient kernel memory was available.</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENOTDIR</b></p>
+
+<p style="margin-left:22%;">A component of the path prefix
+is not a directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+additional errors can occur for <b>readlinkat</b>():</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>EBADF</b></p></td>
+<td width="4%"></td>
+<td width="56%">
+
+
+<p><i>dirfd</i> is not a valid file descriptor.</p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ENOTDIR</b></p>
+
+<p style="margin-left:22%;"><i>pathname</i> is relative and
+<i>dirfd</i> is a file descriptor referring to a file other
+than a directory.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlinkat</b>()
+was added to Linux in kernel 2.6.16; library support was
+added to glibc in version 2.4.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlink</b>():
+4.4BSD (<b>readlink</b>() first appeared in 4.2BSD),
+POSIX.1-2001, POSIX.1-2008.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlinkat</b>():
+POSIX.1-2008.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In versions of
+glibc up to and including glibc 2.4, the return type of
+<b>readlink</b>() was declared as <i>int</i>. Nowadays, the
+return type is declared as <i>ssize_t</i>, as (newly)
+required in POSIX.1-2001.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using a
+statically sized buffer might not provide enough room for
+the symbolic link contents. The required size for the buffer
+can be obtained from the <i>stat.st_size</i> value returned
+by a call to <b>lstat</b>(2) on the link. However, the
+number of bytes written by <b>readlink</b>() and
+<b>readlinkat</b>() should be checked to make sure that the
+size of the symbolic link did not increase between the
+calls. Dynamically allocating the buffer for
+<b>readlink</b>() and <b>readlinkat</b>() also addresses a
+common portability problem when using <b>PATH_MAX</b> for
+the buffer size, as this constant is not guaranteed to be
+defined per POSIX if the system does not have such
+limit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Glibc
+notes</b> <br>
+On older kernels where <b>readlinkat</b>() is unavailable,
+the glibc wrapper function falls back to the use of
+<b>readlink</b>(). When <i>pathname</i> is a relative
+pathname, glibc constructs a pathname based on the symbolic
+link in <i>/proc/self/fd</i> that corresponds to the
+<i>dirfd</i> argument.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+program allocates the buffer needed by <b>readlink</b>()
+dynamically from the information provided by
+<b>lstat</b>(2), falling back to a buffer of size
+<b>PATH_MAX</b> in cases where <b>lstat</b>(2) reports a
+size of zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;sys/types.h&gt; <br>
+#include &lt;sys/stat.h&gt; <br>
+#include &lt;limits.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;unistd.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+struct stat sb; <br>
+char *buf; <br>
+ssize_t nbytes, bufsiz;</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (argc != 2)
+{ <br>
+fprintf(stderr, &quot;Usage: %s &lt;pathname&gt;\n&quot;,
+argv[0]); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">if
+(lstat(argv[1], &amp;sb) == -1) { <br>
+perror(&quot;lstat&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Add one to
+the link size, so that we can determine whether <br>
+the buffer returned by readlink() was truncated. */</p>
+
+<p style="margin-left:11%; margin-top: 1em">bufsiz =
+sb.st_size + 1;</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Some magic
+symlinks under (for example) /proc and /sys <br>
+report 'st_size' as zero. In that case, take PATH_MAX as
+<br>
+a &quot;good enough&quot; estimate. */</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (sb.st_size
+== 0) <br>
+bufsiz = PATH_MAX;</p>
+
+<p style="margin-left:11%; margin-top: 1em">buf =
+malloc(bufsiz); <br>
+if (buf == NULL) { <br>
+perror(&quot;malloc&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">nbytes =
+readlink(argv[1], buf, bufsiz); <br>
+if (nbytes == -1) { <br>
+perror(&quot;readlink&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;'%s'
+points to '%.*s'\n&quot;, argv[1], (int) nbytes, buf);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* If the
+return value was equal to the buffer size, then the <br>
+the link target was larger than expected (perhaps because
+the <br>
+target was changed between the call to lstat() and the call
+to <br>
+readlink()). Warn the user that the returned target may have
+<br>
+been truncated. */</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (nbytes ==
+bufsiz) <br>
+printf(&quot;(Returned buffer may have been
+truncated)\n&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">free(buf); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>readlink</b>(1),
+<b>lstat</b>(2), <b>stat</b>(2), <b>symlink</b>(2),
+<b>realpath</b>(3), <b>path_resolution</b>(7),
+<b>symlink</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

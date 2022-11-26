@@ -1,0 +1,202 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:19 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Dpkg::Arch</title>
+
+</head>
+<body>
+
+<h1 align="center">Dpkg::Arch</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FUNCTIONS">FUNCTIONS</a><br>
+<a href="#CHANGES">CHANGES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Dpkg::Arch -
+handle architectures</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Dpkg::Arch
+module provides functions to handle Debian architectures,
+wildcards, and mapping from and to <small>GNU</small>
+triplets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">No symbols are
+exported by default. The :all tag can be used to import all
+symbols. The :getters, :parsers, :mappers and :operators
+tags can be used to import specific symbol subsets.</p>
+
+<h2>FUNCTIONS
+<a name="FUNCTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$arch =
+<b>get_raw_build_arch()</b></p>
+
+<p style="margin-left:17%;">Get the raw build Debian
+architecture, without taking into account variables from the
+environment.</p>
+
+<p style="margin-left:11%;">$arch =
+<b>get_build_arch()</b></p>
+
+<p style="margin-left:17%;">Get the build Debian
+architecture, using <small>DEB_BUILD_ARCH</small> from the
+environment if available.</p>
+
+<p style="margin-left:11%;">$arch =
+<b>get_raw_host_arch()</b></p>
+
+<p style="margin-left:17%;">Get the raw host Debian
+architecture, without taking into account variables from the
+environment.</p>
+
+<p style="margin-left:11%;">$arch =
+<b>get_host_arch()</b></p>
+
+<p style="margin-left:17%;">Get the host Debian
+architecture, using <small>DEB_HOST_ARCH</small> from the
+environment if available.</p>
+
+<p style="margin-left:11%;">@arch_list =
+<b>get_valid_arches()</b></p>
+
+<p style="margin-left:17%;">Get an array with all currently
+known Debian architectures.</p>
+
+<p style="margin-left:11%;">$multiarch =
+gnutriplet_to_multiarch($gnutriplet)</p>
+
+<p style="margin-left:17%;">Map a <small>GNU</small>
+triplet into a Debian multiarch triplet.</p>
+
+<p style="margin-left:11%;">$multiarch =
+debarch_to_multiarch($arch)</p>
+
+<p style="margin-left:17%;">Map a Debian architecture into
+a Debian multiarch triplet.</p>
+
+<p style="margin-left:11%;">$gnutriplet =
+debarch_to_gnutriplet($arch)</p>
+
+<p style="margin-left:17%;">Map a Debian architecture into
+a <small>GNU</small> triplet.</p>
+
+<p style="margin-left:11%;">$arch =
+gnutriplet_to_debarch($gnutriplet)</p>
+
+<p style="margin-left:17%;">Map a <small>GNU</small>
+triplet into a Debian architecture.</p>
+
+<p style="margin-left:11%;">$bool = debarch_eq($arch_a,
+$arch_b)</p>
+
+<p style="margin-left:17%;">Evaluate the equality of a
+Debian architecture, by comparing with another Debian
+architecture. No wildcard matching is performed.</p>
+
+<p style="margin-left:11%;">$bool = debarch_is($arch,
+$arch_wildcard)</p>
+
+<p style="margin-left:17%;">Evaluate the identity of a
+Debian architecture, by matching with an architecture
+wildcard.</p>
+
+<p style="margin-left:11%;">$bool =
+debarch_is_wildcard($arch)</p>
+
+<p style="margin-left:17%;">Evaluate whether a Debian
+architecture is an architecture wildcard.</p>
+
+<p style="margin-left:11%;">$bool =
+debarch_is_illegal($arch, %options)</p>
+
+<p style="margin-left:17%;">Validate an architecture
+name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+&quot;positive&quot; option is set to a true value, only
+positive architectures will be accepted, otherwise negated
+architectures are allowed.</p>
+
+<p style="margin-left:11%;">$bool =
+debarch_is_concerned($arch, @arches)</p>
+
+<p style="margin-left:17%;">Evaluate whether a Debian
+architecture applies to the list of architecture
+restrictions, as usually found in dependencies inside square
+brackets.</p>
+
+<p style="margin-left:11%;">@array =
+debarch_list_parse($arch_list, %options)</p>
+
+<p style="margin-left:17%;">Parse an architecture list.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+&quot;positive&quot; option is set to a true value, only
+positive architectures will be accepted, otherwise negated
+architectures are allowed.</p>
+
+<h2>CHANGES
+<a name="CHANGES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.03
+(dpkg 1.19.1)</b> <br>
+New argument: Accept a &quot;positive&quot; option in
+<b>debarch_is_illegal()</b> and
+<b>debarch_list_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.02
+(dpkg 1.18.19)</b> <br>
+New import tags: &quot;:all&quot;, &quot;:getters&quot;,
+&quot;:parsers&quot;, &quot;:mappers&quot;,
+&quot;:operators&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.01
+(dpkg 1.18.5)</b> <br>
+New functions: <b>debarch_is_illegal()</b>,
+<b>debarch_list_parse()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Version 1.00
+(dpkg 1.18.2)</b> <br>
+Mark the module as public.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-architecture</b>(1).</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:30 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>WCSTOMBS</title>
+
+</head>
+<body>
+
+<h1 align="center">WCSTOMBS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ATTRIBUTES">ATTRIBUTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">wcstombs -
+convert a wide-character string to a multibyte string</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;stdlib.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>size_t
+wcstombs(char *</b><i>dest</i><b>, const wchar_t
+*</b><i>src</i><b>, size_t</b> <i>n</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If <i>dest</i>
+is not NULL, the <b>wcstombs</b>() function converts the
+wide-character string <i>src</i> to a multibyte string
+starting at <i>dest</i>. At most <i>n</i> bytes are written
+to <i>dest</i>. The sequence of characters placed in
+<i>dest</i> begins in the initial shift state. The
+conversion can stop for three reasons:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>A wide character has been encountered that can not be
+represented as a multibyte sequence (according to the
+current locale). In this case, <i>(size_t)&nbsp;-1</i> is
+returned.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>The length limit forces a stop. In this case, the number
+of bytes written to <i>dest</i> is returned, but the shift
+state at this point is lost.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>The wide-character string has been completely converted,
+including the terminating null wide character (L'\0'). In
+this case, the conversion ends in the initial shift state.
+The number of bytes written to <i>dest</i>, excluding the
+terminating null byte ('\0'), is returned.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The programmer
+must ensure that there is room for at least <i>n</i> bytes
+at <i>dest</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <i>dest</i>
+is NULL, <i>n</i> is ignored, and the conversion proceeds as
+above, except that the converted bytes are not written out
+to memory, and no length limit exists.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In order to
+avoid the case 2 above, the programmer should make sure
+<i>n</i> is greater than or equal to
+<i>wcstombs(NULL,src,0)+1</i>.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>wcstombs</b>() function returns the number of bytes that
+make up the converted part of a multibyte sequence, not
+including the terminating null byte. If a wide character was
+encountered which could not be converted,
+<i>(size_t)&nbsp;-1</i> is returned.</p>
+
+<h2>ATTRIBUTES
+<a name="ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For an
+explanation of the terms used in this section, see
+<b>attributes</b>(7).</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-3313051.png" alt="Image grohtml-3313051.png"></p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2001,
+POSIX.1-2008, C99.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The behavior of
+<b>wcstombs</b>() depends on the <b>LC_CTYPE</b> category of
+the current locale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>wcsrtombs</b>(3) provides a better interface to the same
+functionality.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mblen</b>(3),
+<b>mbstowcs</b>(3), <b>mbtowc</b>(3), <b>wcsrtombs</b>(3),
+<b>wctomb</b>(3)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

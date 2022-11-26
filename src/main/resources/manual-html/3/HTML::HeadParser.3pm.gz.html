@@ -1,0 +1,216 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:42 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HTML::HeadParser</title>
+
+</head>
+<body>
+
+<h1 align="center">HTML::HeadParser</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::HeadParser
+- Parse &lt;HEAD&gt; section of a HTML document</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">require
+HTML::HeadParser; <br>
+$p = HTML::HeadParser-&gt;new; <br>
+$p-&gt;parse($text) and print &quot;not finished&quot;; <br>
+$p-&gt;header('Title') # to access
+&lt;title&gt;....&lt;/title&gt; <br>
+$p-&gt;header('Content-Base') # to access &lt;base
+href=&quot;http://...&quot;&gt; <br>
+$p-&gt;header('Foo') # to access &lt;meta
+http-equiv=&quot;Foo&quot; content=&quot;...&quot;&gt; <br>
+$p-&gt;header('X-Meta-Author') # to access &lt;meta
+name=&quot;author&quot; content=&quot;...&quot;&gt; <br>
+$p-&gt;header('X-Meta-Charset') # to access &lt;meta
+charset=&quot;...&quot;&gt;</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;HTML::HeadParser&quot; is a specialized (and
+lightweight) &quot;HTML::Parser&quot; that will only parse
+the &lt; <small>HEAD</small> &gt;...&lt;/HEAD&gt; section of
+an <small>HTML</small> document. The <b>parse()</b> method
+will return a <small>FALSE</small> value as soon as some
+&lt; <small>BODY</small> &gt; element or body text are
+found, and should not be called again after this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+&quot;HTML::HeadParser&quot; might get confused if raw
+undecoded <small>UTF-8</small> is passed to the
+<b>parse()</b> method. Make sure the strings are properly
+decoded before passing them on.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;HTML::HeadParser&quot; keeps a reference to a header
+object, and the parser will update this header object as the
+various elements of the &lt; <small>HEAD</small> &gt;
+section of the <small>HTML</small> document are recognized.
+The following header fields are affected: <br>
+Content-Base:</p>
+
+<p style="margin-left:17%;">The <i>Content-Base</i> header
+is initialized from the &lt;base href=&quot;...&quot;&gt;
+element.</p>
+
+<p style="margin-left:11%;">Title:</p>
+
+<p style="margin-left:17%;">The <i>Title</i> header is
+initialized from the &lt;title&gt;...&lt;/title&gt;
+element.</p>
+
+<p style="margin-left:11%;">Isindex:</p>
+
+<p style="margin-left:17%;">The <i>Isindex</i> header will
+be added if there is a &lt;isindex&gt; element in the
+&lt;head&gt;. The header value is initialized from the
+<i>prompt</i> attribute if it is present. If no
+<i>prompt</i> attribute is given it will have
+&rsquo;?&rsquo; as the value.</p>
+
+<p style="margin-left:11%;">X-Meta-Foo:</p>
+
+<p style="margin-left:17%;">All &lt;meta&gt; elements
+containing a &quot;name&quot; attribute will result in
+headers using the prefix &quot;X-Meta-&quot; appended with
+the value of the &quot;name&quot; attribute as the name of
+the header, and the value of the &quot;content&quot;
+attribute as the pushed header value.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;meta&gt;
+elements containing a &quot;http-equiv&quot; attribute will
+result in headers as in above, but without the
+&quot;X-Meta-&quot; prefix in the header name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;meta&gt;
+elements containing a &quot;charset&quot; attribute will
+result in an &quot;X-Meta-Charset&quot; header, using the
+value of the &quot;charset&quot; attribute as the pushed
+header value.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+&rsquo;:&rsquo; character can&rsquo;t be represented in
+header field names, so if the meta element contains this
+char it&rsquo;s substituted with &rsquo;-&rsquo; before
+forming the field name.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods (in addition to those provided by the superclass)
+are available: <br>
+$hp = HTML::HeadParser-&gt;new <br>
+$hp = HTML::HeadParser-&gt;new( $header )</p>
+
+<p style="margin-left:17%;">The object constructor. The
+optional $header argument should be a reference to an object
+that implement the <b>header()</b> and <b>push_header()</b>
+methods as defined by the &quot;HTTP::Headers&quot; class.
+Normally it will be of some class that is a or delegates to
+the &quot;HTTP::Headers&quot; class.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no $header
+is given &quot;HTML::HeadParser&quot; will create an
+&quot;HTTP::Headers&quot; object by itself (initially
+empty).</p>
+
+<p style="margin-left:11%;">$hp-&gt;header;</p>
+
+<p style="margin-left:17%;">Returns a reference to the
+header object.</p>
+
+<p style="margin-left:11%;">$hp-&gt;header( $key )</p>
+
+<p style="margin-left:17%;">Returns a header value. It is
+just a shorter way to write
+&quot;$hp-&gt;header-&gt;header($key)&quot;.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$h =
+HTTP::Headers-&gt;new; <br>
+$p = HTML::HeadParser-&gt;new($h); <br>
+$p-&gt;parse(&lt;&lt;EOT); <br>
+&lt;title&gt;Stupid example&lt;/title&gt; <br>
+&lt;base href=&quot;http://www.linpro.no/lwp/&quot;&gt; <br>
+Normal text starts here. <br>
+EOT <br>
+undef $p; <br>
+print $h-&gt;title; # should print &quot;Stupid
+example&quot;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTML::Parser,
+HTTP::Headers</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;HTTP::Headers&quot; class is distributed as part of
+the <i>libwww-perl</i> package. If you don&rsquo;t have that
+distribution installed you need to provide the $header
+argument to the &quot;HTML::HeadParser&quot; constructor
+with your own object that implements the documented
+protocol.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1996-2001 Gisle Aas. All rights reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

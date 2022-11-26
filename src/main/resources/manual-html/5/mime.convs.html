@@ -1,0 +1,142 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:20 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>mime.convs</title>
+
+</head>
+<body>
+
+<h1 align="center">mime.convs</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mime.convs -
+mime type conversion file for cups (deprecated)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>mime.convs</b> file defines the filters that are
+available for converting files from one format to another.
+The standard filters support text, PDF, PostScript, and many
+types of image files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additional
+filters are specified in files with the extension
+<i>.convs</i> in the CUPS configuration directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each line in
+the <b>mime.convs</b> file is a comment, blank, or filter
+line. Comment lines start with the # character. Filter lines
+specify the source and destination MIME types along with a
+relative cost associated with the filter and the filter to
+run:</p>
+
+<p style="margin-left:11%; margin-top: 1em">source/type
+destination/type cost filter</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>source/type</i> field specifies the source MIME media
+type that is consumed by the filter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>destination/type</i> field specifies the destination MIME
+media type that is produced by the filter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>cost</i>
+field specifies the relative cost for running the filter. A
+value of 100 means that the filter uses a large amount of
+resources while a value of 0 means that the filter uses very
+few resources.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>filter</i> field specifies the filter program filename.
+Filenames are relative to the CUPS filter directory.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/cups</i>
+- Typical CUPS configuration directory. <i><br>
+/usr/lib/cups/filter</i> - Typical CUPS filter directory.
+<i><br>
+/usr/libexec/cups/filter</i> - CUPS filter directory on
+macOS.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Define a filter
+that converts PostScript documents to CUPS Raster
+format:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">application/vnd.cups-postscript
+application/vnd.cups-raster 50 pstoraster</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">CUPS filters
+are deprecated and will no longer be supported in a future
+feature release of CUPS. Printers that do not support IPP
+can be supported using applications such as
+<b>ippeveprinter</b>(1).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cups-files.conf</b>(5),
+<b>cupsd.conf</b>(5), <b>cupsd</b>(8), <b>cupsfilter</b>(8),
+<b>mime.types</b>(5), CUPS Online Help
+(http://localhost:631/help)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2021-2022 by OpenPrinting.</p>
+<hr>
+</body>
+</html>

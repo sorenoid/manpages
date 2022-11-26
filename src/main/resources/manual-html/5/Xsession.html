@@ -1,0 +1,463 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:24 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Xsession</title>
+
+</head>
+<body>
+
+<h1 align="center">Xsession</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#INPUT FILES">INPUT FILES</a><br>
+<a href="#OUTPUT FILES">OUTPUT FILES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Xsession -
+initialize X session</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Xsession [
+<i>session-type</i> ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/X11/Xsession</i>
+is a Bourne shell (<b>sh</b>(1)) script which is run when an
+X Window System session is begun by <b>startx</b>(1) or a
+display manager such as <b>xdm</b>(1). (Some display
+managers only invoke <i>Xsession</i> when specifically
+directed to so by the user; see the documentation for your
+display manager to find out more.) Administrators unfamiliar
+with the Bourne shell will likely find the
+<b>Xsession.options</b>(5) configuration file easier to deal
+with than <i>Xsession</i> itself.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Xsession</i>
+is not intended to be invoked directly by the user; to be
+effective it needs to run in a special environment
+associated with X server initialization. <b>startx</b>,
+<b>xdm</b>, <b>xinit</b>(1), and other similar programs
+handle this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default on a
+Debian system, <i>Xsession</i> is used by both common
+methods of starting the X Window System, <b>xdm</b> (or
+another X display manager) and <b>startx</b>. To change this
+for <b>xdm,</b> edit the
+&rsquo;DisplayManager*session&rsquo; resource in the
+<i>/etc/X11/xdm/xdm-config</i> file &mdash; for other
+display managers, consult their documentation. To stop
+<b>startx</b> from using <i>Xsession</i> by default, replace
+the contents of the <i>/etc/X11/xinit/xinitrc</i> file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>Xsession</i> script is quite flexible, and extensive
+customization of the X startup procedure is possible without
+modifying the script itself. See &ldquo;CUSTOMIZING THE
+STARTUP PROCEDURE&rdquo; below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SESSION
+TYPES</b> <i><br>
+Xsession</i> may optionally be passed a single argument
+indicating the type of X session to be started. It is up to
+the display manager to set the argument. To pass
+<i>Xsession</i> an argument from <b>startx</b> or
+<b>xinit</b>, <i>/etc/X11/Xsession</i> (or
+<i>/etc/X11/xinit/xinitrc</i>) must be called explicitly
+with a path, as in <b>startx /etc/X11/Xsession failsafe</b>.
+By default, three different arguments are supported: <b><br>
+failsafe</b></p>
+
+<p style="margin-left:22%;">invokes a session consisting
+solely of an <b>x-terminal-emulator</b>(1) (no window
+manager is launched). If the <b>x-terminal-emulator program
+cannot</b> be found, the session exits. The
+&rsquo;failsafe&rsquo; argument is ignored if there is no
+&rsquo;allow-failsafe&rsquo; line in
+<i>Xsession.options</i>.</p>
+
+<p style="margin-left:11%;"><b>default</b></p>
+
+<p style="margin-left:22%;">produces the same behavior as
+if no session type argument had been given at all.</p>
+
+<p style="margin-left:11%;"><i>program</i></p>
+
+<p style="margin-left:22%;">starts <i>program</i> if it can
+be found in the $PATH. This is usually a session manager or
+a very featureful window manager. If <i>program</i> is not
+found, the <i>Xsession</i> script proceeds with its default
+behavior. This argument is ignored if there is no
+&rsquo;allow-user-xsession&rsquo; line in
+<i>Xsession.options</i>. (If the administrator does not want
+users writing their own <i>.xsession</i> files, it makes
+little sense to permit them to specify the names of
+arbitrary programs to run.) Note that the restriction may be
+easy to bypass, e.g. by using a <i>.gnomerc</i> file
+instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DEFAULT
+STARTUP PROCEDURE</b> <br>
+Initially, <i>Xsession</i> performs some housekeeping. It
+declares a set of built-in functions (see &ldquo;BUILT-IN
+SHELL FUNCTIONS&rdquo; below) and variables, then attempts
+to create a log file for the X session, or append to an
+existing one. Historically this is called an
+&rsquo;error&rsquo; file, but it catches all sorts of
+diagnostic output from various X clients run in the
+user&rsquo;s session, not just error messages. If it is
+impossible to write to an error file, the script (and thus
+the X session) aborts. For convenience, once the error file
+is successfully opened, <i>Xsession</i> reports the fact
+that the session has started, the invoking username, and the
+date to the error file. This makes it easier to discern
+which X session produced a particular line of output in the
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Xsession</i>
+next confirms that its script directory, <i>Xsession.d</i>,
+exists. If it does not, the script aborts. After the script
+directory is confirmed to be present, <i>Xsession</i> uses
+<b>run-parts</b>(1) to identify files in that directory that
+should be sourced (executed) in the shell&rsquo;s
+environment. Only files named in a certain way are sourced;
+see the <b>run-parts</b> manual page for a description of
+valid characters in the filename. (This restriction enables
+the administrator to move experimental or problematic files
+out of the way of the script but keep them in an obvious
+place, for instance by renaming them with &rsquo;.old&rsquo;
+or &rsquo;.broken&rsquo; appended to the filename.)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SUPPLIED
+SCRIPTS</b> <br>
+Five shell script portions are supplied by default to handle
+the details of the session startup procedure. <i><br>
+/etc/X11/Xsession.d/20x11-common_process-args</i></p>
+
+<p style="margin-left:22%;">Arguments are processed as
+described in &ldquo;SESSION TYPES&rdquo; above. The startup
+program, if one is identified at this point, is merely
+stored for later reference, and not immediately
+executed.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.d/30x11-common_xresources</i></p>
+
+<p style="margin-left:22%;">X resources are merged.
+<b>run-parts</b> is again used, this time to identify files
+in the <i>/etc/X11/Xresources</i> directory that should be
+processed with &rsquo;xrdb -merge&rsquo;. Next, if the line
+&rsquo;allow-user-resources&rsquo; is present in
+<i>Xsession.options</i>, the user&rsquo;s
+<i>$HOME/.Xresources</i> file is merged in the same way.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.d/35x11-common_xhost-local</i></p>
+
+<p style="margin-left:22%;">Give access to the X server to
+the same user on the local host. If the <i>xhost</i> command
+is available, it will use it to allow any process of the
+same user running on the local host to access the X
+server.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.d/40x11-common_xsessionrc</i></p>
+
+<p style="margin-left:22%;">Source global environment
+variables. This script will source anything in
+<i>$HOME/.xsessionrc</i> if the file is present. This allows
+the user to set global environment variables for their X
+session, such as locale information.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.d/50x11-common_determine-startup</i></p>
+
+<p style="margin-left:22%;">Determine startup program. The
+X client to launch as the controlling process (the one that,
+upon exiting, causes the X server to exit as well) is
+determined next. If a program or failsafe argument was given
+and is allowed (see above), it is used as the controlling
+process. Otherwise, if the line
+&rsquo;allow-user-xsession&rsquo; is present in
+<i>Xsession.options</i>, a user-specified session program or
+script is used. In the latter case, two historically popular
+names for user X session scripts are searched for:
+<i>$HOME/.xsession</i> and <i>$HOME/.Xsession</i> (note the
+difference in case). The first one found is used. If the
+script is not executable, it is marked to be executed with
+the Bourne shell interpreter, <b>sh</b>. Finally, if none of
+the above succeeds, the following programs are searched for:
+<i>/usr/bin/x-session-manager</i>,
+<i>/usr/bin/x-window-manager</i>, and
+<i>/usr/bin/x-terminal-emulator</i>. The first one found is
+used. If none are found, <i>Xsession</i> aborts with an
+error.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.d/90x11-common_ssh-agent</i></p>
+
+<p style="margin-left:22%;">Start <b>ssh-agent</b>(1), if
+needed. If the line &rsquo;use-ssh-agent&rsquo; is present
+in <i>Xsession.options</i>, and no SSH agent process appears
+to be running already, <b>ssh-agent</b> is marked to be used
+to execute the startup program determined previously.
+<b>Note:</b> this functionality may move to the ssh package
+in the future.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.d/99x11-common_start</i></p>
+
+<p style="margin-left:22%;">Start the X session. The
+startup program is executed, inside a Bourne shell if it is
+not executable, and inside an ssh-agent if necessary. The
+shell&rsquo;s <b>exec</b> command is used to spare a slot in
+the process table.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CUSTOMIZING
+THE STARTUP PROCEDURE</b> <br>
+Of course, any of the existing files can be edited in
+place.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because the
+order in which the various scripts in
+<i>/etc/X11/Xsession.d</i> are executed is important, files
+to be added to this directory should have a well-formed
+name. The following format is recommended:</p>
+
+<p style="margin-left:11%; margin-top: 1em">* a two-digit
+number denoting sequence;</p>
+
+<p style="margin-left:11%; margin-top: 1em">* the name of
+the package providing the script (or &rsquo;custom&rsquo;
+for locally-created scripts);</p>
+
+<p style="margin-left:11%; margin-top: 1em">* an
+underscore;</p>
+
+<p style="margin-left:11%; margin-top: 1em">* a description
+of the script&rsquo;s basic function, using only characters
+allowed by <b>run-parts</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example of how one might write a script, named
+<i>40custom_load-xmodmap</i>, to invoke
+<b>xmodmap</b>(1):</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">SYSMODMAP=&quot;/etc/X11/Xmodmap&quot;
+<br>
+USRMODMAP=&quot;$HOME/.Xmodmap&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">if [ -x
+/usr/bin/X11/xmodmap ]; then <br>
+if [ -f &quot;$SYSMODMAP&quot; ]; then <br>
+xmodmap &quot;$SYSMODMAP&quot; <br>
+fi <br>
+fi</p>
+
+<p style="margin-left:11%; margin-top: 1em">if [ -x
+/usr/bin/X11/xmodmap ]; then <br>
+if [ -f &quot;$USRMODMAP&quot; ]; then <br>
+xmodmap &quot;$USRMODMAP&quot; <br>
+fi <br>
+fi</p>
+
+<p style="margin-left:11%; margin-top: 1em">Those writing
+scripts for <i>Xsession</i> to execute should avail
+themselves of its built-in shell functions, described
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>BUILT-IN
+SHELL FUNCTIONS <br>
+message</b> is used for communicating with the user. It is a
+wrapper for the <b>echo</b>(1) command and relies upon
+<b>echo</b> for its argument processing. This function may
+be given an arbitrarily long message string, which is
+formatted to the user&rsquo;s terminal width (breaking lines
+at whitespace) and sent to standard error. If the
+<i>DISPLAY</i> environment variable is set and the
+<b>xmessage</b>(1) program is available, <b>xmessage</b> is
+also used to display the message.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>message_nonl</b>
+is used for communicating with the user when a trailing
+newline is undesirable; it omits a trailing newline from the
+message text. It otherwise works as <b>message</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>errormsg</b>
+is used for indicating an error condition and aborting the
+script. It works as <b>message</b>, above, except that after
+displaying the message, it will exit <i>Xsession</i> with
+status 1.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+environment variables affect the execution of
+<i>Xsession</i>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>HOME</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>specifies the user&rsquo;s home directory; various files
+are searched for here.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>TMPDIR</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>names a default directory for temporary files; if the
+standard X session error file cannot be opened, this
+variable is used to locate a place for one.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>COLUMNS</b></p>
+
+<p style="margin-left:22%;">indicates the width of terminal
+device in character cells. This value is used for formatting
+diagnostic messages.</p>
+
+<h2>INPUT FILES
+<a name="INPUT FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/X11/Xsession.d/</i></p>
+
+<p style="margin-left:22%;">is a directory containing
+Bourne shell scripts to be executed by <i>Xsession</i>.
+Files in this directory are matched using <b>run-parts</b>
+and are <b>source</b>d, not executed in a subshell.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xresources/</i></p>
+
+<p style="margin-left:22%;">is a directory containing files
+corresponding to Debian package names, each of which
+contains system-wide X resource settings for X clients from
+the corresponding package. The settings are loaded with
+<b>xrdb -merge</b>. Files in this directory are matched
+using <b>run-parts</b>.</p>
+
+
+<p style="margin-left:11%;"><i>/etc/X11/Xsession.options</i></p>
+
+<p style="margin-left:22%;">contains configuration options
+for the <i>/etc/X11/Xsession</i> script. See
+<b>Xsession.options</b>(5) for more information.</p>
+
+<p style="margin-left:11%;"><i>$HOME/.Xresources</i></p>
+
+<p style="margin-left:22%;">contains X resources specific
+to the invoking user&rsquo;s environment. The settings are
+loaded with <b>xrdb -merge</b>. Note that
+<i>$HOME/.Xdefaults</i> is a relic from X Version 10 (and
+X11R1) days, before app-defaults files were implemented. It
+has been deprecated for over ten years at the time of this
+writing. <i>.Xresources</i> should be used instead.</p>
+
+<p style="margin-left:11%;"><i>$HOME/.xsession</i></p>
+
+<p style="margin-left:22%;">is a sequence of commands
+invoking X clients (or a session manager such as
+<b>xsm</b>(1)). See the manual page for <b>xinit</b> for
+tips on writing an <i>.xsession</i> file.</p>
+
+<h2>OUTPUT FILES
+<a name="OUTPUT FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$HOME/.xsession-errors</i></p>
+
+<p style="margin-left:22%;">is where standard output and
+standard error for <i>Xsession</i> script and all X client
+processes are directed by default.</p>
+
+<p style="margin-left:11%;"><i>$TMPDIR/filename</i></p>
+
+<p style="margin-left:22%;">is where the X session error
+file is placed if <i>$HOME/.xsession-errors</i> cannot be
+opened. For security reasons, the exact filename is randomly
+generated by <b>tempfile</b>(1).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Stephen Early,
+Mark Eichin, and Branden Robinson developed Debian&rsquo;s X
+session handling scripts. Branden Robinson wrote this manual
+page.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Xsession.options</b>(5),
+<b>X</b>(7), <b>run-parts</b>(1), <b>ssh-agent</b>(1),
+<b>startx</b>(1), <b>tempfile</b>(1), <b>xdm</b>(1),
+<b>xmessage</b>(1), <b>xmodmap</b>(1), <b>xrdb</b>(1),
+<b>sh</b>(1)</p>
+<hr>
+</body>
+</html>

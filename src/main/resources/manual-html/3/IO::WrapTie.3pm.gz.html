@@ -1,0 +1,543 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:15 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>IO::WrapTie</title>
+
+</head>
+<body>
+
+<h1 align="center">IO::WrapTie</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#HOW IT ALL WORKS">HOW IT ALL WORKS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#WARNINGS">WARNINGS</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">IO::WrapTie -
+wrap tieable objects in IO::Handle interface</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is
+currently Alpha code, released for comments. <br>
+Please give me your feedback!</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">First of all,
+you&rsquo;ll need <b>tie()</b>, so:</p>
+
+<p style="margin-left:11%; margin-top: 1em">require
+5.004;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Function
+interface (experimental).</i> Use this with any existing
+class...</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IO::WrapTie; <br>
+use FooHandle; ### implements TIEHANDLE interface <br>
+### Suppose we want a &quot;FooHandle-&gt;new(&amp;FOO_RDWR,
+2)&quot;. <br>
+### We can instead say... <br>
+$FH = wraptie('FooHandle', &amp;FOO_RDWR, 2); <br>
+### Now we can use... <br>
+print $FH &quot;Hello, &quot;; ### traditional operator
+syntax... <br>
+$FH-&gt;print(&quot;world!\n&quot;); ### ...and OO syntax as
+well!</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><small>OO</small>
+interface (preferred).</i> You can inherit from the
+IO::WrapTie::Slave mixin to get a nifty
+&quot;new_tie()&quot; constructor...</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">#------------------------------
+<br>
+package FooHandle; ### a class which can TIEHANDLE <br>
+use IO::WrapTie; <br>
+@ISA = qw(IO::WrapTie::Slave); ### inherit new_tie() <br>
+... <br>
+#------------------------------ <br>
+package main; <br>
+$FH = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2); ### $FH is an
+IO::WrapTie::Master <br>
+print $FH &quot;Hello, &quot;; ### traditional operator
+syntax <br>
+$FH-&gt;print(&quot;world!\n&quot;); ### OO syntax</p>
+
+<p style="margin-left:11%; margin-top: 1em">See IO::Scalar
+as an example. It also shows you how to create classes which
+work both with and without 5.004.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Suppose you
+have a class &quot;FooHandle&quot;, where...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>FooHandle does not inherit from IO::Handle;</b> that
+is, it performs filehandle-like I/O, but to something other
+than an underlying file descriptor. Good examples are
+IO::Scalar (for printing to a string) and IO::Lines (for
+printing to an array of lines).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>FooHandle implements the <small>TIEHANDLE</small>
+interface</b> (see perltie); that is, it provides methods
+<small>TIEHANDLE, GETC, PRINT, PRINTF, READ,</small> and
+<small>READLINE.</small></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>FooHandle implements the traditional
+<small>OO</small> interface</b> of FileHandle and
+IO::Handle; i.e., it contains methods like <b>getline()</b>,
+<b>read()</b>, <b>print()</b>, <b>seek()</b>, <b>tell()</b>,
+<b>eof()</b>, etc.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Normally, users
+of your class would have two options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>Use only <small>OO</small>
+syntax,</b> and forsake named I/O operators like
+&rsquo;print&rsquo;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><b>Use with tie,</b> and forsake treating it as a
+first-class object (i.e., class-specific methods can only be
+invoked through the underlying object via <b>tied()</b>...
+giving the object a &quot;split personality&quot;).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">But now with
+IO::WrapTie, you can say:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$WT =
+wraptie('FooHandle', &amp;FOO_RDWR, 2); <br>
+$WT-&gt;print(&quot;Hello, world\n&quot;); ### OO syntax
+<br>
+print $WT &quot;Yes!\n&quot;; ### Named operator syntax too!
+<br>
+$WT-&gt;weird_stuff; ### Other methods!</p>
+
+<p style="margin-left:11%; margin-top: 1em">And if
+you&rsquo;re authoring a class like FooHandle, just have it
+inherit from &quot;IO::WrapTie::Slave&quot; and that first
+line becomes even prettier:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$WT =
+FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The bottom
+line:</b> now, almost any class can look and work exactly
+like an IO::Handle... and be used both with
+<small>OO</small> and non-OO filehandle syntax.</p>
+
+<h2>HOW IT ALL WORKS
+<a name="HOW IT ALL WORKS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>The data
+structures</b> <br>
+Consider this example code, using classes in this
+distribution:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use IO::Scalar;
+<br>
+use IO::WrapTie; <br>
+$WT = wraptie('IO::Scalar',\$s); <br>
+print $WT &quot;Hello, &quot;; <br>
+$WT-&gt;print(&quot;world!\n&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">In it, the
+<b>wraptie()</b> function creates a data structure as
+follows:</p>
+
+<p style="margin-left:11%; margin-top: 1em">* $WT is a
+blessed reference to a tied filehandle <br>
+$WT glob; that glob is tied to the &quot;Slave&quot; object.
+<br>
+| * You would do all your i/o with $WT directly. <br>
+| <br>
+| <br>
+| ,---isa--&gt; IO::WrapTie::Master &gt;--isa--&gt;
+IO::Handle <br>
+V / <br>
+.-------------. <br>
+| | <br>
+| | * Perl i/o operators work on the tied object, <br>
+| &quot;Master&quot; | invoking the TIEHANDLE methods. <br>
+| | * Method invocations are delegated to the tied <br>
+| | slave. <br>
+`-------------' <br>
+| <br>
+tied(*$WT) | .---isa--&gt; IO::WrapTie::Slave <br>
+V / <br>
+.-------------. <br>
+| | <br>
+| &quot;Slave&quot; | * Instance of FileHandle-like class
+which doesn't <br>
+| | actually use file descriptors, like IO::Scalar. <br>
+| IO::Scalar | * The slave can be any kind of object. <br>
+| | * Must implement the TIEHANDLE interface. <br>
+`-------------'</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><small>NOTE:</small></i>
+just as an IO::Handle is really just a blessed reference to
+a <i>traditional</i> filehandle glob... so also, an
+IO::WrapTie::Master is really just a blessed reference to a
+filehandle glob <i>which has been tied to some
+&quot;slave&quot; class.</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How
+wraptie() works</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The call to function
+&quot;wraptie(SLAVECLASS, TIEARGS...)&quot; is passed onto
+&quot;IO::WrapTie::Master::new()&quot;. Note that class
+IO::WrapTie::Master is a subclass of IO::Handle.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>The &quot;IO::WrapTie::Master::new&quot; method creates
+a new IO::Handle object, reblessed into class
+IO::WrapTie::Master. This object is the <i>master</i>, which
+will be returned from the constructor. At the same
+time...</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>The &quot;new&quot; method also creates the
+<i>slave</i>: this is an instance of
+<small>SLAVECLASS</small> which is created by tying the
+master&rsquo;s IO::Handle to <small>SLAVECLASS</small> via
+&quot;tie(HANDLE, SLAVECLASS, TIEARGS...)&quot;. This call
+to &quot;tie()&quot; creates the slave in the following
+manner:</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Class <small>SLAVECLASS</small> is sent the message
+&quot;TIEHANDLE(TIEARGS...)&quot;; it will usually delegate
+this to &quot;SLAVECLASS::new(TIEARGS...)&quot;, resulting
+in a new instance of <small>SLAVECLASS</small> being created
+and returned.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>5.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Once both master and slave have been created, the master
+is returned to the caller.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How I/O
+operators work (on the master)</b> <br>
+Consider using an i/o operator on the master:</p>
+
+<p style="margin-left:11%; margin-top: 1em">print $WT
+&quot;Hello, world!\n&quot;;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since the
+master ($WT) is really a [blessed] reference to a glob, the
+normal Perl i/o operators like &quot;print&quot; may be used
+on it. They will just operate on the symbol part of the
+glob.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since the glob
+is tied to the slave, the slave&rsquo;s <small>PRINT</small>
+method (part of the <small>TIEHANDLE</small> interface) will
+be automatically invoked.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the slave is
+an IO::Scalar, that means IO::Scalar::PRINT will be invoked,
+and that method happens to delegate to the
+&quot;print()&quot; method of the same class. So the
+<i>real</i> work is ultimately done by
+<b>IO::Scalar::print()</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How methods
+work (on the master)</b> <br>
+Consider using a method on the master:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$WT-&gt;print(&quot;Hello,
+world!\n&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since the
+master ($WT) is blessed into the class IO::WrapTie::Master,
+Perl first attempts to find a &quot;print()&quot; method
+there. Failing that, Perl next attempts to find a
+&quot;print()&quot; method in the superclass, IO::Handle. It
+just so happens that there <i>is</i> such a method; that
+method merely invokes the &quot;print&quot; i/o operator on
+the self object... and for that, see above!</p>
+
+<p style="margin-left:11%; margin-top: 1em">But let&rsquo;s
+suppose we&rsquo;re dealing with a method which
+<i>isn&rsquo;t</i> part of IO::Handle... for example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $sref =
+$WT-&gt;sref;</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this case,
+the intuitive behavior is to have the master delegate the
+method invocation to the slave (now do you see where the
+designations come from?). This is indeed what happens:
+IO::WrapTie::Master contains an <small>AUTOLOAD</small>
+method which performs the delegation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So: when
+&quot;sref()&quot; can&rsquo;t be found in IO::Handle, the
+<small>AUTOLOAD</small> method of IO::WrapTie::Master is
+invoked, and the standard behavior of delegating the method
+to the underlying slave (here, an IO::Scalar) is done.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Sometimes, to
+get this to work properly, you may need to create a subclass
+of IO::WrapTie::Master which is an effective master for
+<i>your</i> class, and do the delegation there.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Why not
+simply use the object&rsquo;s <small>OO</small>
+interface?</b> <br>
+Because that means forsaking the use of named operators like
+<b>print()</b>, and you may need to pass the object to a
+subroutine which will attempt to use those operators:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$O =
+FooHandle-&gt;new(&amp;FOO_RDWR, 2); <br>
+$O-&gt;print(&quot;Hello, world\n&quot;); ### OO syntax is
+okay, BUT.... <br>
+sub nope { print $_[0] &quot;Nope!\n&quot; } <br>
+X nope($O); ### ERROR!!! (not a glob ref)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Why not
+simply use tie()?</b> <br>
+Because (1) you have to use <b>tied()</b> to invoke methods
+in the object&rsquo;s public interface (yuck), and (2) you
+may need to pass the tied symbol to another subroutine which
+will attempt to treat it in an OO-way... and that will break
+it:</p>
+
+<p style="margin-left:11%; margin-top: 1em">tie *T,
+'FooHandle', &amp;FOO_RDWR, 2; <br>
+print T &quot;Hello, world\n&quot;; ### Operator is okay,
+BUT... <br>
+tied(*T)-&gt;other_stuff; ### yuck! AND... <br>
+sub nope { shift-&gt;print(&quot;Nope!\n&quot;) } <br>
+X nope(\*T); ### ERROR!!! (method &quot;print&quot; on
+unblessed ref)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Why a master
+and slave? <br>
+Why not simply write FooHandle to inherit from
+IO::Handle?</b> <br>
+I tried this, with an implementation similar to that of
+IO::Socket. The problem is that <i>the whole point is to use
+this with objects that don&rsquo;t have an underlying
+file/socket descriptor.</i>. Subclassing IO::Handle will
+work fine for the <small>OO</small> stuff, and fine with
+named operators <i>if</i> you <b>tie()</b>... but if you
+just attempt to say:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$IO =
+FooHandle-&gt;new(&amp;FOO_RDWR, 2); <br>
+print $IO &quot;Hello!\n&quot;;</p>
+
+<p style="margin-left:11%; margin-top: 1em">you get a
+warning from Perl like:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Filehandle
+GEN001 never opened</p>
+
+<p style="margin-left:11%; margin-top: 1em">because
+it&rsquo;s trying to do system-level i/o on an (unopened)
+file descriptor. To avoid this, you apparently have to
+<b>tie()</b> the handle... which brings us right back to
+where we started! At least the IO::WrapTie mixin lets us
+say:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$IO =
+FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2); <br>
+print $IO &quot;Hello!\n&quot;;</p>
+
+<p style="margin-left:11%; margin-top: 1em">and so is not
+<i>too</i> bad. &quot;:-)&quot;</p>
+
+<h2>WARNINGS
+<a name="WARNINGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Remember: this
+stuff is for doing FileHandle-like i/o on things <i>without
+underlying file descriptors</i>. If you have an underlying
+file descriptor, you&rsquo;re better off just inheriting
+from IO::Handle.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Be aware
+that new_tie() always returns an instance of a kind of
+IO::WrapTie::Master...</b> it does <b>not</b> return an
+instance of the i/o class you&rsquo;re tying to!</p>
+
+<p style="margin-left:11%; margin-top: 1em">Invoking some
+methods on the master object causes <small>AUTOLOAD</small>
+to delegate them to the slave object... so it <i>looks</i>
+like you&rsquo;re manipulating a &quot;FooHandle&quot;
+object directly, but you&rsquo;re not.</p>
+
+<p style="margin-left:11%; margin-top: 1em">I have not
+explored all the ramifications of this use of <b>tie()</b>.
+<i>Here there be dragons</i>.</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$Id:
+WrapTie.pm,v 1.2 2005/02/10 21:21:53 dfs Exp $</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Primary
+Maintainer</p>
+
+<p style="margin-left:17%;">Dianne Skoll
+(<i>dfs@roaringpenguin.com</i>).</p>
+
+<p style="margin-left:11%;">Original Author</p>
+
+<p style="margin-left:17%;">Eryq (<i>eryq@zeegee.com</i>).
+President, ZeeGee Software Inc
+(<i>http://www.zeegee.com</i>).</p>
+<hr>
+</body>
+</html>

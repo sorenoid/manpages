@@ -1,0 +1,290 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:38:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LWP::ConnCache</title>
+
+</head>
+<body>
+
+<h1 align="center">LWP::ConnCache</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#NOTE">NOTE</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#METHODS">METHODS</a><br>
+<a href="#PROTOCOL METHODS">PROTOCOL METHODS</a><br>
+<a href="#INTERNAL METHODS">INTERNAL METHODS</a><br>
+<a href="#SUBCLASSING">SUBCLASSING</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">LWP::ConnCache
+- Connection cache manager</p>
+
+<h2>NOTE
+<a name="NOTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module is
+experimental. Details of its interface is likely to change
+in the future.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+LWP::ConnCache; <br>
+my $cache = LWP::ConnCache-&gt;new; <br>
+$cache-&gt;deposit($type, $key, $sock); <br>
+$sock = $cache-&gt;withdraw($type, $key);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;LWP::ConnCache&quot; class is the standard connection
+cache manager for LWP::UserAgent.</p>
+
+<h2>METHODS
+<a name="METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+basic methods are provided:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>new</b> <br>
+my $cache = LWP::ConnCache-&gt;new( %options )</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method
+constructs a new LWP::ConnCache object. The only option
+currently accepted is &quot;total_capacity&quot;. If
+specified it initializes the &quot;total_capacity&quot; in
+LWP::ConnCache option. It defaults to 1.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>total_capacity</b>
+<br>
+my $cap = $cache-&gt;total_capacity; <br>
+$cache-&gt;total_capacity(0); # drop all immediately <br>
+$cache-&gt;total_capacity(undef); # no limit <br>
+$cache-&gt;total_capacity($number);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get/sets the
+number of connection that will be cached. Connections will
+start to be dropped when this limit is reached. If set to 0,
+then all connections are immediately dropped. If set to
+&quot;undef&quot;, then there is no limit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>capacity</b>
+<br>
+my $http_capacity = $cache-&gt;capacity('http'); <br>
+$cache-&gt;capacity('http', 2 );</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get/set a limit
+for the number of connections of the specified type that can
+be cached. The first parameter is a short string like
+&quot;http&quot; or &quot;ftp&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>drop</b>
+<br>
+$cache-&gt;drop(); # Drop ALL connections <br>
+# which is just a synonym for: <br>
+$cache-&gt;drop(sub{1}); # Drop ALL connections <br>
+# drop all connections older than 22 seconds and add a
+reason for it! <br>
+$cache-&gt;drop(22, &quot;Older than 22 secs dropped&quot;);
+<br>
+# which is just a synonym for: <br>
+$cache-&gt;drop(sub { <br>
+my ($conn, $type, $key, $deposit_time) = @_; <br>
+if ($deposit_time &lt; 22) { <br>
+# true values drop the connection <br>
+return 1; <br>
+} <br>
+# false values don't drop the connection <br>
+return 0; <br>
+}, &quot;Older than 22 secs dropped&quot; );</p>
+
+<p style="margin-left:11%; margin-top: 1em">Drop
+connections by some criteria. The $checker argument is a
+subroutine that is called for each connection. If the
+routine returns a <small>TRUE</small> value then the
+connection is dropped. The routine is called with
+&quot;($conn, $type, $key, $deposit_time)&quot; as
+arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Shortcuts: If
+the $checker argument is absent (or &quot;undef&quot;) all
+cached connections are dropped. If the $checker is a number
+then all connections untouched that the given number of
+seconds or more are dropped. If $checker is a string then
+all connections of the given type are dropped.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;reason&quot; is passed on to the &quot;dropped&quot;
+in LWP::ConnCache method.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>prune</b>
+<br>
+$cache-&gt;prune();</p>
+
+<p style="margin-left:11%; margin-top: 1em">Calling this
+method will drop all connections that are dead. This is
+tested by calling the &quot;ping&quot; in LWP::ConnCache
+method on the connections. If the &quot;ping&quot; in
+LWP::ConnCache method exists and returns a false value, then
+the connection is dropped.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_types</b>
+<br>
+my @types = $cache-&gt;get_types();</p>
+
+<p style="margin-left:11%; margin-top: 1em">This returns
+all the &quot;type&quot; fields used for the currently
+cached connections.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>get_connections</b>
+<br>
+my @conns = $cache-&gt;get_connections(); # all connections
+<br>
+my @conns = $cache-&gt;get_connections('http'); #
+connections for http</p>
+
+<p style="margin-left:11%; margin-top: 1em">This returns
+all connection objects of the specified type. If no type is
+specified then all connections are returned. In scalar
+context the number of cached connections of the specified
+type is returned.</p>
+
+<h2>PROTOCOL METHODS
+<a name="PROTOCOL METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods are called by low-level protocol modules to try to
+save away connections and to get them back.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>deposit</b>
+<br>
+$cache-&gt;deposit($type, $key, $conn);</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method
+adds a new connection to the cache. As a result, other
+already cached connections might be dropped. Multiple
+connections with the same type/key might be added.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>withdraw</b>
+<br>
+my $conn = $cache-&gt;withdraw($type, $key);</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method
+tries to fetch back a connection that was previously
+deposited. If no cached connection with the specified
+$type/$key is found, then &quot;undef&quot; is returned.
+There is not guarantee that a deposited connection can be
+withdrawn, as the cache manger is free to drop connections
+at any time.</p>
+
+<h2>INTERNAL METHODS
+<a name="INTERNAL METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+methods are called internally. Subclasses might want to
+override them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>enforce_limits</b>
+<br>
+$conn-&gt;enforce_limits([$type])</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method is
+called with after a new connection is added (deposited) in
+the cache or capacity limits are adjusted. The default
+implementation drops connections until the specified
+capacity limits are not exceeded.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dropping</b>
+<br>
+$conn-&gt;dropping($conn_record, $reason)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method is
+called when a connection is dropped. The record belonging to
+the dropped connection is passed as the first argument and a
+string describing the reason for the drop is passed as the
+second argument. The default implementation makes some noise
+if the $LWP::ConnCache::DEBUG variable is set and nothing
+more.</p>
+
+<h2>SUBCLASSING
+<a name="SUBCLASSING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For specialized
+cache policy it makes sense to subclass
+&quot;LWP::ConnCache&quot; and perhaps override the
+&quot;deposit&quot; in LWP::ConnCache,
+&quot;enforce_limits&quot; in LWP::ConnCache, and
+&quot;dropping&quot; in LWP::ConnCache methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The object
+itself is a hash. Keys prefixed with &quot;cc_&quot; are
+reserved for the base class.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">LWP::UserAgent</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2001
+Gisle Aas.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

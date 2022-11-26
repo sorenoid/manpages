@@ -1,0 +1,901 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:08 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>USERFAULTFD</title>
+
+</head>
+<body>
+
+<h1 align="center">USERFAULTFD</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">userfaultfd -
+create a file descriptor for handling page faults in user
+space</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/types.h&gt; <br>
+#include &lt;linux/userfaultfd.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+userfaultfd(int</b> <i>flags</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Note</i>:
+There is no glibc wrapper for this system call; see
+NOTES.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>userfaultfd</b>()
+creates a new userfaultfd object that can be used for
+delegation of page-fault handling to a user-space
+application, and returns a file descriptor that refers to
+the new object. The new userfaultfd object is configured
+using <b>ioctl</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Once the
+userfaultfd object is configured, the application can use
+<b>read</b>(2) to receive userfaultfd notifications. The
+reads from userfaultfd may be blocking or non-blocking,
+depending on the value of <i>flags</i> used for the creation
+of the userfaultfd or subsequent calls to
+<b>fcntl</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+values may be bitwise ORed in <i>flags</i> to change the
+behavior of <b>userfaultfd</b>(): <b><br>
+O_CLOEXEC</b></p>
+
+<p style="margin-left:22%;">Enable the close-on-exec flag
+for the new userfaultfd file descriptor. See the description
+of the <b>O_CLOEXEC</b> flag in <b>open</b>(2).</p>
+
+<p style="margin-left:11%;"><b>O_NONBLOCK</b></p>
+
+<p style="margin-left:22%;">Enables non-blocking operation
+for the userfaultfd object. See the description of the
+<b>O_NONBLOCK</b> flag in <b>open</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the last
+file descriptor referring to a userfaultfd object is closed,
+all memory ranges that were registered with the object are
+unregistered and unread events are flushed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Usage</b>
+<br>
+The userfaultfd mechanism is designed to allow a thread in a
+multithreaded program to perform user-space paging for the
+other threads in the process. When a page fault occurs for
+one of the regions registered to the userfaultfd object, the
+faulting thread is put to sleep and an event is generated
+that can be read via the userfaultfd file descriptor. The
+fault-handling thread reads events from this file descriptor
+and services them using the operations described in
+<b>ioctl_userfaultfd</b>(2). When servicing the page fault
+events, the fault-handling thread can trigger a wake-up for
+the sleeping thread.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+for the faulting threads and the fault-handling threads to
+run in the context of different processes. In this case,
+these threads may belong to different programs, and the
+program that executes the faulting threads will not
+necessarily cooperate with the program that handles the page
+faults. In such non-cooperative mode, the process that
+monitors userfaultfd and handles page faults needs to be
+aware of the changes in the virtual memory layout of the
+faulting process to avoid memory corruption.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Starting from
+Linux 4.11, userfaultfd can also notify the fault-handling
+threads about changes in the virtual memory layout of the
+faulting process. In addition, if the faulting process
+invokes <b>fork</b>(2), the userfaultfd objects associated
+with the parent may be duplicated into the child process and
+the userfaultfd monitor will be notified (via the
+<b>UFFD_EVENT_FORK</b> described below) about the file
+descriptor associated with the userfault objects created for
+the child process, which allows the userfaultfd monitor to
+perform user-space paging for the child process. Unlike page
+faults which have to be synchronous and require an explicit
+or implicit wakeup, all other events are delivered
+asynchronously and the non-cooperative process resumes
+execution as soon as the userfaultfd manager executes
+<b>read</b>(2). The userfaultfd manager should carefully
+synchronize calls to <b>UFFDIO_COPY</b> with the processing
+of events.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The current
+asynchronous model of the event delivery is optimal for
+single threaded non-cooperative userfaultfd manager
+implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Userfaultfd
+operation</b> <br>
+After the userfaultfd object is created with
+<b>userfaultfd</b>(), the application must enable it using
+the <b>UFFDIO_API ioctl</b>(2) operation. This operation
+allows a handshake between the kernel and user space to
+determine the API version and supported features. This
+operation must be performed before any of the other
+<b>ioctl</b>(2) operations described below (or those
+operations fail with the <b>EINVAL</b> error).</p>
+
+<p style="margin-left:11%; margin-top: 1em">After a
+successful <b>UFFDIO_API</b> operation, the application then
+registers memory address ranges using the <b>UFFDIO_REGISTER
+ioctl</b>(2) operation. After successful completion of a
+<b>UFFDIO_REGISTER</b> operation, a page fault occurring in
+the requested memory range, and satisfying the mode defined
+at the registration time, will be forwarded by the kernel to
+the user-space application. The application can then use the
+<b>UFFDIO_COPY</b> or <b>UFFDIO_ZEROPAGE ioctl</b>(2)
+operations to resolve the page fault.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Starting from
+Linux 4.14, if the application sets the
+<b>UFFD_FEATURE_SIGBUS</b> feature bit using the
+<b>UFFDIO_API ioctl</b>(2), no page-fault notification will
+be forwarded to user space. Instead a <b>SIGBUS</b> signal
+is delivered to the faulting process. With this feature,
+userfaultfd can be used for robustness purposes to simply
+catch any access to areas within the registered address
+range that do not have pages allocated, without having to
+listen to userfaultfd events. No userfaultfd monitor will be
+required for dealing with such memory accesses. For example,
+this feature can be useful for applications that want to
+prevent the kernel from automatically allocating pages and
+filling holes in sparse files when the hole is accessed
+through a memory mapping.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>UFFD_FEATURE_SIGBUS</b> feature is implicitly inherited
+through <b>fork</b>(2) if used in combination with
+<b>UFFD_FEATURE_FORK</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Details of the
+various <b>ioctl</b>(2) operations can be found in
+<b>ioctl_userfaultfd</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since Linux
+4.11, events other than page-fault may enabled during
+<b>UFFDIO_API</b> operation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Up to Linux
+4.11, userfaultfd can be used only with anonymous private
+memory mappings. Since Linux 4.11, userfaultfd can be also
+used with hugetlbfs and shared memory mappings.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Reading from
+the userfaultfd structure</b> <br>
+Each <b>read</b>(2) from the userfaultfd file descriptor
+returns one or more <i>uffd_msg</i> structures, each of
+which describes a page-fault event or an event required for
+the non-cooperative userfaultfd usage:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct uffd_msg
+{ <br>
+__u8 event; /* Type of event */ <br>
+... <br>
+union { <br>
+struct { <br>
+__u64 flags; /* Flags describing fault */ <br>
+__u64 address; /* Faulting address */ <br>
+} pagefault;</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct { /*
+Since Linux 4.11 */ <br>
+__u32 ufd; /* Userfault file descriptor <br>
+of the child process */ <br>
+} fork;</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct { /*
+Since Linux 4.11 */ <br>
+__u64 from; /* Old address of remapped area */ <br>
+__u64 to; /* New address of remapped area */ <br>
+__u64 len; /* Original mapping length */ <br>
+} remap;</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct { /*
+Since Linux 4.11 */ <br>
+__u64 start; /* Start address of removed area */ <br>
+__u64 end; /* End address of removed area */ <br>
+} remove; <br>
+... <br>
+} arg;</p>
+
+<p style="margin-left:17%; margin-top: 1em">/* Padding
+fields omitted */ <br>
+} __packed;</p>
+
+<p style="margin-left:11%; margin-top: 1em">If multiple
+events are available and the supplied buffer is large
+enough, <b>read</b>(2) returns as many events as will fit in
+the supplied buffer. If the buffer supplied to
+<b>read</b>(2) is smaller than the size of the
+<i>uffd_msg</i> structure, the <b>read</b>(2) fails with the
+error <b>EINVAL</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fields set
+in the <i>uffd_msg</i> structure are as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>event</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The type of event. Depending of the event type,
+different fields of the <i>arg</i> union represent details
+required for the event processing. The non-page-fault events
+are generated only when appropriate feature is enabled
+during API handshake with <b>UFFDIO_API ioctl</b>(2).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+values can appear in the <i>event</i> field: <b><br>
+UFFD_EVENT_PAGEFAULT</b> (since Linux 4.3)</p>
+
+<p style="margin-left:32%;">A page-fault event. The
+page-fault details are available in the <i>pagefault</i>
+field.</p>
+
+<p style="margin-left:22%;"><b>UFFD_EVENT_FORK</b> (since
+Linux 4.11)</p>
+
+<p style="margin-left:32%;">Generated when the faulting
+process invokes <b>fork</b>(2) (or <b>clone</b>(2) without
+the <b>CLONE_VM</b> flag). The event details are available
+in the <i>fork</i> field.</p>
+
+<p style="margin-left:22%;"><b>UFFD_EVENT_REMAP</b> (since
+Linux 4.11)</p>
+
+<p style="margin-left:32%;">Generated when the faulting
+process invokes <b>mremap</b>(2). The event details are
+available in the <i>remap</i> field.</p>
+
+<p style="margin-left:22%;"><b>UFFD_EVENT_REMOVE</b> (since
+Linux 4.11)</p>
+
+<p style="margin-left:32%;">Generated when the faulting
+process invokes <b>madvise</b>(2) with <b>MADV_DONTNEED</b>
+or <b>MADV_REMOVE</b> advice. The event details are
+available in the <i>remove</i> field.</p>
+
+<p style="margin-left:22%;"><b>UFFD_EVENT_UNMAP</b> (since
+Linux 4.11)</p>
+
+<p style="margin-left:32%;">Generated when the faulting
+process unmaps a memory range, either explicitly using
+<b>munmap</b>(2) or implicitly during <b>mmap</b>(2) or
+<b>mremap</b>(2). The event details are available in the
+<i>remove</i> field.</p>
+
+<p style="margin-left:11%;"><i>pagefault.address</i></p>
+
+<p style="margin-left:22%;">The address that triggered the
+page fault.</p>
+
+<p style="margin-left:11%;"><i>pagefault.flags</i></p>
+
+<p style="margin-left:22%;">A bit mask of flags that
+describe the event. For <b>UFFD_EVENT_PAGEFAULT</b>, the
+following flag may appear: <b><br>
+UFFD_PAGEFAULT_FLAG_WRITE</b></p>
+
+<p style="margin-left:32%;">If the address is in a range
+that was registered with the
+<b>UFFDIO_REGISTER_MODE_MISSING</b> flag (see
+<b>ioctl_userfaultfd</b>(2)) and this flag is set, this a
+write fault; otherwise it is a read fault.</p>
+
+<p style="margin-left:11%;"><i>fork.ufd</i></p>
+
+<p style="margin-left:22%;">The file descriptor associated
+with the userfault object created for the child created by
+<b>fork</b>(2).</p>
+
+<p style="margin-left:11%;"><i>remap.from</i></p>
+
+<p style="margin-left:22%;">The original address of the
+memory range that was remapped using <b>mremap</b>(2).</p>
+
+<p style="margin-left:11%;"><i>remap.to</i></p>
+
+<p style="margin-left:22%;">The new address of the memory
+range that was remapped using <b>mremap</b>(2).</p>
+
+<p style="margin-left:11%;"><i>remap.len</i></p>
+
+<p style="margin-left:22%;">The original length of the
+memory range that was remapped using <b>mremap</b>(2).</p>
+
+<p style="margin-left:11%;"><i>remove.start</i></p>
+
+<p style="margin-left:22%;">The start address of the memory
+range that was freed using <b>madvise</b>(2) or unmapped</p>
+
+<p style="margin-left:11%;"><i>remove.end</i></p>
+
+<p style="margin-left:22%;">The end address of the memory
+range that was freed using <b>madvise</b>(2) or unmapped</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+<b>read</b>(2) on a userfaultfd file descriptor can fail
+with the following errors:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The userfaultfd object has not yet been enabled using
+the <b>UFFDIO_API ioctl</b>(2) operation</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>O_NONBLOCK</b> flag is enabled in the associated open
+file description, the userfaultfd file descriptor can be
+monitored with <b>poll</b>(2), <b>select</b>(2), and
+<b>epoll</b>(7). When events are available, the file
+descriptor indicates as readable. If the <b>O_NONBLOCK</b>
+flag is not enabled, then <b>poll</b>(2) (always) indicates
+the file as having a <b>POLLERR</b> condition, and
+<b>select</b>(2) indicates the file descriptor as both
+readable and writable.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>userfaultfd</b>() returns a new file descriptor that
+refers to the userfaultfd object. On error, -1 is returned,
+and <i>errno</i> is set appropriately.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">An unsupported value was
+specified in <i>flags</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EMFILE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The per-process limit on the number of open file
+descriptors has been reached</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENFILE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The system-wide limit on the total number of open files
+has been reached.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Insufficient kernel memory was available.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>EPERM</b> (since Linux
+5.2)</p>
+
+<p style="margin-left:22%;">The caller is not privileged
+(does not have the <b>CAP_SYS_PTRACE</b> capability in the
+initial user namespace), and
+<i>/proc/sys/vm/unprivileged_userfaultfd</i> has the value
+0.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>userfaultfd</b>() system call first appeared in Linux
+4.3.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The support for
+hugetlbfs and shared memory areas and non-page-fault events
+was added in Linux 4.11</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>userfaultfd</b>()
+is Linux-specific and should not be used in programs
+intended to be portable.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Glibc does not
+provide a wrapper for this system call; call it using
+<b>syscall</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The userfaultfd
+mechanism can be used as an alternative to traditional
+user-space paging techniques based on the use of the
+<b>SIGSEGV</b> signal and <b>mmap</b>(2). It can also be
+used to implement lazy restore for checkpoint/restore
+mechanisms, as well as post-copy migration to allow (nearly)
+uninterrupted execution when transferring virtual machines
+and Linux containers from one host to another.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>UFFD_FEATURE_EVENT_FORK</b> is enabled and a system call
+from the <b>fork</b>(2) family is interrupted by a signal or
+failed, a stale userfaultfd descriptor might be created. In
+this case, a spurious <b>UFFD_EVENT_FORK</b> will be
+delivered to the userfaultfd monitor.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+below demonstrates the use of the userfaultfd mechanism. The
+program creates two threads, one of which acts as the
+page-fault handler for the process, for the pages in a
+demand-page zero region created using <b>mmap</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+takes one command-line argument, which is the number of
+pages that will be created in a mapping whose page faults
+will be handled via userfaultfd. After creating a
+userfaultfd object, the program then creates an anonymous
+private mapping of the specified size and registers the
+address range of that mapping using the <b>UFFDIO_REGISTER
+ioctl</b>(2) operation. The program then creates a second
+thread that will perform the task of handling page
+faults.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The main thread
+then walks through the pages of the mapping fetching bytes
+from successive pages. Because the pages have not yet been
+accessed, the first access of a byte in each page will
+trigger a page-fault event on the userfaultfd file
+descriptor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each of the
+page-fault events is handled by the second thread, which
+sits in a loop processing input from the userfaultfd file
+descriptor. In each loop iteration, the second thread first
+calls <b>poll</b>(2) to check the state of the file
+descriptor, and then reads an event from the file
+descriptor. All such events should be
+<b>UFFD_EVENT_PAGEFAULT</b> events, which the thread handles
+by copying a page of data into the faulting region using the
+<b>UFFDIO_COPY ioctl</b>(2) operation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+is an example of what we see when running the program:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+<b>./userfaultfd_demo 3</b> <br>
+Address returned by mmap() = 0x7fd30106c000</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">fault_handler_thread():
+<br>
+poll() returns: nready = 1; POLLIN = 1; POLLERR = 0 <br>
+UFFD_EVENT_PAGEFAULT event: flags = 0; address =
+7fd30106c00f <br>
+(uffdio_copy.copy returned 4096) <br>
+Read address 0x7fd30106c00f in main(): A <br>
+Read address 0x7fd30106c40f in main(): A <br>
+Read address 0x7fd30106c80f in main(): A <br>
+Read address 0x7fd30106cc0f in main(): A</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">fault_handler_thread():
+<br>
+poll() returns: nready = 1; POLLIN = 1; POLLERR = 0 <br>
+UFFD_EVENT_PAGEFAULT event: flags = 0; address =
+7fd30106d00f <br>
+(uffdio_copy.copy returned 4096) <br>
+Read address 0x7fd30106d00f in main(): B <br>
+Read address 0x7fd30106d40f in main(): B <br>
+Read address 0x7fd30106d80f in main(): B <br>
+Read address 0x7fd30106dc0f in main(): B</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">fault_handler_thread():
+<br>
+poll() returns: nready = 1; POLLIN = 1; POLLERR = 0 <br>
+UFFD_EVENT_PAGEFAULT event: flags = 0; address =
+7fd30106e00f <br>
+(uffdio_copy.copy returned 4096) <br>
+Read address 0x7fd30106e00f in main(): C <br>
+Read address 0x7fd30106e40f in main(): C <br>
+Read address 0x7fd30106e80f in main(): C <br>
+Read address 0x7fd30106ec0f in main(): C</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+source</b> <br>
+/* userfaultfd_demo.c</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the GNU General Public License version 2 or later. <br>
+*/ <br>
+#define _GNU_SOURCE <br>
+#include &lt;inttypes.h&gt; <br>
+#include &lt;sys/types.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;linux/userfaultfd.h&gt; <br>
+#include &lt;pthread.h&gt; <br>
+#include &lt;errno.h&gt; <br>
+#include &lt;unistd.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;fcntl.h&gt; <br>
+#include &lt;signal.h&gt; <br>
+#include &lt;poll.h&gt; <br>
+#include &lt;string.h&gt; <br>
+#include &lt;sys/mman.h&gt; <br>
+#include &lt;sys/syscall.h&gt; <br>
+#include &lt;sys/ioctl.h&gt; <br>
+#include &lt;poll.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#define
+errExit(msg) do { perror(msg); exit(EXIT_FAILURE); \ <br>
+} while (0)</p>
+
+<p style="margin-left:11%; margin-top: 1em">static int
+page_size;</p>
+
+<p style="margin-left:11%; margin-top: 1em">static void *
+<br>
+fault_handler_thread(void *arg) <br>
+{ <br>
+static struct uffd_msg msg; /* Data read from userfaultfd */
+<br>
+static int fault_cnt = 0; /* Number of faults so far handled
+*/ <br>
+long uffd; /* userfaultfd file descriptor */ <br>
+static char *page = NULL; <br>
+struct uffdio_copy uffdio_copy; <br>
+ssize_t nread;</p>
+
+<p style="margin-left:11%; margin-top: 1em">uffd = (long)
+arg;</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Create a
+page that will be copied into the faulting region */</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (page ==
+NULL) { <br>
+page = mmap(NULL, page_size, PROT_READ | PROT_WRITE, <br>
+MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); <br>
+if (page == MAP_FAILED) <br>
+errExit(&quot;mmap&quot;); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Loop,
+handling incoming events on the userfaultfd <br>
+file descriptor */</p>
+
+<p style="margin-left:11%; margin-top: 1em">for (;;) {</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* See what
+poll() tells us about the userfaultfd */</p>
+
+<p style="margin-left:11%; margin-top: 1em">struct pollfd
+pollfd; <br>
+int nready; <br>
+pollfd.fd = uffd; <br>
+pollfd.events = POLLIN; <br>
+nready = poll(&amp;pollfd, 1, -1); <br>
+if (nready == -1) <br>
+errExit(&quot;poll&quot;);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;\nfault_handler_thread():\n&quot;);
+<br>
+printf(&quot; poll() returns: nready = %d; &quot; <br>
+&quot;POLLIN = %d; POLLERR = %d\n&quot;, nready, <br>
+(pollfd.revents &amp; POLLIN) != 0, <br>
+(pollfd.revents &amp; POLLERR) != 0);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Read an
+event from the userfaultfd */</p>
+
+<p style="margin-left:11%; margin-top: 1em">nread =
+read(uffd, &amp;msg, sizeof(msg)); <br>
+if (nread == 0) { <br>
+printf(&quot;EOF on userfaultfd!\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (nread ==
+-1) <br>
+errExit(&quot;read&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* We expect
+only one kind of event; verify that assumption */</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (msg.event
+!= UFFD_EVENT_PAGEFAULT) { <br>
+fprintf(stderr, &quot;Unexpected event on
+userfaultfd\n&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Display info
+about the page-fault event */</p>
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;
+UFFD_EVENT_PAGEFAULT event: &quot;); <br>
+printf(&quot;flags = %&quot;PRIx64&quot;; &quot;,
+msg.arg.pagefault.flags); <br>
+printf(&quot;address = %&quot;PRIx64&quot;\n&quot;,
+msg.arg.pagefault.address);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Copy the
+page pointed to by 'page' into the faulting <br>
+region. Vary the contents that are copied in, so that it
+<br>
+is more obvious that each fault is handled separately.
+*/</p>
+
+<p style="margin-left:11%; margin-top: 1em">memset(page,
+'A' + fault_cnt % 20, page_size); <br>
+fault_cnt++;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">uffdio_copy.src
+= (unsigned long) page;</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* We need to
+handle page faults in units of pages(!). <br>
+So, round faulting address down to page boundary */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">uffdio_copy.dst
+= (unsigned long) msg.arg.pagefault.address &amp; <br>
+~(page_size - 1); <br>
+uffdio_copy.len = page_size; <br>
+uffdio_copy.mode = 0; <br>
+uffdio_copy.copy = 0; <br>
+if (ioctl(uffd, UFFDIO_COPY, &amp;uffdio_copy) == -1) <br>
+errExit(&quot;ioctl-UFFDIO_COPY&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;
+(uffdio_copy.copy returned %&quot;PRId64&quot;)\n&quot;,
+<br>
+uffdio_copy.copy); <br>
+} <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+long uffd; /* userfaultfd file descriptor */ <br>
+char *addr; /* Start of region handled by userfaultfd */
+<br>
+uint64_t len; /* Length of region handled by userfaultfd */
+<br>
+pthread_t thr; /* ID of thread that handles page faults */
+<br>
+struct uffdio_api uffdio_api; <br>
+struct uffdio_register uffdio_register; <br>
+int s;</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (argc != 2)
+{ <br>
+fprintf(stderr, &quot;Usage: %s num-pages\n&quot;, argv[0]);
+<br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">page_size =
+sysconf(_SC_PAGE_SIZE); <br>
+len = strtoull(argv[1], NULL, 0) * page_size;</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Create and
+enable userfaultfd object */</p>
+
+<p style="margin-left:11%; margin-top: 1em">uffd =
+syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK); <br>
+if (uffd == -1) <br>
+errExit(&quot;userfaultfd&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">uffdio_api.api
+= UFFD_API; <br>
+uffdio_api.features = 0; <br>
+if (ioctl(uffd, UFFDIO_API, &amp;uffdio_api) == -1) <br>
+errExit(&quot;ioctl-UFFDIO_API&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Create a
+private anonymous mapping. The memory will be <br>
+demand-zero paged--that is, not yet allocated. When we <br>
+actually touch the memory, it will be allocated via <br>
+the userfaultfd. */</p>
+
+<p style="margin-left:11%; margin-top: 1em">addr =
+mmap(NULL, len, PROT_READ | PROT_WRITE, <br>
+MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); <br>
+if (addr == MAP_FAILED) <br>
+errExit(&quot;mmap&quot;);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;Address
+returned by mmap() = %p\n&quot;, addr);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Register the
+memory range of the mapping we just created for <br>
+handling by the userfaultfd object. In mode, we request to
+track <br>
+missing pages (i.e., pages that have not yet been faulted
+in). */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">uffdio_register.range.start
+= (unsigned long) addr; <br>
+uffdio_register.range.len = len; <br>
+uffdio_register.mode = UFFDIO_REGISTER_MODE_MISSING; <br>
+if (ioctl(uffd, UFFDIO_REGISTER, &amp;uffdio_register) ==
+-1) <br>
+errExit(&quot;ioctl-UFFDIO_REGISTER&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Create a
+thread that will process the userfaultfd events */</p>
+
+<p style="margin-left:11%; margin-top: 1em">s =
+pthread_create(&amp;thr, NULL, fault_handler_thread, (void
+*) uffd); <br>
+if (s != 0) { <br>
+errno = s; <br>
+errExit(&quot;pthread_create&quot;); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">/* Main thread
+now touches memory in the mapping, touching <br>
+locations 1024 bytes apart. This will trigger userfaultfd
+<br>
+events for all pages in the region. */</p>
+
+<p style="margin-left:11%; margin-top: 1em">int l; <br>
+l = 0xf; /* Ensure that faulting address is not on a page
+<br>
+boundary, in order to test that we correctly <br>
+handle that case in fault_handling_thread() */ <br>
+while (l &lt; len) { <br>
+char c = addr[l]; <br>
+printf(&quot;Read address %p in main(): &quot;, addr + l);
+<br>
+printf(&quot;%c\n&quot;, c); <br>
+l += 1024; <br>
+usleep(100000); /* Slow things down a little */ <br>
+}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">exit(EXIT_SUCCESS);
+<br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fcntl</b>(2),
+<b>ioctl</b>(2), <b>ioctl_userfaultfd</b>(2),
+<b>madvise</b>(2), <b>mmap</b>(2)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Documentation/admin-guide/mm/userfaultfd.rst</i>
+in the Linux kernel source tree</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:36:59 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SCHED_SETSCHEDULER</title>
+
+</head>
+<body>
+
+<h1 align="center">SCHED_SETSCHEDULER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">sched_setscheduler,
+sched_getscheduler - set and get scheduling
+policy/parameters</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sched.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+sched_setscheduler(pid_t</b> <i>pid</i><b>, int</b>
+<i>policy</i><b>, <br>
+const struct sched_param *</b><i>param</i><b>);</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+sched_getscheduler(pid_t</b> <i>pid</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sched_setscheduler</b>() system call sets both the
+scheduling policy and parameters for the thread whose ID is
+specified in <i>pid</i>. If <i>pid</i> equals zero, the
+scheduling policy and parameters of the calling thread will
+be set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The scheduling
+parameters are specified in the <i>param</i> argument, which
+is a pointer to a structure of the following form:</p>
+
+<p style="margin-left:17%; margin-top: 1em">struct
+sched_param { <br>
+... <br>
+int sched_priority; <br>
+... <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the current
+implementation, the structure contains only one field,
+<i>sched_priority</i>. The interpretation of <i>param</i>
+depends on the selected policy.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Currently,
+Linux supports the following &quot;normal&quot; (i.e.,
+non-real-time) scheduling policies as values that may be
+specified in <i>policy</i>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>SCHED_OTHER</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>the standard round-robin time-sharing policy;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>SCHED_BATCH</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>for &quot;batch&quot; style execution of processes;
+and</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><b>SCHED_IDLE</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>for running <i>very</i> low priority background
+jobs.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For each of the
+above policies, <i>param-&gt;sched_priority</i> must be
+0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Various
+&quot;real-time&quot; policies are also supported, for
+special time-critical applications that need precise control
+over the way in which runnable threads are selected for
+execution. For the rules governing when a process may use
+these policies, see <b>sched</b>(7). The real-time policies
+that may be specified in <i>policy</i> are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em"><b>SCHED_FIFO</b></p></td>
+<td width="6%"></td>
+<td width="51%">
+
+
+<p style="margin-top: 1em">a first-in, first-out policy;
+and</p> </td>
+<td width="17%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p><b>SCHED_RR</b></p></td>
+<td width="6%"></td>
+<td width="51%">
+
+
+<p>a round-robin policy.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For each of the
+above policies, <i>param-&gt;sched_priority</i> specifies a
+scheduling priority for the thread. This is a number in the
+range returned by calling <b>sched_get_priority_min</b>(2)
+and <b>sched_get_priority_max</b>(2) with the specified
+<i>policy</i>. On Linux, these system calls return,
+respectively, 1 and 99.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since Linux
+2.6.32, the <b>SCHED_RESET_ON_FORK</b> flag can be ORed in
+<i>policy</i> when calling <b>sched_setscheduler</b>(). As a
+result of including this flag, children created by
+<b>fork</b>(2) do not inherit privileged scheduling
+policies. See <b>sched</b>(7) for details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sched_getscheduler</b>()
+returns the current scheduling policy of the thread
+identified by <i>pid</i>. If <i>pid</i> equals zero, the
+policy of the calling thread will be retrieved.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>sched_setscheduler</b>() returns zero. On success,
+<b>sched_getscheduler</b>() returns the policy for the
+thread (a nonnegative integer). On error, both calls return
+-1, and <i>errno</i> is set appropriately.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Invalid arguments: <i>pid</i> is
+negative or <i>param</i> is NULL.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>sched_setscheduler</b>()) <i>policy</i> is not one
+of the recognized policies.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(<b>sched_setscheduler</b>()) <i>param</i> does not make
+sense for the specified <i>policy</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EPERM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The calling thread does not have appropriate
+privileges.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ESRCH</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The thread whose ID is <i>pid</i> could not be
+found.</p> </td></tr>
+</table>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2001,
+POSIX.1-2008 (but see BUGS below). The <b>SCHED_BATCH</b>
+and <b>SCHED_IDLE</b> policies are Linux-specific.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Further details
+of the semantics of all of the above &quot;normal&quot; and
+&quot;real-time&quot; scheduling policies can be found in
+the <b>sched</b>(7) manual page. That page also describes an
+additional policy, <b>SCHED_DEADLINE</b>, which is settable
+only via <b>sched_setattr</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX systems
+on which <b>sched_setscheduler</b>() and
+<b>sched_getscheduler</b>() are available define
+<b>_POSIX_PRIORITY_SCHEDULING</b> in
+<i>&lt;unistd.h&gt;</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1 does
+not detail the permissions that an unprivileged thread
+requires in order to call <b>sched_setscheduler</b>(), and
+details vary across systems. For example, the Solaris 7
+manual page says that the real or effective user ID of the
+caller must match the real user ID or the save set-user-ID
+of the target.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The scheduling
+policy and parameters are in fact per-thread attributes on
+Linux. The value returned from a call to <b>gettid</b>(2)
+can be passed in the argument <i>pid</i>. Specifying
+<i>pid</i> as 0 will operate on the attributes of the
+calling thread, and passing the value returned from a call
+to <b>getpid</b>(2) will operate on the attributes of the
+main thread of the thread group. (If you are using the POSIX
+threads API, then use <b>pthread_setschedparam</b>(3),
+<b>pthread_getschedparam</b>(3), and
+<b>pthread_setschedprio</b>(3), instead of the
+<b>sched_*</b>(2) system calls.)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1 says
+that on success, <b>sched_setscheduler</b>() should return
+the previous scheduling policy. Linux
+<b>sched_setscheduler</b>() does not conform to this
+requirement, since it always returns 0 on success.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>(1),
+<b>nice</b>(2), <b>sched_get_priority_max</b>(2),
+<b>sched_get_priority_min</b>(2),
+<b>sched_getaffinity</b>(2), <b>sched_getattr</b>(2),
+<b>sched_getparam</b>(2), <b>sched_rr_get_interval</b>(2),
+<b>sched_setaffinity</b>(2), <b>sched_setattr</b>(2),
+<b>sched_setparam</b>(2), <b>sched_yield</b>(2),
+<b>setpriority</b>(2), <b>capabilities</b>(7),
+<b>cpuset</b>(7), <b>sched</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

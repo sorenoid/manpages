@@ -1,0 +1,459 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:02 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PIDFD_OPEN</title>
+
+</head>
+<body>
+
+<h1 align="center">PIDFD_OPEN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#ERRORS">ERRORS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pidfd_open -
+obtain a file descriptor that refers to a process</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>#include
+&lt;sys/types.h&gt;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int
+pidfd_open(pid_t</b> <i>pid</i><b>, unsigned int</b>
+<i>flags</i><b>);</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pidfd_open</b>() system call creates a file descriptor
+that refers to the process whose PID is specified in
+<i>pid</i>. The file descriptor is returned as the function
+result; the close-on-exec flag is set on the file
+descriptor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>flags</i> argument is reserved for future use; currently,
+this argument must be specified as 0.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>pidfd_open</b>() returns a file descriptor (a nonnegative
+integer). On error, -1 is returned and <i>errno</i> is set
+to indicate the cause of the error.</p>
+
+<h2>ERRORS
+<a name="ERRORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><i>flags</i> is not 0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EINVAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p><i>pid</i> is not valid.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EMFILE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The per-process limit on the number of open file
+descriptors has been reached (see the description of
+<b>RLIMIT_NOFILE</b> in <b>getrlimit</b>(2)).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENFILE</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The system-wide limit on the total number of open files
+has been reached.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENODEV</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The anonymous inode filesystem is not available in this
+kernel.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ENOMEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Insufficient kernel memory was available.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ESRCH</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The process specified by <i>pid</i> does not exist.</p></td></tr>
+</table>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pidfd_open</b>()
+first appeared in Linux 5.3.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pidfd_open</b>()
+is Linux specific.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Currently,
+there is no glibc wrapper for this system call; call it
+using <b>syscall</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+code sequence can be used to obtain a file descriptor for
+the child of <b>fork</b>(2):</p>
+
+<p style="margin-left:17%; margin-top: 1em">pid = fork();
+<br>
+if (pid &gt; 0) { /* If parent */ <br>
+pidfd = pidfd_open(pid, 0); <br>
+... <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Even if the
+child has already terminated by the time of the
+<b>pidfd_open</b>() call, its PID will not have been
+recycled and the returned file descriptor will refer to the
+resulting zombie process. Note, however, that this is
+guaranteed only if the following conditions hold true:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">the disposition of
+<b>SIGCHLD</b> has not been explicitly set to <b>SIG_IGN</b>
+(see <b>sigaction</b>(2));</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>the <b>SA_NOCLDWAIT</b> flag was not specified while
+establishing a handler for <b>SIGCHLD</b> or while setting
+the disposition of that signal to <b>SIG_DFL</b> (see
+<b>sigaction</b>(2)); and</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>the zombie process was not reaped elsewhere in the
+program (e.g., either by an asynchronously executed signal
+handler or by <b>wait</b>(2) or similar in another
+thread).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If any of these
+conditions does not hold, then the child process (along with
+a PID file descriptor that refers to it) should instead be
+created using <b>clone</b>(2) with the <b>CLONE_PIDFD</b>
+flag.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Use cases
+for PID file descriptors</b> <br>
+A PID file descriptor returned by <b>pidfd_open</b>() (or by
+<b>clone</b>(2) with the <b>CLONE_PID</b> flag) can be used
+for the following purposes:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">The <b>pidfd_send_signal</b>(2)
+system call can be used to send a signal to the process
+referred to by a PID file descriptor.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>A PID file descriptor can be monitored using
+<b>poll</b>(2), <b>select</b>(2), and <b>epoll</b>(7). When
+the process that it refers to terminates, these interfaces
+indicate the file descriptor as readable. Note, however,
+that in the current implementation, nothing can be read from
+the file descriptor (<b>read</b>(2) on the file descriptor
+fails with the error <b>EINVAL</b>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>If the PID file descriptor refers to a child of the
+calling process, then it can be waited on using
+<b>waitid</b>(2).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The <b>pidfd_getfd</b>(2) system call can be used to
+obtain a duplicate of a file descriptor of another process
+referred to by a PID file descriptor.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>A PID file descriptor can be used as the argument of
+<b>setns</b>(2) in order to move into one or more of the
+same namespaces as the process referred to by the file
+descriptor.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pidfd_open</b>() system call is the preferred way of
+obtaining a PID file descriptor for an already existing
+process. The alternative is to obtain a file descriptor by
+opening a <i>/proc/[pid]</i> directory. However, the latter
+technique is possible only if the <b>proc</b>(5) filesystem
+is mounted; furthermore, the file descriptor obtained in
+this way is <i>not</i> pollable and can&rsquo;t be waited on
+with <b>waitid</b>(2).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+below opens a PID file descriptor for the process whose PID
+is specified as its command-line argument. It then uses
+<b>poll</b>(2) to monitor the file descriptor for process
+exit, as indicated by an <b>EPOLLIN</b> event.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+source</b> <br>
+#define _GNU_SOURCE <br>
+#include &lt;sys/types.h&gt; <br>
+#include &lt;sys/syscall.h&gt; <br>
+#include &lt;unistd.h&gt; <br>
+#include &lt;poll.h&gt; <br>
+#include &lt;stdlib.h&gt; <br>
+#include &lt;stdio.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#ifndef
+__NR_pidfd_open <br>
+#define __NR_pidfd_open 434 /* System call # on most
+architectures */ <br>
+#endif</p>
+
+<p style="margin-left:11%; margin-top: 1em">static int <br>
+pidfd_open(pid_t pid, unsigned int flags) <br>
+{ <br>
+return syscall(__NR_pidfd_open, pid, flags); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+struct pollfd pollfd; <br>
+int pidfd, ready;</p>
+
+<p style="margin-left:11%; margin-top: 1em">if (argc != 2)
+{ <br>
+fprintf(stderr, &quot;Usage: %s &lt;pid&gt;\n&quot;,
+argv[0]); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">pidfd =
+pidfd_open(atoi(argv[1]), 0); <br>
+if (pidfd == -1) { <br>
+perror(&quot;pidfd_open&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">pollfd.fd =
+pidfd; <br>
+pollfd.events = POLLIN;</p>
+
+<p style="margin-left:11%; margin-top: 1em">ready =
+poll(&amp;pollfd, 1, -1); <br>
+if (ready == -1) { <br>
+perror(&quot;poll&quot;); <br>
+exit(EXIT_FAILURE); <br>
+}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;Events
+(%#x): POLLIN is %sset\n&quot;, pollfd.revents, <br>
+(pollfd.revents &amp; POLLIN) ? &quot;&quot; : &quot;not
+&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">close(pidfd);
+<br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
+<b>kill</b>(2), <b>pidfd_getfd</b>(2),
+<b>pidfd_send_signal</b>(2), <b>poll</b>(2),
+<b>select</b>(2), <b>setns</b>(2), <b>waitid</b>(2),
+<b>epoll</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

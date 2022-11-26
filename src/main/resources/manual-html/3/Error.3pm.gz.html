@@ -1,0 +1,884 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:12 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Error</title>
+
+</head>
+<body>
+
+<h1 align="center">Error</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#WARNING">WARNING</a><br>
+<a href="#PROCEDURAL INTERFACE">PROCEDURAL INTERFACE</a><br>
+<a href="#COMPATIBILITY">COMPATIBILITY</a><br>
+<a href="#CLASS INTERFACE">CLASS INTERFACE</a><br>
+<a href="#PRE-DEFINED ERROR CLASSES">PRE-DEFINED ERROR CLASSES</a><br>
+<a href="#$Error::ObjectifyCallback">$Error::ObjectifyCallback</a><br>
+<a href="#MESSAGE HANDLERS">MESSAGE HANDLERS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#KNOWN BUGS">KNOWN BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#MAINTAINER">MAINTAINER</a><br>
+<a href="#PAST MAINTAINERS">PAST MAINTAINERS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SUPPORT">SUPPORT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Error -
+Error/exception handling in an OO-ish way</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">version
+0.17029</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use Error
+qw(:try); <br>
+throw Error::Simple( &quot;A simple error&quot;); <br>
+sub xyz { <br>
+... <br>
+record Error::Simple(&quot;A simple error&quot;) <br>
+and return; <br>
+} <br>
+unlink($file) or throw Error::Simple(&quot;$file:
+$!&quot;,$!); <br>
+try { <br>
+do_some_stuff(); <br>
+die &quot;error!&quot; if $condition; <br>
+throw Error::Simple &quot;Oops!&quot; if $other_condition;
+<br>
+} <br>
+catch Error::IO with { <br>
+my $E = shift; <br>
+print STDERR &quot;File &quot;, $E-&gt;{'-file'}, &quot; had
+a problem\n&quot;; <br>
+} <br>
+except { <br>
+my $E = shift; <br>
+my $general_handler=sub {send_message
+$E-&gt;{-description}}; <br>
+return { <br>
+UserException1 =&gt; $general_handler, <br>
+UserException2 =&gt; $general_handler <br>
+}; <br>
+} <br>
+otherwise { <br>
+print STDERR &quot;Well I don't know what to say\n&quot;;
+<br>
+} <br>
+finally { <br>
+close_the_garage_door_already(); # Should be reliable <br>
+}; # Don't forget the trailing ; or you might be
+surprised</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;Error&quot; package provides two interfaces. Firstly
+&quot;Error&quot; provides a procedural interface to
+exception handling. Secondly &quot;Error&quot; is a base
+class for errors/exceptions that can either be thrown, for
+subsequent catch, or can simply be recorded.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Errors in the
+class &quot;Error&quot; should not be thrown directly, but
+the user should throw errors from a sub-class of
+&quot;Error&quot;.</p>
+
+<h2>WARNING
+<a name="WARNING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Using the
+&quot;Error&quot; module is <b>no longer recommended</b> due
+to the black-magical nature of its syntactic sugar, which
+often tends to break. Its maintainers have stopped actively
+writing code that uses it, and discourage people from doing
+so. See the &quot; <small>SEE ALSO&quot;</small> section
+below for better recommendations.</p>
+
+<h2>PROCEDURAL INTERFACE
+<a name="PROCEDURAL INTERFACE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;Error&quot;
+exports subroutines to perform exception handling. These
+will be exported if the &quot;:try&quot; tag is used in the
+&quot;use&quot; line. <br>
+try <small>BLOCK CLAUSES</small></p>
+
+<p style="margin-left:17%;">&quot;try&quot; is the main
+subroutine called by the user. All other subroutines
+exported are clauses to the try subroutine.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>BLOCK</small> will be evaluated and, if no error is
+throw, try will return the result of the block.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;CLAUSES&quot;
+are the subroutines below, which describe what to do in the
+event of an error being thrown within
+<small>BLOCK.</small></p>
+
+<p style="margin-left:11%;">catch <small>CLASS</small> with
+<small>BLOCK</small></p>
+
+<p style="margin-left:17%;">This clauses will cause all
+errors that satisfy &quot;$err-&gt;isa(CLASS)&quot; to be
+caught and handled by evaluating &quot;BLOCK&quot;.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;BLOCK&quot;
+will be passed two arguments. The first will be the error
+being thrown. The second is a reference to a scalar
+variable. If this variable is set by the catch block then,
+on return from the catch block, try will continue processing
+as if the catch block was never found. The error will also
+be available in $@.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To propagate
+the error the catch block may call
+&quot;$err-&gt;throw&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the scalar
+reference by the second argument is not set, and the error
+is not thrown. Then the current try block will return with
+the result from the catch block.</p>
+
+<p style="margin-left:11%;">except <small>BLOCK</small></p>
+
+<p style="margin-left:17%;">When &quot;try&quot; is looking
+for a handler, if an except clause is found
+&quot;BLOCK&quot; is evaluated. The return value from this
+block should be a <small>HASHREF</small> or a list of
+key-value pairs, where the keys are class names and the
+values are <small>CODE</small> references for the handler of
+errors of that type.</p>
+
+<p style="margin-left:11%;">otherwise
+<small>BLOCK</small></p>
+
+<p style="margin-left:17%;">Catch any error by executing
+the code in &quot;BLOCK&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">When evaluated
+&quot;BLOCK&quot; will be passed one argument, which will be
+the error being processed. The error will also be available
+in $@.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Only one
+otherwise block may be specified per try block</p>
+
+<p style="margin-left:11%;">finally
+<small>BLOCK</small></p>
+
+<p style="margin-left:17%;">Execute the code in
+&quot;BLOCK&quot; either after the code in the try block has
+successfully completed, or if the try block throws an error
+then &quot;BLOCK&quot; will be executed after the handler
+has completed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the handler
+throws an error then the error will be caught, the finally
+block will be executed and the error will be re-thrown.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Only one
+finally block may be specified per try block</p>
+
+<h2>COMPATIBILITY
+<a name="COMPATIBILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Moose exports a
+keyword called &quot;with&quot; which clashes with
+Error&rsquo;s. This example returns a prototype mismatch
+error:</p>
+
+<p style="margin-left:11%; margin-top: 1em">package MyTest;
+<br>
+use warnings; <br>
+use Moose; <br>
+use Error qw(:try);</p>
+
+<p style="margin-left:11%; margin-top: 1em">(Thanks to
+&quot;maik.hentsche@amd.com&quot; for the report.).</p>
+
+<h2>CLASS INTERFACE
+<a name="CLASS INTERFACE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>CONSTRUCTORS</small></b>
+<br>
+The &quot;Error&quot; object is implemented as a
+<small>HASH.</small> This <small>HASH</small> is initialized
+with the arguments that are passed to it&rsquo;s
+constructor. The elements that are used by, or are
+retrievable by the &quot;Error&quot; class are listed below,
+other classes may add to these.</p>
+
+<p style="margin-left:11%; margin-top: 1em">-file <br>
+-line <br>
+-text <br>
+-value <br>
+-object</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+&quot;-file&quot; or &quot;-line&quot; are not specified in
+the constructor arguments then these will be initialized
+with the file name and line number where the constructor was
+called from.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the error is
+associated with an object then the object should be passed
+as the &quot;-object&quot; argument. This will allow the
+&quot;Error&quot; package to associate the error with the
+object.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;Error&quot; package remembers the last error created,
+and also the last error associated with a package. This
+could either be the last error created by a sub in that
+package, or the last error which passed an object blessed
+into that package as the &quot;-object&quot; argument. <br>
+Error-&gt;<b>new()</b></p>
+
+<p style="margin-left:17%;">See the Error::Simple
+documentation.</p>
+
+<p style="margin-left:11%;">throw ( [ <small>ARGS</small> ]
+)</p>
+
+<p style="margin-left:17%;">Create a new &quot;Error&quot;
+object and throw an error, which will be caught by a
+surrounding &quot;try&quot; block, if there is one.
+Otherwise it will cause the program to exit.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;throw&quot;
+may also be called on an existing error to re-throw it.</p>
+
+<p style="margin-left:11%;">with ( [ <small>ARGS</small> ]
+)</p>
+
+<p style="margin-left:17%;">Create a new &quot;Error&quot;
+object and returns it. This is defined for syntactic sugar,
+eg</p>
+
+<p style="margin-left:17%; margin-top: 1em">die with
+Some::Error ( ... );</p>
+
+<p style="margin-left:11%;">record ( [ <small>ARGS</small>
+] )</p>
+
+<p style="margin-left:17%;">Create a new &quot;Error&quot;
+object and returns it. This is defined for syntactic sugar,
+eg</p>
+
+<p style="margin-left:17%; margin-top: 1em">record
+Some::Error ( ... ) <br>
+and return;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>STATIC
+METHODS</small></b> <br>
+prior ( [ <small>PACKAGE</small> ] )</p>
+
+<p style="margin-left:17%;">Return the last error created,
+or the last error associated with &quot;PACKAGE&quot;</p>
+
+<p style="margin-left:11%;">flush ( [
+<small>PACKAGE</small> ] )</p>
+
+<p style="margin-left:17%;">Flush the last error created,
+or the last error associated with &quot;PACKAGE&quot;.It is
+necessary to clear the error stack before exiting the
+package or uncaught errors generated using
+&quot;record&quot; will be reported.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$Error-&gt;flush;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OBJECT
+METHODS</small></b> <br>
+stacktrace</p>
+
+<p style="margin-left:17%;">If the variable $Error::Debug
+was non-zero when the error was created, then
+&quot;stacktrace&quot; returns a string created by calling
+&quot;Carp::longmess&quot;. If the variable was zero the
+&quot;stacktrace&quot; returns the text of the error
+appended with the filename and line number of where the
+error was created, providing the text does not end with a
+newline.</p>
+
+<p style="margin-left:11%;">object</p>
+
+<p style="margin-left:17%;">The object this error was
+associated with</p>
+
+<p style="margin-left:11%;">file</p>
+
+<p style="margin-left:17%;">The file where the constructor
+of this error was called from</p>
+
+<p style="margin-left:11%;">line</p>
+
+<p style="margin-left:17%;">The line where the constructor
+of this error was called from</p>
+
+<p style="margin-left:11%;">text</p>
+
+<p style="margin-left:17%;">The text of the error</p>
+
+<p style="margin-left:11%;">$err-&gt;associate($obj)</p>
+
+<p style="margin-left:17%;">Associates an error with an
+object to allow error propagation. I.e:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$ber-&gt;encode(...)
+or <br>
+return Error-&gt;prior($ber)-&gt;associate($ldap);</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OVERLOAD
+METHODS</small></b> <br>
+stringify</p>
+
+<p style="margin-left:17%;">A method that converts the
+object into a string. This method may simply return the same
+as the &quot;text&quot; method, or it may append more
+information. For example the file name and line number.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default this
+method returns the &quot;-text&quot; argument that was
+passed to the constructor, or the string &quot;Died&quot; if
+none was given.</p>
+
+<p style="margin-left:11%;">value</p>
+
+<p style="margin-left:17%;">A method that will return a
+value that can be associated with the error. For example if
+an error was created due to the failure of a system call,
+then this may return the numeric value of $! at the
+time.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default this
+method returns the &quot;-value&quot; argument that was
+passed to the constructor.</p>
+
+<h2>PRE-DEFINED ERROR CLASSES
+<a name="PRE-DEFINED ERROR CLASSES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Error::Simple</b>
+<br>
+This class can be used to hold simple error strings and
+values. It&rsquo;s constructor takes two arguments. The
+first is a text value, the second is a numeric value. These
+values are what will be returned by the overload
+methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the text
+value ends with &quot;at file line 1&quot; as $@ strings do,
+then this information will be used to set the
+&quot;-file&quot; and &quot;-line&quot; arguments of the
+error object.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This class is
+used internally if an eval&rsquo;d block die&rsquo;s with an
+error that is a plain string. (Unless
+$Error::ObjectifyCallback is modified)</p>
+
+<h2>$Error::ObjectifyCallback
+<a name="$Error::ObjectifyCallback"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This variable
+holds a reference to a subroutine that converts errors that
+are plain strings to objects. It is used by Error.pm to
+convert textual errors to objects, and can be overridden by
+the user.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It accepts a
+single argument which is a hash reference to named
+parameters. Currently the only named parameter passed is
+'text' which is the text of the error, but others may be
+available in the future.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example the
+following code will cause Error.pm to throw objects of the
+class MyError::Bar by default:</p>
+
+<p style="margin-left:11%; margin-top: 1em">sub
+throw_MyError_Bar <br>
+{ <br>
+my $args = shift; <br>
+my $err = MyError::Bar-&gt;new(); <br>
+$err-&gt;{'MyBarText'} = $args-&gt;{'text'}; <br>
+return $err; <br>
+} <br>
+{ <br>
+local $Error::ObjectifyCallback = \&amp;throw_MyError_Bar;
+<br>
+# Error handling here. <br>
+}</p>
+
+<h2>MESSAGE HANDLERS
+<a name="MESSAGE HANDLERS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;Error&quot;
+also provides handlers to extend the output of the
+&quot;warn()&quot; perl function, and to handle the printing
+of a thrown &quot;Error&quot; that is not caught or
+otherwise handled. These are not installed by default, but
+are requested using the &quot;:warndie&quot; tag in the
+&quot;use&quot; line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">use Error qw(
+:warndie );</p>
+
+<p style="margin-left:11%; margin-top: 1em">These new error
+handlers are installed in $SIG{__WARN__} and $SIG{__DIE__}.
+If these handlers are already defined when the tag is
+imported, the old values are stored, and used during the new
+code. Thus, to arrange for custom handling of warnings and
+errors, you will need to perform something like the
+following:</p>
+
+<p style="margin-left:11%; margin-top: 1em">BEGIN { <br>
+$SIG{__WARN__} = sub { <br>
+print STDERR &quot;My special warning handler: $_[0]&quot;
+<br>
+}; <br>
+} <br>
+use Error qw( :warndie );</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+setting $SIG{__WARN__} after the &quot;:warndie&quot; tag
+has been imported will overwrite the handler that
+&quot;Error&quot; provides. If this cannot be avoided, then
+the tag can be explicitly &quot;import&quot;ed later</p>
+
+<p style="margin-left:11%; margin-top: 1em">use Error; <br>
+$SIG{__WARN__} = ...; <br>
+import Error qw( :warndie );</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>EXAMPLE</small></b>
+<br>
+The &quot;__DIE__&quot; handler turns messages such as</p>
+
+<p style="margin-left:11%; margin-top: 1em">Can't call
+method &quot;foo&quot; on an undefined value at
+examples/warndie.pl line 16.</p>
+
+<p style="margin-left:11%; margin-top: 1em">into</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unhandled perl
+error caught at toplevel: <br>
+Can't call method &quot;foo&quot; on an undefined value <br>
+Thrown from: examples/warndie.pl:16 <br>
+Full stack trace: <br>
+main::inner('undef') called at examples/warndie.pl line 20
+<br>
+main::outer('undef') called at examples/warndie.pl line
+23</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See
+Exception::Class for a different module providing
+Object-Oriented exception handling, along with a convenient
+syntax for declaring hierarchies for them. It doesn&rsquo;t
+provide Error&rsquo;s syntactic sugar of &quot;try { ...
+}&quot;, &quot;catch { ... }&quot;, etc. which may be a good
+thing or a bad thing based on what you want. (Because
+Error&rsquo;s syntactic sugar tends to break.)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Error::Exception
+aims to combine Error and Exception::Class &quot;with
+correct stringification&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">TryCatch and
+Try::Tiny are similar in concept to Error.pm only providing
+a syntax that hopefully breaks less.</p>
+
+<h2>KNOWN BUGS
+<a name="KNOWN BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None, but that
+does not mean there are not any.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Graham Barr
+&lt;gbarr@pobox.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The code that
+inspired me to write this was originally written by Peter
+Seibel &lt;peter@weblogic.com&gt; and adapted by Jesse Glick
+&lt;jglick@sig.bsh.com&gt;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;:warndie&quot;
+handlers added by Paul Evans
+&lt;leonerd@leonerd.org.uk&gt;</p>
+
+<h2>MAINTAINER
+<a name="MAINTAINER"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Shlomi Fish,
+&lt;http://www.shlomifish.org/&gt; .</p>
+
+<h2>PAST MAINTAINERS
+<a name="PAST MAINTAINERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Arun Kumar U
+&lt;u_arunkumar@yahoo.com&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1997-8 Graham Barr. All rights reserved. This program is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+
+<h2>SUPPORT
+<a name="SUPPORT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Websites</b>
+<br>
+The following websites have more information about this
+module, and may be of help to you. As always, in addition to
+those websites please use your favorite search engine to
+discover more resources.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="12%">
+
+
+<p>MetaCPAN</p></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">A modern,
+open-source <small>CPAN</small> search engine, useful to
+view <small>POD</small> in <small>HTML</small> format.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://metacpan.org/release/Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em">Search <small>CPAN</small></p></td>
+<td width="66%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+<small>CPAN</small> search engine, useful to view
+<small>POD</small> in <small>HTML</small> format.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;http://search.cpan.org/dist/Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="34%">
+
+
+<p style="margin-top: 1em"><small>RT: CPAN</small> &rsquo;s
+Bug Tracker</p></td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>RT</small> ( Request Tracker ) website is the default
+bug/issue tracking system for <small>CPAN.</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;https://rt.cpan.org/Public/Dist/Display.html?Name=Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><small>CPAN</small> Ratings</p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>CPAN</small> Ratings is a website that allows
+community ratings and reviews of Perl modules.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;http://cpanratings.perl.org/d/Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><small>CPANTS</small></p></td>
+<td width="74%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>CPANTS</small> is a website that analyzes the
+Kwalitee ( code metrics ) of a distribution.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;http://cpants.cpanauthors.org/dist/Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><small>CPAN</small> Testers</p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>CPAN</small> Testers is a network of smoke testers
+who run automated tests on uploaded <small>CPAN</small>
+distributions.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;http://www.cpantesters.org/distro/E/Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="29%">
+
+
+<p style="margin-top: 1em"><small>CPAN</small> Testers
+Matrix</p> </td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>CPAN</small> Testers Matrix is a website that
+provides a visual overview of the test results for a
+distribution on various Perls/platforms.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;http://matrix.cpantesters.org/?dist=Error&gt;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><small>CPAN</small> Testers
+Dependencies</p> </td>
+<td width="45%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<small>CPAN</small> Testers Dependencies is a website that
+shows a chart of the test results of all dependencies for a
+distribution.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&lt;http://deps.cpantesters.org/?module=Error&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Bugs /
+Feature Requests</b> <br>
+Please report any bugs or feature requests by email to
+&quot;bug-error at rt.cpan.org&quot;, or through the web
+interface at
+&lt;https://rt.cpan.org/Public/Bug/Report.html?Queue=Error&gt;.
+You will be automatically notified of any progress on the
+request by the system.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Source
+Code</b> <br>
+The code is open to the world, and available for you to hack
+on. Please feel free to browse it and play with it, or
+whatever. If you want to contribute patches, please send me
+a diff or prod me to pull from your repository :)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;https://github.com/shlomif/perl-error.pm&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">git clone
+git://github.com/shlomif/perl-error.pm.git</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Shlomi Fish (
+http://www.shlomifish.org/ )</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please report
+any bugs or feature requests on the bugtracker website
+&lt;https://github.com/shlomif/perl-error.pm/issues&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">When submitting
+a bug or request, please include a test-file or a patch to
+an existing test-file that illustrates the bug or desired
+feature.</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is copyright (c) 2020 by Shlomi Fish (
+http://www.shlomifish.org/ ).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; you can redistribute it and/or modify it under the
+same terms as the Perl 5 programming language system
+itself.</p>
+<hr>
+</body>
+</html>

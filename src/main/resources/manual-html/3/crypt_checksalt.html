@@ -1,0 +1,140 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:16 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>CRYPT_CHECKSALT(3) BSD Library Functions Manual
+CRYPT_CHECKSALT(3)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>crypt_checksalt</b> &mdash;
+validate a crypt setting string</p>
+
+<p style="margin-top: 1em"><b>LIBRARY</b></p>
+
+<p style="margin-left:6%;">Crypt Library (libcrypt,
+-lcrypt)</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:6%;"><b>#include
+&lt;crypt.h&gt;</b></p>
+
+<p style="margin-left:6%; margin-top: 1em"><i>int</i></p>
+
+
+<p><b>crypt_checksalt</b>(<i>const&nbsp;char&nbsp;*setting</i>);</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>crypt_checksalt</b> checks
+the <i>setting</i> string against the system configuration
+and reports whether the hashing method and parameters it
+specifies are acceptable. It is intended to be used by
+programs such as login(1) to determine whether the
+user&rsquo;s passphrase should be re-hashed using the
+currently preferred hashing method.</p>
+
+<p style="margin-top: 1em"><b>RETURN VALUES</b></p>
+
+<p style="margin-left:6%;">The return value is 0 if there
+is nothing wrong with this setting. Otherwise, it is one of
+the following constants:</p>
+
+<p style="margin-top: 1em">CRYPT_SALT_OK</p>
+
+<p style="margin-left:14%;"><i>setting</i> is a fully
+correct setting string. This constant is guaranteed to equal
+0.</p>
+
+<p style="margin-top: 1em">CRYPT_SALT_INVALID</p>
+
+<p style="margin-left:14%;"><i>setting</i> is not a valid
+setting string; either it specifies a hashing method that is
+not known to this version of libxcrypt, or it specifies
+invalid parameters for the method.</p>
+
+<p style="margin-top: 1em">CRYPT_SALT_METHOD_DISABLED (Not
+implemented, yet)</p>
+
+<p style="margin-left:14%;"><i>setting</i> specifies a
+hashing method that is no longer allowed to be used at all;
+<b>crypt</b> will fail if passed this <i>setting</i>. Manual
+intervention will be required to reactivate the user&rsquo;s
+account.</p>
+
+<p style="margin-top: 1em">CRYPT_SALT_METHOD_LEGACY</p>
+
+<p style="margin-left:14%;"><i>setting</i> specifies a
+hashing method that is no longer considered strong enough
+for use with new passphrases. <b>crypt</b> will still
+authenticate a passphrase against this setting, but if
+authentication succeeds, the passphrase should be re-hashed
+using the currently preferred method.</p>
+
+<p style="margin-top: 1em">CRYPT_SALT_TOO_CHEAP (Not
+implemented, yet)</p>
+
+<p style="margin-left:14%;"><i>setting</i> specifies cost
+parameters that are considered too cheap for use with new
+passphrases. <b>crypt</b> will still authenticate a
+passphrase against this setting, but if authentication
+succeeds, the passphrase should be re-hashed using the
+currently preferred method.</p>
+
+<p style="margin-top: 1em"><b>FEATURE TEST MACROS</b></p>
+
+<p style="margin-left:6%;">&lt;<i>crypt.h</i>&gt; will
+define the macro CRYPT_CHECKSALT_AVAILABLE if
+<b>crypt_checksalt</b> is available in the current version
+of libxcrypt.</p>
+
+<p style="margin-top: 1em"><b>BUGS</b></p>
+
+<p style="margin-left:6%;">Since full configurability is
+not yet implemented, the current implementation will only
+ever return <b>CRYPT_SALT_OK (0)</b> or
+<b>CRYPT_SALT_INVALID</b> when invoked.</p>
+
+<p style="margin-top: 1em"><b>PORTABILITY NOTES</b></p>
+
+<p style="margin-left:6%;">The function
+<b>crypt_checksalt</b> is not part of any standard. It was
+added to libxcrypt in version 4.3.0.</p>
+
+<p style="margin-top: 1em"><b>ATTRIBUTES</b></p>
+
+<p style="margin-left:6%;">For an explanation of the terms
+used in this section, see attributes(7).</p>
+
+
+<p align="center"><img src="grohtml-3287341.png" alt="Image grohtml-3287341.png"></p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">crypt(3), crypt_gensalt(3),
+crypt(5)</p>
+
+<p style="margin-left:6%; margin-top: 1em">libxcrypt
+November&nbsp;8, 2018 libxcrypt</p>
+<hr>
+</body>
+</html>

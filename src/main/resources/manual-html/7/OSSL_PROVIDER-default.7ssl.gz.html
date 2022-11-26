@@ -1,0 +1,271 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:45 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>OSSL_PROVIDER-DEFAULT</title>
+
+</head>
+<body>
+
+<h1 align="center">OSSL_PROVIDER-DEFAULT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPERATIONS AND ALGORITHMS">OPERATIONS AND ALGORITHMS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">OSSL_PROVIDER-default
+- OpenSSL default provider</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The OpenSSL
+default provider supplies the majority of OpenSSL&rsquo;s
+diverse algorithm implementations. If an application
+doesn&rsquo;t specify anything else explicitly (e.g. in the
+application or via config), then this is the provider that
+will be used as fallback: It is loaded automatically the
+first time that an algorithm is fetched from a provider or a
+function acting on providers is called and no other provider
+has been loaded yet.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an attempt
+to load a provider has already been made (whether successful
+or not) then the default provider won&rsquo;t be loaded
+automatically. Therefore if the default provider is to be
+used in conjunction with other providers then it must be
+loaded explicitly. Automatic loading of the default provider
+only occurs a maximum of once; if the default provider is
+explicitly unloaded then the default provider will not be
+automatically loaded again.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Properties</b>
+<br>
+The implementations in this provider specifically have this
+property defined: <br>
+&quot;provider=default&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">It may be used
+in a property query string with fetching functions such as
+<b>EVP_MD_fetch</b>(3) or <b>EVP_CIPHER_fetch</b>(3), as
+well as with other functions that take a property query
+string, such as <b>EVP_PKEY_CTX_new_from_name</b>(3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">It isn&rsquo;t
+mandatory to query for this property, except to make sure to
+get implementations of this provider and none other.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+implementations may define additional properties. Exact
+information is listed below</p>
+
+<h2>OPERATIONS AND ALGORITHMS
+<a name="OPERATIONS AND ALGORITHMS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The OpenSSL
+default provider supports these operations and
+algorithms:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Hashing
+Algorithms / Message Digests</b> <small><br>
+SHA1,</small> see <b><small>EVP_MD-SHA1</small></b> (7)
+<small><br>
+SHA2,</small> see <b><small>EVP_MD-SHA2</small></b> (7)
+<small><br>
+SHA3,</small> see <b><small>EVP_MD-SHA3</small></b> (7) <br>
+KECCAK-KMAC, see <b><small>EVP_MD-KECCAK-KMAC</small></b>
+(7) <small><br>
+SHAKE,</small> see <b><small>EVP_MD-SHAKE</small></b> (7)
+<small><br>
+BLAKE2,</small> see <b><small>EVP_MD-BLAKE2</small></b> (7)
+<small><br>
+SM3,</small> see <b><small>EVP_MD-SM3</small></b> (7)
+<small><br>
+MD5,</small> see <b><small>EVP_MD-MD5</small></b> (7)
+<small><br>
+MD5-SHA1,</small> see <b><small>EVP_MD-MD5-SHA1</small></b>
+(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Symmetric
+Ciphers</b> <small><br>
+AES,</small> see <b><small>EVP_CIPHER-AES</small></b> (7)
+<small><br>
+ARIA,</small> see <b><small>EVP_CIPHER-ARIA</small></b> (7)
+<small><br>
+CAMELLIA,</small> see
+<b><small>EVP_CIPHER-CAMELLIA</small></b> (7) <br>
+3DES, see <b><small>EVP_CIPHER-DES</small></b> (7)
+<small><br>
+SEED,</small> see <b><small>EVP_CIPHER-SEED</small></b> (7)
+<small><br>
+SM4,</small> see <b><small>EVP_CIPHER-SM4</small></b> (7)
+<br>
+ChaCha20, see <b><small>EVP_CIPHER-CHACHA</small></b> (7)
+<br>
+ChaCha20-Poly1305, see
+<b><small>EVP_CIPHER-CHACHA</small></b> (7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Message
+Authentication Code ( <small>MAC</small> )</b> <small><br>
+BLAKE2,</small> see <b><small>EVP_MAC-BLAKE2</small></b> (7)
+<small><br>
+CMAC,</small> see <b><small>EVP_MAC-CMAC</small></b> (7)
+<small><br>
+GMAC,</small> see <b><small>EVP_MAC-GMAC</small></b> (7)
+<small><br>
+HMAC,</small> see <b><small>EVP_MAC-HMAC</small></b> (7)
+<small><br>
+KMAC,</small> see <b><small>EVP_MAC-KMAC</small></b> (7)
+<small><br>
+SIPHASH,</small> see <b>EVP_MAC-Siphash</b>(7) <small><br>
+POLY1305,</small> see <b>EVP_MAC-Poly1305</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Key
+Derivation Function ( <small>KDF</small> )</b> <small><br>
+HKDF,</small> see <b><small>EVP_KDF-HKDF</small></b> (7)
+<small><br>
+SSKDF,</small> see <b><small>EVP_KDF-SS</small></b> (7)
+<small><br>
+PBKDF2,</small> see <b><small>EVP_KDF-PBKDF2</small></b> (7)
+<small><br>
+PKCS12KDF,</small> see
+<b><small>EVP_KDF-PKCS12KDF</small></b> (7) <small><br>
+SSHKDF,</small> see <b><small>EVP_KDF-SSHKDF</small></b> (7)
+<small><br>
+TLS1-PRF,</small> see <b><small>EVP_KDF-TLS1_PRF</small></b>
+(7) <small><br>
+KBKDF,</small> see <b><small>EVP_KDF-KB</small></b> (7) <br>
+X942KDF-ASN1, see <b><small>EVP_KDF-X942-ASN1</small></b>
+(7) <br>
+X942KDF-CONCAT, see
+<b><small>EVP_KDF-X942-CONCAT</small></b> (7) <br>
+X963KDF, see <b><small>EVP_KDF-X963</small></b> (7)
+<small><br>
+SCRYPT,</small> see <b><small>EVP_KDF-SCRYPT</small></b> (7)
+<small><br>
+KRB5KDF,</small> see <b><small>EVP_KDF-KRB5KDF</small></b>
+(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Key
+Exchange</b> <small><br>
+DH,</small> see <b><small>EVP_KEYEXCH-DH</small></b> (7)
+<small><br>
+ECDH,</small> see <b><small>EVP_KEYEXCH-ECDH</small></b> (7)
+<br>
+X25519, see <b><small>EVP_KEYEXCH-X25519</small></b> (7)
+<br>
+X448, see <b><small>EVP_KEYEXCH-X448</small></b> (7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Signature</b> <small><br>
+DSA,</small> see <b><small>EVP_SIGNATURE-DSA</small></b> (7)
+<small><br>
+RSA,</small> see <b><small>EVP_SIGNATURE-RSA</small></b> (7)
+<small><br>
+HMAC,</small> see <b><small>EVP_SIGNATURE-HMAC</small></b>
+(7) <small><br>
+SIPHASH,</small> see <b>EVP_SIGNATURE-Siphash</b>(7)
+<small><br>
+POLY1305,</small> see <b>EVP_SIGNATURE-Poly1305</b>(7)
+<small><br>
+CMAC,</small> see <b><small>EVP_SIGNATURE-CMAC</small></b>
+(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Cipher</b> <small><br>
+RSA,</small> see <b><small>EVP_ASYM_CIPHER-RSA</small></b>
+(7) <small><br>
+SM2,</small> see <b><small>EVP_ASYM_CIPHER-SM2</small></b>
+(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Key Encapsulation</b> <small><br>
+RSA,</small> see <b><small>EVP_KEM-RSA</small></b> (7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Key Management</b> <small><br>
+DH,</small> see <b><small>EVP_KEYMGMT-DH</small></b> (7)
+<small><br>
+DSA,</small> see <b><small>EVP_KEYMGMT-DSA</small></b> (7)
+<small><br>
+RSA,</small> see <b><small>EVP_KEYMGMT-RSA</small></b> (7)
+<small><br>
+EC,</small> see <b><small>EVP_KEYMGMT-EC</small></b> (7)
+<br>
+X25519, see <b><small>EVP_KEYMGMT-X25519</small></b> (7)
+<br>
+X448, see <b><small>EVP_KEYMGMT-X448</small></b> (7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Asymmetric
+Key Encoder</b> <br>
+The default provider also includes all of the encoding
+algorithms present in the base provider. Some of these have
+the property &quot;fips=yes&quot;, to allow them to be used
+together with the <small>FIPS</small> provider. <small><br>
+RSA,</small> see <b><small>OSSL_ENCODER-RSA</small></b> (7)
+<small><br>
+DH,</small> see <b><small>OSSL_ENCODER-DH</small></b> (7)
+<small><br>
+DSA,</small> see <b><small>OSSL_ENCODER-DSA</small></b> (7)
+<small><br>
+EC,</small> see <b><small>OSSL_ENCODER-EC</small></b> (7)
+<br>
+X25519, see <b><small>OSSL_ENCODER-X25519</small></b> (7)
+<br>
+X448, see <b><small>OSSL_ENCODER-X448</small></b> (7)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>openssl-core.h</b>(7),
+<b>openssl-core_dispatch.h</b>(7), <b>provider</b>(7),
+<b>OSSL_PROVIDER-base</b>(7)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>

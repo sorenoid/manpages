@@ -1,0 +1,878 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:39:16 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>/etc/containerd/config.toml</title>
+
+</head>
+<body>
+
+<h1 align="center">/etc/containerd/config.toml</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FORMAT">FORMAT</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">containerd-config.toml
+- configuration file for containerd</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>config.toml</b> file is a configuration file for the
+containerd daemon. The file must be placed at
+<b>/etc/containerd/config.toml</b> or specified with the
+<b>--config</b> option of <b>containerd</b> to be used by
+the daemon. If the file does not exist at the appropriate
+location or is not provided via the <b>--config</b> option
+containerd uses its default configuration settings, which
+can be displayed with the <b>containerd config(1)</b>
+command.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The TOML file
+used to configure the containerd daemon settings has a short
+list of global settings followed by a series of sections for
+specific areas of daemon configuration. There is also a
+section for <b>plugins</b> that allows each containerd
+plugin to have an area for plugin-specific configuration and
+settings.</p>
+
+<h2>FORMAT
+<a name="FORMAT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>version</b></p>
+
+<p style="margin-left:22%;">The version field in the config
+file specifies the config&acirc;s version. If no version
+number is specified inside the config file then it is
+assumed to be a version 1 config and parsed as such. Please
+use version = 2 to enable version 2 config as version 1 has
+been deprecated.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>root</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The root directory for containerd metadata. (Default:
+&quot;/var/lib/containerd&quot;)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>state</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The state directory for containerd (Default:
+&quot;/run/containerd&quot;)</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>plugin_dir</b></p>
+
+<p style="margin-left:22%;">The directory for dynamic
+plugins to be stored</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>[grpc]</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Section for gRPC socket listener settings. Contains the
+following properties:</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">&bull;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%"></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>address</b> (Default:
+&quot;/run/containerd/containerd.sock&quot;)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>tcp_address</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>tcp_tls_cert</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>tcp_tls_key</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>uid</b> (Default: 0)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>gid</b> (Default: 0)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>max_recv_message_size</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>max_send_message_size</b></p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>[ttrpc]</b></p>
+
+<p style="margin-left:22%;">Section for TTRPC settings.
+Contains properties:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p><b>address</b> (Default: &quot;&quot;)</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p><b>uid</b> (Default: 0)</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p><b>gid</b> (Default: 0)</p></td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>[debug]</b></p>
+
+<p style="margin-left:22%;">Section to enable and configure
+a debug socket listener. Contains four properties:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="73%">
+
+
+<p><b>address</b> (Default:
+&quot;/run/containerd/debug.sock&quot;)</p> </td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="73%">
+
+
+<p><b>uid</b> (Default: 0)</p></td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="73%">
+
+
+<p><b>gid</b> (Default: 0)</p></td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="73%">
+
+
+<p><b>level</b> (Default: &quot;info&quot;) sets the debug
+log level</p></td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>[metrics]</b></p>
+
+<p style="margin-left:22%;">Section to enable and configure
+a metrics listener. Contains two properties:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>address</b> (Default: &quot;&quot;) Metrics endpoint
+does not listen by default</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>grpc_histogram</b> (Default: false) Turn on or off
+gRPC histogram metrics</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>disabled_plugins</b></p>
+
+<p style="margin-left:22%;">Disabled plugins are IDs of
+plugins to disable. Disabled plugins won&rsquo;t be
+initialized and started.</p>
+
+<p style="margin-left:11%;"><b>required_plugins</b></p>
+
+<p style="margin-left:22%;">Required plugins are IDs of
+required plugins. Containerd exits if any required plugin
+doesn&rsquo;t exist or fails to be initialized or
+started.</p>
+
+<p style="margin-left:11%;"><b>[plugins]</b></p>
+
+<p style="margin-left:22%;">The plugins section contains
+configuration options exposed from installed plugins. The
+following plugins are enabled by default and their settings
+are shown below. Plugins that are not enabled by default
+will provide their own configuration values
+documentation.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>[plugins.cgroup]</b> has one option
+<b>no_prometheus</b> (Default: <b>false</b>)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>[plugins.diff]</b> has one option <b>default</b>, a
+list by default set to <b>[&quot;walking&quot;]</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>[plugins.linux]</b> has several options for
+configuring the runtime, shim, and related options:</p></td></tr>
+</table>
+
+<p style="margin-left:25%;">&bull;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%"></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>shim</b> specifies the shim
+binary (Default: <b>&quot;containerd-shim&quot;</b>),</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>runtime</b> is the OCI compliant runtime binary
+(Default: <b>&quot;runc&quot;</b>),</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>runtime_root</b> is the root directory used by the
+runtime (Default: <b>&quot;&quot;</b>),</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>no_shim</b> specifies whether to use a shim or not
+(Default: <b>false</b>),</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>shim_debug</b> turns on debugging for the shim
+(Default: <b>false</b>)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:25%; margin-top: 1em"><b>[plugins.&quot;io.containerd.gc.v1.scheduler&quot;]</b>
+has several options that perform advanced tuning for the
+scheduler:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>pause_threshold</b> is the
+maximum amount of time GC should be scheduled (Default:
+<b>0.02</b>),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>deletion_threshold</b> guarantees GC is scheduled
+after n number of deletions (Default: <b>0</b> [not
+triggered]),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>mutation_threshold</b> guarantees GC is scheduled
+after n number of database mutations (Default:
+<b>100</b>),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>schedule_delay</b> defines the delay after trigger
+event before scheduling a GC (Default <b>&quot;0ms&quot;</b>
+[immediate]),</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>startup_delay</b> defines the delay after startup
+before scheduling a GC (Default
+<b>&quot;100ms&quot;</b>)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:25%; margin-top: 1em"><b>[plugins.&quot;io.containerd.runtime-shim.v2.shim&quot;]</b>
+specifies options for configuring the runtime shim:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>platforms</b> specifies the
+list of supported platforms</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p><b>sched_core</b> Core scheduling is a feature that
+allows only trusted tasks to run concurrently on cpus
+sharing compute resources (eg: hyperthreads on a core).
+(Default: <b>false</b>)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:25%; margin-top: 1em"><b>[plugins.&quot;io.containerd.service.v1.tasks-service&quot;]</b>
+has one option:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="25%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>rdt_config_file</b> (Linux
+only) specifies path to a configuration used for configuring
+RDT (Default: <b>&quot;&quot;</b>). Enables support for
+Intel RDT, a technology for cache and memory bandwidth
+management. See
+https://github.com/intel/goresctrl/blob/v0.2.0/doc/rdt.md#configuration
+for details of the configuration file format.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>oom_score</b></p>
+
+<p style="margin-left:22%;">The out of memory (OOM) score
+applied to the containerd daemon process (Default: 0)</p>
+
+<p style="margin-left:11%;"><b>[cgroup]</b></p>
+
+<p style="margin-left:22%;">Section for Linux cgroup
+specific settings</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>path</b> (Default: &quot;&quot;) Specify a custom
+cgroup path for created containers</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>[proxy_plugins]</b></p>
+
+<p style="margin-left:22%;">Proxy plugins configures
+plugins which are communicated to over gRPC</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p><b>type</b> (Default: &quot;&quot;)</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p><b>address</b> (Default: &quot;&quot;)</p></td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>timeouts</b></p>
+
+<p style="margin-left:22%;">Timeouts specified as a
+duration</p>
+
+<p style="margin-left:11%;"><b>imports</b></p>
+
+<p style="margin-left:22%;">Imports is a list of additional
+configuration files to include. This allows to split the
+main configuration file and keep some sections separately
+(for example vendors may keep a custom runtime configuration
+in a separate file without modifying the main
+<tt>config.toml</tt>). Imported files will overwrite simple
+fields like <tt>int</tt> or <tt>string</tt> (if not empty)
+and will append <tt>array</tt> and <tt>map</tt> fields.
+Imported files are also versioned, and the version
+can&rsquo;t be higher than the main config.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stream_processors</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>accepts</b> (Default: &quot;[]&quot;) Accepts
+specific media-types</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>returns</b> (Default: &quot;&quot;) Returns the
+media-type</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>path</b> (Default: &quot;&quot;) Path or name of the
+binary</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p><b>args</b> (Default: &quot;[]&quot;) Args to the
+binary</p> </td></tr>
+</table>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+is a complete <b>config.toml</b> default configuration
+example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">root =
+&quot;/var/lib/containerd&quot; <br>
+state = &quot;/run/containerd&quot; <br>
+oom_score = 0 <br>
+imports = [&quot;/etc/containerd/runtime_*.toml&quot;,
+&quot;./debug.toml&quot;]</p>
+
+<p style="margin-left:22%; margin-top: 1em">[grpc] <br>
+address = &quot;/run/containerd/containerd.sock&quot; <br>
+uid = 0 <br>
+gid = 0</p>
+
+<p style="margin-left:22%; margin-top: 1em">[debug] <br>
+address = &quot;/run/containerd/debug.sock&quot; <br>
+uid = 0 <br>
+gid = 0 <br>
+level = &quot;info&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">[metrics] <br>
+address = &quot;&quot; <br>
+grpc_histogram = false</p>
+
+<p style="margin-left:22%; margin-top: 1em">[cgroup] <br>
+path = &quot;&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">[plugins] <br>
+[plugins.cgroups] <br>
+no_prometheus = false <br>
+[plugins.diff] <br>
+default = [&quot;walking&quot;] <br>
+[plugins.linux] <br>
+shim = &quot;containerd-shim&quot; <br>
+runtime = &quot;runc&quot; <br>
+runtime_root = &quot;&quot; <br>
+no_shim = false <br>
+shim_debug = false <br>
+[plugins.scheduler] <br>
+pause_threshold = 0.02 <br>
+deletion_threshold = 0 <br>
+mutation_threshold = 100 <br>
+schedule_delay = 0 <br>
+startup_delay = &quot;100ms&quot; <br>
+[plugins.&quot;io.containerd.runtime-shim.v2.shim&quot;]
+<br>
+platforms = [&quot;linux/amd64&quot;] <br>
+sched_core = true <br>
+
+[plugins.&quot;io.containerd.service.v1.tasks-service&quot;]
+<br>
+rdt_config_file = &quot;/etc/rdt-config.yaml&quot;</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please file any
+specific issues that you encounter at
+https://github.com/containerd/containerd.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Phil Estes
+estesp@gmail.com &lang; mailto:estesp@gmail.com&rang;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ctr(8),
+containerd-config(8), containerd(8)</p>
+<hr>
+</body>
+</html>

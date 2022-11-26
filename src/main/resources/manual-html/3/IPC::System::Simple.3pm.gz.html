@@ -1,0 +1,713 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:37:56 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>IPC::System::Simple</title>
+
+</head>
+<body>
+
+<h1 align="center">IPC::System::Simple</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ADVANCED SYNOPSIS">ADVANCED SYNOPSIS</a><br>
+<a href="#ADVANCED USAGE">ADVANCED USAGE</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#DEPENDENCIES">DEPENDENCIES</a><br>
+<a href="#COMPARISON TO OTHER APIs">COMPARISON TO OTHER APIs</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#FEEDBACK">FEEDBACK</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">IPC::System::Simple
+- Run commands simply, with detailed diagnostics</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(system systemx capture capturex);
+<br>
+system(&quot;some_command&quot;); # Command succeeds or
+dies! <br>
+system(&quot;some_command&quot;,@args); # Succeeds or dies,
+avoids shell if @args <br>
+systemx(&quot;some_command&quot;,@args); # Succeeds or dies,
+NEVER uses the shell <br>
+# Capture the output of a command (just like backticks).
+Dies on error. <br>
+my $output = capture(&quot;some_command&quot;); <br>
+# Just like backticks in list context. Dies on error. <br>
+my @output = capture(&quot;some_command&quot;); <br>
+# As above, but avoids the shell if @args is non-empty <br>
+my $output = capture(&quot;some_command&quot;, @args); <br>
+# As above, but NEVER invokes the shell. <br>
+my $output = capturex(&quot;some_command&quot;, @args); <br>
+my @output = capturex(&quot;some_command&quot;, @args);</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Calling
+Perl&rsquo;s in-built &quot;system()&quot; function is easy,
+determining if it was successful is <i>hard</i>. Let&rsquo;s
+face it, $? isn&rsquo;t the nicest variable in the world to
+play with, and even if you <i>do</i> check it, producing a
+well-formatted error string takes a lot of work.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;IPC::System::Simple&quot;
+takes the hard work out of calling external commands. In
+fact, if you want to be really lazy, you can just write:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(system);</p>
+
+<p style="margin-left:11%; margin-top: 1em">and all of your
+&quot;system&quot; commands will either succeed (run to
+completion and return a zero exit value), or die with rich
+diagnostic messages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;IPC::System::Simple&quot; module also provides a
+simple replacement to Perl&rsquo;s backticks operator.
+Simply write:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(capture);</p>
+
+<p style="margin-left:11%; margin-top: 1em">and then use
+the &quot;<b>capture()</b>&quot; command just like
+you&rsquo;d use backticks. If there&rsquo;s an error, it
+will die with a detailed description of what went wrong.
+Better still, you can even use &quot;capturex()&quot; to run
+the equivalent of backticks, but without the shell:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(capturex); <br>
+my $result = capturex($command, @args);</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want
+more power than the basic interface, including the ability
+to specify which exit values are acceptable, trap errors, or
+process diagnostics, then read on!</p>
+
+<h2>ADVANCED SYNOPSIS
+<a name="ADVANCED SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw( <br>
+capture capturex system systemx run runx $EXITVAL EXIT_ANY
+<br>
+); <br>
+# Run a command, throwing exception on failure <br>
+run(&quot;some_command&quot;); <br>
+runx(&quot;some_command&quot;,@args); # Run a command,
+avoiding the shell <br>
+# Do the same thing, but with the drop-in system
+replacement. <br>
+system(&quot;some_command&quot;); <br>
+systemx(&quot;some_command&quot;, @args); <br>
+# Run a command which must return 0..5, avoid the shell, and
+get the <br>
+# exit value (we could also look at $EXITVAL) <br>
+my $exit_value = runx([0..5], &quot;some_command&quot;,
+@args); <br>
+# The same, but any exit value will do. <br>
+my $exit_value = runx(EXIT_ANY, &quot;some_command&quot;,
+@args); <br>
+# Capture output into $result and throw exception on failure
+<br>
+my $result = capture(&quot;some_command&quot;); <br>
+# Check exit value from captured command <br>
+print &quot;some_command exited with status
+$EXITVAL\n&quot;; <br>
+# Captures into @lines, splitting on $/ <br>
+my @lines = capture(&quot;some_command&quot;); <br>
+# Run a command which must return 0..5, capture the output
+into <br>
+# @lines, and avoid the shell. <br>
+my @lines = capturex([0..5], &quot;some_command&quot;,
+@args);</p>
+
+<h2>ADVANCED USAGE
+<a name="ADVANCED USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>run() and
+system()</b> <br>
+&quot;IPC::System::Simple&quot; provides a subroutine called
+&quot;run&quot;, that executes a command using the same
+semantics as Perl&rsquo;s built-in &quot;system&quot;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(run); <br>
+run(&quot;cat *.txt&quot;); # Execute command via the shell
+<br>
+run(&quot;cat&quot;,&quot;/etc/motd&quot;); # Execute
+command without shell</p>
+
+<p style="margin-left:11%; margin-top: 1em">The primary
+difference between Perl&rsquo;s in-built system and the
+&quot;run&quot; command is that &quot;run&quot; will throw
+an exception on failure, and allows a list of acceptable
+exit values to be set. See &quot;Exit values&quot; for
+further information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In fact, you
+can even have &quot;IPC::System::Simple&quot; replace the
+default &quot;system&quot; function for your package so it
+has the same behaviour:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(system); <br>
+system(&quot;cat *.txt&quot;); # system now succeeds or
+dies!</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;system&quot;
+and &quot;run&quot; are aliases to each other.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+&quot;<b>runx()</b>, <b>systemx()</b> and
+<b>capturex()</b>&quot; for variants of &quot;system()&quot;
+and &quot;run()&quot; that never invoke the shell, even with
+a single argument.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>capture()</b>
+<br>
+A second subroutine, named &quot;capture&quot; executes a
+command with the same semantics as Perl&rsquo;s built-in
+backticks (and &quot;qx()&quot;):</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(capture); <br>
+# Capture text while invoking the shell. <br>
+my $file = capture(&quot;cat /etc/motd&quot;); <br>
+my @lines = capture(&quot;cat /etc/passwd&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">However unlike
+regular backticks, which always use the shell,
+&quot;capture&quot; will bypass the shell when called with
+multiple arguments:</p>
+
+<p style="margin-left:11%; margin-top: 1em"># Capture text
+while avoiding the shell. <br>
+my $file = capture(&quot;cat&quot;, &quot;/etc/motd&quot;);
+<br>
+my @lines = capture(&quot;cat&quot;,
+&quot;/etc/passwd&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">See also
+&quot;<b>runx()</b>, <b>systemx()</b> and
+<b>capturex()</b>&quot; for a variant of
+&quot;capture()&quot; that never invokes the shell, even
+with a single argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>runx(),
+systemx() and capturex()</b> <br>
+The &quot;runx()&quot;, &quot;systemx()&quot; and
+&quot;capturex()&quot; commands are identical to the
+multi-argument forms of &quot;run()&quot;,
+&quot;system()&quot; and &quot;capture()&quot; respectively,
+but <i>never</i> invoke the shell, even when called with a
+single argument. These forms are particularly useful when a
+command&rsquo;s argument list <i>might</i> be empty, for
+example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">systemx($cmd,
+@args);</p>
+
+<p style="margin-left:11%; margin-top: 1em">The use of
+&quot;systemx()&quot; here guarantees that the shell will
+<i>never</i> be invoked, even if @args is empty.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Exception
+handling</b> <br>
+In the case where the command returns an unexpected status,
+both &quot;run&quot; and &quot;capture&quot; will throw an
+exception, which if not caught will terminate your program
+with an error.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Capturing the
+exception is easy:</p>
+
+<p style="margin-left:11%; margin-top: 1em">eval { <br>
+run(&quot;cat *.txt&quot;); <br>
+}; <br>
+if ($@) { <br>
+print &quot;Something went wrong - $@\n&quot;; <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+diagnostics section below for more details.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Exception
+cases</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;IPC::System::Simple&quot;
+considers the following to be unexpected, and worthy of
+exception:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Failing to start entirely (eg, command not found,
+permission denied).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Returning an exit value other than zero (but see
+below).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Being killed by a signal.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Being passed tainted data (in taint mode).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Exit
+values</b> <br>
+Traditionally, system commands return a zero status for
+success and a non-zero status for failure.
+&quot;IPC::System::Simple&quot; will default to throwing an
+exception if a non-zero exit value is returned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may specify
+a range of values which are considered acceptable exit
+values by passing an <i>array reference</i> as the first
+argument. The special constant &quot;EXIT_ANY&quot; can be
+used to allow <i>any</i> exit value to be returned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(run system capture EXIT_ANY); <br>
+run( [0..5], &quot;cat *.txt&quot;); # Exit values 0-5 are
+OK <br>
+system( [0..5], &quot;cat *.txt&quot;); # This works the
+same way <br>
+my @lines = capture( EXIT_ANY, &quot;cat *.txt&quot;); # Any
+exit is fine.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;run&quot; and replacement &quot;system&quot;
+subroutines returns the exit value of the process:</p>
+
+<p style="margin-left:11%; margin-top: 1em">my $exit_value
+= run( [0..5], &quot;cat *.txt&quot;); <br>
+# OR: <br>
+my $exit_value = system( [0..5] &quot;cat *.txt&quot;); <br>
+print &quot;Program exited with value
+$exit_value\n&quot;;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$EXITVAL</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The exit value
+of any command executed by &quot;IPC::System::Simple&quot;
+can always be retrieved from the
+$IPC::System::Simple::EXITVAL variable:</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is
+particularly useful when inspecting results from
+&quot;capture&quot;, which returns the captured text from
+the command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+IPC::System::Simple qw(capture $EXITVAL EXIT_ANY); <br>
+my @enemies_defeated = capture(EXIT_ANY,
+&quot;defeat_evil&quot;, &quot;/dev/mordor&quot;); <br>
+print &quot;Program exited with value $EXITVAL\n&quot;;</p>
+
+<p style="margin-left:11%; margin-top: 1em">$EXITVAL will
+be set to &quot;-1&quot; if the command did not exit
+normally (eg, being terminated by a signal) or did not
+start. In this situation an exception will also be
+thrown.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>WINDOWS-SPECIFIC
+<small>NOTES</small></b> <br>
+The &quot;run&quot; subroutine make available the full
+32-bit exit value on Win32 systems. This has been true since
+&quot;IPC::System::Simple&quot; v0.06 when called with
+multiple arguments, and since v1.25 when called with a
+single argument. This is different from the previous
+versions of &quot;IPC::System::Simple&quot; and from
+Perl&rsquo;s in-build &quot;system()&quot; function, which
+can only handle 8-bit return values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;capture&quot; subroutine always returns the 32-bit
+exit value under Windows. The &quot;capture&quot; subroutine
+also never uses the shell, even when passed a single
+argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;run&quot; subroutine always uses a shell when passed a
+single argument. On <small>NT</small> systems, it uses
+&quot;cmd.exe&quot; in the system root, and on non-NT
+systems it uses &quot;command.com&quot; in the system
+root.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As of
+&quot;IPC::System::Simple&quot; v1.25, the &quot;runx&quot;
+and &quot;capturex&quot; subroutines, as well as
+multiple-argument calls to the &quot;run&quot; and
+&quot;capture&quot; subroutines, have their arguments
+properly quoted, so that arugments with spaces and the like
+work properly. Unfortunately, this breaks any attempt to
+invoke the shell itself. If you really need to execute
+&quot;cmd.exe&quot; or &quot;command.com&quot;, use the
+single-argument form. For single-argument calls to
+&quot;run&quot; and &quot;capture&quot;, the argument must
+be properly shell-quoted in advance of the call.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Versions of
+&quot;IPC::System::Simple&quot; before v0.09 would not
+search the &quot;PATH&quot; environment variable when the
+multi-argument form of &quot;run()&quot; was called.
+Versions from v0.09 onwards correctly search the path
+provided the command is provided including the extension
+(eg, &quot;notepad.exe&quot; rather than just
+&quot;notepad&quot;, or &quot;gvim.bat&quot; rather than
+just &quot;gvim&quot;). If no extension is provided,
+&quot;.exe&quot; is assumed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Signals are not
+supported on Windows systems. Sending a signal to a Windows
+process will usually cause it to exit with the signal number
+used.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;%s&quot;
+failed to start: &quot;%s&quot;</p>
+
+<p style="margin-left:17%;">The command specified did not
+even start. It may not exist, or you may not have permission
+to use it. The reason it could not start (as determined from
+$!) will be provided.</p>
+
+<p style="margin-left:11%;">&quot;%s&quot; unexpectedly
+returned exit value %d</p>
+
+<p style="margin-left:17%;">The command ran successfully,
+but returned an exit value we did not expect. The value
+returned is reported.</p>
+
+<p style="margin-left:11%;">&quot;%s&quot; died to signal
+&quot;%s&quot; (%d) %s</p>
+
+<p style="margin-left:17%;">The command was killed by a
+signal. The name of the signal will be reported, or
+&quot;UNKNOWN&quot; if it cannot be determined. The signal
+number is always reported. If we detected that the process
+dumped core, then the string &quot;and dumped core&quot; is
+appended.</p>
+
+<p style="margin-left:11%;">IPC::System::Simple::%s called
+with no arguments</p>
+
+<p style="margin-left:17%;">You attempted to call
+&quot;run&quot; or &quot;capture&quot; but did not provide
+any arguments at all. At the very lease you need to supply a
+command to run.</p>
+
+<p style="margin-left:11%;">IPC::System::Simple::%s called
+with no command</p>
+
+<p style="margin-left:17%;">You called &quot;run&quot; or
+&quot;capture&quot; with a list of acceptable exit values,
+but no actual command.</p>
+
+<p style="margin-left:11%;">IPC::System::Simple::%s called
+with tainted argument &quot;%s&quot;</p>
+
+<p style="margin-left:17%;">You called &quot;run&quot; or
+&quot;capture&quot; with tainted (untrusted) arguments,
+which is almost certainly a bad idea. To untaint your
+arguments you&rsquo;ll need to pass your data through a
+regular expression and use the resulting match variables.
+See &quot;Laundering and Detecting Tainted Data&quot; in
+perlsec for more information.</p>
+
+<p style="margin-left:11%;">IPC::System::Simple::%s called
+with tainted environment $ENV{%s}</p>
+
+<p style="margin-left:17%;">You called &quot;run&quot; or
+&quot;capture&quot; but part of your environment was tainted
+(untrusted). You should either delete the named environment
+variable before calling &quot;run&quot;, or set it to an
+untainted value (usually one set inside your program). See
+&quot;Cleaning Up Your Path&quot; in perlsec for more
+information.</p>
+
+<p style="margin-left:11%;">Error in IPC::System::Simple
+plumbing: &quot;%s&quot; - &quot;%s&quot;</p>
+
+<p style="margin-left:17%;">Implementing the
+&quot;capture&quot; command involves dark and terrible
+magicks involving pipes, and one of them has sprung a leak.
+This could be due to a lack of file descriptors, although
+there are other possibilities.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you are able
+to reproduce this error, you are encouraged to submit a bug
+report according to the &quot;Reporting bugs&quot; section
+below.</p>
+
+<p style="margin-left:11%;">Internal error in
+IPC::System::Simple: &quot;%s&quot;</p>
+
+<p style="margin-left:17%;">You&rsquo;ve found a bug in
+&quot;IPC::System::Simple&quot;. Please check to see if an
+updated version of &quot;IPC::System::Simple&quot; is
+available. If not, please file a bug report according to the
+&quot;Reporting bugs&quot; section below.</p>
+
+<p style="margin-left:11%;">IPC::System::Simple::%s called
+with undefined command</p>
+
+<p style="margin-left:17%;">You&rsquo;ve passed the
+undefined value as a command to be executed. While this is a
+very Zen-like action, it&rsquo;s not supported by
+Perl&rsquo;s current implementation.</p>
+
+<h2>DEPENDENCIES
+<a name="DEPENDENCIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This module
+depends upon Win32::Process when used on Win32 system.
+&quot;Win32::Process&quot; is bundled as a core module in
+ActivePerl 5.6 and above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+non-core dependencies on non-Win32 systems.</p>
+
+<h2>COMPARISON TO OTHER APIs
+<a name="COMPARISON TO OTHER APIs"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Perl provides a
+range of in-built functions for handling external commands,
+and <small>CPAN</small> provides even more. The
+&quot;IPC::System::Simple&quot; differentiates itself from
+other options by providing: <br>
+Extremely detailed diagnostics</p>
+
+<p style="margin-left:17%;">The diagnostics produced by
+&quot;IPC::System::Simple&quot; are designed to provide as
+much information as possible. Rather than requiring the
+developer to inspect $?, &quot;IPC::System::Simple&quot;
+does the hard work for you.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If an odd exit
+status is provided, you&rsquo;re informed of what it is. If
+a signal kills your process, you are informed of both its
+name and number. If tainted data or environment prevents
+your command from running, you are informed of exactly which
+data or environmental variable is tainted.</p>
+
+<p style="margin-left:11%;">Exceptions on failure</p>
+
+
+<p style="margin-left:17%;">&quot;IPC::System::Simple&quot;
+takes an aggressive approach to error handling. Rather than
+allow commands to fail silently, exceptions are thrown when
+unexpected results are seen. This allows for easy
+development using a try/catch style, and avoids the
+possibility of accidentally continuing after a failed
+command.</p>
+
+<p style="margin-left:11%;">Easy access to exit status</p>
+
+<p style="margin-left:17%;">The &quot;run&quot;,
+&quot;system&quot; and &quot;capture&quot; commands all set
+$EXITVAL, making it easy to determine the exit status of a
+command. Additionally, the &quot;system&quot; and
+&quot;run&quot; interfaces return the exit status.</p>
+
+<p style="margin-left:11%;">Consistent interfaces</p>
+
+<p style="margin-left:17%;">When called with multiple
+arguments, the &quot;run&quot;, &quot;system&quot; and
+&quot;capture&quot; interfaces <i>never</i> invoke the
+shell. This differs from the in-built Perl
+&quot;system&quot; command which may invoke the shell under
+Windows when called with multiple arguments. It differs from
+the in-built Perl backticks operator which always invokes
+the shell.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When
+&quot;system&quot; is exported, the exotic form &quot;system
+{ $cmd } @args&quot; is not supported. Attemping to use the
+exotic form is a syntax error. This affects the calling
+package <i>only</i>. Use &quot;CORE::system&quot; if you
+need it, or consider using the autodie module to replace
+&quot;system&quot; with lexical scope.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Core dumps are
+only checked for when a process dies due to a signal. It is
+not believed there are any systems where processes can dump
+core without dying to a signal.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;WIFSTOPPED&quot;
+status is not checked, as perl never spawns processes with
+the &quot;WUNTRACED&quot; option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Signals are not
+supported under Win32 systems, since they don&rsquo;t work
+at all like Unix signals. Win32 signals cause commands to
+exit with a given exit value, which this modules <i>does</i>
+capture.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Reporting
+bugs</b> <br>
+Before reporting a bug, please check to ensure you are using
+the most recent version of &quot;IPC::System::Simple&quot;.
+Your problem may have already been fixed in a new
+release.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can find
+the &quot;IPC::System::Simple&quot; bug-tracker at
+&lt;http://rt.cpan.org/Public/Dist/Display.html?Name=IPC-System-Simple&gt;
+. Please check to see if your bug has already been reported;
+if in doubt, report yours anyway.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Submitting a
+patch and/or failing test case will greatly expedite the
+fixing of bugs.</p>
+
+<h2>FEEDBACK
+<a name="FEEDBACK"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you find
+this module useful, please consider rating it on the
+<small>CPAN</small> Ratings service at
+&lt;http://cpanratings.perl.org/rate/?distribution=IPC-System-Simple&gt;
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The module
+author loves to hear how &quot;IPC::System::Simple&quot; has
+made your life better (or worse). Feedback can be sent to
+&lt;pjf@perltraining.com.au&gt;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">autodie uses
+&quot;IPC::System::Simple&quot; to provide succeed-or-die
+replacements to &quot;system&quot; (and other built-ins)
+with lexical scope.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>POSIX</small>
+, IPC::Run::Simple, perlipc, perlport, IPC::Run, IPC::Run3,
+Win32::Process</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Paul Fenwick
+&lt;pjf@cpan.org&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2006-2008 by Paul Fenwick</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself, either Perl version
+5.6.0 or, at your option, any later version of Perl 5 you
+may have available.</p>
+<hr>
+</body>
+</html>

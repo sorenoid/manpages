@@ -1,0 +1,136 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>IPC_NAMESPACES</title>
+
+</head>
+<body>
+
+<h1 align="center">IPC_NAMESPACES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COLOPHON">COLOPHON</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ipc_namespaces
+- overview of Linux IPC namespaces</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">IPC namespaces
+isolate certain IPC resources, namely, System V IPC objects
+(see <b>sysvipc</b>(7)) and (since Linux 2.6.30) POSIX
+message queues (see <b>mq_overview</b>(7)). The common
+characteristic of these IPC mechanisms is that IPC objects
+are identified by mechanisms other than filesystem
+pathnames.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each IPC
+namespace has its own set of System V IPC identifiers and
+its own POSIX message queue filesystem. Objects created in
+an IPC namespace are visible to all other processes that are
+members of that namespace, but are not visible to processes
+in other IPC namespaces.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+<i>/proc</i> interfaces are distinct in each IPC
+namespace:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The POSIX message queue interfaces in
+<i>/proc/sys/fs/mqueue</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The System V IPC interfaces in <i>/proc/sys/kernel</i>,
+namely: <i>msgmax</i>, <i>msgmnb</i>, <i>msgmni</i>,
+<i>sem</i>, <i>shmall</i>, <i>shmmax</i>, <i>shmmni</i>, and
+<i>shm_rmid_forced</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The System V IPC interfaces in <i>/proc/sysvipc</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">When an IPC
+namespace is destroyed (i.e., when the last process that is
+a member of the namespace terminates), all IPC objects in
+the namespace are automatically destroyed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use of IPC
+namespaces requires a kernel that is configured with the
+<b>CONFIG_IPC_NS</b> option.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nsenter</b>(1),
+<b>unshare</b>(1), <b>clone</b>(2), <b>setns</b>(2),
+<b>unshare</b>(2), <b>mq_overview</b>(7),
+<b>namespaces</b>(7), <b>sysvipc</b>(7)</p>
+
+<h2>COLOPHON
+<a name="COLOPHON"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page is
+part of release 5.10 of the Linux <i>man-pages</i> project.
+A description of the project, information about reporting
+bugs, and the latest version of this page, can be found at
+https://www.kernel.org/doc/man-pages/.</p>
+<hr>
+</body>
+</html>

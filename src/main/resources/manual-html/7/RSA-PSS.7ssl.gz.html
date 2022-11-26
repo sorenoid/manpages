@@ -1,0 +1,130 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Sat Nov 26 20:40:07 2022 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RSA-PSS</title>
+
+</head>
+<body>
+
+<h1 align="center">RSA-PSS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">RSA-PSS -
+EVP_PKEY RSA-PSS algorithm support</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>RSA-PSS</b> <small>EVP_PKEY</small> implementation is a
+restricted version of the <small>RSA</small> algorithm which
+only supports signing, verification and key generation using
+<small>PSS</small> padding modes with optional parameter
+restrictions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It has
+associated private key and public key formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This algorithm
+shares several control operations with the
+<b><small>RSA</small></b> algorithm but with some
+restrictions described below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Signing and
+Verification</b> <br>
+Signing and verification is similar to the
+<b><small>RSA</small></b> algorithm except the padding mode
+is always <small>PSS.</small> If the key in use has
+parameter restrictions then the corresponding signature
+parameters are set to the restrictions: for example, if the
+key can only be used with digest <small>SHA256, MGF1
+SHA256</small> and minimum salt length 32 then the digest,
+<small>MGF1</small> digest and salt length will be set to
+<small>SHA256, SHA256</small> and 32 respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Key
+Generation</b> <br>
+By default no parameter restrictions are placed on the
+generated key.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The public key
+format is documented in <small>RFC4055.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">The PKCS#8
+private key format used for RSA-PSS keys is similar to the
+<small>RSA</small> format except it uses the
+<b>id-RSASSA-PSS</b> <small>OID</small> and the parameters
+field, if present, restricts the key parameters in the same
+way as the public key.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>RFC
+4055</small></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EVP_PKEY_CTX_set_rsa_pss_keygen_md</b>(3),
+<b>EVP_PKEY_CTX_set_rsa_pss_keygen_mgf1_md</b>(3),
+<b>EVP_PKEY_CTX_set_rsa_pss_keygen_saltlen</b>(3),
+<b>EVP_PKEY_CTX_new</b>(3), <b>EVP_PKEY_CTX_ctrl_str</b>(3),
+<b>EVP_PKEY_derive</b>(3)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+2017-2018 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Licensed under
+the Apache License 2.0 (the &quot;License&quot;). You may
+not use this file except in compliance with the License. You
+can obtain a copy in the file <small>LICENSE</small> in the
+source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>
+<hr>
+</body>
+</html>
