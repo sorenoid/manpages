@@ -18,7 +18,7 @@ object FileSlurper {
 
     init {
         // for running in an executable jar
-        var jarFile = File(javaClass.protectionDomain.codeSource.location.path)
+        val jarFile = File(javaClass.protectionDomain.codeSource.location.path)
         if (jarFile.isFile) {
             val jar = JarFile(jarFile)
             val entries = jar.entries()
@@ -28,22 +28,26 @@ object FileSlurper {
                 val name = entries.nextElement().name
                 if (name.startsWith("manual-html/1")) {
                     val inputStream = javaClass.classLoader.getResourceAsStream(name)
-                    val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                        .lines()
-                        .collect(Collectors.joining("\n"))
-                    val head = contents.guts("<head>", "</head>").lowercase()
-                    var body = contents.guts("<body>", "</body>")
+                    if (inputStream != null) {
+                        val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                            .lines()
+                            .collect(Collectors.joining("\n"))
+                        val head = contents.guts("<head>", "</head>").lowercase()
+                        var body = contents.guts("<body>", "</body>")
 
-                    val title = head.guts("<title>", "</title>")
-                    val matcher = headingPattern.matcher(body)
-                    while(matcher.find()) {
-                        headings.add(matcher.group())
+                        val title = head.guts("<title>", "</title>")
+                        val matcher = headingPattern.matcher(body)
+                        while (matcher.find()) {
+                            val str = matcher.group().removeSuffix("<br>")
+
+                            headings.add(str)
+                        }
+                        headings.forEach {
+                            body = body.replaceFirst(it + "<br>", "")
+                        }
+                        // println("body: $body")
+                        manuals.add(Manual(title, body, headings))
                     }
-                    headings.forEach {
-                        body = body.replaceFirst(it, "")
-                    }
-                    // println("body: $body")
-                    manuals.add(Manual(title, body, headings))
                 }
             }
         }

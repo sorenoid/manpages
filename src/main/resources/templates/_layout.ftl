@@ -19,7 +19,6 @@
     <div class="ad_header">
         <!-- adsense -->
         <ins class="adsbygoogle"
-             style="display:block"
              data-ad-client="ca-pub-1076242142955733"
              crossorigin="anonymous"
              data-ad-format="auto"></ins>
