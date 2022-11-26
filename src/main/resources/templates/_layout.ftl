@@ -1,10 +1,10 @@
-<#macro head level=-1 name="bar">
+<#macro head>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Linux Manpages Online - man.page</title>
     <meta name="robots" content="index,follow"/>
-    <link rel="stylesheet" type="text/css" href="css/layout.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="___/css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="___/css/style.css"/>
 
     <script language="JavaScript" type="text/javascript">
         function wysiwygUrl(base, tform) {
@@ -13,7 +13,8 @@
         }
     </script>
 </head>
-
+</#macro>
+<#macro header level=-1 name="bar">
 <header>
     <div class="ad_header">
         <!-- adsense -->
@@ -23,24 +24,36 @@
              crossorigin="anonymous"
              data-ad-format="auto"></ins>
     </div>
-    <h1><a name="top" href="/">Manpages</a></h1>
+    <#if level!=-1 && name !="bar">
+    <h1><a name="top" href="/">Linux Manual Pages</a></h1><nav> | <a href="/${level}">${level}</a> | <a href="/${name}">${name}</a> </nav>
+    <#else>
+    <h1><a name="top" href="/">Linux Manual Pages</a></h1>
+    </#if>
     <form method="get" accept-charset="utf-8" action="/"
           onsubmit="return wysiwygUrl('/',this)">
-        <label for="lookup">Manpage:</label>
+        <label for="lookup">Search Manpages:</label>
         <input name="page" id="lookup" type="text"/>
         <input type="submit" value="go" name="do[go]"/>
         <!-- input type="submit" value="search" name="do[search]" /-->
     </form>
-    <#if level!=-1 && name!="bar">
-        <a href="/">Linux Manual Pages</> | <a href="/${level}">${level}</a> | <a href="/${level}/${name}">${name}</a>
-    </#if>
+
 </header>
 </#macro>
 <#macro body>
-<body>
     <#nested>
-    <p><i>Powered by Ktor</i></p>
-    <a href="/">Back to the main page</a>
-</body>
-</html>
+</#macro>
+<#macro aside headings>
+<aside>
+<nav>
+    <h3><svg viewBox="3 3 21 21"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+        Contents
+    </h3>
+    <ul>
+    <#list headings as heading>
+        <li>${heading}</li>
+    </#list>
+    </ul>
+</nav>
+</aside>
+
 </#macro>

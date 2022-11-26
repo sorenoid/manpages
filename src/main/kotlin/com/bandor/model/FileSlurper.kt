@@ -4,6 +4,7 @@ import java.io.File
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.util.jar.JarFile
+import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 fun String.guts(startTag: String, endTag: String): String =
@@ -12,7 +13,7 @@ fun String.guts(startTag: String, endTag: String): String =
         .replace(endTag, "")
         .replace(startTag, "")
 
-object Html2Json {
+object FileSlurper {
     val manuals = mutableListOf<Manual>()
 
     init {
@@ -21,7 +22,9 @@ object Html2Json {
         if (jarFile.isFile) {
             val jar = JarFile(jarFile)
             val entries = jar.entries()
+            val headingPattern = Pattern.compile("(<a href=\"#.+\">.+</a><br>)")
             while (entries.hasMoreElements()) {
+                val headings = mutableListOf<String>()
                 val name = entries.nextElement().name
                 if (name.startsWith("manual-html/1")) {
                     val inputStream = javaClass.classLoader.getResourceAsStream(name)
@@ -29,11 +32,18 @@ object Html2Json {
                         .lines()
                         .collect(Collectors.joining("\n"))
                     val head = contents.guts("<head>", "</head>").lowercase()
-                    val body = contents.guts("<body>", "</body>")
+                    var body = contents.guts("<body>", "</body>")
 
                     val title = head.guts("<title>", "</title>")
+                    val matcher = headingPattern.matcher(body)
+                    while(matcher.find()) {
+                        headings.add(matcher.group())
+                    }
+                    headings.forEach {
+                        body = body.replaceFirst(it, "")
+                    }
                     // println("body: $body")
-                    manuals.add(Manual(title, body))
+                    manuals.add(Manual(title, body, headings))
                 }
             }
         }
