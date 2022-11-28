@@ -23,18 +23,20 @@
              crossorigin="anonymous"
              data-ad-format="auto"></ins>
     </div>
+    <div class="header">
     <#if level!=-1 && name !="bar">
     <h1><a name="top" href="/">Linux Manual Pages</a></h1><nav> | <a href="/${level}">${level}</a> | <a href="/${level}/${name}">${name}</a> </nav>
     <#else>
     <h1><a name="top" href="/">Linux Manual Pages</a></h1>
     </#if>
     <form method="get" accept-charset="utf-8" action="/"
-          onsubmit="return wysiwygUrl('/',this)">
+          onsubmit="return wysiwygUrl('/',this)" autofocus>
         <label for="lookup">Search Manpages:</label>
         <input name="page" id="lookup" type="text"/>
-        <input type="submit" value="go" name="do[go]"/>
+        <input type="submit" id="lookup_button" value="go" name="do[go]"/>
         <!-- input type="submit" value="search" name="do[search]" /-->
     </form>
+    </div>
 
 </header>
 </#macro>
