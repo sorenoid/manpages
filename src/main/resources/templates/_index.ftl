@@ -5,13 +5,13 @@
         Manual Levels
     </h3>
     <ul>
-        <li><a href="/1">Level 1</a>
-        <li><a href="/2">Level 2</a>
-        <li><a href="/3">Level 3</a>
-        <li><a href="/4">Level 4</a>
-        <li><a href="/5">Level 5</a>
-        <li><a href="/6">Level 6</a>
-        <li><a href="/7">Level 7</a>
+        <li><a href="/1">Level 1</a></li><br>
+        <li><a href="/2">Level 2</a></li><br>
+        <li><a href="/3">Level 3</a></li><br>
+        <li><a href="/4">Level 4</a></li><br>
+        <li><a href="/5">Level 5</a></li><br>
+        <li><a href="/6">Level 6</a></li><br>
+        <li><a href="/7">Level 7</a></li>
     </ul>
 </nav>
 </aside>
