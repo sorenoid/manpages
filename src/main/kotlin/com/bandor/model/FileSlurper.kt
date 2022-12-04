@@ -64,12 +64,9 @@ object FileSlurper {
     }
 
     private fun addIntroTocs() {
-        val intros = manuals.filter { manual ->
+        manuals.filter { manual ->
             manual.name == "intro"
-        }
-
-
-        intros.forEach { intro ->
+        }.forEach { intro ->
             val levelManuals = mutableListOf<String>()
             intro.headings.add("<p>level ${intro.level} manuals</p><hr>")
             manuals
@@ -83,9 +80,6 @@ object FileSlurper {
             levelManuals.sort()
             intro.headings.addAll(levelManuals)
         }
-
-
-
     }
 
     private fun slurp(name: String, level: Int) {
@@ -99,17 +93,19 @@ object FileSlurper {
             var body = contents.guts("<body>", "</body>")
 
             val title = head.guts("<title>", "</title>")
-            val matcher = headingPattern.matcher(body)
-            while (matcher.find()) {
-                val str = matcher.group().removeSuffix("<br>")
+            if (title.isNotEmpty()) {
+                val matcher = headingPattern.matcher(body)
+                while (matcher.find()) {
+                    val str = matcher.group().removeSuffix("<br>")
 
-                headings.add(str)
+                    headings.add(str)
+                }
+                headings.forEach {
+                    body = body.replaceFirst(it + "<br>", "")
+                }
+                // println("body: $body")
+                manuals.add(Manual(title, body, headings, level))
             }
-            headings.forEach {
-                body = body.replaceFirst(it + "<br>", "")
-            }
-            // println("body: $body")
-            manuals.add(Manual(title, body, headings, level))
         }
     }
 }
