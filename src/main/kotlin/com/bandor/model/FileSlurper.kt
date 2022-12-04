@@ -17,30 +17,6 @@ object FileSlurper {
     val manuals = mutableListOf<Manual>()
 
     private val headingPattern = Pattern.compile("(<a href=\"#.+\">.+</a><br>)")
-    private fun slurp(name: String, level: Int) {
-        val headings = mutableListOf<String>()
-        val inputStream = javaClass.classLoader.getResourceAsStream(name)
-        if (inputStream != null) {
-            val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"))
-            val head = contents.guts("<head>", "</head>").lowercase()
-            var body = contents.guts("<body>", "</body>")
-
-            val title = head.guts("<title>", "</title>")
-            val matcher = headingPattern.matcher(body)
-            while (matcher.find()) {
-                val str = matcher.group().removeSuffix("<br>")
-
-                headings.add(str)
-            }
-            headings.forEach {
-                body = body.replaceFirst(it + "<br>", "")
-            }
-            // println("body: $body")
-            manuals.add(Manual(title, body, headings, level))
-        }
-    }
 
     init {
         // for running in an executable jar
@@ -65,35 +41,6 @@ object FileSlurper {
                 } else if (name.startsWith("manual-html/7")) {
                     slurp(name, 7)
                 }
-//                if (name.startsWith("manual-html/1")
-//                    || name.startsWith("manual-html/2")
-//                    || name.startsWith("manual-html/3")
-//                    || name.startsWith("manual-html/4")
-//                    || name.startsWith("manual-html/5")
-//                    || name.startsWith("manual-html/6")
-//                    || name.startsWith("manual-html/7")) {
-//                    val inputStream = javaClass.classLoader.getResourceAsStream(name)
-//                    if (inputStream != null) {
-//                        val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
-//                            .lines()
-//                            .collect(Collectors.joining("\n"))
-//                        val head = contents.guts("<head>", "</head>").lowercase()
-//                        var body = contents.guts("<body>", "</body>")
-//
-//                        val title = head.guts("<title>", "</title>")
-//                        val matcher = headingPattern.matcher(body)
-//                        while (matcher.find()) {
-//                            val str = matcher.group().removeSuffix("<br>")
-//
-//                            headings.add(str)
-//                        }
-//                        headings.forEach {
-//                            body = body.replaceFirst(it + "<br>", "")
-//                        }
-//                        // println("body: $body")
-//                        manuals.add(Manual(title, body, headings))
-//                    }
-              //  }
             }
         }
 
@@ -112,5 +59,57 @@ object FileSlurper {
 //        }
 
         manuals.sortByDescending { it.name }
+
+        addIntroTocs()
+    }
+
+    private fun addIntroTocs() {
+        val intros = manuals.filter { manual ->
+            manual.name == "intro"
+        }
+
+
+        intros.forEach { intro ->
+            val levelManuals = mutableListOf<String>()
+            intro.headings.add("<p>level ${intro.level} manuals</p><hr>")
+            manuals
+                .filter { manual ->
+                    manual.level == intro.level && manual.name != "intro"
+                }
+                .forEach { manual ->
+                    levelManuals.add("<a href=\"/${intro.level}/${manual.name}\">${manual.name.uppercase()}</a><br>")
+                }
+
+            levelManuals.sort()
+            intro.headings.addAll(levelManuals)
+        }
+
+
+
+    }
+
+    private fun slurp(name: String, level: Int) {
+        val headings = mutableListOf<String>()
+        val inputStream = javaClass.classLoader.getResourceAsStream(name)
+        if (inputStream != null) {
+            val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"))
+            val head = contents.guts("<head>", "</head>").lowercase()
+            var body = contents.guts("<body>", "</body>")
+
+            val title = head.guts("<title>", "</title>")
+            val matcher = headingPattern.matcher(body)
+            while (matcher.find()) {
+                val str = matcher.group().removeSuffix("<br>")
+
+                headings.add(str)
+            }
+            headings.forEach {
+                body = body.replaceFirst(it + "<br>", "")
+            }
+            // println("body: $body")
+            manuals.add(Manual(title, body, headings, level))
+        }
     }
 }
