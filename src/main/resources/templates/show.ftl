@@ -14,7 +14,7 @@
 </@layout.body>
 <@layout.aside headings=manual.headings/>
 </div>
-<p><i>Powered by <a href="https://ktor.io">Ktor</a></i> | <a href="#top">Back to top</a></p>
+<nav class="footer"><i>Powered by <a href="https://ktor.io">Ktor</a></i> | <i><a href="https://github.com/sorenoid/manpages/tree/main">Source for this site</a></i> | <i><a href="#top">Back to top</a></i></nav>
 <script>
     // open/close toc content on header click
     var asideheaders = document.querySelectorAll('aside nav > h3');

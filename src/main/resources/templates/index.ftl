@@ -7,6 +7,6 @@
 <body>
 <@layout.header/>
 <@index.body/>
-<p><i>Powered by Ktor</i></p>
+<nav class="footer"><i>Powered by <a href="https://ktor.io">Ktor</a></i> | <i><a href="https://github.com/sorenoid/manpages/tree/main">Source for this site</a></i></nav>
 </body>
 </html>

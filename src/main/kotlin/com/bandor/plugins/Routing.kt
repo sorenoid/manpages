@@ -29,7 +29,7 @@ fun Application.configureRouting() {
             try {
                 val level = call.parameters.getOrFail<Int>("level").toInt()
                 val name = call.parameters.getOrFail<String>("name").toString()
-                application.log.debug("GOT $level and $name")
+                //application.log.debug("GOT $level and $name")
                 FileSlurper.manuals.find { it.level == level && it.name.lowercase() == name.lowercase() }?.let {
                     call.respond(
                         FreeMarkerContent(
@@ -39,7 +39,7 @@ fun Application.configureRouting() {
                     )
                 } ?: call.respondRedirect("/")
             } catch (e: Exception) {
-                application.log.debug("GOT exception ")
+                //application.log.debug("GOT exception ")
                 e.printStackTrace()
                 call.respondRedirect("/")
             }
@@ -48,7 +48,7 @@ fun Application.configureRouting() {
         get("{level}") {
             try {
                 val param = call.parameters.getOrFail("level")
-                application.log.debug("GOT $param")
+                //application.log.debug("GOT $param")
                 param.toIntOrNull()?.let { level ->
                     FileSlurper.manuals.find { it.level == level && it.name.lowercase() == "intro" }?.let {
                         call.respond(
@@ -59,7 +59,7 @@ fun Application.configureRouting() {
                         )
                     } ?: call.respondRedirect("/")
                 } ?: run {
-                    application.log.debug("GOT $param as name")
+                    //application.log.debug("GOT $param as name")
                     FileSlurper.manuals.find { it.name.lowercase() == param.lowercase() }?.let {
                         call.respond(
                             FreeMarkerContent(
@@ -72,7 +72,7 @@ fun Application.configureRouting() {
                 }
 
             } catch (e: Exception) {
-                application.log.debug("GOT ${e.stackTrace}")
+                //application.log.debug("GOT ${e.stackTrace}")
                 call.respondRedirect("/")
             }
 
