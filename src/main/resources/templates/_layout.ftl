@@ -22,10 +22,8 @@
 <header>
     <div class="ad_header">
         <!-- adsense -->
-        <ins class="adsbygoogle"
-             data-ad-client="ca-pub-1076242142955733"
-             crossorigin="anonymous"
-             data-ad-format="auto"></ins>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076242142955733"
+             crossorigin="anonymous"></script>
     </div>
     <div class="header">
     <#if level!=-1 && name !="bar">
