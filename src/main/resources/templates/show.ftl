@@ -2,7 +2,7 @@
 <#import "_layout.ftl" as layout />
 <!DOCTYPE html>
 <html lang="en">
-<@layout.head/>
+<@layout.head level=manual.level name=manual.name />
 <body>
 <@layout.header level=manual.level name=manual.name />
 <@layout.body>
