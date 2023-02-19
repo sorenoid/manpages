@@ -1,7 +1,11 @@
-<#macro head>
+<#macro head level = -1 name = "bar">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <#if level!=-1 && name !="bar">
+    <title>${name}(${level}) man page</title>
+    <#else>
     <title>Linux Manpages Online - man.page</title>
+    </#if>
     <meta name="robots" content="index,follow"/>
     <link rel="stylesheet" type="text/css" href="/___/css/layout.css"/>
     <link rel="stylesheet" type="text/css" href="/___/css/style.css"/>
@@ -18,10 +22,8 @@
 <header>
     <div class="ad_header">
         <!-- adsense -->
-        <ins class="adsbygoogle"
-             data-ad-client="ca-pub-1076242142955733"
-             crossorigin="anonymous"
-             data-ad-format="auto"></ins>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076242142955733"
+             crossorigin="anonymous"></script>
     </div>
     <div class="header">
     <#if level!=-1 && name !="bar">
