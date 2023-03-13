@@ -1,6 +1,7 @@
 <#macro head level = -1 name = "bar">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <#if level!=-1 && name !="bar">
     <title>${name}(${level}) man page</title>
     <#else>
@@ -20,7 +21,7 @@
 </#macro>
 <#macro header level=-1 name="bar">
 <header>
-    <div class="ad_header">
+    <div>
         <!-- adsense -->
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076242142955733"
              crossorigin="anonymous"></script>
