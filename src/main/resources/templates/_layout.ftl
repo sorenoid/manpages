@@ -21,7 +21,7 @@
 </#macro>
 <#macro header level=-1 name="bar">
 <header>
-    <div class="ad_header">
+    <div>
         <!-- adsense -->
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076242142955733"
              crossorigin="anonymous"></script>
