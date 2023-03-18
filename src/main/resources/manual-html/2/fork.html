@@ -69,7 +69,7 @@ process.</p>
 process and the parent process run in separate memory
 spaces. At the time of <b>fork</b>() both memory spaces have
 the same content. Memory writes, file mappings
-(<b>mmap</b>(2)), and unmappings (<b>munmap</b>(2))
+(<a href="https://man.page/2/mmap">mmap(2)</a>), and unmappings (<a href="https://man.page/2/munmap">munmap(2)</a>)
 performed by one of the processes do not affect the
 other.</p>
 
@@ -91,7 +91,7 @@ for the following points:</p>
 
 <p>The child has its own unique process ID, and this PID
 does not match the ID of any existing process group
-(<b>setpgid</b>(2)) or session.</p></td></tr>
+(<a href="https://man.page/2/setpgid">setpgid(2)</a>) or session.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -115,7 +115,7 @@ parent&rsquo;s process ID.</p></td></tr>
 
 
 <p>The child does not inherit its parent&rsquo;s memory
-locks (<b>mlock</b>(2), <b>mlockall</b>(2)).</p></td></tr>
+locks (<a href="https://man.page/2/mlock">mlock(2)</a>, <a href="https://man.page/2/mlockall">mlockall(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -126,8 +126,8 @@ locks (<b>mlock</b>(2), <b>mlockall</b>(2)).</p></td></tr>
 <td width="85%">
 
 
-<p>Process resource utilizations (<b>getrusage</b>(2)) and
-CPU time counters (<b>times</b>(2)) are reset to zero in the
+<p>Process resource utilizations (<a href="https://man.page/2/getrusage">getrusage(2)</a>) and
+CPU time counters (<a href="https://man.page/2/times">times(2)</a>) are reset to zero in the
 child.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -140,7 +140,7 @@ child.</p> </td></tr>
 
 
 <p>The child&rsquo;s set of pending signals is initially
-empty (<b>sigpending</b>(2)).</p></td></tr>
+empty (<a href="https://man.page/2/sigpending">sigpending(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -152,7 +152,7 @@ empty (<b>sigpending</b>(2)).</p></td></tr>
 
 
 <p>The child does not inherit semaphore adjustments from
-its parent (<b>semop</b>(2)).</p></td></tr>
+its parent (<a href="https://man.page/2/semop">semop(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -164,9 +164,9 @@ its parent (<b>semop</b>(2)).</p></td></tr>
 
 
 <p>The child does not inherit process-associated record
-locks from its parent (<b>fcntl</b>(2)). (On the other hand,
-it does inherit <b>fcntl</b>(2) open file description locks
-and <b>flock</b>(2) locks from its parent.)</p></td></tr>
+locks from its parent (<a href="https://man.page/2/fcntl">fcntl(2)</a>). (On the other hand,
+it does inherit <a href="https://man.page/2/fcntl">fcntl(2)</a> open file description locks
+and <a href="https://man.page/2/flock">flock(2)</a> locks from its parent.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -178,8 +178,8 @@ and <b>flock</b>(2) locks from its parent.)</p></td></tr>
 
 
 <p>The child does not inherit timers from its parent
-(<b>setitimer</b>(2), <b>alarm</b>(2),
-<b>timer_create</b>(2)).</p> </td></tr>
+(<a href="https://man.page/2/setitimer">setitimer(2)</a>, <a href="https://man.page/2/alarm">alarm(2)</a>,
+<a href="https://man.page/2/timer_create">timer_create(2)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -191,9 +191,9 @@ and <b>flock</b>(2) locks from its parent.)</p></td></tr>
 
 
 <p>The child does not inherit outstanding asynchronous I/O
-operations from its parent (<b>aio_read</b>(3),
-<b>aio_write</b>(3)), nor does it inherit any asynchronous
-I/O contexts from its parent (see <b>io_setup</b>(2)).</p></td></tr>
+operations from its parent (<a href="https://man.page/3/aio_read">aio_read(3)</a>,
+<a href="https://man.page/3/aio_write">aio_write(3)</a>), nor does it inherit any asynchronous
+I/O contexts from its parent (see <a href="https://man.page/2/io_setup">io_setup(2)</a>).</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">The process
@@ -216,7 +216,7 @@ the following Linux-specific process attributes:</p>
 <p style="margin-top: 1em">The child does not inherit
 directory change notifications (dnotify) from its parent
 (see the description of <b>F_NOTIFY</b> in
-<b>fcntl</b>(2)).</p> </td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -227,7 +227,7 @@ directory change notifications (dnotify) from its parent
 <td width="85%">
 
 
-<p>The <b>prctl</b>(2) <b>PR_SET_PDEATHSIG</b> setting is
+<p>The <a href="https://man.page/2/prctl">prctl(2)</a> <b>PR_SET_PDEATHSIG</b> setting is
 reset so that the child does not receive a signal when its
 parent terminates.</p></td></tr>
 <tr valign="top" align="left">
@@ -243,7 +243,7 @@ parent terminates.</p></td></tr>
 <p>The default timer slack value is set to the
 parent&rsquo;s current timer slack value. See the
 description of <b>PR_SET_TIMERSLACK</b> in
-<b>prctl</b>(2).</p> </td></tr>
+<a href="https://man.page/2/prctl">prctl(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -255,7 +255,7 @@ description of <b>PR_SET_TIMERSLACK</b> in
 
 
 <p>Memory mappings that have been marked with the
-<b>madvise</b>(2) <b>MADV_DONTFORK</b> flag are not
+<a href="https://man.page/2/madvise">madvise(2)</a> <b>MADV_DONTFORK</b> flag are not
 inherited across a <b>fork</b>().</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -268,7 +268,7 @@ inherited across a <b>fork</b>().</p></td></tr>
 
 
 <p>Memory in address ranges that have been marked with the
-<b>madvise</b>(2) <b>MADV_WIPEONFORK</b> flag is zeroed in
+<a href="https://man.page/2/madvise">madvise(2)</a> <b>MADV_WIPEONFORK</b> flag is zeroed in
 the child after a <b>fork</b>(). (The <b>MADV_WIPEONFORK</b>
 setting remains in place for those address ranges in the
 child.)</p> </td></tr>
@@ -283,7 +283,7 @@ child.)</p> </td></tr>
 
 
 <p>The termination signal of the child is always
-<b>SIGCHLD</b> (see <b>clone</b>(2)).</p></td></tr>
+<b>SIGCHLD</b> (see <a href="https://man.page/2/clone">clone(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -294,9 +294,9 @@ child.)</p> </td></tr>
 <td width="85%">
 
 
-<p>The port access permission bits set by <b>ioperm</b>(2)
+<p>The port access permission bits set by <a href="https://man.page/2/ioperm">ioperm(2)</a>
 are not inherited by the child; the child must turn on any
-bits that it requires using <b>ioperm</b>(2).</p></td></tr>
+bits that it requires using <a href="https://man.page/2/ioperm">ioperm(2)</a>.</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">Note the
@@ -319,7 +319,7 @@ with a single thread&mdash;the one that called
 <b>fork</b>(). The entire virtual address space of the
 parent is replicated in the child, including the states of
 mutexes, condition variables, and other pthreads objects;
-the use of <b>pthread_atfork</b>(3) may be helpful for
+the use of <a href="https://man.page/3/pthread_atfork">pthread_atfork(3)</a> may be helpful for
 dealing with problems that this can cause.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -333,8 +333,8 @@ dealing with problems that this can cause.</p></td></tr>
 
 <p>After a <b>fork</b>() in a multithreaded program, the
 child can safely call only async-signal-safe functions (see
-<b>signal-safety</b>(7)) until such time as it calls
-<b>execve</b>(2).</p> </td></tr>
+<a href="https://man.page/7/signal-safety">signal-safety(7)</a>) until such time as it calls
+<a href="https://man.page/2/execve">execve(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -348,11 +348,11 @@ child can safely call only async-signal-safe functions (see
 <p>The child inherits copies of the parent&rsquo;s set of
 open file descriptors. Each file descriptor in the child
 refers to the same open file description (see
-<b>open</b>(2)) as the corresponding file descriptor in the
+<a href="https://man.page/2/open">open(2)</a>) as the corresponding file descriptor in the
 parent. This means that the two file descriptors share open
 file status flags, file offset, and signal-driven I/O
 attributes (see the description of <b>F_SETOWN</b> and
-<b>F_SETSIG</b> in <b>fcntl</b>(2)).</p></td></tr>
+<b>F_SETSIG</b> in <a href="https://man.page/2/fcntl">fcntl(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -364,7 +364,7 @@ attributes (see the description of <b>F_SETOWN</b> and
 
 
 <p>The child inherits copies of the parent&rsquo;s set of
-open message queue descriptors (see <b>mq_overview</b>(7)).
+open message queue descriptors (see <a href="https://man.page/7/mq_overview">mq_overview(7)</a>).
 Each file descriptor in the child refers to the same open
 message queue description as the corresponding file
 descriptor in the parent. This means that the two file
@@ -380,7 +380,7 @@ descriptors share the same flags (<i>mq_flags</i>).</p></td></tr>
 
 
 <p>The child inherits copies of the parent&rsquo;s set of
-open directory streams (see <b>opendir</b>(3)). POSIX.1 says
+open directory streams (see <a href="https://man.page/3/opendir">opendir(3)</a>). POSIX.1 says
 that the corresponding directory streams in the parent and
 child <i>may</i> share the directory stream positioning; on
 Linux/glibc they do not.</p></td></tr>
@@ -431,7 +431,7 @@ limits that may trigger this error:</p></td></tr>
 
 
 <p style="margin-top: 1em">the <b>RLIMIT_NPROC</b> soft
-resource limit (set via <b>setrlimit</b>(2)), which limits
+resource limit (set via <a href="https://man.page/2/setrlimit">setrlimit(2)</a>), which limits
 the number of processes and threads for a real user ID, was
 reached;</p> </td></tr>
 <tr valign="top" align="left">
@@ -446,7 +446,7 @@ reached;</p> </td></tr>
 
 <p>the kernel&rsquo;s system-wide limit on the number of
 processes and threads, <i>/proc/sys/kernel/threads-max</i>,
-was reached (see <b>proc</b>(5));</p></td></tr>
+was reached (see <a href="https://man.page/5/proc">proc(5)</a>);</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="12%">
@@ -459,7 +459,7 @@ was reached (see <b>proc</b>(5));</p></td></tr>
 
 <p>the maximum number of PIDs,
 <i>/proc/sys/kernel/pid_max</i>, was reached (see
-<b>proc</b>(5)); or</p></td></tr>
+<a href="https://man.page/5/proc">proc(5)</a>); or</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="12%">
@@ -487,7 +487,7 @@ reached.</p> </td></tr>
 <p style="margin-left:22%; margin-top: 1em">The caller is
 operating under the <b>SCHED_DEADLINE</b> scheduling policy
 and does not have the reset-on-fork flag set. See
-<b>sched</b>(7).</p>
+<a href="https://man.page/7/sched">sched(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -515,7 +515,7 @@ the necessary kernel structures because memory is tight.</p></td></tr>
 
 <p>An attempt was made to create a child process in a PID
 namespace whose &quot;init&quot; process has terminated. See
-<b>pid_namespaces</b>(7).</p> </td></tr>
+<a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -561,13 +561,13 @@ library/kernel differences</b> <br>
 Since version 2.3.3, rather than invoking the kernel&rsquo;s
 <b>fork</b>() system call, the glibc <b>fork</b>() wrapper
 that is provided as part of the NPTL threading
-implementation invokes <b>clone</b>(2) with flags that
+implementation invokes <a href="https://man.page/2/clone">clone(2)</a> with flags that
 provide the same effect as the traditional system call. (A
 call to <b>fork</b>() is equivalent to a call to
-<b>clone</b>(2) specifying <i>flags</i> as just
+<a href="https://man.page/2/clone">clone(2)</a> specifying <i>flags</i> as just
 <b>SIGCHLD</b>.) The glibc wrapper invokes any fork handlers
 that have been established using
-<b>pthread_atfork</b>(3).</p>
+<a href="https://man.page/3/pthread_atfork">pthread_atfork(3)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -575,7 +575,7 @@ that have been established using
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>pipe</b>(2) and <b>wait</b>(2).</p>
+<a href="https://man.page/2/pipe">pipe(2)</a> and <a href="https://man.page/2/wait">wait(2)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -583,11 +583,11 @@ that have been established using
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
-<b>execve</b>(2), <b>exit</b>(2), <b>setrlimit</b>(2),
-<b>unshare</b>(2), <b>vfork</b>(2), <b>wait</b>(2),
-<b>daemon</b>(3), <b>pthread_atfork</b>(3),
-<b>capabilities</b>(7), <b>credentials</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/execve">execve(2)</a>, <a href="https://man.page/2/exit">exit(2)</a>, <a href="https://man.page/2/setrlimit">setrlimit(2)</a>,
+<a href="https://man.page/2/unshare">unshare(2)</a>, <a href="https://man.page/2/vfork">vfork(2)</a>, <a href="https://man.page/2/wait">wait(2)</a>,
+<a href="https://man.page/3/daemon">daemon(3)</a>, <a href="https://man.page/3/pthread_atfork">pthread_atfork(3)</a>,
+<a href="https://man.page/7/capabilities">capabilities(7)</a>, <a href="https://man.page/7/credentials">credentials(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

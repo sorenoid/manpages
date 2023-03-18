@@ -122,7 +122,7 @@ to indicate the cause of the error.</p>
 
 <p>The per-process limit on the number of open file
 descriptors has been reached (see the description of
-<b>RLIMIT_NOFILE</b> in <b>getrlimit</b>(2)).</p></td></tr>
+<b>RLIMIT_NOFILE</b> in <a href="https://man.page/2/getrlimit">getrlimit(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -196,11 +196,11 @@ is Linux specific.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Currently,
 there is no glibc wrapper for this system call; call it
-using <b>syscall</b>(2).</p>
+using <a href="https://man.page/2/syscall">syscall(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 code sequence can be used to obtain a file descriptor for
-the child of <b>fork</b>(2):</p>
+the child of <a href="https://man.page/2/fork">fork(2)</a>:</p>
 
 <p style="margin-left:17%; margin-top: 1em">pid = fork();
 <br>
@@ -230,7 +230,7 @@ guaranteed only if the following conditions hold true:</p>
 
 <p style="margin-top: 1em">the disposition of
 <b>SIGCHLD</b> has not been explicitly set to <b>SIG_IGN</b>
-(see <b>sigaction</b>(2));</p></td></tr>
+(see <a href="https://man.page/2/sigaction">sigaction(2)</a>);</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -244,7 +244,7 @@ guaranteed only if the following conditions hold true:</p>
 <p>the <b>SA_NOCLDWAIT</b> flag was not specified while
 establishing a handler for <b>SIGCHLD</b> or while setting
 the disposition of that signal to <b>SIG_DFL</b> (see
-<b>sigaction</b>(2)); and</p></td></tr>
+<a href="https://man.page/2/sigaction">sigaction(2)</a>); and</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -257,20 +257,20 @@ the disposition of that signal to <b>SIG_DFL</b> (see
 
 <p>the zombie process was not reaped elsewhere in the
 program (e.g., either by an asynchronously executed signal
-handler or by <b>wait</b>(2) or similar in another
+handler or by <a href="https://man.page/2/wait">wait(2)</a> or similar in another
 thread).</p> </td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">If any of these
 conditions does not hold, then the child process (along with
 a PID file descriptor that refers to it) should instead be
-created using <b>clone</b>(2) with the <b>CLONE_PIDFD</b>
+created using <a href="https://man.page/2/clone">clone(2)</a> with the <b>CLONE_PIDFD</b>
 flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Use cases
 for PID file descriptors</b> <br>
 A PID file descriptor returned by <b>pidfd_open</b>() (or by
-<b>clone</b>(2) with the <b>CLONE_PID</b> flag) can be used
+<a href="https://man.page/2/clone">clone(2)</a> with the <b>CLONE_PID</b> flag) can be used
 for the following purposes:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -285,7 +285,7 @@ for the following purposes:</p>
 <td width="86%">
 
 
-<p style="margin-top: 1em">The <b>pidfd_send_signal</b>(2)
+<p style="margin-top: 1em">The <a href="https://man.page/2/pidfd_send_signal">pidfd_send_signal(2)</a>
 system call can be used to send a signal to the process
 referred to by a PID file descriptor.</p></td></tr>
 <tr valign="top" align="left">
@@ -299,11 +299,11 @@ referred to by a PID file descriptor.</p></td></tr>
 
 
 <p>A PID file descriptor can be monitored using
-<b>poll</b>(2), <b>select</b>(2), and <b>epoll</b>(7). When
+<a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/select">select(2)</a>, and <a href="https://man.page/7/epoll">epoll(7)</a>. When
 the process that it refers to terminates, these interfaces
 indicate the file descriptor as readable. Note, however,
 that in the current implementation, nothing can be read from
-the file descriptor (<b>read</b>(2) on the file descriptor
+the file descriptor (<a href="https://man.page/2/read">read(2)</a> on the file descriptor
 fails with the error <b>EINVAL</b>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -317,7 +317,7 @@ fails with the error <b>EINVAL</b>).</p></td></tr>
 
 <p>If the PID file descriptor refers to a child of the
 calling process, then it can be waited on using
-<b>waitid</b>(2).</p> </td></tr>
+<a href="https://man.page/2/waitid">waitid(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -328,7 +328,7 @@ calling process, then it can be waited on using
 <td width="86%">
 
 
-<p>The <b>pidfd_getfd</b>(2) system call can be used to
+<p>The <a href="https://man.page/2/pidfd_getfd">pidfd_getfd(2)</a> system call can be used to
 obtain a duplicate of a file descriptor of another process
 referred to by a PID file descriptor.</p></td></tr>
 <tr valign="top" align="left">
@@ -342,7 +342,7 @@ referred to by a PID file descriptor.</p></td></tr>
 
 
 <p>A PID file descriptor can be used as the argument of
-<b>setns</b>(2) in order to move into one or more of the
+<a href="https://man.page/2/setns">setns(2)</a> in order to move into one or more of the
 same namespaces as the process referred to by the file
 descriptor.</p> </td></tr>
 </table>
@@ -352,10 +352,10 @@ descriptor.</p> </td></tr>
 obtaining a PID file descriptor for an already existing
 process. The alternative is to obtain a file descriptor by
 opening a <i>/proc/[pid]</i> directory. However, the latter
-technique is possible only if the <b>proc</b>(5) filesystem
+technique is possible only if the <a href="https://man.page/5/proc">proc(5)</a> filesystem
 is mounted; furthermore, the file descriptor obtained in
 this way is <i>not</i> pollable and can&rsquo;t be waited on
-with <b>waitid</b>(2).</p>
+with <a href="https://man.page/2/waitid">waitid(2)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -365,7 +365,7 @@ with <b>waitid</b>(2).</p>
 <p style="margin-left:11%; margin-top: 1em">The program
 below opens a PID file descriptor for the process whose PID
 is specified as its command-line argument. It then uses
-<b>poll</b>(2) to monitor the file descriptor for process
+<a href="https://man.page/2/poll">poll(2)</a> to monitor the file descriptor for process
 exit, as indicated by an <b>EPOLLIN</b> event.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Program
@@ -438,11 +438,11 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
-<b>kill</b>(2), <b>pidfd_getfd</b>(2),
-<b>pidfd_send_signal</b>(2), <b>poll</b>(2),
-<b>select</b>(2), <b>setns</b>(2), <b>waitid</b>(2),
-<b>epoll</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/kill">kill(2)</a>, <a href="https://man.page/2/pidfd_getfd">pidfd_getfd(2)</a>,
+<a href="https://man.page/2/pidfd_send_signal">pidfd_send_signal(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>,
+<a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/setns">setns(2)</a>, <a href="https://man.page/2/waitid">waitid(2)</a>,
+<a href="https://man.page/7/epoll">epoll(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

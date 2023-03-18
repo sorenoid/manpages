@@ -72,8 +72,8 @@ each kernel revision, but old programs will keep
 working.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The portable
-interfaces are <b>cap_set_proc</b>(3) and
-<b>cap_get_proc</b>(3); if possible, you should use those
+interfaces are <a href="https://man.page/3/cap_set_proc">cap_set_proc(3)</a> and
+<a href="https://man.page/3/cap_get_proc">cap_get_proc(3)</a>; if possible, you should use those
 interfaces in applications.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Current
@@ -111,7 +111,7 @@ __u32 inheritable; <br>
 <p style="margin-left:11%; margin-top: 1em">The
 <i>effective</i>, <i>permitted</i>, and <i>inheritable</i>
 fields are bit masks of the capabilities defined in
-<b>capabilities</b>(7). Note that the <b>CAP_*</b> values
+<a href="https://man.page/7/capabilities">capabilities(7)</a>. Note that the <b>CAP_*</b> values
 are bit indexes and need to be bit-shifted before ORing into
 the bit fields. To define the structures for passing to the
 system call, you have to use the <i>struct
@@ -143,18 +143,18 @@ process by specifying its process ID with the
 <i>hdrp-&gt;pid</i> field value.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For details on
-the data, see <b>capabilities</b>(7).</p>
+the data, see <a href="https://man.page/7/capabilities">capabilities(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>With VFS
 capabilities support</b> <br>
 VFS capabilities employ a file extended attribute (see
-<b>xattr</b>(7)) to allow capabilities to be attached to
+<a href="https://man.page/7/xattr">xattr(7)</a>) to allow capabilities to be attached to
 executables. This privilege model obsoletes kernel support
 for one process asynchronously setting the capabilities of
 another. That is, on kernels that have VFS capabilities
 support, when calling <b>capset</b>(), the only permitted
 values for <i>hdrp-&gt;pid</i> are 0 or, equivalently, the
-value returned by <b>gettid</b>(2).</p>
+value returned by <a href="https://man.page/2/gettid">gettid(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Without VFS
 capabilities support</b> <br>
@@ -169,9 +169,9 @@ of the calling thread if <i>pid</i> is 0. If <i>pid</i>
 refers to a single-threaded process, then <i>pid</i> can be
 specified as a traditional process ID; operating on a thread
 of a multithreaded process requires a thread ID of the type
-returned by <b>gettid</b>(2). For <b>capset</b>(),
+returned by <a href="https://man.page/2/gettid">gettid(2)</a>. For <b>capset</b>(),
 <i>pid</i> can also be: -1, meaning perform the change on
-all threads except the caller and <b>init</b>(1); or a value
+all threads except the caller and <a href="https://man.page/1/init">init(1)</a>; or a value
 less than -1, in which case the change is applied to all
 members of the process group whose ID is -<i>pid</i>.</p>
 
@@ -296,7 +296,7 @@ never permitted. For kernels lacking VFS support, the
 before 2.6.11 meant that this error could also occur if a
 thread without this capability tried to change its own
 capabilities by specifying the <i>pid</i> field as a nonzero
-value (i.e., the value returned by <b>getpid</b>(2)) instead
+value (i.e., the value returned by <a href="https://man.page/2/getpid">getpid(2)</a>) instead
 of 0.)</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -342,8 +342,8 @@ here: <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
-<b>gettid</b>(2), <b>capabilities</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/gettid">gettid(2)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

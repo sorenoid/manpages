@@ -67,15 +67,15 @@ checksums to catch transmission errors.</p>
 <p style="margin-left:11%; margin-top: 1em">When a UDP
 socket is created, its local and remote addresses are
 unspecified. Datagrams can be sent immediately using
-<b>sendto</b>(2) or <b>sendmsg</b>(2) with a valid
-destination address as an argument. When <b>connect</b>(2)
+<a href="https://man.page/2/sendto">sendto(2)</a> or <a href="https://man.page/2/sendmsg">sendmsg(2)</a> with a valid
+destination address as an argument. When <a href="https://man.page/2/connect">connect(2)</a>
 is called on the socket, the default destination address is
-set and datagrams can now be sent using <b>send</b>(2) or
-<b>write</b>(2) without specifying a destination address. It
+set and datagrams can now be sent using <a href="https://man.page/2/send">send(2)</a> or
+<a href="https://man.page/2/write">write(2)</a> without specifying a destination address. It
 is still possible to send to other destinations by passing
-an address to <b>sendto</b>(2) or <b>sendmsg</b>(2). In
+an address to <a href="https://man.page/2/sendto">sendto(2)</a> or <a href="https://man.page/2/sendmsg">sendmsg(2)</a>. In
 order to receive packets, the socket can be bound to a local
-address first by using <b>bind</b>(2). Otherwise, the socket
+address first by using <a href="https://man.page/2/bind">bind(2)</a>. Otherwise, the socket
 layer will automatically assign a free local port out of the
 range defined by
 <i>/proc/sys/net/ipv4/ip_local_port_range</i> and bind the
@@ -90,10 +90,10 @@ supported.</p>
 
 <p style="margin-left:11%; margin-top: 1em">IP options may
 be sent or received using the socket options described in
-<b>ip</b>(7). They are processed by the kernel only when the
+<a href="https://man.page/7/ip">ip(7)</a>. They are processed by the kernel only when the
 appropriate <i>/proc</i> parameter is enabled (but still
 passed to the user even when it is turned off). See
-<b>ip</b>(7).</p>
+<a href="https://man.page/7/ip">ip(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the
 <b>MSG_DONTROUTE</b> flag is set on sending, the destination
@@ -109,7 +109,7 @@ application should decrease the packet size. Path MTU
 discovery can be also turned off using the
 <b>IP_MTU_DISCOVER</b> socket option or the
 <i>/proc/sys/net/ipv4/ip_no_pmtu_disc</i> file; see
-<b>ip</b>(7) for details. When turned off, UDP will fragment
+<a href="https://man.page/7/ip">ip(7)</a> for details. When turned off, UDP will fragment
 outgoing UDP packets that exceed the interface MTU. However,
 disabling it is not recommended for performance and
 reliability reasons.</p>
@@ -117,7 +117,7 @@ reliability reasons.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Address
 format</b> <br>
 UDP uses the IPv4 <i>sockaddr_in</i> address format
-described in <b>ip</b>(7).</p>
+described in <a href="https://man.page/7/ip">ip(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Error
 handling</b> <br>
@@ -137,12 +137,12 @@ receive remote errors only when the socket has been
 connected (except for <b>EPROTO</b> and <b>EMSGSIZE</b>).
 Locally generated errors are always passed. Support for this
 socket option was removed in later kernels; see
-<b>socket</b>(7) for further information.</p>
+<a href="https://man.page/7/socket">socket(7)</a> for further information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the
 <b>IP_RECVERR</b> option is enabled, all errors are stored
 in the socket error queue, and can be received by
-<b>recvmsg</b>(2) with the <b>MSG_ERRQUEUE</b> flag set.</p>
+<a href="https://man.page/2/recvmsg">recvmsg(2)</a> with the <b>MSG_ERRQUEUE</b> flag set.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>/proc
 interfaces</b> <br>
@@ -175,7 +175,7 @@ usage.</p> </td></tr>
 <p style="margin-left:22%;"><i>pressure</i></p>
 
 <p style="margin-left:32%;">This value was introduced to
-follow the format of <i>tcp_mem</i> (see <b>tcp</b>(7)).</p>
+follow the format of <i>tcp_mem</i> (see <a href="https://man.page/7/tcp">tcp(7)</a>).</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -216,8 +216,8 @@ of UDP sockets exceed <i>udp_mem</i> pressure.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
 options</b> <br>
-To set or get a UDP socket option, call <b>getsockopt</b>(2)
-to read or <b>setsockopt</b>(2) to write the option with the
+To set or get a UDP socket option, call <a href="https://man.page/2/getsockopt">getsockopt(2)</a>
+to read or <a href="https://man.page/2/setsockopt">setsockopt(2)</a> to write the option with the
 option level argument set to <b>IPPROTO_UDP</b>. Unless
 otherwise noted, <i>optval</i> is a pointer to an
 <i>int</i>.</p>
@@ -225,7 +225,7 @@ otherwise noted, <i>optval</i> is a pointer to an
 <p style="margin-left:11%; margin-top: 1em">Following is a
 list of UDP-specific socket options. For details of some
 other socket options that are also applicable for UDP
-sockets, see <b>socket</b>(7). <b><br>
+sockets, see <a href="https://man.page/7/socket">socket(7)</a>. <b><br>
 UDP_CORK</b> (since Linux 2.5.44)</p>
 
 <p style="margin-left:22%;">If this option is enabled, then
@@ -236,7 +236,7 @@ portable.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Ioctls</b>
 <br>
-These ioctls can be accessed using <b>ioctl</b>(2). The
+These ioctls can be accessed using <a href="https://man.page/2/ioctl">ioctl(2)</a>. The
 correct syntax is:</p>
 
 <p style="margin-left:22%; margin-top: 1em"><b>int</b>
@@ -253,8 +253,8 @@ the integer in bytes, or 0 when no datagram is pending.
 <b>Warning:</b> Using <b>FIONREAD</b>, it is impossible to
 distinguish the case where no datagram is pending from the
 case where the next pending datagram contains zero bytes of
-data. It is safer to use <b>select</b>(2), <b>poll</b>(2),
-or <b>epoll</b>(7) to distinguish these cases.</p>
+data. It is safer to use <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>,
+or <a href="https://man.page/7/epoll">epoll(7)</a> to distinguish these cases.</p>
 
 <p style="margin-left:11%;"><b>TIOCOUTQ</b>
 (<b>SIOCOUTQ</b>)</p>
@@ -264,7 +264,7 @@ bytes in the local send queue. Supported only with Linux 2.4
 and above.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In addition,
-all ioctls documented in <b>ip</b>(7) and <b>socket</b>(7)
+all ioctls documented in <a href="https://man.page/7/ip">ip(7)</a> and <a href="https://man.page/7/socket">socket(7)</a>
 are supported.</p>
 
 <h2>ERRORS
@@ -273,7 +273,7 @@ are supported.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">All errors
-documented for <b>socket</b>(7) or <b>ip</b>(7) may be
+documented for <a href="https://man.page/7/socket">socket(7)</a> or <a href="https://man.page/7/ip">ip(7)</a> may be
 returned by a send or receive on a UDP socket. <b><br>
 ECONNREFUSED</b></p>
 
@@ -295,8 +295,8 @@ is a new feature in Linux 2.2.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ip</b>(7),
-<b>raw</b>(7), <b>socket</b>(7), <b>udplite</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/7/ip">ip(7)</a>,
+<a href="https://man.page/7/raw">raw(7)</a>, <a href="https://man.page/7/socket">socket(7)</a>, <a href="https://man.page/7/udplite">udplite(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel
 source file

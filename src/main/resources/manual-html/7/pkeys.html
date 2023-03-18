@@ -61,13 +61,13 @@ page.</p>
 <p style="margin-left:11%; margin-top: 1em">Protection keys
 work in conjunction with the existing <b>PROT_READ</b>/
 <b>PROT_WRITE</b>/ <b>PROT_EXEC</b> permissions passed to
-system calls such as <b>mprotect</b>(2) and <b>mmap</b>(2),
+system calls such as <a href="https://man.page/2/mprotect">mprotect(2)</a> and <a href="https://man.page/2/mmap">mmap(2)</a>,
 but always act to further restrict these traditional
 permission mechanisms.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If a process
 performs an access that violates pkey restrictions, it
-receives a <b>SIGSEGV</b> signal. See <b>sigaction</b>(2)
+receives a <b>SIGSEGV</b> signal. See <a href="https://man.page/2/sigaction">sigaction(2)</a>
 for details of the information available with that
 signal.</p>
 
@@ -80,7 +80,7 @@ each process. However, pkey 0 is used as the default key, so
 a maximum of 15 are available for actual application use.
 The default key is assigned to any memory region for which a
 pkey has not been explicitly assigned via
-<b>pkey_mprotect</b>(2).</p>
+<a href="https://man.page/2/pkey_mprotect">pkey_mprotect(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Protection keys
 have the potential to add a layer of security and
@@ -93,20 +93,20 @@ register or can execute arbitrary instructions.</p>
 <p style="margin-left:11%; margin-top: 1em">Applications
 should be very careful to ensure that they do not
 &quot;leak&quot; protection keys. For instance, before
-calling <b>pkey_free</b>(2), the application should be sure
+calling <a href="https://man.page/2/pkey_free">pkey_free(2)</a>, the application should be sure
 that no memory has that pkey assigned. If the application
 left the freed pkey assigned, a future user of that pkey
 might inadvertently change the permissions of an unrelated
 data structure, which could impact security or stability.
 The kernel currently allows in-use pkeys to have
-<b>pkey_free</b>(2) called on them because it would have
+<a href="https://man.page/2/pkey_free">pkey_free(2)</a> called on them because it would have
 processor or memory performance implications to perform the
 additional checks needed to disallow it. Implementation of
 the necessary checks is left up to applications.
 Applications may implement these checks by searching the
 <i>/proc/[pid]/smaps</i> file for memory regions with the
 pkey assigned. Further details can be found in
-<b>proc</b>(5).</p>
+<a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Any application
 wanting to use protection keys needs to be able to function
@@ -116,7 +116,7 @@ kernel code does not contain support, the kernel support has
 been disabled, or because the keys have all been allocated,
 perhaps by a library the application is using. It is
 recommended that applications wanting to use protection keys
-should simply call <b>pkey_alloc</b>(2) and test whether the
+should simply call <a href="https://man.page/2/pkey_alloc">pkey_alloc(2)</a> and test whether the
 call succeeds, instead of attempting to detect support for
 the feature in any other way.</p>
 
@@ -134,10 +134,10 @@ and has enabled protection keys support.</p>
 <p style="margin-left:11%; margin-top: 1em">Applications
 using threads and protection keys should be especially
 careful. Threads inherit the protection key rights of the
-parent at the time of the <b>clone</b>(2), system call.
+parent at the time of the <a href="https://man.page/2/clone">clone(2)</a>, system call.
 Applications should either ensure that their own permissions
 are appropriate for child threads at the time when
-<b>clone</b>(2) is called, or ensure that each child thread
+<a href="https://man.page/2/clone">clone(2)</a> is called, or ensure that each child thread
 can perform its own initialization of protection key
 rights.</p>
 
@@ -162,8 +162,8 @@ same as that of floating-point registers.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Protection
 Keys system calls</b> <br>
 The Linux kernel implements the following pkey-related
-system calls: <b>pkey_mprotect</b>(2), <b>pkey_alloc</b>(2),
-and <b>pkey_free</b>(2).</p>
+system calls: <a href="https://man.page/2/pkey_mprotect">pkey_mprotect(2)</a>, <a href="https://man.page/2/pkey_alloc">pkey_alloc(2)</a>,
+and <a href="https://man.page/2/pkey_free">pkey_free(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The Linux pkey
 system calls are available only if the kernel was configured
@@ -320,9 +320,9 @@ errExit(&quot;pkey_free&quot;);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pkey_alloc</b>(2),
-<b>pkey_free</b>(2), <b>pkey_mprotect</b>(2),
-<b>sigaction</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/pkey_alloc">pkey_alloc(2)</a>,
+<a href="https://man.page/2/pkey_free">pkey_free(2)</a>, <a href="https://man.page/2/pkey_mprotect">pkey_mprotect(2)</a>,
+<a href="https://man.page/2/sigaction">sigaction(2)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

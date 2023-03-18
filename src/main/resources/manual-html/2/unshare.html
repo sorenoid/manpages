@@ -66,10 +66,10 @@ allows a process (or thread) to disassociate parts of its
 execution context that are currently being shared with other
 processes (or threads). Part of the execution context, such
 as the mount namespace, is shared implicitly when a new
-process is created using <b>fork</b>(2) or <b>vfork</b>(2),
+process is created using <a href="https://man.page/2/fork">fork(2)</a> or <a href="https://man.page/2/vfork">vfork(2)</a>,
 while other parts, such as virtual memory, may be shared by
 explicit request when creating a process or thread using
-<b>clone</b>(2).</p>
+<a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The main use of
 <b>unshare</b>() is to allow a process to control its shared
@@ -83,24 +83,24 @@ following constants: <b><br>
 CLONE_FILES</b></p>
 
 <p style="margin-left:22%;">Reverse the effect of the
-<b>clone</b>(2) <b>CLONE_FILES</b> flag. Unshare the file
+<a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_FILES</b> flag. Unshare the file
 descriptor table, so that the calling process no longer
 shares its file descriptors with any other process.</p>
 
 <p style="margin-left:11%;"><b>CLONE_FS</b></p>
 
 <p style="margin-left:22%;">Reverse the effect of the
-<b>clone</b>(2) <b>CLONE_FS</b> flag. Unshare filesystem
+<a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_FS</b> flag. Unshare filesystem
 attributes, so that the calling process no longer shares its
-root directory (<b>chroot</b>(2)), current directory
-(<b>chdir</b>(2)), or umask (<b>umask</b>(2)) attributes
+root directory (<a href="https://man.page/2/chroot">chroot(2)</a>), current directory
+(<a href="https://man.page/2/chdir">chdir(2)</a>), or umask (<a href="https://man.page/2/umask">umask(2)</a>) attributes
 with any other process.</p>
 
 <p style="margin-left:11%;"><b>CLONE_NEWCGROUP</b> (since
 Linux 4.6)</p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWCGROUP</b> flag. Unshare
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWCGROUP</b> flag. Unshare
 the cgroup namespace. Use of <b>CLONE_NEWCGROUP</b> requires
 the <b>CAP_SYS_ADMIN</b> capability.</p>
 
@@ -108,7 +108,7 @@ the <b>CAP_SYS_ADMIN</b> capability.</p>
 Linux 2.6.19)</p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWIPC</b> flag. Unshare the
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWIPC</b> flag. Unshare the
 IPC namespace, so that the calling process has a private
 copy of the IPC namespace which is not shared with any other
 process. Specifying this flag automatically implies
@@ -119,7 +119,7 @@ requires the <b>CAP_SYS_ADMIN</b> capability.</p>
 Linux 2.6.24)</p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWNET</b> flag. Unshare the
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWNET</b> flag. Unshare the
 network namespace, so that the calling process is moved into
 a new network namespace which is not shared with any
 previously existing process. Use of <b>CLONE_NEWNET</b>
@@ -128,29 +128,29 @@ requires the <b>CAP_SYS_ADMIN</b> capability.</p>
 <p style="margin-left:11%;"><b>CLONE_NEWNS</b></p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWNS</b> flag. Unshare the
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWNS</b> flag. Unshare the
 mount namespace, so that the calling process has a private
 copy of its namespace which is not shared with any other
 process. Specifying this flag automatically implies
 <b>CLONE_FS</b> as well. Use of <b>CLONE_NEWNS</b> requires
 the <b>CAP_SYS_ADMIN</b> capability. For further
-information, see <b>mount_namespaces</b>(7).</p>
+information, see <a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>CLONE_NEWPID</b> (since
 Linux 3.8)</p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWPID</b> flag. Unshare the
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWPID</b> flag. Unshare the
 PID namespace, so that the calling process has a new PID
 namespace for its children which is not shared with any
 previously existing process. The calling process is
 <i>not</i> moved into the new namespace. The first child
 created by the calling process will have the process ID 1
-and will assume the role of <b>init</b>(1) in the new
+and will assume the role of <a href="https://man.page/1/init">init(1)</a> in the new
 namespace. <b>CLONE_NEWPID</b> automatically implies
 <b>CLONE_THREAD</b> as well. Use of <b>CLONE_NEWPID</b>
 requires the <b>CAP_SYS_ADMIN</b> capability. For further
-information, see <b>pid_namespaces</b>(7).</p>
+information, see <a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>CLONE_NEWTIME</b> (since
 Linux 5.6)</p>
@@ -161,17 +161,17 @@ children which is not shared with any previously existing
 process. The calling process is <i>not</i> moved into the
 new namespace. Use of <b>CLONE_NEWTIME</b> requires the
 <b>CAP_SYS_ADMIN</b> capability. For further information,
-see <b>time_namespaces</b>(7).</p>
+see <a href="https://man.page/7/time_namespaces">time_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>CLONE_NEWUSER</b> (since
 Linux 3.8)</p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWUSER</b> flag. Unshare
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWUSER</b> flag. Unshare
 the user namespace, so that the calling process is moved
 into a new user namespace which is not shared with any
 previously existing process. As with the child process
-created by <b>clone</b>(2) with the <b>CLONE_NEWUSER</b>
+created by <a href="https://man.page/2/clone">clone(2)</a> with the <b>CLONE_NEWUSER</b>
 flag, the caller obtains a full set of capabilities in the
 new namespace.</p>
 
@@ -188,13 +188,13 @@ the call.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For further
 information on user namespaces, see
-<b>user_namespaces</b>(7).</p>
+<a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>CLONE_NEWUTS</b> (since
 Linux 2.6.19)</p>
 
 <p style="margin-left:22%;">This flag has the same effect
-as the <b>clone</b>(2) <b>CLONE_NEWUTS</b> flag. Unshare the
+as the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWUTS</b> flag. Unshare the
 UTS IPC namespace, so that the calling process has a private
 copy of the UTS namespace which is not shared with any other
 process. Use of <b>CLONE_NEWUTS</b> requires the
@@ -204,14 +204,14 @@ process. Use of <b>CLONE_NEWUTS</b> requires the
 Linux 2.6.26)</p>
 
 <p style="margin-left:22%;">This flag reverses the effect
-of the <b>clone</b>(2) <b>CLONE_SYSVSEM</b> flag. Unshare
+of the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_SYSVSEM</b> flag. Unshare
 System&nbsp;V semaphore adjustment (<i>semadj</i>) values,
 so that the calling process has a new empty <i>semadj</i>
 list that is not shared with any other process. If this is
 the last process that has a reference to the process&rsquo;s
 current <i>semadj</i> list, then the adjustments in that
 list are applied to the corresponding semaphores, as
-described in <b>semop</b>(2).</p>
+described in <a href="https://man.page/2/semop">semop(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In addition,
 <b>CLONE_THREAD</b>, <b>CLONE_SIGHAND</b>, and
@@ -368,7 +368,7 @@ caller&rsquo;s context that need to be unshared.</p></td></tr>
 <p style="margin-left:22%;"><b>CLONE_NEWPID</b> was
 specified in flags, but the limit on the nesting depth of
 PID namespaces would have been exceeded; see
-<b>pid_namespaces</b>(7).</p>
+<a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>ENOSPC</b> (since Linux 4.9;
 beforehand <b>EUSERS</b>)</p>
@@ -376,7 +376,7 @@ beforehand <b>EUSERS</b>)</p>
 <p style="margin-left:22%;"><b>CLONE_NEWUSER</b> was
 specified in <i>flags</i>, and the call would cause the
 limit on the number of nested user namespaces to be
-exceeded. See <b>user_namespaces</b>(7).</p>
+exceeded. See <a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">From Linux 3.11
 to Linux 4.8, the error diagnosed in this case was
@@ -389,7 +389,7 @@ to Linux 4.8, the error diagnosed in this case was
 <i>flags</i> specified the creation of a new user namespace,
 but doing so would have caused the limit defined by the
 corresponding file in <i>/proc/sys/user</i> to be exceeded.
-For further details, see <b>namespaces</b>(7).</p>
+For further details, see <a href="https://man.page/7/namespaces">namespaces(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -418,7 +418,7 @@ for this operation.</p></td></tr>
 <p><b>CLONE_NEWUSER</b> was specified in <i>flags</i>, but
 either the effective user ID or the effective group ID of
 the caller does not have a mapping in the parent namespace
-(see <b>user_namespaces</b>(7)).</p></td></tr>
+(see <a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>).</p></td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>EPERM</b> (since Linux
@@ -462,7 +462,7 @@ of the <b>ENOSPC</b> error above.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Not all of the
 process attributes that can be shared when a new process is
-created using <b>clone</b>(2) can be unshared using
+created using <a href="https://man.page/2/clone">clone(2)</a> can be unshared using
 <b>unshare</b>(). In particular, as at kernel 3.8,
 <b>unshare</b>() does not implement flags that reverse the
 effects of <b>CLONE_SIGHAND</b>, <b>CLONE_THREAD</b>, or
@@ -476,7 +476,7 @@ future, if required.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The program
 below provides a simple implementation of the
-<b>unshare</b>(1) command, which unshares one or more
+<a href="https://man.page/1/unshare">unshare(1)</a> command, which unshares one or more
 namespaces and executes the command supplied in its
 command-line arguments. Here&rsquo;s an example of the use
 of this program, running a shell in a new mount namespace,
@@ -491,7 +491,7 @@ $ <b>sudo ./unshare -m /bin/bash</b> <br>
 mnt:[4026532325]</p>
 
 <p style="margin-left:11%; margin-top: 1em">The differing
-output of the two <b>readlink</b>(1) commands shows that the
+output of the two <a href="https://man.page/1/readlink">readlink(1)</a> commands shows that the
 two shells are in different mount namespaces.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Program
@@ -585,9 +585,9 @@ errExit(&quot;execvp&quot;); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>unshare</b>(1),
-<b>clone</b>(2), <b>fork</b>(2), <b>kcmp</b>(2),
-<b>setns</b>(2), <b>vfork</b>(2), <b>namespaces</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/unshare">unshare(1)</a>,
+<a href="https://man.page/2/clone">clone(2)</a>, <a href="https://man.page/2/fork">fork(2)</a>, <a href="https://man.page/2/kcmp">kcmp(2)</a>,
+<a href="https://man.page/2/setns">setns(2)</a>, <a href="https://man.page/2/vfork">vfork(2)</a>, <a href="https://man.page/7/namespaces">namespaces(7)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/userspace-api/unshare.rst</i>

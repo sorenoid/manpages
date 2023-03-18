@@ -80,16 +80,16 @@ char *const</b> <i>argv[]</i><b>, char *const</b>
 used to create a new child process that executes a specified
 file. These functions were specified by POSIX to provide a
 standardized method of creating new processes on machines
-that lack the capability to support the <b>fork</b>(2)
+that lack the capability to support the <a href="https://man.page/2/fork">fork(2)</a>
 system call. These machines are generally small, embedded
 systems lacking MMU support.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>posix_spawn</b>() and <b>posix_spawnp</b>() functions
-provide the functionality of a combined <b>fork</b>(2) and
-<b>exec</b>(3), with some optional housekeeping steps in the
-child process before the <b>exec</b>(3). These functions are
-not meant to replace the <b>fork</b>(2) and <b>execve</b>(2)
+provide the functionality of a combined <a href="https://man.page/2/fork">fork(2)</a> and
+<a href="https://man.page/3/exec">exec(3)</a>, with some optional housekeeping steps in the
+child process before the <a href="https://man.page/3/exec">exec(3)</a>. These functions are
+not meant to replace the <a href="https://man.page/2/fork">fork(2)</a> and <a href="https://man.page/2/execve">execve(2)</a>
 system calls. In fact, they provide only a subset of the
 functionality that can be achieved by using the system
 calls.</p>
@@ -103,7 +103,7 @@ pathname (which can be absolute or relative). With
 <b>posix_spawnp</b>(), the executable file is specified as a
 simple filename; the system searches for this file in the
 list of directories specified by <b>PATH</b> (in the same
-way as for <b>execvp</b>(3)). For the remainder of this
+way as for <a href="https://man.page/3/execvp">execvp(3)</a>). For the remainder of this
 page, the discussion is phrased in terms of
 <b>posix_spawn</b>(), with the understanding that
 <b>posix_spawnp</b>() differs only on the point just
@@ -138,10 +138,10 @@ to return the process ID of the new child process.</p></td></tr>
 
 <p>The <i>file_actions</i> argument points to a <i>spawn
 file actions object</i> that specifies file-related actions
-to be performed in the child between the <b>fork</b>(2) and
-<b>exec</b>(3) steps. This object is initialized and
+to be performed in the child between the <a href="https://man.page/2/fork">fork(2)</a> and
+<a href="https://man.page/3/exec">exec(3)</a> steps. This object is initialized and
 populated before the <b>posix_spawn</b>() call using
-<b>posix_spawn_file_actions_init</b>(3) and the
+<a href="https://man.page/3/posix_spawn_file_actions_init">posix_spawn_file_actions_init(3)</a> and the
 <b>posix_spawn_file_actions_*</b>() functions.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -157,7 +157,7 @@ populated before the <b>posix_spawn</b>() call using
 objects</i> that specifies various attributes of the created
 child process. This object is initialized and populated
 before the <b>posix_spawn</b>() call using
-<b>posix_spawnattr_init</b>(3) and the
+<a href="https://man.page/3/posix_spawnattr_init">posix_spawnattr_init(3)</a> and the
 <b>posix_spawnattr_*</b>() functions.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -171,7 +171,7 @@ before the <b>posix_spawn</b>() call using
 
 <p>The <i>argv</i> and <i>envp</i> arguments specify the
 argument list and environment for the program that is
-executed in the child process, as for <b>execve</b>(2).</p></td></tr>
+executed in the child process, as for <a href="https://man.page/2/execve">execve(2)</a>.</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">Below, the
@@ -183,9 +183,9 @@ child).</p>
 <p style="margin-left:11%; margin-top: 1em"><b>fork()
 step</b> <br>
 Since glibc 2.24, the <b>posix_spawn</b>() function
-commences by calling <b>clone</b>(2) with <b>CLONE_VM</b>
+commences by calling <a href="https://man.page/2/clone">clone(2)</a> with <b>CLONE_VM</b>
 and <b>CLONE_VFORK</b> flags. Older implementations use
-<b>fork</b>(2), or possibly <b>vfork</b>(2) (see below).</p>
+<a href="https://man.page/2/fork">fork(2)</a>, or possibly <a href="https://man.page/2/vfork">vfork(2)</a> (see below).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The PID of the
 new child process is placed in <i>*pid</i>. The
@@ -194,14 +194,14 @@ parent process.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Subsequently,
 the parent can use one of the system calls described in
-<b>wait</b>(2) to check the status of the child process. If
+<a href="https://man.page/2/wait">wait(2)</a> to check the status of the child process. If
 the child fails in any of the housekeeping steps described
 below, or fails to execute the desired file, it exits with a
 status of 127.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Before glibc
-2.24, the child process is created using <b>vfork</b>(2)
-instead of <b>fork</b>(2) when either of the following is
+2.24, the child process is created using <a href="https://man.page/2/vfork">vfork(2)</a>
+instead of <a href="https://man.page/2/fork">fork(2)</a> when either of the following is
 true:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -240,9 +240,9 @@ does <i>not</i> contain <b>POSIX_SPAWN_SETSIGMASK</b>,
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">In other words,
-<b>vfork</b>(2) is used if the caller requests it, or if
+<a href="https://man.page/2/vfork">vfork(2)</a> is used if the caller requests it, or if
 there is no cleanup expected in the child before it
-<b>exec</b>(3)s the requested file.</p>
+<a href="https://man.page/3/exec">exec(3)</a>s the requested file.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>pre-exec()
 step: housekeeping</b> <br>
@@ -306,13 +306,13 @@ attributes in the child, other than those affected by
 attributes specified in the object pointed to by
 <i>attrp</i> and the file actions in the object pointed to
 by <i>file_actions</i>, will be affected as though the child
-was created with <b>fork</b>(2) and it executed the program
-with <b>execve</b>(2).</p>
+was created with <a href="https://man.page/2/fork">fork(2)</a> and it executed the program
+with <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The process
 attributes actions are defined by the attributes object
 pointed to by <i>attrp</i>. The <i>spawn-flags</i> attribute
-(set using <b>posix_spawnattr_setflags</b>(3)) controls the
+(set using <a href="https://man.page/3/posix_spawnattr_setflags">posix_spawnattr_setflags(3)</a>) controls the
 general actions that occur, and other attributes in the
 object specify values to be used during those actions.</p>
 
@@ -336,7 +336,7 @@ attribute of the object pointed to by <i>attrp</i> to the
 default. For the treatment of the dispositions of signals
 not specified in the <i>spawn-sigdefault</i> attribute, or
 the treatment when <b>POSIX_SPAWN_SETSIGDEF</b> is not
-specified, see <b>execve</b>(2).</p>
+specified, see <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>POSIX_SPAWN_SETSCHEDPARAM</b></p>
@@ -398,7 +398,7 @@ process. If this flag is not set, then the child retains the
 effective UID and GID of the parent. In either case, if the
 set-user-ID and set-group-ID permission bits are enabled on
 the executable file, their effect will override the setting
-of the effective UID and GID (se <b>execve</b>(2)).</p>
+of the effective UID and GID (se <a href="https://man.page/2/execve">execve(2)</a>).</p>
 
 
 <p style="margin-left:11%;"><b>POSIX_SPAWN_SETPGROUP</b></p>
@@ -417,8 +417,8 @@ ID.</p>
 
 <p style="margin-left:22%;">Since glibc 2.24, this flag has
 no effect. On older implementations, setting this flag
-forces the <b>fork()</b> step to use <b>vfork</b>(2) instead
-of <b>fork</b>(2). The <b>_GNU_SOURCE</b> feature test macro
+forces the <b>fork()</b> step to use <a href="https://man.page/2/vfork">vfork(2)</a> instead
+of <a href="https://man.page/2/fork">fork(2)</a>. The <b>_GNU_SOURCE</b> feature test macro
 must be defined to obtain the definition of this
 constant.</p>
 
@@ -429,7 +429,7 @@ constant.</p>
 process shall create a new session and become the session
 leader. The child process shall also become the process
 group leader of the new process group in the session (see
-<b>setsid</b>(2)). The <b>_GNU_SOURCE</b> feature test macro
+<a href="https://man.page/2/setsid">setsid(2)</a>). The <b>_GNU_SOURCE</b> feature test macro
 must be defined to obtain the definition of this
 constant.</p>
 
@@ -441,8 +441,8 @@ flag apply.</p>
 <i>file_actions</i> argument specifies a sequence of file
 operations that are performed in the child process after the
 general processing described above, and before it performs
-the <b>exec</b>(3). If <i>file_actions</i> is NULL, then no
-special action is taken, and standard <b>exec</b>(3)
+the <a href="https://man.page/3/exec">exec(3)</a>. If <i>file_actions</i> is NULL, then no
+special action is taken, and standard <a href="https://man.page/3/exec">exec(3)</a>
 semantics apply&mdash;file descriptors open before the exec
 remain open in the new process, except those for which the
 <b>FD_CLOEXEC</b> flag has been set. File locks remain in
@@ -450,12 +450,12 @@ place.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
 <i>file_actions</i> is not NULL, then it contains an ordered
-set of requests to <b>open</b>(2), <b>close</b>(2), and
-<b>dup2</b>(2) files. These requests are added to the
+set of requests to <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/close">close(2)</a>, and
+<a href="https://man.page/2/dup2">dup2(2)</a> files. These requests are added to the
 <i>file_actions</i> by
-<b>posix_spawn_file_actions_addopen</b>(3),
-<b>posix_spawn_file_actions_addclose</b>(3), and
-<b>posix_spawn_file_actions_adddup2</b>(3). The requested
+<a href="https://man.page/3/posix_spawn_file_actions_addopen">posix_spawn_file_actions_addopen(3)</a>,
+<a href="https://man.page/3/posix_spawn_file_actions_addclose">posix_spawn_file_actions_addclose(3)</a>, and
+<a href="https://man.page/3/posix_spawn_file_actions_adddup2">posix_spawn_file_actions_adddup2(3)</a>. The requested
 operations are performed in the order they were added to
 <i>file_actions</i>.</p>
 
@@ -475,9 +475,9 @@ executable.</p>
 <p style="margin-left:11%; margin-top: 1em">The child
 process takes its environment from the <i>envp</i> argument,
 which is interpreted as if it had been passed to
-<b>execve</b>(2). The arguments to the created process come
+<a href="https://man.page/2/execve">execve(2)</a>. The arguments to the created process come
 from the <i>argv</i> argument, which is processed as for
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -496,7 +496,7 @@ described below.</p>
 functions return a success status, the child process may
 still fail for a plethora of reasons related to its
 pre-<b>exec</b>() initialization. In addition, the
-<b>exec</b>(3) may fail. In all of these cases, the child
+<a href="https://man.page/3/exec">exec(3)</a> may fail. In all of these cases, the child
 process will exit with the exit value of 127.</p>
 
 <h2>ERRORS
@@ -506,11 +506,11 @@ process will exit with the exit value of 127.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>posix_spawn</b>() and <b>posix_spawnp</b>() functions
-fail only in the case where the underlying <b>fork</b>(2),
-<b>vfork</b>(2) or <b>clone</b>(2) call fails; in these
+fail only in the case where the underlying <a href="https://man.page/2/fork">fork(2)</a>,
+<a href="https://man.page/2/vfork">vfork(2)</a> or <a href="https://man.page/2/clone">clone(2)</a> call fails; in these
 cases, these functions return an error number, which will be
-one of the errors described for <b>fork</b>(2),
-<b>vfork</b>(2) or <b>clone</b>(2).</p>
+one of the errors described for <a href="https://man.page/2/fork">fork(2)</a>,
+<a href="https://man.page/2/vfork">vfork(2)</a> or <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In addition,
 these functions fail if:</p>
@@ -569,16 +569,16 @@ implementation details.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">According to
 POSIX, it is unspecified whether fork handlers established
-with <b>pthread_atfork</b>(3) are called when
+with <a href="https://man.page/3/pthread_atfork">pthread_atfork(3)</a> are called when
 <b>posix_spawn</b>() is invoked. Since glibc 2.24, the fork
 handlers are not executed in any case. On older
 implementations, fork handlers are called only if the child
-is created using <b>fork</b>(2).</p>
+is created using <a href="https://man.page/2/fork">fork(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">There is no
 &quot;posix_fspawn&quot; function (i.e., a function that is
-to <b>posix_spawn</b>() as <b>fexecve</b>(3) is to
-<b>execve</b>(2)). However, this functionality can be
+to <b>posix_spawn</b>() as <a href="https://man.page/3/fexecve">fexecve(3)</a> is to
+<a href="https://man.page/2/execve">execve(2)</a>). However, this functionality can be
 obtained by specifying the <i>path</i> argument as one of
 the files in the caller&rsquo;s <i>/proc/self/fd</i>
 directory.</p>
@@ -611,7 +611,7 @@ executable name and command-line arguments of the program
 that is executed in the child.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In the first
-run, the <b>date</b>(1) command is executed in the child,
+run, the <a href="https://man.page/1/date">date(1)</a> command is executed in the child,
 and the <b>posix_spawn</b>() call employs no file actions or
 attributes objects.</p>
 
@@ -624,7 +624,7 @@ Child status: exited, status=0</p>
 <p style="margin-left:11%; margin-top: 1em">In the next
 run, the <i>-c</i> command-line option is used to create a
 file actions object that closes standard output in the
-child. Consequently, <b>date</b>(1) fails when trying to
+child. Consequently, <a href="https://man.page/1/date">date(1)</a> fails when trying to
 perform output and exits with a status of 1.</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>./a.out -c
@@ -637,7 +637,7 @@ Child status: exited, status=1</p>
 run, the <i>-s</i> command-line option is used to create an
 attributes object that specifies that all (blockable)
 signals in the child should be blocked. Consequently, trying
-to kill child with the default signal sent by <b>kill</b>(1)
+to kill child with the default signal sent by <a href="https://man.page/1/kill">kill(1)</a>
 (i.e., <b>SIGTERM</b>) fails, because that signal is
 blocked. Therefore, to kill the child, <b>SIGKILL</b> is
 necessary (<b>SIGKILL</b> can&rsquo;t be blocked).</p>
@@ -655,7 +655,7 @@ $ Child status: killed by signal 9 <br>
 
 <p style="margin-left:11%; margin-top: 1em">When we try to
 execute a nonexistent command in the child, the
-<b>exec</b>(3) fails and the child exits with a status of
+<a href="https://man.page/3/exec">exec(3)</a> fails and the child exits with a status of
 127.</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>./a.out
@@ -835,32 +835,32 @@ printf(&quot;continued\n&quot;); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2),
-<b>dup2</b>(2), <b>execl</b>(2), <b>execlp</b>(2),
-<b>fork</b>(2), <b>open</b>(2), <b>sched_setparam</b>(2),
-<b>sched_setscheduler</b>(2), <b>setpgid</b>(2),
-<b>setuid</b>(2), <b>sigaction</b>(2),
-<b>sigprocmask</b>(2),
-<b>posix_spawn_file_actions_addclose</b>(3),
-<b>posix_spawn_file_actions_adddup2</b>(3),
-<b>posix_spawn_file_actions_addopen</b>(3),
-<b>posix_spawn_file_actions_destroy</b>(3),
-<b>posix_spawn_file_actions_init</b>(3),
-<b>posix_spawnattr_destroy</b>(3),
-<b>posix_spawnattr_getflags</b>(3),
-<b>posix_spawnattr_getpgroup</b>(3),
-<b>posix_spawnattr_getschedparam</b>(3),
-<b>posix_spawnattr_getschedpolicy</b>(3),
-<b>posix_spawnattr_getsigdefault</b>(3),
-<b>posix_spawnattr_getsigmask</b>(3),
-<b>posix_spawnattr_init</b>(3),
-<b>posix_spawnattr_setflags</b>(3),
-<b>posix_spawnattr_setpgroup</b>(3),
-<b>posix_spawnattr_setschedparam</b>(3),
-<b>posix_spawnattr_setschedpolicy</b>(3),
-<b>posix_spawnattr_setsigdefault</b>(3),
-<b>posix_spawnattr_setsigmask</b>(3),
-<b>pthread_atfork</b>(3), <i>&lt;spawn.h&gt;</i>, Base
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/close">close(2)</a>,
+<a href="https://man.page/2/dup2">dup2(2)</a>, <a href="https://man.page/2/execl">execl(2)</a>, <a href="https://man.page/2/execlp">execlp(2)</a>,
+<a href="https://man.page/2/fork">fork(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/sched_setparam">sched_setparam(2)</a>,
+<a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a>, <a href="https://man.page/2/setpgid">setpgid(2)</a>,
+<a href="https://man.page/2/setuid">setuid(2)</a>, <a href="https://man.page/2/sigaction">sigaction(2)</a>,
+<a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>,
+<a href="https://man.page/3/posix_spawn_file_actions_addclose">posix_spawn_file_actions_addclose(3)</a>,
+<a href="https://man.page/3/posix_spawn_file_actions_adddup2">posix_spawn_file_actions_adddup2(3)</a>,
+<a href="https://man.page/3/posix_spawn_file_actions_addopen">posix_spawn_file_actions_addopen(3)</a>,
+<a href="https://man.page/3/posix_spawn_file_actions_destroy">posix_spawn_file_actions_destroy(3)</a>,
+<a href="https://man.page/3/posix_spawn_file_actions_init">posix_spawn_file_actions_init(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_destroy">posix_spawnattr_destroy(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_getflags">posix_spawnattr_getflags(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_getpgroup">posix_spawnattr_getpgroup(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_getschedparam">posix_spawnattr_getschedparam(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_getschedpolicy">posix_spawnattr_getschedpolicy(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_getsigdefault">posix_spawnattr_getsigdefault(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_getsigmask">posix_spawnattr_getsigmask(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_init">posix_spawnattr_init(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_setflags">posix_spawnattr_setflags(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_setpgroup">posix_spawnattr_setpgroup(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_setschedparam">posix_spawnattr_setschedparam(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_setschedpolicy">posix_spawnattr_setschedpolicy(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_setsigdefault">posix_spawnattr_setsigdefault(3)</a>,
+<a href="https://man.page/3/posix_spawnattr_setsigmask">posix_spawnattr_setsigmask(3)</a>,
+<a href="https://man.page/3/pthread_atfork">pthread_atfork(3)</a>, <i>&lt;spawn.h&gt;</i>, Base
 Definitions volume of POSIX.1-2001,
 <i>http://www.opengroup.org/unix/online.html</i></p>
 

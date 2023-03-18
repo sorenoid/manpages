@@ -126,7 +126,7 @@ jobs.</p> </td></tr>
 special time-critical applications that need precise control
 over the way in which runnable threads are selected for
 execution. For the rules governing when a process may use
-these policies, see <b>sched</b>(7). The real-time policies
+these policies, see <a href="https://man.page/7/sched">sched(7)</a>. The real-time policies
 that may be specified in <i>policy</i> are:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -165,7 +165,7 @@ provides the following policy: <b><br>
 SCHED_DEADLINE</b></p>
 
 <p style="margin-left:32%;">a deadline scheduling policy;
-see <b>sched</b>(7) for details.</p>
+see <a href="https://man.page/7/sched">sched(7)</a> for details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <i>attr</i>
 argument is a pointer to a structure that defines the new
@@ -239,8 +239,8 @@ control scheduling behavior: <b><br>
 SCHED_FLAG_RESET_ON_FORK</b></p>
 
 <p style="margin-left:32%;">Children created by
-<b>fork</b>(2) do not inherit privileged scheduling
-policies. See <b>sched</b>(7) for details.</p>
+<a href="https://man.page/2/fork">fork(2)</a> do not inherit privileged scheduling
+policies. See <a href="https://man.page/7/sched">sched(7)</a> for details.</p>
 
 <p style="margin-left:22%;"><b>SCHED_FLAG_RECLAIM</b>
 (since Linux 4.13)</p>
@@ -262,7 +262,7 @@ overrun.</p>
 
 <p style="margin-left:32%; margin-top: 1em">This
 <b>SIGXCPU</b> signal is <i>process-directed</i> (see
-<b>signal</b>(7)) rather than thread-directed. This is
+<a href="https://man.page/7/signal">signal(7)</a>) rather than thread-directed. This is
 probably a bug. On the one hand, <b>sched_setattr</b>() is
 being used to set a per-thread attribute. On the other hand,
 if the process-directed signal is delivered to a thread
@@ -276,7 +276,7 @@ overran.</p>
 value to be set when specifying <i>sched_policy</i> as
 <b>SCHED_OTHER</b> or <b>SCHED_BATCH</b>. The nice value is
 a number in the range -20 (high priority) to +19 (low
-priority); see <b>sched</b>(7).</p>
+priority); see <a href="https://man.page/7/sched">sched(7)</a>.</p>
 
 <p style="margin-left:11%;"><i>sched_priority</i></p>
 
@@ -284,8 +284,8 @@ priority); see <b>sched</b>(7).</p>
 priority to be set when specifying <i>sched_policy</i> as
 <b>SCHED_FIFO</b> or <b>SCHED_RR</b>. The allowed range of
 priorities for these policies can be determined using
-<b>sched_get_priority_min</b>(2) and
-<b>sched_get_priority_max</b>(2). For other policies, this
+<a href="https://man.page/2/sched_get_priority_min">sched_get_priority_min(2)</a> and
+<a href="https://man.page/2/sched_get_priority_max">sched_get_priority_max(2)</a>. For other policies, this
 field must be specified as 0.</p>
 
 <p style="margin-left:11%;"><i>sched_runtime</i></p>
@@ -294,7 +294,7 @@ field must be specified as 0.</p>
 &quot;Runtime&quot; parameter for deadline scheduling. The
 value is expressed in nanoseconds. This field, and the next
 two fields, are used only for <b>SCHED_DEADLINE</b>
-scheduling; for further details, see <b>sched</b>(7).</p>
+scheduling; for further details, see <a href="https://man.page/7/sched">sched(7)</a>.</p>
 
 <p style="margin-left:11%;"><i>sched_deadline</i></p>
 
@@ -462,7 +462,7 @@ nonzero.</p> </td></tr>
 
 
 <p><b>SCHED_DEADLINE</b> admission control failure, see
-<b>sched</b>(7).</p> </td></tr>
+<a href="https://man.page/7/sched">sched(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -503,7 +503,7 @@ invalid.</p> </td></tr>
 
 <p>The CPU affinity mask of the thread specified by
 <i>pid</i> does not include all CPUs in the system (see
-<b>sched_setaffinity</b>(2)).</p> </td></tr>
+<a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>).</p> </td></tr>
 </table>
 
 <h2>VERSIONS
@@ -530,14 +530,14 @@ calls are nonstandard Linux extensions.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>sched_setattr</b>()
 provides a superset of the functionality of
-<b>sched_setscheduler</b>(2), <b>sched_setparam</b>(2),
-<b>nice</b>(2), and (other than the ability to set the
+<a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a>, <a href="https://man.page/2/sched_setparam">sched_setparam(2)</a>,
+<a href="https://man.page/2/nice">nice(2)</a>, and (other than the ability to set the
 priority of all processes belonging to a specified user or
-all processes in a specified group) <b>setpriority</b>(2).
+all processes in a specified group) <a href="https://man.page/2/setpriority">setpriority(2)</a>.
 Analogously, <b>sched_getattr</b>() provides a superset of
-the functionality of <b>sched_getscheduler</b>(2),
-<b>sched_getparam</b>(2), and (partially)
-<b>getpriority</b>(2).</p>
+the functionality of <a href="https://man.page/2/sched_getscheduler">sched_getscheduler(2)</a>,
+<a href="https://man.page/2/sched_getparam">sched_getparam(2)</a>, and (partially)
+<a href="https://man.page/2/getpriority">getpriority(2)</a>.</p>
 
 <h2>BUGS
 <a name="BUGS"></a>
@@ -561,18 +561,18 @@ space.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>(1),
-<b>nice</b>(2), <b>sched_get_priority_max</b>(2),
-<b>sched_get_priority_min</b>(2),
-<b>sched_getaffinity</b>(2), <b>sched_getparam</b>(2),
-<b>sched_getscheduler</b>(2),
-<b>sched_rr_get_interval</b>(2),
-<b>sched_setaffinity</b>(2), <b>sched_setparam</b>(2),
-<b>sched_setscheduler</b>(2), <b>sched_yield</b>(2),
-<b>setpriority</b>(2), <b>pthread_getschedparam</b>(3),
-<b>pthread_setschedparam</b>(3),
-<b>pthread_setschedprio</b>(3), <b>capabilities</b>(7),
-<b>cpuset</b>(7), <b>sched</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/chrt">chrt(1)</a>,
+<a href="https://man.page/2/nice">nice(2)</a>, <a href="https://man.page/2/sched_get_priority_max">sched_get_priority_max(2)</a>,
+<a href="https://man.page/2/sched_get_priority_min">sched_get_priority_min(2)</a>,
+<a href="https://man.page/2/sched_getaffinity">sched_getaffinity(2)</a>, <a href="https://man.page/2/sched_getparam">sched_getparam(2)</a>,
+<a href="https://man.page/2/sched_getscheduler">sched_getscheduler(2)</a>,
+<a href="https://man.page/2/sched_rr_get_interval">sched_rr_get_interval(2)</a>,
+<a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>, <a href="https://man.page/2/sched_setparam">sched_setparam(2)</a>,
+<a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a>, <a href="https://man.page/2/sched_yield">sched_yield(2)</a>,
+<a href="https://man.page/2/setpriority">setpriority(2)</a>, <a href="https://man.page/3/pthread_getschedparam">pthread_getschedparam(3)</a>,
+<a href="https://man.page/3/pthread_setschedparam">pthread_setschedparam(3)</a>,
+<a href="https://man.page/3/pthread_setschedprio">pthread_setschedprio(3)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/cpuset">cpuset(7)</a>, <a href="https://man.page/7/sched">sched(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

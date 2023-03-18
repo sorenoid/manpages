@@ -62,7 +62,7 @@ struct timespec *</b><i>remain</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>clock_nanosleep</b>():</p>
@@ -76,7 +76,7 @@ Macro Requirements for glibc (see
 
 
 <p style="margin-left:11%; margin-top: 1em">Like
-<b>nanosleep</b>(2), <b>clock_nanosleep</b>() allows the
+<a href="https://man.page/2/nanosleep">nanosleep(2)</a>, <b>clock_nanosleep</b>() allows the
 calling thread to sleep for an interval specified with
 nanosecond precision. It differs in allowing the caller to
 select the clock against which the sleep interval is to be
@@ -130,10 +130,10 @@ that measures CPU time consumed by all threads in the
 process.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>clock_getres</b>(2) for further details on these clocks.
+<a href="https://man.page/2/clock_getres">clock_getres(2)</a> for further details on these clocks.
 In addition, the CPU clock IDs returned by
-<b>clock_getcpuclockid</b>(3) and
-<b>pthread_getcpuclockid</b>(3) can also be passed in
+<a href="https://man.page/3/clock_getcpuclockid">clock_getcpuclockid(3)</a> and
+<a href="https://man.page/3/pthread_getcpuclockid">pthread_getcpuclockid(3)</a> can also be passed in
 <i>clockid</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If <i>flags</i>
@@ -207,7 +207,7 @@ specified an invalid address.</p></td></tr>
 
 
 <p>The sleep was interrupted by a signal handler; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -264,7 +264,7 @@ POSIX.1-2008.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the interval
 specified in <i>request</i> is not an exact multiple of the
-granularity underlying clock (see <b>time</b>(7)), then the
+granularity underlying clock (see <a href="https://man.page/7/time">time(7)</a>), then the
 interval will be rounded up to the next multiple.
 Furthermore, after the sleep completes, there may still be a
 delay before the CPU becomes free to once again execute the
@@ -272,11 +272,11 @@ calling thread.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Using an
 absolute timer is useful for preventing timer drift problems
-of the type described in <b>nanosleep</b>(2). (Such problems
+of the type described in <a href="https://man.page/2/nanosleep">nanosleep(2)</a>. (Such problems
 are exacerbated in programs that try to restart a relative
 sleep that is repeatedly interrupted by signals.) To perform
 a relative sleep that avoids these problems, call
-<b>clock_gettime</b>(2) for the desired clock, add the
+<a href="https://man.page/2/clock_gettime">clock_gettime(2)</a> for the desired clock, add the
 desired interval to the returned time value, and then call
 <b>clock_nanosleep</b>() with the <b>TIMER_ABSTIME</b>
 flag.</p>
@@ -284,7 +284,7 @@ flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>clock_nanosleep</b>()
 is never restarted after being interrupted by a signal
-handler, regardless of the use of the <b>sigaction</b>(2)
+handler, regardless of the use of the <a href="https://man.page/2/sigaction">sigaction(2)</a>
 <b>SA_RESTART</b> flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -298,7 +298,7 @@ signals dispositions or the signal mask.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX.1
 specifies that after changing the value of the
-<b>CLOCK_REALTIME</b> clock via <b>clock_settime</b>(2), the
+<b>CLOCK_REALTIME</b> clock via <a href="https://man.page/2/clock_settime">clock_settime(2)</a>, the
 new clock value shall be used to determine the time at which
 a thread blocked on an absolute <b>clock_nanosleep</b>()
 will wake up; if the new clock value falls past the end of
@@ -307,7 +307,7 @@ will return immediately.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX.1
 specifies that changing the value of the
-<b>CLOCK_REALTIME</b> clock via <b>clock_settime</b>(2)
+<b>CLOCK_REALTIME</b> clock via <a href="https://man.page/2/clock_settime">clock_settime(2)</a>
 shall have no effect on a thread that is blocked on a
 relative <b>clock_nanosleep</b>().</p>
 
@@ -317,10 +317,10 @@ relative <b>clock_nanosleep</b>().</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>clock_getres</b>(2),
-<b>nanosleep</b>(2), <b>restart_syscall</b>(2),
-<b>timer_create</b>(2), <b>sleep</b>(3), <b>usleep</b>(3),
-<b>time</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/clock_getres">clock_getres(2)</a>,
+<a href="https://man.page/2/nanosleep">nanosleep(2)</a>, <a href="https://man.page/2/restart_syscall">restart_syscall(2)</a>,
+<a href="https://man.page/2/timer_create">timer_create(2)</a>, <a href="https://man.page/3/sleep">sleep(3)</a>, <a href="https://man.page/3/usleep">usleep(3)</a>,
+<a href="https://man.page/7/time">time(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

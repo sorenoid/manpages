@@ -60,7 +60,7 @@ pclose(FILE *</b><i>stream</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>popen</b>(),
@@ -97,12 +97,12 @@ for writing. Since glibc 2.9, this argument can additionally
 include the letter 'e', which causes the close-on-exec flag
 (<b>FD_CLOEXEC</b>) to be set on the underlying file
 descriptor; see the description of the <b>O_CLOEXEC</b> flag
-in <b>open</b>(2) for reasons why this may be useful.</p>
+in <a href="https://man.page/2/open">open(2)</a> for reasons why this may be useful.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The return
 value from <b>popen</b>() is a normal standard I/O stream in
 all respects save that it must be closed with
-<b>pclose</b>() rather than <b>fclose</b>(3). Writing to
+<b>pclose</b>() rather than <a href="https://man.page/3/fclose">fclose(3)</a>. Writing to
 such a stream writes to the standard input of the command;
 the command&rsquo;s standard output is the same as that of
 the process that called <b>popen</b>(), unless this is
@@ -118,7 +118,7 @@ default.</p>
 <p style="margin-left:11%; margin-top: 1em">The
 <b>pclose</b>() function waits for the associated process to
 terminate and returns the exit status of the command as
-returned by <b>wait4</b>(2).</p>
+returned by <a href="https://man.page/2/wait4">wait4(2)</a>.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -128,14 +128,14 @@ returned by <b>wait4</b>(2).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>popen</b>():
 on success, returns a pointer to an open stream that can be
-used to read or write to the pipe; if the <b>fork</b>(2) or
-<b>pipe</b>(2) calls fail, or if the function cannot
+used to read or write to the pipe; if the <a href="https://man.page/2/fork">fork(2)</a> or
+<a href="https://man.page/2/pipe">pipe(2)</a> calls fail, or if the function cannot
 allocate memory, NULL is returned.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>pclose</b>():
 on success, returns the exit status of the command; if
-<b>wait4</b>(2) returns an error, or some other error is
+<a href="https://man.page/2/wait4">wait4(2)</a> returns an error, or some other error is
 detected, -1 is returned.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Both functions
@@ -149,8 +149,8 @@ error.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>popen</b>() function does not set <i>errno</i> if memory
-allocation fails. If the underlying <b>fork</b>(2) or
-<b>pipe</b>(2) fails, <i>errno</i> is set appropriately. If
+allocation fails. If the underlying <a href="https://man.page/2/fork">fork(2)</a> or
+<a href="https://man.page/2/pipe">pipe(2)</a> fails, <i>errno</i> is set appropriately. If
 the <i>type</i> argument is invalid, and this condition is
 detected, <i>errno</i> is set to <b>EINVAL</b>.</p>
 
@@ -165,7 +165,7 @@ is set to <b>ECHILD</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -210,7 +210,7 @@ for <i>type</i> is a Linux extension.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Note</b>:
-carefully read Caveats in <b>system</b>(3).</p>
+carefully read Caveats in <a href="https://man.page/3/system">system(3)</a>.</p>
 
 <h2>BUGS
 <a name="BUGS"></a>
@@ -224,7 +224,7 @@ the original process has done a buffered read, the
 command&rsquo;s input position may not be as expected.
 Similarly, the output from a command opened for writing may
 become intermingled with that of the original process. The
-latter can be avoided by calling <b>fflush</b>(3) before
+latter can be avoided by calling <a href="https://man.page/3/fflush">fflush(3)</a> before
 <b>popen</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">Failure to
@@ -238,10 +238,10 @@ exit of the command. The only hint is an exit status of
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>sh</b>(1),
-<b>fork</b>(2), <b>pipe</b>(2), <b>wait4</b>(2),
-<b>fclose</b>(3), <b>fflush</b>(3), <b>fopen</b>(3),
-<b>stdio</b>(3), <b>system</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/sh">sh(1)</a>,
+<a href="https://man.page/2/fork">fork(2)</a>, <a href="https://man.page/2/pipe">pipe(2)</a>, <a href="https://man.page/2/wait4">wait4(2)</a>,
+<a href="https://man.page/3/fclose">fclose(3)</a>, <a href="https://man.page/3/fflush">fflush(3)</a>, <a href="https://man.page/3/fopen">fopen(3)</a>,
+<a href="https://man.page/3/stdio">stdio(3)</a>, <a href="https://man.page/3/system">system(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -56,7 +56,7 @@ duplocale(locale_t</b> <i>locobj</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>duplocale</b>():</p>
@@ -82,7 +82,7 @@ locale object referred to by <i>locobj</i>.</p>
 <p style="margin-left:11%; margin-top: 1em">If
 <i>locobj</i> is <b>LC_GLOBAL_LOCALE</b>, <b>duplocale</b>()
 creates a locale object containing a copy of the global
-locale determined by <b>setlocale</b>(3).</p>
+locale determined by <a href="https://man.page/3/setlocale">setlocale(3)</a>.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -154,7 +154,7 @@ locale can serve the following purposes:</p>
 
 <p style="margin-top: 1em">To create a copy of a locale
 object in which one of more categories are to be modified
-(using <b>newlocale</b>(3)).</p></td></tr>
+(using <a href="https://man.page/3/newlocale">newlocale(3)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -167,7 +167,7 @@ object in which one of more categories are to be modified
 
 <p>To obtain a handle for the current locale which can used
 in other functions that employ a locale handle, such as
-<b>toupper_l</b>(3). This is done by applying
+<a href="https://man.page/3/toupper_l">toupper_l(3)</a>. This is done by applying
 <b>duplocale</b>() to the value returned by the following
 call:</p> </td></tr>
 </table>
@@ -176,17 +176,17 @@ call:</p> </td></tr>
 uselocale((locale_t) 0);</p>
 
 <p style="margin-left:15%; margin-top: 1em">This technique
-is necessary, because the above <b>uselocale</b>(3) call may
+is necessary, because the above <a href="https://man.page/3/uselocale">uselocale(3)</a> call may
 return the value <b>LC_GLOBAL_LOCALE</b>, which results in
 undefined behavior if passed to functions such as
-<b>toupper_l</b>(3). Calling <b>duplocale</b>() can be used
+<a href="https://man.page/3/toupper_l">toupper_l(3)</a>. Calling <b>duplocale</b>() can be used
 to ensure that the <b>LC_GLOBAL_LOCALE</b> value is
 converted into a usable locale object. See EXAMPLES,
 below.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each locale
 object created by <b>duplocale</b>() should be deallocated
-using <b>freelocale</b>(3).</p>
+using <a href="https://man.page/3/freelocale">freelocale(3)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -194,9 +194,9 @@ using <b>freelocale</b>(3).</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The program
-below uses <b>uselocale</b>(3) and <b>duplocale</b>() to
+below uses <a href="https://man.page/3/uselocale">uselocale(3)</a> and <b>duplocale</b>() to
 obtain a handle for the current locale which is then passed
-to <b>toupper_l</b>(3). The program takes one command-line
+to <a href="https://man.page/3/toupper_l">toupper_l(3)</a>. The program takes one command-line
 argument, a string of characters that is converted to
 uppercase and displayed on standard output. An example of
 its use is the following:</p>
@@ -265,9 +265,9 @@ putchar(toupper_l(*p, nloc));</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>freelocale</b>(3),
-<b>newlocale</b>(3), <b>setlocale</b>(3),
-<b>uselocale</b>(3), <b>locale</b>(5), <b>locale</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/freelocale">freelocale(3)</a>,
+<a href="https://man.page/3/newlocale">newlocale(3)</a>, <a href="https://man.page/3/setlocale">setlocale(3)</a>,
+<a href="https://man.page/3/uselocale">uselocale(3)</a>, <a href="https://man.page/5/locale">locale(5)</a>, <a href="https://man.page/7/locale">locale(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

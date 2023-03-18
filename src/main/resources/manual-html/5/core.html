@@ -48,15 +48,15 @@ action of certain signals is to cause a process to terminate
 and produce a <i>core dump file</i>, a file containing an
 image of the process&rsquo;s memory at the time of
 termination. This image can be used in a debugger (e.g.,
-<b>gdb</b>(1)) to inspect the state of the program at the
+<a href="https://man.page/1/gdb">gdb(1)</a>) to inspect the state of the program at the
 time that it terminated. A list of the signals which cause a
-process to dump core can be found in <b>signal</b>(7).</p>
+process to dump core can be found in <a href="https://man.page/7/signal">signal(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A process can
 set its soft <b>RLIMIT_CORE</b> resource limit to place an
 upper limit on the size of the core dump file that will be
 produced if it receives a &quot;core dump&quot; signal; see
-<b>getrlimit</b>(2) for details.</p>
+<a href="https://man.page/2/getrlimit">getrlimit(2)</a> for details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">There are
 various circumstances in which a core dump file is not
@@ -133,9 +133,9 @@ created does not exist.</p></td></tr>
 
 <p>The <b>RLIMIT_CORE</b> (core file size) or
 <b>RLIMIT_FSIZE</b> (file size) resource limits for the
-process are set to zero; see <b>getrlimit</b>(2) and the
+process are set to zero; see <a href="https://man.page/2/getrlimit">getrlimit(2)</a> and the
 documentation of the shell&rsquo;s <i>ulimit</i> command
-(<i>limit</i> in <b>csh</b>(1)).</p></td></tr>
+(<i>limit</i> in <a href="https://man.page/1/csh">csh(1)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -165,10 +165,10 @@ containing an image of the executable.)</p></td></tr>
 program that is owned by a user (group) other than the real
 user (group) ID of the process, or the process is executing
 a program that has file capabilities (see
-<b>capabilities</b>(7)). (However, see the description of
-the <b>prctl</b>(2) <b>PR_SET_DUMPABLE</b> operation, and
+<a href="https://man.page/7/capabilities">capabilities(7)</a>). (However, see the description of
+the <a href="https://man.page/2/prctl">prctl(2)</a> <b>PR_SET_DUMPABLE</b> operation, and
 the description of the <i>/proc/sys/fs/suid_dumpable</i>
-file in <b>proc</b>(5).)</p></td></tr>
+file in <a href="https://man.page/5/proc">proc(5)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -185,7 +185,7 @@ file in <b>proc</b>(5).)</p></td></tr>
 <i>/proc/sys/kernel/core_pattern</i> is empty and
 <i>/proc/sys/kernel/core_uses_pid</i> contains the value 1,
 core dump files will have names of the form <i>.pid</i>, and
-such files are hidden unless one uses the <b>ls</b>(1)
+such files are hidden unless one uses the <a href="https://man.page/1/ls">ls(1)</a>
 <i>-a</i> option.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -203,13 +203,13 @@ such files are hidden unless one uses the <b>ls</b>(1)
 
 <p style="margin-left:11%; margin-top: 1em">In addition, a
 core dump may exclude part of the address space of the
-process if the <b>madvise</b>(2) <b>MADV_DONTDUMP</b> flag
+process if the <a href="https://man.page/2/madvise">madvise(2)</a> <b>MADV_DONTDUMP</b> flag
 was employed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On systems that
-employ <b>systemd</b>(1) as the <i>init</i> framework, core
+employ <a href="https://man.page/1/systemd">systemd(1)</a> as the <i>init</i> framework, core
 dumps may instead be placed in a location determined by
-<b>systemd</b>(1). See below for further details.</p>
+<a href="https://man.page/1/systemd">systemd(1)</a>. See below for further details.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Naming of
 core dump files</b> <br>
@@ -256,7 +256,7 @@ file is created:</p>
 
 
 <p>Dump mode&mdash;same as value returned by
-<b>prctl</b>(2) <b>PR_GET_DUMPABLE</b> (since Linux
+<a href="https://man.page/2/prctl">prctl(2)</a> <b>PR_GET_DUMPABLE</b> (since Linux
 3.7).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="17%"></td>
@@ -273,7 +273,7 @@ typically is the same as the executable filename (without
 path prefix, and truncated to a maximum of 15 characters),
 but may have been modified to be something different; see
 the discussion of <i>/proc/[pid]/comm</i> and
-<i>/proc/[pid]/task/[tid]/comm</i> in <b>proc</b>(5).</p></td></tr>
+<i>/proc/[pid]/task/[tid]/comm</i> in <a href="https://man.page/5/proc">proc(5)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="17%"></td>
 <td width="3%">
@@ -308,7 +308,7 @@ exclamation marks ('!') (since Linux 3.0).</p></td></tr>
 
 
 <p>Hostname (same as <i>nodename</i> returned by
-<b>uname</b>(2)).</p> </td></tr>
+<a href="https://man.page/2/uname">uname(2)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="17%"></td>
 <td width="3%">
@@ -413,9 +413,9 @@ filename.</p>
 interpreted according to the settings that are active for
 the crashing process. That means the crashing
 process&rsquo;s mount namespace (see
-<b>mount_namespaces</b>(7)), its current working directory
-(found via <b>getcwd</b>(2)), and its root directory (see
-<b>chroot</b>(2)).</p>
+<a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a>), its current working directory
+(found via <a href="https://man.page/2/getcwd">getcwd(2)</a>), and its root directory (see
+<a href="https://man.page/2/chroot">chroot(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since version
 2.4, Linux has also provided a more primitive method of
@@ -628,7 +628,7 @@ process with the corresponding process ID.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The value in
 the file is a bit mask of memory mapping types (see
-<b>mmap</b>(2)). If a bit is set in the mask, then memory
+<a href="https://man.page/2/mmap">mmap(2)</a>). If a bit is set in the mask, then memory
 mappings of the corresponding type are dumped; otherwise
 they are not dumped. The bits in this file have the
 following meanings:</p>
@@ -723,13 +723,13 @@ thus displayed as 33.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">Memory-mapped
 I/O pages such as frame buffer are never dumped, and virtual
-DSO (<b>vdso</b>(7)) pages are always dumped, regardless of
+DSO (<a href="https://man.page/7/vdso">vdso(7)</a>) pages are always dumped, regardless of
 the <i>coredump_filter</i> value.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A child process
-created via <b>fork</b>(2) inherits its parent&rsquo;s
+created via <a href="https://man.page/2/fork">fork(2)</a> inherits its parent&rsquo;s
 <i>coredump_filter</i> value; the <i>coredump_filter</i>
-value is preserved across an <b>execve</b>(2).</p>
+value is preserved across an <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">It can be
 useful to set <i>coredump_filter</i> in the parent shell
@@ -745,9 +745,9 @@ provided only if the kernel was built with the
 
 <p style="margin-left:11%; margin-top: 1em"><b>Core dumps
 and systemd</b> <br>
-On systems using the <b>systemd</b>(1) <i>init</i>
+On systems using the <a href="https://man.page/1/systemd">systemd(1)</a> <i>init</i>
 framework, core dumps may be placed in a location determined
-by <b>systemd</b>(1). To do this, <b>systemd</b>(1) employs
+by <a href="https://man.page/1/systemd">systemd(1)</a>. To do this, <a href="https://man.page/1/systemd">systemd(1)</a> employs
 the <i>core_pattern</i> feature that allows piping core
 dumps to a program. One can verify this by checking whether
 core dumps are being piped to the <b>systemd-coredump</b>(8)
@@ -759,11 +759,11 @@ program:</p>
 
 <p style="margin-left:11%; margin-top: 1em">In this case,
 core dumps will be placed in the location configured for
-<b>systemd-coredump</b>(8), typically as <b>lz4</b>(1)
+<b>systemd-coredump</b>(8), typically as <a href="https://man.page/1/lz4">lz4(1)</a>
 compressed files in the directory
 <i>/var/lib/systemd/coredump/</i>. One can list the core
 dumps that have been recorded by <b>systemd-coredump</b>(8)
-using <b>coredumpctl</b>(1):</p>
+using <a href="https://man.page/1/coredumpctl">coredumpctl(1)</a>:</p>
 
 <p style="margin-left:11%; margin-top: 1em">$
 <b>coredumpctl list | tail -5</b> <br>
@@ -783,8 +783,8 @@ shown for each core dump includes the date and time of the
 dump, the PID, UID, and GID of the dumping process, the
 signal number that caused the core dump, and the pathname of
 the executable that was being run by the dumped process.
-Various options to <b>coredumpctl</b>(1) allow a specified
-coredump file to be pulled from the <b>systemd</b>(1)
+Various options to <a href="https://man.page/1/coredumpctl">coredumpctl(1)</a> allow a specified
+coredump file to be pulled from the <a href="https://man.page/1/systemd">systemd(1)</a>
 location into a specified file. For example, to extract the
 core dump for PID 2955 shown above to a file named
 <i>core</i> in the current directory, one could use:</p>
@@ -793,14 +793,14 @@ core dump for PID 2955 shown above to a file named
 <b>coredumpctl dump 2955 -o core</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">For more
-extensive details, see the <b>coredumpctl</b>(1) manual
+extensive details, see the <a href="https://man.page/1/coredumpctl">coredumpctl(1)</a> manual
 page.</p>
 
 <p style="margin-left:11%; margin-top: 1em">To
-(persistently) disable the <b>systemd</b>(1) mechanism that
+(persistently) disable the <a href="https://man.page/1/systemd">systemd(1)</a> mechanism that
 archives core dumps, restoring to something more like
 traditional Linux behavior, one can set an override for the
-<b>systemd</b>(1) mechanism, using something like:</p>
+<a href="https://man.page/1/systemd">systemd(1)</a> mechanism, using something like:</p>
 
 <p style="margin-left:17%; margin-top: 1em"># <b>echo
 &quot;kernel.core_pattern=core.%p&quot; &gt; \ <br>
@@ -823,14 +823,14 @@ kernel.core_pattern=&quot;%e-%s.core&quot;</b></p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>gdb</b>(1) <i>gcore</i> command can be used to obtain a
+<a href="https://man.page/1/gdb">gdb(1)</a> <i>gcore</i> command can be used to obtain a
 core dump of a running process.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In Linux
 versions up to and including 2.6.27, if a multithreaded
 process (or, more precisely, a process that shares its
 memory with another process by being created with the
-<b>CLONE_VM</b> flag of <b>clone</b>(2)) dumps core, then
+<b>CLONE_VM</b> flag of <a href="https://man.page/2/clone">clone(2)</a>) dumps core, then
 the process ID is always appended to the core filename,
 unless the process ID was already included elsewhere in the
 filename via a <i>%p</i> specification in
@@ -942,11 +942,11 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>bash</b>(1),
-<b>coredumpctl</b>(1), <b>gdb</b>(1), <b>getrlimit</b>(2),
-<b>mmap</b>(2), <b>prctl</b>(2), <b>sigaction</b>(2),
-<b>elf</b>(5), <b>proc</b>(5), <b>pthreads</b>(7),
-<b>signal</b>(7), <b>systemd-coredump</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/bash">bash(1)</a>,
+<a href="https://man.page/1/coredumpctl">coredumpctl(1)</a>, <a href="https://man.page/1/gdb">gdb(1)</a>, <a href="https://man.page/2/getrlimit">getrlimit(2)</a>,
+<a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/prctl">prctl(2)</a>, <a href="https://man.page/2/sigaction">sigaction(2)</a>,
+<a href="https://man.page/5/elf">elf(5)</a>, <a href="https://man.page/5/proc">proc(5)</a>, <a href="https://man.page/7/pthreads">pthreads(7)</a>,
+<a href="https://man.page/7/signal">signal(7)</a>, <b>systemd-coredump</b>(8)</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

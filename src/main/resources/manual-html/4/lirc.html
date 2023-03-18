@@ -68,7 +68,7 @@ hardware also supports sending IR data. Such hardware can be
 used with (almost) any kind of remote. This type of hardware
 can also be used in <b>LIRC_MODE_SCANCODE</b> mode, in which
 case the kernel IR decoders will decode the IR. These
-decoders can be written in extended BPF (see <b>bpf</b>(2))
+decoders can be written in extended BPF (see <a href="https://man.page/2/bpf">bpf(2)</a>)
 and attached to the <b>lirc</b> device.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -79,7 +79,7 @@ modes, amongst other features.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Reading
 input with the LIRC_MODE_MODE2 mode</b> <br>
 In the <b>LIRC_MODE_MODE2 mode</b>, the data returned by
-<b>read</b>(2) provides 32-bit values representing a space
+<a href="https://man.page/2/read">read(2)</a> provides 32-bit values representing a space
 or a pulse duration. The time of the duration (microseconds)
 is encoded in the lower 24 bits. The upper 8 bits indicate
 the type of package: <b><br>
@@ -109,7 +109,7 @@ ioctl.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Reading
 input with the LIRC_MODE_SCANCODE mode</b> <br>
 In the <b>LIRC_MODE_SCANCODE</b> mode, the data returned by
-<b>read</b>(2) reflects decoded button presses, in the
+<a href="https://man.page/2/read">read(2)</a> reflects decoded button presses, in the
 struct <i>lirc_scancode</i>. The scancode is stored in the
 <i>scancode</i> field, and the IR protocol is stored in
 <i>rc_proto</i>. This field has one the values of the
@@ -118,13 +118,13 @@ struct <i>lirc_scancode</i>. The scancode is stored in the
 <p style="margin-left:11%; margin-top: 1em"><b>Writing
 output with the LIRC_MODE_PULSE mode</b> <br>
 The data written to the character device using
-<b>write</b>(2) is a pulse/space sequence of integer values.
+<a href="https://man.page/2/write">write(2)</a> is a pulse/space sequence of integer values.
 Pulses and spaces are only marked implicitly by their
 position. The data must start and end with a pulse, thus it
 must always include an odd number of samples. The
-<b>write</b>(2) function blocks until the data has been
+<a href="https://man.page/2/write">write(2)</a> function blocks until the data has been
 transmitted by the hardware. If more data is provided than
-the hardware can send, the <b>write</b>(2) call fails with
+the hardware can send, the <a href="https://man.page/2/write">write(2)</a> call fails with
 the error <b>EINVAL</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Writing
@@ -493,8 +493,8 @@ bundled in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ir-ctl</b>(1),
-<b>lircd</b>(8),&nbsp;<b>bpf</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ir-ctl">ir-ctl(1)</a>,
+<b>lircd</b>(8),&nbsp;<a href="https://man.page/2/bpf">bpf(2)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em">https://www.kernel.org/doc/html/latest/media/uapi/rc/lirc-dev.html</p>

@@ -57,12 +57,12 @@ program with different Linux privilege settings</p>
 
 <p style="margin-left:11%; margin-top: 1em">Sets or queries
 various Linux privilege settings that are inherited across
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In comparison
-to <b>su</b>(1) and <b>runuser</b>(1), <b>setpriv</b>
+to <a href="https://man.page/1/su">su(1)</a> and <a href="https://man.page/1/runuser">runuser(1)</a>, <b>setpriv</b>
 neither uses PAM, nor does it prompt for a password. It is a
-simple, non-set-user-ID wrapper around <b>execve</b>(2), and
+simple, non-set-user-ID wrapper around <a href="https://man.page/2/execve">execve(2)</a>, and
 can be used to drop privileges in the same way as
 <b>setuidgid</b>(8) from <b>daemontools</b>, <b>chpst</b>(8)
 from <b>runit</b>, or similar tools shipped by other service
@@ -101,11 +101,11 @@ argument is a comma-separated list of GIDs or names.</p>
 
 <p style="margin-left:17%;">Set the inheritable
 capabilities, ambient capabilities or the capability
-bounding set. See <b>capabilities</b>(7). The argument is a
+bounding set. See <a href="https://man.page/7/capabilities">capabilities(7)</a>. The argument is a
 comma-separated list of <b>+</b><i>cap</i> and
 <b>-</b><i>cap</i> entries, which add or remove an entry
 respectively. <i>cap</i> can either be a human-readable name
-as seen in <b>capabilities</b>(7) without the <i>cap_</i>
+as seen in <a href="https://man.page/7/capabilities">capabilities(7)</a> without the <i>cap_</i>
 prefix or of the format <b>cap_N</b>, where <i>N</i> is the
 internal capability index used by Linux. <b>+all</b> and
 <b>-all</b> can be used to add or remove all caps.</p>
@@ -117,7 +117,7 @@ capabilities starts out as the current inheritable set for
 <b>--bounding-set</b>.</p>
 
 <p style="margin-left:17%; margin-top: 1em">Note the
-following restrictions (detailed in <b>capabilities</b>(7))
+following restrictions (detailed in <a href="https://man.page/7/capabilities">capabilities(7)</a>)
 regarding modifications to these capability sets:</p>
 
 <p style="margin-left:23%; margin-top: 1em">&bull; A
@@ -163,14 +163,14 @@ This option must be specified alone.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>--no-new-privs</b></p>
 
 <p style="margin-left:17%;">Set the <i>no_new_privs</i>
-bit. With this bit set, <b>execve</b>(2) will not grant new
+bit. With this bit set, <a href="https://man.page/2/execve">execve(2)</a> will not grant new
 privileges. For example, the set-user-ID and set-group-ID
 bits as well as file capabilities will be disabled.
 (Executing binaries with these bits set will still work, but
 they will not gain privileges. Certain LSMs, especially
 AppArmor, may result in failures to execute certain
 programs.) This bit is inherited by child processes and
-cannot be unset. See <b>prctl</b>(2) and
+cannot be unset. See <a href="https://man.page/2/prctl">prctl(2)</a> and
 <i>Documentation/prctl/no_new_privs.txt</i> in the Linux
 kernel source.</p>
 
@@ -215,7 +215,7 @@ something like:</p>
 argument is a comma-separated list. The valid securebits are
 <i>noroot</i>, <i>noroot_locked</i>, <i>no_setuid_fixup</i>,
 <i>no_setuid_fixup_locked</i>, and <i>keep_caps_locked</i>.
-<i>keep_caps</i> is cleared by <b>execve</b>(2) and is
+<i>keep_caps</i> is cleared by <a href="https://man.page/2/execve">execve(2)</a> and is
 therefore not allowed.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>--pdeathsig
@@ -235,10 +235,10 @@ after changing credentials to remedy that situation.</p>
 transition (using a transition on exec, not dyntrans). This
 will fail and cause <b>setpriv</b> to abort if SELinux is
 not in use, and the transition may be ignored or cause
-<b>execve</b>(2) to fail at SELinux&rsquo;s whim. (In
+<a href="https://man.page/2/execve">execve(2)</a> to fail at SELinux&rsquo;s whim. (In
 particular, this is unlikely to work in conjunction with
 <i>no_new_privs</i>.) This is similar to
-<b>runcon</b>(1).</p>
+<a href="https://man.page/1/runcon">runcon(1)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>--apparmor-profile</b>
@@ -247,7 +247,7 @@ particular, this is unlikely to work in conjunction with
 <p style="margin-left:17%;">Request a particular AppArmor
 profile (using a transition on exec). This will fail and
 cause <b>setpriv</b> to abort if AppArmor is not in use, and
-the transition may be ignored or cause <b>execve</b>(2) to
+the transition may be ignored or cause <a href="https://man.page/2/execve">execve(2)</a> to
 fail at AppArmor&rsquo;s whim.</p>
 
 
@@ -303,7 +303,7 @@ taking effect.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
 looking for behavior similar to
-<b>su</b>(1)/<b>runuser</b>(1), or <b>sudo</b>(8) (without
+<a href="https://man.page/1/su">su(1)</a>/<a href="https://man.page/1/runuser">runuser(1)</a>, or <b>sudo</b>(8) (without
 the <b>-g</b> option), try something like:</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>setpriv
@@ -329,8 +329,8 @@ Lutomirski</i></b> &lt;luto@amacapital.net&gt;</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>(1),
-<b>su</b>(1), <b>prctl</b>(2), <b>capabilities</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/runuser">runuser(1)</a>,
+<a href="https://man.page/1/su">su(1)</a>, <a href="https://man.page/2/prctl">prctl(2)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a></p>
 
 <h2>REPORTING BUGS
 <a name="REPORTING BUGS"></a>

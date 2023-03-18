@@ -72,13 +72,13 @@ are dropped, it is automatically released. Anonymous memory
 is used for all backing pages of the file. Therefore, files
 created by <b>memfd_create</b>() have the same semantics as
 other anonymous memory allocations such as those allocated
-using <b>mmap</b>(2) with the <b>MAP_ANONYMOUS</b> flag.</p>
+using <a href="https://man.page/2/mmap">mmap(2)</a> with the <b>MAP_ANONYMOUS</b> flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The initial
 size of the file is set to 0. Following the call, the file
-size should be set using <b>ftruncate</b>(2).
+size should be set using <a href="https://man.page/2/ftruncate">ftruncate(2)</a>.
 (Alternatively, the file may be populated by calls to
-<b>write</b>(2) or similar.)</p>
+<a href="https://man.page/2/write">write(2)</a> or similar.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The name
 supplied in <i>name</i> is used as a filename and will be
@@ -96,14 +96,14 @@ MFD_CLOEXEC</b></p>
 
 <p style="margin-left:22%;">Set the close-on-exec
 (<b>FD_CLOEXEC</b>) flag on the new file descriptor. See the
-description of the <b>O_CLOEXEC</b> flag in <b>open</b>(2)
+description of the <b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a>
 for reasons why this may be useful.</p>
 
 <p style="margin-left:11%;"><b>MFD_ALLOW_SEALING</b></p>
 
 <p style="margin-left:22%;">Allow sealing operations on
 this file. See the discussion of the <b>F_ADD_SEALS</b> and
-<b>F_GET_SEALS</b> operations in <b>fcntl</b>(2), and also
+<b>F_GET_SEALS</b> operations in <a href="https://man.page/2/fcntl">fcntl(2)</a>, and also
 NOTES, below. The initial set of seals is empty. If this
 flag is not set, the initial set of seals will be
 <b>F_SEAL_SEAL</b>, meaning that no other seals can be set
@@ -133,7 +133,7 @@ huge page sizes are included in the header file
 <p style="margin-left:22%; margin-top: 1em">For details on
 encoding huge page sizes not included in the header file,
 see the discussion of the similarly named constants in
-<b>mmap</b>(2).</p>
+<a href="https://man.page/2/mmap">mmap(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Unused bits in
 <i>flags</i> must be 0.</p>
@@ -145,12 +145,12 @@ is opened for both reading and writing (<b>O_RDWR</b>) and
 <b>O_LARGEFILE</b> is set for the file descriptor.</p>
 
 <p style="margin-left:11%; margin-top: 1em">With respect to
-<b>fork</b>(2) and <b>execve</b>(2), the usual semantics
+<a href="https://man.page/2/fork">fork(2)</a> and <a href="https://man.page/2/execve">execve(2)</a>, the usual semantics
 apply for the file descriptor created by
 <b>memfd_create</b>(). A copy of the file descriptor is
-inherited by the child produced by <b>fork</b>(2) and refers
+inherited by the child produced by <a href="https://man.page/2/fork">fork(2)</a> and refers
 to the same file. The file descriptor is preserved across
-<b>execve</b>(2), unless the close-on-exec flag has been
+<a href="https://man.page/2/execve">execve(2)</a>, unless the close-on-exec flag has been
 set.</p>
 
 <h2>RETURN VALUE
@@ -279,12 +279,12 @@ file.</p> </td></tr>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>memfd_create</b>() system call provides a simple
-alternative to manually mounting a <b>tmpfs</b>(5)
+alternative to manually mounting a <a href="https://man.page/5/tmpfs">tmpfs(5)</a>
 filesystem and creating and opening a file in that
 filesystem. The primary purpose of <b>memfd_create</b>() is
 to create files and associated file descriptors that are
 used with the file-sealing APIs provided by
-<b>fcntl</b>(2).</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>memfd_create</b>() system call also has uses without file
@@ -292,7 +292,7 @@ sealing (which is why file-sealing is disabled, unless
 explicitly requested with the <b>MFD_ALLOW_SEALING</b>
 flag). In particular, it can be used as an alternative to
 creating files in <i>tmp</i> or as an alternative to using
-the <b>open</b>(2) <b>O_TMPFILE</b> in cases where there is
+the <a href="https://man.page/2/open">open(2)</a> <b>O_TMPFILE</b> in cases where there is
 no intention to actually link the resulting file into the
 filesystem.</p>
 
@@ -337,7 +337,7 @@ the usage of the sealing mechanism is as follows:</p>
 
 
 <p style="margin-top: 1em">The first process creates a
-<b>tmpfs</b>(5) file using <b>memfd_create</b>(). The call
+<a href="https://man.page/5/tmpfs">tmpfs(5)</a> file using <b>memfd_create</b>(). The call
 yields a file descriptor used in subsequent steps.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -350,8 +350,8 @@ yields a file descriptor used in subsequent steps.</p></td></tr>
 
 
 <p>The first process sizes the file created in the previous
-step using <b>ftruncate</b>(2), maps it using
-<b>mmap</b>(2), and populates the shared memory with the
+step using <a href="https://man.page/2/ftruncate">ftruncate(2)</a>, maps it using
+<a href="https://man.page/2/mmap">mmap(2)</a>, and populates the shared memory with the
 desired data.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -363,7 +363,7 @@ desired data.</p></td></tr>
 <td width="85%">
 
 
-<p>The first process uses the <b>fcntl</b>(2)
+<p>The first process uses the <a href="https://man.page/2/fcntl">fcntl(2)</a>
 <b>F_ADD_SEALS</b> operation to place one or more seals on
 the file, in order to restrict further modifications on the
 file. (If placing the seal <b>F_SEAL_WRITE</b>, then it will
@@ -371,7 +371,7 @@ be necessary to first unmap the shared writable mapping
 created in the previous step. Otherwise, behavior similar to
 <b>F_SEAL_WRITE</b> can be achieved by using
 <b>F_SEAL_FUTURE_WRITE</b>, which will prevent future writes
-via <b>mmap</b>(2) and <b>write</b>(2) from succeeding while
+via <a href="https://man.page/2/mmap">mmap(2)</a> and <a href="https://man.page/2/write">write(2)</a> from succeeding while
 keeping existing shared writable mappings).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -384,7 +384,7 @@ keeping existing shared writable mappings).</p></td></tr>
 
 
 <p>A second process obtains a file descriptor for the
-<b>tmpfs</b>(5) file and maps it. Among the possible ways in
+<a href="https://man.page/5/tmpfs">tmpfs(5)</a> file and maps it. Among the possible ways in
 which this could happen are the following:</p></td></tr>
 </table>
 
@@ -402,8 +402,8 @@ which this could happen are the following:</p></td></tr>
 <p style="margin-top: 1em">The process that called
 <b>memfd_create</b>() could transfer the resulting file
 descriptor to the second process via a UNIX domain socket
-(see <b>unix</b>(7) and <b>cmsg</b>(3)). The second process
-then maps the file using <b>mmap</b>(2).</p></td></tr>
+(see <a href="https://man.page/7/unix">unix(7)</a> and <a href="https://man.page/3/cmsg">cmsg(3)</a>). The second process
+then maps the file using <a href="https://man.page/2/mmap">mmap(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="6%">
@@ -414,7 +414,7 @@ then maps the file using <b>mmap</b>(2).</p></td></tr>
 <td width="80%">
 
 
-<p>The second process is created via <b>fork</b>(2) and
+<p>The second process is created via <a href="https://man.page/2/fork">fork(2)</a> and
 thus automatically inherits the file descriptor and mapping.
 (Note that in this case and the next, there is a natural
 trust relationship between the two processes, since they are
@@ -436,7 +436,7 @@ would not normally be necessary.)</p></td></tr>
 that called <b>memfd_create</b>()), and <i>&lt;fd&gt;</i> is
 the number of the file descriptor returned by the call to
 <b>memfd_create</b>() in that process. The second process
-then maps the file using <b>mmap</b>(2).</p></td></tr>
+then maps the file using <a href="https://man.page/2/mmap">mmap(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="6%">
@@ -449,7 +449,7 @@ then maps the file using <b>mmap</b>(2).</p></td></tr>
 </table>
 
 <p style="margin-left:15%; margin-top: 1em">The second
-process uses the <b>fcntl</b>(2) <b>F_GET_SEALS</b>
+process uses the <a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_GET_SEALS</b>
 operation to retrieve the bit mask of seals that has been
 applied to the file. This bit mask can be inspected in order
 to determine what kinds of restrictions have been placed on
@@ -467,7 +467,7 @@ two example programs that demonstrate the use of
 <b>memfd_create</b>() and the file sealing API.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The first
-program, <i>t_memfd_create.c</i>, creates a <b>tmpfs</b>(5)
+program, <i>t_memfd_create.c</i>, creates a <a href="https://man.page/5/tmpfs">tmpfs(5)</a>
 file using <b>memfd_create</b>(), sets a size for the file,
 maps it into memory, and optionally places some seals on the
 file. The program accepts up to three command-line
@@ -485,7 +485,7 @@ file.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 shell session demonstrates the use of these programs. First
-we create a <b>tmpfs</b>(5) file and set some seals on
+we create a <a href="https://man.page/5/tmpfs">tmpfs(5)</a> file and set some seals on
 it:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$
@@ -683,9 +683,9 @@ resulting mapping omitted */</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fcntl</b>(2),
-<b>ftruncate</b>(2), <b>mmap</b>(2), <b>shmget</b>(2),
-<b>shm_open</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fcntl">fcntl(2)</a>,
+<a href="https://man.page/2/ftruncate">ftruncate(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/shmget">shmget(2)</a>,
+<a href="https://man.page/3/shm_open">shm_open(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

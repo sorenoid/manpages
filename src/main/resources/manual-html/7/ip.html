@@ -72,10 +72,10 @@ also contains an IP router including a packet filter.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The programming
 interface is BSD-sockets compatible. For more information on
-sockets, see <b>socket</b>(7).</p>
+sockets, see <a href="https://man.page/7/socket">socket(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An IP socket is
-created using <b>socket</b>(2):</p>
+created using <a href="https://man.page/2/socket">socket(2)</a>:</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">socket(AF_INET,
@@ -84,7 +84,7 @@ socket_type, protocol);</p>
 <p style="margin-left:11%; margin-top: 1em">Valid socket
 types include <b>SOCK_STREAM</b> to open a stream socket,
 <b>SOCK_DGRAM</b> to open a datagram socket, and
-<b>SOCK_RAW</b> to open a <b>raw</b>(7) socket to access the
+<b>SOCK_RAW</b> to open a <a href="https://man.page/7/raw">raw(7)</a> socket to access the
 IP protocol directly.</p>
 
 
@@ -104,7 +104,7 @@ Valid values for <i>protocol</i> include:</p>
 <td width="74%">
 
 
-<p>0 and <b>IPPROTO_TCP</b> for <b>tcp</b>(7) stream
+<p>0 and <b>IPPROTO_TCP</b> for <a href="https://man.page/7/tcp">tcp(7)</a> stream
 sockets;</p> </td>
 <td width="12%">
 </td></tr>
@@ -118,7 +118,7 @@ sockets;</p> </td>
 <td width="74%">
 
 
-<p>0 and <b>IPPROTO_UDP</b> for <b>udp</b>(7) datagram
+<p>0 and <b>IPPROTO_UDP</b> for <a href="https://man.page/7/udp">udp(7)</a> datagram
 sockets;</p> </td>
 <td width="12%">
 </td></tr>
@@ -132,7 +132,7 @@ sockets;</p> </td>
 <td width="74%">
 
 
-<p><b>IPPROTO_SCTP</b> for <b>sctp</b>(7) stream sockets;
+<p><b>IPPROTO_SCTP</b> for <a href="https://man.page/7/sctp">sctp(7)</a> stream sockets;
 and</p> </td>
 <td width="12%">
 </td></tr>
@@ -146,7 +146,7 @@ and</p> </td>
 <td width="74%">
 
 
-<p><b>IPPROTO_UDPLITE</b> for <b>udplite</b>(7) datagram
+<p><b>IPPROTO_UDPLITE</b> for <a href="https://man.page/7/udplite">udplite(7)</a> datagram
 sockets.</p> </td>
 <td width="12%">
 </td></tr>
@@ -159,13 +159,13 @@ defined in RFC&nbsp;1700 assigned numbers.</p>
 <p style="margin-left:11%; margin-top: 1em">When a process
 wants to receive new incoming packets or connections, it
 should bind a socket to a local interface address using
-<b>bind</b>(2). In this case, only one IP socket may be
+<a href="https://man.page/2/bind">bind(2)</a>. In this case, only one IP socket may be
 bound to any given local (address, port) pair. When
 <b>INADDR_ANY</b> is specified in the bind call, the socket
 will be bound to <i>all</i> local interfaces. When
-<b>listen</b>(2) is called on an unbound socket, the socket
+<a href="https://man.page/2/listen">listen(2)</a> is called on an unbound socket, the socket
 is automatically bound to a random free port with the local
-address set to <b>INADDR_ANY</b>. When <b>connect</b>(2) is
+address set to <b>INADDR_ANY</b>. When <a href="https://man.page/2/connect">connect(2)</a> is
 called on an unbound socket, the socket is automatically
 bound to a random free port or to a usable shared port with
 the local address set to <b>INADDR_ANY</b>.</p>
@@ -181,8 +181,8 @@ format</b> <br>
 An IP socket address is defined as a combination of an IP
 interface address and a 16-bit port number. The basic IP
 protocol does not supply port numbers, they are implemented
-by higher level protocols like <b>udp</b>(7) and
-<b>tcp</b>(7). On raw sockets <i>sin_port</i> is set to the
+by higher level protocols like <a href="https://man.page/7/udp">udp(7)</a> and
+<a href="https://man.page/7/tcp">tcp(7)</a>. On raw sockets <i>sin_port</i> is set to the
 IP protocol.</p>
 
 <p style="margin-left:17%; margin-top: 1em">struct
@@ -208,10 +208,10 @@ network byte order. The port numbers below 1024 are called
 ports</i>). Only a privileged process (on Linux: a process
 that has the <b>CAP_NET_BIND_SERVICE</b> capability in the
 user namespace governing its network namespace) may
-<b>bind</b>(2) to these sockets. Note that the raw IPv4
+<a href="https://man.page/2/bind">bind(2)</a> to these sockets. Note that the raw IPv4
 protocol as such has no concept of a port, they are
-implemented only by higher protocols like <b>tcp</b>(7) and
-<b>udp</b>(7).</p>
+implemented only by higher protocols like <a href="https://man.page/7/tcp">tcp(7)</a> and
+<a href="https://man.page/7/udp">udp(7)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>sin_addr</i>
@@ -219,10 +219,10 @@ is the IP host address. The <i>s_addr</i> member of
 <i>struct in_addr</i> contains the host interface address in
 network byte order. <i>in_addr</i> should be assigned one of
 the <b>INADDR_*</b> values (e.g., <b>INADDR_LOOPBACK</b>)
-using <b>htonl</b>(3) or set using the <b>inet_aton</b>(3),
-<b>inet_addr</b>(3), <b>inet_makeaddr</b>(3) library
+using <a href="https://man.page/3/htonl">htonl(3)</a> or set using the <a href="https://man.page/3/inet_aton">inet_aton(3)</a>,
+<a href="https://man.page/3/inet_addr">inet_addr(3)</a>, <a href="https://man.page/3/inet_makeaddr">inet_makeaddr(3)</a> library
 functions or directly with the name resolver (see
-<b>gethostbyname</b>(3)).</p>
+<a href="https://man.page/3/gethostbyname">gethostbyname(3)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">IPv4 addresses
 are divided into unicast, broadcast, and multicast
@@ -237,7 +237,7 @@ sockets are allowed to use only unicast addresses.</p>
 <p style="margin-left:11%; margin-top: 1em">Note that the
 address and the port are always stored in network byte
 order. In particular, this means that you need to call
-<b>htons</b>(3) on the number that is assigned to a port.
+<a href="https://man.page/3/htons">htons(3)</a> on the number that is assigned to a port.
 All address/port manipulation functions in the standard
 library work in network byte order.</p>
 
@@ -252,14 +252,14 @@ for historical reasons.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
 options</b> <br>
 IP supports some protocol-specific socket options that can
-be set with <b>setsockopt</b>(2) and read with
-<b>getsockopt</b>(2). The socket option level for IP is
+be set with <a href="https://man.page/2/setsockopt">setsockopt(2)</a> and read with
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a>. The socket option level for IP is
 <b>IPPROTO_IP</b>. A boolean integer flag is zero when it is
 false, otherwise true.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When an invalid
-socket option is specified, <b>getsockopt</b>(2) and
-<b>setsockopt</b>(2) fail with the error <b>ENOPROTOOPT</b>.
+socket option is specified, <a href="https://man.page/2/getsockopt">getsockopt(2)</a> and
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> fail with the error <b>ENOPROTOOPT</b>.
 <b><br>
 IP_ADD_MEMBERSHIP</b> (since Linux 1.2)</p>
 
@@ -279,7 +279,7 @@ int imr_ifindex; /* interface index */ <br>
 <p style="margin-left:11%; margin-top: 1em"><i>imr_multiaddr</i>
 contains the address of the multicast group the application
 wants to join or leave. It must be a valid multicast address
-(or <b>setsockopt</b>(2) fails with the error
+(or <a href="https://man.page/2/setsockopt">setsockopt(2)</a> fails with the error
 <b>EINVAL</b>). <i>imr_address</i> is the address of the
 local interface with which the system should join the
 multicast group; if it is equal to <b>INADDR_ANY</b>, an
@@ -298,7 +298,7 @@ passed based on the size passed in <i>optlen</i>.)</p>
 
 
 <p style="margin-left:22%; margin-top: 1em"><b>IP_ADD_MEMBERSHIP</b>
-is valid only for <b>setsockopt</b>(2).</p>
+is valid only for <a href="https://man.page/2/setsockopt">setsockopt(2)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>IP_ADD_SOURCE_MEMBERSHIP</b>
@@ -337,9 +337,9 @@ than one source.</p>
 (since Linux 4.2)</p>
 
 <p style="margin-left:22%;">Inform the kernel to not
-reserve an ephemeral port when using <b>bind</b>(2) with a
+reserve an ephemeral port when using <a href="https://man.page/2/bind">bind(2)</a> with a
 port number of 0. The port will later be automatically
-chosen at <b>connect</b>(2) time, in a way that allows
+chosen at <a href="https://man.page/2/connect">connect(2)</a> time, in a way that allows
 sharing a source port as long as the 4-tuple is unique.</p>
 
 <p style="margin-left:11%;"><b>IP_BLOCK_SOURCE</b> (since
@@ -395,7 +395,7 @@ described below.</p>
 
 <p style="margin-left:22%;">If enabled, the user supplies
 an IP header in front of the user data. Valid only for
-<b>SOCK_RAW</b> sockets; see <b>raw</b>(7) for more
+<b>SOCK_RAW</b> sockets; see <a href="https://man.page/7/raw">raw(7)</a> for more
 information. When this flag is enabled, the values set by
 <b>IP_OPTIONS</b>, <b>IP_TTL</b>, and <b>IP_TOS</b> are
 ignored.</p>
@@ -440,7 +440,7 @@ description of multicast source filtering refer to RFC
 MTU of the current socket. Returns an integer.</p>
 
 <p style="margin-left:22%; margin-top: 1em"><b>IP_MTU</b>
-is valid only for <b>getsockopt</b>(2) and can be employed
+is valid only for <a href="https://man.page/2/getsockopt">getsockopt(2)</a> and can be employed
 only when the socket has been connected.</p>
 
 <p style="margin-left:11%;"><b>IP_MTU_DISCOVER</b> (since
@@ -472,7 +472,7 @@ nonzero values) to the
 <p style="margin-left:22%; margin-top: 1em">When PMTU
 discovery is enabled, the kernel automatically keeps track
 of the path MTU per destination host. When it is connected
-to a specific peer with <b>connect</b>(2), the currently
+to a specific peer with <a href="https://man.page/2/connect">connect(2)</a>, the currently
 known path MTU can be retrieved conveniently using the
 <b>IP_MTU</b> socket option (e.g., after an <b>EMSGSIZE</b>
 error occurred). The path MTU may change over time. For
@@ -495,8 +495,8 @@ MTU.</p>
 
 <p style="margin-left:22%; margin-top: 1em">To get an
 initial estimate of the path MTU, connect a datagram socket
-to the destination address using <b>connect</b>(2) and
-retrieve the MTU by calling <b>getsockopt</b>(2) with the
+to the destination address using <a href="https://man.page/2/connect">connect(2)</a> and
+retrieve the MTU by calling <a href="https://man.page/2/getsockopt">getsockopt(2)</a> with the
 <b>IP_MTU</b> option.</p>
 
 <p style="margin-left:22%; margin-top: 1em">It is possible
@@ -525,12 +525,12 @@ socket.</p>
 Linux 1.2)</p>
 
 <p style="margin-left:22%;">Set the local device for a
-multicast socket. The argument for <b>setsockopt</b>(2) is
+multicast socket. The argument for <a href="https://man.page/2/setsockopt">setsockopt(2)</a> is
 an <i>ip_mreqn</i> or (since Linux 3.5) <i>ip_mreq</i>
 structure similar to <b>IP_ADD_MEMBERSHIP</b>, or an
 <i>in_addr</i> structure. (The kernel determines which
 structure is being passed based on the size passed in
-<i>optlen</i>.) For <b>getsockopt</b>(2), the argument is an
+<i>optlen</i>.) For <a href="https://man.page/2/getsockopt">getsockopt(2)</a>, the argument is an
 <i>in_addr</i> structure.</p>
 
 <p style="margin-left:11%;"><b>IP_MULTICAST_LOOP</b> (since
@@ -566,7 +566,7 @@ valid only for <b>SOCK_RAW</b> sockets.</p>
 <p style="margin-left:22%;">Set or get the IP options to be
 sent with every packet from this socket. The arguments are a
 pointer to a memory buffer containing the options and the
-option length. The <b>setsockopt</b>(2) call sets the IP
+option length. The <a href="https://man.page/2/setsockopt">setsockopt(2)</a> call sets the IP
 options associated with a socket. The maximum option size
 for IPv4 is 40 bytes. See RFC&nbsp;791 for the allowed
 options. When the initial connection request packet for a
@@ -579,7 +579,7 @@ source routing options is disabled by default and can be
 enabled by using the <i>accept_source_route /proc</i>
 interface. Other options like timestamps are still handled.
 For datagram sockets, IP options can be set only by the
-local user. Calling <b>getsockopt</b>(2) with
+local user. Calling <a href="https://man.page/2/getsockopt">getsockopt(2)</a> with
 <b>IP_OPTIONS</b> puts the current IP options used for
 sending into the supplied buffer.</p>
 
@@ -590,13 +590,13 @@ sending into the supplied buffer.</p>
 configured on the sending and receiving hosts, this option
 enables receiving of the security context of the peer socket
 in an ancillary message of type <b>SCM_SECURITY</b>
-retrieved using <b>recvmsg</b>(2). This option is supported
+retrieved using <a href="https://man.page/2/recvmsg">recvmsg(2)</a>. This option is supported
 only for UDP sockets; for TCP or SCTP sockets, see the
 description of the <b>SO_PEERSEC</b> option below.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The value given
-as an argument to <b>setsockopt</b>(2) and returned as the
-result of <b>getsockopt</b>(2) is an integer boolean
+as an argument to <a href="https://man.page/2/setsockopt">setsockopt(2)</a> and returned as the
+result of <a href="https://man.page/2/getsockopt">getsockopt(2)</a> is an integer boolean
 flag.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The security
@@ -624,8 +624,8 @@ This works only for datagram oriented sockets. The argument
 is a flag that tells the socket whether the
 <b>IP_PKTINFO</b> message should be passed or not. The
 message itself can be sent/retrieved only as a control
-message with a packet using <b>recvmsg</b>(2) or
-<b>sendmsg</b>(2).</p>
+message with a packet using <a href="https://man.page/2/recvmsg">recvmsg(2)</a> or
+<a href="https://man.page/2/sendmsg">sendmsg(2)</a>.</p>
 
 <p style="margin-left:28%; margin-top: 1em">struct
 in_pktinfo { <br>
@@ -640,7 +640,7 @@ address */ <br>
 is the unique index of the interface the packet was received
 on. <i>ipi_spec_dst</i> is the local address of the packet
 and <i>ipi_addr</i> is the destination address in the packet
-header. If <b>IP_PKTINFO</b> is passed to <b>sendmsg</b>(2)
+header. If <b>IP_PKTINFO</b> is passed to <a href="https://man.page/2/sendmsg">sendmsg(2)</a>
 and <i>ipi_spec_dst</i> is not zero, then it is used as the
 local source address for the routing table lookup and for
 setting up IP source route options. When <i>ipi_ifindex</i>
@@ -655,7 +655,7 @@ the routing table lookup.</p>
 message passing. When enabled on a datagram socket, all
 generated errors will be queued in a per-socket error queue.
 When the user receives an error from a socket operation, the
-errors can be received by calling <b>recvmsg</b>(2) with the
+errors can be received by calling <a href="https://man.page/2/recvmsg">recvmsg(2)</a> with the
 <b>MSG_ERRQUEUE</b> flag set. The <i>sock_extended_err</i>
 structure describing the error will be passed in an
 ancillary message with the type <b>IP_RECVERR</b> and the
@@ -745,7 +745,7 @@ host. Not supported for <b>SOCK_STREAM</b> sockets.</p>
 
 <p style="margin-left:22%;">This boolean option enables the
 <b>IP_ORIGDSTADDR</b> ancillary message in
-<b>recvmsg</b>(2), in which the kernel returns the original
+<a href="https://man.page/2/recvmsg">recvmsg(2)</a>, in which the kernel returns the original
 destination address of the datagram being received. The
 ancillary message contains a <i>struct sockaddr_in</i>.</p>
 
@@ -855,11 +855,11 @@ created the peer socket unless overridden by the policy or
 by a process with the required permissions.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The argument to
-<b>getsockopt</b>(2) is a pointer to a buffer of the
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a> is a pointer to a buffer of the
 specified length in bytes into which the security context
 string will be copied. If the buffer length is less than the
 length of the security context string, then
-<b>getsockopt</b>(2) returns -1, sets <i>errno</i> to
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a> returns -1, sets <i>errno</i> to
 <b>ERANGE</b>, and returns the required length via
 <i>optlen</i>. The caller should allocate at least
 <b>NAME_MAX</b> bytes for the buffer initially, although
@@ -982,7 +982,7 @@ following circumstances:</p>
 
 
 <p>the port number in a socket address is specified as 0
-when calling <b>bind</b>(2);</p></td></tr>
+when calling <a href="https://man.page/2/bind">bind(2)</a>;</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -993,7 +993,7 @@ when calling <b>bind</b>(2);</p></td></tr>
 <td width="74%">
 
 
-<p><b>listen</b>(2) is called on a stream socket that was
+<p><a href="https://man.page/2/listen">listen(2)</a> is called on a stream socket that was
 not previously bound;</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -1005,7 +1005,7 @@ not previously bound;</p></td></tr>
 <td width="74%">
 
 
-<p><b>connect</b>(2) was called on a socket that was not
+<p><a href="https://man.page/2/connect">connect(2)</a> was called on a socket that was not
 previously bound;</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -1017,7 +1017,7 @@ previously bound;</p></td></tr>
 <td width="74%">
 
 
-<p><b>sendto</b>(2) is called on a datagram socket that was
+<p><a href="https://man.page/2/sendto">sendto(2)</a> is called on a datagram socket that was
 not previously bound.</p></td></tr>
 </table>
 
@@ -1053,7 +1053,7 @@ not doing it incurs a high cost to the network.</p>
 (Boolean; default: disabled; since Linux 2.4)</p>
 
 <p style="margin-left:22%;">If set, allows processes to
-<b>bind</b>(2) to nonlocal IP addresses, which can be quite
+<a href="https://man.page/2/bind">bind(2)</a> to nonlocal IP addresses, which can be quite
 useful, but may break some applications.</p>
 
 <p style="margin-left:11%;"><i>ip6frag_time</i> (integer;
@@ -1079,16 +1079,16 @@ with the number of bytes.</p>
 
 <p style="margin-left:11%;"><i>neigh/*</i></p>
 
-<p style="margin-left:22%;">See <b>arp</b>(7).</p>
+<p style="margin-left:22%;">See <a href="https://man.page/7/arp">arp(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Ioctls</b>
 <br>
-All ioctls described in <b>socket</b>(7) apply to
+All ioctls described in <a href="https://man.page/7/socket">socket(7)</a> apply to
 <b>ip</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Ioctls to
 configure generic device parameters are described in
-<b>netdevice</b>(7).</p>
+<a href="https://man.page/7/netdevice">netdevice(7)</a>.</p>
 
 <h2>ERRORS
 <a name="ERRORS"></a>
@@ -1152,7 +1152,7 @@ nonblocking socket is already in progress.</p>
 <p style="margin-left:11%;"><b>ECONNABORTED</b></p>
 
 <p style="margin-left:22%;">A connection was closed during
-an <b>accept</b>(2).</p>
+an <a href="https://man.page/2/accept">accept(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>EHOSTUNREACH</b></p>
 
@@ -1179,7 +1179,7 @@ caused by sending to a <i>blackhole</i> route.</p></td></tr>
 
 <p style="margin-left:11%;"><b>EISCONN</b></p>
 
-<p style="margin-left:22%;"><b>connect</b>(2) was called on
+<p style="margin-left:22%;"><a href="https://man.page/2/connect">connect(2)</a> was called on
 an already connected socket.</p>
 
 <p style="margin-left:11%;"><b>EMSGSIZE</b></p>
@@ -1270,8 +1270,8 @@ an unknown socket type was requested.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Other errors
 may be generated by the overlaying protocols; see
-<b>tcp</b>(7), <b>raw</b>(7), <b>udp</b>(7), and
-<b>socket</b>(7).</p>
+<a href="https://man.page/7/tcp">tcp(7)</a>, <a href="https://man.page/7/raw">raw(7)</a>, <a href="https://man.page/7/udp">udp(7)</a>, and
+<a href="https://man.page/7/socket">socket(7)</a>.</p>
 
 <h2>NOTES
 <a name="NOTES"></a>
@@ -1313,14 +1313,14 @@ BSD-based stacks use the <b>IPPROTO_IP</b> level.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>INADDR_ANY</b>
 (0.0.0.0) and <b>INADDR_BROADCAST</b> (255.255.255.255) are
 byte-order-neutral. <br>
-This means <b>htonl</b>(3) has no effect on them.</p>
+This means <a href="https://man.page/3/htonl">htonl(3)</a> has no effect on them.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Compatibility</b>
 <br>
 For compatibility with Linux 2.0, the obsolete
 <b>socket(AF_INET, SOCK_PACKET,</b> <i>protocol</i><b>)</b>
-syntax is still supported to open a <b>packet</b>(7) socket.
+syntax is still supported to open a <a href="https://man.page/7/packet">packet(7)</a> socket.
 This is deprecated and should be replaced by
 <b>socket(AF_PACKET, SOCK_RAW,</b> <i>protocol</i><b>)</b>
 instead. The main difference is the new <i>sockaddr_ll</i>
@@ -1337,8 +1337,8 @@ many inconsistent error values.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The error used
 to diagnose exhaustion of the ephemeral port range differs
-across the various system calls (<b>connect</b>(2),
-<b>bind</b>(2), <b>listen</b>(2), <b>sendto</b>(2)) that can
+across the various system calls (<a href="https://man.page/2/connect">connect(2)</a>,
+<a href="https://man.page/2/bind">bind(2)</a>, <a href="https://man.page/2/listen">listen(2)</a>, <a href="https://man.page/2/sendto">sendto(2)</a>) that can
 assign ephemeral ports.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The ioctls to
@@ -1347,7 +1347,7 @@ not described.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Receiving the
 original destination address with <b>MSG_ERRQUEUE</b> in
-<i>msg_name</i> by <b>recvmsg</b>(2) does not work in some
+<i>msg_name</i> by <a href="https://man.page/2/recvmsg">recvmsg(2)</a> does not work in some
 2.2 kernels.</p>
 
 <h2>SEE ALSO
@@ -1356,11 +1356,11 @@ original destination address with <b>MSG_ERRQUEUE</b> in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>recvmsg</b>(2),
-<b>sendmsg</b>(2), <b>byteorder</b>(3),
-<b>capabilities</b>(7), <b>icmp</b>(7), <b>ipv6</b>(7),
-<b>netdevice</b>(7), <b>netlink</b>(7), <b>raw</b>(7),
-<b>socket</b>(7), <b>tcp</b>(7), <b>udp</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/recvmsg">recvmsg(2)</a>,
+<a href="https://man.page/2/sendmsg">sendmsg(2)</a>, <a href="https://man.page/3/byteorder">byteorder(3)</a>,
+<a href="https://man.page/7/capabilities">capabilities(7)</a>, <a href="https://man.page/7/icmp">icmp(7)</a>, <a href="https://man.page/7/ipv6">ipv6(7)</a>,
+<a href="https://man.page/7/netdevice">netdevice(7)</a>, <a href="https://man.page/7/netlink">netlink(7)</a>, <a href="https://man.page/7/raw">raw(7)</a>,
+<a href="https://man.page/7/socket">socket(7)</a>, <a href="https://man.page/7/tcp">tcp(7)</a>, <a href="https://man.page/7/udp">udp(7)</a>,
 <b>ip</b>(8)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel

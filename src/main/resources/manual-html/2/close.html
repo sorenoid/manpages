@@ -60,16 +60,16 @@ close(int</b> <i>fd</i><b>);</b></p>
 <p style="margin-left:11%; margin-top: 1em"><b>close</b>()
 closes a file descriptor, so that it no longer refers to any
 file and may be reused. Any record locks (see
-<b>fcntl</b>(2)) held on the file it was associated with,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>) held on the file it was associated with,
 and owned by the process, are removed (regardless of the
 file descriptor that was used to obtain the lock).</p>
 
 <p style="margin-left:11%; margin-top: 1em">If <i>fd</i> is
 the last file descriptor referring to the underlying open
-file description (see <b>open</b>(2)), the resources
+file description (see <a href="https://man.page/2/open">open(2)</a>), the resources
 associated with the open file description are freed; if the
 file descriptor was the last reference to a file which has
-been removed using <b>unlink</b>(2), the file is
+been removed using <a href="https://man.page/2/unlink">unlink(2)</a>, the file is
 deleted.</p>
 
 <h2>RETURN VALUE
@@ -111,7 +111,7 @@ open file descriptor.</p></td></tr>
 
 
 <p>The <b>close</b>() call was interrupted by a signal; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="7%">
@@ -131,7 +131,7 @@ open file descriptor.</p></td></tr>
 <p style="margin-left:22%;">On NFS, these errors are not
 normally reported against the first write which exceeds the
 available storage space, but instead against a subsequent
-<b>write</b>(2), <b>fsync</b>(2), or <b>close</b>().</p>
+<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/fsync">fsync(2)</a>, or <b>close</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">See NOTES for a
 discussion of why <b>close</b>() should not be retried after
@@ -156,13 +156,13 @@ saved to disk, as the kernel uses the buffer cache to defer
 writes. Typically, filesystems do not flush buffers when a
 file is closed. If you need to be sure that the data is
 physically stored on the underlying disk, use
-<b>fsync</b>(2). (It will depend on the disk hardware at
+<a href="https://man.page/2/fsync">fsync(2)</a>. (It will depend on the disk hardware at
 this point.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 close-on-exec file descriptor flag can be used to ensure
 that a file descriptor is automatically closed upon a
-successful <b>execve</b>(2); see <b>fcntl</b>(2) for
+successful <a href="https://man.page/2/execve">execve(2)</a>; see <a href="https://man.page/2/fcntl">fcntl(2)</a> for
 details.</p>
 
 
@@ -191,8 +191,8 @@ performing operations on the same file descriptor:</p>
 
 
 <p>One thread is blocked in an I/O system call on the file
-descriptor. For example, it is trying to <b>write</b>(2) to
-a pipe that is already full, or trying to <b>read</b>(2)
+descriptor. For example, it is trying to <a href="https://man.page/2/write">write(2)</a> to
+a pipe that is already full, or trying to <a href="https://man.page/2/read">read(2)</a>
 from a stream socket which currently has no available
 data.</p> </td></tr>
 <tr valign="top" align="left">
@@ -218,7 +218,7 @@ possibly some other systems), the behavior is different. the
 blocking I/O system call holds a reference to the underlying
 open file description, and this reference keeps the
 description open until the I/O system call completes. (See
-<b>open</b>(2) for a discussion of open file descriptions.)
+<a href="https://man.page/2/open">open(2)</a> for a discussion of open file descriptions.)
 Thus, the blocking system call in the first thread may
 successfully complete after the <b>close</b>() in the second
 thread.</p>
@@ -227,7 +227,7 @@ thread.</p>
 error returns from close()</b> <br>
 A careful programmer will check the return value of
 <b>close</b>(), since it is quite possible that errors on a
-previous <b>write</b>(2) operation are reported only on the
+previous <a href="https://man.page/2/write">write(2)</a> operation are reported only on the
 final <b>close</b>() that releases the open file
 description. Failing to check the return value when closing
 a file may lead to <i>silent</i> loss of data. This can
@@ -260,7 +260,7 @@ behavior in the next major release of the standard.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A careful
 programmer who wants to know about I/O errors may precede
-<b>close</b>() with a call to <b>fsync</b>(2).</p>
+<b>close</b>() with a call to <a href="https://man.page/2/fsync">fsync(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>EINTR</b> error is a somewhat special case. Regarding the
@@ -296,9 +296,9 @@ POSIX.1 standard.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fcntl</b>(2),
-<b>fsync</b>(2), <b>open</b>(2), <b>shutdown</b>(2),
-<b>unlink</b>(2), <b>fclose</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fcntl">fcntl(2)</a>,
+<a href="https://man.page/2/fsync">fsync(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/shutdown">shutdown(2)</a>,
+<a href="https://man.page/2/unlink">unlink(2)</a>, <a href="https://man.page/3/fclose">fclose(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

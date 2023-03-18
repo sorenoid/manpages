@@ -84,7 +84,7 @@ off_t</b> <i>offset</i><b>, int</b>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>preadv</b>(),
@@ -121,11 +121,11 @@ size_t iov_len; /* Number of bytes to transfer */ <br>
 };</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>readv</b>() system call works just like <b>read</b>(2)
+<b>readv</b>() system call works just like <a href="https://man.page/2/read">read(2)</a>
 except that multiple buffers are filled.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>writev</b>() system call works just like <b>write</b>(2)
+<b>writev</b>() system call works just like <a href="https://man.page/2/write">write(2)</a>
 except that multiple buffers are written out.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Buffers are
@@ -141,24 +141,24 @@ contents of <i>iov[0]</i> before proceeding to
 transfers performed by <b>readv</b>() and <b>writev</b>()
 are atomic: the data written by <b>writev</b>() is written
 as a single block that is not intermingled with output from
-writes in other processes (but see <b>pipe</b>(7) for an
+writes in other processes (but see <a href="https://man.page/7/pipe">pipe(7)</a> for an
 exception); analogously, <b>readv</b>() is guaranteed to
 read a contiguous block of data from the file, regardless of
 read operations performed in other threads or processes that
 have file descriptors referring to the same open file
-description (see <b>open</b>(2)).</p>
+description (see <a href="https://man.page/2/open">open(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>preadv() and
 pwritev()</b> <br>
 The <b>preadv</b>() system call combines the functionality
-of <b>readv</b>() and <b>pread</b>(2). It performs the same
+of <b>readv</b>() and <a href="https://man.page/2/pread">pread(2)</a>. It performs the same
 task as <b>readv</b>(), but adds a fourth argument,
 <i>offset</i>, which specifies the file offset at which the
 input operation is to be performed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>pwritev</b>() system call combines the functionality of
-<b>writev</b>() and <b>pwrite</b>(2). It performs the same
+<b>writev</b>() and <a href="https://man.page/2/pwrite">pwrite(2)</a>. It performs the same
 task as <b>writev</b>(), but adds a fourth argument,
 <i>offset</i>, which specifies the file offset at which the
 output operation is to be performed.</p>
@@ -243,7 +243,7 @@ written.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that it is
 not an error for a successful call to transfer fewer bytes
-than requested (see <b>read</b>(2) and <b>write</b>(2)).</p>
+than requested (see <a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">On error, -1 is
 returned, and <i>errno</i> is set appropriately.</p>
@@ -254,10 +254,10 @@ returned, and <i>errno</i> is set appropriately.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The errors are
-as given for <b>read</b>(2) and <b>write</b>(2).
+as given for <a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a>.
 Furthermore, <b>preadv</b>(), <b>preadv2</b>(),
 <b>pwritev</b>(), and <b>pwritev2</b>() can also fail for
-the same reasons as <b>lseek</b>(2). Additionally, the
+the same reasons as <a href="https://man.page/2/lseek">lseek(2)</a>. Additionally, the
 following errors are defined:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -366,12 +366,12 @@ they detected that the underlying kernel system call failed
 because this limit was exceeded. In the case of
 <b>readv</b>(), the wrapper function allocated a temporary
 buffer large enough for all of the items specified by
-<i>iov</i>, passed that buffer in a call to <b>read</b>(2),
+<i>iov</i>, passed that buffer in a call to <a href="https://man.page/2/read">read(2)</a>,
 copied data from the buffer to the locations specified by
 the <i>iov_base</i> fields of the elements of <i>iov</i>,
 and then freed the buffer. The wrapper function for
 <b>writev</b>() performed the analogous task using a
-temporary buffer and a call to <b>write</b>(2).</p>
+temporary buffer and a call to <a href="https://man.page/2/write">write(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The need for
 this extra effort in the glibc wrapper functions went away
@@ -415,8 +415,8 @@ writev(STDOUT_FILENO, iov, 2);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pread</b>(2),
-<b>read</b>(2), <b>write</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/pread">pread(2)</a>,
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/write">write(2)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

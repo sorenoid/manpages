@@ -46,14 +46,14 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">For an overview
-of namespaces, see <b>namespaces</b>(7).</p>
+of namespaces, see <a href="https://man.page/7/namespaces">namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">User namespaces
 isolate security-related identifiers and attributes, in
 particular, user IDs and group IDs (see
-<b>credentials</b>(7)), the root directory, keys (see
-<b>keyrings</b>(7)), and capabilities (see
-<b>capabilities</b>(7)). A process&rsquo;s user and group
+<a href="https://man.page/7/credentials">credentials(7)</a>), the root directory, keys (see
+<a href="https://man.page/7/keyrings">keyrings(7)</a>), and capabilities (see
+<a href="https://man.page/7/capabilities">capabilities(7)</a>). A process&rsquo;s user and group
 IDs can be different inside and outside a user namespace. In
 particular, a process can have a normal unprivileged user ID
 outside a user namespace while at the same time having a
@@ -69,71 +69,71 @@ namespace&mdash;except the initial (&quot;root&quot;)
 namespace&mdash;has a parent user namespace, and can have
 zero or more child user namespaces. The parent user
 namespace is the user namespace of the process that creates
-the user namespace via a call to <b>unshare</b>(2) or
-<b>clone</b>(2) with the <b>CLONE_NEWUSER</b> flag.</p>
+the user namespace via a call to <a href="https://man.page/2/unshare">unshare(2)</a> or
+<a href="https://man.page/2/clone">clone(2)</a> with the <b>CLONE_NEWUSER</b> flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel
 imposes (since version 3.11) a limit of 32 nested levels of
-user namespaces. Calls to <b>unshare</b>(2) or
-<b>clone</b>(2) that would cause this limit to be exceeded
+user namespaces. Calls to <a href="https://man.page/2/unshare">unshare(2)</a> or
+<a href="https://man.page/2/clone">clone(2)</a> that would cause this limit to be exceeded
 fail with the error <b>EUSERS</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each process is
 a member of exactly one user namespace. A process created
-via <b>fork</b>(2) or <b>clone</b>(2) without the
+via <a href="https://man.page/2/fork">fork(2)</a> or <a href="https://man.page/2/clone">clone(2)</a> without the
 <b>CLONE_NEWUSER</b> flag is a member of the same user
 namespace as its parent. A single-threaded process can join
-another user namespace with <b>setns</b>(2) if it has the
+another user namespace with <a href="https://man.page/2/setns">setns(2)</a> if it has the
 <b>CAP_SYS_ADMIN</b> in that namespace; upon doing so, it
 gains a full set of capabilities in that namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A call to
-<b>clone</b>(2) or <b>unshare</b>(2) with the
+<a href="https://man.page/2/clone">clone(2)</a> or <a href="https://man.page/2/unshare">unshare(2)</a> with the
 <b>CLONE_NEWUSER</b> flag makes the new child process (for
-<b>clone</b>(2)) or the caller (for <b>unshare</b>(2)) a
+<a href="https://man.page/2/clone">clone(2)</a>) or the caller (for <a href="https://man.page/2/unshare">unshare(2)</a>) a
 member of the new user namespace created by the call.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>NS_GET_PARENT ioctl</b>(2) operation can be used to
 discover the parental relationship between user namespaces;
-see <b>ioctl_ns</b>(2).</p>
+see <a href="https://man.page/2/ioctl_ns">ioctl_ns(2)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Capabilities</b>
 <br>
-The child process created by <b>clone</b>(2) with the
+The child process created by <a href="https://man.page/2/clone">clone(2)</a> with the
 <b>CLONE_NEWUSER</b> flag starts out with a complete set of
 capabilities in the new user namespace. Likewise, a process
-that creates a new user namespace using <b>unshare</b>(2) or
-joins an existing user namespace using <b>setns</b>(2) gains
+that creates a new user namespace using <a href="https://man.page/2/unshare">unshare(2)</a> or
+joins an existing user namespace using <a href="https://man.page/2/setns">setns(2)</a> gains
 a full set of capabilities in that namespace. On the other
 hand, that process has no capabilities in the parent (in the
-case of <b>clone</b>(2)) or previous (in the case of
-<b>unshare</b>(2) and <b>setns</b>(2)) user namespace, even
+case of <a href="https://man.page/2/clone">clone(2)</a>) or previous (in the case of
+<a href="https://man.page/2/unshare">unshare(2)</a> and <a href="https://man.page/2/setns">setns(2)</a>) user namespace, even
 if the new namespace is created or joined by the root user
 (i.e., a process with user ID 0 in the root namespace).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that a
-call to <b>execve</b>(2) will cause a process&rsquo;s
+call to <a href="https://man.page/2/execve">execve(2)</a> will cause a process&rsquo;s
 capabilities to be recalculated in the usual way (see
-<b>capabilities</b>(7)). Consequently, unless the process
+<a href="https://man.page/7/capabilities">capabilities(7)</a>). Consequently, unless the process
 has a user ID of 0 within the namespace, or the executable
 file has a nonempty inheritable capabilities mask, the
 process will lose all capabilities. See the discussion of
 user and group ID mappings, below.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A call to
-<b>clone</b>(2) or <b>unshare</b>(2) using the
-<b>CLONE_NEWUSER</b> flag or a call to <b>setns</b>(2) that
+<a href="https://man.page/2/clone">clone(2)</a> or <a href="https://man.page/2/unshare">unshare(2)</a> using the
+<b>CLONE_NEWUSER</b> flag or a call to <a href="https://man.page/2/setns">setns(2)</a> that
 moves the caller into another user namespace sets the
-&quot;securebits&quot; flags (see <b>capabilities</b>(7)) to
+&quot;securebits&quot; flags (see <a href="https://man.page/7/capabilities">capabilities(7)</a>) to
 their default values (all flags disabled) in the child (for
-<b>clone</b>(2)) or caller (for <b>unshare</b>(2) or
-<b>setns</b>(2)). Note that because the caller no longer has
+<a href="https://man.page/2/clone">clone(2)</a>) or caller (for <a href="https://man.page/2/unshare">unshare(2)</a> or
+<a href="https://man.page/2/setns">setns(2)</a>). Note that because the caller no longer has
 capabilities in its original user namespace after a call to
-<b>setns</b>(2), it is not possible for a process to reset
+<a href="https://man.page/2/setns">setns(2)</a>, it is not possible for a process to reset
 its &quot;securebits&quot; flags while retaining its user
-namespace membership by using a pair of <b>setns</b>(2)
+namespace membership by using a pair of <a href="https://man.page/2/setns">setns(2)</a>
 calls to move to another user namespace and then return to
 its original user namespace.</p>
 
@@ -160,7 +160,7 @@ capabilities in its effective capability set in various
 ways. For example, it may execute a set-user-ID program or
 an executable with associated file capabilities. In
 addition, a process may gain capabilities via the effect of
-<b>clone</b>(2), <b>unshare</b>(2), or <b>setns</b>(2), as
+<a href="https://man.page/2/clone">clone(2)</a>, <a href="https://man.page/2/unshare">unshare(2)</a>, or <a href="https://man.page/2/setns">setns(2)</a>, as
 already described.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -194,7 +194,7 @@ in the namespace. By virtue of the previous rule, this means
 that the process has all capabilities in all further removed
 descendant user namespaces as well. The <b>NS_GET_OWNER_UID
 ioctl</b>(2) operation can be used to discover the user ID
-of the owner of the namespace; see <b>ioctl_ns</b>(2).</p></td></tr>
+of the owner of the namespace; see <a href="https://man.page/2/ioctl_ns">ioctl_ns(2)</a>.</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Effect of
@@ -275,7 +275,7 @@ filesystems:</p>
 <td width="40%">
 
 
-<p><b>tmpfs</b>(5) (since Linux 3.9)</p></td>
+<p><a href="https://man.page/5/tmpfs">tmpfs(5)</a> (since Linux 3.9)</p></td>
 <td width="40%">
 </td></tr>
 <tr valign="top" align="left">
@@ -354,17 +354,17 @@ that owns the nonuser namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
 <b>CLONE_NEWUSER</b> is specified along with other
-<b>CLONE_NEW*</b> flags in a single <b>clone</b>(2) or
-<b>unshare</b>(2) call, the user namespace is guaranteed to
-be created first, giving the child (<b>clone</b>(2)) or
-caller (<b>unshare</b>(2)) privileges over the remaining
+<b>CLONE_NEW*</b> flags in a single <a href="https://man.page/2/clone">clone(2)</a> or
+<a href="https://man.page/2/unshare">unshare(2)</a> call, the user namespace is guaranteed to
+be created first, giving the child (<a href="https://man.page/2/clone">clone(2)</a>) or
+caller (<a href="https://man.page/2/unshare">unshare(2)</a>) privileges over the remaining
 namespaces created by the call. Thus, it is possible for an
 unprivileged caller to specify this combination of
 flags.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a new
 namespace (other than a user namespace) is created via
-<b>clone</b>(2) or <b>unshare</b>(2), the kernel records the
+<a href="https://man.page/2/clone">clone(2)</a> or <a href="https://man.page/2/unshare">unshare(2)</a>, the kernel records the
 user namespace of the creating process as the owner of the
 new namespace. (This association can&rsquo;t be changed.)
 When a process in the new namespace subsequently performs
@@ -373,7 +373,7 @@ isolated by the namespace, the permission checks are
 performed according to the process&rsquo;s capabilities in
 the user namespace that the kernel associated with the new
 namespace. For example, suppose that a process attempts to
-change the hostname (<b>sethostname</b>(2)), a resource
+change the hostname (<a href="https://man.page/2/sethostname">sethostname(2)</a>), a resource
 governed by the UTS namespace. In this case, the kernel will
 determine which user namespace owns the process&rsquo;s UTS
 namespace, and check whether the process has the required
@@ -383,7 +383,7 @@ namespace.</p>
 <p style="margin-left:11%; margin-top: 1em">The
 <b>NS_GET_USERNS ioctl</b>(2) operation can be used to
 discover the user namespace that owns a nonuser namespace;
-see <b>ioctl_ns</b>(2).</p>
+see <a href="https://man.page/2/ioctl_ns">ioctl_ns(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>User and
 group ID mappings: uid_map and gid_map</b> <br>
@@ -504,9 +504,9 @@ namespaces.</p>
 
 <p style="margin-left:11%; margin-top: 1em">System calls
 that return user IDs (group IDs)&mdash;for example,
-<b>getuid</b>(2), <b>getgid</b>(2), and the credential
+<a href="https://man.page/2/getuid">getuid(2)</a>, <a href="https://man.page/2/getgid">getgid(2)</a>, and the credential
 fields in the structure returned by
-<b>stat</b>(2)&mdash;return the user ID (group ID) mapped
+<a href="https://man.page/2/stat">stat(2)</a>&mdash;return the user ID (group ID) mapped
 into the caller&rsquo;s user namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a process
@@ -514,7 +514,7 @@ accesses a file, its user and group IDs are mapped into the
 initial user namespace for the purpose of permission
 checking and assigning IDs when creating a file. When a
 process retrieves file user and group IDs via
-<b>stat</b>(2), the IDs are mapped in the opposite
+<a href="https://man.page/2/stat">stat(2)</a>, the IDs are mapped in the opposite
 direction, to produce values relative to the process user
 and group ID mappings.</p>
 
@@ -536,7 +536,7 @@ parent namespace, and the length of the range is the largest
 32-bit unsigned integer. This leaves 4294967295 (the 32-bit
 signed -1 value) unmapped. This is deliberate:
 <i>(uid_t)&nbsp;-1</i> is used in several interfaces (e.g.,
-<b>setreuid</b>(2)) as a way to specify &quot;no user
+<a href="https://man.page/2/setreuid">setreuid(2)</a>) as a way to specify &quot;no user
 ID&quot;. Leaving <i>(uid_t)&nbsp;-1</i> unmapped and
 unusable guarantees that there will be no confusion when
 using these interfaces.</p>
@@ -596,8 +596,8 @@ Linux 4.14 and earlier, this limit was (arbitrarily) set at
 5 lines. Since Linux 4.15, the limit is 340 lines. In
 addition, the number of bytes written to the file must be
 less than the system page size, and the write must be
-performed at the start of the file (i.e., <b>lseek</b>(2)
-and <b>pwrite</b>(2) can&rsquo;t be used to write to nonzero
+performed at the start of the file (i.e., <a href="https://man.page/2/lseek">lseek(2)</a>
+and <a href="https://man.page/2/pwrite">pwrite(2)</a> can&rsquo;t be used to write to nonzero
 offsets in the file).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -774,7 +774,7 @@ as the process that created the user namespace.</p></td></tr>
 
 
 <p>In the case of <i>gid_map</i>, use of the
-<b>setgroups</b>(2) system call must first be denied by
+<a href="https://man.page/2/setgroups">setgroups(2)</a> system call must first be denied by
 writing &quot;<i>deny</i>&quot; to the
 <i>/proc/[pid]/setgroups</i> file (see below) before writing
 to <i>gid_map</i>.</p></td></tr>
@@ -795,17 +795,17 @@ written, only the mapped values may be used in system calls
 that change user and group IDs.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For user IDs,
-the relevant system calls include <b>setuid</b>(2),
-<b>setfsuid</b>(2), <b>setreuid</b>(2), and
-<b>setresuid</b>(2). For group IDs, the relevant system
-calls include <b>setgid</b>(2), <b>setfsgid</b>(2),
-<b>setregid</b>(2), <b>setresgid</b>(2), and
-<b>setgroups</b>(2).</p>
+the relevant system calls include <a href="https://man.page/2/setuid">setuid(2)</a>,
+<a href="https://man.page/2/setfsuid">setfsuid(2)</a>, <a href="https://man.page/2/setreuid">setreuid(2)</a>, and
+<a href="https://man.page/2/setresuid">setresuid(2)</a>. For group IDs, the relevant system
+calls include <a href="https://man.page/2/setgid">setgid(2)</a>, <a href="https://man.page/2/setfsgid">setfsgid(2)</a>,
+<a href="https://man.page/2/setregid">setregid(2)</a>, <a href="https://man.page/2/setresgid">setresgid(2)</a>, and
+<a href="https://man.page/2/setgroups">setgroups(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Writing
 &quot;<i>deny</i>&quot; to the <i>/proc/[pid]/setgroups</i>
 file before writing to <i>/proc/[pid]/gid_map</i> will
-permanently disable <b>setgroups</b>(2) in a user namespace
+permanently disable <a href="https://man.page/2/setgroups">setgroups(2)</a> in a user namespace
 and allow writing to <i>/proc/[pid]/gid_map</i> without
 having the <b>CAP_SETGID</b> capability in the parent user
 namespace.</p>
@@ -815,12 +815,12 @@ namespace.</p>
 The <i>/proc/[pid]/setgroups</i> file displays the string
 &quot;<i>allow</i>&quot; if processes in the user namespace
 that contains the process <i>pid</i> are permitted to employ
-the <b>setgroups</b>(2) system call; it displays
-&quot;<i>deny</i>&quot; if <b>setgroups</b>(2) is not
+the <a href="https://man.page/2/setgroups">setgroups(2)</a> system call; it displays
+&quot;<i>deny</i>&quot; if <a href="https://man.page/2/setgroups">setgroups(2)</a> is not
 permitted in that user namespace. Note that regardless of
 the value in the <i>/proc/[pid]/setgroups</i> file (and
 regardless of the process&rsquo;s capabilities), calls to
-<b>setgroups</b>(2) are also not permitted if
+<a href="https://man.page/2/setgroups">setgroups(2)</a> are also not permitted if
 <i>/proc/[pid]/gid_map</i> has not yet been set.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A privileged
@@ -830,19 +830,19 @@ namespace) may write either of the strings
 file <i>before</i> writing a group ID mapping for this user
 namespace to the file <i>/proc/[pid]/gid_map</i>. Writing
 the string &quot;<i>deny</i>&quot; prevents any process in
-the user namespace from employing <b>setgroups</b>(2).</p>
+the user namespace from employing <a href="https://man.page/2/setgroups">setgroups(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The essence of
 the restrictions described in the preceding paragraph is
 that it is permitted to write to
 <i>/proc/[pid]/setgroups</i> only so long as calling
-<b>setgroups</b>(2) is disallowed because
+<a href="https://man.page/2/setgroups">setgroups(2)</a> is disallowed because
 <i>/proc/[pid]/gid_map</i> has not been set. This ensures
 that a process cannot transition from a state where
-<b>setgroups</b>(2) is allowed to a state where
-<b>setgroups</b>(2) is denied; a process can transition only
-from <b>setgroups</b>(2) being disallowed to
-<b>setgroups</b>(2) being allowed.</p>
+<a href="https://man.page/2/setgroups">setgroups(2)</a> is allowed to a state where
+<a href="https://man.page/2/setgroups">setgroups(2)</a> is denied; a process can transition only
+from <a href="https://man.page/2/setgroups">setgroups(2)</a> being disallowed to
+<a href="https://man.page/2/setgroups">setgroups(2)</a> being allowed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The default
 value of this file in the initial user namespace is
@@ -850,9 +850,9 @@ value of this file in the initial user namespace is
 
 <p style="margin-left:11%; margin-top: 1em">Once
 <i>/proc/[pid]/gid_map</i> has been written to (which has
-the effect of enabling <b>setgroups</b>(2) in the user
+the effect of enabling <a href="https://man.page/2/setgroups">setgroups(2)</a> in the user
 namespace), it is no longer possible to disallow
-<b>setgroups</b>(2) by writing &quot;<i>deny</i>&quot; to
+<a href="https://man.page/2/setgroups">setgroups(2)</a> by writing &quot;<i>deny</i>&quot; to
 <i>/proc/[pid]/setgroups</i> (the write fails with the error
 <b>EPERM</b>).</p>
 
@@ -862,7 +862,7 @@ from its parent.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
 <i>setgroups</i> file has the value &quot;<i>deny</i>&quot;,
-then the <b>setgroups</b>(2) system call can&rsquo;t
+then the <a href="https://man.page/2/setgroups">setgroups(2)</a> system call can&rsquo;t
 subsequently be reenabled (by writing
 &quot;<i>allow</i>&quot; to the file) in this user
 namespace. (Attempts to do so fail with the error
@@ -876,11 +876,11 @@ because it addresses a security issue. The issue concerned
 files with permissions such as &quot;rwx---rwx&quot;. Such
 files give fewer permissions to &quot;group&quot; than they
 do to &quot;other&quot;. This means that dropping groups
-using <b>setgroups</b>(2) might allow a process file access
+using <a href="https://man.page/2/setgroups">setgroups(2)</a> might allow a process file access
 that it did not formerly have. Before the existence of user
 namespaces this was not a concern, since only a privileged
 process (one with the <b>CAP_SETGID</b> capability) could
-call <b>setgroups</b>(2). However, with the introduction of
+call <a href="https://man.page/2/setgroups">setgroups(2)</a>. However, with the introduction of
 user namespaces, it became possible for an unprivileged
 process to create a new namespace in which the user had all
 privileges. This then allowed formerly unprivileged users to
@@ -888,33 +888,33 @@ drop groups and thus gain file access that they did not
 previously have. The <i>/proc/[pid]/setgroups</i> file was
 added to address this security issue, by denying any pathway
 for an unprivileged process to drop groups with
-<b>setgroups</b>(2).</p>
+<a href="https://man.page/2/setgroups">setgroups(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Unmapped
 user and group IDs</b> <br>
 There are various places where an unmapped user ID (group
 ID) may be exposed to user space. For example, the first
-process in a new user namespace may call <b>getuid</b>(2)
+process in a new user namespace may call <a href="https://man.page/2/getuid">getuid(2)</a>
 before a user ID mapping has been defined for the namespace.
 In most such cases, an unmapped user ID is converted to the
 overflow user ID (group ID); the default value for the
 overflow user ID (group ID) is 65534. See the descriptions
 of <i>/proc/sys/kernel/overflowuid</i> and
-<i>/proc/sys/kernel/overflowgid</i> in <b>proc</b>(5).</p>
+<i>/proc/sys/kernel/overflowgid</i> in <a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The cases where
 unmapped IDs are mapped in this fashion include system calls
-that return user IDs (<b>getuid</b>(2), <b>getgid</b>(2),
+that return user IDs (<a href="https://man.page/2/getuid">getuid(2)</a>, <a href="https://man.page/2/getgid">getgid(2)</a>,
 and similar), credentials passed over a UNIX domain socket,
-credentials returned by <b>stat</b>(2), <b>waitid</b>(2),
+credentials returned by <a href="https://man.page/2/stat">stat(2)</a>, <a href="https://man.page/2/waitid">waitid(2)</a>,
 and the System V IPC &quot;ctl&quot; <b>IPC_STAT</b>
 operations, credentials exposed by <i>/proc/[pid]/status</i>
 and the files in <i>/proc/sysvipc/*</i>, credentials
 returned via the <i>si_uid</i> field in the <i>siginfo_t</i>
-received with a signal (see <b>sigaction</b>(2)),
+received with a signal (see <a href="https://man.page/2/sigaction">sigaction(2)</a>),
 credentials written to the process accounting file (see
-<b>acct</b>(5)), and credentials returned with POSIX message
-queue notifications (see <b>mq_notify</b>(3)).</p>
+<a href="https://man.page/5/acct">acct(5)</a>), and credentials returned with POSIX message
+queue notifications (see <a href="https://man.page/3/mq_notify">mq_notify(3)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">There is one
 notable case where unmapped user and group IDs are
@@ -997,7 +997,7 @@ program is executed, but the process&rsquo;s effective user
 (group) ID is left unchanged. (This mirrors the semantics of
 executing a set-user-ID or set-group-ID program that resides
 on a filesystem that was mounted with the <b>MS_NOSUID</b>
-flag, as described in <b>mount</b>(2).)</p>
+flag, as described in <a href="https://man.page/2/mount">mount(2)</a>.)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous</b>
@@ -1005,7 +1005,7 @@ flag, as described in <b>mount</b>(2).)</p>
 When a process&rsquo;s user and group IDs are passed over a
 UNIX domain socket to a process in a different user
 namespace (see the description of <b>SCM_CREDENTIALS</b> in
-<b>unix</b>(7)), they are translated into the corresponding
+<a href="https://man.page/7/unix">unix(7)</a>), they are translated into the corresponding
 values as per the receiving process&rsquo;s user and group
 ID mappings.</p>
 
@@ -1640,12 +1640,12 @@ printf(&quot;%s: terminating\n&quot;, argv[0]);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>newgidmap</b>(1),
-<b>newuidmap</b>(1), <b>clone</b>(2), <b>ptrace</b>(2),
-<b>setns</b>(2), <b>unshare</b>(2), <b>proc</b>(5),
-<b>subgid</b>(5), <b>subuid</b>(5), <b>capabilities</b>(7),
-<b>cgroup_namespaces</b>(7), <b>credentials</b>(7),
-<b>namespaces</b>(7), <b>pid_namespaces</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/newgidmap">newgidmap(1)</a>,
+<a href="https://man.page/1/newuidmap">newuidmap(1)</a>, <a href="https://man.page/2/clone">clone(2)</a>, <a href="https://man.page/2/ptrace">ptrace(2)</a>,
+<a href="https://man.page/2/setns">setns(2)</a>, <a href="https://man.page/2/unshare">unshare(2)</a>, <a href="https://man.page/5/proc">proc(5)</a>,
+<a href="https://man.page/5/subgid">subgid(5)</a>, <a href="https://man.page/5/subuid">subuid(5)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/cgroup_namespaces">cgroup_namespaces(7)</a>, <a href="https://man.page/7/credentials">credentials(7)</a>,
+<a href="https://man.page/7/namespaces">namespaces(7)</a>, <a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel
 source file

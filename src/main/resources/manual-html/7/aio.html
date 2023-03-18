@@ -59,41 +59,41 @@ interface consists of the following functions: <b><br>
 aio_read</b>(3)</p>
 
 <p style="margin-left:22%;">Enqueue a read request. This is
-the asynchronous analog of <b>read</b>(2).</p>
+the asynchronous analog of <a href="https://man.page/2/read">read(2)</a>.</p>
 
-<p style="margin-left:11%;"><b>aio_write</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/aio_write">aio_write(3)</a></p>
 
 <p style="margin-left:22%;">Enqueue a write request. This
-is the asynchronous analog of <b>write</b>(2).</p>
+is the asynchronous analog of <a href="https://man.page/2/write">write(2)</a>.</p>
 
-<p style="margin-left:11%;"><b>aio_fsync</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/aio_fsync">aio_fsync(3)</a></p>
 
 <p style="margin-left:22%;">Enqueue a sync request for the
 I/O operations on a file descriptor. This is the
-asynchronous analog of <b>fsync</b>(2) and
-<b>fdatasync</b>(2).</p>
+asynchronous analog of <a href="https://man.page/2/fsync">fsync(2)</a> and
+<a href="https://man.page/2/fdatasync">fdatasync(2)</a>.</p>
 
-<p style="margin-left:11%;"><b>aio_error</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/aio_error">aio_error(3)</a></p>
 
 <p style="margin-left:22%;">Obtain the error status of an
 enqueued I/O request.</p>
 
-<p style="margin-left:11%;"><b>aio_return</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/aio_return">aio_return(3)</a></p>
 
 <p style="margin-left:22%;">Obtain the return status of a
 completed I/O request.</p>
 
-<p style="margin-left:11%;"><b>aio_suspend</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/aio_suspend">aio_suspend(3)</a></p>
 
 <p style="margin-left:22%;">Suspend the caller until one or
 more of a specified set of I/O requests completes.</p>
 
-<p style="margin-left:11%;"><b>aio_cancel</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/aio_cancel">aio_cancel(3)</a></p>
 
 <p style="margin-left:22%;">Attempt to cancel outstanding
 I/O requests on a specified file descriptor.</p>
 
-<p style="margin-left:11%;"><b>lio_listio</b>(3)</p>
+<p style="margin-left:11%;"><a href="https://man.page/3/lio_listio">lio_listio(3)</a></p>
 
 <p style="margin-left:22%;">Enqueue multiple I/O requests
 using a single function call.</p>
@@ -160,7 +160,7 @@ pointed to by <i>aio_buf</i>.</p>
 <p style="margin-left:22%;">This field specifies a value
 that is subtracted from the calling thread&rsquo;s real-time
 priority in order to determine the priority for execution of
-this I/O request (see <b>pthread_setschedparam</b>(3)). The
+this I/O request (see <a href="https://man.page/3/pthread_setschedparam">pthread_setschedparam(3)</a>). The
 specified value must be between 0 and the value returned by
 <i>sysconf(_SC_AIO_PRIO_DELTA_MAX)</i>. This field is
 ignored for file synchronization operations.</p>
@@ -172,12 +172,12 @@ specifies how the caller is to be notified when the
 asynchronous I/O operation completes. Possible values for
 <i>aio_sigevent.sigev_notify</i> are <b>SIGEV_NONE</b>,
 <b>SIGEV_SIGNAL</b>, and <b>SIGEV_THREAD</b>. See
-<b>sigevent</b>(7) for further details.</p>
+<a href="https://man.page/7/sigevent">sigevent(7)</a> for further details.</p>
 
 <p style="margin-left:11%;"><i>aio_lio_opcode</i></p>
 
 <p style="margin-left:22%;">The type of operation to be
-performed; used only for <b>lio_listio</b>(3).</p>
+performed; used only for <a href="https://man.page/3/lio_listio">lio_listio(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In addition to
 the standard functions listed above, the GNU C library
@@ -234,7 +234,7 @@ POSIX.1-2008.</p>
 
 <p style="margin-left:11%; margin-top: 1em">It is a good
 idea to zero out the control block buffer before use (see
-<b>memset</b>(3)). The control block buffer and the buffer
+<a href="https://man.page/3/memset">memset(3)</a>). The control block buffer and the buffer
 pointed to by <i>aio_buf</i> must not be changed while the
 I/O operation is in progress. These buffers must remain
 valid until the I/O operation completes.</p>
@@ -249,9 +249,9 @@ glibc. This has a number of limitations, most notably that
 maintaining multiple threads to perform I/O operations is
 expensive and scales poorly. Work has been in progress for
 some time on a kernel state-machine-based implementation of
-asynchronous I/O (see <b>io_submit</b>(2),
-<b>io_setup</b>(2), <b>io_cancel</b>(2),
-<b>io_destroy</b>(2), <b>io_getevents</b>(2)), but this
+asynchronous I/O (see <a href="https://man.page/2/io_submit">io_submit(2)</a>,
+<a href="https://man.page/2/io_setup">io_setup(2)</a>, <a href="https://man.page/2/io_cancel">io_cancel(2)</a>,
+<a href="https://man.page/2/io_destroy">io_destroy(2)</a>, <a href="https://man.page/2/io_getevents">io_getevents(2)</a>), but this
 implementation hasn&rsquo;t yet matured to the point where
 the POSIX AIO implementation can be completely reimplemented
 using the kernel system calls.</p>
@@ -264,17 +264,17 @@ using the kernel system calls.</p>
 <p style="margin-left:11%; margin-top: 1em">The program
 below opens each of the files named in its command-line
 arguments and queues a request on the resulting file
-descriptor using <b>aio_read</b>(3). The program then loops,
+descriptor using <a href="https://man.page/3/aio_read">aio_read(3)</a>. The program then loops,
 periodically monitoring each of the I/O operations that is
-still in progress using <b>aio_error</b>(3). Each of the I/O
+still in progress using <a href="https://man.page/3/aio_error">aio_error(3)</a>. Each of the I/O
 requests is set up to provide notification by delivery of a
 signal. After all I/O requests have completed, the program
-retrieves their status using <b>aio_return</b>(3).</p>
+retrieves their status using <a href="https://man.page/3/aio_return">aio_return(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>SIGQUIT</b> signal (generated by typing control-\) causes
 the program to request cancellation of each of the
-outstanding requests using <b>aio_cancel</b>(3).</p>
+outstanding requests using <a href="https://man.page/3/aio_cancel">aio_cancel(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Here is an
 example of what we might see when running this program. In
@@ -569,13 +569,13 @@ j, ioList[j].aiocbp-&gt;aio_fildes, s); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>io_cancel</b>(2),
-<b>io_destroy</b>(2), <b>io_getevents</b>(2),
-<b>io_setup</b>(2), <b>io_submit</b>(2),
-<b>aio_cancel</b>(3), <b>aio_error</b>(3),
-<b>aio_init</b>(3), <b>aio_read</b>(3),
-<b>aio_return</b>(3), <b>aio_write</b>(3),
-<b>lio_listio</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/io_cancel">io_cancel(2)</a>,
+<a href="https://man.page/2/io_destroy">io_destroy(2)</a>, <a href="https://man.page/2/io_getevents">io_getevents(2)</a>,
+<a href="https://man.page/2/io_setup">io_setup(2)</a>, <a href="https://man.page/2/io_submit">io_submit(2)</a>,
+<a href="https://man.page/3/aio_cancel">aio_cancel(3)</a>, <a href="https://man.page/3/aio_error">aio_error(3)</a>,
+<a href="https://man.page/3/aio_init">aio_init(3)</a>, <a href="https://man.page/3/aio_read">aio_read(3)</a>,
+<a href="https://man.page/3/aio_return">aio_return(3)</a>, <a href="https://man.page/3/aio_write">aio_write(3)</a>,
+<a href="https://man.page/3/lio_listio">lio_listio(3)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em">&quot;Asynchronous

@@ -76,13 +76,13 @@ shm_unlink(const char *</b><i>name</i><b>);</b></p>
 creates and opens a new, or opens an existing, POSIX shared
 memory object. A POSIX shared memory object is in effect a
 handle which can be used by unrelated processes to
-<b>mmap</b>(2) the same region of shared memory. The
+<a href="https://man.page/2/mmap">mmap(2)</a> the same region of shared memory. The
 <b>shm_unlink</b>() function performs the converse
 operation, removing an object previously created by
 <b>shm_open</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">The operation
-of <b>shm_open</b>() is analogous to that of <b>open</b>(2).
+of <b>shm_open</b>() is analogous to that of <a href="https://man.page/2/open">open(2)</a>.
 <i>name</i> specifies the shared memory object to be created
 or opened. For portable use, a shared memory object should
 be identified by a name of the form <i>/somename</i>; that
@@ -98,7 +98,7 @@ O_RDONLY</b></p>
 
 <p style="margin-left:22%;">Open the object for read
 access. A shared memory object opened in this way can be
-<b>mmap</b>(2)ed only for read (<b>PROT_READ</b>)
+<a href="https://man.page/2/mmap">mmap(2)</a>ed only for read (<b>PROT_READ</b>)
 access.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -126,15 +126,15 @@ object are taken from the corresponding effective IDs of the
 calling process, and the object&rsquo;s permission bits are
 set according to the low-order 9 bits of <i>mode</i>, except
 that those bits set in the process file mode creation mask
-(see <b>umask</b>(2)) are cleared for the new object. A set
+(see <a href="https://man.page/2/umask">umask(2)</a>) are cleared for the new object. A set
 of macro constants which can be used to define <i>mode</i>
-is listed in <b>open</b>(2). (Symbolic definitions of these
+is listed in <a href="https://man.page/2/open">open(2)</a>. (Symbolic definitions of these
 constants can be obtained by including
 <i>&lt;sys/stat.h&gt;</i>.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">A new shared
 memory object initially has zero length&mdash;the size of
-the object can be set using <b>ftruncate</b>(2). The newly
+the object can be set using <a href="https://man.page/2/ftruncate">ftruncate(2)</a>. The newly
 allocated bytes of a shared memory object are automatically
 initialized to 0.</p>
 
@@ -171,18 +171,18 @@ completion <b>shm_open</b>() returns a new file descriptor
 referring to the shared memory object. This file descriptor
 is guaranteed to be the lowest-numbered file descriptor not
 previously opened within the process. The <b>FD_CLOEXEC</b>
-flag (see <b>fcntl</b>(2)) is set for the file
+flag (see <a href="https://man.page/2/fcntl">fcntl(2)</a>) is set for the file
 descriptor.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The file
 descriptor is normally used in subsequent calls to
-<b>ftruncate</b>(2) (for a newly created object) and
-<b>mmap</b>(2). After a call to <b>mmap</b>(2) the file
+<a href="https://man.page/2/ftruncate">ftruncate(2)</a> (for a newly created object) and
+<a href="https://man.page/2/mmap">mmap(2)</a>. After a call to <a href="https://man.page/2/mmap">mmap(2)</a> the file
 descriptor may be closed without affecting the memory
 mapping.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The operation
-of <b>shm_unlink</b>() is analogous to <b>unlink</b>(2): it
+of <b>shm_unlink</b>() is analogous to <a href="https://man.page/2/unlink">unlink(2)</a>: it
 removes a shared memory object name, and, once all processes
 have unmapped the object, de-allocates and destroys the
 contents of the associated memory region. After a successful
@@ -340,7 +340,7 @@ are provided in glibc 2.2 and later.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3320851.png" alt="Image grohtml-3320851.png"></p>
@@ -375,7 +375,7 @@ be so on other UNIX systems.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The POSIX
 shared memory object implementation on Linux makes use of a
-dedicated <b>tmpfs</b>(5) filesystem that is normally
+dedicated <a href="https://man.page/5/tmpfs">tmpfs(5)</a> filesystem that is normally
 mounted under <i>/dev/shm</i>.</p>
 
 <h2>EXAMPLES
@@ -649,11 +649,11 @@ write(STDOUT_FILENO, &quot;\n&quot;, 1);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2),
-<b>fchmod</b>(2), <b>fchown</b>(2), <b>fcntl</b>(2),
-<b>fstat</b>(2), <b>ftruncate</b>(2),
-<b>memfd_create</b>(2), <b>mmap</b>(2), <b>open</b>(2),
-<b>umask</b>(2), <b>shm_overview</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/close">close(2)</a>,
+<a href="https://man.page/2/fchmod">fchmod(2)</a>, <a href="https://man.page/2/fchown">fchown(2)</a>, <a href="https://man.page/2/fcntl">fcntl(2)</a>,
+<a href="https://man.page/2/fstat">fstat(2)</a>, <a href="https://man.page/2/ftruncate">ftruncate(2)</a>,
+<a href="https://man.page/2/memfd_create">memfd_create(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/2/umask">umask(2)</a>, <a href="https://man.page/7/shm_overview">shm_overview(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

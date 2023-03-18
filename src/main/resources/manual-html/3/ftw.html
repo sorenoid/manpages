@@ -72,7 +72,7 @@ int</b> <i>nopenfd</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>nftw</b>():
 _XOPEN_SOURCE &gt;= 500</p>
@@ -108,7 +108,7 @@ time of the call to <b>nftw</b>(), if <i>dirpath</i> was
 expressed as a relative pathname, or as an absolute
 pathname, if <i>dirpath</i> was expressed as an absolute
 pathname. <i>sb</i> is a pointer to the <i>stat</i>
-structure returned by a call to <b>stat</b>(2) for
+structure returned by a call to <a href="https://man.page/2/stat">stat(2)</a> for
 <i>fpath</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -178,12 +178,12 @@ processed.</p> </td></tr>
 <td width="78%">
 
 
-<p>The <b>stat</b>(2) call failed on <i>fpath</i>, which is
+<p>The <a href="https://man.page/2/stat">stat(2)</a> call failed on <i>fpath</i>, which is
 not a symbolic link. The probable cause for this is that the
 caller had read permission on the parent directory, so that
 the filename <i>fpath</i> could be seen, but did not have
 execute permission, so that the file could not be reached
-for <b>stat</b>(2). The contents of the buffer pointed to by
+for <a href="https://man.page/2/stat">stat(2)</a>. The contents of the buffer pointed to by
 <i>sb</i> are undefined.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -205,7 +205,7 @@ set in <i>flags</i>.</p></td></tr>
 pointing to a nonexistent file. (This occurs only if
 <b>FTW_PHYS</b> is not set.) In this case the <i>sb</i>
 argument passed to <i>fn</i>() contains information returned
-by performing <b>lstat</b>(2) on the &quot;dangling&quot;
+by performing <a href="https://man.page/2/lstat">lstat(2)</a> on the &quot;dangling&quot;
 symbolic link. (But see BUGS.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The fourth
@@ -231,7 +231,7 @@ will become the return value of <b>nftw</b>(). As long as
 <i>fn</i>() returns 0, <b>nftw</b>() will continue either
 until it has traversed the entire tree, in which case it
 will return zero, or until it encounters an error (such as a
-<b>malloc</b>(3) failure), in which case it will return
+<a href="https://man.page/3/malloc">malloc(3)</a> failure), in which case it will return
 -1.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Because
@@ -240,7 +240,7 @@ way to exit out of a tree walk is to return a nonzero value
 from <i>fn</i>(). To allow a signal to terminate the walk
 without causing a memory leak, have the handler set a global
 flag that is checked by <i>fn</i>(). <i>Don&rsquo;t</i> use
-<b>longjmp</b>(3) unless the program is going to
+<a href="https://man.page/3/longjmp">longjmp(3)</a> unless the program is going to
 terminate.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -290,7 +290,7 @@ definition of <b>FTW_ACTIONRETVAL</b> from
 
 <p style="margin-left:11%;"><b>FTW_CHDIR</b></p>
 
-<p style="margin-left:22%;">If set, do a <b>chdir</b>(2) to
+<p style="margin-left:22%;">If set, do a <a href="https://man.page/2/chdir">chdir(2)</a> to
 each directory before handling its contents. This is useful
 if the program needs to perform some action in the directory
 in which <i>fpath</i> resides. (Specifying this flag has no
@@ -404,7 +404,7 @@ is available under glibc since version 2.1.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3319891.png" alt="Image grohtml-3319891.png"></p>
@@ -437,7 +437,7 @@ implementations (e.g., glibc), <b>ftw</b>() will never use
 for symbolic links that do not point to an existing file,
 and again on other systems <b>ftw</b>() will use
 <b>FTW_SL</b> for each symbolic link. If <i>fpath</i> is a
-symbolic link and <b>stat</b>(2) failed, POSIX.1-2008 states
+symbolic link and <a href="https://man.page/2/stat">stat(2)</a> failed, POSIX.1-2008 states
 that it is undefined whether <b>FTW_NS</b> or <b>FTW_SL</b>
 is passed in <i>typeflag</i>. For predictable results, use
 <b>nftw</b>().</p>
@@ -451,7 +451,7 @@ is passed in <i>typeflag</i>. For predictable results, use
 POSIX.1-2008, when the <i>typeflag</i> argument passed to
 <i>fn</i>() contains <b>FTW_SLN</b>, the buffer pointed to
 by <i>sb</i> should contain information about the dangling
-symbolic link (obtained by calling <b>lstat</b>(2) on the
+symbolic link (obtained by calling <a href="https://man.page/2/lstat">lstat(2)</a> on the
 link). Early glibc versions correctly followed the POSIX
 specification on this point. However, as a result of a
 regression introduced in glibc 2.4, the contents of the
@@ -544,8 +544,8 @@ exit(EXIT_FAILURE); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>stat</b>(2),
-<b>fts</b>(3), <b>readdir</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/stat">stat(2)</a>,
+<a href="https://man.page/3/fts">fts(3)</a>, <a href="https://man.page/3/readdir">readdir(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

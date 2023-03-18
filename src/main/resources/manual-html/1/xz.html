@@ -81,7 +81,7 @@ always use the name <b>xz</b> with appropriate arguments
 
 <p style="margin-left:11%; margin-top: 1em"><b>xz</b> is a
 general-purpose data compression tool with command line
-syntax similar to <b>gzip</b>(1) and <b>bzip2</b>(1). The
+syntax similar to <a href="https://man.page/1/gzip">gzip(1)</a> and <a href="https://man.page/1/bzip2">bzip2(1)</a>. The
 native file format is the <b>.xz</b> format, but the legacy
 <b>.lzma</b> format used by LZMA Utils and raw compressed
 streams with no container format headers are also
@@ -254,8 +254,8 @@ surprises, <b>xz</b> has a built-in memory usage limiter,
 which is disabled by default. While some operating systems
 provide ways to limit the memory usage of processes, relying
 on it wasn&rsquo;t deemed to be flexible enough (for
-example, using <b>ulimit</b>(1) to limit virtual memory
-tends to cripple <b>mmap</b>(2)).</p>
+example, using <a href="https://man.page/1/ulimit">ulimit(1)</a> to limit virtual memory
+tends to cripple <a href="https://man.page/2/mmap">mmap(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The memory
 usage limiter can be enabled with the command line option
@@ -490,7 +490,7 @@ and sticky bits are not copied to the target file.</p></td></tr>
 <p>When used with <b>--decompress --stdout</b> and
 <b>xz</b> cannot recognize the type of the source file, copy
 the source file as is to standard output. This allows
-<b>xzcat --force</b> to be used like <b>cat</b>(1) for files
+<b>xzcat --force</b> to be used like <a href="https://man.page/1/cat">cat(1)</a> for files
 that have not been compressed with <b>xz</b>. Note that in
 future, <b>xz</b> might support new compressed file formats,
 which may make <b>xz</b> decompress more types of files
@@ -806,13 +806,13 @@ level clears the custom filter chain.</p>
 
 
 <p>The differences between the presets are more significant
-than with <b>gzip</b>(1) and <b>bzip2</b>(1). The selected
+than with <a href="https://man.page/1/gzip">gzip(1)</a> and <a href="https://man.page/1/bzip2">bzip2(1)</a>. The selected
 compression settings determine the memory requirements of
 the decompressor, thus using a too high preset level might
 make it painful to decompress the file on an old system with
 little RAM. Specifically, <b>it&rsquo;s not a good idea to
 blindly use -9 for everything</b> like it often is with
-<b>gzip</b>(1) and <b>bzip2</b>(1).</p></td></tr>
+<a href="https://man.page/1/gzip">gzip(1)</a> and <a href="https://man.page/1/bzip2">bzip2(1)</a>.</p></td></tr>
 </table>
 
 <p style="margin-left:22%;"><b>-0</b> ... <b>-3</b></p>
@@ -820,7 +820,7 @@ blindly use -9 for everything</b> like it often is with
 <p style="margin-left:32%;">These are somewhat fast
 presets. <b>-0</b> is sometimes faster than <b>gzip -9</b>
 while compressing much better. The higher ones often have
-speed comparable to <b>bzip2</b>(1) with comparable or
+speed comparable to <a href="https://man.page/1/bzip2">bzip2(1)</a> with comparable or
 better compression ratio, although the results depend a lot
 on the type of data being compressed.</p>
 
@@ -1956,7 +1956,7 @@ uncompressed bitmap images or uncompressed PCM audio.
 However, special purpose algorithms may give significantly
 better results than Delta + LZMA2. This is true especially
 with audio, which compresses faster and better, for example,
-with <b>flac</b>(1).</p></td></tr>
+with <a href="https://man.page/1/flac">flac(1)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="78%">
@@ -3045,7 +3045,7 @@ variables <b>XZ_DEFAULTS</b> and <b>XZ_OPT</b>, in this
 order, before parsing the options from the command line.
 Note that only options are parsed from the environment
 variables; all non-options are silently ignored. Parsing is
-done with <b>getopt_long</b>(3) which is used also for the
+done with <a href="https://man.page/3/getopt_long">getopt_long(3)</a> which is used also for the
 command line arguments. <b><br>
 XZ_DEFAULTS</b></p>
 
@@ -3071,7 +3071,7 @@ unset <b>XZ_DEFAULTS</b>.</p>
 <p>This is for passing options to <b>xz</b> when it is not
 possible to set the options directly on the <b>xz</b>
 command line. This is the case when <b>xz</b> is run by a
-script or tool, for example, GNU <b>tar</b>(1):</p></td></tr>
+script or tool, for example, GNU <a href="https://man.page/1/tar">tar(1)</a>:</p></td></tr>
 </table>
 
 <p style="margin-left:32%; margin-top: 1em">XZ_OPT=-2v tar
@@ -3088,7 +3088,7 @@ caf foo.tar.xz foo</p>
 for example, to set script-specific default compression
 options. It is still recommended to allow users to override
 <b>XZ_OPT</b> if that is reasonable. For example, in
-<b>sh</b>(1) scripts one may use something like this:</p></td></tr>
+<a href="https://man.page/1/sh">sh(1)</a> scripts one may use something like this:</p></td></tr>
 </table>
 
 
@@ -3277,7 +3277,7 @@ b.txt.xz c.txt d.txt.lzma &gt; abcd.txt</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Parallel
 compression of many files</b> <br>
-On GNU and *BSD, <b>find</b>(1) and <b>xargs</b>(1) can be
+On GNU and *BSD, <a href="https://man.page/1/find">find(1)</a> and <a href="https://man.page/1/xargs">xargs(1)</a> can be
 used to parallelize compression of many files:</p>
 
 <p style="margin-left:22%; margin-top: 1em">find . -type f
@@ -3285,17 +3285,17 @@ used to parallelize compression of many files:</p>
 | xargs -0r -P4 -n16 xz -T1</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <b>-P</b>
-option to <b>xargs</b>(1) sets the number of parallel
+option to <a href="https://man.page/1/xargs">xargs(1)</a> sets the number of parallel
 <b>xz</b> processes. The best value for the <b>-n</b> option
 depends on how many files there are to be compressed. If
 there are only a couple of files, the value should probably
 be 1; with tens of thousands of files, 100 or even more may
 be appropriate to reduce the number of <b>xz</b> processes
-that <b>xargs</b>(1) will eventually create.</p>
+that <a href="https://man.page/1/xargs">xargs(1)</a> will eventually create.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The option
 <b>-T1</b> for <b>xz</b> is there to force it to
-single-threaded mode, because <b>xargs</b>(1) is used to
+single-threaded mode, because <a href="https://man.page/1/xargs">xargs(1)</a> is used to
 control the amount of parallelization.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Robot
@@ -3308,7 +3308,7 @@ compressing multiple files:</p>
 
 <p style="margin-left:11%; margin-top: 1em">A script may
 want to know that it is using new enough <b>xz</b>. The
-following <b>sh</b>(1) script checks that the version number
+following <a href="https://man.page/1/sh">sh(1)</a> script checks that the version number
 of the <b>xz</b> tool is at least 5.0.0. This method is
 compatible with old beta versions, which didn&rsquo;t
 support the <b>--robot</b> option:</p>
@@ -3457,10 +3457,10 @@ as all images have the same number of bytes per pixel.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>xzdec</b>(1),
-<b>xzdiff</b>(1), <b>xzgrep</b>(1), <b>xzless</b>(1),
-<b>xzmore</b>(1), <b>gzip</b>(1), <b>bzip2</b>(1),
-<b>7z</b>(1)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/xzdec">xzdec(1)</a>,
+<a href="https://man.page/1/xzdiff">xzdiff(1)</a>, <a href="https://man.page/1/xzgrep">xzgrep(1)</a>, <a href="https://man.page/1/xzless">xzless(1)</a>,
+<a href="https://man.page/1/xzmore">xzmore(1)</a>, <a href="https://man.page/1/gzip">gzip(1)</a>, <a href="https://man.page/1/bzip2">bzip2(1)</a>,
+<a href="https://man.page/1/7z">7z(1)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">XZ Utils:
 &lt;https://tukaani.org/xz/&gt; <br>

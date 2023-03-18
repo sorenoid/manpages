@@ -77,18 +77,18 @@ or print &quot;Unlocking failed: &quot; . $fs-&gt;error .
 <p style="margin-left:11%; margin-top: 1em">File locking in
 Perl is usually done using the &quot;flock&quot; function.
 Unfortunately, this only allows locks on whole files and is
-often implemented in terms of the <b>flock</b>(2) system
+often implemented in terms of the <a href="https://man.page/2/flock">flock(2)</a> system
 function which has some shortcomings (especially concerning
 locks on remotely mounted file systems) and slightly
-different behaviour than <b>fcntl</b>(2).</p>
+different behaviour than <a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Using this
-module file locking via <b>fcntl</b>(2) can be done
+module file locking via <a href="https://man.page/2/fcntl">fcntl(2)</a> can be done
 (obviously, this restricts the use of the module to systems
-that have a <b>fcntl</b>(2) system call). Before a file (or
+that have a <a href="https://man.page/2/fcntl">fcntl(2)</a> system call). Before a file (or
 parts of a file) can be locked, an object simulating a flock
 structure, containing information in a binary format to be
-passed to <b>fcntl</b>(2) for locking requests, must be
+passed to <a href="https://man.page/2/fcntl">fcntl(2)</a> for locking requests, must be
 created and its properties set. Afterwards, by calling the
 <b>lock()</b> method a lock can be set and removed or it can
 be determined if and which process currently holds the
@@ -97,7 +97,7 @@ lock.</p>
 
 <p style="margin-left:11%; margin-top: 1em">File::FcntlLock
 (or its alias File::FcntlLock::XS) uses a shared library,
-build during installation, to call the <b>fcntl</b>(2)
+build during installation, to call the <a href="https://man.page/2/fcntl">fcntl(2)</a>
 system function directly. If this is unsuitable there are
 two alternatives, File::FcntlLock::Pure and
 File::FcntlLock::Inline. Both call the Perl
@@ -127,7 +127,7 @@ File::FcntlLock;</p>
 
 <p style="margin-left:17%; margin-top: 1em">The object has
 a number of properties, reflecting the members of the flock
-structure to be passed to <b>fcntl</b>(2) (see below). Per
+structure to be passed to <a href="https://man.page/2/fcntl">fcntl(2)</a> (see below). Per
 default on object creation the l_type property is set to
 &quot;F_RDLCK&quot;, l_whence to &quot;SEEK_SET&quot;, and
 both l_start and l_len to 0, i.e., the settings for a read
@@ -170,7 +170,7 @@ determining if the l_start value is relative to the start of
 the file, to the current position in the file or to the end
 of the file. These values are &quot;SEEK_SET&quot;,
 &quot;SEEK_CUR&quot; and &quot;SEEK_END&quot; (also see the
-man page for <b>lseek</b>(2)). If called with no argument
+man page for <a href="https://man.page/2/lseek">lseek(2)</a>). If called with no argument
 the current value of the property is returned.</p>
 
 <p style="margin-left:11%;">&quot;l_start()&quot;</p>
@@ -178,7 +178,7 @@ the current value of the property is returned.</p>
 <p style="margin-left:17%;">Queries or sets the start
 position (offset) of the lock in the file according to the
 mode selected by the l_whence member. See also the man page
-for <b>lseek</b>(2).</p>
+for <a href="https://man.page/2/lseek">lseek(2)</a>.</p>
 
 <p style="margin-left:11%;">&quot;l_len()&quot;</p>
 
@@ -195,7 +195,7 @@ resulting in a lock ranging from &quot;l_start+l_len&quot;
 up to and including &quot;l_start-1&quot;. But not all
 systems support negative values for l_len and will return an
 error when you try to obtain such a lock, so please read the
-<b>fcntl</b>(2) man page of the system carefully for
+<a href="https://man.page/2/fcntl">fcntl(2)</a> man page of the system carefully for
 details.</p>
 
 <p style="margin-left:11%;">&quot;l_pid()&quot;</p>
@@ -239,7 +239,7 @@ attempt is made to obtain a lock but a lock is already being
 held by some other process the method returns
 &quot;undef&quot; and &quot;errno&quot; is set to
 &quot;EACCESS&quot; or &quot;EAGAIN&quot; (please see the
-the man page for <b>fcntl</b>(2) for more details).</p>
+the man page for <a href="https://man.page/2/fcntl">fcntl(2)</a> for more details).</p>
 
 <p style="margin-left:17%;">&quot;F_SETLKW&quot;</p>
 
@@ -279,11 +279,11 @@ handling</b> <br>
 There are minor differences between File::FcntlLock on the
 one hand and File::FcntlLock::Pure and
 File::FcntlLock::Inline on the other, due to the first
-calling the system function <b>fcntl</b>(2) directly while
+calling the system function <a href="https://man.page/2/fcntl">fcntl(2)</a> directly while
 the latter two invoke the Perl &quot;fcntl&quot; function.
 Perl&rsquo;s &quot;fcntl&quot; function already returns a
 Perl error on some types of invalid arguments. In contrast
-File::FcntlLock passes them on to the <b>fcntl</b>(2) system
+File::FcntlLock passes them on to the <a href="https://man.page/2/fcntl">fcntl(2)</a> system
 call and then returns the systems response to the
 caller.</p>
 
@@ -334,7 +334,7 @@ SEEK_SET SEEK_CUR SEEK_END</small></p>
 
 
 <p style="margin-left:11%; margin-top: 1em">Obviously, this
-module requires that there&rsquo;s a <b>fcntl</b>(2) system
+module requires that there&rsquo;s a <a href="https://man.page/2/fcntl">fcntl(2)</a> system
 call. Note also that under certain circumstances the
 File::FcntlLock::Pure and File::FcntlLock::Inline modules
 may not have been installed. This happens on 32-bit systems
@@ -355,7 +355,7 @@ several problems and also helped improve the documentation.
 Julian Moreno Patino helped correcting the documentation and
 pointed out problems arising on <small>GNU</small> Hurd
 which seems to have only very rudimentary support for
-locking with <b>fcntl</b>(2). Niko Tyni and Guillem Jover
+locking with <a href="https://man.page/2/fcntl">fcntl(2)</a>. Niko Tyni and Guillem Jover
 encouraged and helped with implementing alternatives to an
 XS-only approach which hopefully will make the module more
 useful under certain circumstances.</p>
@@ -374,8 +374,8 @@ Toerring &lt;jt@toerring.de&gt;</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>perl</b>(1),
-<b>fcntl</b>(2), <b>lseek</b>(2).</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/perl">perl(1)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/lseek">lseek(2)</a>.</p>
 
 <h2>LICENSE
 <a name="LICENSE"></a>

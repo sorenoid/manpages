@@ -67,7 +67,7 @@ int setpgrp(pid_t</b> <i>pid</i><b>, pid_t</b>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>getpgid</b>():</p>
@@ -116,8 +116,8 @@ the PGID of the process specified by <i>pid</i> is made the
 same as its process ID. If <b>setpgid</b>() is used to move
 a process from one process group to another (as is done by
 some shells when creating pipelines), both process groups
-must be part of the same session (see <b>setsid</b>(2) and
-<b>credentials</b>(7)). In this case, the <i>pgid</i>
+must be part of the same session (see <a href="https://man.page/2/setsid">setsid(2)</a> and
+<a href="https://man.page/7/credentials">credentials(7)</a>). In this case, the <i>pgid</i>
 specifies an existing process group to be joined and the
 session ID of that group must match the session ID of the
 joining process.</p>
@@ -204,7 +204,7 @@ set appropriately.</p>
 <p style="margin-top: 1em">An attempt was made to change
 the process group ID of one of the children of the calling
 process and the child had already performed an
-<b>execve</b>(2) (<b>setpgid</b>(), <b>setpgrp</b>()).</p></td></tr>
+<a href="https://man.page/2/execve">execve(2)</a> (<b>setpgid</b>(), <b>setpgrp</b>()).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -274,13 +274,13 @@ marks this <b>setpgrp</b>() specification as obsolete.)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">A child created
-via <b>fork</b>(2) inherits its parent&rsquo;s process group
-ID. The PGID is preserved across an <b>execve</b>(2).</p>
+via <a href="https://man.page/2/fork">fork(2)</a> inherits its parent&rsquo;s process group
+ID. The PGID is preserved across an <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each process
 group is a member of a session and each process is a member
 of the session of which its process group is a member. (See
-<b>credentials</b>(7).)</p>
+<a href="https://man.page/7/credentials">credentials(7)</a>.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">A session can
 have a controlling terminal. At any time, one (and only one)
@@ -289,18 +289,18 @@ process group for the terminal; the remaining process groups
 are in the background. If a signal is generated from the
 terminal (e.g., typing the interrupt key to generate
 <b>SIGINT</b>), that signal is sent to the foreground
-process group. (See <b>termios</b>(3) for a description of
+process group. (See <a href="https://man.page/3/termios">termios(3)</a> for a description of
 the characters that generate signals.) Only the foreground
-process group may <b>read</b>(2) from the terminal; if a
-background process group tries to <b>read</b>(2) from the
+process group may <a href="https://man.page/2/read">read(2)</a> from the terminal; if a
+background process group tries to <a href="https://man.page/2/read">read(2)</a> from the
 terminal, then the group is sent a <b>SIGTTIN</b> signal,
-which suspends it. The <b>tcgetpgrp</b>(3) and
-<b>tcsetpgrp</b>(3) functions are used to get/set the
+which suspends it. The <a href="https://man.page/3/tcgetpgrp">tcgetpgrp(3)</a> and
+<a href="https://man.page/3/tcsetpgrp">tcsetpgrp(3)</a> functions are used to get/set the
 foreground process group of the controlling terminal.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>setpgid</b>() and <b>getpgrp</b>() calls are used by
-programs such as <b>bash</b>(1) to create process groups in
+programs such as <a href="https://man.page/1/bash">bash(1)</a> to create process groups in
 order to implement shell job control.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
@@ -312,7 +312,7 @@ newly orphaned process group. An orphaned process group is
 one in which the parent of every member of process group is
 either itself also a member of the process group or is a
 member of a process group in a different session (see also
-<b>credentials</b>(7)).</p>
+<a href="https://man.page/7/credentials">credentials(7)</a>).</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -320,9 +320,9 @@ member of a process group in a different session (see also
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>getuid</b>(2),
-<b>setsid</b>(2), <b>tcgetpgrp</b>(3), <b>tcsetpgrp</b>(3),
-<b>termios</b>(3), <b>credentials</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/getuid">getuid(2)</a>,
+<a href="https://man.page/2/setsid">setsid(2)</a>, <a href="https://man.page/3/tcgetpgrp">tcgetpgrp(3)</a>, <a href="https://man.page/3/tcsetpgrp">tcsetpgrp(3)</a>,
+<a href="https://man.page/3/termios">termios(3)</a>, <a href="https://man.page/7/credentials">credentials(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

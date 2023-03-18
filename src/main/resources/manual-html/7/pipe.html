@@ -48,19 +48,19 @@ end</i> and a <i>write end</i>. Data written to the write
 end of a pipe can be read from the read end of the pipe.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A pipe is
-created using <b>pipe</b>(2), which creates a new pipe and
+created using <a href="https://man.page/2/pipe">pipe(2)</a>, which creates a new pipe and
 returns two file descriptors, one referring to the read end
 of the pipe, the other referring to the write end. Pipes can
 be used to create a communication channel between related
-processes; see <b>pipe</b>(2) for an example.</p>
+processes; see <a href="https://man.page/2/pipe">pipe(2)</a> for an example.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A FIFO (short
 for First In First Out) has a name within the filesystem
-(created using <b>mkfifo</b>(3)), and is opened using
-<b>open</b>(2). Any process may open a FIFO, assuming the
+(created using <a href="https://man.page/3/mkfifo">mkfifo(3)</a>), and is opened using
+<a href="https://man.page/2/open">open(2)</a>. Any process may open a FIFO, assuming the
 file permissions allow it. The read end is opened using the
 <b>O_RDONLY</b> flag; the write end is opened using the
-<b>O_WRONLY</b> flag. See <b>fifo</b>(7) for further
+<b>O_WRONLY</b> flag. See <a href="https://man.page/7/fifo">fifo(7)</a> for further
 details. <i>Note</i>: although FIFOs have a pathname in the
 filesystem, I/O on FIFOs does not involve operations on the
 underlying device (if there is one).</p>
@@ -73,12 +73,12 @@ been accomplished, I/O on pipes and FIFOs has exactly the
 same semantics.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If a process
-attempts to read from an empty pipe, then <b>read</b>(2)
+attempts to read from an empty pipe, then <a href="https://man.page/2/read">read(2)</a>
 will block until data is available. If a process attempts to
-write to a full pipe (see below), then <b>write</b>(2)
+write to a full pipe (see below), then <a href="https://man.page/2/write">write(2)</a>
 blocks until sufficient data has been read from the pipe to
 allow the write to complete. Nonblocking I/O is possible by
-using the <b>fcntl</b>(2) <b>F_SETFL</b> operation to enable
+using the <a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_SETFL</b> operation to enable
 the <b>O_NONBLOCK</b> open file status flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -87,26 +87,26 @@ stream</i>: there is no concept of message boundaries.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If all file
 descriptors referring to the write end of a pipe have been
-closed, then an attempt to <b>read</b>(2) from the pipe will
-see end-of-file (<b>read</b>(2) will return 0). If all file
+closed, then an attempt to <a href="https://man.page/2/read">read(2)</a> from the pipe will
+see end-of-file (<a href="https://man.page/2/read">read(2)</a> will return 0). If all file
 descriptors referring to the read end of a pipe have been
-closed, then a <b>write</b>(2) will cause a <b>SIGPIPE</b>
+closed, then a <a href="https://man.page/2/write">write(2)</a> will cause a <b>SIGPIPE</b>
 signal to be generated for the calling process. If the
 calling process is ignoring this signal, then
-<b>write</b>(2) fails with the error <b>EPIPE</b>. An
-application that uses <b>pipe</b>(2) and <b>fork</b>(2)
-should use suitable <b>close</b>(2) calls to close
+<a href="https://man.page/2/write">write(2)</a> fails with the error <b>EPIPE</b>. An
+application that uses <a href="https://man.page/2/pipe">pipe(2)</a> and <a href="https://man.page/2/fork">fork(2)</a>
+should use suitable <a href="https://man.page/2/close">close(2)</a> calls to close
 unnecessary duplicate file descriptors; this ensures that
 end-of-file and <b>SIGPIPE</b>/<b>EPIPE</b> are delivered
 when appropriate.</p>
 
 <p style="margin-left:11%; margin-top: 1em">It is not
-possible to apply <b>lseek</b>(2) to a pipe.</p>
+possible to apply <a href="https://man.page/2/lseek">lseek(2)</a> to a pipe.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Pipe
 capacity</b> <br>
 A pipe has a limited capacity. If the pipe is full, then a
-<b>write</b>(2) will block or fail, depending on whether the
+<a href="https://man.page/2/write">write(2)</a> will block or fail, depending on whether the
 <b>O_NONBLOCK</b> flag is set (see below). Different
 implementations have different limits for the pipe capacity.
 Applications should not rely on a particular capacity: an
@@ -120,12 +120,12 @@ as the system page size (e.g., 4096 bytes on i386). Since
 Linux 2.6.11, the pipe capacity is 16 pages (i.e., 65,536
 bytes in a system with a page size of 4096 bytes). Since
 Linux 2.6.35, the default pipe capacity is 16 pages, but the
-capacity can be queried and set using the <b>fcntl</b>(2)
+capacity can be queried and set using the <a href="https://man.page/2/fcntl">fcntl(2)</a>
 <b>F_GETPIPE_SZ</b> and <b>F_SETPIPE_SZ</b> operations. See
-<b>fcntl</b>(2) for more information.</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
-<b>ioctl</b>(2) operation, which can be applied to a file
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation, which can be applied to a file
 descriptor that refers to either end of a pipe, places a
 count of the number of unread bytes in the pipe in the
 <i>int</i> buffer pointed to by the final argument of the
@@ -172,7 +172,7 @@ file after assigning a value to it.</p>
 value for this file is 1048576 (1&nbsp;MiB). The minimum
 value that can be assigned to this file is the system page
 size. Attempts to set a limit less than the page size cause
-<b>write</b>(2) to fail with the error <b>EINVAL</b>.</p>
+<a href="https://man.page/2/write">write(2)</a> to fail with the error <b>EINVAL</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Since Linux
 4.9, the value on this file also acts as a ceiling on the
@@ -222,7 +222,7 @@ limits; see BUGS.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>PIPE_BUF</b>
 <br>
-POSIX.1 says that <b>write</b>(2)s of less than
+POSIX.1 says that <a href="https://man.page/2/write">write(2)</a>s of less than
 <b>PIPE_BUF</b> bytes must be atomic: the output data is
 written to the pipe as a contiguous sequence. Writes of more
 than <b>PIPE_BUF</b> bytes may be nonatomic: the kernel may
@@ -236,34 +236,34 @@ be written: <b><br>
 O_NONBLOCK</b> disabled, <i>n</i> &lt;= <b>PIPE_BUF</b></p>
 
 <p style="margin-left:22%;">All <i>n</i> bytes are written
-atomically; <b>write</b>(2) may block if there is not room
+atomically; <a href="https://man.page/2/write">write(2)</a> may block if there is not room
 for <i>n</i> bytes to be written immediately</p>
 
 <p style="margin-left:11%;"><b>O_NONBLOCK</b> enabled,
 <i>n</i> &lt;= <b>PIPE_BUF</b></p>
 
 <p style="margin-left:22%;">If there is room to write
-<i>n</i> bytes to the pipe, then <b>write</b>(2) succeeds
+<i>n</i> bytes to the pipe, then <a href="https://man.page/2/write">write(2)</a> succeeds
 immediately, writing all <i>n</i> bytes; otherwise
-<b>write</b>(2) fails, with <i>errno</i> set to
+<a href="https://man.page/2/write">write(2)</a> fails, with <i>errno</i> set to
 <b>EAGAIN</b>.</p>
 
 <p style="margin-left:11%;"><b>O_NONBLOCK</b> disabled,
 <i>n</i> &gt; <b>PIPE_BUF</b></p>
 
 <p style="margin-left:22%;">The write is nonatomic: the
-data given to <b>write</b>(2) may be interleaved with
-<b>write</b>(2)s by other process; the <b>write</b>(2)
+data given to <a href="https://man.page/2/write">write(2)</a> may be interleaved with
+<a href="https://man.page/2/write">write(2)</a>s by other process; the <a href="https://man.page/2/write">write(2)</a>
 blocks until <i>n</i> bytes have been written.</p>
 
 <p style="margin-left:11%;"><b>O_NONBLOCK</b> enabled,
 <i>n</i> &gt; <b>PIPE_BUF</b></p>
 
 <p style="margin-left:22%;">If the pipe is full, then
-<b>write</b>(2) fails, with <i>errno</i> set to
+<a href="https://man.page/2/write">write(2)</a> fails, with <i>errno</i> set to
 <b>EAGAIN</b>. Otherwise, from 1 to <i>n</i> bytes may be
 written (i.e., a &quot;partial write&quot; may occur; the
-caller should check the return value from <b>write</b>(2) to
+caller should check the return value from <a href="https://man.page/2/write">write(2)</a> to
 see how many bytes were actually written), and these bytes
 may be interleaved with writes by other processes.</p>
 
@@ -277,7 +277,7 @@ applied to a pipe or FIFO are <b>O_NONBLOCK</b> and
 <b>O_ASYNC</b> flag for the read end of a pipe causes a
 signal (<b>SIGIO</b> by default) to be generated when new
 input becomes available on the pipe. The target for delivery
-of signals must be set using the <b>fcntl</b>(2)
+of signals must be set using the <a href="https://man.page/2/fcntl">fcntl(2)</a>
 <b>F_SETOWN</b> command. On Linux, <b>O_ASYNC</b> is
 supported for pipes and FIFOs only since kernel 2.6.</p>
 
@@ -293,7 +293,7 @@ semantics.</p>
 <br>
 Before Linux 4.9, some bugs affected the handling of the
 <i>pipe-user-pages-soft</i> and <i>pipe-user-pages-hard</i>
-limits when using the <b>fcntl</b>(2) <b>F_SETPIPE_SZ</b>
+limits when using the <a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_SETPIPE_SZ</b>
 operation to change a pipe&rsquo;s capacity:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -419,7 +419,7 @@ exceeded.</p>
 <p style="margin-left:11%; margin-top: 1em">Before Linux
 4.9, bugs similar to points (1) and (3) could also occur
 when the kernel allocated memory for a new pipe buffer; that
-is, when calling <b>pipe</b>(2) and when opening a
+is, when calling <a href="https://man.page/2/pipe">pipe(2)</a> and when opening a
 previously unopened FIFO.</p>
 
 <h2>SEE ALSO
@@ -428,12 +428,12 @@ previously unopened FIFO.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>mkfifo</b>(1),
-<b>dup</b>(2), <b>fcntl</b>(2), <b>open</b>(2),
-<b>pipe</b>(2), <b>poll</b>(2), <b>select</b>(2),
-<b>socketpair</b>(2), <b>splice</b>(2), <b>stat</b>(2),
-<b>tee</b>(2), <b>vmsplice</b>(2), <b>mkfifo</b>(3),
-<b>epoll</b>(7), <b>fifo</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/mkfifo">mkfifo(1)</a>,
+<a href="https://man.page/2/dup">dup(2)</a>, <a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/2/pipe">pipe(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/socketpair">socketpair(2)</a>, <a href="https://man.page/2/splice">splice(2)</a>, <a href="https://man.page/2/stat">stat(2)</a>,
+<a href="https://man.page/2/tee">tee(2)</a>, <a href="https://man.page/2/vmsplice">vmsplice(2)</a>, <a href="https://man.page/3/mkfifo">mkfifo(3)</a>,
+<a href="https://man.page/7/epoll">epoll(7)</a>, <a href="https://man.page/7/fifo">fifo(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

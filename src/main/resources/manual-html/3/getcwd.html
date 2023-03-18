@@ -63,7 +63,7 @@ get_current_dir_name - get current working directory</p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>get_current_dir_name</b>():</p>
@@ -111,22 +111,22 @@ and allocate a larger buffer if necessary.</p>
 
 <p style="margin-left:11%; margin-top: 1em">As an extension
 to the POSIX.1-2001 standard, glibc&rsquo;s <b>getcwd</b>()
-allocates the buffer dynamically using <b>malloc</b>(3) if
+allocates the buffer dynamically using <a href="https://man.page/3/malloc">malloc(3)</a> if
 <i>buf</i> is NULL. In this case, the allocated buffer has
 the length <i>size</i> unless <i>size</i> is zero, when
 <i>buf</i> is allocated as big as necessary. The caller
-should <b>free</b>(3) the returned buffer.</p>
+should <a href="https://man.page/3/free">free(3)</a> the returned buffer.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>get_current_dir_name</b>()
-will <b>malloc</b>(3) an array big enough to hold the
+will <a href="https://man.page/3/malloc">malloc(3)</a> an array big enough to hold the
 absolute pathname of the current working directory. If the
 environment variable <b>PWD</b> is set, and its value is
 correct, then that value will be returned. The caller should
-<b>free</b>(3) the returned buffer.</p>
+<a href="https://man.page/3/free">free(3)</a> the returned buffer.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>getwd</b>()
-does not <b>malloc</b>(3) any memory. The <i>buf</i>
+does not <a href="https://man.page/3/malloc">malloc(3)</a> any memory. The <i>buf</i>
 argument should be a pointer to an array at least
 <b>PATH_MAX</b> bytes long. If the length of the absolute
 pathname of the current working directory, including the
@@ -134,7 +134,7 @@ terminating null byte, exceeds <b>PATH_MAX</b> bytes, NULL
 is returned, and <i>errno</i> is set to <b>ENAMETOOLONG</b>.
 (Note that on some systems, <b>PATH_MAX</b> may not be a
 compile-time constant; furthermore, its value may depend on
-the filesystem, see <b>pathconf</b>(3).) For portability and
+the filesystem, see <a href="https://man.page/3/pathconf">pathconf(3)</a>.) For portability and
 security reasons, use of <b>getwd</b>() is deprecated.</p>
 
 <h2>RETURN VALUE
@@ -261,7 +261,7 @@ and try again.</p></td></tr>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3336801.png" alt="Image grohtml-3336801.png"></p>
@@ -304,7 +304,7 @@ Only in that case can these calls fail under Linux with
 are often used to save the location of the current working
 directory for the purpose of returning to it later. Opening
 the current directory (&quot;.&quot;) and calling
-<b>fchdir</b>(2) to return is usually a faster and more
+<a href="https://man.page/2/fchdir">fchdir(2)</a> to return is usually a faster and more
 reliable alternative when sufficiently many file descriptors
 are available, especially on platforms other than Linux.</p>
 
@@ -331,7 +331,7 @@ change in Linux 2.6.36, the pathname returned by the
 &quot;(unreachable)&quot; if the current directory is not
 below the root directory of the current process (e.g.,
 because the process set a new filesystem root using
-<b>chroot</b>(2) without changing its current directory into
+<a href="https://man.page/2/chroot">chroot(2)</a> without changing its current directory into
 the new root). Such behavior can also be caused by an
 unprivileged user by changing the current directory into
 another mount namespace. When dealing with pathname from
@@ -360,9 +360,9 @@ now result in failure with <b>ENOENT</b>.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pwd</b>(1),
-<b>chdir</b>(2), <b>fchdir</b>(2), <b>open</b>(2),
-<b>unlink</b>(2), <b>free</b>(3), <b>malloc</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/pwd">pwd(1)</a>,
+<a href="https://man.page/2/chdir">chdir(2)</a>, <a href="https://man.page/2/fchdir">fchdir(2)</a>, <a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/2/unlink">unlink(2)</a>, <a href="https://man.page/3/free">free(3)</a>, <a href="https://man.page/3/malloc">malloc(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

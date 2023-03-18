@@ -68,10 +68,10 @@ system calls are used with this API:</p>
 <td width="85%">
 
 
-<p><b>inotify_init</b>(2) creates an inotify instance and
+<p><a href="https://man.page/2/inotify_init">inotify_init(2)</a> creates an inotify instance and
 returns a file descriptor referring to the inotify instance.
-The more recent <b>inotify_init1</b>(2) is like
-<b>inotify_init</b>(2), but has a <i>flags</i> argument that
+The more recent <a href="https://man.page/2/inotify_init1">inotify_init1(2)</a> is like
+<a href="https://man.page/2/inotify_init">inotify_init(2)</a>, but has a <i>flags</i> argument that
 provides access to some extra functionality.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -83,15 +83,15 @@ provides access to some extra functionality.</p></td></tr>
 <td width="85%">
 
 
-<p><b>inotify_add_watch</b>(2) manipulates the &quot;watch
+<p><a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a> manipulates the &quot;watch
 list&quot; associated with an inotify instance. Each item
 (&quot;watch&quot;) in the watch list specifies the pathname
 of a file or directory, along with some set of events that
 the kernel should monitor for the file referred to by that
-pathname. <b>inotify_add_watch</b>(2) either creates a new
+pathname. <a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a> either creates a new
 watch item, or modifies an existing watch. Each watch has a
 unique &quot;watch descriptor&quot;, an integer returned by
-<b>inotify_add_watch</b>(2) when the watch is created.</p></td></tr>
+<a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a> when the watch is created.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -105,7 +105,7 @@ unique &quot;watch descriptor&quot;, an integer returned by
 <p>When events occur for monitored files and directories,
 those events are made available to the application as
 structured data that can be read from the inotify file
-descriptor using <b>read</b>(2) (see below).</p></td></tr>
+descriptor using <a href="https://man.page/2/read">read(2)</a> (see below).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -116,7 +116,7 @@ descriptor using <b>read</b>(2) (see below).</p></td></tr>
 <td width="85%">
 
 
-<p><b>inotify_rm_watch</b>(2) removes an item from an
+<p><a href="https://man.page/2/inotify_rm_watch">inotify_rm_watch(2)</a> removes an item from an
 inotify watch list.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -129,7 +129,7 @@ inotify watch list.</p></td></tr>
 
 
 <p>When all file descriptors referring to an inotify
-instance have been closed (using <b>close</b>(2)), the
+instance have been closed (using <a href="https://man.page/2/close">close(2)</a>), the
 underlying object and its resources are freed for reuse by
 the kernel; all associated watches are automatically
 freed.</p> </td></tr>
@@ -147,15 +147,15 @@ and rebuild the cache when inconsistencies are detected.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Reading
 events from an inotify file descriptor</b> <br>
 To determine what events have occurred, an application
-<b>read</b>(2)s from the inotify file descriptor. If no
+<a href="https://man.page/2/read">read(2)</a>s from the inotify file descriptor. If no
 events have so far occurred, then, assuming a blocking file
-descriptor, <b>read</b>(2) will block until at least one
+descriptor, <a href="https://man.page/2/read">read(2)</a> will block until at least one
 event occurs (unless interrupted by a signal, in which case
 the call fails with the error <b>EINTR</b>; see
-<b>signal</b>(7)).</p>
+<a href="https://man.page/7/signal">signal(7)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each successful
-<b>read</b>(2) returns a buffer containing one or more of
+<a href="https://man.page/2/read">read(2)</a> returns a buffer containing one or more of
 the following structures:</p>
 
 <p style="margin-left:17%; margin-top: 1em">struct
@@ -171,7 +171,7 @@ char name[]; /* Optional null-terminated name */ <br>
 <p style="margin-left:11%; margin-top: 1em"><i>wd</i>
 identifies the watch for which this event occurs. It is one
 of the watch descriptors returned by a previous call to
-<b>inotify_add_watch</b>(2).</p>
+<a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>mask</i>
 contains bits that describe the event that occurred (see
@@ -200,10 +200,10 @@ structure is thus <i>sizeof(struct
 inotify_event)+len</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The behavior
-when the buffer given to <b>read</b>(2) is too small to
+when the buffer given to <a href="https://man.page/2/read">read(2)</a> is too small to
 return information about the next event depends on the
-kernel version: in kernels before 2.6.21, <b>read</b>(2)
-returns 0; since kernel 2.6.21, <b>read</b>(2) fails with
+kernel version: in kernels before 2.6.21, <a href="https://man.page/2/read">read(2)</a>
+returns 0; since kernel 2.6.21, <a href="https://man.page/2/read">read(2)</a> fails with
 the error <b>EINVAL</b>. Specifying a buffer of size</p>
 
 <p style="margin-left:11%; margin-top: 1em">sizeof(struct
@@ -214,27 +214,27 @@ sufficient to read at least one event.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>inotify
 events</b> <br>
-The <b>inotify_add_watch</b>(2) <i>mask</i> argument and the
+The <a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a> <i>mask</i> argument and the
 <i>mask</i> field of the <i>inotify_event</i> structure
-returned when <b>read</b>(2)ing an inotify file descriptor
+returned when <a href="https://man.page/2/read">read(2)</a>ing an inotify file descriptor
 are both bit masks identifying inotify events. The following
 bits can be specified in <i>mask</i> when calling
-<b>inotify_add_watch</b>(2) and may be returned in the
-<i>mask</i> field returned by <b>read</b>(2):</p>
+<a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a> and may be returned in the
+<i>mask</i> field returned by <a href="https://man.page/2/read">read(2)</a>:</p>
 
 <p style="margin-left:17%;"><b>IN_ACCESS</b> (+)</p>
 
 <p style="margin-left:28%;">File was accessed (e.g.,
-<b>read</b>(2), <b>execve</b>(2)).</p>
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/execve">execve(2)</a>).</p>
 
 <p style="margin-left:17%;"><b>IN_ATTRIB</b> (*)</p>
 
 <p style="margin-left:28%;">Metadata changed&mdash;for
-example, permissions (e.g., <b>chmod</b>(2)), timestamps
-(e.g., <b>utimensat</b>(2)), extended attributes
-(<b>setxattr</b>(2)), link count (since Linux 2.6.25; e.g.,
-for the target of <b>link</b>(2) and for <b>unlink</b>(2)),
-and user/group ID (e.g., <b>chown</b>(2)).</p>
+example, permissions (e.g., <a href="https://man.page/2/chmod">chmod(2)</a>), timestamps
+(e.g., <a href="https://man.page/2/utimensat">utimensat(2)</a>), extended attributes
+(<a href="https://man.page/2/setxattr">setxattr(2)</a>), link count (since Linux 2.6.25; e.g.,
+for the target of <a href="https://man.page/2/link">link(2)</a> and for <a href="https://man.page/2/unlink">unlink(2)</a>),
+and user/group ID (e.g., <a href="https://man.page/2/chown">chown(2)</a>).</p>
 
 <p style="margin-left:17%;"><b>IN_CLOSE_WRITE</b> (+)</p>
 
@@ -249,9 +249,9 @@ for writing was closed.</p>
 <p style="margin-left:17%;"><b>IN_CREATE</b> (+)</p>
 
 <p style="margin-left:28%;">File/directory created in
-watched directory (e.g., <b>open</b>(2) <b>O_CREAT</b>,
-<b>mkdir</b>(2), <b>link</b>(2), <b>symlink</b>(2),
-<b>bind</b>(2) on a UNIX domain socket).</p>
+watched directory (e.g., <a href="https://man.page/2/open">open(2)</a> <b>O_CREAT</b>,
+<a href="https://man.page/2/mkdir">mkdir(2)</a>, <a href="https://man.page/2/link">link(2)</a>, <a href="https://man.page/2/symlink">symlink(2)</a>,
+<a href="https://man.page/2/bind">bind(2)</a> on a UNIX domain socket).</p>
 
 <p style="margin-left:17%;"><b>IN_DELETE</b> (+)</p>
 
@@ -262,7 +262,7 @@ watched directory.</p>
 
 <p style="margin-left:28%;">Watched file/directory was
 itself deleted. (This event also occurs if an object is
-moved to another filesystem, since <b>mv</b>(1) in effect
+moved to another filesystem, since <a href="https://man.page/1/mv">mv(1)</a> in effect
 copies the file to the other filesystem and then deletes it
 from the original filesystem.) In addition, an
 <b>IN_IGNORED</b> event will subsequently be generated for
@@ -271,7 +271,7 @@ the watch descriptor.</p>
 <p style="margin-left:17%;"><b>IN_MODIFY</b> (+)</p>
 
 <p style="margin-left:28%;">File was modified (e.g.,
-<b>write</b>(2), <b>truncate</b>(2)).</p>
+<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/truncate">truncate(2)</a>).</p>
 
 <p style="margin-left:17%;"><b>IN_MOVE_SELF</b></p>
 
@@ -348,7 +348,7 @@ directory.</p>
 <b>IN_ALL_EVENTS</b> macro is defined as a bit mask of all
 of the above events. This macro can be used as the
 <i>mask</i> argument when calling
-<b>inotify_add_watch</b>(2).</p>
+<a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Two additional
 convenience macros are defined:</p>
@@ -365,7 +365,7 @@ IN_CLOSE_NOWRITE</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 further bits can be specified in <i>mask</i> when calling
-<b>inotify_add_watch</b>(2):</p>
+<a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a>:</p>
 
 <p style="margin-left:17%;"><b>IN_DONT_FOLLOW</b> (since
 Linux 2.6.15)</p>
@@ -423,17 +423,17 @@ being watched.</p>
 provides an application with a way of ensuring that new
 watches do not modify existing ones. This is useful because
 multiple paths may refer to the same inode, and multiple
-calls to <b>inotify_add_watch</b>(2) without this flag may
+calls to <a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a> without this flag may
 clobber existing watch masks.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 bits may be set in the <i>mask</i> field returned by
-<b>read</b>(2):</p>
+<a href="https://man.page/2/read">read(2)</a>:</p>
 
 <p style="margin-left:17%;"><b>IN_IGNORED</b></p>
 
 <p style="margin-left:28%;">Watch was removed explicitly
-(<b>inotify_rm_watch</b>(2)) or automatically (file was
+(<a href="https://man.page/2/inotify_rm_watch">inotify_rm_watch(2)</a>) or automatically (file was
 deleted, or filesystem was unmounted). See also BUGS.</p>
 
 <p style="margin-left:17%;"><b>IN_ISDIR</b></p>
@@ -557,7 +557,7 @@ kernel memory consumed by inotify: <i><br>
 /proc/sys/fs/inotify/max_queued_events</i></p>
 
 <p style="margin-left:22%;">The value in this file is used
-when an application calls <b>inotify_init</b>(2) to set an
+when an application calls <a href="https://man.page/2/inotify_init">inotify_init(2)</a> to set an
 upper limit on the number of events that can be queued to
 the corresponding inotify instance. Events in excess of this
 limit are dropped, but an <b>IN_Q_OVERFLOW</b> event is
@@ -602,17 +602,17 @@ is Linux-specific.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">Inotify file
-descriptors can be monitored using <b>select</b>(2),
-<b>poll</b>(2), and <b>epoll</b>(7). When an event is
+descriptors can be monitored using <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, and <a href="https://man.page/7/epoll">epoll(7)</a>. When an event is
 available, the file descriptor indicates as readable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 2.6.25, signal-driven I/O notification is available for
 inotify file descriptors; see the discussion of
 <b>F_SETFL</b> (for setting the <b>O_ASYNC</b> flag),
-<b>F_SETOWN</b>, and <b>F_SETSIG</b> in <b>fcntl</b>(2). The
+<b>F_SETOWN</b>, and <b>F_SETSIG</b> in <a href="https://man.page/2/fcntl">fcntl(2)</a>. The
 <i>siginfo_t</i> structure (described in
-<b>sigaction</b>(2)) that is passed to the signal handler
+<a href="https://man.page/2/sigaction">sigaction(2)</a>) that is passed to the signal handler
 has the following fields set: <i>si_fd</i> is set to the
 inotify file descriptor number; <i>si_signo</i> is set to
 the signal number; <i>si_code</i> is set to <b>POLL_IN</b>;
@@ -639,7 +639,7 @@ descriptor.</p>
 watch descriptors that is being monitored via an inotify
 file descriptor can be viewed via the entry for the inotify
 file descriptor in the process&rsquo;s
-<i>/proc/[pid]/fdinfo</i> directory. See <b>proc</b>(5) for
+<i>/proc/[pid]/fdinfo</i> directory. See <a href="https://man.page/5/proc">proc(5)</a> for
 further details. The <b>FIONREAD ioctl</b>(2) returns the
 number of bytes available to read from an inotify file
 descriptor.</p>
@@ -663,8 +663,8 @@ monitorable with inotify.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The inotify API
 does not report file accesses and modifications that may
-occur because of <b>mmap</b>(2), <b>msync</b>(2), and
-<b>munmap</b>(2).</p>
+occur because of <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/msync">msync(2)</a>, and
+<a href="https://man.page/2/munmap">munmap(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The inotify API
 identifies affected files by filename. However, by the time
@@ -715,7 +715,7 @@ generated for the directory and the objects it contains.</p>
 rename() events</b> <br>
 As noted above, the <b>IN_MOVED_FROM</b> and
 <b>IN_MOVED_TO</b> event pair that is generated by
-<b>rename</b>(2) can be matched up via their shared cookie
+<a href="https://man.page/2/rename">rename(2)</a> can be matched up via their shared cookie
 value. However, the task of matching has some
 challenges.</p>
 
@@ -733,7 +733,7 @@ the <b>IN_MOVED_TO</b> has not.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Matching up the
 <b>IN_MOVED_FROM</b> and <b>IN_MOVED_TO</b> event pair
-generated by <b>rename</b>(2) is thus inherently racy.
+generated by <a href="https://man.page/2/rename">rename(2)</a> is thus inherently racy.
 (Don&rsquo;t forget that if an object is renamed outside of
 a monitored directory, there may not even be an
 <b>IN_MOVED_TO</b> event.) Heuristic approaches (e.g.,
@@ -752,8 +752,8 @@ scenario.)</p>
 should also allow for the possibility that the
 <b>IN_MOVED_FROM</b> event was the last event that could fit
 in the buffer returned by the current call to
-<b>read</b>(2), and the accompanying <b>IN_MOVED_TO</b>
-event might be fetched only on the next <b>read</b>(2),
+<a href="https://man.page/2/read">read(2)</a>, and the accompanying <b>IN_MOVED_TO</b>
+event might be fetched only on the next <a href="https://man.page/2/read">read(2)</a>,
 which should be done with a (small) timeout to allow for the
 fact that insertion of the
 <b>IN_MOVED_FROM</b>-<b>IN_MOVED_TO</b> event pair is not
@@ -766,8 +766,8 @@ atomic, and also the possibility that there may not be any
 
 
 <p style="margin-left:11%; margin-top: 1em">Before Linux
-3.19, <b>fallocate</b>(2) did not create any inotify events.
-Since Linux 3.19, calls to <b>fallocate</b>(2) generate
+3.19, <a href="https://man.page/2/fallocate">fallocate(2)</a> did not create any inotify events.
+Since Linux 3.19, calls to <a href="https://man.page/2/fallocate">fallocate(2)</a> generate
 <b>IN_MODIFY</b> events.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In kernels
@@ -789,12 +789,12 @@ yet been read) instead checked if the most recent event
 could be coalesced with the <i>oldest</i> unread event.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a watch
-descriptor is removed by calling <b>inotify_rm_watch</b>(2)
+descriptor is removed by calling <a href="https://man.page/2/inotify_rm_watch">inotify_rm_watch(2)</a>
 (or because a watch file is deleted or the filesystem that
 contains it is unmounted), any pending unread events for
 that watch descriptor remain available to read. As watch
 descriptors are subsequently allocated with
-<b>inotify_add_watch</b>(2), the kernel cycles through the
+<a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a>, the kernel cycles through the
 range of possible watch descriptors (0 to <b>INT_MAX</b>)
 incrementally. When allocating a free watch descriptor, no
 check is made to see whether that watch descriptor number
@@ -1102,11 +1102,11 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>inotifywait</b>(1),
-<b>inotifywatch</b>(1), <b>inotify_add_watch</b>(2),
-<b>inotify_init</b>(2), <b>inotify_init1</b>(2),
-<b>inotify_rm_watch</b>(2), <b>read</b>(2), <b>stat</b>(2),
-<b>fanotify</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/inotifywait">inotifywait(1)</a>,
+<a href="https://man.page/1/inotifywatch">inotifywatch(1)</a>, <a href="https://man.page/2/inotify_add_watch">inotify_add_watch(2)</a>,
+<a href="https://man.page/2/inotify_init">inotify_init(2)</a>, <a href="https://man.page/2/inotify_init1">inotify_init1(2)</a>,
+<a href="https://man.page/2/inotify_rm_watch">inotify_rm_watch(2)</a>, <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/stat">stat(2)</a>,
+<a href="https://man.page/7/fanotify">fanotify(7)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/filesystems/inotify.txt</i>

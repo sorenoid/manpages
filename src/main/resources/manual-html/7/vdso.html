@@ -102,7 +102,7 @@ obsolete way to ask the kernel what time it is or what CPU
 the caller is on.</p>
 
 <p style="margin-left:11%; margin-top: 1em">One frequently
-used system call is <b>gettimeofday</b>(2). This system call
+used system call is <a href="https://man.page/2/gettimeofday">gettimeofday(2)</a>. This system call
 is called both directly by user-space applications as well
 as indirectly by the C library. Think timestamps or timing
 loops or polling&mdash;all of these frequently need to know
@@ -111,21 +111,21 @@ secret&mdash;any application in any privilege mode (root or
 any unprivileged user) will get the same answer. Thus the
 kernel arranges for the information required to answer this
 question to be placed in memory the process can access. Now
-a call to <b>gettimeofday</b>(2) changes from a system call
+a call to <a href="https://man.page/2/gettimeofday">gettimeofday(2)</a> changes from a system call
 to a normal function call and a few memory accesses.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Finding the
 vDSO</b> <br>
 The base address of the vDSO (if one exists) is passed by
 the kernel to each program in the initial auxiliary vector
-(see <b>getauxval</b>(3)), via the <b>AT_SYSINFO_EHDR</b>
+(see <a href="https://man.page/3/getauxval">getauxval(3)</a>), via the <b>AT_SYSINFO_EHDR</b>
 tag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">You must not
 assume the vDSO is mapped at any particular location in the
 user&rsquo;s memory map. The base address will usually be
 randomized at run time every time a new process image is
-created (at <b>execve</b>(2) time). This is done for
+created (at <a href="https://man.page/2/execve">execve(2)</a> time). This is done for
 security reasons, to prevent &quot;return-to-libc&quot;
 attacks.</p>
 
@@ -184,7 +184,7 @@ arch/$ARCH/ -name '*vdso*.so*' -o -name '*gate*.so*'</p>
 <p style="margin-left:11%; margin-top: 1em"><b>vDSO
 names</b> <br>
 The name of the vDSO varies across architectures. It will
-often show up in things like glibc&rsquo;s <b>ldd</b>(1)
+often show up in things like glibc&rsquo;s <a href="https://man.page/1/ldd">ldd(1)</a>
 output. The exact name should not matter to any code, so do
 not hardcode it.</p>
 
@@ -270,10 +270,10 @@ not hardcode it.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>strace(1),
 seccomp(2), and the vDSO</b> <br>
-When tracing systems calls with <b>strace</b>(1), symbols
+When tracing systems calls with <a href="https://man.page/1/strace">strace(1)</a>, symbols
 (system calls) that are exported by the vDSO will <i>not</i>
 appear in the trace output. Those system calls will likewise
-not be visible to <b>seccomp</b>(2) filters.</p>
+not be visible to <a href="https://man.page/2/seccomp">seccomp(2)</a> filters.</p>
 
 <h2>ARCHITECTURE-SPECIFIC NOTES
 <a name="ARCHITECTURE-SPECIFIC NOTES"></a>
@@ -447,7 +447,7 @@ also has &quot;light-weight system calls&quot; (also known
 as &quot;fast syscalls&quot; or &quot;fsys&quot;). You can
 invoke these via the <i>__kernel_syscall_via_epc</i> vDSO
 helper. The system calls listed here have the same semantics
-as if you called them directly via <b>syscall</b>(2), so
+as if you called them directly via <a href="https://man.page/2/syscall">syscall(2)</a>, so
 refer to the relevant documentation for each. The table
 below lists the functions available via this mechanism.</p>
 
@@ -998,8 +998,8 @@ reconceived as a vDSO in the current format.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>syscalls</b>(2),
-<b>getauxval</b>(3), <b>proc</b>(5)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/syscalls">syscalls(2)</a>,
+<a href="https://man.page/3/getauxval">getauxval(3)</a>, <a href="https://man.page/5/proc">proc(5)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The documents,
 examples, and source code in the Linux source code tree:</p>

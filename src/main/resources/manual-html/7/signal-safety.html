@@ -60,11 +60,11 @@ maintain a statically allocated data buffer along with
 associated counters and indexes (or pointers) that record
 the amount of data and the current position in the buffer.
 Suppose that the main program is in the middle of a call to
-a <i>stdio</i> function such as <b>printf</b>(3) where the
+a <i>stdio</i> function such as <a href="https://man.page/3/printf">printf(3)</a> where the
 buffer and associated variables have been partially updated.
 If, at that moment, the program is interrupted by a signal
-handler that also calls <b>printf</b>(3), then the second
-call to <b>printf</b>(3) will operate on inconsistent data,
+handler that also calls <a href="https://man.page/3/printf">printf(3)</a>, then the second
+call to <a href="https://man.page/3/printf">printf(3)</a> will operate on inconsistent data,
 with unpredictable results.</p>
 
 <p style="margin-left:11%; margin-top: 1em">To avoid
@@ -143,8 +143,8 @@ the table details changes in the subsequent standards.</p>
 
 
 <p style="margin-top: 1em">POSIX.1-2001 and POSIX.1-2001
-TC2 required the functions <b>fpathconf</b>(3),
-<b>pathconf</b>(3), and <b>sysconf</b>(3) to be
+TC2 required the functions <a href="https://man.page/3/fpathconf">fpathconf(3)</a>,
+<a href="https://man.page/3/pathconf">pathconf(3)</a>, and <a href="https://man.page/3/sysconf">sysconf(3)</a> to be
 async-signal-safe, but this requirement was removed in
 POSIX.1-2008.</p> </td></tr>
 <tr valign="top" align="left">
@@ -159,7 +159,7 @@ POSIX.1-2008.</p> </td></tr>
 
 <p>If a signal handler interrupts the execution of an
 unsafe function, and the handler terminates via a call to
-<b>longjmp</b>(3) or <b>siglongjmp</b>(3) and the program
+<a href="https://man.page/3/longjmp">longjmp(3)</a> or <a href="https://man.page/3/siglongjmp">siglongjmp(3)</a> and the program
 subsequently calls an unsafe function, then the behavior of
 the program is undefined.</p></td></tr>
 <tr valign="top" align="left">
@@ -173,11 +173,11 @@ the program is undefined.</p></td></tr>
 
 
 <p>POSIX.1-2001 TC1 clarified that if an application calls
-<b>fork</b>(2) from a signal handler and any of the fork
-handlers registered by <b>pthread_atfork</b>(3) calls a
+<a href="https://man.page/2/fork">fork(2)</a> from a signal handler and any of the fork
+handlers registered by <a href="https://man.page/3/pthread_atfork">pthread_atfork(3)</a> calls a
 function that is not async-signal-safe, the behavior is
 undefined. A future revision of the standard is likely to
-remove <b>fork</b>(2) from the list of async-signal-safe
+remove <a href="https://man.page/2/fork">fork(2)</a> from the list of async-signal-safe
 functions.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -221,8 +221,8 @@ the GNU C library:</p>
 
 
 <p style="margin-top: 1em">Before glibc 2.24,
-<b>execl</b>(3) and <b>execle</b>(3) employed
-<b>realloc</b>(3) internally and were consequently not
+<a href="https://man.page/3/execl">execl(3)</a> and <a href="https://man.page/3/execle">execle(3)</a> employed
+<a href="https://man.page/3/realloc">realloc(3)</a> internally and were consequently not
 async-signal-safe. This was fixed in glibc 2.24.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -234,9 +234,9 @@ async-signal-safe. This was fixed in glibc 2.24.</p></td></tr>
 <td width="85%">
 
 
-<p>The glibc implementation of <b>aio_suspend</b>(3) is not
+<p>The glibc implementation of <a href="https://man.page/3/aio_suspend">aio_suspend(3)</a> is not
 async-signal-safe because it uses
-<b>pthread_mutex_lock</b>(3) internally.</p></td></tr>
+<a href="https://man.page/3/pthread_mutex_lock">pthread_mutex_lock(3)</a> internally.</p></td></tr>
 </table>
 
 <h2>SEE ALSO
@@ -245,8 +245,8 @@ async-signal-safe because it uses
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>sigaction</b>(2),
-<b>signal</b>(7), <b>standards</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/sigaction">sigaction(2)</a>,
+<a href="https://man.page/7/signal">signal(7)</a>, <a href="https://man.page/7/standards">standards(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

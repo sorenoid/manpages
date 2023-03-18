@@ -63,7 +63,7 @@ int</b> <i>fd</i><b>, struct epoll_event
 
 <p style="margin-left:11%; margin-top: 1em">This system
 call is used to add, modify, or remove entries in the
-interest list of the <b>epoll</b>(7) instance referred to by
+interest list of the <a href="https://man.page/7/epoll">epoll(7)</a> instance referred to by
 the file descriptor <i>epfd</i>. It requests that the
 operation <i>op</i> be performed for the target file
 descriptor, <i>fd</i>.</p>
@@ -75,8 +75,8 @@ EPOLL_CTL_ADD</b></p>
 <p style="margin-left:22%;">Add an entry to the interest
 list of the epoll file descriptor, <i>epfd</i>. The entry
 includes the file descriptor, <i>fd</i>, a reference to the
-corresponding open file description (see <b>epoll</b>(7) and
-<b>open</b>(2)), and the settings specified in
+corresponding open file description (see <a href="https://man.page/7/epoll">epoll(7)</a> and
+<a href="https://man.page/2/open">open(2)</a>), and the settings specified in
 <i>event</i>.</p>
 
 <p style="margin-left:11%;"><b>EPOLL_CTL_MOD</b></p>
@@ -114,7 +114,7 @@ epoll_data_t data; /* User data variable */ <br>
 <p style="margin-left:11%; margin-top: 1em">The <i>data</i>
 member of the <i>epoll_event</i> structure specifies data
 that the kernel should save and then return (via
-<b>epoll_wait</b>(2)) when this file descriptor becomes
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>) when this file descriptor becomes
 ready.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -124,12 +124,12 @@ following available event types: <b><br>
 EPOLLIN</b></p>
 
 <p style="margin-left:22%;">The associated file is
-available for <b>read</b>(2) operations.</p>
+available for <a href="https://man.page/2/read">read(2)</a> operations.</p>
 
 <p style="margin-left:11%;"><b>EPOLLOUT</b></p>
 
 <p style="margin-left:22%;">The associated file is
-available for <b>write</b>(2) operations.</p>
+available for <a href="https://man.page/2/write">write(2)</a> operations.</p>
 
 <p style="margin-left:11%;"><b>EPOLLRDHUP</b> (since Linux
 2.6.17)</p>
@@ -143,7 +143,7 @@ peer shutdown when using edge-triggered monitoring.)</p>
 
 <p style="margin-left:22%;">There is an exceptional
 condition on the file descriptor. See the discussion of
-<b>POLLPRI</b> in <b>poll</b>(2).</p>
+<b>POLLPRI</b> in <a href="https://man.page/2/poll">poll(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>EPOLLERR</b></p>
 
@@ -153,7 +153,7 @@ the write end of a pipe when the read end has been
 closed.</p>
 
 
-<p style="margin-left:22%; margin-top: 1em"><b>epoll_wait</b>(2)
+<p style="margin-left:22%; margin-top: 1em"><a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>
 will always report for this event; it is not necessary to
 set it in <i>events</i> when calling <b>epoll_ctl</b>().</p>
 
@@ -163,7 +163,7 @@ set it in <i>events</i> when calling <b>epoll_ctl</b>().</p>
 associated file descriptor.</p>
 
 
-<p style="margin-left:22%; margin-top: 1em"><b>epoll_wait</b>(2)
+<p style="margin-left:22%; margin-top: 1em"><a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>
 will always wait for this event; it is not necessary to set
 it in <i>events</i> when calling <b>epoll_ctl</b>().</p>
 
@@ -179,13 +179,13 @@ has been consumed.</p>
 <p style="margin-left:22%;">Requests edge-triggered
 notification for the associated file descriptor. The default
 behavior for <b>epoll</b> is level-triggered. See
-<b>epoll</b>(7) for more detailed information about
+<a href="https://man.page/7/epoll">epoll(7)</a> for more detailed information about
 edge-triggered and level-triggered notification.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This flag is an
 input flag for the <i>event.events</i> field when calling
 <b>epoll_ctl</b>(); it is never returned by
-<b>epoll_wait</b>(2).</p>
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>EPOLLONESHOT</b> (since
 Linux 2.6.2)</p>
@@ -193,7 +193,7 @@ Linux 2.6.2)</p>
 <p style="margin-left:22%;">Requests one-shot notification
 for the associated file descriptor. This means that after an
 event notified for the file descriptor by
-<b>epoll_wait</b>(2), the file descriptor is disabled in the
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>, the file descriptor is disabled in the
 interest list and no other events will be reported by the
 <b>epoll</b> interface. The user must call
 <b>epoll_ctl</b>() with <b>EPOLL_CTL_MOD</b> to rearm the
@@ -202,7 +202,7 @@ file descriptor with a new event mask.</p>
 <p style="margin-left:22%; margin-top: 1em">This flag is an
 input flag for the <i>event.events</i> field when calling
 <b>epoll_ctl</b>(); it is never returned by
-<b>epoll_wait</b>(2).</p>
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>EPOLLWAKEUP</b> (since Linux
 3.5)</p>
@@ -213,9 +213,9 @@ input flag for the <i>event.events</i> field when calling
 does not enter &quot;suspend&quot; or &quot;hibernate&quot;
 while this event is pending or being processed. The event is
 considered as being &quot;processed&quot; from the time when
-it is returned by a call to <b>epoll_wait</b>(2) until the
-next call to <b>epoll_wait</b>(2) on the same
-<b>epoll</b>(7) file descriptor, the closure of that file
+it is returned by a call to <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a> until the
+next call to <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a> on the same
+<a href="https://man.page/7/epoll">epoll(7)</a> file descriptor, the closure of that file
 descriptor, the removal of the event file descriptor with
 <b>EPOLL_CTL_DEL</b>, or the clearing of <b>EPOLLWAKEUP</b>
 for the event file descriptor with <b>EPOLL_CTL_MOD</b>. See
@@ -224,7 +224,7 @@ also BUGS.</p>
 <p style="margin-left:22%; margin-top: 1em">This flag is an
 input flag for the <i>event.events</i> field when calling
 <b>epoll_ctl</b>(); it is never returned by
-<b>epoll_wait</b>(2).</p>
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>EPOLLEXCLUSIVE</b> (since
 Linux 4.5)</p>
@@ -235,7 +235,7 @@ target file descriptor, <i>fd</i>. When a wakeup event
 occurs and multiple epoll file descriptors are attached to
 the same target file using <b>EPOLLEXCLUSIVE</b>, one or
 more of the epoll file descriptors will receive an event
-with <b>epoll_wait</b>(2). The default in this scenario
+with <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>. The default in this scenario
 (when <b>EPOLLEXCLUSIVE</b> is not set) is for all epoll
 file descriptors to receive an event. <b>EPOLLEXCLUSIVE</b>
 is thus useful for avoiding thundering herd problems in
@@ -274,7 +274,7 @@ likewise fail. The error in all of these cases is
 <p style="margin-left:22%; margin-top: 1em">The
 <b>EPOLLEXCLUSIVE</b> flag is an input flag for the
 <i>event.events</i> field when calling <b>epoll_ctl</b>();
-it is never returned by <b>epoll_wait</b>(2).</p>
+it is never returned by <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -432,7 +432,7 @@ this epoll instance.</p></td></tr>
 <p>The limit imposed by
 <i>/proc/sys/fs/epoll/max_user_watches</i> was encountered
 while trying to register (<b>EPOLL_CTL_ADD</b>) a new file
-descriptor on an epoll instance. See <b>epoll</b>(7) for
+descriptor on an epoll instance. See <a href="https://man.page/7/epoll">epoll(7)</a> for
 further details.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -475,7 +475,7 @@ is Linux-specific.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>epoll</b> interface supports all file descriptors that
-support <b>poll</b>(2).</p>
+support <a href="https://man.page/2/poll">poll(2)</a>.</p>
 
 <h2>BUGS
 <a name="BUGS"></a>
@@ -512,8 +512,8 @@ therefore double check that it has the
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>epoll_create</b>(2),
-<b>epoll_wait</b>(2), <b>poll</b>(2), <b>epoll</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/epoll_create">epoll_create(2)</a>,
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

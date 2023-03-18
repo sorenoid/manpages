@@ -71,7 +71,7 @@ int openat(int</b> <i>dirfd</i><b>, const char
 <i>mode</i><b>);</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">/* Documented
-separately, in <b>openat2</b>(2): */ <b><br>
+separately, in <a href="https://man.page/2/openat2">openat2(2)</a>: */ <b><br>
 int openat2(int</b> <i>dirfd</i><b>, const char
 *</b><i>pathname</i><b>, <br>
 const struct open_how *</b><i>how</i><b>, size_t</b>
@@ -79,7 +79,7 @@ const struct open_how *</b><i>how</i><b>, size_t</b>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>openat</b>():</p>
@@ -107,19 +107,19 @@ may optionally (if <b>O_CREAT</b> is specified in
 <p style="margin-left:11%; margin-top: 1em">The return
 value of <b>open</b>() is a file descriptor, a small,
 nonnegative integer that is used in subsequent system calls
-(<b>read</b>(2), <b>write</b>(2), <b>lseek</b>(2),
-<b>fcntl</b>(2), etc.) to refer to the open file. The file
+(<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/lseek">lseek(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, etc.) to refer to the open file. The file
 descriptor returned by a successful call will be the
 lowest-numbered file descriptor not currently open for the
 process.</p>
 
 <p style="margin-left:11%; margin-top: 1em">By default, the
 new file descriptor is set to remain open across an
-<b>execve</b>(2) (i.e., the <b>FD_CLOEXEC</b> file
-descriptor flag described in <b>fcntl</b>(2) is initially
+<a href="https://man.page/2/execve">execve(2)</a> (i.e., the <b>FD_CLOEXEC</b> file
+descriptor flag described in <a href="https://man.page/2/fcntl">fcntl(2)</a> is initially
 disabled); the <b>O_CLOEXEC</b> flag, described below, can
 be used to change this default. The file offset is set to
-the beginning of the file (see <b>lseek</b>(2)).</p>
+the beginning of the file (see <a href="https://man.page/2/lseek">lseek(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">A call to
 <b>open</b>() creates a new <i>open file description</i>, an
@@ -149,7 +149,7 @@ flags is that the file creation flags affect the semantics
 of the open operation itself, while the file status flags
 affect the semantics of subsequent I/O operations. The file
 status flags can be retrieved and (in some cases) modified;
-see <b>fcntl</b>(2) for details.</p>
+see <a href="https://man.page/2/fcntl">fcntl(2)</a> for details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The full list
 of file creation flags and file status flags is as follows:
@@ -157,9 +157,9 @@ of file creation flags and file status flags is as follows:
 O_APPEND</b></p>
 
 <p style="margin-left:22%;">The file is opened in append
-mode. Before each <b>write</b>(2), the file offset is
+mode. Before each <a href="https://man.page/2/write">write(2)</a>, the file offset is
 positioned at the end of the file, as if with
-<b>lseek</b>(2). The modification of the file offset and the
+<a href="https://man.page/2/lseek">lseek(2)</a>. The modification of the file offset and the
 write operation are performed as a single atomic step.</p>
 
 
@@ -174,10 +174,10 @@ a race condition.</p>
 
 <p style="margin-left:22%;">Enable signal-driven I/O:
 generate a signal (<b>SIGIO</b> by default, but this can be
-changed via <b>fcntl</b>(2)) when input or output becomes
+changed via <a href="https://man.page/2/fcntl">fcntl(2)</a>) when input or output becomes
 possible on this file descriptor. This feature is available
 only for terminals, pseudoterminals, sockets, and (since
-Linux 2.6) pipes and FIFOs. See <b>fcntl</b>(2) for further
+Linux 2.6) pipes and FIFOs. See <a href="https://man.page/2/fcntl">fcntl(2)</a> for further
 details. See also BUGS, below.</p>
 
 <p style="margin-left:11%;"><b>O_CLOEXEC</b> (since Linux
@@ -185,21 +185,21 @@ details. See also BUGS, below.</p>
 
 <p style="margin-left:22%;">Enable the close-on-exec flag
 for the new file descriptor. Specifying this flag permits a
-program to avoid additional <b>fcntl</b>(2) <b>F_SETFD</b>
+program to avoid additional <a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_SETFD</b>
 operations to set the <b>FD_CLOEXEC</b> flag.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Note that the
 use of this flag is essential in some multithreaded
-programs, because using a separate <b>fcntl</b>(2)
+programs, because using a separate <a href="https://man.page/2/fcntl">fcntl(2)</a>
 <b>F_SETFD</b> operation to set the <b>FD_CLOEXEC</b> flag
 does not suffice to avoid race conditions where one thread
 opens a file descriptor and attempts to set its
-close-on-exec flag using <b>fcntl</b>(2) at the same time as
-another thread does a <b>fork</b>(2) plus <b>execve</b>(2).
+close-on-exec flag using <a href="https://man.page/2/fcntl">fcntl(2)</a> at the same time as
+another thread does a <a href="https://man.page/2/fork">fork(2)</a> plus <a href="https://man.page/2/execve">execve(2)</a>.
 Depending on the order of execution, the race may lead to
 the file descriptor returned by <b>open</b>() being
 unintentionally leaked to the program executed by the child
-process created by <b>fork</b>(2). (This kind of race is in
+process created by <a href="https://man.page/2/fork">fork(2)</a>. (This kind of race is in
 principle possible for any system call that creates a file
 descriptor whose close-on-exec flag should be set, and
 various other Linux system calls provide an equivalent of
@@ -417,7 +417,7 @@ in <i>mode</i>:</p>
 <td width="62%">
 
 
-<p>0002000 set-group-ID bit (see <b>inode</b>(7)).</p></td>
+<p>0002000 set-group-ID bit (see <a href="https://man.page/7/inode">inode(7)</a>).</p></td>
 <td width="3%">
 </td></tr>
 <tr valign="top" align="left">
@@ -430,7 +430,7 @@ in <i>mode</i>:</p>
 <td width="62%">
 
 
-<p>0001000 sticky bit (see <b>inode</b>(7)).</p></td>
+<p>0001000 sticky bit (see <a href="https://man.page/7/inode">inode(7)</a>).</p></td>
 <td width="3%">
 </td></tr>
 </table>
@@ -459,7 +459,7 @@ described in <b>raw</b>(8).</p>
 <p style="margin-left:22%;">If <i>pathname</i> is not a
 directory, cause the open to fail. This flag was added in
 kernel version 2.1.126, to avoid denial-of-service problems
-if <b>opendir</b>(3) is called on a FIFO or tape device.</p>
+if <a href="https://man.page/3/opendir">opendir(3)</a> is called on a FIFO or tape device.</p>
 
 <p style="margin-left:11%;"><b>O_DSYNC</b></p>
 
@@ -468,11 +468,11 @@ will complete according to the requirements of synchronized
 I/O <i>data</i> integrity completion.</p>
 
 <p style="margin-left:22%; margin-top: 1em">By the time
-<b>write</b>(2) (and similar) return, the output data has
+<a href="https://man.page/2/write">write(2)</a> (and similar) return, the output data has
 been transferred to the underlying hardware, along with any
 file metadata that would be required to retrieve that data
-(i.e., as though each <b>write</b>(2) was followed by a call
-to <b>fdatasync</b>(2)). <i>See NOTES below</i>.</p>
+(i.e., as though each <a href="https://man.page/2/write">write(2)</a> was followed by a call
+to <a href="https://man.page/2/fdatasync">fdatasync(2)</a>). <i>See NOTES below</i>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -514,9 +514,9 @@ Portable programs that want to perform atomic file locking
 using a lockfile, and need to avoid reliance on NFS support
 for <b>O_EXCL</b>, can create a unique file on the same
 filesystem (e.g., incorporating hostname and PID), and use
-<b>link</b>(2) to make a link to the lockfile. If
-<b>link</b>(2) returns 0, the lock is successful. Otherwise,
-use <b>stat</b>(2) on the unique file to check if its link
+<a href="https://man.page/2/link">link(2)</a> to make a link to the lockfile. If
+<a href="https://man.page/2/link">link(2)</a> returns 0, the lock is successful. Otherwise,
+use <a href="https://man.page/2/stat">stat(2)</a> on the unique file to check if its link
 count has increased to 2, in which case the lock is also
 successful.</p>
 
@@ -530,14 +530,14 @@ including <i>any</i> header files) in order to obtain this
 definition. Setting the <b>_FILE_OFFSET_BITS</b> feature
 test macro to 64 (rather than using <b>O_LARGEFILE</b>) is
 the preferred method of accessing large files on 32-bit
-systems (see <b>feature_test_macros</b>(7)).</p>
+systems (see <a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>O_NOATIME</b> (since Linux
 2.6.8)</p>
 
 <p style="margin-left:22%;">Do not update the file last
 access time (<i>st_atime</i> in the inode) when the file is
-<b>read</b>(2).</p>
+<a href="https://man.page/2/read">read(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This flag can
 be employed only if one of the following conditions is
@@ -582,7 +582,7 @@ time.</p>
 <p style="margin-left:11%;"><b>O_NOCTTY</b></p>
 
 <p style="margin-left:22%;">If <i>pathname</i> refers to a
-terminal device&mdash;see <b>tty</b>(4)&mdash;it will not
+terminal device&mdash;see <a href="https://man.page/4/tty">tty(4)</a>&mdash;it will not
 become the process&rsquo;s controlling terminal even if the
 process does not have one.</p>
 
@@ -616,7 +616,7 @@ is returned will cause the calling process to wait.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Note that the
 setting of this flag has no effect on the operation of
-<b>poll</b>(2), <b>select</b>(2), <b>epoll</b>(7), and
+<a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>, and
 similar, since those interfaces merely inform the caller
 about whether a file descriptor is &quot;ready&quot;,
 meaning that an I/O operation performed on the file
@@ -633,10 +633,10 @@ behavior when specifying this flag for regular files and
 block devices.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For the
-handling of FIFOs (named pipes), see also <b>fifo</b>(7).
+handling of FIFOs (named pipes), see also <a href="https://man.page/7/fifo">fifo(7)</a>.
 For a discussion of the effect of <b>O_NONBLOCK</b> in
 conjunction with mandatory file locks and with file leases,
-see <b>fcntl</b>(2).</p>
+see <a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>O_PATH</b> (since Linux
 2.6.39)</p>
@@ -645,9 +645,9 @@ see <b>fcntl</b>(2).</p>
 can be used for two purposes: to indicate a location in the
 filesystem tree and to perform operations that act purely at
 the file descriptor level. The file itself is not opened,
-and other file operations (e.g., <b>read</b>(2),
-<b>write</b>(2), <b>fchmod</b>(2), <b>fchown</b>(2),
-<b>fgetxattr</b>(2), <b>ioctl</b>(2), <b>mmap</b>(2)) fail
+and other file operations (e.g., <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/fchmod">fchmod(2)</a>, <a href="https://man.page/2/fchown">fchown(2)</a>,
+<a href="https://man.page/2/fgetxattr">fgetxattr(2)</a>, <a href="https://man.page/2/ioctl">ioctl(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>) fail
 with the error <b>EBADF</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The following
@@ -666,7 +666,7 @@ descriptor:</p>
 <td width="74%">
 
 
-<p><b>close</b>(2).</p></td></tr>
+<p><a href="https://man.page/2/close">close(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -677,7 +677,7 @@ descriptor:</p>
 <td width="74%">
 
 
-<p><b>fchdir</b>(2), if the file descriptor refers to a
+<p><a href="https://man.page/2/fchdir">fchdir(2)</a>, if the file descriptor refers to a
 directory (since Linux 3.5).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -689,7 +689,7 @@ directory (since Linux 3.5).</p></td></tr>
 <td width="74%">
 
 
-<p><b>fstat</b>(2) (since Linux 3.6).</p></td></tr>
+<p><a href="https://man.page/2/fstat">fstat(2)</a> (since Linux 3.6).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -700,7 +700,7 @@ directory (since Linux 3.5).</p></td></tr>
 <td width="74%">
 
 
-<p><b>fstatfs</b>(2) (since Linux 3.12).</p></td></tr>
+<p><a href="https://man.page/2/fstatfs">fstatfs(2)</a> (since Linux 3.12).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -711,8 +711,8 @@ directory (since Linux 3.5).</p></td></tr>
 <td width="74%">
 
 
-<p>Duplicating the file descriptor (<b>dup</b>(2),
-<b>fcntl</b>(2) <b>F_DUPFD</b>, etc.).</p></td></tr>
+<p>Duplicating the file descriptor (<a href="https://man.page/2/dup">dup(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_DUPFD</b>, etc.).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -724,7 +724,7 @@ directory (since Linux 3.5).</p></td></tr>
 
 
 <p>Getting and setting file descriptor flags
-(<b>fcntl</b>(2) <b>F_GETFD</b> and <b>F_SETFD</b>).</p></td></tr>
+(<a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_GETFD</b> and <b>F_SETFD</b>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -736,7 +736,7 @@ directory (since Linux 3.5).</p></td></tr>
 
 
 <p>Retrieving open file status flags using the
-<b>fcntl</b>(2) <b>F_GETFL</b> operation: the returned flags
+<a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_GETFL</b> operation: the returned flags
 will include the bit <b>O_PATH</b>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -750,7 +750,7 @@ will include the bit <b>O_PATH</b>.</p></td></tr>
 
 <p>Passing the file descriptor as the <i>dirfd</i> argument
 of <b>openat</b>() and the other &quot;*at()&quot; system
-calls. This includes <b>linkat</b>(2) with
+calls. This includes <a href="https://man.page/2/linkat">linkat(2)</a> with
 <b>AT_EMPTY_PATH</b> (or via procfs using
 <b>AT_SYMLINK_FOLLOW</b>) even if the file is not a
 directory.</p> </td></tr>
@@ -766,7 +766,7 @@ directory.</p> </td></tr>
 
 <p>Passing the file descriptor to another process via a
 UNIX domain socket (see <b>SCM_RIGHTS</b> in
-<b>unix</b>(7)).</p> </td></tr>
+<a href="https://man.page/7/unix">unix(7)</a>).</p> </td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">When
@@ -779,13 +779,13 @@ or directory with the <b>O_PATH</b> flag requires no
 permissions on the object itself (but does require execute
 permission on the directories in the path prefix). Depending
 on the subsequent operation, a check for suitable file
-permissions may be performed (e.g., <b>fchdir</b>(2)
+permissions may be performed (e.g., <a href="https://man.page/2/fchdir">fchdir(2)</a>
 requires execute permission on the directory referred to by
 its file descriptor argument). By contrast, obtaining a
 reference to a filesystem object by opening it with the
 <b>O_RDONLY</b> flag requires that the caller have read
 permission on the object, even when the subsequent operation
-(e.g., <b>fchdir</b>(2), <b>fstat</b>(2)) does not require
+(e.g., <a href="https://man.page/2/fchdir">fchdir(2)</a>, <a href="https://man.page/2/fstat">fstat(2)</a>) does not require
 read permission on the object.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If
@@ -793,8 +793,8 @@ read permission on the object.</p>
 flag is also specified, then the call returns a file
 descriptor referring to the symbolic link. This file
 descriptor can be used as the <i>dirfd</i> argument in calls
-to <b>fchownat</b>(2), <b>fstatat</b>(2), <b>linkat</b>(2),
-and <b>readlinkat</b>(2) with an empty pathname to have the
+to <a href="https://man.page/2/fchownat">fchownat(2)</a>, <a href="https://man.page/2/fstatat">fstatat(2)</a>, <a href="https://man.page/2/linkat">linkat(2)</a>,
+and <a href="https://man.page/2/readlinkat">readlinkat(2)</a> with an empty pathname to have the
 calls operate on the symbolic link.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If
@@ -802,7 +802,7 @@ calls operate on the symbolic link.</p>
 yet been triggered, so no other filesystem is mounted on it,
 then the call returns a file descriptor referring to the
 automount directory without triggering a mount.
-<b>fstatfs</b>(2) can then be used to determine if it is, in
+<a href="https://man.page/2/fstatfs">fstatfs(2)</a> can then be used to determine if it is, in
 fact, an untriggered automount point (<b>.f_type ==
 AUTOFS_SUPER_MAGIC</b>).</p>
 
@@ -822,7 +822,7 @@ execl(buf, &quot;some_prog&quot;, (char *) NULL);</p>
 
 <p style="margin-left:22%; margin-top: 1em">An
 <b>O_PATH</b> file descriptor can also be passed as the
-argument of <b>fexecve</b>(3).</p>
+argument of <a href="https://man.page/3/fexecve">fexecve(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -844,10 +844,10 @@ by <b>O_DSYNC</b>.)</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">By the time
-<b>write</b>(2) (or similar) returns, the output data and
+<a href="https://man.page/2/write">write(2)</a> (or similar) returns, the output data and
 associated file metadata have been transferred to the
-underlying hardware (i.e., as though each <b>write</b>(2)
-was followed by a call to <b>fsync</b>(2)). <i>See NOTES
+underlying hardware (i.e., as though each <a href="https://man.page/2/write">write(2)</a>
+was followed by a call to <a href="https://man.page/2/fsync">fsync(2)</a>). <i>See NOTES
 below</i>.</p>
 
 <p style="margin-left:11%;"><b>O_TMPFILE</b> (since Linux
@@ -864,7 +864,7 @@ closed, unless the file is given a name.</p>
 <p style="margin-left:22%; margin-top: 1em"><b>O_TMPFILE</b>
 must be specified with one of <b>O_RDWR</b> or
 <b>O_WRONLY</b> and, optionally, <b>O_EXCL</b>. If
-<b>O_EXCL</b> is not specified, then <b>linkat</b>(2) can be
+<b>O_EXCL</b> is not specified, then <a href="https://man.page/2/linkat">linkat(2)</a> can be
 used to link the temporary file into the filesystem, making
 it permanent, using code like the following:</p>
 
@@ -920,7 +920,7 @@ main use cases for <b>O_TMPFILE</b>:</p>
 <td width="74%">
 
 
-<p>Improved <b>tmpfile</b>(3) functionality: race-free
+<p>Improved <a href="https://man.page/3/tmpfile">tmpfile(3)</a> functionality: race-free
 creation of temporary files that (1) are automatically
 deleted when closed; (2) can never be reached via any
 pathname; (3) are not subject to symlink attacks; and (4) do
@@ -937,10 +937,10 @@ not require the caller to devise unique names.</p></td></tr>
 
 <p>Creating a file that is initially invisible, which is
 then populated with data and adjusted to have appropriate
-filesystem attributes (<b>fchown</b>(2), <b>fchmod</b>(2),
-<b>fsetxattr</b>(2), etc.) before being atomically linked
+filesystem attributes (<a href="https://man.page/2/fchown">fchown(2)</a>, <a href="https://man.page/2/fchmod">fchmod(2)</a>,
+<a href="https://man.page/2/fsetxattr">fsetxattr(2)</a>, etc.) before being atomically linked
 into the filesystem in a fully formed state (using
-<b>linkat</b>(2) as described above).</p></td></tr>
+<a href="https://man.page/2/linkat">linkat(2)</a> as described above).</p></td></tr>
 </table>
 
 
@@ -995,10 +995,10 @@ ignored.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>openat2(2)</b>
 <br>
-The <b>openat2</b>(2) system call is an extension of
+The <a href="https://man.page/2/openat2">openat2(2)</a> system call is an extension of
 <b>openat</b>(), and provides a superset of the features of
 <b>openat</b>(). It is documented separately, in
-<b>openat2</b>(2).</p>
+<a href="https://man.page/2/openat2">openat2(2)</a>.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -1036,7 +1036,7 @@ following errors:</p>
 search permission is denied for one of the directories in
 the path prefix of <i>pathname</i>, or the file did not
 exist yet and write access to the parent directory is not
-allowed. (See also <b>path_resolution</b>(7).)</p></td></tr>
+allowed. (See also <a href="https://man.page/7/path_resolution">path_resolution(7)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1055,7 +1055,7 @@ the owner of the containing directory, and the containing
 directory is both world- or group-writable and sticky. For
 details, see the descriptions of
 <i>/proc/sys/fs/protected_fifos</i> and
-<i>/proc/sys/fs/protected_regular</i> in <b>proc</b>(5).</p></td></tr>
+<i>/proc/sys/fs/protected_regular</i> in <a href="https://man.page/5/proc">proc(5)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1128,8 +1128,8 @@ space.</p> </td></tr>
 
 
 <p>While blocked waiting to complete an open of a slow
-device (e.g., a FIFO; see <b>fifo</b>(7)), the call was
-interrupted by a signal handler; see <b>signal</b>(7).</p></td></tr>
+device (e.g., a FIFO; see <a href="https://man.page/7/fifo">fifo(7)</a>), the call was
+interrupted by a signal handler; see <a href="https://man.page/7/signal">signal(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1255,7 +1255,7 @@ specified <b>O_NOFOLLOW</b> but not <b>O_PATH</b>.</p></td></tr>
 
 <p>The per-process limit on the number of open file
 descriptors has been reached (see the description of
-<b>RLIMIT_NOFILE</b> in <b>getrlimit</b>(2)).</p></td></tr>
+<b>RLIMIT_NOFILE</b> in <a href="https://man.page/2/getrlimit">getrlimit(2)</a>).</p></td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>ENAMETOOLONG</b></p>
@@ -1341,7 +1341,7 @@ not provide the <b>O_TMPFILE</b> functionality.</p></td></tr>
 <p>The named file is a FIFO, but memory for the FIFO buffer
 can&rsquo;t be allocated because the per-user hard limit on
 memory allocation for pipes has been reached and the caller
-is not privileged; see <b>pipe</b>(7).</p></td></tr>
+is not privileged; see <a href="https://man.page/7/pipe">pipe(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1456,7 +1456,7 @@ the file and the caller was not privileged.</p></td></tr>
 
 
 <p>The operation was prevented by a file seal; see
-<b>fcntl</b>(2).</p> </td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="7%">
@@ -1494,7 +1494,7 @@ requested.</p>
 
 <p style="margin-left:22%;">The <b>O_NONBLOCK</b> flag was
 specified, and an incompatible lease was held on the file
-(see <b>fcntl</b>(2)).</p>
+(see <a href="https://man.page/2/fcntl">fcntl(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 additional errors can occur for <b>openat</b>():</p>
@@ -1545,7 +1545,7 @@ added to glibc in version 2.4.</p>
 POSIX.1-2008.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>openat2</b>(2)
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/openat2">openat2(2)</a>
 is Linux-specific.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -1564,7 +1564,7 @@ value greater than or equal to 200809L or
 by defining <b>_GNU_SOURCE</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">As noted in
-<b>feature_test_macros</b>(7), feature test macros such as
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>, feature test macros such as
 <b>_POSIX_C_SOURCE</b>, <b>_XOPEN_SOURCE</b>, and
 <b>_GNU_SOURCE</b> must be defined before including
 <i>any</i> header files.</p>
@@ -1579,7 +1579,7 @@ the <b>O_NONBLOCK</b> flag is sometimes used in cases where
 one wants to open but does not necessarily have the
 intention to read or write. For example, this may be used to
 open a device in order to get a file descriptor for use with
-<b>ioctl</b>(2).</p>
+<a href="https://man.page/2/ioctl">ioctl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The (undefined)
 effect of <b>O_RDONLY | O_TRUNC</b> varies among
@@ -1588,14 +1588,14 @@ truncated.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that
 <b>open</b>() can open device special files, but
-<b>creat</b>() cannot create them; use <b>mknod</b>(2)
+<b>creat</b>() cannot create them; use <a href="https://man.page/2/mknod">mknod(2)</a>
 instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the file is
 newly created, its <i>st_atime</i>, <i>st_ctime</i>,
 <i>st_mtime</i> fields (respectively, time of last access,
 time of last status change, and time of last modification;
-see <b>stat</b>(2)) are set to the current time, and so are
+see <a href="https://man.page/2/stat">stat(2)</a>) are set to the current time, and so are
 the <i>st_ctime</i> and <i>st_mtime</i> fields of the parent
 directory. Otherwise, if the file is modified because of the
 <b>O_TRUNC</b> flag, its <i>st_ctime</i> and <i>st_mtime</i>
@@ -1606,7 +1606,7 @@ the <i>/proc/[pid]/fd</i> directory show the open file
 descriptors of the process with the PID <i>pid</i>. The
 files in the <i>/proc/[pid]/fdinfo</i> directory show even
 more information about these file descriptors. See
-<b>proc</b>(5) for further details of both of these
+<a href="https://man.page/5/proc">proc(5)</a> for further details of both of these
 directories.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The Linux
@@ -1624,12 +1624,12 @@ In other contexts, this object is variously also called an
 kernel-developer parlance&mdash;a <i>struct file</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a file
-descriptor is duplicated (using <b>dup</b>(2) or similar),
+descriptor is duplicated (using <a href="https://man.page/2/dup">dup(2)</a> or similar),
 the duplicate refers to the same open file description as
 the original file descriptor, and the two file descriptors
 consequently share the file offset and file status flags.
 Such sharing can also occur between processes: a child
-process created via <b>fork</b>(2) inherits duplicates of
+process created via <a href="https://man.page/2/fork">fork(2)</a> inherits duplicates of
 its parent&rsquo;s file descriptors, and those duplicates
 refer to the same open file descriptions.</p>
 
@@ -1639,7 +1639,7 @@ thus, there may be multiple open file descriptions
 corresponding to a file inode.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On Linux, one
-can use the <b>kcmp</b>(2) <b>KCMP_FILE</b> operation to
+can use the <a href="https://man.page/2/kcmp">kcmp(2)</a> <b>KCMP_FILE</b> operation to
 test whether two file descriptors (in the same process or in
 two different processes) refer to the same open file
 description.</p>
@@ -1721,7 +1721,7 @@ affecting amongst others <b>O_SYNC</b> and
 
 <p style="margin-left:11%; margin-top: 1em">On NFS
 filesystems with UID mapping enabled, <b>open</b>() may
-return a file descriptor but, for example, <b>read</b>(2)
+return a file descriptor but, for example, <a href="https://man.page/2/read">read(2)</a>
 requests are denied with <b>EACCES</b>. This is because the
 client performs <b>open</b>() by checking the permissions,
 but UID mapping is performed by the server upon read and
@@ -1731,7 +1731,7 @@ write requests.</p>
 <br>
 Opening the read or write end of a FIFO blocks until the
 other end is also opened (by another process or thread). See
-<b>fifo</b>(7) for further details.</p>
+<a href="https://man.page/7/fifo">fifo(7)</a> for further details.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>File access
 mode</b> <br>
@@ -1750,23 +1750,23 @@ the special, nonstandard access mode 3 (binary 11) in
 the file and return a file descriptor that can&rsquo;t be
 used for reading or writing. This nonstandard access mode is
 used by some Linux drivers to return a file descriptor that
-is to be used only for device-specific <b>ioctl</b>(2)
+is to be used only for device-specific <a href="https://man.page/2/ioctl">ioctl(2)</a>
 operations.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Rationale
 for openat() and other directory file descriptor APIs <br>
 openat</b>() and the other system calls and library
 functions that take a directory file descriptor argument
-(i.e., <b>execveat</b>(2), <b>faccessat</b>(2),
-<b>fanotify_mark</b>(2), <b>fchmodat</b>(2),
-<b>fchownat</b>(2), <b>fspick</b>(2), <b>fstatat</b>(2),
-<b>futimesat</b>(2), <b>linkat</b>(2), <b>mkdirat</b>(2),
-<b>move_mount</b>(2), <b>mknodat</b>(2),
-<b>name_to_handle_at</b>(2), <b>open_tree</b>(2),
-<b>openat2</b>(2), <b>readlinkat</b>(2), <b>renameat</b>(2),
-<b>statx</b>(2), <b>symlinkat</b>(2), <b>unlinkat</b>(2),
-<b>utimensat</b>(2), <b>mkfifoat</b>(3), and
-<b>scandirat</b>(3)) address two problems with the older
+(i.e., <a href="https://man.page/2/execveat">execveat(2)</a>, <a href="https://man.page/2/faccessat">faccessat(2)</a>,
+<a href="https://man.page/2/fanotify_mark">fanotify_mark(2)</a>, <a href="https://man.page/2/fchmodat">fchmodat(2)</a>,
+<a href="https://man.page/2/fchownat">fchownat(2)</a>, <a href="https://man.page/2/fspick">fspick(2)</a>, <a href="https://man.page/2/fstatat">fstatat(2)</a>,
+<a href="https://man.page/2/futimesat">futimesat(2)</a>, <a href="https://man.page/2/linkat">linkat(2)</a>, <a href="https://man.page/2/mkdirat">mkdirat(2)</a>,
+<a href="https://man.page/2/move_mount">move_mount(2)</a>, <a href="https://man.page/2/mknodat">mknodat(2)</a>,
+<a href="https://man.page/2/name_to_handle_at">name_to_handle_at(2)</a>, <a href="https://man.page/2/open_tree">open_tree(2)</a>,
+<a href="https://man.page/2/openat2">openat2(2)</a>, <a href="https://man.page/2/readlinkat">readlinkat(2)</a>, <a href="https://man.page/2/renameat">renameat(2)</a>,
+<a href="https://man.page/2/statx">statx(2)</a>, <a href="https://man.page/2/symlinkat">symlinkat(2)</a>, <a href="https://man.page/2/unlinkat">unlinkat(2)</a>,
+<a href="https://man.page/2/utimensat">utimensat(2)</a>, <a href="https://man.page/3/mkfifoat">mkfifoat(3)</a>, and
+<a href="https://man.page/3/scandirat">scandirat(3)</a>) address two problems with the older
 interfaces that preceded them. Here, the explanation is in
 terms of the <b>openat</b>() call, but the rationale is
 analogous for the other interfaces.</p>
@@ -1786,7 +1786,7 @@ existence check and the file-creation step, <i>dir1</i> or
 modified to point to a different location. Such races can be
 avoided by opening a file descriptor for the target
 directory, and then specifying that file descriptor as the
-<i>dirfd</i> argument of (say) <b>fstatat</b>(2) and
+<i>dirfd</i> argument of (say) <a href="https://man.page/2/fstatat">fstatat(2)</a> and
 <b>openat</b>(). The use of the <i>dirfd</i> file descriptor
 also has other benefits:</p>
 
@@ -1832,8 +1832,8 @@ efficiently.)</p>
 using <b>open</b>() or <b>openat</b>() to open a directory
 (with either the <b>O_RDONLY</b> or the <b>O_PATH</b> flag).
 Alternatively, such a file descriptor can be obtained by
-applying <b>dirfd</b>(3) to a directory stream created using
-<b>opendir</b>(3).</p>
+applying <a href="https://man.page/3/dirfd">dirfd(3)</a> to a directory stream created using
+<a href="https://man.page/3/opendir">opendir(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When these APIs
 are given a <i>dirfd</i> argument of <b>AT_FDCWD</b> or the
@@ -1855,7 +1855,7 @@ However there is currently no filesystem-independent
 interface for an application to discover these restrictions
 for a given file or filesystem. Some filesystems provide
 their own interfaces for doing so, for example the
-<b>XFS_IOC_DIOINFO</b> operation in <b>xfsctl</b>(3).</p>
+<b>XFS_IOC_DIOINFO</b> operation in <a href="https://man.page/3/xfsctl">xfsctl(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Under Linux
 2.4, transfer sizes, and the alignment of the user buffer
@@ -1863,7 +1863,7 @@ and the file offset must all be multiples of the logical
 block size of the filesystem. Since Linux 2.6.0, alignment
 to the logical block size of the underlying storage
 (typically 512 bytes) suffices. The logical block size can
-be determined using the <b>ioctl</b>(2) <b>BLKSSZGET</b>
+be determined using the <a href="https://man.page/2/ioctl">ioctl(2)</a> <b>BLKSSZGET</b>
 operation or from the shell using the command:</p>
 
 <p style="margin-left:17%; margin-top: 1em">blockdev
@@ -1872,26 +1872,26 @@ operation or from the shell using the command:</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>O_DIRECT</b>
 I/Os should never be run concurrently with the
-<b>fork</b>(2) system call, if the memory buffer is a
+<a href="https://man.page/2/fork">fork(2)</a> system call, if the memory buffer is a
 private mapping (i.e., any mapping created with the
-<b>mmap</b>(2) <b>MAP_PRIVATE</b> flag; this includes memory
+<a href="https://man.page/2/mmap">mmap(2)</a> <b>MAP_PRIVATE</b> flag; this includes memory
 allocated on the heap and statically allocated buffers). Any
 such I/Os, whether submitted via an asynchronous I/O
 interface or from another thread in the process, should be
-completed before <b>fork</b>(2) is called. Failure to do so
+completed before <a href="https://man.page/2/fork">fork(2)</a> is called. Failure to do so
 can result in data corruption and undefined behavior in
 parent and child processes. This restriction does not apply
 when the memory buffer for the <b>O_DIRECT</b> I/Os was
-created using <b>shmat</b>(2) or <b>mmap</b>(2) with the
+created using <a href="https://man.page/2/shmat">shmat(2)</a> or <a href="https://man.page/2/mmap">mmap(2)</a> with the
 <b>MAP_SHARED</b> flag. Nor does this restriction apply when
 the memory buffer has been advised as <b>MADV_DONTFORK</b>
-with <b>madvise</b>(2), ensuring that it will not be
-available to the child after <b>fork</b>(2).</p>
+with <a href="https://man.page/2/madvise">madvise(2)</a>, ensuring that it will not be
+available to the child after <a href="https://man.page/2/fork">fork(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>O_DIRECT</b> flag was introduced in SGI IRIX, where it
 has alignment restrictions similar to those of Linux 2.4.
-IRIX has also a <b>fcntl</b>(2) call to query appropriate
+IRIX has also a <a href="https://man.page/2/fcntl">fcntl(2)</a> call to query appropriate
 alignments, and sizes. FreeBSD 4.x introduced a flag of the
 same name, but without alignment restrictions.</p>
 
@@ -1909,7 +1909,7 @@ same file, and especially to overlapping byte regions in the
 same file. Even when the filesystem correctly handles the
 coherency issues in this situation, overall I/O throughput
 is likely to be slower than using either mode alone.
-Likewise, applications should avoid mixing <b>mmap</b>(2) of
+Likewise, applications should avoid mixing <a href="https://man.page/2/mmap">mmap(2)</a> of
 files with direct I/O to the same files.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The behavior of
@@ -1943,7 +1943,7 @@ is disabled by default.</p>
 <p style="margin-left:11%; margin-top: 1em">Currently, it
 is not possible to enable signal-driven I/O by specifying
 <b>O_ASYNC</b> when calling <b>open</b>(); use
-<b>fcntl</b>(2) to enable this flag.</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> to enable this flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">One must check
 for two different error codes, <b>EISDIR</b> and
@@ -1962,16 +1962,16 @@ not exist, <b>open</b>() will create a regular file (i.e.,
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>chmod</b>(2),
-<b>chown</b>(2), <b>close</b>(2), <b>dup</b>(2),
-<b>fcntl</b>(2), <b>link</b>(2), <b>lseek</b>(2),
-<b>mknod</b>(2), <b>mmap</b>(2), <b>mount</b>(2),
-<b>open_by_handle_at</b>(2), <b>openat2</b>(2),
-<b>read</b>(2), <b>socket</b>(2), <b>stat</b>(2),
-<b>umask</b>(2), <b>unlink</b>(2), <b>write</b>(2),
-<b>fopen</b>(3), <b>acl</b>(5), <b>fifo</b>(7),
-<b>inode</b>(7), <b>path_resolution</b>(7),
-<b>symlink</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/chmod">chmod(2)</a>,
+<a href="https://man.page/2/chown">chown(2)</a>, <a href="https://man.page/2/close">close(2)</a>, <a href="https://man.page/2/dup">dup(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/link">link(2)</a>, <a href="https://man.page/2/lseek">lseek(2)</a>,
+<a href="https://man.page/2/mknod">mknod(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/mount">mount(2)</a>,
+<a href="https://man.page/2/open_by_handle_at">open_by_handle_at(2)</a>, <a href="https://man.page/2/openat2">openat2(2)</a>,
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/socket">socket(2)</a>, <a href="https://man.page/2/stat">stat(2)</a>,
+<a href="https://man.page/2/umask">umask(2)</a>, <a href="https://man.page/2/unlink">unlink(2)</a>, <a href="https://man.page/2/write">write(2)</a>,
+<a href="https://man.page/3/fopen">fopen(3)</a>, <a href="https://man.page/5/acl">acl(5)</a>, <a href="https://man.page/7/fifo">fifo(7)</a>,
+<a href="https://man.page/7/inode">inode(7)</a>, <a href="https://man.page/7/path_resolution">path_resolution(7)</a>,
+<a href="https://man.page/7/symlink">symlink(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

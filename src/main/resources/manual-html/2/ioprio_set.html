@@ -235,18 +235,18 @@ calls are Linux-specific.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Glibc does not
 provide a wrapper for these system calls; call them using
-<b>syscall</b>(2).</p>
+<a href="https://man.page/2/syscall">syscall(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Two or more
 processes or threads can share an I/O context. This will be
-the case when <b>clone</b>(2) was called with the
+the case when <a href="https://man.page/2/clone">clone(2)</a> was called with the
 <b>CLONE_IO</b> flag. However, by default, the distinct
 threads of a process will <b>not</b> share the same I/O
 context. This means that if you want to change the I/O
 priority of all threads in a process, you may need to call
 <b>ioprio_set</b>() on each of the threads. The thread ID
 that you would need for this operation is the one that is
-returned by <b>gettid</b>(2) or <b>clone</b>(2).</p>
+returned by <a href="https://man.page/2/gettid">gettid(2)</a> or <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">These system
 calls have an effect only when used in conjunction with an
@@ -257,7 +257,7 @@ Queuing (CFQ) I/O scheduler.</p>
 <p style="margin-left:11%; margin-top: 1em">If no I/O
 scheduler has been set for a thread, then by default the I/O
 priority will follow the CPU nice value
-(<b>setpriority</b>(2)). In Linux kernels before version
+(<a href="https://man.page/2/setpriority">setpriority(2)</a>). In Linux kernels before version
 2.6.24, once an I/O priority had been set using
 <b>ioprio_set</b>(), there was no way to reset the I/O
 scheduling behavior to the default. Since Linux 2.6.24,
@@ -320,7 +320,7 @@ scheduling class, which is the default for any process that
 hasn&rsquo;t set a specific I/O priority. The class data
 (priority) determines how much I/O bandwidth the process
 will get. Best-effort priority levels are analogous to CPU
-nice values (see <b>getpriority</b>(2)). The priority level
+nice values (see <a href="https://man.page/2/getpriority">getpriority(2)</a>). The priority level
 determines a priority relative to other processes in the
 best-effort scheduling class. Priority levels range from 0
 (highest) to 7 (lowest).</p>
@@ -382,9 +382,9 @@ definitions can be found in <i>linux/ioprio.h</i>.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ionice</b>(1),
-<b>getpriority</b>(2), <b>open</b>(2),
-<b>capabilities</b>(7), <b>cgroups</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ionice">ionice(1)</a>,
+<a href="https://man.page/2/getpriority">getpriority(2)</a>, <a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/7/capabilities">capabilities(7)</a>, <a href="https://man.page/7/cgroups">cgroups(7)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/block/ioprio.txt</i>

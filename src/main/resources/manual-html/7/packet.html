@@ -113,19 +113,19 @@ queued.</p>
 <p style="margin-left:11%; margin-top: 1em">By default, all
 packets of the specified protocol type are passed to a
 packet socket. To get packets only from a specific interface
-use <b>bind</b>(2) specifying an address in a <i>struct
+use <a href="https://man.page/2/bind">bind(2)</a> specifying an address in a <i>struct
 sockaddr_ll</i> to bind the packet socket to an interface.
 Fields used for binding are <i>sll_family</i> (should be
 <b>AF_PACKET</b>), <i>sll_protocol</i>, and
 <i>sll_ifindex</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>connect</b>(2) operation is not supported on packet
+<a href="https://man.page/2/connect">connect(2)</a> operation is not supported on packet
 sockets.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the
-<b>MSG_TRUNC</b> flag is passed to <b>recvmsg</b>(2),
-<b>recv</b>(2), or <b>recvfrom</b>(2), the real length of
+<b>MSG_TRUNC</b> flag is passed to <a href="https://man.page/2/recvmsg">recvmsg(2)</a>,
+<a href="https://man.page/2/recv">recv(2)</a>, or <a href="https://man.page/2/recvfrom">recvfrom(2)</a>, the real length of
 the packet on the wire is always returned, even when it is
 longer than the buffer.</p>
 
@@ -176,7 +176,7 @@ the socket&rsquo;s protocol.</p></td></tr>
 
 
 <p><i>sll_ifindex</i> is the interface index of the
-interface (see <b>netdevice</b>(7)); 0 matches any interface
+interface (see <a href="https://man.page/7/netdevice">netdevice(7)</a>); 0 matches any interface
 (only permitted for binding). <i>sll_hatype</i> is an ARP
 type as defined in the <i>&lt;linux/if_arp.h&gt;</i> include
 file.</p> </td></tr>
@@ -225,7 +225,7 @@ packets for your information.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
 options</b> <br>
 Packet socket options are configured by calling
-<b>setsockopt</b>(2) with level <b>SOL_PACKET</b>. <b><br>
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> with level <b>SOL_PACKET</b>. <b><br>
 PACKET_ADD_MEMBERSHIP <br>
 PACKET_DROP_MEMBERSHIP</b></p>
 
@@ -266,8 +266,8 @@ Linux 2.6.21)</p>
 
 <p style="margin-left:22%;">If this binary option is
 enabled, the packet socket passes a metadata structure along
-with each packet in the <b>recvmsg</b>(2) control field. The
-structure can be read with <b>cmsg</b>(3). It is defined
+with each packet in the <a href="https://man.page/2/recvmsg">recvmsg(2)</a> control field. The
+structure can be read with <a href="https://man.page/3/cmsg">cmsg(3)</a>. It is defined
 as</p>
 
 <p style="margin-left:28%; margin-top: 1em">struct
@@ -289,7 +289,7 @@ Linux 3.1)</p>
 threads, packet sockets can form a fanout group. In this
 mode, each matching packet is enqueued onto only one socket
 in the group. A socket joins a fanout group by calling
-<b>setsockopt</b>(2) with level <b>SOL_PACKET</b> and option
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> with level <b>SOL_PACKET</b> and option
 <b>PACKET_FANOUT</b>. Each network namespace can have up to
 65536 independent groups. A socket selects a group by
 encoding the ID in the first 16 bits of the integer option
@@ -408,7 +408,7 @@ the transmission immediately. The malformed packet blocks
 itself and subsequently enqueued packets from being sent.
 The format error must be fixed, the associated
 <i>tp_status</i> reset to <b>TP_STATUS_SEND_REQUEST</b>, and
-the transmission process restarted via <b>send</b>(2).
+the transmission process restarted via <a href="https://man.page/2/send">send(2)</a>.
 However, if <b>PACKET_LOSS</b> is set, any malformed packet
 will be skipped, its <i>tp_status</i> reset to
 <b>TP_STATUS_AVAILABLE</b>, and the transmission process
@@ -493,10 +493,10 @@ application writes packets into slots with <i>tp_status</i>
 equal to <b>TP_STATUS_AVAILABLE</b> and schedules them for
 transmission by changing <i>tp_status</i> to
 <b>TP_STATUS_SEND_REQUEST</b>. When packets are ready to be
-transmitted, the application calls <b>send</b>(2) or a
+transmitted, the application calls <a href="https://man.page/2/send">send(2)</a> or a
 variant thereof. The <i>buf</i> and <i>len</i> fields of
 this call are ignored. If an address is passed using
-<b>sendto</b>(2) or <b>sendmsg</b>(2), then that overrides
+<a href="https://man.page/2/sendto">sendto(2)</a> or <a href="https://man.page/2/sendmsg">sendmsg(2)</a>, then that overrides
 the socket default. On successful transmission, the socket
 resets <i>tp_status</i> to <b>TP_STATUS_AVAILABLE</b>. It
 immediately aborts the transmission on error unless
@@ -532,8 +532,8 @@ last received packet. Argument is a <i>struct timeval</i>
 variable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In addition,
-all standard ioctls defined in <b>netdevice</b>(7) and
-<b>socket</b>(7) are valid on packet sockets.</p>
+all standard ioctls defined in <a href="https://man.page/7/netdevice">netdevice(7)</a> and
+<a href="https://man.page/7/socket">socket(7)</a> are valid on packet sockets.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Error
 handling</b> <br>
@@ -676,7 +676,7 @@ supported only <b>SOCK_PACKET</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For portable
 programs it is suggested to use <b>AF_PACKET</b> via
-<b>pcap</b>(3); although this covers only a subset of the
+<a href="https://man.page/3/pcap">pcap(3)</a>; although this covers only a subset of the
 <b>AF_PACKET</b> features.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -755,9 +755,9 @@ via <b>SOCK_DGRAM</b>.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>socket</b>(2),
-<b>pcap</b>(3), <b>capabilities</b>(7), <b>ip</b>(7),
-<b>raw</b>(7), <b>socket</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/socket">socket(2)</a>,
+<a href="https://man.page/3/pcap">pcap(3)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>, <a href="https://man.page/7/ip">ip(7)</a>,
+<a href="https://man.page/7/raw">raw(7)</a>, <a href="https://man.page/7/socket">socket(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">RFC&nbsp;894
 for the standard IP Ethernet encapsulation. RFC&nbsp;1700

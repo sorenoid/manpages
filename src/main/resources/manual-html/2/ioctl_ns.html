@@ -46,9 +46,9 @@ ioctl() operations for Linux namespaces</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Discovering
 namespace relationships</b> <br>
-The following <b>ioctl</b>(2) operations are provided to
+The following <a href="https://man.page/2/ioctl">ioctl(2)</a> operations are provided to
 allow discovery of namespace relationships (see
-<b>user_namespaces</b>(7) and <b>pid_namespaces</b>(7)). The
+<a href="https://man.page/7/user_namespaces">user_namespaces(7)</a> and <a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>). The
 form of the calls is:</p>
 
 <p style="margin-left:17%; margin-top: 1em">new_fd =
@@ -76,10 +76,10 @@ namespaces, <b>NS_GET_PARENT</b> is synonymous with
 <p style="margin-left:11%; margin-top: 1em">The new file
 descriptor returned by these operations is opened with the
 <b>O_RDONLY</b> and <b>O_CLOEXEC</b> (close-on-exec; see
-<b>fcntl</b>(2)) flags.</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>) flags.</p>
 
 <p style="margin-left:11%; margin-top: 1em">By applying
-<b>fstat</b>(2) to the returned file descriptor, one obtains
+<a href="https://man.page/2/fstat">fstat(2)</a> to the returned file descriptor, one obtains
 a <i>stat</i> structure whose <i>st_dev</i> (resident
 device) and <i>st_ino</i> (inode number) fields together
 identify the owning/parent namespace. This inode number can
@@ -88,7 +88,7 @@ be matched with the inode number of another
 that is the owning/parent namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Either of these
-<b>ioctl</b>(2) operations can fail with the following
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operations can fail with the following
 errors:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -162,7 +162,7 @@ refers to a <i>/proc/[pid]/ns/*</i> file.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The return
 value is one of the <b>CLONE_NEW*</b> values that can be
-specified to <b>clone</b>(2) or <b>unshare</b>(2) in order
+specified to <a href="https://man.page/2/clone">clone(2)</a> or <a href="https://man.page/2/unshare">unshare(2)</a> in order
 to create a namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Discovering
@@ -245,7 +245,7 @@ Linux-specific.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The example
-shown below uses the <b>ioctl</b>(2) operations described
+shown below uses the <a href="https://man.page/2/ioctl">ioctl(2)</a> operations described
 above to perform simple discovery of namespace
 relationships. The following shell sessions show various
 examples of the use of this program.</p>
@@ -259,7 +259,7 @@ no parent:</p>
 The parent namespace is outside your namespace scope</p>
 
 <p style="margin-left:11%; margin-top: 1em">Create a
-process running <b>sleep</b>(1) that resides in new user and
+process running <a href="https://man.page/1/sleep">sleep(1)</a> that resides in new user and
 UTS namespaces, and show that the new UTS namespace is
 associated with the new user namespace:</p>
 
@@ -439,8 +439,8 @@ printf(&quot;Device/Inode of parent namespace is: [%jx,%jx]
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fstat</b>(2),
-<b>ioctl</b>(2), <b>proc</b>(5), <b>namespaces</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fstat">fstat(2)</a>,
+<a href="https://man.page/2/ioctl">ioctl(2)</a>, <a href="https://man.page/5/proc">proc(5)</a>, <a href="https://man.page/7/namespaces">namespaces(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

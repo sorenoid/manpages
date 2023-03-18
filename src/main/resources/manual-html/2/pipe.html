@@ -85,7 +85,7 @@ of the pipe. <i>pipefd[0]</i> refers to the read end of the
 pipe. <i>pipefd[1]</i> refers to the write end of the pipe.
 Data written to the write end of the pipe is buffered by the
 kernel until it is read from the read end of the pipe. For
-further details, see <b>pipe</b>(7).</p>
+further details, see <a href="https://man.page/7/pipe">pipe(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If <i>flags</i>
 is 0, then <b>pipe2</b>() is the same as <b>pipe</b>(). The
@@ -95,15 +95,15 @@ O_CLOEXEC</b></p>
 
 <p style="margin-left:22%;">Set the close-on-exec
 (<b>FD_CLOEXEC</b>) flag on the two new file descriptors.
-See the description of the same flag in <b>open</b>(2) for
+See the description of the same flag in <a href="https://man.page/2/open">open(2)</a> for
 reasons why this may be useful.</p>
 
 <p style="margin-left:11%;"><b>O_DIRECT</b> (since Linux
 3.4)</p>
 
 <p style="margin-left:22%;">Create a pipe that performs I/O
-in &quot;packet&quot; mode. Each <b>write</b>(2) to the pipe
-is dealt with as a separate packet, and <b>read</b>(2)s from
+in &quot;packet&quot; mode. Each <a href="https://man.page/2/write">write(2)</a> to the pipe
+is dealt with as a separate packet, and <a href="https://man.page/2/read">read(2)</a>s from
 the pipe will read one packet at a time. Note the following
 points:</p>
 
@@ -120,7 +120,7 @@ points:</p>
 
 
 <p>Writes of greater than <b>PIPE_BUF</b> bytes (see
-<b>pipe</b>(7)) will be split into multiple packets. The
+<a href="https://man.page/7/pipe">pipe(7)</a>) will be split into multiple packets. The
 constant <b>PIPE_BUF</b> is defined in
 <i>&lt;limits.h&gt;</i>.</p> </td></tr>
 <tr valign="top" align="left">
@@ -133,7 +133,7 @@ constant <b>PIPE_BUF</b> is defined in
 <td width="74%">
 
 
-<p>If a <b>read</b>(2) specifies a buffer size that is
+<p>If a <a href="https://man.page/2/read">read(2)</a> specifies a buffer size that is
 smaller than the next packet, then the requested number of
 bytes are read, and the excess bytes in the packet are
 discarded. Specifying a buffer size of <b>PIPE_BUF</b> will
@@ -149,7 +149,7 @@ previous point).</p></td></tr>
 <td width="74%">
 
 
-<p>Zero-length packets are not supported. (A <b>read</b>(2)
+<p>Zero-length packets are not supported. (A <a href="https://man.page/2/read">read(2)</a>
 that specifies a buffer size of zero is a no-op, and returns
 0.)</p> </td></tr>
 </table>
@@ -160,14 +160,14 @@ that do not support this flag will indicate this via an
 
 <p style="margin-left:22%; margin-top: 1em">Since Linux
 4.5, it is possible to change the <b>O_DIRECT</b> setting of
-a pipe file descriptor using <b>fcntl</b>(2).</p>
+a pipe file descriptor using <a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>O_NONBLOCK</b></p>
 
 <p style="margin-left:22%;">Set the <b>O_NONBLOCK</b> file
 status flag on the open file descriptions referred to by the
 new file descriptors. Using this flag saves extra calls to
-<b>fcntl</b>(2) to achieve the same result.</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> to achieve the same result.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -250,7 +250,7 @@ has been reached.</p></td></tr>
 
 <p>The user hard limit on memory that can be allocated for
 pipes has been reached and the caller is not privileged; see
-<b>pipe</b>(7).</p> </td></tr>
+<a href="https://man.page/7/pipe">pipe(7)</a>.</p> </td></tr>
 </table>
 
 <h2>VERSIONS
@@ -287,7 +287,7 @@ the <b>pipe</b>() system call in a functional manner: the
 call doesn&rsquo;t take any arguments and returns a pair of
 file descriptors as the return value on success. The glibc
 <b>pipe</b>() wrapper function transparently deals with
-this. See <b>syscall</b>(2) for information regarding
+this. See <a href="https://man.page/2/syscall">syscall(2)</a> for information regarding
 registers used for storing second file descriptor.</p>
 
 <h2>EXAMPLES
@@ -296,12 +296,12 @@ registers used for storing second file descriptor.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The following
-program creates a pipe, and then <b>fork</b>(2)s to create a
+program creates a pipe, and then <a href="https://man.page/2/fork">fork(2)</a>s to create a
 child process; the child inherits a duplicate set of file
 descriptors that refer to the same pipe. After the
-<b>fork</b>(2), each process closes the file descriptors
+<a href="https://man.page/2/fork">fork(2)</a>, each process closes the file descriptors
 that it doesn&rsquo;t need for the pipe (see
-<b>pipe</b>(7)). The parent then writes the string contained
+<a href="https://man.page/7/pipe">pipe(7)</a>). The parent then writes the string contained
 in the program&rsquo;s command-line argument to the pipe,
 and the child reads this string a byte at a time from the
 pipe and echoes it on standard output.</p>
@@ -372,10 +372,10 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fork</b>(2),
-<b>read</b>(2), <b>socketpair</b>(2), <b>splice</b>(2),
-<b>tee</b>(2), <b>vmsplice</b>(2), <b>write</b>(2),
-<b>popen</b>(3), <b>pipe</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fork">fork(2)</a>,
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/socketpair">socketpair(2)</a>, <a href="https://man.page/2/splice">splice(2)</a>,
+<a href="https://man.page/2/tee">tee(2)</a>, <a href="https://man.page/2/vmsplice">vmsplice(2)</a>, <a href="https://man.page/2/write">write(2)</a>,
+<a href="https://man.page/3/popen">popen(3)</a>, <a href="https://man.page/7/pipe">pipe(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

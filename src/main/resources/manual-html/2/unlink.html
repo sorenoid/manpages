@@ -66,7 +66,7 @@ unlinkat(int</b> <i>dirfd</i><b>, const char
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>unlinkat</b>():</p>
@@ -109,7 +109,7 @@ continue to use it.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>unlinkat()</b>
 <br>
 The <b>unlinkat</b>() system call operates in exactly the
-same way as either <b>unlink</b>() or <b>rmdir</b>(2)
+same way as either <b>unlink</b>() or <a href="https://man.page/2/rmdir">rmdir(2)</a>
 (depending on whether or not <i>flags</i> includes the
 <b>AT_REMOVEDIR</b> flag) except for the differences
 described here.</p>
@@ -119,7 +119,7 @@ given in <i>pathname</i> is relative, then it is interpreted
 relative to the directory referred to by the file descriptor
 <i>dirfd</i> (rather than relative to the current working
 directory of the calling process, as is done by
-<b>unlink</b>() and <b>rmdir</b>(2) for a relative
+<b>unlink</b>() and <a href="https://man.page/2/rmdir">rmdir(2)</a> for a relative
 pathname).</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the pathname
@@ -127,7 +127,7 @@ given in <i>pathname</i> is relative and <i>dirfd</i> is the
 special value <b>AT_FDCWD</b>, then <i>pathname</i> is
 interpreted relative to the current working directory of the
 calling process (like <b>unlink</b>() and
-<b>rmdir</b>(2)).</p>
+<a href="https://man.page/2/rmdir">rmdir(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the pathname
 given in <i>pathname</i> is absolute, then <i>dirfd</i> is
@@ -143,11 +143,11 @@ AT_REMOVEDIR</b></p>
 <p style="margin-left:22%;">By default, <b>unlinkat</b>()
 performs the equivalent of <b>unlink</b>() on
 <i>pathname</i>. If the <b>AT_REMOVEDIR</b> flag is
-specified, then performs the equivalent of <b>rmdir</b>(2)
+specified, then performs the equivalent of <a href="https://man.page/2/rmdir">rmdir(2)</a>
 on <i>pathname</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>openat</b>(2) for an explanation of the need for
+<a href="https://man.page/2/openat">openat(2)</a> for an explanation of the need for
 <b>unlinkat</b>().</p>
 
 <h2>RETURN VALUE
@@ -180,7 +180,7 @@ is set appropriately.</p>
 containing <i>pathname</i> is not allowed for the
 process&rsquo;s effective UID, or one of the directories in
 <i>pathname</i> did not allow search permission. (See also
-<b>path_resolution</b>(7).)</p> </td></tr>
+<a href="https://man.page/7/path_resolution">path_resolution(7)</a>.)</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -329,7 +329,7 @@ and the process is not privileged (Linux: does not have the
 
 
 <p>The file to be unlinked is marked immutable or
-append-only. (See <b>ioctl_iflags</b>(2).)</p></td></tr>
+append-only. (See <a href="https://man.page/2/ioctl_iflags">ioctl_iflags(2)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="7%">
@@ -345,7 +345,7 @@ filesystem.</p> </td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">The same errors
-that occur for <b>unlink</b>() and <b>rmdir</b>(2) can also
+that occur for <b>unlink</b>() and <a href="https://man.page/2/rmdir">rmdir(2)</a> can also
 occur for <b>unlinkat</b>(). The following additional errors
 can occur for <b>unlinkat</b>():</p>
 
@@ -426,7 +426,7 @@ POSIX.1-2008.</p>
 notes</b> <br>
 On older kernels where <b>unlinkat</b>() is unavailable, the
 glibc wrapper function falls back to the use of
-<b>unlink</b>() or <b>rmdir</b>(2). When <i>pathname</i> is
+<b>unlink</b>() or <a href="https://man.page/2/rmdir">rmdir(2)</a>. When <i>pathname</i> is
 a relative pathname, glibc constructs a pathname based on
 the symbolic link in <i>/proc/self/fd</i> that corresponds
 to the <i>dirfd</i> argument.</p>
@@ -445,11 +445,11 @@ disappearance of files which are still being used.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>rm</b>(1),
-<b>unlink</b>(1), <b>chmod</b>(2), <b>link</b>(2),
-<b>mknod</b>(2), <b>open</b>(2), <b>rename</b>(2),
-<b>rmdir</b>(2), <b>mkfifo</b>(3), <b>remove</b>(3),
-<b>path_resolution</b>(7), <b>symlink</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/rm">rm(1)</a>,
+<a href="https://man.page/1/unlink">unlink(1)</a>, <a href="https://man.page/2/chmod">chmod(2)</a>, <a href="https://man.page/2/link">link(2)</a>,
+<a href="https://man.page/2/mknod">mknod(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/rename">rename(2)</a>,
+<a href="https://man.page/2/rmdir">rmdir(2)</a>, <a href="https://man.page/3/mkfifo">mkfifo(3)</a>, <a href="https://man.page/3/remove">remove(3)</a>,
+<a href="https://man.page/7/path_resolution">path_resolution(7)</a>, <a href="https://man.page/7/symlink">symlink(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

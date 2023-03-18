@@ -68,7 +68,7 @@ freeaddrinfo(struct addrinfo *</b><i>res</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>getaddrinfo</b>(),
@@ -86,10 +86,10 @@ Glibc 2.21 and earlier: _POSIX_C_SOURCE</p>
 host and a service, <b>getaddrinfo</b>() returns one or more
 <i>addrinfo</i> structures, each of which contains an
 Internet address that can be specified in a call to
-<b>bind</b>(2) or <b>connect</b>(2). The
+<a href="https://man.page/2/bind">bind(2)</a> or <a href="https://man.page/2/connect">connect(2)</a>. The
 <b>getaddrinfo</b>() function combines the functionality
-provided by the <b>gethostbyname</b>(3) and
-<b>getservbyname</b>(3) functions into a single interface,
+provided by the <a href="https://man.page/3/gethostbyname">gethostbyname(3)</a> and
+<a href="https://man.page/3/getservbyname">getservbyname(3)</a> functions into a single interface,
 but unlike the latter functions, <b>getaddrinfo</b>() is
 reentrant and allows programs to eliminate IPv4-versus-IPv6
 dependencies.</p>
@@ -162,8 +162,8 @@ contain either 0 or a null pointer, as appropriate.</p>
 specifies different defaults for <i>ai_flags</i>; see
 NOTES.) <i>node</i> specifies either a numerical network
 address (for IPv4, numbers-and-dots notation as supported by
-<b>inet_aton</b>(3); for IPv6, hexadecimal string format as
-supported by <b>inet_pton</b>(3)), or a network hostname,
+<a href="https://man.page/3/inet_aton">inet_aton(3)</a>; for IPv6, hexadecimal string format as
+supported by <a href="https://man.page/3/inet_pton">inet_pton(3)</a>), or a network hostname,
 whose network addresses are looked up and resolved. If
 <i>hints.ai_flags</i> contains the <b>AI_NUMERICHOST</b>
 flag, then <i>node</i> must be a numerical network address.
@@ -174,7 +174,7 @@ lengthy network host address lookups.</p>
 <b>AI_PASSIVE</b> flag is specified in
 <i>hints.ai_flags</i>, and <i>node</i> is NULL, then the
 returned socket addresses will be suitable for
-<b>bind</b>(2)ing a socket that will <b>accept</b>(2)
+<a href="https://man.page/2/bind">bind(2)</a>ing a socket that will <a href="https://man.page/2/accept">accept(2)</a>
 connections. The returned socket address will contain the
 &quot;wildcard address&quot; (<b>INADDR_ANY</b> for IPv4
 addresses, <b>IN6ADDR_ANY_INIT</b> for IPv6 address). The
@@ -186,8 +186,8 @@ network addresses. If <i>node</i> is not NULL, then the
 <p style="margin-left:11%; margin-top: 1em">If the
 <b>AI_PASSIVE</b> flag is not set in <i>hints.ai_flags</i>,
 then the returned socket addresses will be suitable for use
-with <b>connect</b>(2), <b>sendto</b>(2), or
-<b>sendmsg</b>(2). If <i>node</i> is NULL, then the network
+with <a href="https://man.page/2/connect">connect(2)</a>, <a href="https://man.page/2/sendto">sendto(2)</a>, or
+<a href="https://man.page/2/sendmsg">sendmsg(2)</a>. If <i>node</i> is NULL, then the network
 address will be set to the loopback interface address
 (<b>INADDR_LOOPBACK</b> for IPv4 addresses,
 <b>IN6ADDR_LOOPBACK_INIT</b> for IPv6 address); this is used
@@ -196,7 +196,7 @@ running on the same host.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>service</i>
 sets the port in each returned address structure. If this
-argument is a service name (see <b>services</b>(5)), it is
+argument is a service name (see <a href="https://man.page/5/services">services(5)</a>), it is
 translated to the corresponding port number. This argument
 can also be specified as a decimal number, which is simply
 converted to binary. If <i>service</i> is NULL, then the
@@ -260,7 +260,7 @@ initialized as follows:</p>
 <p>The <i>ai_family</i>, <i>ai_socktype</i>, and
 <i>ai_protocol</i> fields return the socket creation
 parameters (i.e., these fields have the same meaning as the
-corresponding arguments of <b>socket</b>(2)). For example,
+corresponding arguments of <a href="https://man.page/2/socket">socket(2)</a>). For example,
 <i>ai_family</i> might return <b>AF_INET</b> or
 <b>AF_INET6</b>; <i>ai_socktype</i> might return
 <b>SOCK_DGRAM</b> or <b>SOCK_STREAM</b>; and
@@ -290,8 +290,8 @@ configured. The loopback address is not considered for this
 case as valid as a configured address. This flag is useful
 on, for example, IPv4-only systems, to ensure that
 <b>getaddrinfo</b>() does not return IPv6 socket addresses
-that would always fail in <b>connect</b>(2) or
-<b>bind</b>(2).</p>
+that would always fail in <a href="https://man.page/2/connect">connect(2)</a> or
+<a href="https://man.page/2/bind">bind(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
 <i>hints.ai_flags</i> specifies the <b>AI_V4MAPPED</b> flag,
@@ -469,7 +469,7 @@ reporting.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3293531.png" alt="Image grohtml-3293531.png"></p>
@@ -515,7 +515,7 @@ specification.</p>
 <p style="margin-left:11%; margin-top: 1em">The following
 programs demonstrate the use of <b>getaddrinfo</b>(),
 <b>gai_strerror</b>(), <b>freeaddrinfo</b>(), and
-<b>getnameinfo</b>(3). The programs are an echo server and
+<a href="https://man.page/3/getnameinfo">getnameinfo(3)</a>. The programs are an echo server and
 client for UDP datagrams.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Server
@@ -758,10 +758,10 @@ exit(EXIT_FAILURE); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>getaddrinfo_a</b>(3),
-<b>gethostbyname</b>(3), <b>getnameinfo</b>(3),
-<b>inet</b>(3), <b>gai.conf</b>(5), <b>hostname</b>(7),
-<b>ip</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/getaddrinfo_a">getaddrinfo_a(3)</a>,
+<a href="https://man.page/3/gethostbyname">gethostbyname(3)</a>, <a href="https://man.page/3/getnameinfo">getnameinfo(3)</a>,
+<a href="https://man.page/3/inet">inet(3)</a>, <b>gai.conf</b>(5), <a href="https://man.page/7/hostname">hostname(7)</a>,
+<a href="https://man.page/7/ip">ip(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

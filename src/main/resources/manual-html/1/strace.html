@@ -192,7 +192,7 @@ redirection:</p>
 O_WRONLY|O_APPEND|O_CREAT, 0666) = 3</p>
 
 <p style="margin-left:11%; margin-top: 1em">Here, the
-second and the third argument of <b>open</b>(2) are decoded
+second and the third argument of <a href="https://man.page/2/open">open(2)</a> are decoded
 by breaking down the flag argument into its three bitwise-OR
 constituents and printing the mode value in octal by
 tradition. Where the traditional or native usage differs
@@ -217,7 +217,7 @@ each member is displayed symbolically. In particular,
 observe how the <b>st_mode</b> member is carefully decoded
 into a bitwise-OR of symbolic and numeric values. Also
 notice in this example that the first argument to
-<b>lstat</b>(2) is an input to the system call and the
+<a href="https://man.page/2/lstat">lstat(2)</a> is an input to the system call and the
 second argument is an output. Since output arguments are not
 modified if the system call fails, arguments may not always
 be dereferenced. For example, retrying the &quot;ls -l&quot;
@@ -248,7 +248,7 @@ by ordinary C escape codes. Only the first <i>strsize</i>
 (32 by default) bytes of strings are printed; longer strings
 have an ellipsis appended following the closing quote. Here
 is a line from &quot;ls -l&quot; where the
-<b>getpwuid</b>(3) library routine is reading the password
+<a href="https://man.page/3/getpwuid">getpwuid(3)</a> library routine is reading the password
 file:</p>
 
 <p style="margin-left:17%; margin-top: 1em">read(3,
@@ -259,7 +259,7 @@ file:</p>
 structures are annotated using curly braces, simple pointers
 and arrays are printed using square brackets with commas
 separating elements. Here is an example from the command
-<b>id</b>(1) on a system with supplementary group ids:</p>
+<a href="https://man.page/1/id">id(1)</a> on a system with supplementary group ids:</p>
 
 <p style="margin-left:17%; margin-top: 1em">getgroups(32,
 [100, 0]) = 2</p>
@@ -456,7 +456,7 @@ without effective privileges.</p>
 
 <p style="margin-left:29%;">If specified syscall is
 reached, detach from traced process. Currently, only
-<b>execve</b>(2) syscall is supported. This option is useful
+<a href="https://man.page/2/execve">execve(2)</a> syscall is supported. This option is useful
 if you want to trace multi-threaded process and therefore
 require <b>-f</b>, but don&rsquo;t want to trace its
 (potentially very complex) children.</p>
@@ -509,7 +509,7 @@ direct child of the calling process.</p>
 tracee&rsquo;s grandchild in a separate process group. In
 addition to reduction of the visible effect of
 <b>strace</b>, it also avoids killing of <b>strace</b> with
-<b>kill</b>(2) issued to the whole process group.</p>
+<a href="https://man.page/2/kill">kill(2)</a> issued to the whole process group.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -548,7 +548,7 @@ visible effect of <b>strace</b>, it also avoids killing of
 
 <p style="margin-left:29%;">Trace child processes as they
 are created by currently traced processes as a result of the
-<b>fork</b>(2), <b>vfork</b>(2) and <b>clone</b>(2) system
+<a href="https://man.page/2/fork">fork(2)</a>, <a href="https://man.page/2/vfork">vfork(2)</a> and <a href="https://man.page/2/clone">clone(2)</a> system
 calls. Note that <b>-p</b> <i>PID</i> <b>-f</b> will attach
 all threads of process <i>PID</i> if it is multi-threaded,
 not only thread with <i>thread_id</i> = <i>PID</i>.</p>
@@ -582,7 +582,7 @@ options. This is incompatible with <b>-c</b>, since no
 per-process counts are kept.</p>
 
 <p style="margin-left:29%; margin-top: 1em">One might want
-to consider using <b>strace-log-merge</b>(1) to obtain a
+to consider using <a href="https://man.page/1/strace-log-merge">strace-log-merge(1)</a> to obtain a
 combined strace log view.</p>
 
 <p style="margin-left:11%;"><b>-I</b> <i>interruptible</i>
@@ -694,7 +694,7 @@ qualification provided.</p></td></tr>
 
 <p>Trace only those system calls that match the
 <i>regex</i>. You can use <b>POSIX</b> Extended Regular
-Expression syntax (see <b>regex</b>(7)).</p></td></tr>
+Expression syntax (see <a href="https://man.page/7/regex">regex(7)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="29%"></td>
 <td width="17%">
@@ -756,7 +756,7 @@ argument. You can think of this as an abbreviation for
 which is useful to seeing what files the process is
 referencing. Furthermore, using the abbreviation will ensure
 that you don&rsquo;t accidentally forget to include a call
-like <b>lstat</b>(2) in the list. Betchya woulda forgot that
+like <a href="https://man.page/2/lstat">lstat(2)</a> in the list. Betchya woulda forgot that
 one. The syntax without a preceding percent sign
 (&quot;<b>-e trace</b>=<b>file</b>&quot;) is deprecated.</p></td></tr>
 <tr valign="top" align="left">
@@ -1025,15 +1025,15 @@ clocks.</p> </td></tr>
 
 <p>Trace syscalls that always succeed and have no
 arguments. Currently, this list includes
-<b>arc_gettls</b>(2), <b>getdtablesize</b>(2),
-<b>getegid</b>(2), <b>getegid32</b>(2), <b>geteuid</b>(2),
-<b>geteuid32</b>(2), <b>getgid</b>(2), <b>getgid32</b>(2),
-<b>getpagesize</b>(2), <b>getpgrp</b>(2), <b>getpid</b>(2),
-<b>getppid</b>(2), <b>get_thread_area</b>(2) (on
-architectures other than x86), <b>gettid</b>(2),
-<b>get_tls</b>(2), <b>getuid</b>(2), <b>getuid32</b>(2),
-<b>getxgid</b>(2), <b>getxpid</b>(2), <b>getxuid</b>(2),
-<b>kern_features</b>(2), and <b>metag_get_tls</b>(2)
+<a href="https://man.page/2/arc_gettls">arc_gettls(2)</a>, <a href="https://man.page/2/getdtablesize">getdtablesize(2)</a>,
+<a href="https://man.page/2/getegid">getegid(2)</a>, <a href="https://man.page/2/getegid32">getegid32(2)</a>, <a href="https://man.page/2/geteuid">geteuid(2)</a>,
+<a href="https://man.page/2/geteuid32">geteuid32(2)</a>, <a href="https://man.page/2/getgid">getgid(2)</a>, <a href="https://man.page/2/getgid32">getgid32(2)</a>,
+<a href="https://man.page/2/getpagesize">getpagesize(2)</a>, <a href="https://man.page/2/getpgrp">getpgrp(2)</a>, <a href="https://man.page/2/getpid">getpid(2)</a>,
+<a href="https://man.page/2/getppid">getppid(2)</a>, <a href="https://man.page/2/get_thread_area">get_thread_area(2)</a> (on
+architectures other than x86), <a href="https://man.page/2/gettid">gettid(2)</a>,
+<a href="https://man.page/2/get_tls">get_tls(2)</a>, <a href="https://man.page/2/getuid">getuid(2)</a>, <a href="https://man.page/2/getuid32">getuid32(2)</a>,
+<a href="https://man.page/2/getxgid">getxgid(2)</a>, <a href="https://man.page/2/getxpid">getxpid(2)</a>, <a href="https://man.page/2/getxuid">getxuid(2)</a>,
+<a href="https://man.page/2/kern_features">kern_features(2)</a>, and <a href="https://man.page/2/metag_get_tls">metag_get_tls(2)</a>
 syscalls.</p> </td></tr>
 </table>
 
@@ -1073,8 +1073,8 @@ threads, <b>strace</b> will first print both the entry and
 exit of the first system call to exit, regardless of their
 respective entry time. The entry and exit of the second
 system call to exit will be printed afterwards. Here is an
-example when <b>select</b>(2) is called, but a different
-thread calls <b>clock_gettime</b>(2) before <b>select</b>(2)
+example when <a href="https://man.page/2/select">select(2)</a> is called, but a different
+thread calls <a href="https://man.page/2/clock_gettime">clock_gettime(2)</a> before <a href="https://man.page/2/select">select(2)</a>
 finishes:</p>
 
 <p style="margin-left:35%; margin-top: 1em">[pid 28779]
@@ -1287,7 +1287,7 @@ data read from file descriptors listed in the specified set.
 For example, to see all input activity on file descriptors
 <i>3</i> and <i>5</i> use
 <b>-e&nbsp;read</b>=<i>3</i>,<i>5</i>. Note that this is
-independent from the normal tracing of the <b>read</b>(2)
+independent from the normal tracing of the <a href="https://man.page/2/read">read(2)</a>
 system call which is controlled by the option
 <b>-e&nbsp;trace</b>=<b>read</b>.</p> </td></tr>
 </table>
@@ -1312,7 +1312,7 @@ data written to file descriptors listed in the specified
 set. For example, to see all output activity on file
 descriptors <i>3</i> and <i>5</i> use
 <b>-e&nbsp;write</b>=<i>3</i>,<i>5</i>. Note that this is
-independent from the normal tracing of the <b>write</b>(2)
+independent from the normal tracing of the <a href="https://man.page/2/write">write(2)</a>
 system call which is controlled by the option
 <b>-e&nbsp;trace</b>=<b>write</b>.</p> </td></tr>
 </table>
@@ -1414,7 +1414,7 @@ the <b>-P</b> option (&quot;<b>Requested path
 
 
 <p>Suppress messages about process being superseded by
-<b>execve</b>(2) in another thread (&quot;<b>+++ superseded
+<a href="https://man.page/2/execve">execve(2)</a> in another thread (&quot;<b>+++ superseded
 by execve in pid NNNN +++</b>&quot;).</p></td></tr>
 </table>
 
@@ -1785,7 +1785,7 @@ previous setting.</p></td></tr>
 <td width="49%">
 
 
-<p>Wall clock time (<b>strftime</b>(3) format string is
+<p>Wall clock time (<a href="https://man.page/3/strftime">strftime(3)</a> format string is
 <b>%T</b>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="29%"></td>
@@ -1797,7 +1797,7 @@ previous setting.</p></td></tr>
 <td width="49%">
 
 
-<p>Number of seconds since the epoch (<b>strftime</b>(3)
+<p>Number of seconds since the epoch (<a href="https://man.page/3/strftime">strftime(3)</a>
 format string is <b>%s</b>).</p></td></tr>
 </table>
 
@@ -2220,7 +2220,7 @@ overriding the default heuristic for guessing how much time
 is spent in mere measuring when timing system calls using
 the <b>-c</b> option. The accuracy of the heuristic can be
 gauged by timing a given program run without tracing (using
-<b>time</b>(1)) and comparing the accumulated system call
+<a href="https://man.page/1/time">time(1)</a>) and comparing the accumulated system call
 time to the total produced using <b>-c</b>.</p>
 
 <p style="margin-left:29%; margin-top: 1em">The format of
@@ -2690,8 +2690,8 @@ option.</p> </td></tr>
 <p style="margin-left:11%;"><b>--seccomp-bpf</b></p>
 
 <p style="margin-left:29%;">Try to enable use of
-seccomp-bpf (see <b>seccomp</b>(2)) to have
-<b>ptrace</b>(2)-stops only when system calls that are being
+seccomp-bpf (see <a href="https://man.page/2/seccomp">seccomp(2)</a>) to have
+<a href="https://man.page/2/ptrace">ptrace(2)</a>-stops only when system calls that are being
 traced occur in the traced processes. This option has no
 effect unless <b>-f</b>/<b>--follow-forks</b> is also
 specified. <b>--seccomp-bpf</b> is also not applicable to
@@ -2735,7 +2735,7 @@ call.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Time
 specification format description</b> <br>
 Time values can be specified as a decimal floating point
-number (in a format accepted by <b>strtod</b>(3)),
+number (in a format accepted by <a href="https://man.page/3/strtod">strtod(3)</a>),
 optionally followed by one of the following suffices that
 specify the unit of time: <b>s</b> (seconds), <b>ms</b>
 (milliseconds), <b>us</b> (microseconds), or <b>ns</b>
@@ -2759,7 +2759,7 @@ status. If <i>command</i> is terminated by a signal,
 that <b>strace</b> can be used as a wrapper process
 transparent to the invoking parent process. Note that
 parent-child relationship (signal stop notifications,
-<b>getppid</b>(2) value, etc) between traced process and its
+<a href="https://man.page/2/getppid">getppid(2)</a> value, etc) between traced process and its
 parent are not preserved unless <b>-D</b> is used.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When using
@@ -2937,10 +2937,10 @@ outputs as propositions.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In some cases,
 a system call will differ from the documented behavior or
-have a different name. For example, the <b>faccessat</b>(2)
+have a different name. For example, the <a href="https://man.page/2/faccessat">faccessat(2)</a>
 system call does not have <i>flags</i> argument, and the
-<b>setrlimit</b>(2) library function uses
-<b>prlimit64</b>(2) system call on modern (2.6.38+) kernels.
+<a href="https://man.page/2/setrlimit">setrlimit(2)</a> library function uses
+<a href="https://man.page/2/prlimit64">prlimit64(2)</a> system call on modern (2.6.38+) kernels.
 These discrepancies are normal but idiosyncratic
 characteristics of the system call interface and are
 accounted for by C library wrapper functions.</p>
@@ -2951,13 +2951,13 @@ personalities. In these cases, system call filtering and
 printing uses the names that match corresponding
 <b>__NR_</b>* kernel macros of the tracee&rsquo;s
 architecture and personality. There are two exceptions from
-this general rule: <b>arm_fadvise64_64</b>(2) ARM syscall
-and <b>xtensa_fadvise64_64</b>(2) Xtensa syscall are
-filtered and printed as <b>fadvise64_64</b>(2).</p>
+this general rule: <a href="https://man.page/2/arm_fadvise64_64">arm_fadvise64_64(2)</a> ARM syscall
+and <a href="https://man.page/2/xtensa_fadvise64_64">xtensa_fadvise64_64(2)</a> Xtensa syscall are
+filtered and printed as <a href="https://man.page/2/fadvise64_64">fadvise64_64(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On x32,
 syscalls that are intended to be used by 64-bit processes
-and not x32 ones (for example, <b>readv</b>(2), that has
+and not x32 ones (for example, <a href="https://man.page/2/readv">readv(2)</a>, that has
 syscall number 19 on x86_64, with its x32 counterpart has
 syscall number 515), but called with
 <b>__X32_SYSCALL_BIT</b> flag being set, are designated with
@@ -3014,7 +3014,7 @@ Branko&rsquo;s work was based on Paul&rsquo;s <b>strace</b>
 1.5 release from 1991. In 1993, Rick Sladkey merged
 <b>strace</b> 2.5 for SunOS and the second release of
 <b>strace</b> for Linux, added many of the features of
-<b>truss</b>(1) from SVR4, and produced an <b>strace</b>
+<a href="https://man.page/1/truss">truss(1)</a> from SVR4, and produced an <b>strace</b>
 that worked on both platforms. In 1994 Rick ported
 <b>strace</b> to SVR4 and Solaris and wrote the automatic
 configuration support. In 1995 he ported <b>strace</b> to
@@ -3063,9 +3063,9 @@ mailing list</a>.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>strace-log-merge</b>(1),
-<b>ltrace</b>(1), <b>perf-trace</b>(1), <b>trace-cmd</b>(1),
-<b>time</b>(1), <b>ptrace</b>(2), <b>proc</b>(5) <br>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/strace-log-merge">strace-log-merge(1)</a>,
+<a href="https://man.page/1/ltrace">ltrace(1)</a>, <a href="https://man.page/1/perf-trace">perf-trace(1)</a>, <a href="https://man.page/1/trace-cmd">trace-cmd(1)</a>,
+<a href="https://man.page/1/time">time(1)</a>, <a href="https://man.page/2/ptrace">ptrace(2)</a>, <a href="https://man.page/5/proc">proc(5)</a> <br>
 <a href="https://strace.io/"><b>strace</b> Home Page</a></p>
 
 <h2>AUTHORS

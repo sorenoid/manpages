@@ -62,8 +62,8 @@ ioctl(int</b> <i>fd</i><b>, int</b> <i>cmd</i><b>,
 
 
 <p style="margin-left:11%; margin-top: 1em">Various
-<b>ioctl</b>(2) operations can be performed on a userfaultfd
-object (created by a call to <b>userfaultfd</b>(2)) using
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operations can be performed on a userfaultfd
+object (created by a call to <a href="https://man.page/2/userfaultfd">userfaultfd(2)</a>) using
 calls of the form:</p>
 
 <p style="margin-left:17%; margin-top: 1em">ioctl(fd, cmd,
@@ -76,7 +76,7 @@ file descriptor referring to a userfaultfd object,
 specific to <i>cmd</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The various
-<b>ioctl</b>(2) operations are described below. The
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operations are described below. The
 <b>UFFDIO_API</b>, <b>UFFDIO_REGISTER</b>, and
 <b>UFFDIO_UNREGISTER</b> operations are used to
 <i>configure</i> userfaultfd behavior. These operations
@@ -112,14 +112,14 @@ application.</p>
 verifies that it can support the requested API version, and
 sets the <i>features</i> and <i>ioctls</i> fields to bit
 masks representing all the available features and the
-generic <b>ioctl</b>(2) operations available.</p>
+generic <a href="https://man.page/2/ioctl">ioctl(2)</a> operations available.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For Linux
 kernel versions before 4.11, the <i>features</i> field must
 be initialized to zero before the call to <b>UFFDIO_API</b>,
 and zero (i.e., no feature bits) is placed in the
 <i>features</i> field by the kernel upon return from
-<b>ioctl</b>(2).</p>
+<a href="https://man.page/2/ioctl">ioctl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Starting from
 Linux 4.11, the <i>features</i> field can be used to ask
@@ -142,7 +142,7 @@ UFFD_FEATURE_EVENT_FORK</b> (since Linux 4.11)</p>
 
 <p style="margin-left:22%;">When this feature is enabled,
 the userfaultfd objects associated with a parent process are
-duplicated into the child process during <b>fork</b>(2) and
+duplicated into the child process during <a href="https://man.page/2/fork">fork(2)</a> and
 a <b>UFFD_EVENT_FORK</b> event is delivered to the
 userfaultfd monitor</p>
 
@@ -151,7 +151,7 @@ userfaultfd monitor</p>
 (since Linux 4.11)</p>
 
 <p style="margin-left:22%;">If this feature is enabled,
-when the faulting process invokes <b>mremap</b>(2), the
+when the faulting process invokes <a href="https://man.page/2/mremap">mremap(2)</a>, the
 userfaultfd monitor will receive an event of type
 <b>UFFD_EVENT_REMAP</b>.</p>
 
@@ -160,7 +160,7 @@ userfaultfd monitor will receive an event of type
 (since Linux 4.11)</p>
 
 <p style="margin-left:22%;">If this feature is enabled,
-when the faulting process calls <b>madvise</b>(2) with the
+when the faulting process calls <a href="https://man.page/2/madvise">madvise(2)</a> with the
 <b>MADV_DONTNEED</b> or <b>MADV_REMOVE</b> advice value to
 free a virtual memory area the userfaultfd monitor will
 receive an event of type <b>UFFD_EVENT_REMOVE</b>.</p>
@@ -171,8 +171,8 @@ receive an event of type <b>UFFD_EVENT_REMOVE</b>.</p>
 
 <p style="margin-left:22%;">If this feature is enabled,
 when the faulting process unmaps virtual memory either
-explicitly with <b>munmap</b>(2), or implicitly during
-either <b>mmap</b>(2) or <b>mremap</b>(2). the userfaultfd
+explicitly with <a href="https://man.page/2/munmap">munmap(2)</a>, or implicitly during
+either <a href="https://man.page/2/mmap">mmap(2)</a> or <a href="https://man.page/2/mremap">mremap(2)</a>. the userfaultfd
 monitor will receive an event of type
 <b>UFFD_EVENT_UNMAP</b>.</p>
 
@@ -191,9 +191,9 @@ virtual memory areas</p>
 <p style="margin-left:22%;">If this feature bit is set, the
 kernel supports registering userfaultfd ranges on shared
 memory areas. This includes all kernel shared memory APIs:
-System V shared memory, <b>tmpfs</b>(5), shared mappings of
-<i>/dev/zero</i>, <b>mmap</b>(2) with the <b>MAP_SHARED</b>
-flag set, <b>memfd_create</b>(2), and so on.</p>
+System V shared memory, <a href="https://man.page/5/tmpfs">tmpfs(5)</a>, shared mappings of
+<i>/dev/zero</i>, <a href="https://man.page/2/mmap">mmap(2)</a> with the <b>MAP_SHARED</b>
+flag set, <a href="https://man.page/2/memfd_create">memfd_create(2)</a>, and so on.</p>
 
 <p style="margin-left:11%;"><b>UFFD_FEATURE_SIGBUS</b>
 (since Linux 4.14)</p>
@@ -226,7 +226,7 @@ _UFFDIO_UNREGISTER</b></p>
 operation is supported.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
-<b>ioctl</b>(2) operation returns 0 on success. On error, -1
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation returns 0 on success. On error, -1
 is returned and <i>errno</i> is set to indicate the cause of
 the error. Possible errors include:</p>
 
@@ -332,12 +332,12 @@ only supported mode is
 <p style="margin-left:11%; margin-top: 1em">If the
 operation is successful, the kernel modifies the
 <i>ioctls</i> bit-mask field to indicate which
-<b>ioctl</b>(2) operations are available for the specified
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operations are available for the specified
 range. This returned bit mask is as for
 <b>UFFDIO_API</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
-<b>ioctl</b>(2) operation returns 0 on success. On error, -1
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation returns 0 on success. On error, -1
 is returned and <i>errno</i> is set to indicate the cause of
 the error. Possible errors include:</p>
 
@@ -430,7 +430,7 @@ range to unregister is specified in the <i>uffdio_range</i>
 structure pointed to by <i>argp</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
-<b>ioctl</b>(2) operation returns 0 on success. On error, -1
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation returns 0 on success. On error, -1
 is returned and <i>errno</i> is set to indicate the cause of
 the error. Possible errors include:</p>
 
@@ -513,7 +513,7 @@ in <i>len</i>, the operation fails with the error
 not read by the <b>UFFDIO_COPY</b> operation.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
-<b>ioctl</b>(2) operation returns 0 on success. In this
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation returns 0 on success. In this
 case, the entire area was copied. On error, -1 is returned
 and <i>errno</i> is set to indicate the cause of the error.
 Possible errors include:</p>
@@ -617,7 +617,7 @@ output-only; it is not read by the <b>UFFDIO_ZEROPAGE</b>
 operation.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
-<b>ioctl</b>(2) operation returns 0 on success. In this
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation returns 0 on success. In this
 case, the entire area was zeroed. On error, -1 is returned
 and <i>errno</i> is set to indicate the cause of the error.
 Possible errors include:</p>
@@ -691,7 +691,7 @@ argument is a pointer to a <i>uffdio_range</i> structure
 (shown above) that specifies the address range.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
-<b>ioctl</b>(2) operation returns 0 on success. On error, -1
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operation returns 0 on success. On error, -1
 is returned and <i>errno</i> is set to indicate the cause of
 the error. Possible errors include:</p>
 
@@ -766,7 +766,7 @@ userfaultfd object has not yet been enabled (via the
 
 
 <p style="margin-left:11%; margin-top: 1em">These
-<b>ioctl</b>(2) operations are Linux-specific.</p>
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operations are Linux-specific.</p>
 
 <h2>BUGS
 <a name="BUGS"></a>
@@ -787,7 +787,7 @@ desired features.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>userfaultfd</b>(2).</p>
+<a href="https://man.page/2/userfaultfd">userfaultfd(2)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -795,8 +795,8 @@ desired features.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ioctl</b>(2),
-<b>mmap</b>(2), <b>userfaultfd</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/ioctl">ioctl(2)</a>,
+<a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/userfaultfd">userfaultfd(2)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/admin-guide/mm/userfaultfd.rst</i>

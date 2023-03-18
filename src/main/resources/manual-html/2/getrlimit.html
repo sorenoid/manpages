@@ -67,7 +67,7 @@ struct rlimit *</b><i>old_limit</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>prlimit</b>():
@@ -113,12 +113,12 @@ RLIMIT_AS</b></p>
 <p style="margin-left:22%;">This is the maximum size of the
 process&rsquo;s virtual memory (address space). The limit is
 specified in bytes, and is rounded down to the system page
-size. This limit affects calls to <b>brk</b>(2),
-<b>mmap</b>(2), and <b>mremap</b>(2), which fail with the
+size. This limit affects calls to <a href="https://man.page/2/brk">brk(2)</a>,
+<a href="https://man.page/2/mmap">mmap(2)</a>, and <a href="https://man.page/2/mremap">mremap(2)</a>, which fail with the
 error <b>ENOMEM</b> upon exceeding this limit. In addition,
 automatic stack expansion fails (and generates a
 <b>SIGSEGV</b> that kills the process if no alternate stack
-has been made available via <b>sigaltstack</b>(2)). Since
+has been made available via <a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>). Since
 the value is a <i>long</i>, on machines with a 32-bit
 <i>long</i> either this limit is at most 2&nbsp;GiB, or this
 resource is unlimited.</p>
@@ -126,7 +126,7 @@ resource is unlimited.</p>
 <p style="margin-left:11%;"><b>RLIMIT_CORE</b></p>
 
 <p style="margin-left:22%;">This is the maximum size of a
-<i>core</i> file (see <b>core</b>(5)) in bytes that the
+<i>core</i> file (see <a href="https://man.page/5/core">core(5)</a>) in bytes that the
 process may dump. When 0 no core dump files are created.
 When nonzero, larger dumps are truncated to this size.</p>
 
@@ -153,8 +153,8 @@ termination upon first receipt of <b>SIGXCPU</b>.)</p>
 process&rsquo;s data segment (initialized data,
 uninitialized data, and heap). The limit is specified in
 bytes, and is rounded down to the system page size. This
-limit affects calls to <b>brk</b>(2), <b>sbrk</b>(2), and
-(since Linux 4.7) <b>mmap</b>(2), which fail with the error
+limit affects calls to <a href="https://man.page/2/brk">brk(2)</a>, <a href="https://man.page/2/sbrk">sbrk(2)</a>, and
+(since Linux 4.7) <a href="https://man.page/2/mmap">mmap(2)</a>, which fail with the error
 <b>ENOMEM</b> upon encountering the soft limit of this
 resource.</p>
 
@@ -165,14 +165,14 @@ bytes of files that the process may create. Attempts to
 extend a file beyond this limit result in delivery of a
 <b>SIGXFSZ</b> signal. By default, this signal terminates a
 process, but a process can catch this signal instead, in
-which case the relevant system call (e.g., <b>write</b>(2),
-<b>truncate</b>(2)) fails with the error <b>EFBIG</b>.</p>
+which case the relevant system call (e.g., <a href="https://man.page/2/write">write(2)</a>,
+<a href="https://man.page/2/truncate">truncate(2)</a>) fails with the error <b>EFBIG</b>.</p>
 
 <p style="margin-left:11%;"><b>RLIMIT_LOCKS</b> (Linux
 2.4.0 to 2.4.24)</p>
 
 <p style="margin-left:22%;">This is a limit on the combined
-number of <b>flock</b>(2) locks and <b>fcntl</b>(2) leases
+number of <a href="https://man.page/2/flock">flock(2)</a> locks and <a href="https://man.page/2/fcntl">fcntl(2)</a> leases
 that this process may establish.</p>
 
 <p style="margin-left:11%;"><b>RLIMIT_MEMLOCK</b></p>
@@ -180,16 +180,16 @@ that this process may establish.</p>
 <p style="margin-left:22%;">This is the maximum number of
 bytes of memory that may be locked into RAM. This limit is
 in effect rounded down to the nearest multiple of the system
-page size. This limit affects <b>mlock</b>(2),
-<b>mlockall</b>(2), and the <b>mmap</b>(2) <b>MAP_LOCKED</b>
+page size. This limit affects <a href="https://man.page/2/mlock">mlock(2)</a>,
+<a href="https://man.page/2/mlockall">mlockall(2)</a>, and the <a href="https://man.page/2/mmap">mmap(2)</a> <b>MAP_LOCKED</b>
 operation. Since Linux 2.6.9, it also affects the
-<b>shmctl</b>(2) <b>SHM_LOCK</b> operation, where it sets a
+<a href="https://man.page/2/shmctl">shmctl(2)</a> <b>SHM_LOCK</b> operation, where it sets a
 maximum on the total bytes in shared memory segments (see
-<b>shmget</b>(2)) that may be locked by the real user ID of
-the calling process. The <b>shmctl</b>(2) <b>SHM_LOCK</b>
+<a href="https://man.page/2/shmget">shmget(2)</a>) that may be locked by the real user ID of
+the calling process. The <a href="https://man.page/2/shmctl">shmctl(2)</a> <b>SHM_LOCK</b>
 locks are accounted for separately from the per-process
-memory locks established by <b>mlock</b>(2),
-<b>mlockall</b>(2), and <b>mmap</b>(2) <b>MAP_LOCKED</b>; a
+memory locks established by <a href="https://man.page/2/mlock">mlock(2)</a>,
+<a href="https://man.page/2/mlockall">mlockall(2)</a>, and <a href="https://man.page/2/mmap">mmap(2)</a> <b>MAP_LOCKED</b>; a
 process can lock bytes up to this limit in each of these two
 categories.</p>
 
@@ -207,7 +207,7 @@ Linux 2.6.8)</p>
 <p style="margin-left:22%;">This is a limit on the number
 of bytes that can be allocated for POSIX message queues for
 the real user ID of the calling process. This limit is
-enforced for <b>mq_open</b>(3). Each message queue that the
+enforced for <a href="https://man.page/3/mq_open">mq_open(3)</a>. Each message queue that the
 user creates counts (until it is removed) against this limit
 according to the formula:</p>
 
@@ -233,7 +233,7 @@ attr.mq_maxmsg * attr.mq_msgsize; <br>
 
 <p style="margin-left:22%; margin-top: 1em">where
 <i>attr</i> is the <i>mq_attr</i> structure specified as the
-fourth argument to <b>mq_open</b>(3), and the <i>msg_msg</i>
+fourth argument to <a href="https://man.page/3/mq_open">mq_open(3)</a>, and the <i>msg_msg</i>
 and <i>posix_msg_tree_node</i> structures are
 kernel-internal structures.</p>
 
@@ -249,7 +249,7 @@ consume some system memory for bookkeeping overhead).</p>
 
 <p style="margin-left:22%;">This specifies a ceiling to
 which the process&rsquo;s nice value can be raised using
-<b>setpriority</b>(2) or <b>nice</b>(2). The actual ceiling
+<a href="https://man.page/2/setpriority">setpriority(2)</a> or <a href="https://man.page/2/nice">nice(2)</a>. The actual ceiling
 for the nice value is calculated as
 <i>20&nbsp;-&nbsp;rlim_cur</i>. The useful range for this
 limit is thus from 1 (corresponding to a nice value of 19)
@@ -258,14 +258,14 @@ choice of range was necessary because negative numbers
 cannot be specified as resource limit values, since they
 typically have special meanings. For example,
 <b>RLIM_INFINITY</b> typically is the same as -1. For more
-detail on the nice value, see <b>sched</b>(7).</p>
+detail on the nice value, see <a href="https://man.page/7/sched">sched(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>RLIMIT_NOFILE</b></p>
 
 <p style="margin-left:22%;">This specifies a value one
 greater than the maximum file descriptor number that can be
-opened by this process. Attempts (<b>open</b>(2),
-<b>pipe</b>(2), <b>dup</b>(2), etc.) to exceed this limit
+opened by this process. Attempts (<a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/2/pipe">pipe(2)</a>, <a href="https://man.page/2/dup">dup(2)</a>, etc.) to exceed this limit
 yield the error <b>EMFILE</b>. (Historically, this limit was
 named <b>RLIMIT_OFILE</b> on BSD.)</p>
 
@@ -274,8 +274,8 @@ named <b>RLIMIT_OFILE</b> on BSD.)</p>
 descriptors that an unprivileged process (one without the
 <b>CAP_SYS_RESOURCE</b> capability) may have &quot;in
 flight&quot; to other processes, by being passed across UNIX
-domain sockets. This limit applies to the <b>sendmsg</b>(2)
-system call. For further details, see <b>unix</b>(7).</p>
+domain sockets. This limit applies to the <a href="https://man.page/2/sendmsg">sendmsg(2)</a>
+system call. For further details, see <a href="https://man.page/7/unix">unix(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>RLIMIT_NPROC</b></p>
 
@@ -284,7 +284,7 @@ of extant process (or, more precisely on Linux, threads) for
 the real user ID of the calling process. So long as the
 current number of processes belonging to this
 process&rsquo;s real user ID is greater than or equal to
-this limit, <b>fork</b>(2) fails with the error
+this limit, <a href="https://man.page/2/fork">fork(2)</a> fails with the error
 <b>EAGAIN</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
@@ -298,19 +298,19 @@ have either the <b>CAP_SYS_ADMIN</b> or the
 the process&rsquo;s resident set (the number of virtual
 pages resident in RAM). This limit has effect only in Linux
 2.4.x, x &lt; 30, and there affects only calls to
-<b>madvise</b>(2) specifying <b>MADV_WILLNEED</b>.</p>
+<a href="https://man.page/2/madvise">madvise(2)</a> specifying <b>MADV_WILLNEED</b>.</p>
 
 <p style="margin-left:11%;"><b>RLIMIT_RTPRIO</b> (since
 Linux 2.6.12, but see BUGS)</p>
 
 <p style="margin-left:22%;">This specifies a ceiling on the
 real-time priority that may be set for this process using
-<b>sched_setscheduler</b>(2) and
-<b>sched_setparam</b>(2).</p>
+<a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a> and
+<a href="https://man.page/2/sched_setparam">sched_setparam(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For further
 details on real-time scheduling policies, see
-<b>sched</b>(7)</p>
+<a href="https://man.page/7/sched">sched(7)</a></p>
 
 <p style="margin-left:11%;"><b>RLIMIT_RTTIME</b> (since
 Linux 2.6.25)</p>
@@ -323,7 +323,7 @@ this limit, each time a process makes a blocking system
 call, the count of its consumed CPU time is reset to zero.
 The CPU time count is not reset if the process continues
 trying to use the CPU but is preempted, its time slice
-expires, or it calls <b>sched_yield</b>(2).</p>
+expires, or it calls <a href="https://man.page/2/sched_yield">sched_yield(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Upon reaching
 the soft limit, the process is sent a <b>SIGXCPU</b> signal.
@@ -338,7 +338,7 @@ from locking up the system.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For further
 details on real-time scheduling policies, see
-<b>sched</b>(7)</p>
+<a href="https://man.page/7/sched">sched(7)</a></p>
 
 <p style="margin-left:11%;"><b>RLIMIT_SIGPENDING</b> (since
 Linux 2.6.8)</p>
@@ -347,8 +347,8 @@ Linux 2.6.8)</p>
 of signals that may be queued for the real user ID of the
 calling process. Both standard and real-time signals are
 counted for the purpose of checking this limit. However, the
-limit is enforced only for <b>sigqueue</b>(3); it is always
-possible to use <b>kill</b>(2) to queue one instance of any
+limit is enforced only for <a href="https://man.page/3/sigqueue">sigqueue(3)</a>; it is always
+possible to use <a href="https://man.page/2/kill">kill(2)</a> to queue one instance of any
 of the signals that are not already queued to the
 process.</p>
 
@@ -358,13 +358,13 @@ process.</p>
 process stack, in bytes. Upon reaching this limit, a
 <b>SIGSEGV</b> signal is generated. To handle this signal, a
 process must employ an alternate signal stack
-(<b>sigaltstack</b>(2)).</p>
+(<a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">Since Linux
 2.6.23, this limit also determines the amount of space used
 for the process&rsquo;s command-line arguments and
 environment variables; for details, see
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>prlimit()</b>
@@ -466,7 +466,7 @@ this.</p> </td></tr>
 
 <p>The caller tried to increase the hard
 <b>RLIMIT_NOFILE</b> limit above the maximum defined by
-<i>/proc/sys/fs/nr_open</i> (see <b>proc</b>(5))</p></td></tr>
+<i>/proc/sys/fs/nr_open</i> (see <a href="https://man.page/5/proc">proc(5)</a>)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -510,7 +510,7 @@ permission to set limits for the process specified by
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3273101.png" alt="Image grohtml-3273101.png"></p>
@@ -546,9 +546,9 @@ nevertheless present on most implementations.
 
 
 <p style="margin-left:11%; margin-top: 1em">A child process
-created via <b>fork</b>(2) inherits its parent&rsquo;s
+created via <a href="https://man.page/2/fork">fork(2)</a> inherits its parent&rsquo;s
 resource limits. Resource limits are preserved across
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Resource limits
 are per-process attributes that are shared by all of the
@@ -562,13 +562,13 @@ resource).</p>
 
 <p style="margin-left:11%; margin-top: 1em">One can set the
 resource limits of the shell using the built-in
-<i>ulimit</i> command (<i>limit</i> in <b>csh</b>(1)). The
+<i>ulimit</i> command (<i>limit</i> in <a href="https://man.page/1/csh">csh(1)</a>). The
 shell&rsquo;s resource limits are inherited by the processes
 that it creates to execute commands.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 2.6.24, the resource limits of any process can be inspected
-via <i>/proc/[pid]/limits</i>; see <b>proc</b>(5).</p>
+via <i>/proc/[pid]/limits</i>; see <a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Ancient systems
 provided a <b>vlimit</b>() function with a similar purpose
@@ -612,7 +612,7 @@ means that <b>RLIMIT_RTPRIO</b> does not work in kernel
 
 <p style="margin-left:11%; margin-top: 1em">In kernel
 2.6.12, there was an off-by-one mismatch between the
-priority ranges returned by <b>getpriority</b>(2) and
+priority ranges returned by <a href="https://man.page/2/getpriority">getpriority(2)</a> and
 <b>RLIMIT_NICE</b>. This had the effect that the actual
 ceiling for the nice value was calculated as
 <i>19&nbsp;-&nbsp;rlim_cur</i>. This was fixed in kernel
@@ -754,14 +754,14 @@ printf(&quot;New limits: soft=%jd; hard=%jd\n&quot;, <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>prlimit</b>(1),
-<b>dup</b>(2), <b>fcntl</b>(2), <b>fork</b>(2),
-<b>getrusage</b>(2), <b>mlock</b>(2), <b>mmap</b>(2),
-<b>open</b>(2), <b>quotactl</b>(2), <b>sbrk</b>(2),
-<b>shmctl</b>(2), <b>malloc</b>(3), <b>sigqueue</b>(3),
-<b>ulimit</b>(3), <b>core</b>(5), <b>capabilities</b>(7),
-<b>cgroups</b>(7), <b>credentials</b>(7),
-<b>signal</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/prlimit">prlimit(1)</a>,
+<a href="https://man.page/2/dup">dup(2)</a>, <a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/fork">fork(2)</a>,
+<a href="https://man.page/2/getrusage">getrusage(2)</a>, <a href="https://man.page/2/mlock">mlock(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>,
+<a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/quotactl">quotactl(2)</a>, <a href="https://man.page/2/sbrk">sbrk(2)</a>,
+<a href="https://man.page/2/shmctl">shmctl(2)</a>, <a href="https://man.page/3/malloc">malloc(3)</a>, <a href="https://man.page/3/sigqueue">sigqueue(3)</a>,
+<a href="https://man.page/3/ulimit">ulimit(3)</a>, <a href="https://man.page/5/core">core(5)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/cgroups">cgroups(7)</a>, <a href="https://man.page/7/credentials">credentials(7)</a>,
+<a href="https://man.page/7/signal">signal(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

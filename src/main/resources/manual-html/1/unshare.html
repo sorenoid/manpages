@@ -68,7 +68,7 @@ processes. A new namespace can be made persistent even when
 it has no member processes by bind mounting
 /proc/<i>pid</i>/ns/<i>type</i> files to a filesystem path.
 A namespace that has been made persistent in this way can
-subsequently be entered with <b>nsenter</b>(1) even after
+subsequently be entered with <a href="https://man.page/1/nsenter">nsenter(1)</a> even after
 the <i>program</i> terminates (except PID namespaces where a
 permanently running init process is required). Once a
 persistent namespace is no longer needed, it can be
@@ -94,7 +94,7 @@ for filesystems which are explicitly marked as shared (with
 <b>mount --make-shared</b>; see <i>/proc/self/mountinfo</i>
 or <b>findmnt -o+PROPAGATION</b> for the <b>shared</b>
 flags). For further details, see
-<b>mount_namespaces</b>(7).</p>
+<a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a>.</p>
 
 <p style="margin-left:17%; margin-top: 1em"><b>unshare</b>
 since util-linux version 2.27 automatically sets propagation
@@ -109,7 +109,7 @@ namespace</b></p>
 
 <p style="margin-left:17%;">Setting hostname or domainname
 will not affect the rest of the system. For further details,
-see <b>uts_namespaces</b>(7).</p>
+see <a href="https://man.page/7/uts_namespaces">uts_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>IPC
 namespace</b></p>
@@ -118,7 +118,7 @@ namespace</b></p>
 independent namespace for POSIX message queues as well as
 System V message queues, semaphore sets and shared memory
 segments. For further details, see
-<b>ipc_namespaces</b>(7).</p>
+<a href="https://man.page/7/ipc_namespaces">ipc_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>network
 namespace</b></p>
@@ -127,14 +127,14 @@ namespace</b></p>
 independent IPv4 and IPv6 stacks, IP routing tables,
 firewall rules, the <i>/proc/net</i> and
 <i>/sys/class/net</i> directory trees, sockets, etc. For
-further details, see <b>network_namespaces</b>(7).</p>
+further details, see <a href="https://man.page/7/network_namespaces">network_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>PID
 namespace</b></p>
 
 <p style="margin-left:17%;">Children will have a distinct
 set of PID-to-process mappings from their parent. For
-further details, see <b>pid_namespaces</b>(7).</p>
+further details, see <a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>cgroup
 namespace</b></p>
@@ -142,14 +142,14 @@ namespace</b></p>
 <p style="margin-left:17%;">The process will have a
 virtualized view of <i>/proc/self/cgroup</i>, and new cgroup
 mounts will be rooted at the namespace cgroup root. For
-further details, see <b>cgroup_namespaces</b>(7).</p>
+further details, see <a href="https://man.page/7/cgroup_namespaces">cgroup_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>user
 namespace</b></p>
 
 <p style="margin-left:17%;">The process will have a
 distinct set of UIDs, GIDs and capabilities. For further
-details, see <b>user_namespaces</b>(7).</p>
+details, see <a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>time
 namespace</b></p>
@@ -157,7 +157,7 @@ namespace</b></p>
 <p style="margin-left:17%;">The process can have a distinct
 view of <b>CLOCK_MONOTONIC</b> and/or <b>CLOCK_BOOTTIME</b>
 which can be changed using <i>/proc/self/timens_offsets</i>.
-For further details, see <b>time_namespaces</b>(7).</p>
+For further details, see <a href="https://man.page/7/time_namespaces">time_namespaces(7)</a>.</p>
 
 <h2>OPTIONS
 <a name="OPTIONS"></a>
@@ -331,17 +331,17 @@ option is silently ignored when the mount namespace
 allow</b>|<b>deny</b></p>
 
 <p style="margin-left:17%;">Allow or deny the
-<b>setgroups</b>(2) system call in a user namespace.</p>
+<a href="https://man.page/2/setgroups">setgroups(2)</a> system call in a user namespace.</p>
 
 <p style="margin-left:17%; margin-top: 1em">To be able to
-call <b>setgroups</b>(2), the calling process must at least
+call <a href="https://man.page/2/setgroups">setgroups(2)</a>, the calling process must at least
 have <b>CAP_SETGID</b>. But since Linux 3.19 a further
 restriction applies: the kernel gives permission to call
-<b>setgroups</b>(2) only after the GID map
+<a href="https://man.page/2/setgroups">setgroups(2)</a> only after the GID map
 (<b>/proc/</b><i>pid</i>*/gid_map*) has been set. The GID
-map is writable by root when <b>setgroups</b>(2) is enabled
+map is writable by root when <a href="https://man.page/2/setgroups">setgroups(2)</a> is enabled
 (i.e., <b>allow</b>, the default), and the GID map becomes
-writable by unprivileged processes when <b>setgroups</b>(2)
+writable by unprivileged processes when <a href="https://man.page/2/setgroups">setgroups(2)</a>
 is permanently disabled (with <b>deny</b>).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
@@ -421,7 +421,7 @@ ensure that the executed command is performed in a child
 process that (being the first process in the namespace) has
 PID 1. The <b>--mount-proc</b> option ensures that a new
 mount namespace is also simultaneously created and that a
-new <b>proc</b>(5) filesystem is mounted that contains
+new <a href="https://man.page/5/proc">proc(5)</a> filesystem is mounted that contains
 information corresponding to the new PID namespace. When the
 <b>readlink</b> command terminates, the new namespaces are
 automatically torn down.</p>
@@ -450,7 +450,7 @@ root <br>
 the following commands creates a new persistent UTS
 namespace and modifies the hostname as seen in that
 namespace. The namespace is then entered with
-<b>nsenter</b>(1) in order to display the modified hostname;
+<a href="https://man.page/1/nsenter">nsenter(1)</a> in order to display the modified hostname;
 this step demonstrates that the UTS namespace continues to
 exist even though the namespace had no member processes
 after the <b>unshare</b> command terminated. The namespace
@@ -504,7 +504,7 @@ unshare <br>
 # pidof sleep</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>pidof</b>(1) command prints no output, because the
+<a href="https://man.page/1/pidof">pidof(1)</a> command prints no output, because the
 <b>sleep</b> processes have been killed. More precisely,
 when the <b>sleep</b> process that has PID 1 in the
 namespace (i.e., the namespace&rsquo;s init process) was
@@ -556,8 +556,8 @@ Zak</i> &lt;kzak@redhat.com&gt;</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
-<b>unshare</b>(2), <b>namespaces</b>(7), <b>mount</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/unshare">unshare(2)</a>, <a href="https://man.page/7/namespaces">namespaces(7)</a>, <b>mount</b>(8)</p>
 
 <h2>REPORTING BUGS
 <a name="REPORTING BUGS"></a>

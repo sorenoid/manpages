@@ -47,12 +47,12 @@ overview of POSIX message queues</p>
 <p style="margin-left:11%; margin-top: 1em">POSIX message
 queues allow processes to exchange data in the form of
 messages. This API is distinct from that provided by System
-V message queues (<b>msgget</b>(2), <b>msgsnd</b>(2),
-<b>msgrcv</b>(2), etc.), but provides similar
+V message queues (<a href="https://man.page/2/msgget">msgget(2)</a>, <a href="https://man.page/2/msgsnd">msgsnd(2)</a>,
+<a href="https://man.page/2/msgrcv">msgrcv(2)</a>, etc.), but provides similar
 functionality.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Message queues
-are created and opened using <b>mq_open</b>(3); this
+are created and opened using <a href="https://man.page/3/mq_open">mq_open(3)</a>; this
 function returns a <i>message queue descriptor</i>
 (<i>mqd_t</i>), which is used to refer to the open message
 queue in later calls. Each message queue is identified by a
@@ -61,23 +61,23 @@ null-terminated string of up to <b>NAME_MAX</b> (i.e., 255)
 characters consisting of an initial slash, followed by one
 or more characters, none of which are slashes. Two processes
 can operate on the same queue by passing the same name to
-<b>mq_open</b>(3).</p>
+<a href="https://man.page/3/mq_open">mq_open(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Messages are
-transferred to and from a queue using <b>mq_send</b>(3) and
-<b>mq_receive</b>(3). When a process has finished using the
-queue, it closes it using <b>mq_close</b>(3), and when the
+transferred to and from a queue using <a href="https://man.page/3/mq_send">mq_send(3)</a> and
+<a href="https://man.page/3/mq_receive">mq_receive(3)</a>. When a process has finished using the
+queue, it closes it using <a href="https://man.page/3/mq_close">mq_close(3)</a>, and when the
 queue is no longer required, it can be deleted using
-<b>mq_unlink</b>(3). Queue attributes can be retrieved and
-(in some cases) modified using <b>mq_getattr</b>(3) and
-<b>mq_setattr</b>(3). A process can request asynchronous
+<a href="https://man.page/3/mq_unlink">mq_unlink(3)</a>. Queue attributes can be retrieved and
+(in some cases) modified using <a href="https://man.page/3/mq_getattr">mq_getattr(3)</a> and
+<a href="https://man.page/3/mq_setattr">mq_setattr(3)</a>. A process can request asynchronous
 notification of the arrival of a message on a previously
-empty queue using <b>mq_notify</b>(3).</p>
+empty queue using <a href="https://man.page/3/mq_notify">mq_notify(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A message queue
 descriptor is a reference to an <i>open message queue
-description</i> (see <b>open</b>(2)). After a
-<b>fork</b>(2), a child inherits copies of its
+description</i> (see <a href="https://man.page/2/open">open(2)</a>). After a
+<a href="https://man.page/2/fork">fork(2)</a>, a child inherits copies of its
 parent&rsquo;s message queue descriptors, and these
 descriptors refer to the same open message queue
 descriptions as the corresponding message queue descriptors
@@ -196,7 +196,7 @@ option is enabled by default.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Persistence</b>
 <br>
 POSIX message queues have kernel persistence: if not removed
-by <b>mq_unlink</b>(3), a message queue will exist until the
+by <a href="https://man.page/3/mq_unlink">mq_unlink(3)</a>, a message queue will exist until the
 system is shut down.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Linking</b>
@@ -214,7 +214,7 @@ the default attributes for new message queues: <i><br>
 
 <p style="margin-left:22%;">This file defines the value
 used for a new queue&rsquo;s <i>mq_maxmsg</i> setting when
-the queue is created with a call to <b>mq_open</b>(3) where
+the queue is created with a call to <a href="https://man.page/3/mq_open">mq_open(3)</a> where
 <i>attr</i> is specified as NULL. The default value for this
 file is 10. The minimum and maximum are as for
 <i>/proc/sys/fs/mqueue/msg_max</i>. A new queue&rsquo;s
@@ -231,7 +231,7 @@ the <i>msg_max</i> limit.</p>
 and change the ceiling value for the maximum number of
 messages in a queue. This value acts as a ceiling on the
 <i>attr-&gt;mq_maxmsg</i> argument given to
-<b>mq_open</b>(3). The default value for <i>msg_max</i> is
+<a href="https://man.page/3/mq_open">mq_open(3)</a>. The default value for <i>msg_max</i> is
 10. The minimum value is 1 (10 in kernels before 2.6.28).
 The upper limit is <b>HARD_MSGMAX</b>. The <i>msg_max</i>
 limit is ignored for privileged processes
@@ -287,7 +287,7 @@ versions:</p>
 
 <p style="margin-left:22%;">This file defines the value
 used for a new queue&rsquo;s <i>mq_msgsize</i> setting when
-the queue is created with a call to <b>mq_open</b>(3) where
+the queue is created with a call to <a href="https://man.page/3/mq_open">mq_open(3)</a> where
 <i>attr</i> is specified as NULL. The default value for this
 file is 8192 (bytes). The minimum and maximum are as for
 <i>/proc/sys/fs/mqueue/msgsize_max</i>. If
@@ -304,7 +304,7 @@ Linux 3.4, the default was the value defined for the
 <p style="margin-left:22%;">This file can be used to view
 and change the ceiling on the maximum message size. This
 value acts as a ceiling on the <i>attr-&gt;mq_msgsize</i>
-argument given to <b>mq_open</b>(3). The default value for
+argument given to <a href="https://man.page/3/mq_open">mq_open(3)</a>. The default value for
 <i>msgsize_max</i> is 8192 bytes. The minimum value is 128
 (8192 in kernels before 2.6.28). The upper limit for
 <i>msgsize_max</i> has varied across kernel versions:</p>
@@ -370,7 +370,7 @@ limit</b> <br>
 The <b>RLIMIT_MSGQUEUE</b> resource limit, which places a
 limit on the amount of space that can be consumed by all of
 the message queues belonging to a process&rsquo;s real user
-ID, is described in <b>getrlimit</b>(2).</p>
+ID, is described in <a href="https://man.page/2/getrlimit">getrlimit(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Mounting the
 message queue filesystem</b> <br>
@@ -390,8 +390,8 @@ is automatically enabled on the mount directory.</p>
 <p style="margin-left:11%; margin-top: 1em">After the
 filesystem has been mounted, the message queues on the
 system can be viewed and manipulated using the commands
-usually used for files (e.g., <b>ls</b>(1) and
-<b>rm</b>(1)).</p>
+usually used for files (e.g., <a href="https://man.page/1/ls">ls(1)</a> and
+<a href="https://man.page/1/rm">rm(1)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The contents of
 each file in the directory consist of a single line
@@ -423,7 +423,7 @@ are as follows:</p>
 <p style="margin-left:11%;"><b>NOTIFY_PID</b></p>
 
 <p style="margin-left:22%;">If this is nonzero, then the
-process with this PID has used <b>mq_notify</b>(3) to
+process with this PID has used <a href="https://man.page/3/mq_notify">mq_notify(3)</a> to
 register for asynchronous message notification, and the
 remaining fields describe how notification occurs.</p>
 
@@ -459,18 +459,18 @@ implementation of message queue descriptors</b> <br>
 On Linux, a message queue descriptor is actually a file
 descriptor. (POSIX does not require such an implementation.)
 This means that a message queue descriptor can be monitored
-using <b>select</b>(2), <b>poll</b>(2), or <b>epoll</b>(7).
+using <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, or <a href="https://man.page/7/epoll">epoll(7)</a>.
 This is not portable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-close-on-exec flag (see <b>open</b>(2)) is automatically set
-on the file descriptor returned by <b>mq_open</b>(2).</p>
+close-on-exec flag (see <a href="https://man.page/2/open">open(2)</a>) is automatically set
+on the file descriptor returned by <a href="https://man.page/2/mq_open">mq_open(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>IPC
 namespaces</b> <br>
 For a discussion of the interaction of POSIX message queue
 objects and IPC namespaces, see
-<b>ipc_namespaces</b>(7).</p>
+<a href="https://man.page/7/ipc_namespaces">ipc_namespaces(7)</a>.</p>
 
 <h2>NOTES
 <a name="NOTES"></a>
@@ -478,8 +478,8 @@ objects and IPC namespaces, see
 
 
 <p style="margin-left:11%; margin-top: 1em">System V
-message queues (<b>msgget</b>(2), <b>msgsnd</b>(2),
-<b>msgrcv</b>(2), etc.) are an older API for exchanging
+message queues (<a href="https://man.page/2/msgget">msgget(2)</a>, <a href="https://man.page/2/msgsnd">msgsnd(2)</a>,
+<a href="https://man.page/2/msgrcv">msgrcv(2)</a>, etc.) are an older API for exchanging
 messages between processes. POSIX message queues provide a
 better designed interface than System V message queues; on
 the other hand POSIX message queues are less widely
@@ -521,7 +521,7 @@ in the queue.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An example of
 the use of various message queue functions is shown in
-<b>mq_notify</b>(3).</p>
+<a href="https://man.page/3/mq_notify">mq_notify(3)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -529,13 +529,13 @@ the use of various message queue functions is shown in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>getrlimit</b>(2),
-<b>mq_getsetattr</b>(2), <b>poll</b>(2), <b>select</b>(2),
-<b>mq_close</b>(3), <b>mq_getattr</b>(3),
-<b>mq_notify</b>(3), <b>mq_open</b>(3),
-<b>mq_receive</b>(3), <b>mq_send</b>(3),
-<b>mq_unlink</b>(3), <b>epoll</b>(7),
-<b>namespaces</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/getrlimit">getrlimit(2)</a>,
+<a href="https://man.page/2/mq_getsetattr">mq_getsetattr(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/3/mq_close">mq_close(3)</a>, <a href="https://man.page/3/mq_getattr">mq_getattr(3)</a>,
+<a href="https://man.page/3/mq_notify">mq_notify(3)</a>, <a href="https://man.page/3/mq_open">mq_open(3)</a>,
+<a href="https://man.page/3/mq_receive">mq_receive(3)</a>, <a href="https://man.page/3/mq_send">mq_send(3)</a>,
+<a href="https://man.page/3/mq_unlink">mq_unlink(3)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>,
+<a href="https://man.page/7/namespaces">namespaces(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

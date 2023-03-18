@@ -81,8 +81,8 @@ SP 800-90A</small> Rev. 1].</p>
 Unless you have very specific requirements for your random
 generator, it is in general not necessary to utilize the
 <small>EVP_RAND API</small> directly. The usual way to
-obtain random bytes is to use <b>RAND_bytes</b>(3) or
-<b>RAND_priv_bytes</b>(3), see also
+obtain random bytes is to use <a href="https://man.page/3/RAND_bytes">RAND_bytes(3)</a> or
+<a href="https://man.page/3/RAND_priv_bytes">RAND_priv_bytes(3)</a>, see also
 <b><small>RAND</small></b> (7).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Typical Use
@@ -119,7 +119,7 @@ don&rsquo;t need to be locked).</p></td></tr>
 
 
 <p>You need to integrate a previously unsupported entropy
-source. Refer to <b>provider-rand</b>(7) for the
+source. Refer to <a href="https://man.page/7/provider-rand">provider-rand(7)</a> for the
 implementation details to support adding randomness sources
 to <small>EVP_RAND.</small></p></td></tr>
 <tr valign="top" align="left">
@@ -177,7 +177,7 @@ created per thread and accessed through thread-local
 storage.</p>
 
 <p style="margin-left:11%; margin-top: 1em">By default, the
-functions <b>RAND_bytes</b>(3) and <b>RAND_priv_bytes</b>(3)
+functions <a href="https://man.page/3/RAND_bytes">RAND_bytes(3)</a> and <a href="https://man.page/3/RAND_priv_bytes">RAND_priv_bytes(3)</a>
 use the thread-local &lt;public&gt; and &lt;private&gt;
 <small>DRBG</small> instance, respectively.</p>
 
@@ -188,17 +188,17 @@ by the application, only for reseeding the two other two
 <small>DRBG</small> instances. It reseeds itself by
 obtaining randomness either from os entropy sources or by
 consuming randomness which was added previously by
-<b>RAND_add</b>(3).</p>
+<a href="https://man.page/3/RAND_add">RAND_add(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The
 &lt;public&gt; <small>DRBG</small> instance</b> <br>
 This instance is used per default by
-<b>RAND_bytes</b>(3).</p>
+<a href="https://man.page/3/RAND_bytes">RAND_bytes(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The
 &lt;private&gt; <small>DRBG</small> instance</b> <br>
 This instance is used per default by
-<b>RAND_priv_bytes</b>(3)</p>
+<a href="https://man.page/3/RAND_priv_bytes">RAND_priv_bytes(3)</a></p>
 
 <h2>LOCKING
 <a name="LOCKING"></a>
@@ -303,7 +303,7 @@ detail.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Automatic
 Reseeding</b> <br>
 Before satisfying a generate request
-(<b>EVP_RAND_generate</b>(3)), the <small>DRBG</small>
+(<a href="https://man.page/3/EVP_RAND_generate">EVP_RAND_generate(3)</a>), the <small>DRBG</small>
 reseeds itself automatically, if one of the following
 conditions holds:</p>
 
@@ -338,7 +338,7 @@ Reseeding</b> <br>
 In addition to automatic reseeding, the caller can request
 an immediate reseeding of the <small>DRBG</small> with fresh
 entropy by setting the <i>prediction resistance</i>
-parameter to 1 when calling <b>EVP_RAND_generate</b>(3).</p>
+parameter to 1 when calling <a href="https://man.page/3/EVP_RAND_generate">EVP_RAND_generate(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The document [
 <small>NIST SP 800-90C</small> ] describes prediction
@@ -352,9 +352,9 @@ live entropy source is configured and is being used.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For the three
 shared DRBGs (and only for these) there is another way to
-reseed them manually: If <b>RAND_add</b>(3) is called with a
+reseed them manually: If <a href="https://man.page/3/RAND_add">RAND_add(3)</a> is called with a
 positive <i>randomness</i> argument (or
-<b>RAND_seed</b>(3)), then this will immediately reseed the
+<a href="https://man.page/3/RAND_seed">RAND_seed(3)</a>), then this will immediately reseed the
 &lt;primary&gt; <small>DRBG.</small> The &lt;public&gt; and
 &lt;private&gt; <small>DRBG</small> will detect this on
 their next generate call and reseed, pulling randomness from
@@ -433,7 +433,7 @@ that entropy *shall not* be provided by the consuming
 application for instantiation (Section 9.1) or reseeding
 (Section 9.2). For that reason, the <i>randomness</i>
 argument is ignored and the random bytes provided by the
-<b>RAND_add</b>(3) and <b>RAND_seed</b>(3) calls are treated
+<a href="https://man.page/3/RAND_add">RAND_add(3)</a> and <a href="https://man.page/3/RAND_seed">RAND_seed(3)</a> calls are treated
 as additional data.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Reseeding

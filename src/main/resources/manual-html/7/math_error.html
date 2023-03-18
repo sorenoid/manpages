@@ -61,8 +61,8 @@ functions declared in <i>&lt;math.h&gt;</i> indicate an
 error using other mechanisms. There are two error-reporting
 mechanisms: the older one sets <i>errno</i>; the newer one
 uses the floating-point exception mechanism (the use of
-<b>feclearexcept</b>(3) and <b>fetestexcept</b>(3), as
-outlined below) described in <b>fenv</b>(3).</p>
+<a href="https://man.page/3/feclearexcept">feclearexcept(3)</a> and <a href="https://man.page/3/fetestexcept">fetestexcept(3)</a>, as
+outlined below) described in <a href="https://man.page/3/fenv">fenv(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A portable
 program that needs to check for an error from a mathematical
@@ -77,7 +77,7 @@ a mathematical function.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Upon return
 from the mathematical function, if <i>errno</i> is nonzero,
-or the following call (see <b>fenv</b>(3)) returns
+or the following call (see <a href="https://man.page/3/fenv">fenv(3)</a>) returns
 nonzero</p>
 
 
@@ -97,7 +97,7 @@ error</b> <br>
 A <i>domain error</i> occurs when a mathematical function is
 supplied with an argument whose value falls outside the
 domain for which the function is defined (e.g., giving a
-negative argument to <b>log</b>(3)). When a domain error
+negative argument to <a href="https://man.page/3/log">log(3)</a>). When a domain error
 occurs, math functions commonly return a NaN (though some
 functions return a different value in this case);
 <i>errno</i> is set to <b>EDOM</b>, and an
@@ -167,7 +167,7 @@ significand.</p>
 POSIX.1 is not supported by glibc. This identifier is
 supposed to indicate which of the two error-notification
 mechanisms (<i>errno</i>, exceptions retrievable via
-<b>fetestexcept</b>(3)) is in use. The standards require
+<a href="https://man.page/3/fetestexcept">fetestexcept(3)</a>) is in use. The standards require
 that at least one be in use, but permit both to be
 available. The current (version 2.8) situation under glibc
 is messy. Most (but not all) functions raise exceptions on
@@ -178,10 +178,10 @@ details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">To avoid the
 complexities of using <i>errno</i> and
-<b>fetestexcept</b>(3) for error checking, it is often
+<a href="https://man.page/3/fetestexcept">fetestexcept(3)</a> for error checking, it is often
 advised that one should instead check for bad argument
 values before each call. For example, the following code
-ensures that <b>log</b>(3)&rsquo;s argument is not a NaN and
+ensures that <a href="https://man.page/3/log">log(3)</a>&rsquo;s argument is not a NaN and
 is not zero (a pole error) or less than zero (a domain
 error):</p>
 
@@ -202,23 +202,23 @@ functions (i.e., those declared by
 to return errors by C99 and POSIX.1.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>gcc</b>(1) <i>-fno-math-errno</i> option causes the
+<a href="https://man.page/1/gcc">gcc(1)</a> <i>-fno-math-errno</i> option causes the
 executable to employ implementations of some mathematical
 functions that are faster than the standard implementations,
-but do not set <i>errno</i> on error. (The <b>gcc</b>(1)
+but do not set <i>errno</i> on error. (The <a href="https://man.page/1/gcc">gcc(1)</a>
 <i>-ffast-math</i> option also enables
 <i>-fno-math-errno</i>.) An error can still be tested for
-using <b>fetestexcept</b>(3).</p>
+using <a href="https://man.page/3/fetestexcept">fetestexcept(3)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>gcc</b>(1),
-<b>errno</b>(3), <b>fenv</b>(3), <b>fpclassify</b>(3),
-<b>INFINITY</b>(3), <b>isgreater</b>(3), <b>matherr</b>(3),
-<b>nan</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/gcc">gcc(1)</a>,
+<a href="https://man.page/3/errno">errno(3)</a>, <a href="https://man.page/3/fenv">fenv(3)</a>, <a href="https://man.page/3/fpclassify">fpclassify(3)</a>,
+<a href="https://man.page/3/INFINITY">INFINITY(3)</a>, <a href="https://man.page/3/isgreater">isgreater(3)</a>, <a href="https://man.page/3/matherr">matherr(3)</a>,
+<a href="https://man.page/3/nan">nan(3)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>info
 libc</i></p>

@@ -162,7 +162,7 @@ added to the unit (see above).</p>
 <p style="margin-left:17%;">Takes a directory path relative
 to the host's root directory (i.e. the root of the system
 running the service manager). Sets the root directory for
-executed processes, with the <b>chroot</b>(2) system call.
+executed processes, with the <a href="https://man.page/2/chroot">chroot(2)</a> system call.
 If this is used, it must be ensured that the process binary
 and all its auxiliary files are available in the
 <b>chroot()</b> jail. Note that setting this parameter might
@@ -287,7 +287,7 @@ bits (and hence 64 formatted hexadecimal characters) long
 (in case of SHA256 for example). If this option is not
 specified, but the image file carries the
 &quot;user.verity.roothash&quot; extended file attribute
-(see <b>xattr</b>(7)), then the root hash is read from it,
+(see <a href="https://man.page/7/xattr">xattr(7)</a>), then the root hash is read from it,
 also as formatted hexadecimal characters. If the extended
 file attribute is not found (or is not supported by the
 underlying file system), but a file with the .roothash
@@ -904,7 +904,7 @@ service manager.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Controls
 which capabilities to include in the capability bounding set
-for the executed process. See <b>capabilities</b>(7) for
+for the executed process. See <a href="https://man.page/7/capabilities">capabilities(7)</a> for
 details. Takes a whitespace-separated list of capability
 names, e.g. <b>CAP_SYS_ADMIN</b>, <b>CAP_DAC_OVERRIDE</b>,
 <b>CAP_SYS_PTRACE</b>. Capabilities listed will be included
@@ -929,7 +929,7 @@ with &quot;+&quot;.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">Use
-<b>systemd-analyze</b>(1)'s <b>capability</b> command to
+<a href="https://man.page/1/systemd-analyze">systemd-analyze(1)</a>'s <b>capability</b> command to
 retrieve a list of capabilities defined on the local
 system.</font></p>
 
@@ -1034,7 +1034,7 @@ list: <b>keep-caps</b>, <b>keep-caps-locked</b>,
 appear more than once, in which case the secure bits are
 ORed. If the empty string is assigned to this option, the
 bits are reset to 0. This does not affect commands prefixed
-with &quot;+&quot;. See <b>capabilities</b>(7) for
+with &quot;+&quot;. See <a href="https://man.page/7/capabilities">capabilities(7)</a> for
 details.</font></p>
 
 <h2>MANDATORY ACCESS CONTROL
@@ -1058,7 +1058,7 @@ the policy still needs to authorize the transition. This
 directive is ignored if SELinux is disabled. If prefixed by
 &quot;-&quot;, all errors will be ignored. This does not
 affect commands prefixed with &quot;+&quot;. See
-<b>setexeccon</b>(3) for details.</font></p>
+<a href="https://man.page/3/setexeccon">setexeccon(3)</a> for details.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>AppArmorProfile=</i></font></p>
@@ -1109,7 +1109,7 @@ prefixed with &quot;+&quot;.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Set soft
 and hard limits on various resources for executed processes.
-See <b>setrlimit</b>(2) for details on the resource limit
+See <a href="https://man.page/2/setrlimit">setrlimit(2)</a> for details on the resource limit
 concept. Resource limits may be specified in two formats:
 either as single value to set a specific soft and hard limit
 to the same value, or as colon-separated pair
@@ -1193,7 +1193,7 @@ the unit used</b></font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Controls
 the file mode creation mask. Takes an access mode in octal
-notation. See <b>umask</b>(2) for details. Defaults to 0022
+notation. See <a href="https://man.page/2/umask">umask(2)</a> for details. Defaults to 0022
 for system units. For user units the default value is
 inherited from the per-user service manager (whose default
 is in turn inherited from the system service manager, and
@@ -1225,7 +1225,7 @@ type names are <b>private-anonymous</b>,
 <b>shared-dax</b>, and the special values <b>all</b> (all
 types) and <b>default</b> (the kernel default of
 &quot;<b>private-anonymous shared-anonymous elf-headers
-private-huge</b>&quot;). See <b>core</b>(5) for the meaning
+private-huge</b>&quot;). See <a href="https://man.page/5/core">core(5)</a> for the meaning
 of the mapping types. When specified multiple times, all
 specified masks are ORed. When not set, or if the empty
 value is assigned, the inherited value is not
@@ -1244,7 +1244,7 @@ private-dax shared-dax</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Controls
 how the kernel session keyring is set up for the service
-(see <b>session-keyring</b>(7) for details on the session
+(see <a href="https://man.page/7/session-keyring">session-keyring(7)</a> for details on the session
 keyring). Takes one of <b>inherit</b>, <b>private</b>,
 <b>shared</b>. If set to <b>inherit</b> no special keyring
 setup is done, and the kernel's default behaviour is
@@ -1296,7 +1296,7 @@ terminating a process of the service. See
 <p style="margin-left:17%;"><font color="#000000">Sets the
 timer slack in nanoseconds for the executed processes. The
 timer slack controls the accuracy of wake-ups triggered by
-timers. See <b>prctl</b>(2) for more information. Note that
+timers. See <a href="https://man.page/2/prctl">prctl(2)</a> for more information. Note that
 in contrast to most other time span definitions this
 parameter takes an integer value in nano-seconds if no unit
 is specified. The usual time units are understood
@@ -1306,7 +1306,7 @@ too.</font></p>
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Personality=</i></font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Controls
-which kernel architecture <b>uname</b>(2) shall report, when
+which kernel architecture <a href="https://man.page/2/uname">uname(2)</a> shall report, when
 invoked by unit processes. Takes one of the architecture
 identifiers <b>x86</b>, <b>x86-64</b>, <b>ppc</b>,
 <b>ppc-le</b>, <b>ppc64</b>, <b>ppc64-le</b>, <b>s390</b> or
@@ -1344,7 +1344,7 @@ processes. Takes an integer between -20 (highest priority)
 and 19 (lowest priority). In case of resource contention,
 smaller values mean more resources will be made available to
 the unit's processes, larger values mean less resources will
-be made available. See <b>setpriority</b>(2) for
+be made available. See <a href="https://man.page/2/setpriority">setpriority(2)</a> for
 details.</font></p>
 
 
@@ -1353,7 +1353,7 @@ details.</font></p>
 <p style="margin-left:17%;"><font color="#000000">Sets the
 CPU scheduling policy for executed processes. Takes one of
 <b>other</b>, <b>batch</b>, <b>idle</b>, <b>fifo</b> or
-<b>rr</b>. See <b>sched_setscheduler</b>(2) for
+<b>rr</b>. See <a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a> for
 details.</font></p>
 
 
@@ -1367,7 +1367,7 @@ policies an integer between 1 (lowest priority) and 99
 (highest priority) can be used. In case of CPU resource
 contention, smaller values mean less CPU time is made
 available to the service, larger values mean more. See
-<b>sched_setscheduler</b>(2) for details.</font></p>
+<a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a> for details.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>CPUSchedulingResetOnFork=</i></font></p>
@@ -1375,8 +1375,8 @@ available to the service, larger values mean more. See
 <p style="margin-left:17%;"><font color="#000000">Takes a
 boolean argument. If true, elevated CPU scheduling
 priorities and policies will be reset when the executed
-processes call <b>fork</b>(2), and can hence not leak into
-child processes. See <b>sched_setscheduler</b>(2) for
+processes call <a href="https://man.page/2/fork">fork(2)</a>, and can hence not leak into
+child processes. See <a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a> for
 details. Defaults to false.</font></p>
 
 
@@ -1393,7 +1393,7 @@ separated by a dash. This option may be specified more than
 once, in which case the specified CPU affinity masks are
 merged. If the empty string is assigned, the mask is reset,
 all assignments prior to this will have no effect. See
-<b>sched_setaffinity</b>(2) for details.</font></p>
+<a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a> for details.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>NUMAPolicy=</i></font></p>
@@ -1404,9 +1404,9 @@ policy type, one of: <b>default</b>, <b>preferred</b>,
 <b>bind</b>, <b>interleave</b> and <b>local</b>. A list of
 NUMA nodes that should be associated with the policy must be
 specified in <i>NUMAMask=</i>. For more details on each
-policy please see, <b>set_mempolicy</b>(2). For overall
+policy please see, <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>. For overall
 overview of NUMA support in Linux see,
-<b>numa</b>(7).</font></p>
+<a href="https://man.page/7/numa">numa(7)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>NUMAMask=</i></font></p>
@@ -1431,7 +1431,7 @@ the strings <b>realtime</b>, <b>best-effort</b> or
 <b>best-effort</b> at a priority of 4. If the empty string
 is assigned to this option, all prior assignments to both
 <i>IOSchedulingClass=</i> and <i>IOSchedulingPriority=</i>
-have no effect. See <b>ioprio_set</b>(2) for
+have no effect. See <a href="https://man.page/2/ioprio_set">ioprio_set(2)</a> for
 details.</font></p>
 
 
@@ -1448,7 +1448,7 @@ above). If the empty string is assigned to this option, all
 prior assignments to both <i>IOSchedulingClass=</i> and
 <i>IOSchedulingPriority=</i> have no effect. For the
 kernel's default scheduling class (<b>best-effort</b>) this
-defaults to 4. See <b>ioprio_set</b>(2) for
+defaults to 4. See <a href="https://man.page/2/ioprio_set">ioprio_set(2)</a> for
 details.</font></p>
 
 <h2>SANDBOXING
@@ -1667,7 +1667,7 @@ started.</font></p>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">To
 remove any of the directories created by these settings, use
 the <b>systemctl clean ...</b> command on the relevant
-units, see <b>systemctl</b>(1) for details.</font></p>
+units, see <a href="https://man.page/1/systemctl">systemctl(1)</a> for details.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">Example:
@@ -1714,7 +1714,7 @@ the access mode of the directories specified in
 <i>CacheDirectory=</i>, <i>LogsDirectory=</i>, or
 <i>ConfigurationDirectory=</i>, respectively, as an octal
 number. Defaults to <b>0755</b>. See &quot;Permissions&quot;
-in <b>path_resolution</b>(7) for a discussion of the meaning
+in <a href="https://man.page/7/path_resolution">path_resolution(7)</a> for a discussion of the meaning
 of permission bits.</font></p>
 
 
@@ -1742,7 +1742,7 @@ system is rebooted.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Configures
 a timeout on the clean-up operation requested through
-<b>systemctl clean ...</b>, see <b>systemctl</b>(1) for
+<b>systemctl clean ...</b>, see <a href="https://man.page/1/systemctl">systemctl(1)</a> for
 details. Takes the usual time values and defaults to
 <b>infinity</b>, i.e. by default no timeout is applied. If a
 timeout is configured the clean operation will be aborted
@@ -1978,7 +1978,7 @@ setting may not be used for services which shall be able to
 install mount points in the main mount namespace. The new
 /dev/ will be mounted read-only and 'noexec'. The latter may
 break old programs which try to set up executable memory by
-using <b>mmap</b>(2) of /dev/zero instead of using
+using <a href="https://man.page/2/mmap">mmap(2)</a> of /dev/zero instead of using
 <b>MAP_ANON</b>. For this setting the same restrictions
 regarding mount propagation and privileges apply as for
 <i>ReadOnlyPaths=</i> and related calls, see above. If
@@ -2099,7 +2099,7 @@ mostly legacy) as well as POSIX message queues (for which
 <b>AF_UNIX</b>/<b>SOCK_SEQPACKET</b> sockets are typically a
 better replacement). IPC namespacing also has no effect on
 POSIX shared memory (which is subject to mount namespacing)
-either. See <b>ipc_namespaces</b>(7) for the
+either. See <a href="https://man.page/7/ipc_namespaces">ipc_namespaces(7)</a> for the
 details.</font></p>
 
 
@@ -2328,8 +2328,8 @@ most services that do not need to read from or write to the
 kernel log ring buffer. Enabling this option removes
 <b>CAP_SYSLOG</b> from the capability bounding set for this
 unit, and installs a system call filter to block the
-<b>syslog</b>(2) system call (not to be confused with the
-libc API <b>syslog</b>(3) for userspace logging). The kernel
+<a href="https://man.page/2/syslog">syslog(2)</a> system call (not to be confused with the
+libc API <a href="https://man.page/3/syslog">syslog(3)</a> for userspace logging). The kernel
 exposes its log buffer to userspace via /dev/kmsg and
 /proc/kmsg. If enabled, these are made inaccessible to all
 the processes in the unit. If this setting is on, but the
@@ -2348,7 +2348,7 @@ service manager.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Takes a
 boolean argument. If true, the Linux Control Groups
-(<b>cgroups</b>(7)) hierarchies accessible through
+(<a href="https://man.page/7/cgroups">cgroups(7)</a>) hierarchies accessible through
 /sys/fs/cgroup/ will be made read-only to all processes of
 the unit. Except for container managers no services should
 require write access to the control groups hierarchies; it
@@ -2378,7 +2378,7 @@ When &quot;none&quot; is specified, then all address
 families will be denied. When prefixed with &quot;~&quot;
 the listed address families will be applied as deny list,
 otherwise as allow list. Note that this restricts access to
-the <b>socket</b>(2) system call only. Sockets passed into
+the <a href="https://man.page/2/socket">socket(2)</a> system call only. Sockets passed into
 the process by other means (for example, by using socket
 activation with socket units, see <b>systemd.socket</b>(5))
 are unaffected. Also, sockets created with
@@ -2408,7 +2408,7 @@ in particular via exotic and sensitive network protocols,
 such as <b>AF_PACKET</b>. Note that in most cases, the local
 <b>AF_UNIX</b> address family should be included in the
 configured allow list as it is frequently used for local
-communication, including for <b>syslog</b>(2)
+communication, including for <a href="https://man.page/2/syslog">syslog(2)</a>
 logging.</font></p>
 
 
@@ -2418,7 +2418,7 @@ logging.</font></p>
 <p style="margin-left:17%;"><font color="#000000">Restricts
 access to Linux namespace functionality for the processes of
 this unit. For details about Linux namespaces, see
-<b>namespaces</b>(7). Either takes a boolean argument, or a
+<a href="https://man.page/7/namespaces">namespaces(7)</a>. Either takes a boolean argument, or a
 space-separated list of namespace type identifiers. If false
 (the default), no restrictions on namespace creation and
 switching are made. If true, access to any kind of
@@ -2438,7 +2438,7 @@ false. This option may appear more than once, in which case
 the namespace types are merged by <b>OR</b>, or by
 <b>AND</b> if the lines are prefixed with &quot;~&quot; (see
 examples below). Internally, this setting limits access to
-the <b>unshare</b>(2), <b>clone</b>(2) and <b>setns</b>(2)
+the <a href="https://man.page/2/unshare">unshare(2)</a>, <a href="https://man.page/2/clone">clone(2)</a> and <a href="https://man.page/2/setns">setns(2)</a>
 system calls, taking the specified flags parameters into
 account. Note that &mdash; if this option is used &mdash; in
 addition to restricting creation and switching of the
@@ -2480,7 +2480,7 @@ only <b>ipc</b> is set.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Takes a
 boolean argument. If set, locks down the
-<b>personality</b>(2) system call so that the kernel
+<a href="https://man.page/2/personality">personality(2)</a> system call so that the kernel
 execution domain may not be changed from the default or the
 personality selected with <i>Personality=</i> directive.
 This may be useful to improve security, because odd
@@ -2499,10 +2499,10 @@ that are writable and executable at the same time, or to
 change existing memory mappings to become executable, or
 mapping shared memory segments as executable are prohibited.
 Specifically, a system call filter is added that rejects
-<b>mmap</b>(2) system calls with both <b>PROT_EXEC</b> and
-<b>PROT_WRITE</b> set, <b>mprotect</b>(2) or
-<b>pkey_mprotect</b>(2) system calls with <b>PROT_EXEC</b>
-set and <b>shmat</b>(2) system calls with <b>SHM_EXEC</b>
+<a href="https://man.page/2/mmap">mmap(2)</a> system calls with both <b>PROT_EXEC</b> and
+<b>PROT_WRITE</b> set, <a href="https://man.page/2/mprotect">mprotect(2)</a> or
+<a href="https://man.page/2/pkey_mprotect">pkey_mprotect(2)</a> system calls with <b>PROT_EXEC</b>
+set and <a href="https://man.page/2/shmat">shmat(2)</a> system calls with <b>SHM_EXEC</b>
 set. Note that this option is incompatible with programs and
 libraries that generate program code dynamically at runtime,
 including JIT execution engines, executable stacks, and code
@@ -2537,7 +2537,7 @@ boolean argument. If set, any attempts to enable realtime
 scheduling in a process of the unit are refused. This
 restricts access to realtime task scheduling policies such
 as <b>SCHED_FIFO</b>, <b>SCHED_RR</b> or
-<b>SCHED_DEADLINE</b>. See <b>sched</b>(7) for details about
+<b>SCHED_DEADLINE</b>. See <a href="https://man.page/7/sched">sched(7)</a> for details about
 these scheduling policies. If running in user mode, or in
 system mode, but without the <b>CAP_SYS_ADMIN</b> capability
 (e.g. setting <i>User=</i>), <i>NoNewPrivileges=yes</i> is
@@ -2556,7 +2556,7 @@ off.</font></p>
 boolean argument. If set, any attempts to set the
 set-user-ID (SUID) or set-group-ID (SGID) bits on files or
 directories will be denied (for details on these bits see
-<b>inode</b>(7)). If running in user mode, or in system
+<a href="https://man.page/7/inode">inode(7)</a>). If running in user mode, or in system
 mode, but without the <b>CAP_SYS_ADMIN</b> capability (e.g.
 setting <i>User=</i>), <i>NoNewPrivileges=yes</i> is
 implied. As the SUID/SGID bits are mechanisms to elevate
@@ -2603,7 +2603,7 @@ file system mount points established or removed by the
 unit's processes will be private to them and not be visible
 to the host. However, file system mount points established
 or removed on the host will be propagated to the unit's
-processes. See <b>mount_namespaces</b>(7) for details on
+processes. See <a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a> for details on
 file system namespaces. Defaults to off.</font></p>
 
 
@@ -2656,7 +2656,7 @@ mount propagation setting: <b>shared</b>, <b>slave</b> or
 <b>private</b>, which controls whether file system mount
 points in the file system namespaces set up for this unit's
 processes will receive or propagate mounts and unmounts from
-other file system namespaces. See <b>mount</b>(2) for
+other file system namespaces. See <a href="https://man.page/2/mount">mount(2)</a> for
 details on mount propagation, and the three propagation
 flags in particular.</font></p>
 
@@ -2724,7 +2724,7 @@ system calls will result in immediate process termination
 groups may optionally be suffixed with a colon
 (&quot;:&quot;) and &quot;errno&quot; error number (between
 0 and 4095) or errno name such as <b>EPERM</b>,
-<b>EACCES</b> or <b>EUCLEAN</b> (see <b>errno</b>(3) for a
+<b>EACCES</b> or <b>EUCLEAN</b> (see <a href="https://man.page/3/errno">errno(3)</a> for a
 full list). This value will be returned when a deny-listed
 system call is triggered, instead of terminating the
 processes immediately. Special setting &quot;kill&quot; can
@@ -2871,7 +2871,7 @@ Specifically these are the options <i>PrivateTmp=</i>,
 name such as <b>EPERM</b>, <b>EACCES</b> or <b>EUCLEAN</b>,
 to return when the system call filter configured with
 <i>SystemCallFilter=</i> is triggered, instead of
-terminating the process immediately. See <b>errno</b>(3) for
+terminating the process immediately. See <a href="https://man.page/3/errno">errno(3)</a> for
 a full list of error codes. When this setting is not used,
 or when the empty string or the special setting
 &quot;kill&quot; is assigned, the process will be terminated
@@ -2999,7 +2999,7 @@ three variables &quot;VAR1&quot;, &quot;VAR2&quot;,
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
-<b>environ</b>(7) for details about environment
+<a href="https://man.page/7/environ">environ(7)</a> for details about environment
 variables.</font></p>
 
 
@@ -3123,7 +3123,7 @@ PID1.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
-<b>environ</b>(7) for details about environment
+<a href="https://man.page/7/environ">environ(7)</a> for details about environment
 variables.</font></p>
 
 
@@ -3160,7 +3160,7 @@ used).</font></p>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
 &quot;Environment Variables in Spawned Processes&quot; below
 for a description of how those settings combine to form the
-inherited environment. See <b>environ</b>(7) for general
+inherited environment. See <a href="https://man.page/7/environ">environ(7)</a> for general
 information about environment variables.</font></p>
 
 <h2>LOGGING AND STANDARD INPUT/OUTPUT
@@ -3297,7 +3297,7 @@ processes to release the terminal.</font></p>
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>journal</b>
 connects standard output with the journal, which is
-accessible via <b>journalctl</b>(1). Note that everything
+accessible via <a href="https://man.page/1/journalctl">journalctl(1)</a>. Note that everything
 that is written to kmsg (see below) is implicitly stored in
 the journal as well, the specific option listed below is
 hence a superset of this one. (Also note that any external,
@@ -3308,7 +3308,7 @@ shall be processed with such a daemon.)</font></p>
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>kmsg</b>
 connects standard output with the kernel log buffer which is
-accessible via <b>dmesg</b>(1), in addition to the journal.
+accessible via <a href="https://man.page/1/dmesg">dmesg(1)</a>, in addition to the journal.
 The journal daemon might be configured to send all logs to
 kmsg anyway, in which case this option is no different from
 <b>journal</b>.</font></p>
@@ -3516,7 +3516,7 @@ unit. Takes a <b>syslog</b> log level, one of <b>emerg</b>
 (lowest log level, only highest priority messages),
 <b>alert</b>, <b>crit</b>, <b>err</b>, <b>warning</b>,
 <b>notice</b>, <b>info</b>, <b>debug</b> (highest log level,
-also lowest priority messages). See <b>syslog</b>(3) for
+also lowest priority messages). See <a href="https://man.page/3/syslog">syslog(3)</a> for
 details. By default no filtering is applied (i.e. the
 default maximum log level is <b>debug</b>). Use this option
 to configure the logging system to drop log messages of a
@@ -3618,7 +3618,7 @@ units associated with the systemd-journald@.service instance
 so that they are automatically established prior to the unit
 starting up. Note that when this option is used log output
 of this service does not appear in the regular
-<b>journalctl</b>(1) output, unless the <b>--namespace=</b>
+<a href="https://man.page/1/journalctl">journalctl(1)</a> output, unless the <b>--namespace=</b>
 option is used.</font></p>
 
 
@@ -3650,7 +3650,7 @@ of <b>kern</b>, <b>user</b>, <b>mail</b>, <b>daemon</b>,
 <b>uucp</b>, <b>cron</b>, <b>authpriv</b>, <b>ftp</b>,
 <b>local0</b>, <b>local1</b>, <b>local2</b>, <b>local3</b>,
 <b>local4</b>, <b>local5</b>, <b>local6</b> or
-<b>local7</b>. See <b>syslog</b>(3) for details. This option
+<b>local7</b>. See <a href="https://man.page/3/syslog">syslog(3)</a> for details. This option
 is only useful when <i>StandardOutput=</i> or
 <i>StandardError=</i> are set to <b>journal</b> or
 <b>kmsg</b> (or to the same settings in combination with
@@ -3665,7 +3665,7 @@ default <b>syslog</b> log level to use when logging to the
 logging system or the kernel log buffer. One of
 <b>emerg</b>, <b>alert</b>, <b>crit</b>, <b>err</b>,
 <b>warning</b>, <b>notice</b>, <b>info</b>, <b>debug</b>.
-See <b>syslog</b>(3) for details. This option is only useful
+See <a href="https://man.page/3/syslog">syslog(3)</a> for details. This option is only useful
 when <i>StandardOutput=</i> or <i>StandardError=</i> are set
 to <b>journal</b> or <b>kmsg</b> (or to the same settings in
 combination with <b>+console</b>), and only applies to log
@@ -3675,7 +3675,7 @@ different log level which can be used to override the
 default log level specified here. The interpretation of
 these prefixes may be disabled with
 <i>SyslogLevelPrefix=</i>, see below. For details, see
-<b>sd-daemon</b>(3). Defaults to <b>info</b>.</font></p>
+<a href="https://man.page/3/sd-daemon">sd-daemon(3)</a>. Defaults to <b>info</b>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SyslogLevelPrefix=</i></font></p>
@@ -3690,7 +3690,7 @@ this log level set but the prefix removed. If set to false,
 the interpretation of these prefixes is disabled and the
 logged lines are passed on as-is. This only applies to log
 messages written to stdout or stderr. For details about this
-prefixing see <b>sd-daemon</b>(3). Defaults to
+prefixing see <a href="https://man.page/3/sd-daemon">sd-daemon(3)</a>. Defaults to
 true.</font></p>
 
 
@@ -3809,7 +3809,7 @@ enforced.</font></p>
 referencing an <b>AF_UNIX</b> stream socket to connect to,
 the connection will originate from an abstract namespace
 socket, that includes information about the unit and the
-credential ID in its socket name. Use <b>getpeername</b>(2)
+credential ID in its socket name. Use <a href="https://man.page/2/getpeername">getpeername(2)</a>
 to query this information. The returned socket name is
 formatted as <b>NUL</b> <i>RANDOM</i> &quot;/unit/&quot;
 <i>UNIT</i> &quot;/&quot; <i>ID</i>, i.e. a <b>NUL</b> byte
@@ -3859,7 +3859,7 @@ fatal.</font></p>
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>UtmpIdentifier=</i></font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Takes a
-four character identifier string for an <b>utmp</b>(5) and
+four character identifier string for an <a href="https://man.page/5/utmp">utmp(5)</a> and
 wtmp entry for this service. This should only be set for
 services such as <b>getty</b> implementations (such as
 <b>agetty</b>(8)) where utmp/wtmp entries must be created
@@ -3878,7 +3878,7 @@ service.</font></p>
 <p style="margin-left:17%;"><font color="#000000">Takes one
 of &quot;init&quot;, &quot;login&quot; or &quot;user&quot;.
 If <i>UtmpIdentifier=</i> is set, controls which type of
-<b>utmp</b>(5)/wtmp entries for this service are generated.
+<a href="https://man.page/5/utmp">utmp(5)</a>/wtmp entries for this service are generated.
 This setting has no effect unless <i>UtmpIdentifier=</i> is
 set too. If &quot;init&quot; is set, only an
 <b>INIT_PROCESS</b> entry is generated and the invoked
@@ -3886,7 +3886,7 @@ process must implement a <b>getty</b>-compatible utmp/wtmp
 logic. If &quot;login&quot; is set, first an
 <b>INIT_PROCESS</b> entry, followed by a
 <b>LOGIN_PROCESS</b> entry is generated. In this case, the
-invoked process must implement a <b>login</b>(1)-compatible
+invoked process must implement a <a href="https://man.page/1/login">login(1)</a>-compatible
 utmp/wtmp logic. If &quot;user&quot; is set, first an
 <b>INIT_PROCESS</b> entry, then a <b>LOGIN_PROCESS</b> entry
 and finally a <b>USER_PROCESS</b> entry is generated. In
@@ -3922,7 +3922,7 @@ Variables globally configured for the service manager, using
 the <i>DefaultEnvironment=</i> setting in
 <b>systemd-system.conf</b>(5), the kernel command line
 option <i>systemd.setenv=</i> understood by
-<b>systemd</b>(1), or via <b>systemctl</b>(1)
+<a href="https://man.page/1/systemd">systemd(1)</a>, or via <a href="https://man.page/1/systemctl">systemctl(1)</a>
 <b>set-environment</b> verb.</font></p>
 
 
@@ -4010,8 +4010,8 @@ entries, and have only one program with a given name in
 
 <p style="margin-left:17%;"><font color="#000000">Locale.
 Can be set in <b>locale.conf</b>(5) or on the kernel command
-line (see <b>systemd</b>(1) and
-<b>kernel-command-line</b>(7)).</font></p>
+line (see <a href="https://man.page/1/systemd">systemd(1)</a> and
+<a href="https://man.page/7/kernel-command-line">kernel-command-line(7)</a>).</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$USER</i>,
@@ -4021,7 +4021,7 @@ line (see <b>systemd</b>(1) and
 (twice), home directory, and the login shell. The variables
 are set for the units that have <i>User=</i> set, which
 includes user <b>systemd</b> instances. See
-<b>passwd</b>(5).</font></p>
+<a href="https://man.page/5/passwd">passwd(5)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$INVOCATION_ID</i></font></p>
@@ -4094,14 +4094,14 @@ spawned by it.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Information
 about file descriptors passed to a service for socket
-activation. See <b>sd_listen_fds</b>(3).</font></p>
+activation. See <a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$NOTIFY_SOCKET</i></font></p>
 
 <p style="margin-left:17%;"><font color="#000000">The
 socket <b>sd_notify()</b> talks to. See
-<b>sd_notify</b>(3).</font></p>
+<a href="https://man.page/3/sd_notify">sd_notify(3)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$WATCHDOG_PID</i>,
@@ -4110,7 +4110,7 @@ socket <b>sd_notify()</b> talks to. See
 
 <p style="margin-left:17%;"><font color="#000000">Information
 about watchdog keep-alive notifications. See
-<b>sd_watchdog_enabled</b>(3).</font></p>
+<a href="https://man.page/3/sd_watchdog_enabled">sd_watchdog_enabled(3)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_EXEC_PID</i></font></p>
@@ -4121,7 +4121,7 @@ of the unit process (e.g. process invoked by
 information to determine whether the process is directly
 invoked by the service manager or indirectly as a child of
 another process by comparing this value with the current PID
-(as similar to the scheme used in <b>sd_listen_fds</b>(3)
+(as similar to the scheme used in <a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a>
 with <i>$LISTEN_PID</i> and <i>$LISTEN_FDS</i>).</font></p>
 
 
@@ -4130,7 +4130,7 @@ with <i>$LISTEN_PID</i> and <i>$LISTEN_FDS</i>).</font></p>
 <p style="margin-left:17%;"><font color="#000000">Terminal
 type, set only for units connected to a terminal
 (<i>StandardInput=tty</i>, <i>StandardOutput=tty</i>, or
-<i>StandardError=tty</i>). See <b>termcap</b>(5).</font></p>
+<i>StandardError=tty</i>). See <a href="https://man.page/5/termcap">termcap(5)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$LOG_NAMESPACE</i></font></p>
@@ -4176,7 +4176,7 @@ descriptors.)</font></p>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
 environment variable is primarily useful to allow services
 to optionally upgrade their used log protocol to the native
-journal protocol (using <b>sd_journal_print</b>(3) and other
+journal protocol (using <a href="https://man.page/3/sd_journal_print">sd_journal_print(3)</a> and other
 functions) if their standard output or standard error output
 is connected to the journal anyway, thus enabling delivery
 of structured metadata along with logged
@@ -4220,7 +4220,7 @@ variables are passed to all <i>ExecStop=</i>,
 <i>ExecStopPost=</i> processes and contain exit status/code
 information of the main process of the service. For the
 precise definition of the exit code and status, see
-<b>wait</b>(2). <i>$EXIT_CODE</i> is one of
+<a href="https://man.page/2/wait">wait(2)</a>. <i>$EXIT_CODE</i> is one of
 &quot;exited&quot;, &quot;killed&quot;, &quot;dumped&quot;.
 <i>$EXIT_STATUS</i> contains the numeric exit code formatted
 as string if <i>$EXIT_CODE</i> is &quot;exited&quot;, and
@@ -4270,8 +4270,8 @@ settings above. In that case the already created service
 process will exit with a non-zero exit code before the
 configured command line is executed. (Or in other words, the
 child process possibly exits with these error codes, after
-having been created by the <b>fork</b>(2) system call, but
-before the matching <b>execve</b>(2) system call is called.)
+having been created by the <a href="https://man.page/2/fork">fork(2)</a> system call, but
+before the matching <a href="https://man.page/2/execve">execve(2)</a> system call is called.)
 Specifically, exit codes defined by the C library, by the
 LSB specification and by the systemd service manager itself
 are used.</font></p>
@@ -4334,15 +4334,15 @@ exit codes</b></font></p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
-<b>systemctl</b>(1), <b>systemd-analyze</b>(1),
-<b>journalctl</b>(1), <b>systemd-system.conf</b>(5),
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/1/systemctl">systemctl(1)</a>, <a href="https://man.page/1/systemd-analyze">systemd-analyze(1)</a>,
+<a href="https://man.page/1/journalctl">journalctl(1)</a>, <b>systemd-system.conf</b>(5),
 <b>systemd.unit</b>(5), <b>systemd.service</b>(5),
 <b>systemd.socket</b>(5), <b>systemd.swap</b>(5),
 <b>systemd.mount</b>(5), <b>systemd.kill</b>(5),
 <b>systemd.resource-control</b>(5), <b>systemd.time</b>(7),
 <b>systemd.directives</b>(7), <b>tmpfiles.d</b>(5),
-<b>exec</b>(3), <b>fork</b>(2)</font></p>
+<a href="https://man.page/3/exec">exec(3)</a>, <a href="https://man.page/2/fork">fork(2)</a></font></p>
 
 <h2>NOTES
 <a name="NOTES"></a>

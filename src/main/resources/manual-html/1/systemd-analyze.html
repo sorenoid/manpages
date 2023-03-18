@@ -374,7 +374,7 @@ $ eog bootup.svg&amp;</p>
 dot [</b><i>pattern</i>...] <br>
 This command generates textual dependency graph description
 in dot format for further processing with the GraphViz
-<b>dot</b>(1) tool. Use a command line like
+<a href="https://man.page/1/dot">dot(1)</a> tool. Use a command line like
 <b>systemd-analyze dot | dot -Tsvg &gt;systemd.svg</b> to
 generate a graphical dependency tree. Unless <b>--order</b>
 or <b>--require</b> is passed, the generated graph will show
@@ -467,7 +467,7 @@ DATAERR 65 BSD</p>
 <p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
 capability [</b><i>CAPABILITY</i>...] <br>
 This command prints a list of Linux capabilities along with
-their numeric IDs. See <b>capabilities</b>(7) for details.
+their numeric IDs. See <a href="https://man.page/7/capabilities">capabilities(7)</a> for details.
 If no argument is specified the full list of capabilities
 known to the service manager and the kernel is shown.
 Capabilities defined by the kernel but not known to the
@@ -853,7 +853,7 @@ shows dependencies of all these types.</p>
 <p style="margin-left:17%;">When used in conjunction with
 the <b>dot</b> command (see above), this selects which
 relationships are shown in the dependency graph. Both
-options require a <b>glob</b>(7) pattern as an argument,
+options require a <a href="https://man.page/7/glob">glob(7)</a> pattern as an argument,
 which will be matched against the left-hand and the
 right-hand, respectively, nodes of a relationship.</p>
 
@@ -881,7 +881,7 @@ is seconds unless specified with a different unit, e.g.
 
 <p style="margin-left:11%; margin-top: 1em"><b>--man=no</b></p>
 
-<p style="margin-left:17%;">Do not invoke <b>man</b>(1) to
+<p style="margin-left:17%;">Do not invoke <a href="https://man.page/1/man">man(1)</a> to
 verify the existence of man pages listed in
 <i>Documentation=</i>.</p>
 
@@ -987,7 +987,7 @@ less important ones, will be suppressed). Either one of (in
 order of decreasing importance) <b>emerg</b>, <b>alert</b>,
 <b>crit</b>, <b>err</b>, <b>warning</b>, <b>notice</b>,
 <b>info</b>, <b>debug</b>, or an integer in the range 0...7.
-See <b>syslog</b>(3) for more information.</p>
+See <a href="https://man.page/3/syslog">syslog(3)</a> for more information.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_COLOR</i></p>
@@ -998,7 +998,7 @@ priority.</p>
 
 <p style="margin-left:17%; margin-top: 1em">This setting is
 only useful when messages are written directly to the
-terminal, because <b>journalctl</b>(1) and other tools that
+terminal, because <a href="https://man.page/1/journalctl">journalctl(1)</a> and other tools that
 display logs will color messages based on the log level on
 their own.</p>
 
@@ -1010,7 +1010,7 @@ messages will be prefixed with a timestamp.</p>
 
 <p style="margin-left:17%; margin-top: 1em">This setting is
 only useful when messages are written directly to the
-terminal or a file, because <b>journalctl</b>(1) and other
+terminal or a file, because <a href="https://man.page/1/journalctl">journalctl(1)</a> and other
 tools that display logs will attach timestamps based on the
 entry metadata on their own.</p>
 
@@ -1045,7 +1045,7 @@ nevertheless be convenient when debugging programs.</p>
 messages. One of <b>console</b> (log to the attached tty),
 <b>console-prefixed</b> (log to the attached tty but with
 prefixes encoding the log level and &quot;facility&quot;,
-see <b>syslog</b>(3), <b>kmsg</b> (log to the kernel
+see <a href="https://man.page/3/syslog">syslog(3)</a>, <b>kmsg</b> (log to the kernel
 circular log buffer), <b>journal</b> (log to the journal),
 <b>journal-or-kmsg</b> (log to the journal if available, and
 to kmsg otherwise), <b>auto</b> (determine the appropriate
@@ -1059,7 +1059,7 @@ log output).</p>
 <b>--no-pager</b> is not given; overrides <i>$PAGER</i>. If
 neither <i>$SYSTEMD_PAGER</i> nor <i>$PAGER</i> are set, a
 set of well-known pager implementations are tried in turn,
-including <b>less</b>(1) and <b>more</b>(1), until one is
+including <a href="https://man.page/1/less">less(1)</a> and <a href="https://man.page/1/more">more(1)</a>, until one is
 found. If no pager implementation is discovered no pager is
 invoked. Setting this environment variable to an empty
 string or the value &quot;cat&quot; is equivalent to passing
@@ -1097,7 +1097,7 @@ functionality from working, in particular paged output
 cannot be scrolled with the mouse.</p>
 
 <p style="margin-left:17%; margin-top: 1em">See
-<b>less</b>(1) for more discussion.</p>
+<a href="https://man.page/1/less">less(1)</a> for more discussion.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESSCHARSET</i></p>
@@ -1114,17 +1114,17 @@ true, the &quot;secure&quot; mode of the pager is enabled;
 if false, disabled. If <i>$SYSTEMD_PAGERSECURE</i> is not
 set at all, secure mode is enabled if the effective UID is
 not the same as the owner of the login session, see
-<b>geteuid</b>(2) and <b>sd_pid_get_owner_uid</b>(3). In
+<a href="https://man.page/2/geteuid">geteuid(2)</a> and <a href="https://man.page/3/sd_pid_get_owner_uid">sd_pid_get_owner_uid(3)</a>. In
 secure mode, <b>LESSSECURE=1</b> will be set when invoking
 the pager, and the pager shall disable commands that open or
 create new files or start new subprocesses. When
 <i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
 are not known to implement secure mode will not be used.
-(Currently only <b>less</b>(1) implements secure mode.)</p>
+(Currently only <a href="https://man.page/1/less">less(1)</a> implements secure mode.)</p>
 
 <p style="margin-left:17%; margin-top: 1em">Note: when
 commands are invoked with elevated privileges, for example
-under <b>sudo</b>(8) or <b>pkexec</b>(1), care must be taken
+under <b>sudo</b>(8) or <a href="https://man.page/1/pkexec">pkexec(1)</a>, care must be taken
 to ensure that unintended interactive features are not
 enabled. &quot;Secure&quot; mode for the pager may be
 enabled automatically as describe above. Setting
@@ -1164,8 +1164,8 @@ based on <i>$TERM</i> and other conditions.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
-<b>systemctl</b>(1)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/1/systemctl">systemctl(1)</a></p>
 <hr>
 </body>
 </html>

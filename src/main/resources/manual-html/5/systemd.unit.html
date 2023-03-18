@@ -102,7 +102,7 @@ a plain text ini-style file that encodes information about a
 service, a socket, a device, a mount point, an automount
 point, a swap file or partition, a start-up target, a
 watched file system path, a timer controlled and supervised
-by <b>systemd</b>(1), a resource management slice or a group
+by <a href="https://man.page/1/systemd">systemd(1)</a>, a resource management slice or a group
 of externally created processes. See
 <b>systemd.syntax</b>(7) for a general description of the
 syntax.</p>
@@ -231,7 +231,7 @@ symlinks in the .wants/ or .requires/ directory of a unit
 file is by embedding the dependency in [Install] section of
 the target unit, and creating the symlink in the file system
 with the <b>enable</b> or <b>preset</b> commands of
-<b>systemctl</b>(1).</p>
+<a href="https://man.page/1/systemctl">systemctl(1)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Along with a
 unit file foo.service, a &quot;drop-in&quot; directory
@@ -385,7 +385,7 @@ becomes &quot;foo-bar-baz&quot;.</font></p>
 escaping is fully reversible, as long as it is known whether
 the escaped string was a path (the unescaping results are
 different for paths and non-path strings). The
-<b>systemd-escape</b>(1) command may be used to apply and
+<a href="https://man.page/1/systemd-escape">systemd-escape(1)</a> command may be used to apply and
 reverse escaping on arbitrary strings. Use <b>systemd-escape
 --path</b> to escape path strings, and <b>systemd-escape</b>
 without <b>--path</b> otherwise.</font></p>
@@ -491,7 +491,7 @@ additional units might be loaded into systemd from
 directories not on the unit load path by creating a symlink
 pointing to a unit file in the directories. You can use
 <b>systemctl link</b> for this operation. See
-<b>systemctl</b>(1) for its usage and precaution.</font></p>
+<a href="https://man.page/1/systemctl">systemctl(1)</a> for its usage and precaution.</font></p>
 
 <h2>UNIT GARBAGE COLLECTION
 <a name="UNIT GARBAGE COLLECTION"></a>
@@ -609,7 +609,7 @@ this unit or its configuration. Accepted are only URIs of
 the types &quot;http://&quot;, &quot;https://&quot;,
 &quot;file:&quot;, &quot;info:&quot;, &quot;man:&quot;. For
 more information about the syntax of these URIs, see
-<b>uri</b>(7). The URIs should be listed in order of
+<a href="https://man.page/7/uri">uri(7)</a>. The URIs should be listed in order of
 relevance, starting with the most relevant. It is a good
 idea to first reference documentation that explains what the
 unit's purpose is, followed by how it is configured,
@@ -982,7 +982,7 @@ value of &quot;fail&quot;, &quot;replace&quot;,
 &quot;ignore-requirements&quot;. Defaults to
 &quot;replace&quot;. Specifies how the units listed in
 <i>OnFailure=</i> will be enqueued. See
-<b>systemctl</b>(1)'s <b>--job-mode=</b> option for details
+<a href="https://man.page/1/systemctl">systemctl(1)</a>'s <b>--job-mode=</b> option for details
 on the possible values. If this is set to
 &quot;isolate&quot;, only a single unit may be listed in
 <i>OnFailure=</i>.</font></p>
@@ -1104,7 +1104,7 @@ procedure (i.e. equivalent to <b>systemctl reboot</b>).
 terminate all processes forcibly but should cause no dirty
 file systems on reboot (i.e. equivalent to <b>systemctl
 reboot -f</b>) and <b>reboot-immediate</b> causes immediate
-execution of the <b>reboot</b>(2) system call, which might
+execution of the <a href="https://man.page/2/reboot">reboot(2)</a> system call, which might
 result in data loss (i.e. equivalent to <b>systemctl reboot
 -ff</b>). Similarly, <b>poweroff</b>, <b>poweroff-force</b>,
 <b>poweroff-immediate</b> have the effect of powering down
@@ -1181,7 +1181,7 @@ as <i>StartLimitAction=</i>. Defaults to
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000"><i>JobTimeoutRebootArgument=</i>
 configures an optional reboot string to pass to the
-<b>reboot</b>(2) system call.</font></p>
+<a href="https://man.page/2/reboot">reboot(2)</a> system call.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>StartLimitIntervalSec=interval</i>,
@@ -1261,7 +1261,7 @@ to <b>none</b>.</font></p>
 
 
 <p style="margin-left:17%;"><font color="#000000">Configure
-the optional argument for the <b>reboot</b>(2) system call
+the optional argument for the <a href="https://man.page/2/reboot">reboot(2)</a> system call
 if <i>StartLimitAction=</i> or <i>FailureAction=</i> is a
 reboot action. This works just like the optional argument to
 <b>systemctl reboot</b> command.</font></p>
@@ -1338,7 +1338,7 @@ dependencies.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
-<b>condition</b> verb of <b>systemd-analyze</b>(1) can be
+<b>condition</b> verb of <a href="https://man.page/1/systemd-analyze">systemd-analyze(1)</a> can be
 used to test condition and assert expressions.</font></p>
 
 
@@ -1366,8 +1366,8 @@ Takes one of &quot;x86&quot;, &quot;x86-64&quot;,
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">The
 architecture is determined from the information returned by
-<b>uname</b>(2) and is thus subject to
-<b>personality</b>(2). Note that a <i>Personality=</i>
+<a href="https://man.page/2/uname">uname(2)</a> and is thus subject to
+<a href="https://man.page/2/personality">personality(2)</a>. Note that a <i>Personality=</i>
 setting in the same unit file has no effect on this
 condition. A special architecture name &quot;native&quot; is
 mapped to the architecture the system manager itself is
@@ -1405,7 +1405,7 @@ virtualization solution, or one of &quot;qemu&quot;,
 &quot;wsl&quot;, &quot;proot&quot;, &quot;pouch&quot;,
 &quot;acrn&quot; to test against a specific implementation,
 or &quot;private-users&quot; to check whether we are running
-in a user namespace. See <b>systemd-detect-virt</b>(1) for a
+in a user namespace. See <a href="https://man.page/1/systemd-detect-virt">systemd-detect-virt(1)</a> for a
 full list of known virtualization technologies and their
 identifiers. If multiple virtualization technologies are
 nested, only the innermost is considered. The test may be
@@ -1419,8 +1419,8 @@ negated by prepending an exclamation mark.</font></p>
 may be used to match against the hostname or machine ID of
 the host. This either takes a hostname string (optionally
 with shell style globs) which is tested against the locally
-set hostname as returned by <b>gethostname</b>(2), or a
-machine ID formatted as string (see <b>machine-id</b>(5)).
+set hostname as returned by <a href="https://man.page/2/gethostname">gethostname(2)</a>, or a
+machine ID formatted as string (see <a href="https://man.page/5/machine-id">machine-id(5)</a>).
 The test may be negated by prepending an exclamation
 mark.</font></p>
 
@@ -1508,7 +1508,7 @@ exclamation mark.</font></p>
 whether the given capability exists in the capability
 bounding set of the service manager (i.e. this does not
 check whether capability is actually available in the
-permitted or effective sets, see <b>capabilities</b>(7) for
+permitted or effective sets, see <a href="https://man.page/7/capabilities">capabilities(7)</a> for
 details). Pass a capability name such as
 &quot;CAP_MKNOD&quot;, possibly prefixed with an exclamation
 mark to negate the check.</font></p>
@@ -1585,7 +1585,7 @@ boolean argument. This condition may be used to
 conditionalize units on whether the system is booting up for
 the first time. This roughly means that /etc/ is unpopulated
 (for details, see &quot;First Boot Semantics&quot; in
-<b>machine-id</b>(5)). This may be used to populate /etc/ on
+<a href="https://man.page/5/machine-id">machine-id(5)</a>). This may be used to populate /etc/ on
 the first boot after factory reset, or when a new system
 instance boots up for the first time.</font></p>
 
@@ -1824,7 +1824,7 @@ values are: &quot;fpu&quot;, &quot;vme&quot;,
 
 <p style="margin-left:17%;"><font color="#000000">Verify
 that a specific &quot;key=value&quot; pair is set in the
-host's <b>os-release</b>(5).</font></p>
+host's <a href="https://man.page/5/os-release">os-release(5)</a>.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">Other
@@ -1935,9 +1935,9 @@ unit.</font></p>
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">Unit
 files may include an [Install] section, which carries
 installation information for the unit. This section is not
-interpreted by <b>systemd</b>(1) during runtime; it is used
+interpreted by <a href="https://man.page/1/systemd">systemd(1)</a> during runtime; it is used
 by the <b>enable</b> and <b>disable</b> commands of the
-<b>systemctl</b>(1) tool during installation of a
+<a href="https://man.page/1/systemctl">systemctl(1)</a> tool during installation of a
 unit.</font></p>
 
 
@@ -2297,17 +2297,17 @@ failure-handler@failure-handler.service.</font></p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
-<b>systemctl</b>(1), <b>systemd-system.conf</b>(5),
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/1/systemctl">systemctl(1)</a>, <b>systemd-system.conf</b>(5),
 <b>systemd.special</b>(7), <b>systemd.service</b>(5),
 <b>systemd.socket</b>(5), <b>systemd.device</b>(5),
 <b>systemd.mount</b>(5), <b>systemd.automount</b>(5),
 <b>systemd.swap</b>(5), <b>systemd.target</b>(5),
 <b>systemd.path</b>(5), <b>systemd.timer</b>(5),
 <b>systemd.scope</b>(5), <b>systemd.slice</b>(5),
-<b>systemd.time</b>(7), <b>systemd-analyze</b>(1),
-<b>capabilities</b>(7), <b>systemd.directives</b>(7),
-<b>uname</b>(1)</font></p>
+<b>systemd.time</b>(7), <a href="https://man.page/1/systemd-analyze">systemd-analyze(1)</a>,
+<a href="https://man.page/7/capabilities">capabilities(7)</a>, <b>systemd.directives</b>(7),
+<a href="https://man.page/1/uname">uname(1)</a></font></p>
 
 <h2>NOTES
 <a name="NOTES"></a>

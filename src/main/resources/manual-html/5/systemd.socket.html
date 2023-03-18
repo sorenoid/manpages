@@ -109,7 +109,7 @@ stories linked at the end for an introduction.</p>
 daemon software configured for socket activation with socket
 units needs to be able to accept sockets from systemd,
 either via systemd's native socket passing interface (see
-<b>sd_listen_fds</b>(3) for details about the precise
+<a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a> for details about the precise
 protocol used and the order in which the file descriptors
 are passed) or via traditional <b>inetd</b>(8)-style socket
 passing (i.e. sockets passed in via standard input and
@@ -118,7 +118,7 @@ file).</p>
 
 <p style="margin-left:11%; margin-top: 1em">All network
 sockets allocated through .socket units are allocated in the
-host's network namespace (see <b>network_namespaces</b>(7)).
+host's network namespace (see <a href="https://man.page/7/network_namespaces">network_namespaces(7)</a>).
 This does not mean however that the service activated by a
 configured socket unit has to be part of the host's network
 namespace as well. It is supported and even good practice to
@@ -214,7 +214,7 @@ system socket in the <b>AF_UNIX</b> socket family.</p>
 starts with an at symbol (&quot;@&quot;), it is read as
 abstract namespace socket in the <b>AF_UNIX</b> family. The
 &quot;@&quot; is replaced with a <b>NUL</b> character before
-binding. For details, see <b>unix</b>(7).</p>
+binding. For details, see <a href="https://man.page/7/unix">unix(7)</a>.</p>
 
 <p style="margin-left:17%; margin-top: 1em">If the address
 string is a single number, it is read as port number to
@@ -284,7 +284,7 @@ any point. To deal with this, it is recommended to set the
 <p style="margin-left:11%; margin-top: 1em"><i>ListenFIFO=</i></p>
 
 <p style="margin-left:17%;">Specifies a file system FIFO
-(see <b>fifo</b>(7) for details) to listen on. This expects
+(see <a href="https://man.page/7/fifo">fifo(7)</a> for details) to listen on. This expects
 an absolute file system path as argument. Behavior otherwise
 is very similar to the <i>ListenDatagram=</i> directive
 above.</p>
@@ -314,7 +314,7 @@ group integer. Behavior otherwise is very similar to the
 <p style="margin-left:11%; margin-top: 1em"><i>ListenMessageQueue=</i></p>
 
 <p style="margin-left:17%;">Specifies a POSIX message queue
-name to listen on (see <b>mq_overview</b>(7) for details).
+name to listen on (see <a href="https://man.page/7/mq_overview">mq_overview(7)</a> for details).
 This expects a valid message queue name (i.e. beginning with
 &quot;/&quot;). Behavior otherwise is very similar to the
 <i>ListenFIFO=</i> directive above. On Linux message queue
@@ -350,7 +350,7 @@ UDP-Lite (<b>IPPROTO_UDPLITE</b>) or SCTP
 
 <p style="margin-left:17%;"><font color="#000000">Takes one
 of <b>default</b>, <b>both</b> or <b>ipv6-only</b>. Controls
-the IPV6_V6ONLY socket option (see <b>ipv6</b>(7) for
+the IPV6_V6ONLY socket option (see <a href="https://man.page/7/ipv6">ipv6(7)</a> for
 details). If <b>both</b>, IPv6 sockets bound will be
 accessible via both IPv4 and IPv6. If <b>ipv6-only</b>, they
 will be accessible via IPv6 only. If <b>default</b> (which
@@ -366,7 +366,7 @@ which in turn defaults to the equivalent of
 unsigned integer argument. Specifies the number of
 connections to queue that have not been accepted yet. This
 setting matters only for stream and sequential packet
-sockets. See <b>listen</b>(2) for details. Defaults to
+sockets. See <a href="https://man.page/2/listen">listen(2)</a> for details. Defaults to
 SOMAXCONN (128).</font></p>
 
 
@@ -377,7 +377,7 @@ SOMAXCONN (128).</font></p>
 a network interface name to bind this socket to. If set,
 traffic will only be accepted from the specified network
 interfaces. This controls the <b>SO_BINDTODEVICE</b> socket
-option (see <b>socket</b>(7) for details). If this option is
+option (see <a href="https://man.page/7/socket">socket(7)</a> for details). If this option is
 used, an implicit dependency from this socket unit on the
 network interface device unit is created (see
 <b>systemd.device</b>(5)). Note that setting this parameter
@@ -431,9 +431,9 @@ traffic. Defaults to <b>no</b>. For performance reasons, it
 is recommended to write new daemons only in a way that is
 suitable for <b>Accept=no</b>. A daemon listening on an
 <b>AF_UNIX</b> socket may, but does not need to, call
-<b>close</b>(2) on the received socket before exiting.
+<a href="https://man.page/2/close">close(2)</a> on the received socket before exiting.
 However, it must not unlink the socket from a file system.
-It should not invoke <b>shutdown</b>(2) on sockets it got
+It should not invoke <a href="https://man.page/2/shutdown">shutdown(2)</a> on sockets it got
 with <i>Accept=no</i>, but it may do so for sockets it got
 with <i>Accept=yes</i> set. Setting <i>Accept=yes</i> is
 mostly useful to allow daemons designed for usage with
@@ -498,7 +498,7 @@ boolean argument. If true, the TCP/IP stack will send a keep
 alive message after 2h (depending on the configuration of
 /proc/sys/net/ipv4/tcp_keepalive_time) for all TCP streams
 accepted on this socket. This controls the
-<b>SO_KEEPALIVE</b> socket option (see <b>socket</b>(7) and
+<b>SO_KEEPALIVE</b> socket option (see <a href="https://man.page/7/socket">socket(7)</a> and
 the</font> <b><font color="#0000FF">TCP Keepalive
 HOWTO</font></b>
 <small><font color="#000000">[2]</font></small>
@@ -512,7 +512,7 @@ HOWTO</font></b>
 time (in seconds) as argument. The connection needs to
 remain idle before TCP starts sending keepalive probes. This
 controls the TCP_KEEPIDLE socket option (see
-<b>socket</b>(7) and the</font> <b><font color="#0000FF">TCP
+<a href="https://man.page/7/socket">socket(7)</a> and the</font> <b><font color="#0000FF">TCP
 Keepalive HOWTO</font></b>
 <small><font color="#000000">[2]</font></small>
 <font color="#000000">for details.) Defaults value is 7200
@@ -525,7 +525,7 @@ seconds (2 hours).</font></p>
 time (in seconds) as argument between individual keepalive
 probes, if the socket option <b>SO_KEEPALIVE</b> has been
 set on this socket. This controls the <b>TCP_KEEPINTVL</b>
-socket option (see <b>socket</b>(7) and the</font>
+socket option (see <a href="https://man.page/7/socket">socket(7)</a> and the</font>
 <b><font color="#0000FF">TCP Keepalive HOWTO</font></b>
 <small><font color="#000000">[2]</font></small>
 <font color="#000000">for details.) Defaults value is 75
@@ -538,7 +538,7 @@ seconds.</font></p>
 integer as argument. It is the number of unacknowledged
 probes to send before considering the connection dead and
 notifying the application layer. This controls the
-TCP_KEEPCNT socket option (see <b>socket</b>(7) and
+TCP_KEEPCNT socket option (see <a href="https://man.page/7/socket">socket(7)</a> and
 the</font> <b><font color="#0000FF">TCP Keepalive
 HOWTO</font></b>
 <small><font color="#000000">[2]</font></small>
@@ -552,7 +552,7 @@ HOWTO</font></b>
 boolean argument. TCP Nagle's algorithm works by combining a
 number of small outgoing messages, and sending them all at
 once. This controls the TCP_NODELAY socket option (see
-<b>tcp</b>(7)). Defaults to <b>false</b>.</font></p>
+<a href="https://man.page/7/tcp">tcp(7)</a>). Defaults to <b>false</b>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>Priority=</i></font></p>
@@ -560,7 +560,7 @@ once. This controls the TCP_NODELAY socket option (see
 <p style="margin-left:17%;"><font color="#000000">Takes an
 integer argument controlling the priority for all traffic
 sent from this socket. This controls the <b>SO_PRIORITY</b>
-socket option (see <b>socket</b>(7) for
+socket option (see <a href="https://man.page/7/socket">socket(7)</a> for
 details.).</font></p>
 
 
@@ -571,7 +571,7 @@ time (in seconds) as argument. If set, the listening process
 will be awakened only when data arrives on the socket, and
 not immediately when connection is established. When this
 option is set, the <b>TCP_DEFER_ACCEPT</b> socket option
-will be used (see <b>tcp</b>(7)), and the kernel will ignore
+will be used (see <a href="https://man.page/7/tcp">tcp(7)</a>), and the kernel will ignore
 initial ACK packets without any data. The argument specifies
 the approximate amount of time the kernel should wait for
 incoming data before falling back to the normal behavior of
@@ -601,7 +601,7 @@ by default.</font></p>
 integer argument controlling the receive or send buffer
 sizes of this socket, respectively. This controls the
 <b>SO_RCVBUF</b> and <b>SO_SNDBUF</b> socket options (see
-<b>socket</b>(7) for details.). The usual suffixes K, M, G
+<a href="https://man.page/7/socket">socket(7)</a> for details.). The usual suffixes K, M, G
 are supported and are understood to the base of
 1024.</font></p>
 
@@ -611,7 +611,7 @@ are supported and are understood to the base of
 <p style="margin-left:17%;"><font color="#000000">Takes an
 integer argument controlling the IP Type-Of-Service field
 for packets generated from this socket. This controls the
-<b>IP_TOS</b> socket option (see <b>ip</b>(7) for details.).
+<b>IP_TOS</b> socket option (see <a href="https://man.page/7/ip">ip(7)</a> for details.).
 Either a numeric string or one of <b>low-delay</b>,
 <b>throughput</b>, <b>reliability</b> or <b>low-cost</b> may
 be specified.</font></p>
@@ -623,7 +623,7 @@ be specified.</font></p>
 integer argument controlling the IPv4 Time-To-Live/IPv6
 Hop-Count field for packets generated from this socket. This
 sets the <b>IP_TTL</b>/<b>IPV6_UNICAST_HOPS</b> socket
-options (see <b>ip</b>(7) and <b>ipv6</b>(7) for
+options (see <a href="https://man.page/7/ip">ip(7)</a> and <a href="https://man.page/7/ipv6">ipv6(7)</a> for
 details.)</font></p>
 
 
@@ -640,9 +640,9 @@ details.</font></p>
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>ReusePort=</i></font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Takes a
-boolean value. If true, allows multiple <b>bind</b>(2)s to
+boolean value. If true, allows multiple <a href="https://man.page/2/bind">bind(2)</a>s to
 this TCP or UDP port. This controls the <b>SO_REUSEPORT</b>
-socket option. See <b>socket</b>(7) for details.</font></p>
+socket option. See <a href="https://man.page/7/socket">socket(7)</a> for details.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>SmackLabel=</i>,
@@ -684,7 +684,7 @@ Defaults to &quot;false&quot;.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Takes a
 size in bytes. Controls the pipe buffer size of FIFOs
-configured in this socket unit. See <b>fcntl</b>(2) for
+configured in this socket unit. See <a href="https://man.page/2/fcntl">fcntl(2)</a> for
 details. The usual suffixes K, M, G are supported and are
 understood to the base of 1024.</font></p>
 
@@ -696,7 +696,7 @@ understood to the base of 1024.</font></p>
 settings take integer values and control the mq_maxmsg field
 or the mq_msgsize field, respectively, when creating the
 message queue. Note that either none or both of these
-variables need to be set. See <b>mq_setattr</b>(3) for
+variables need to be set. See <a href="https://man.page/3/mq_setattr">mq_setattr(3)</a> for
 details.</font></p>
 
 
@@ -874,7 +874,7 @@ list.</font></p>
 name to all file descriptors this socket unit encapsulates.
 This is useful to help activated services identify specific
 file descriptors, if multiple fds are passed. Services may
-use the <b>sd_listen_fds_with_names</b>(3) call to acquire
+use the <a href="https://man.page/3/sd_listen_fds_with_names">sd_listen_fds_with_names(3)</a> call to acquire
 the names configured for the received file descriptors.
 Names may contain any ASCII character, but must exclude
 control characters and &quot;:&quot;, and must be at most
@@ -917,13 +917,13 @@ settings.</font></p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
-<b>systemctl</b>(1), <b>systemd-system.conf</b>(5),
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/1/systemctl">systemctl(1)</a>, <b>systemd-system.conf</b>(5),
 <b>systemd.unit</b>(5), <b>systemd.exec</b>(5),
 <b>systemd.kill</b>(5), <b>systemd.resource-control</b>(5),
 <b>systemd.service</b>(5), <b>systemd.directives</b>(7),
-<b>sd_listen_fds</b>(3),
-<b>sd_listen_fds_with_names</b>(3)</font></p>
+<a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a>,
+<a href="https://man.page/3/sd_listen_fds_with_names">sd_listen_fds_with_names(3)</a></font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">For

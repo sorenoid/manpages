@@ -89,14 +89,14 @@ F_DUPFD</b> (<i>int</i>)</p>
 <p style="margin-left:22%;">Duplicate the file descriptor
 <i>fd</i> using the lowest-numbered available file
 descriptor greater than or equal to <i>arg</i>. This is
-different from <b>dup2</b>(2), which uses exactly the file
+different from <a href="https://man.page/2/dup2">dup2(2)</a>, which uses exactly the file
 descriptor specified.</p>
 
 <p style="margin-left:22%; margin-top: 1em">On success, the
 new file descriptor is returned.</p>
 
 <p style="margin-left:22%; margin-top: 1em">See
-<b>dup</b>(2) for further details.</p>
+<a href="https://man.page/2/dup">dup(2)</a> for further details.</p>
 
 <p style="margin-left:11%;"><b>F_DUPFD_CLOEXEC</b>
 (<i>int</i>; since Linux 2.6.24)</p>
@@ -107,7 +107,7 @@ file descriptor. Specifying this flag permits a program to
 avoid an additional <b>fcntl</b>() <b>F_SETFD</b> operation
 to set the <b>FD_CLOEXEC</b> flag. For an explanation of why
 this flag is useful, see the description of <b>O_CLOEXEC</b>
-in <b>open</b>(2).</p>
+in <a href="https://man.page/2/open">open(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>File
 descriptor flags</b> <br>
@@ -116,10 +116,10 @@ a file descriptor. Currently, only one such flag is defined:
 <b>FD_CLOEXEC</b>, the close-on-exec flag. If the
 <b>FD_CLOEXEC</b> bit is set, the file descriptor will
 automatically be closed during a successful
-<b>execve</b>(2). (If the <b>execve</b>(2) fails, the file
+<a href="https://man.page/2/execve">execve(2)</a>. (If the <a href="https://man.page/2/execve">execve(2)</a> fails, the file
 descriptor is left open.) If the <b>FD_CLOEXEC</b> bit is
 not set, the file descriptor will remain open across an
-<b>execve</b>(2). <b><br>
+<a href="https://man.page/2/execve">execve(2)</a>. <b><br>
 F_GETFD</b> (<i>void</i>)</p>
 
 <p style="margin-left:22%;">Return (as the function result)
@@ -133,23 +133,23 @@ to the value specified by <i>arg</i>.</p>
 <p style="margin-left:11%; margin-top: 1em">In
 multithreaded programs, using <b>fcntl</b>() <b>F_SETFD</b>
 to set the close-on-exec flag at the same time as another
-thread performs a <b>fork</b>(2) plus <b>execve</b>(2) is
+thread performs a <a href="https://man.page/2/fork">fork(2)</a> plus <a href="https://man.page/2/execve">execve(2)</a> is
 vulnerable to a race condition that may unintentionally leak
 the file descriptor to the program executed in the child
 process. See the discussion of the <b>O_CLOEXEC</b> flag in
-<b>open</b>(2) for details and a remedy to the problem.</p>
+<a href="https://man.page/2/open">open(2)</a> for details and a remedy to the problem.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>File status
 flags</b> <br>
 Each open file description has certain associated status
-flags, initialized by <b>open</b>(2) and possibly modified
+flags, initialized by <a href="https://man.page/2/open">open(2)</a> and possibly modified
 by <b>fcntl</b>(). Duplicated file descriptors (made with
-<b>dup</b>(2), <b>fcntl</b>(F_DUPFD), <b>fork</b>(2), etc.)
+<a href="https://man.page/2/dup">dup(2)</a>, <b>fcntl</b>(F_DUPFD), <a href="https://man.page/2/fork">fork(2)</a>, etc.)
 refer to the same open file description, and thus share the
 same file status flags.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The file status
-flags and their semantics are described in <b>open</b>(2).
+flags and their semantics are described in <a href="https://man.page/2/open">open(2)</a>.
 <b><br>
 F_GETFL</b> (<i>void</i>)</p>
 
@@ -268,7 +268,7 @@ conflicting lock is held on the file, then wait for that
 lock to be released. If a signal is caught while waiting,
 then the call is interrupted and (after the signal handler
 has returned) returns immediately (with return value -1 and
-<i>errno</i> set to <b>EINTR</b>; see <b>signal</b>(7)).</p>
+<i>errno</i> set to <b>EINTR</b>; see <a href="https://man.page/7/signal">signal(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>F_GETLK</b> (<i>struct flock
 *</i>)</p>
@@ -323,13 +323,13 @@ being removed by an explicit <b>F_UNLCK</b>, record locks
 are automatically released when the process terminates.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Record locks
-are not inherited by a child created via <b>fork</b>(2), but
-are preserved across an <b>execve</b>(2).</p>
+are not inherited by a child created via <a href="https://man.page/2/fork">fork(2)</a>, but
+are preserved across an <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Because of the
-buffering performed by the <b>stdio</b>(3) library, the use
+buffering performed by the <a href="https://man.page/3/stdio">stdio(3)</a> library, the use
 of record locking with routines in that package should be
-avoided; use <b>read</b>(2) and <b>write</b>(2) instead.</p>
+avoided; use <a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a> instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The record
 locks described above are associated with the process
@@ -383,17 +383,17 @@ traditional record locks described above. This lock type is
 Linux-specific, and available since Linux 3.15. (There is a
 proposal with the Austin Group to include this lock type in
 the next revision of POSIX.1.) For an explanation of open
-file descriptions, see <b>open</b>(2).</p>
+file descriptions, see <a href="https://man.page/2/open">open(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The principal
 difference between the two lock types is that whereas
 traditional record locks are associated with a process, open
 file description locks are associated with the open file
 description on which they are acquired, much like locks
-acquired with <b>flock</b>(2). Consequently (and unlike
+acquired with <a href="https://man.page/2/flock">flock(2)</a>. Consequently (and unlike
 traditional advisory record locks), open file description
-locks are inherited across <b>fork</b>(2) (and
-<b>clone</b>(2) with <b>CLONE_FILES</b>), and are only
+locks are inherited across <a href="https://man.page/2/fork">fork(2)</a> (and
+<a href="https://man.page/2/clone">clone(2)</a> with <b>CLONE_FILES</b>), and are only
 automatically released on the last close of the open file
 description, instead of being released on any close of the
 file.</p>
@@ -408,8 +408,8 @@ descriptor.</p>
 <p style="margin-left:11%; margin-top: 1em">Open file
 description locks placed via the same open file description
 (i.e., via the same file descriptor, or via a duplicate of
-the file descriptor created by <b>fork</b>(2),
-<b>dup</b>(2), <b>fcntl</b>() <b>F_DUPFD</b>, and so on) are
+the file descriptor created by <a href="https://man.page/2/fork">fork(2)</a>,
+<a href="https://man.page/2/dup">dup(2)</a>, <b>fcntl</b>() <b>F_DUPFD</b>, and so on) are
 always compatible: if a new lock is placed on an already
 locked region, then the existing lock is converted to the
 new lock type. (Such conversions may result in splitting,
@@ -422,7 +422,7 @@ other when they are acquired via different open file
 descriptions. Thus, the threads in a multithreaded program
 can use open file description locks to synchronize access to
 a file region by having each thread perform its own
-<b>open</b>(2) on the file and applying locks via the
+<a href="https://man.page/2/open">open(2)</a> on the file and applying locks via the
 resulting file descriptor.</p>
 
 <p style="margin-left:11%; margin-top: 1em">As with
@@ -455,7 +455,7 @@ that lock to be released. If a signal is caught while
 waiting, then the call is interrupted and (after the signal
 handler has returned) returns immediately (with return value
 -1 and <i>errno</i> set to <b>EINTR</b>; see
-<b>signal</b>(7)).</p>
+<a href="https://man.page/7/signal">signal(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>F_OFD_GETLK</b> (<i>struct
 flock *</i>)</p>
@@ -495,7 +495,7 @@ processes.</p>
 <p style="margin-left:11%; margin-top: 1em">Both lock types
 can also be mandatory. Mandatory locks are enforced for all
 processes. If a process tries to perform an incompatible
-access (e.g., <b>read</b>(2) or <b>write</b>(2)) on a file
+access (e.g., <a href="https://man.page/2/read">read(2)</a> or <a href="https://man.page/2/write">write(2)</a>) on a file
 region that has an incompatible mandatory lock, then the
 result depends upon whether the <b>O_NONBLOCK</b> flag is
 enabled for its open file description. If the
@@ -511,10 +511,10 @@ the filesystem that contains the file to be locked, and on
 the file itself. Mandatory locking is enabled on a
 filesystem using the &quot;-o mand&quot; option to
 <b>mount</b>(8), or the <b>MS_MANDLOCK</b> flag for
-<b>mount</b>(2). Mandatory locking is enabled on a file by
+<a href="https://man.page/2/mount">mount(2)</a>. Mandatory locking is enabled on a file by
 disabling group execute permission on the file and enabling
-the set-group-ID permission bit (see <b>chmod</b>(1) and
-<b>chmod</b>(2)).</p>
+the set-group-ID permission bit (see <a href="https://man.page/1/chmod">chmod(1)</a> and
+<a href="https://man.page/2/chmod">chmod(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Mandatory
 locking is not specified by POSIX. Some other systems also
@@ -533,7 +533,7 @@ functioning.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the
 filesystem determines that a lock has been lost, future
-<b>read</b>(2) or <b>write</b>(2) requests may fail with the
+<a href="https://man.page/2/read">read(2)</a> or <a href="https://man.page/2/write">write(2)</a> requests may fail with the
 error <b>EIO</b>. This error will persist until the lock is
 removed or the file descriptor is closed. Since Linux 3.12,
 this happens at least for NFSv4 (including all minor
@@ -568,7 +568,7 @@ target process or process group ID is specified in
 <i>arg</i>. A process ID is specified as a positive value; a
 process group ID is specified as a negative value. Most
 commonly, the calling process specifies itself as the owner
-(that is, <i>arg</i> is specified as <b>getpid</b>(2)).</p>
+(that is, <i>arg</i> is specified as <a href="https://man.page/2/getpid">getpid(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">As well as
 setting the file descriptor owner, one must also enable
@@ -583,7 +583,7 @@ delivery of a signal other than <b>SIGIO</b>.</p>
 <p style="margin-left:22%; margin-top: 1em">Sending a
 signal to the owner process (group) specified by
 <b>F_SETOWN</b> is subject to the same permissions checks as
-are described for <b>kill</b>(2), where the sending process
+are described for <a href="https://man.page/2/kill">kill(2)</a>, where the sending process
 is the one that employs <b>F_SETOWN</b> (but see BUGS
 below). If this permission check fails, then the signal is
 silently discarded. <i>Note</i>: The <b>F_SETOWN</b>
@@ -596,7 +596,7 @@ descriptor <i>fd</i> refers to a socket, <b>F_SETOWN</b>
 also selects the recipient of <b>SIGURG</b> signals that are
 delivered when out-of-band data arrives on that socket.
 (<b>SIGURG</b> is sent in any situation where
-<b>select</b>(2) would report the socket as having an
+<a href="https://man.page/2/select">select(2)</a> would report the socket as having an
 &quot;exceptional condition&quot;.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">The following
@@ -611,12 +611,12 @@ has a different meaning: instead of being a process ID
 identifying a whole process, it is a thread ID identifying a
 specific thread within a process. Consequently, it may be
 necessary to pass <b>F_SETOWN</b> the result of
-<b>gettid</b>(2) instead of <b>getpid</b>(2) to get sensible
+<a href="https://man.page/2/gettid">gettid(2)</a> instead of <a href="https://man.page/2/getpid">getpid(2)</a> to get sensible
 results when <b>F_SETSIG</b> is used. (In current Linux
 threading implementations, a main thread&rsquo;s thread ID
 is the same as its process ID. This means that a
-single-threaded program can equally use <b>gettid</b>(2) or
-<b>getpid</b>(2) in this scenario.) Note, however, that the
+single-threaded program can equally use <a href="https://man.page/2/gettid">gettid(2)</a> or
+<a href="https://man.page/2/getpid">getpid(2)</a> in this scenario.) Note, however, that the
 statements in this paragraph do not apply to the
 <b>SIGURG</b> signal generated for out-of-band data on a
 socket: this signal is always sent to either a process or a
@@ -666,7 +666,7 @@ F_OWNER_TID</b></p>
 
 <p style="margin-left:32%;">Send the signal to the thread
 whose thread ID (the value returned by a call to
-<b>clone</b>(2) or <b>gettid</b>(2)) is specified in
+<a href="https://man.page/2/clone">clone(2)</a> or <a href="https://man.page/2/gettid">gettid(2)</a>) is specified in
 <i>pid</i>.</p>
 
 <p style="margin-left:22%;"><b>F_OWNER_PID</b></p>
@@ -706,14 +706,14 @@ available to the signal handler if installed with
 <p style="margin-left:22%; margin-top: 1em">By using
 <b>F_SETSIG</b> with a nonzero value, and setting
 <b>SA_SIGINFO</b> for the signal handler (see
-<b>sigaction</b>(2)), extra information about I/O events is
+<a href="https://man.page/2/sigaction">sigaction(2)</a>), extra information about I/O events is
 passed to the handler in a <i>siginfo_t</i> structure. If
 the <i>si_code</i> field indicates the source is
 <b>SI_SIGIO</b>, the <i>si_fd</i> field gives the file
 descriptor associated with the event. Otherwise, there is no
 indication which file descriptors are pending, and you
-should use the usual mechanisms (<b>select</b>(2),
-<b>poll</b>(2), <b>read</b>(2) with <b>O_NONBLOCK</b> set
+should use the usual mechanisms (<a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/read">read(2)</a> with <b>O_NONBLOCK</b> set
 etc.) to determine which file descriptors are available for
 I/O.</p>
 
@@ -721,7 +721,7 @@ I/O.</p>
 file descriptor provided in <i>si_fd</i> is the one that was
 specified during the <b>F_SETSIG</b> operation. This can
 lead to an unusual corner case. If the file descriptor is
-duplicated (<b>dup</b>(2) or similar), and the original file
+duplicated (<a href="https://man.page/2/dup">dup(2)</a> or similar), and the original file
 descriptor is closed, then I/O events will continue to be
 generated, but the <i>si_fd</i> field will contain the
 number of the now closed file descriptor.</p>
@@ -735,15 +735,15 @@ handler, as above.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Note that Linux
 imposes a limit on the number of real-time signals that may
-be queued to a process (see <b>getrlimit</b>(2) and
-<b>signal</b>(7)) and if this limit is reached, then the
+be queued to a process (see <a href="https://man.page/2/getrlimit">getrlimit(2)</a> and
+<a href="https://man.page/7/signal">signal(7)</a>) and if this limit is reached, then the
 kernel reverts to delivering <b>SIGIO</b>, and this signal
 is delivered to the entire process rather than to a specific
 thread.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Using these
 mechanisms, a program can implement fully asynchronous I/O
-without using <b>select</b>(2) or <b>poll</b>(2) most of the
+without using <a href="https://man.page/2/select">select(2)</a> or <a href="https://man.page/2/poll">poll(2)</a> most of the
 time.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The use of
@@ -765,7 +765,7 @@ descriptor <i>fd</i>. A file lease provides a mechanism
 whereby the process holding the lease (the &quot;lease
 holder&quot;) is notified (via delivery of a signal) when a
 process (the &quot;lease breaker&quot;) tries to
-<b>open</b>(2) or <b>truncate</b>(2) the file referred to by
+<a href="https://man.page/2/open">open(2)</a> or <a href="https://man.page/2/truncate">truncate(2)</a> the file referred to by
 that file descriptor. <b><br>
 F_SETLEASE</b> (<i>int</i>)</p>
 
@@ -795,8 +795,8 @@ file.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Leases are
 associated with an open file description (see
-<b>open</b>(2)). This means that duplicate file descriptors
-(created by, for example, <b>fork</b>(2) or <b>dup</b>(2))
+<a href="https://man.page/2/open">open(2)</a>). This means that duplicate file descriptors
+(created by, for example, <a href="https://man.page/2/fork">fork(2)</a> or <a href="https://man.page/2/dup">dup(2)</a>)
 refer to the same lease, and this lease may be modified or
 released using any of these descriptors. Furthermore, the
 lease is released by either an explicit <b>F_UNLCK</b>
@@ -818,8 +818,8 @@ indicating, respectively, a read lease , a write lease, or
 no lease. <i>arg</i> is ignored.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a process
-(the &quot;lease breaker&quot;) performs an <b>open</b>(2)
-or <b>truncate</b>(2) that conflicts with a lease
+(the &quot;lease breaker&quot;) performs an <a href="https://man.page/2/open">open(2)</a>
+or <a href="https://man.page/2/truncate">truncate(2)</a> that conflicts with a lease
 established via <b>F_SETLEASE</b>, the system call is
 blocked by the kernel and the kernel notifies the lease
 holder by sending it a signal (<b>SIGIO</b> by default). The
@@ -858,14 +858,14 @@ call, the kernel permits the lease breaker&rsquo;s system
 call to proceed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the lease
-breaker&rsquo;s blocked <b>open</b>(2) or <b>truncate</b>(2)
+breaker&rsquo;s blocked <a href="https://man.page/2/open">open(2)</a> or <a href="https://man.page/2/truncate">truncate(2)</a>
 is interrupted by a signal handler, then the system call
 fails with the error <b>EINTR</b>, but the other steps still
 occur as described above. If the lease breaker is killed by
-a signal while blocked in <b>open</b>(2) or
-<b>truncate</b>(2), then the other steps still occur as
+a signal while blocked in <a href="https://man.page/2/open">open(2)</a> or
+<a href="https://man.page/2/truncate">truncate(2)</a>, then the other steps still occur as
 described above. If the lease breaker specifies the
-<b>O_NONBLOCK</b> flag when calling <b>open</b>(2), then the
+<b>O_NONBLOCK</b> flag when calling <a href="https://man.page/2/open">open(2)</a>, then the
 call immediately fails with the error <b>EWOULDBLOCK</b>,
 but the other steps still occur as described above.</p>
 
@@ -894,38 +894,38 @@ bits: <b><br>
 DN_ACCESS</b></p>
 
 <p style="margin-left:32%;">A file was accessed
-(<b>read</b>(2), <b>pread</b>(2), <b>readv</b>(2), and
+(<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/pread">pread(2)</a>, <a href="https://man.page/2/readv">readv(2)</a>, and
 similar)</p>
 
 <p style="margin-left:22%;"><b>DN_MODIFY</b></p>
 
 <p style="margin-left:32%;">A file was modified
-(<b>write</b>(2), <b>pwrite</b>(2), <b>writev</b>(2),
-<b>truncate</b>(2), <b>ftruncate</b>(2), and similar).</p>
+(<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/pwrite">pwrite(2)</a>, <a href="https://man.page/2/writev">writev(2)</a>,
+<a href="https://man.page/2/truncate">truncate(2)</a>, <a href="https://man.page/2/ftruncate">ftruncate(2)</a>, and similar).</p>
 
 <p style="margin-left:22%;"><b>DN_CREATE</b></p>
 
 <p style="margin-left:32%;">A file was created
-(<b>open</b>(2), <b>creat</b>(2), <b>mknod</b>(2),
-<b>mkdir</b>(2), <b>link</b>(2), <b>symlink</b>(2),
-<b>rename</b>(2) into this directory).</p>
+(<a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/creat">creat(2)</a>, <a href="https://man.page/2/mknod">mknod(2)</a>,
+<a href="https://man.page/2/mkdir">mkdir(2)</a>, <a href="https://man.page/2/link">link(2)</a>, <a href="https://man.page/2/symlink">symlink(2)</a>,
+<a href="https://man.page/2/rename">rename(2)</a> into this directory).</p>
 
 <p style="margin-left:22%;"><b>DN_DELETE</b></p>
 
 <p style="margin-left:32%;">A file was unlinked
-(<b>unlink</b>(2), <b>rename</b>(2) to another directory,
-<b>rmdir</b>(2)).</p>
+(<a href="https://man.page/2/unlink">unlink(2)</a>, <a href="https://man.page/2/rename">rename(2)</a> to another directory,
+<a href="https://man.page/2/rmdir">rmdir(2)</a>).</p>
 
 <p style="margin-left:22%;"><b>DN_RENAME</b></p>
 
 <p style="margin-left:32%;">A file was renamed within this
-directory (<b>rename</b>(2)).</p>
+directory (<a href="https://man.page/2/rename">rename(2)</a>).</p>
 
 <p style="margin-left:22%;"><b>DN_ATTRIB</b></p>
 
 <p style="margin-left:32%;">The attributes of a file were
-changed (<b>chown</b>(2), <b>chmod</b>(2), <b>utime</b>(2),
-<b>utimensat</b>(2), and similar).</p>
+changed (<a href="https://man.page/2/chown">chown(2)</a>, <a href="https://man.page/2/chmod">chmod(2)</a>, <a href="https://man.page/2/utime">utime(2)</a>,
+<a href="https://man.page/2/utimensat">utimensat(2)</a>, and similar).</p>
 
 <p style="margin-left:22%; margin-top: 1em">(In order to
 obtain these definitions, the <b>_GNU_SOURCE</b> feature
@@ -968,7 +968,7 @@ queued.</p>
 New applications should use the <i>inotify</i> interface
 (available since kernel 2.6.13), which provides a much
 superior interface for obtaining notifications of filesystem
-events. See <b>inotify</b>(7).</p>
+events. See <a href="https://man.page/7/inotify">inotify(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Changing the
 capacity of a pipe <br>
@@ -978,7 +978,7 @@ F_SETPIPE_SZ</b> (<i>int</i>; since Linux 2.6.35)</p>
 referred to by <i>fd</i> to be at least <i>arg</i> bytes. An
 unprivileged process can adjust the pipe capacity to any
 value between the system page size and the limit defined in
-<i>/proc/sys/fs/pipe-max-size</i> (see <b>proc</b>(5)).
+<i>/proc/sys/fs/pipe-max-size</i> (see <a href="https://man.page/5/proc">proc(5)</a>).
 Attempts to set the pipe capacity below the page size are
 silently rounded up to the page size. Attempts by an
 unprivileged process to set the pipe capacity above the
@@ -1020,11 +1020,11 @@ on. The file is said to be sealed. The default set of seals
 depends on the type of the underlying file and filesystem.
 For an overview of file sealing, a discussion of its
 purpose, and some code examples, see
-<b>memfd_create</b>(2).</p>
+<a href="https://man.page/2/memfd_create">memfd_create(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Currently, file
 seals can be applied only to a file descriptor returned by
-<b>memfd_create</b>(2) (if the <b>MFD_ALLOW_SEALING</b> was
+<a href="https://man.page/2/memfd_create">memfd_create(2)</a> (if the <b>MFD_ALLOW_SEALING</b> was
 employed). On other filesystems, all <b>fcntl</b>()
 operations that operate on seals will return
 <b>EINVAL</b>.</p>
@@ -1071,8 +1071,8 @@ locked.</p>
 
 <p style="margin-left:22%;">If this seal is set, the file
 in question cannot be reduced in size. This affects
-<b>open</b>(2) with the <b>O_TRUNC</b> flag as well as
-<b>truncate</b>(2) and <b>ftruncate</b>(2). Those calls fail
+<a href="https://man.page/2/open">open(2)</a> with the <b>O_TRUNC</b> flag as well as
+<a href="https://man.page/2/truncate">truncate(2)</a> and <a href="https://man.page/2/ftruncate">ftruncate(2)</a>. Those calls fail
 with <b>EPERM</b> if you try to shrink the file in question.
 Increasing the file size is still possible.</p>
 
@@ -1080,9 +1080,9 @@ Increasing the file size is still possible.</p>
 
 <p style="margin-left:22%;">If this seal is set, the size
 of the file in question cannot be increased. This affects
-<b>write</b>(2) beyond the end of the file,
-<b>truncate</b>(2), <b>ftruncate</b>(2), and
-<b>fallocate</b>(2). These calls fail with <b>EPERM</b> if
+<a href="https://man.page/2/write">write(2)</a> beyond the end of the file,
+<a href="https://man.page/2/truncate">truncate(2)</a>, <a href="https://man.page/2/ftruncate">ftruncate(2)</a>, and
+<a href="https://man.page/2/fallocate">fallocate(2)</a>. These calls fail with <b>EPERM</b> if
 you use them to increase the file size. If you keep the size
 or shrink it, those calls still work as expected.</p>
 
@@ -1092,19 +1092,19 @@ or shrink it, those calls still work as expected.</p>
 modify the contents of the file. Note that shrinking or
 growing the size of the file is still possible and allowed.
 Thus, this seal is normally used in combination with one of
-the other seals. This seal affects <b>write</b>(2) and
-<b>fallocate</b>(2) (only in combination with the
+the other seals. This seal affects <a href="https://man.page/2/write">write(2)</a> and
+<a href="https://man.page/2/fallocate">fallocate(2)</a> (only in combination with the
 <b>FALLOC_FL_PUNCH_HOLE</b> flag). Those calls fail with
 <b>EPERM</b> if this seal is set. Furthermore, trying to
 create new shared, writable memory-mappings via
-<b>mmap</b>(2) will also fail with <b>EPERM</b>.</p>
+<a href="https://man.page/2/mmap">mmap(2)</a> will also fail with <b>EPERM</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Using the
 <b>F_ADD_SEALS</b> operation to set the <b>F_SEAL_WRITE</b>
 seal fails with <b>EBUSY</b> if any writable, shared mapping
 exists. Such mappings must be unmapped before you can add
 this seal. Furthermore, if there are any asynchronous I/O
-operations (<b>io_submit</b>(2)) pending on the file, all
+operations (<a href="https://man.page/2/io_submit">io_submit(2)</a>) pending on the file, all
 outstanding writes will be discarded.</p>
 
 <p style="margin-left:11%;"><b>F_SEAL_FUTURE_WRITE</b>
@@ -1114,9 +1114,9 @@ outstanding writes will be discarded.</p>
 similar to <b>F_SEAL_WRITE</b>, but the contents of the file
 can still be modified via shared writable mappings that were
 created prior to the seal being set. Any attempt to create a
-new writable mapping on the file via <b>mmap</b>(2) will
+new writable mapping on the file via <a href="https://man.page/2/mmap">mmap(2)</a> will
 fail with <b>EPERM</b>. Likewise, an attempt to write to the
-file via <b>write</b>(2) will fail with <b>EPERM</b>.</p>
+file via <a href="https://man.page/2/write">write(2)</a> will fail with <b>EPERM</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Using this
 seal, one process can create a memory buffer that it can
@@ -1127,7 +1127,7 @@ continue to modify while sharing that buffer on a
 read/write hints</b> <br>
 Write lifetime hints can be used to inform the kernel about
 the relative expected lifetime of writes on a given inode or
-via a particular open file description. (See <b>open</b>(2)
+via a particular open file description. (See <a href="https://man.page/2/open">open(2)</a>
 for an explanation of open file descriptions.) In this
 context, the term &quot;write lifetime&quot; means the
 expected time the data will live on media, before being
@@ -1390,7 +1390,7 @@ space.</p> </td></tr>
 
 <p><i>cmd</i> is <b>F_SETLKW</b> or <b>F_OFD_SETLKW</b> and
 the operation was interrupted by a signal; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1456,7 +1456,7 @@ and the filesystem containing the inode referred to by
 <p><i>cmd</i> is <b>F_DUPFD</b> and <i>arg</i> is negative
 or is greater than the maximum allowable value (see the
 discussion of <b>RLIMIT_NOFILE</b> in
-<b>getrlimit</b>(2)).</p> </td></tr>
+<a href="https://man.page/2/getrlimit">getrlimit(2)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1527,7 +1527,7 @@ directory.</p>
 
 
 <p><i>cmd</i> is <b>F_SETPIPE_SZ</b> and the soft or hard
-user pipe limit has been reached; see <b>pipe</b>(7).</p></td></tr>
+user pipe limit has been reached; see <a href="https://man.page/7/pipe">pipe(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="7%">
@@ -1605,7 +1605,7 @@ and <b>F_GET_SEALS</b> are Linux-specific.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The errors
-returned by <b>dup2</b>(2) are different from those returned
+returned by <a href="https://man.page/2/dup2">dup2(2)</a> are different from those returned
 by <b>F_DUPFD</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>File
@@ -1624,7 +1624,7 @@ where it is available.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Record
 locks</b> <br>
 Since kernel 2.0, there is no interaction between the types
-of lock placed by <b>flock</b>(2) and <b>fcntl</b>().</p>
+of lock placed by <a href="https://man.page/2/flock">flock(2)</a> and <b>fcntl</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">Several systems
 have more fields in <i>struct flock</i> such as, for
@@ -1721,7 +1721,7 @@ For example, the kernel limits the lock depth of its
 dependency search to 10 steps, meaning that circular
 deadlock chains that exceed that size will not be detected.
 In addition, the kernel may falsely indicate a deadlock when
-two or more processes created using the <b>clone</b>(2)
+two or more processes created using the <a href="https://man.page/2/clone">clone(2)</a>
 <b>CLONE_FILES</b> flag place locks that appear (to the
 kernel) to conflict.</p>
 
@@ -1729,11 +1729,11 @@ kernel) to conflict.</p>
 locking</b> <br>
 The Linux implementation of mandatory locking is subject to
 race conditions which render it unreliable: a
-<b>write</b>(2) call that overlaps with a lock may modify
-data after the mandatory lock is acquired; a <b>read</b>(2)
+<a href="https://man.page/2/write">write(2)</a> call that overlaps with a lock may modify
+data after the mandatory lock is acquired; a <a href="https://man.page/2/read">read(2)</a>
 call that overlaps with a lock may detect changes to data
 that were made only after a write lock was acquired. Similar
-races exist between mandatory locks and <b>mmap</b>(2). It
+races exist between mandatory locks and <a href="https://man.page/2/mmap">mmap(2)</a>. It
 is therefore inadvisable to rely on mandatory locking.</p>
 
 <h2>SEE ALSO
@@ -1742,10 +1742,10 @@ is therefore inadvisable to rely on mandatory locking.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>dup2</b>(2),
-<b>flock</b>(2), <b>open</b>(2), <b>socket</b>(2),
-<b>lockf</b>(3), <b>capabilities</b>(7),
-<b>feature_test_macros</b>(7), <b>lslocks</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/dup2">dup2(2)</a>,
+<a href="https://man.page/2/flock">flock(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/socket">socket(2)</a>,
+<a href="https://man.page/3/lockf">lockf(3)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>, <b>lslocks</b>(8)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>locks.txt</i>,

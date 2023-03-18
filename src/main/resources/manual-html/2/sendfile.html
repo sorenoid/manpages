@@ -64,8 +64,8 @@ off_t *</b><i>offset</i><b>, size_t</b>
 <p style="margin-left:11%; margin-top: 1em"><b>sendfile</b>()
 copies data between one file descriptor and another. Because
 this copying is done within the kernel, <b>sendfile</b>() is
-more efficient than the combination of <b>read</b>(2) and
-<b>write</b>(2), which would require transferring data to
+more efficient than the combination of <a href="https://man.page/2/read">read(2)</a> and
+<a href="https://man.page/2/write">write(2)</a>, which would require transferring data to
 and from user space.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>in_fd</i>
@@ -94,7 +94,7 @@ descriptors.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>in_fd</i> argument must correspond to a file which
-supports <b>mmap</b>(2)-like operations (i.e., it cannot be
+supports <a href="https://man.page/2/mmap">mmap(2)</a>-like operations (i.e., it cannot be
 a socket).</p>
 
 <p style="margin-left:11%; margin-top: 1em">In Linux
@@ -172,7 +172,7 @@ file was not opened for writing.</p></td></tr>
 
 
 <p>Descriptor is not valid or locked, or an
-<b>mmap</b>(2)-like operation is not available for
+<a href="https://man.page/2/mmap">mmap(2)</a>-like operation is not available for
 <i>in_fd</i>, or <i>count</i> is negative.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -271,7 +271,7 @@ true on both 32-bit and 64-bit systems.)</p>
 use <b>sendfile</b>() for sending files to a TCP socket, but
 need to send some header data in front of the file contents,
 you will find it useful to employ the <b>TCP_CORK</b>
-option, described in <b>tcp</b>(7), to minimize the number
+option, described in <a href="https://man.page/7/tcp">tcp(7)</a>, to minimize the number
 of packets and to tune performance.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In Linux 2.4
@@ -287,7 +287,7 @@ argument. The glibc <b>sendfile</b>() wrapper function
 transparently deals with the kernel differences.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Applications
-may wish to fall back to <b>read</b>(2)/<b>write</b>(2) in
+may wish to fall back to <a href="https://man.page/2/read">read(2)</a>/<a href="https://man.page/2/write">write(2)</a> in
 the case where <b>sendfile</b>() fails with <b>EINVAL</b> or
 <b>ENOSYS</b>.</p>
 
@@ -299,7 +299,7 @@ reader on the other end of <i>out_fd</i> has consumed the
 transferred data.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-Linux-specific <b>splice</b>(2) call supports transferring
+Linux-specific <a href="https://man.page/2/splice">splice(2)</a> call supports transferring
 data between arbitrary file descriptors provided one (or
 both) of them is a pipe.</p>
 
@@ -309,9 +309,9 @@ both) of them is a pipe.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>copy_file_range</b>(2),
-<b>mmap</b>(2), <b>open</b>(2), <b>socket</b>(2),
-<b>splice</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/copy_file_range">copy_file_range(2)</a>,
+<a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/socket">socket(2)</a>,
+<a href="https://man.page/2/splice">splice(2)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -61,7 +61,7 @@ int</b> <i>event_f_flags</i><b>);</b></p>
 
 
 <p style="margin-left:11%; margin-top: 1em">For an overview
-of the fanotify API, see <b>fanotify</b>(7).</p>
+of the fanotify API, see <a href="https://man.page/7/fanotify">fanotify(7)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>fanotify_init</b>()
@@ -70,7 +70,7 @@ descriptor for the event queue associated with the
 group.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The file
-descriptor is used in calls to <b>fanotify_mark</b>(2) to
+descriptor is used in calls to <a href="https://man.page/2/fanotify_mark">fanotify_mark(2)</a> to
 specify the files, directories, mounts or filesystems for
 which fanotify events shall be created. These events are
 received by reading from the file descriptor. Some events
@@ -151,14 +151,14 @@ FAN_CLOEXEC</b></p>
 <p style="margin-left:22%;">Set the close-on-exec flag
 (<b>FD_CLOEXEC</b>) on the new file descriptor. See the
 description of the <b>O_CLOEXEC</b> flag in
-<b>open</b>(2).</p>
+<a href="https://man.page/2/open">open(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>FAN_NONBLOCK</b></p>
 
 <p style="margin-left:22%;">Enable the nonblocking flag
 (<b>O_NONBLOCK</b>) for the file descriptor. Reading from
 the file descriptor will not block. Instead, if no data is
-available, <b>read</b>(2) fails with the error
+available, <a href="https://man.page/2/read">read(2)</a> fails with the error
 <b>EAGAIN</b>.</p>
 
 <p style="margin-left:11%;"><b>FAN_UNLIMITED_QUEUE</b></p>
@@ -178,8 +178,8 @@ Linux 4.20)</p>
 
 <p style="margin-left:22%;">Report thread ID (TID) instead
 of process ID (PID) in the <i>pid</i> field of the <i>struct
-fanotify_event_metadata</i> supplied to <b>read</b>(2) (see
-<b>fanotify</b>(7)).</p>
+fanotify_event_metadata</i> supplied to <a href="https://man.page/2/read">read(2)</a> (see
+<a href="https://man.page/7/fanotify">fanotify(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>FAN_REPORT_FID</b> (since
 Linux 5.1)</p>
@@ -207,7 +207,7 @@ identifies the modified directory and not the
 created/deleted/moved child object. The use of
 <b>FAN_CLASS_CONTENT</b> or <b>FAN_CLASS_PRE_CONTENT</b> is
 not permitted with this flag and will result in the error
-<b>EINVAL</b>. See <b>fanotify</b>(7) for additional
+<b>EINVAL</b>. See <a href="https://man.page/7/fanotify">fanotify(7)</a> for additional
 details.</p>
 
 <p style="margin-left:11%;"><b>FAN_REPORT_DIR_FID</b>
@@ -236,7 +236,7 @@ unlinked but open file. In that case, with the
 only one record to identify the non-directory object itself,
 because there is no directory associated with the event.
 Without the <b>FAN_REPORT_FID</b> flag, no event will be
-reported. See <b>fanotify</b>(7) for additional details.</p>
+reported. See <a href="https://man.page/7/fanotify">fanotify(7)</a> for additional details.</p>
 
 <p style="margin-left:11%;"><b>FAN_REPORT_NAME</b> (since
 Linux 5.9)</p>
@@ -268,9 +268,9 @@ the parent directory object and the reported name is the
 name of a directory entry where the object was located at
 the time of the event. The rationale behind this logic is
 that the reported directory file handle can be passed to
-<b>open_by_handle_at</b>(2) to get an open directory file
+<a href="https://man.page/2/open_by_handle_at">open_by_handle_at(2)</a> to get an open directory file
 descriptor and that file descriptor along with the reported
-name can be used to call <b>fstatat</b>(2). The same rule
+name can be used to call <a href="https://man.page/2/fstatat">fstatat(2)</a>. The same rule
 that applies to record type <b>FAN_EVENT_INFO_TYPE_DFID</b>
 also applies to record type
 <b>FAN_EVENT_INFO_TYPE_DFID_NAME</b>: if a non-directory
@@ -279,7 +279,7 @@ or it will be reported without the directory entry
 information. Note that there is no guarantee that the
 filesystem object will be found at the location described by
 the directory entry information at the time the event is
-received. See <b>fanotify</b>(7) for additional details.</p>
+received. See <a href="https://man.page/7/fanotify">fanotify(7)</a> for additional details.</p>
 
 
 <p style="margin-left:11%;"><b>FAN_REPORT_DFID_NAME</b></p>
@@ -292,7 +292,7 @@ received. See <b>fanotify</b>(7) for additional details.</p>
 that will be set on the open file descriptions that are
 created for fanotify events. For details of these flags, see
 the description of the <i>flags</i> values in
-<b>open</b>(2). <i>event_f_flags</i> includes a multi-bit
+<a href="https://man.page/2/open">open(2)</a>. <i>event_f_flags</i> includes a multi-bit
 field for the access mode. This field can take the following
 values: <b><br>
 O_RDONLY</b></p>
@@ -338,7 +338,7 @@ system.</p>
 
 <p style="margin-left:22%;">Enable the close-on-exec flag
 for the file descriptor. See the description of the
-<b>O_CLOEXEC</b> flag in <b>open</b>(2) for reasons why this
+<b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a> for reasons why this
 may be useful.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
@@ -515,8 +515,8 @@ descriptor.</p> </td></tr>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fanotify_mark</b>(2),
-<b>fanotify</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fanotify_mark">fanotify_mark(2)</a>,
+<a href="https://man.page/7/fanotify">fanotify(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -98,7 +98,7 @@ PTHREAD_CANCEL_DEFERRED</b></p>
 
 <p style="margin-left:22%;">A cancellation request is
 deferred until the thread next calls a function that is a
-cancellation point (see <b>pthreads</b>(7)). This is the
+cancellation point (see <a href="https://man.page/7/pthreads">pthreads(7)</a>). This is the
 default cancelability type in all new threads, including the
 initial thread.</p>
 
@@ -184,7 +184,7 @@ error:</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3406931.png" alt="Image grohtml-3406931.png"></p>
@@ -204,7 +204,7 @@ POSIX.1-2008.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For details of
 what happens when a thread is canceled, see
-<b>pthread_cancel</b>(3).</p>
+<a href="https://man.page/3/pthread_cancel">pthread_cancel(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Briefly
 disabling cancelability is useful if a thread performs some
@@ -221,14 +221,14 @@ Setting the cancelability type to
 <b>PTHREAD_CANCEL_ASYNCHRONOUS</b> is rarely useful. Since
 the thread could be canceled at <i>any</i> time, it cannot
 safely reserve resources (e.g., allocating memory with
-<b>malloc</b>(3)), acquire mutexes, semaphores, or locks,
+<a href="https://man.page/3/malloc">malloc(3)</a>), acquire mutexes, semaphores, or locks,
 and so on. Reserving resources is unsafe because the
 application has no way of knowing what the state of these
 resources is when the thread is canceled; that is, did
 cancellation occur before the resources were reserved, while
 they were reserved, or after they were released?
 Furthermore, some internal data structures (e.g., the linked
-list of free blocks managed by the <b>malloc</b>(3) family
+list of free blocks managed by the <a href="https://man.page/3/malloc">malloc(3)</a> family
 of functions) may be left in an inconsistent state if
 cancellation occurs in the middle of the function call.
 Consequently, clean-up handlers cease to be useful.</p>
@@ -236,7 +236,7 @@ Consequently, clean-up handlers cease to be useful.</p>
 <p style="margin-left:11%; margin-top: 1em">Functions that
 can be safely asynchronously canceled are called
 <i>async-cancel-safe functions</i>. POSIX.1-2001 and
-POSIX.1-2008 require only that <b>pthread_cancel</b>(3),
+POSIX.1-2008 require only that <a href="https://man.page/3/pthread_cancel">pthread_cancel(3)</a>,
 <b>pthread_setcancelstate</b>(), and
 <b>pthread_setcanceltype</b>() be async-cancel-safe. In
 general, other library functions can&rsquo;t be safely
@@ -266,7 +266,7 @@ applies for the <i>oldtype</i> argument of
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>pthread_cancel</b>(3).</p>
+<a href="https://man.page/3/pthread_cancel">pthread_cancel(3)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -274,9 +274,9 @@ applies for the <i>oldtype</i> argument of
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pthread_cancel</b>(3),
-<b>pthread_cleanup_push</b>(3),
-<b>pthread_testcancel</b>(3), <b>pthreads</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/pthread_cancel">pthread_cancel(3)</a>,
+<a href="https://man.page/3/pthread_cleanup_push">pthread_cleanup_push(3)</a>,
+<a href="https://man.page/3/pthread_testcancel">pthread_testcancel(3)</a>, <a href="https://man.page/7/pthreads">pthreads(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

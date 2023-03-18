@@ -73,9 +73,9 @@ const struct timespec *</b><i>tmo_p</i><b>, const sigset_t
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>poll</b>()
-performs a similar task to <b>select</b>(2): it waits for
+performs a similar task to <a href="https://man.page/2/select">select(2)</a>: it waits for
 one of a set of file descriptors to become ready to perform
-I/O. The Linux-specific <b>epoll</b>(7) API performs a
+I/O. The Linux-specific <a href="https://man.page/7/epoll">epoll(7)</a> API performs a
 similar task, but offers features beyond those found in
 <b>poll</b>().</p>
 
@@ -224,7 +224,7 @@ condition on the file descriptor. Possibilities include:</p>
 
 
 <p>There is out-of-band data on a TCP socket (see
-<b>tcp</b>(7)).</p> </td></tr>
+<a href="https://man.page/7/tcp">tcp(7)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -236,7 +236,7 @@ condition on the file descriptor. Possibilities include:</p>
 
 
 <p>A pseudoterminal master in packet mode has seen a state
-change on the slave (see <b>ioctl_tty</b>(2)).</p></td></tr>
+change on the slave (see <a href="https://man.page/2/ioctl_tty">ioctl_tty(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -248,7 +248,7 @@ change on the slave (see <b>ioctl_tty</b>(2)).</p></td></tr>
 
 
 <p>A <i>cgroup.events</i> file has been modified (see
-<b>cgroups</b>(7)).</p> </td></tr>
+<a href="https://man.page/7/cgroups">cgroups(7)</a>).</p> </td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>POLLOUT</b></p>
@@ -319,8 +319,8 @@ knows about, but does not use <b>POLLMSG</b>.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>ppoll()</b>
 <br>
 The relationship between <b>poll</b>() and <b>ppoll</b>() is
-analogous to the relationship between <b>select</b>(2) and
-<b>pselect</b>(2): like <b>pselect</b>(2), <b>ppoll</b>()
+analogous to the relationship between <a href="https://man.page/2/select">select(2)</a> and
+<a href="https://man.page/2/pselect">pselect(2)</a>: like <a href="https://man.page/2/pselect">pselect(2)</a>, <b>ppoll</b>()
 allows an application to safely wait until either a file
 descriptor becomes ready or until a signal is caught.</p>
 
@@ -356,7 +356,7 @@ expressed in <i>*tmo_p</i> results in an error from
 <b>ppoll</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">See the
-description of <b>pselect</b>(2) for an explanation of why
+description of <a href="https://man.page/2/pselect">pselect(2)</a> for an explanation of why
 <b>ppoll</b>() is necessary.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
@@ -429,7 +429,7 @@ address space.</p></td></tr>
 
 
 <p>A signal occurred before any requested event; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -477,7 +477,7 @@ structures.</p> </td></tr>
 <b>poll</b>() system call was introduced in Linux 2.1.23. On
 older kernels that lack this system call, the glibc
 <b>poll</b>() wrapper function provides emulation using
-<b>select</b>(2).</p>
+<a href="https://man.page/2/select">select(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>ppoll</b>() system call was added to Linux in kernel
@@ -519,7 +519,7 @@ glibc.</p>
 <p style="margin-left:11%; margin-top: 1em">For a
 discussion of what may happen if a file descriptor being
 monitored by <b>poll</b>() is closed in another thread, see
-<b>select</b>(2).</p>
+<a href="https://man.page/2/select">select(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>C
 library/kernel differences</b> <br>
@@ -535,7 +535,7 @@ the glibc <b>ppoll</b>() function does not modify its
 sigsetsize</i>, which specifies the size in bytes of the
 <i>sigmask</i> argument. The glibc <b>ppoll</b>() wrapper
 function specifies this argument as a fixed value (equal to
-<i>sizeof(kernel_sigset_t)</i>). See <b>sigprocmask</b>(2)
+<i>sizeof(kernel_sigset_t)</i>). See <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>
 for a discussion on the differences between the kernel and
 the libc notion of the sigset.</p>
 
@@ -546,7 +546,7 @@ the libc notion of the sigset.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See the
 discussion of spurious readiness notifications under the
-BUGS section of <b>select</b>(2).</p>
+BUGS section of <a href="https://man.page/2/select">select(2)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -807,9 +807,9 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>restart_syscall</b>(2),
-<b>select</b>(2), <b>select_tut</b>(2), <b>epoll</b>(7),
-<b>time</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/restart_syscall">restart_syscall(2)</a>,
+<a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/select_tut">select_tut(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>,
+<a href="https://man.page/7/time">time(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

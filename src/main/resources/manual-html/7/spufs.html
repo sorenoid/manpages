@@ -50,7 +50,7 @@ Synergistic Processor Units (SPUs).</p>
 <p style="margin-left:11%; margin-top: 1em">The filesystem
 provides a name space similar to POSIX shared memory or
 message queues. Users that have write permissions on the
-filesystem can use <b>spu_create</b>(2) to establish SPU
+filesystem can use <a href="https://man.page/2/spu_create">spu_create(2)</a> to establish SPU
 contexts under the <b>spufs</b> root directory.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Every SPU
@@ -81,25 +81,25 @@ default is 0775.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Files</b>
 <br>
 The files in <b>spufs</b> mostly follow the standard
-behavior for regular system calls like <b>read</b>(2) or
-<b>write</b>(2), but often support only a subset of the
+behavior for regular system calls like <a href="https://man.page/2/read">read(2)</a> or
+<a href="https://man.page/2/write">write(2)</a>, but often support only a subset of the
 operations supported on regular filesystems. This list
 details the supported operations and the deviations from the
 standard behavior described in the respective man pages.</p>
 
 <p style="margin-left:11%; margin-top: 1em">All files that
-support the <b>read</b>(2) operation also support
-<b>readv</b>(2) and all files that support the
-<b>write</b>(2) operation also support <b>writev</b>(2). All
-files support the <b>access</b>(2) and <b>stat</b>(2) family
+support the <a href="https://man.page/2/read">read(2)</a> operation also support
+<a href="https://man.page/2/readv">readv(2)</a> and all files that support the
+<a href="https://man.page/2/write">write(2)</a> operation also support <a href="https://man.page/2/writev">writev(2)</a>. All
+files support the <a href="https://man.page/2/access">access(2)</a> and <a href="https://man.page/2/stat">stat(2)</a> family
 of operations, but for the latter call, the only fields of
 the returned <i>stat</i> structure that contain reliable
 information are <i>st_mode</i>, <i>st_nlink</i>,
 <i>st_uid</i>, and <i>st_gid</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">All files
-support the <b>chmod</b>(2)/<b>fchmod</b>(2) and
-<b>chown</b>(2)/<b>fchown</b>(2) operations, but will not be
+support the <a href="https://man.page/2/chmod">chmod(2)</a>/<a href="https://man.page/2/fchmod">fchmod(2)</a> and
+<a href="https://man.page/2/chown">chown(2)</a>/<a href="https://man.page/2/fchown">fchown(2)</a> operations, but will not be
 able to grant permissions that contradict the possible
 operations (e.g., read access on the <i>wbox</i> file).</p>
 
@@ -160,17 +160,17 @@ in the address space of the SPU. The possible operations on
 an open <i>mem</i> file are:</p></td></tr>
 </table>
 
-<p style="margin-left:22%;"><b>read</b>(2),
-<b>pread</b>(2), <b>write</b>(2), <b>pwrite</b>(2),
-<b>lseek</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/pread">pread(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/pwrite">pwrite(2)</a>,
+<a href="https://man.page/2/lseek">lseek(2)</a></p>
 
 <p style="margin-left:32%;">These operate as usual, with
-the exception that <b>lseek</b>(2), <b>write</b>(2), and
-<b>pwrite</b>(2) are not supported beyond the end of the
+the exception that <a href="https://man.page/2/lseek">lseek(2)</a>, <a href="https://man.page/2/write">write(2)</a>, and
+<a href="https://man.page/2/pwrite">pwrite(2)</a> are not supported beyond the end of the
 file. The file size is the size of the local storage of the
 SPU, which is normally 256 kilobytes.</p>
 
-<p style="margin-left:22%;"><b>mmap</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/mmap">mmap(2)</a></p>
 
 <p style="margin-left:32%;">Mapping <i>mem</i> into the
 process address space provides access to the SPU local
@@ -220,15 +220,15 @@ the <b>SPU_CREATE_NOSCHED</b> flag.</p>
 <p style="margin-top: 1em">The first SPU-to-CPU
 communication mailbox. This file is read-only and can be
 read in units of 4 bytes. The file can be used only in
-nonblocking mode - even <b>poll</b>(2) cannot be used to
+nonblocking mode - even <a href="https://man.page/2/poll">poll(2)</a> cannot be used to
 block on this file. The only possible operation on an open
 <i>mbox</i> file is:</p></td></tr>
 </table>
 
-<p style="margin-left:22%;"><b>read</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a></p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>read</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/read">read(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. If there is no data available in the mailbox
 (i.e., the SPU has not sent a mailbox message), the return
 value is set to -1 and <i>errno</i> is set to <b>EAGAIN</b>.
@@ -249,11 +249,11 @@ in the data buffer and the value four is returned.</p>
 
 <p>The second SPU-to-CPU communication mailbox. This file
 is similar to the first mailbox file, but can be read in
-blocking I/O mode, thus calling <b>read</b>(2) on an open
+blocking I/O mode, thus calling <a href="https://man.page/2/read">read(2)</a> on an open
 <i>ibox</i> file will block until the SPU has written data
 to its interrupt mailbox channel (unless the file has been
 opened with <b>O_NONBLOCK</b>, see below). Also,
-<b>poll</b>(2) and similar system calls can be used to
+<a href="https://man.page/2/poll">poll(2)</a> and similar system calls can be used to
 monitor for the presence of mailbox data.</p></td></tr>
 </table>
 
@@ -262,7 +262,7 @@ operations on an open <i>ibox</i> file are: <b><br>
 read</b>(2)</p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>read</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/read">read(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. If there is no data available in the mailbox
 and the file descriptor has been opened with
 <b>O_NONBLOCK</b>, the return value is set to -1 and
@@ -275,7 +275,7 @@ until the SPU writes to its interrupt mailbox channel. When
 data has been read successfully, four bytes are placed in
 the data buffer and the value four is returned.</p>
 
-<p style="margin-left:22%;"><b>poll</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/poll">poll(2)</a></p>
 
 <p style="margin-left:32%;">Poll on the <i>ibox</i> file
 returns <i>(POLLIN | POLLRDNORM)</i> whenever data is
@@ -295,16 +295,16 @@ available for reading.</p>
 
 <p>The CPU-to-SPU communication mailbox. It is write-only
 and can be written in units of four bytes. If the mailbox is
-full, <b>write</b>(2) will block, and <b>poll</b>(2) can be
+full, <a href="https://man.page/2/write">write(2)</a> will block, and <a href="https://man.page/2/poll">poll(2)</a> can be
 used to block until the mailbox is available for writing
 again. The possible operations on an open <i>wbox</i> file
 are:</p> </td></tr>
 </table>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>write</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/write">write(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. If there is no space available in the mailbox
 and the file descriptor has been opened with
 <b>O_NONBLOCK</b>, the return value is set to -1 and
@@ -318,7 +318,7 @@ Element) mailbox channel. When data has been written
 successfully, the system call returns four as its function
 result.</p>
 
-<p style="margin-left:22%;"><b>poll</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/poll">poll(2)</a></p>
 
 <p style="margin-left:32%;">A poll on the <i>wbox</i> file
 returns <i>(POLLOUT | POLLWRNORM)</i> whenever space is
@@ -338,7 +338,7 @@ number. The only possible operation on an open
 read</b>(2)</p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>read</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/read">read(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. Otherwise, a four-byte value is placed in the
 data buffer. This value is the number of elements that can
 be read from (for <i>mbox_stat</i> and <i>ibox_stat</i>) or
@@ -459,7 +459,7 @@ read</b>(2)</p>
 
 <p style="margin-left:32%;">Reads the current register
 value. If the register value is larger than the buffer
-passed to the <b>read</b>(2) system call, subsequent reads
+passed to the <a href="https://man.page/2/read">read(2)</a> system call, subsequent reads
 will continue reading from the same buffer, until the end of
 the buffer is reached.</p>
 
@@ -468,9 +468,9 @@ string has been read, all subsequent read operations will
 return zero bytes and a new file descriptor needs to be
 opened to read a new value.</p>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
-<p style="margin-left:32%;">A <b>write</b>(2) operation on
+<p style="margin-left:32%;">A <a href="https://man.page/2/write">write(2)</a> operation on
 the file sets the register to the value given in the string.
 The string is parsed from the beginning until the first
 nonnumeric character or the end of the buffer. Subsequent
@@ -499,18 +499,18 @@ and Control Register (fcpr) as a binary, four-byte file. The
 operations on the <i>fpcr</i> file are:</p></td></tr>
 </table>
 
-<p style="margin-left:22%;"><b>read</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a></p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>read</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/read">read(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. Otherwise, a four-byte value is placed in the
 data buffer; this is the current value of the <i>fpcr</i>
 register.</p>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>write</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/write">write(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. Otherwise, a four-byte value is copied from
 the data buffer, updating the value of the <i>fpcr</i>
 register.</p>
@@ -530,15 +530,15 @@ or <i>signal2</i> file are: <b><br>
 read</b>(2)</p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>read</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/read">read(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. Otherwise, a four-byte value is placed in the
 data buffer; this is the current value of the specified
 signal notification register.</p>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
 <p style="margin-left:32%;">If <i>count</i> is smaller than
-four, <b>write</b>(2) returns -1 and sets <i>errno</i> to
+four, <a href="https://man.page/2/write">write(2)</a> returns -1 and sets <i>errno</i> to
 <b>EINVAL</b>. Otherwise, a four-byte value is copied from
 the data buffer, updating the value of the specified signal
 notification register. The signal notification register will
@@ -563,16 +563,16 @@ an open <i>signal1_type</i> or <i>signal2_type</i> file are:
 read</b>(2)</p>
 
 <p style="margin-left:32%;">When the count supplied to the
-<b>read</b>(2) call is shorter than the required length for
+<a href="https://man.page/2/read">read(2)</a> call is shorter than the required length for
 the digit (plus a newline character), subsequent reads from
 the same file descriptor will complete the string. When a
 complete string has been read, all subsequent read
 operations will return zero bytes and a new file descriptor
 needs to be opened to read the value again.</p>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
-<p style="margin-left:32%;">A <b>write</b>(2) operation on
+<p style="margin-left:32%;">A <a href="https://man.page/2/write">write(2)</a> operation on
 the file sets the register to the value given in the string.
 The string is parsed from the beginning until the first
 nonnumeric character or the end of the buffer. Subsequent
@@ -668,13 +668,13 @@ status registers, as an ASCII string. The following
 operations are supported:</p></td></tr>
 </table>
 
-<p style="margin-left:22%;"><b>read</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a></p>
 
 <p style="margin-left:32%;">Reads from the <i>cntl</i> file
 will return an ASCII string with the hex value of the SPU
 Status register.</p>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
 <p style="margin-left:32%;">Writes to the <i>cntl</i> file
 will set the context&rsquo;s SPU Run Control register.</p>
@@ -698,7 +698,7 @@ initiates a DMA from the MFC. The following operations are
 supported:</p> </td></tr>
 </table>
 
-<p style="margin-left:22%;"><b>write</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/write">write(2)</a></p>
 
 <p style="margin-left:32%;">Writes to this file need to be
 in the format of a MFC DMA command, defined as follows:</p>
@@ -720,7 +720,7 @@ bytes in size. The command will be sent to the SPU&rsquo;s
 MFC proxy queue, and the tag stored in the kernel (see
 below).</p>
 
-<p style="margin-left:22%;"><b>read</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a></p>
 
 <p style="margin-left:32%;">Reads the contents of the tag
 status register. If the file is opened in blocking mode
@@ -729,9 +729,9 @@ until a DMA tag (as performed by a previous write) is
 complete. In nonblocking mode, the MFC tag status register
 will be returned without waiting.</p>
 
-<p style="margin-left:22%;"><b>poll</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/poll">poll(2)</a></p>
 
-<p style="margin-left:32%;">Calling <b>poll</b>(2) on the
+<p style="margin-left:32%;">Calling <a href="https://man.page/2/poll">poll(2)</a> on the
 <i>mfc</i> file will block until a new DMA can be started
 (by checking for <b>POLLOUT</b>) or until a previously
 started DMA (by checking for <b>POLLIN</b>) has been
@@ -739,13 +739,13 @@ completed.</p>
 
 <p style="margin-left:32%; margin-top: 1em"><i>/mss</i>
 Provides access to the MFC MultiSource Synchronization (MSS)
-facility. By <b>mmap</b>(2)-ing this file, processes can
+facility. By <a href="https://man.page/2/mmap">mmap(2)</a>-ing this file, processes can
 access the MSS area of the SPU.</p>
 
 <p style="margin-left:32%; margin-top: 1em">The following
 operations are supported:</p>
 
-<p style="margin-left:22%;"><b>mmap</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/mmap">mmap(2)</a></p>
 
 <p style="margin-left:32%;">Mapping <b>mss</b> into the
 process address space gives access to the SPU MSS area
@@ -801,7 +801,7 @@ into this file, applications can set the object ID of the
 SPU context. Any previous value of the object ID is
 overwritten.</p>
 
-<p style="margin-left:22%;"><b>read</b>(2)</p>
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a></p>
 
 <p style="margin-left:32%;">Reading this file gives an
 ASCII hex string representing the object ID for this SPU
@@ -824,9 +824,9 @@ entry</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2),
-<b>spu_create</b>(2), <b>spu_run</b>(2),
-<b>capabilities</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/close">close(2)</a>,
+<a href="https://man.page/2/spu_create">spu_create(2)</a>, <a href="https://man.page/2/spu_run">spu_run(2)</a>,
+<a href="https://man.page/7/capabilities">capabilities(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>The Cell
 Broadband Engine Architecture (CBEA) specification</i></p>

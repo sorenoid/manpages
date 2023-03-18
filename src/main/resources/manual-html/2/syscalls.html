@@ -60,7 +60,7 @@ and library wrapper functions</b> <br>
 System calls are generally not invoked directly, but rather
 via wrapper functions in glibc (or perhaps some other
 library). For details of direct invocation of a system call,
-see <b>intro</b>(2). Often, but not always, the name of the
+see <a href="https://man.page/2/intro">intro(2)</a>. Often, but not always, the name of the
 wrapper function is the same as the name of the system call
 that it invokes. For example, glibc contains a function
 <b>chdir</b>() which invokes the underlying
@@ -71,12 +71,12 @@ wrapper function is quite thin, doing little work other than
 copying arguments to the right registers before invoking the
 system call, and then setting <i>errno</i> appropriately
 after the system call has returned. (These are the same
-steps that are performed by <b>syscall</b>(2), which can be
+steps that are performed by <a href="https://man.page/2/syscall">syscall(2)</a>, which can be
 used to invoke system calls for which no wrapper function is
 provided.) Note: system calls indicate a failure by
 returning a negative error number to the caller on
 architectures without a separate error register/flag, as
-noted in <b>syscall</b>(2); when this happens, the wrapper
+noted in <a href="https://man.page/2/syscall">syscall(2)</a>; when this happens, the wrapper
 function negates the returned error number (to make it
 positive), copies it to <i>errno</i>, and returns -1 to the
 caller of the wrapper.</p>
@@ -85,7 +85,7 @@ caller of the wrapper.</p>
 however, the wrapper function does some extra work before
 invoking the system call. For example, nowadays there are
 (for reasons described below) two related system calls,
-<b>truncate</b>(2) and <b>truncate64</b>(2), and the glibc
+<a href="https://man.page/2/truncate">truncate(2)</a> and <a href="https://man.page/2/truncate64">truncate64(2)</a>, and the glibc
 <b>truncate</b>() wrapper function checks which of those
 system calls are provided by the kernel and determines which
 should be employed.</p>
@@ -234,29 +234,29 @@ few cases only on older kernels) is as follows:</p>
 <p style="margin-left:11%; margin-top: 1em">On many
 platforms, including x86-32, socket calls are all
 multiplexed (via glibc wrapper functions) through
-<b>socketcall</b>(2) and similarly System&nbsp;V IPC calls
-are multiplexed through <b>ipc</b>(2).</p>
+<a href="https://man.page/2/socketcall">socketcall(2)</a> and similarly System&nbsp;V IPC calls
+are multiplexed through <a href="https://man.page/2/ipc">ipc(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Although slots
 are reserved for them in the system call table, the
 following system calls are not implemented in the standard
-kernel: <b>afs_syscall</b>(2), <b>break</b>(2),
-<b>ftime</b>(2), <b>getpmsg</b>(2), <b>gtty</b>(2),
-<b>idle</b>(2), <b>lock</b>(2), <b>madvise1</b>(2),
-<b>mpx</b>(2), <b>phys</b>(2), <b>prof</b>(2),
-<b>profil</b>(2), <b>putpmsg</b>(2), <b>security</b>(2),
-<b>stty</b>(2), <b>tuxcall</b>(2), <b>ulimit</b>(2), and
-<b>vserver</b>(2) (see also <b>unimplemented</b>(2)).
-However, <b>ftime</b>(3), <b>profil</b>(3), and
-<b>ulimit</b>(3) exist as library routines. The slot for
-<b>phys</b>(2) is in use since kernel 2.1.116 for
-<b>umount</b>(2); <b>phys</b>(2) will never be implemented.
-The <b>getpmsg</b>(2) and <b>putpmsg</b>(2) calls are for
+kernel: <a href="https://man.page/2/afs_syscall">afs_syscall(2)</a>, <a href="https://man.page/2/break">break(2)</a>,
+<a href="https://man.page/2/ftime">ftime(2)</a>, <a href="https://man.page/2/getpmsg">getpmsg(2)</a>, <a href="https://man.page/2/gtty">gtty(2)</a>,
+<a href="https://man.page/2/idle">idle(2)</a>, <a href="https://man.page/2/lock">lock(2)</a>, <a href="https://man.page/2/madvise1">madvise1(2)</a>,
+<a href="https://man.page/2/mpx">mpx(2)</a>, <a href="https://man.page/2/phys">phys(2)</a>, <a href="https://man.page/2/prof">prof(2)</a>,
+<a href="https://man.page/2/profil">profil(2)</a>, <a href="https://man.page/2/putpmsg">putpmsg(2)</a>, <a href="https://man.page/2/security">security(2)</a>,
+<a href="https://man.page/2/stty">stty(2)</a>, <a href="https://man.page/2/tuxcall">tuxcall(2)</a>, <a href="https://man.page/2/ulimit">ulimit(2)</a>, and
+<a href="https://man.page/2/vserver">vserver(2)</a> (see also <a href="https://man.page/2/unimplemented">unimplemented(2)</a>).
+However, <a href="https://man.page/3/ftime">ftime(3)</a>, <a href="https://man.page/3/profil">profil(3)</a>, and
+<a href="https://man.page/3/ulimit">ulimit(3)</a> exist as library routines. The slot for
+<a href="https://man.page/2/phys">phys(2)</a> is in use since kernel 2.1.116 for
+<a href="https://man.page/2/umount">umount(2)</a>; <a href="https://man.page/2/phys">phys(2)</a> will never be implemented.
+The <a href="https://man.page/2/getpmsg">getpmsg(2)</a> and <a href="https://man.page/2/putpmsg">putpmsg(2)</a> calls are for
 kernels patched to support STREAMS, and may never be in the
 standard kernel.</p>
 
 <p style="margin-left:11%; margin-top: 1em">There was
-briefly <b>set_zone_reclaim</b>(2), added in Linux 2.6.13,
+briefly <a href="https://man.page/2/set_zone_reclaim">set_zone_reclaim(2)</a>, added in Linux 2.6.13,
 and removed in 2.6.16; this system call was never available
 to user space.</p>
 
@@ -278,7 +278,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="13%">
 
 
-<p><b>pread</b>(2)</p></td>
+<p><a href="https://man.page/2/pread">pread(2)</a></p></td>
 <td width="62%">
 </td></tr>
 <tr valign="top" align="left">
@@ -291,7 +291,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="13%">
 
 
-<p><b>pwrite</b>(2)</p></td>
+<p><a href="https://man.page/2/pwrite">pwrite(2)</a></p></td>
 <td width="62%">
 </td></tr>
 </table>
@@ -311,7 +311,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="61%">
 
 
-<p><b>bfin_spinlock</b>(2) (added in Linux 2.6.22)</p></td>
+<p><a href="https://man.page/2/bfin_spinlock">bfin_spinlock(2)</a> (added in Linux 2.6.22)</p></td>
 <td width="14%">
 </td></tr>
 <tr valign="top" align="left">
@@ -324,7 +324,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="61%">
 
 
-<p><b>dma_memcpy</b>(2) (added in Linux 2.6.22)</p></td>
+<p><a href="https://man.page/2/dma_memcpy">dma_memcpy(2)</a> (added in Linux 2.6.22)</p></td>
 <td width="14%">
 </td></tr>
 <tr valign="top" align="left">
@@ -337,7 +337,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="61%">
 
 
-<p><b>pread</b>(2) (added in Linux 2.6.22)</p></td>
+<p><a href="https://man.page/2/pread">pread(2)</a> (added in Linux 2.6.22)</p></td>
 <td width="14%">
 </td></tr>
 <tr valign="top" align="left">
@@ -350,7 +350,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="61%">
 
 
-<p><b>pwrite</b>(2) (added in Linux 2.6.22)</p></td>
+<p><a href="https://man.page/2/pwrite">pwrite(2)</a> (added in Linux 2.6.22)</p></td>
 <td width="14%">
 </td></tr>
 <tr valign="top" align="left">
@@ -363,7 +363,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="61%">
 
 
-<p><b>sram_alloc</b>(2) (added in Linux 2.6.22)</p></td>
+<p><a href="https://man.page/2/sram_alloc">sram_alloc(2)</a> (added in Linux 2.6.22)</p></td>
 <td width="14%">
 </td></tr>
 <tr valign="top" align="left">
@@ -376,7 +376,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="61%">
 
 
-<p><b>sram_free</b>(2) (added in Linux 2.6.22)</p></td>
+<p><a href="https://man.page/2/sram_free">sram_free(2)</a> (added in Linux 2.6.22)</p></td>
 <td width="14%">
 </td></tr>
 </table>
@@ -396,7 +396,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="63%">
 
 
-<p><b>metag_get_tls</b>(2) (add in Linux 3.9)</p></td>
+<p><a href="https://man.page/2/metag_get_tls">metag_get_tls(2)</a> (add in Linux 3.9)</p></td>
 <td width="12%">
 </td></tr>
 <tr valign="top" align="left">
@@ -409,7 +409,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="63%">
 
 
-<p><b>metag_set_fpu_flags</b>(2) (add in Linux 3.9)</p></td>
+<p><a href="https://man.page/2/metag_set_fpu_flags">metag_set_fpu_flags(2)</a> (add in Linux 3.9)</p></td>
 <td width="12%">
 </td></tr>
 <tr valign="top" align="left">
@@ -422,7 +422,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="63%">
 
 
-<p><b>metag_set_tls</b>(2) (add in Linux 3.9)</p></td>
+<p><a href="https://man.page/2/metag_set_tls">metag_set_tls(2)</a> (add in Linux 3.9)</p></td>
 <td width="12%">
 </td></tr>
 <tr valign="top" align="left">
@@ -435,7 +435,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="63%">
 
 
-<p><b>metag_setglobalbit</b>(2) (add in Linux 3.9)</p></td>
+<p><a href="https://man.page/2/metag_setglobalbit">metag_setglobalbit(2)</a> (add in Linux 3.9)</p></td>
 <td width="12%">
 </td></tr>
 </table>
@@ -455,7 +455,7 @@ AVR32 (port removed in Linux 4.12)</p>
 <td width="64%">
 
 
-<p><b>cmpxchg_badaddr</b>(2) (added in Linux 2.6.36)</p></td>
+<p><a href="https://man.page/2/cmpxchg_badaddr">cmpxchg_badaddr(2)</a> (added in Linux 2.6.36)</p></td>
 <td width="11%">
 </td></tr>
 </table>
@@ -484,7 +484,7 @@ increase the size of structures or scalar values passed to
 the system call. Because of these changes, certain
 architectures (notably, longstanding 32-bit architectures
 such as i386) now have various groups of related system
-calls (e.g., <b>truncate</b>(2) and <b>truncate64</b>(2))
+calls (e.g., <a href="https://man.page/2/truncate">truncate(2)</a> and <a href="https://man.page/2/truncate64">truncate64(2)</a>)
 which perform similar tasks, but which vary in details such
 as the size of their arguments. (As noted earlier,
 applications are generally unaware of this: the glibc
@@ -506,12 +506,12 @@ exist in multiple versions are the following:</p>
 
 
 <p style="margin-top: 1em">By now there are three different
-versions of <b>stat</b>(2): <i>sys_stat</i>() (slot
+versions of <a href="https://man.page/2/stat">stat(2)</a>: <i>sys_stat</i>() (slot
 <i>__NR_oldstat</i>), <i>sys_newstat</i>() (slot
 <i>__NR_stat</i>), and <i>sys_stat64</i>() (slot
 <i>__NR_stat64</i>), with the last being the most current. A
-similar story applies for <b>lstat</b>(2) and
-<b>fstat</b>(2).</p> </td></tr>
+similar story applies for <a href="https://man.page/2/lstat">lstat(2)</a> and
+<a href="https://man.page/2/fstat">fstat(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -536,7 +536,7 @@ routines <i>sys_olduname</i>(), <i>sys_uname</i>(), and
 <td width="85%">
 
 
-<p>In Linux 2.0, a new version of <b>vm86</b>(2) appeared,
+<p>In Linux 2.0, a new version of <a href="https://man.page/2/vm86">vm86(2)</a> appeared,
 with the old and the new kernel routines being named
 <i>sys_vm86old</i>() and <i>sys_vm86</i>().</p></td></tr>
 <tr valign="top" align="left">
@@ -549,7 +549,7 @@ with the old and the new kernel routines being named
 <td width="85%">
 
 
-<p>In Linux 2.4, a new version of <b>getrlimit</b>(2)
+<p>In Linux 2.4, a new version of <a href="https://man.page/2/getrlimit">getrlimit(2)</a>
 appeared, with the old and the new kernel routines being
 named <i>sys_old_getrlimit</i>() (slot
 <i>__NR_getrlimit</i>) and <i>sys_getrlimit</i>() (slot
@@ -566,9 +566,9 @@ named <i>sys_old_getrlimit</i>() (slot
 
 <p>Linux 2.4 increased the size of user and group IDs from
 16 to 32 bits. To support this change, a range of system
-calls were added (e.g., <b>chown32</b>(2),
-<b>getuid32</b>(2), <b>getgroups32</b>(2),
-<b>setresuid32</b>(2)), superseding earlier calls of the
+calls were added (e.g., <a href="https://man.page/2/chown32">chown32(2)</a>,
+<a href="https://man.page/2/getuid32">getuid32(2)</a>, <a href="https://man.page/2/getgroups32">getgroups32(2)</a>,
+<a href="https://man.page/2/setresuid32">setresuid32(2)</a>), superseding earlier calls of the
 same name without the &quot;32&quot; suffix.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -585,9 +585,9 @@ architectures to access large files (i.e., files for which
 the sizes and file offsets can&rsquo;t be represented in 32
 bits.) To support this change, replacements were required
 for system calls that deal with file offsets and sizes. Thus
-the following system calls were added: <b>fcntl64</b>(2),
-<b>getdents64</b>(2), <b>stat64</b>(2), <b>statfs64</b>(2),
-<b>truncate64</b>(2), and their analogs that work with file
+the following system calls were added: <a href="https://man.page/2/fcntl64">fcntl64(2)</a>,
+<a href="https://man.page/2/getdents64">getdents64(2)</a>, <a href="https://man.page/2/stat64">stat64(2)</a>, <a href="https://man.page/2/statfs64">statfs64(2)</a>,
+<a href="https://man.page/2/truncate64">truncate64(2)</a>, and their analogs that work with file
 descriptors or symbolic links. These system calls supersede
 the older system calls which, except in the case of the
 &quot;stat&quot; calls, have the same name without the
@@ -616,7 +616,7 @@ obsolete.</p>
 
 <p style="margin-top: 1em">The <i>rt_sig*</i> calls were
 added in kernel 2.2 to support the addition of real-time
-signals (see <b>signal</b>(7)). These system calls supersede
+signals (see <a href="https://man.page/7/signal">signal(7)</a>). These system calls supersede
 the older system calls of the same name without the
 &quot;rt_&quot; prefix.</p></td></tr>
 <tr valign="top" align="left">
@@ -629,7 +629,7 @@ the older system calls of the same name without the
 <td width="85%">
 
 
-<p>The <b>select</b>(2) and <b>mmap</b>(2) system calls use
+<p>The <a href="https://man.page/2/select">select(2)</a> and <a href="https://man.page/2/mmap">mmap(2)</a> system calls use
 five or more arguments, which caused problems in the way
 argument passing on the i386 used to be set up. Thus, while
 other architectures have <i>sys_select</i>() and
@@ -660,10 +660,10 @@ details: Alpha</b></p>
 <td width="85%">
 
 
-<p style="margin-top: 1em"><b>getxgid</b>(2) returns a pair
+<p style="margin-top: 1em"><a href="https://man.page/2/getxgid">getxgid(2)</a> returns a pair
 of GID and effective GID via registers <b>r0</b> and
-<b>r20</b>; it is provided instead of <b>getgid</b>(2) and
-<b>getegid</b>(2).</p> </td></tr>
+<b>r20</b>; it is provided instead of <a href="https://man.page/2/getgid">getgid(2)</a> and
+<a href="https://man.page/2/getegid">getegid(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -674,9 +674,9 @@ of GID and effective GID via registers <b>r0</b> and
 <td width="85%">
 
 
-<p><b>getxpid</b>(2) returns a pair of PID and parent PID
+<p><a href="https://man.page/2/getxpid">getxpid(2)</a> returns a pair of PID and parent PID
 via registers <b>r0</b> and <b>r20</b>; it is provided
-instead of <b>getpid</b>(2) and <b>getppid</b>(2).</p></td></tr>
+instead of <a href="https://man.page/2/getpid">getpid(2)</a> and <a href="https://man.page/2/getppid">getppid(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -687,8 +687,8 @@ instead of <b>getpid</b>(2) and <b>getppid</b>(2).</p></td></tr>
 <td width="85%">
 
 
-<p><b>old_adjtimex</b>(2) is a variant of
-<b>adjtimex</b>(2) that uses <i>struct timeval32</i>, for
+<p><a href="https://man.page/2/old_adjtimex">old_adjtimex(2)</a> is a variant of
+<a href="https://man.page/2/adjtimex">adjtimex(2)</a> that uses <i>struct timeval32</i>, for
 compatibility with OSF/1.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -700,9 +700,9 @@ compatibility with OSF/1.</p></td></tr>
 <td width="85%">
 
 
-<p><b>getxuid</b>(2) returns a pair of GID and effective
+<p><a href="https://man.page/2/getxuid">getxuid(2)</a> returns a pair of GID and effective
 GID via registers <b>r0</b> and <b>r20</b>; it is provided
-instead of <b>getuid</b>(2) and <b>geteuid</b>(2).</p></td></tr>
+instead of <a href="https://man.page/2/getuid">getuid(2)</a> and <a href="https://man.page/2/geteuid">geteuid(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -713,7 +713,7 @@ instead of <b>getuid</b>(2) and <b>geteuid</b>(2).</p></td></tr>
 <td width="85%">
 
 
-<p><b>sethae</b>(2) is used for configuring the Host
+<p><a href="https://man.page/2/sethae">sethae(2)</a> is used for configuring the Host
 Address Extension register on low-cost Alphas in order to
 access address space beyond first 27 bits.</p></td></tr>
 </table>
@@ -724,9 +724,9 @@ access address space beyond first 27 bits.</p></td></tr>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>intro</b>(2),
-<b>syscall</b>(2), <b>unimplemented</b>(2), <b>errno</b>(3),
-<b>libc</b>(7), <b>vdso</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/intro">intro(2)</a>,
+<a href="https://man.page/2/syscall">syscall(2)</a>, <a href="https://man.page/2/unimplemented">unimplemented(2)</a>, <a href="https://man.page/3/errno">errno(3)</a>,
+<a href="https://man.page/7/libc">libc(7)</a>, <a href="https://man.page/7/vdso">vdso(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

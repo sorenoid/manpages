@@ -56,7 +56,7 @@ madvise(void *</b><i>addr</i><b>, size_t</b>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>madvise</b>():</p>
@@ -100,7 +100,7 @@ appropriate read-ahead and caching techniques. These
 application (except in the case of <b>MADV_DONTNEED</b>),
 but may influence its performance. All of the <i>advice</i>
 values listed here have analogs in the POSIX-specified
-<b>posix_madvise</b>(3) function, and the values have the
+<a href="https://man.page/3/posix_madvise">posix_madvise(3)</a> function, and the values have the
 same meanings, with the exception of
 <b>MADV_DONTNEED</b>.</p>
 
@@ -169,7 +169,7 @@ the pages into user space.)</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Linux-specific
 advice values</b> <br>
 The following Linux-specific <i>advice</i> values have no
-counterparts in the POSIX-specified <b>posix_madvise</b>(3),
+counterparts in the POSIX-specified <a href="https://man.page/3/posix_madvise">posix_madvise(3)</a>,
 and may or may not have counterparts in the <b>madvise</b>()
 interface available on other implementations. Note that some
 of these operations change the semantics of memory accesses.
@@ -179,7 +179,7 @@ MADV_REMOVE</b> (since Linux 2.6.16)</p>
 <p style="margin-left:22%;">Free up a given range of pages
 and its associated backing store. This is equivalent to
 punching a hole in the corresponding byte range of the
-backing store (see <b>fallocate</b>(2)). Subsequent accesses
+backing store (see <a href="https://man.page/2/fallocate">fallocate(2)</a>). Subsequent accesses
 in the specified address range will see bytes containing
 zero.</p>
 
@@ -189,9 +189,9 @@ cannot be applied to locked pages, Huge TLB pages, or
 <b>VM_PFNMAP</b> pages.</p>
 
 <p style="margin-left:22%; margin-top: 1em">In the initial
-implementation, only <b>tmpfs</b>(5) was supported
+implementation, only <a href="https://man.page/5/tmpfs">tmpfs(5)</a> was supported
 <b>MADV_REMOVE</b>; but since Linux 3.5, any filesystem
-which supports the <b>fallocate</b>(2)
+which supports the <a href="https://man.page/2/fallocate">fallocate(2)</a>
 <b>FALLOC_FL_PUNCH_HOLE</b> mode also supports
 <b>MADV_REMOVE</b>. Hugetlbfs fails with the error
 <b>EINVAL</b> and other filesystems fail with the error
@@ -201,10 +201,10 @@ which supports the <b>fallocate</b>(2)
 Linux 2.6.16)</p>
 
 <p style="margin-left:22%;">Do not make the pages in this
-range available to the child after a <b>fork</b>(2). This is
+range available to the child after a <a href="https://man.page/2/fork">fork(2)</a>. This is
 useful to prevent copy-on-write semantics from changing the
 physical location of a page if the parent writes to it after
-a <b>fork</b>(2). (Such page relocations cause problems for
+a <a href="https://man.page/2/fork">fork(2)</a>. (Such page relocations cause problems for
 hardware that DMAs into the page.)</p>
 
 <p style="margin-left:11%;"><b>MADV_DOFORK</b> (since Linux
@@ -212,7 +212,7 @@ hardware that DMAs into the page.)</p>
 
 <p style="margin-left:22%;">Undo the effect of
 <b>MADV_DONTFORK</b>, restoring the default behavior,
-whereby a mapping is inherited across <b>fork</b>(2).</p>
+whereby a mapping is inherited across <a href="https://man.page/2/fork">fork(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>MADV_HWPOISON</b> (since
 Linux 2.6.32)</p>
@@ -241,7 +241,7 @@ pages with identical content. These are replaced by a single
 write-protected page (which is automatically copied if a
 process later wants to update the content of the page). KSM
 merges only private anonymous pages (see
-<b>mmap</b>(2)).</p>
+<a href="https://man.page/2/mmap">mmap(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">The KSM feature
 is intended for applications that generate many instances of
@@ -289,12 +289,12 @@ Linux 2.6.38)</p>
 <p style="margin-left:22%;">Enable Transparent Huge Pages
 (THP) for pages in the range specified by <i>addr</i> and
 <i>length</i>. Currently, Transparent Huge Pages work only
-with private anonymous pages (see <b>mmap</b>(2)). The
+with private anonymous pages (see <a href="https://man.page/2/mmap">mmap(2)</a>). The
 kernel will regularly scan the areas marked as huge page
 candidates to replace them with huge pages. The kernel will
 also allocate huge pages directly when the region is
 naturally aligned to the huge page size (see
-<b>posix_memalign</b>(2)).</p>
+<a href="https://man.page/2/posix_memalign">posix_memalign(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">This feature is
 primarily aimed at applications that use large mappings of
@@ -342,7 +342,7 @@ large areas of memory that are known not to be useful in a
 core dump. The effect of <b>MADV_DONTDUMP</b> takes
 precedence over the bit mask that is set via the
 <i>/proc/[pid]/coredump_filter</i> file (see
-<b>core</b>(5)).</p>
+<a href="https://man.page/5/core">core(5)</a>).</p>
 
 <p style="margin-left:11%;"><b>MADV_DODUMP</b> (since Linux
 3.4)</p>
@@ -372,7 +372,7 @@ references.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
 <b>MADV_FREE</b> operation can be applied only to private
-anonymous pages (see <b>mmap</b>(2)). In Linux before
+anonymous pages (see <a href="https://man.page/2/mmap">mmap(2)</a>). In Linux before
 version 4.12, when freeing pages on a swapless system, the
 pages in the given range are freed instantly, regardless of
 memory pressure.</p>
@@ -381,7 +381,7 @@ memory pressure.</p>
 Linux 4.14)</p>
 
 <p style="margin-left:22%;">Present the child process with
-zero-filled memory in this range after a <b>fork</b>(2).
+zero-filled memory in this range after a <a href="https://man.page/2/fork">fork(2)</a>.
 This is useful in forking servers in order to ensure that
 sensitive per-process data (for example, PRNG seeds,
 cryptographic secrets, and so on) is not handed to child
@@ -389,12 +389,12 @@ processes.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
 <b>MADV_WIPEONFORK</b> operation can be applied only to
-private anonymous pages (see <b>mmap</b>(2)).</p>
+private anonymous pages (see <a href="https://man.page/2/mmap">mmap(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">Within the
-child created by <b>fork</b>(2), the <b>MADV_WIPEONFORK</b>
+child created by <a href="https://man.page/2/fork">fork(2)</a>, the <b>MADV_WIPEONFORK</b>
 setting remains in place on the specified address range.
-This setting is cleared during <b>execve</b>(2).</p>
+This setting is cleared during <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>MADV_KEEPONFORK</b> (since
 Linux 4.14)</p>
@@ -592,7 +592,7 @@ typically implement at least the flags listed above under
 in semantics.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX.1-2001
-describes <b>posix_madvise</b>(3) with constants
+describes <a href="https://man.page/3/posix_madvise">posix_madvise(3)</a> with constants
 <b>POSIX_MADV_NORMAL</b>, <b>POSIX_MADV_RANDOM</b>,
 <b>POSIX_MADV_SEQUENTIAL</b>, <b>POSIX_MADV_WILLNEED</b>,
 and <b>POSIX_MADV_DONTNEED</b>, and so on, with behavior
@@ -618,10 +618,10 @@ ignores them and applies the call to the rest (but returns
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>getrlimit</b>(2),
-<b>mincore</b>(2), <b>mmap</b>(2), <b>mprotect</b>(2),
-<b>msync</b>(2), <b>munmap</b>(2), <b>prctl</b>(2),
-<b>posix_madvise</b>(3), <b>core</b>(5)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/getrlimit">getrlimit(2)</a>,
+<a href="https://man.page/2/mincore">mincore(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/mprotect">mprotect(2)</a>,
+<a href="https://man.page/2/msync">msync(2)</a>, <a href="https://man.page/2/munmap">munmap(2)</a>, <a href="https://man.page/2/prctl">prctl(2)</a>,
+<a href="https://man.page/3/posix_madvise">posix_madvise(3)</a>, <a href="https://man.page/5/core">core(5)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>
