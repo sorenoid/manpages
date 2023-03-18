@@ -89,8 +89,8 @@ word</i>&mdash;whose address is supplied to the
 all platforms, including 64-bit systems.) All futex
 operations are governed by this value. In order to share a
 futex between processes, the futex is placed in a region of
-shared memory, created using (for example) <b>mmap</b>(2) or
-<b>shmat</b>(2). (Thus, the futex word may have different
+shared memory, created using (for example) <a href="https://man.page/2/mmap">mmap(2)</a> or
+<a href="https://man.page/2/shmat">shmat(2)</a>. (Thus, the futex word may have different
 virtual addresses in different processes, but these
 addresses all refer to the same location in physical
 memory.) In a multithreaded program, it is sufficient to
@@ -134,7 +134,7 @@ state&quot;). When releasing the lock, a thread has to first
 reset the lock state to not acquired and then execute a
 futex operation that wakes threads blocked on the lock flag
 used as a futex word (this can be further optimized to avoid
-unnecessary wake-ups). See <b>futex</b>(7) for more detail
+unnecessary wake-ups). See <a href="https://man.page/7/futex">futex(7)</a> for more detail
 on how to use futexes.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Besides the
@@ -304,7 +304,7 @@ descriptor that is associated with the futex at
 descriptor after use. When another process or thread
 performs a <b>FUTEX_WAKE</b> on the futex word, the file
 descriptor indicates as being readable with
-<b>select</b>(2), <b>poll</b>(2), and <b>epoll</b>(7)</p>
+<a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, and <a href="https://man.page/7/epoll">epoll(7)</a></p>
 
 <p style="margin-left:22%; margin-top: 1em">The file
 descriptor can be used to obtain asynchronous notifications:
@@ -401,7 +401,7 @@ Linux 2.6.14)</p>
 <p style="margin-left:22%;">This operation was added to
 support some user-space use cases where more than one futex
 must be handled at the same time. The most notable example
-is the implementation of <b>pthread_cond_signal</b>(3),
+is the implementation of <a href="https://man.page/3/pthread_cond_signal">pthread_cond_signal(3)</a>,
 which requires operations on two futexes, the one used to
 implement the mutex and the one used in the implementation
 of the wait queue associated with the condition variable.
@@ -666,7 +666,7 @@ value shall be 0.</p></td></tr>
 
 
 <p>If the lock is acquired, the futex word&rsquo;s value
-shall be the thread ID (TID; see <b>gettid</b>(2)) of the
+shall be the thread ID (TID; see <a href="https://man.page/2/gettid">gettid(2)</a>) of the
 owning thread.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -850,7 +850,7 @@ one waiter exists, the enqueueing of the waiter is in
 descending priority order. (For information on priority
 ordering, see the discussion of the <b>SCHED_DEADLINE</b>,
 <b>SCHED_FIFO</b>, and <b>SCHED_RR</b> scheduling policies
-in <b>sched</b>(7).) The owner inherits either the
+in <a href="https://man.page/7/sched">sched(7)</a>.) The owner inherits either the
 waiter&rsquo;s CPU bandwidth (if the waiter is scheduled
 under the <b>SCHED_DEADLINE</b> policy) or the
 waiter&rsquo;s priority (if the waiter is scheduled under
@@ -971,7 +971,7 @@ target of the requeue that takes place in the
 
 <p style="margin-left:11%; margin-top: 1em">In the event of
 an error (and assuming that <b>futex</b>() was invoked via
-<b>syscall</b>(2)), all operations return -1 and set
+<a href="https://man.page/2/syscall">syscall(2)</a>), all operations return -1 and set
 <i>errno</i> to indicate the cause of the error.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The return
@@ -1177,7 +1177,7 @@ user-space address.</p></td></tr>
 
 <p>A <b>FUTEX_WAIT</b> or <b>FUTEX_WAIT_BITSET</b>
 operation was interrupted by a signal (see
-<b>signal</b>(7)). In kernels before Linux 2.6.22, this
+<a href="https://man.page/7/signal">signal(7)</a>). In kernels before Linux 2.6.22, this
 error could also be returned for a spurious wakeup; since
 Linux 2.6.22, this no longer happens.</p></td></tr>
 <tr valign="top" align="left">
@@ -1519,7 +1519,7 @@ call is Linux-specific.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Glibc does not
 provide a wrapper for this system call; call it using
-<b>syscall</b>(2).</p>
+<a href="https://man.page/2/syscall">syscall(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Several
 higher-level programming abstractions are implemented via
@@ -1754,10 +1754,10 @@ fpost(futex1); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>get_robust_list</b>(2),
-<b>restart_syscall</b>(2),
-<b>pthread_mutexattr_getprotocol</b>(3), <b>futex</b>(7),
-<b>sched</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/get_robust_list">get_robust_list(2)</a>,
+<a href="https://man.page/2/restart_syscall">restart_syscall(2)</a>,
+<a href="https://man.page/3/pthread_mutexattr_getprotocol">pthread_mutexattr_getprotocol(3)</a>, <a href="https://man.page/7/futex">futex(7)</a>,
+<a href="https://man.page/7/sched">sched(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 kernel source files:</p>

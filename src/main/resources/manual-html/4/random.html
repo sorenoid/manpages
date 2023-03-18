@@ -73,9 +73,9 @@ noise in the entropy pool. From this entropy pool, random
 numbers are created.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Linux 3.17 and
-later provides the simpler and safer <b>getrandom</b>(2)
+later provides the simpler and safer <a href="https://man.page/2/getrandom">getrandom(2)</a>
 interface which requires no special files; see the
-<b>getrandom</b>(2) manual page for details.</p>
+<a href="https://man.page/2/getrandom">getrandom(2)</a> manual page for details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When read, the
 <i>/dev/urandom</i> device returns random bytes using a
@@ -87,7 +87,7 @@ large amounts of data.</p>
 <p style="margin-left:11%; margin-top: 1em">When read
 during early boot time, <i>/dev/urandom</i> may return data
 prior to the entropy pool being initialized. If this is of
-concern in your application, use <b>getrandom</b>(2) or
+concern in your application, use <a href="https://man.page/2/getrandom">getrandom(2)</a> or
 <i>/dev/random</i> instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -103,16 +103,16 @@ afford indeterminate delays.</p>
 <p style="margin-left:11%; margin-top: 1em">When the
 entropy pool is empty, reads from <i>/dev/random</i> will
 block until additional environmental noise is gathered. If
-<b>open</b>(2) is called for <i>/dev/random</i> with the
-<b>O_NONBLOCK</b> flag, a subsequent <b>read</b>(2) will not
+<a href="https://man.page/2/open">open(2)</a> is called for <i>/dev/random</i> with the
+<b>O_NONBLOCK</b> flag, a subsequent <a href="https://man.page/2/read">read(2)</a> will not
 block if the requested number of bytes is not available.
 Instead, the available bytes are returned. If no byte is
-available, <b>read</b>(2) will return -1 and <i>errno</i>
+available, <a href="https://man.page/2/read">read(2)</a> will return -1 and <i>errno</i>
 will be set to <b>EAGAIN</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>O_NONBLOCK</b> flag has no effect when opening
-<i>/dev/urandom</i>. When calling <b>read</b>(2) for the
+<i>/dev/urandom</i>. When calling <a href="https://man.page/2/read">read(2)</a> for the
 device <i>/dev/urandom</i>, reads of up to 256 bytes will
 return as many bytes as are requested and will not be
 interrupted by a signal handler. Reads with a buffer over
@@ -121,8 +121,8 @@ bytes or fail with the error <b>EINTR</b>, if interrupted by
 a signal handler.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
-3.16, a <b>read</b>(2) from <i>/dev/urandom</i> will return
-at most 32&nbsp;MB. A <b>read</b>(2) from <i>/dev/random</i>
+3.16, a <a href="https://man.page/2/read">read(2)</a> from <i>/dev/urandom</i> will return
+at most 32&nbsp;MB. A <a href="https://man.page/2/read">read(2)</a> from <i>/dev/random</i>
 will return at most 512 bytes (340 bytes on Linux kernels
 before version 2.6.12).</p>
 
@@ -139,7 +139,7 @@ The <i>/dev/random</i> interface is considered a legacy
 interface, and <i>/dev/urandom</i> is preferred and
 sufficient in all use cases, with the exception of
 applications which require randomness during early boot
-time; for these applications, <b>getrandom</b>(2) must be
+time; for these applications, <a href="https://man.page/2/getrandom">getrandom(2)</a> must be
 used instead, because it will block until the entropy pool
 is initialized.</p>
 
@@ -259,7 +259,7 @@ default is 64.</p>
 
 <p style="margin-left:22%;">This file contains the number
 of bits of entropy below which we wake up processes that do
-a <b>select</b>(2) or <b>poll</b>(2) for write access to
+a <a href="https://man.page/2/select">select(2)</a> or <a href="https://man.page/2/poll">poll(2)</a> for write access to
 <i>/dev/random</i>. These values can be changed by writing
 to the files.</p>
 
@@ -273,7 +273,7 @@ generated once.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>ioctl(2)
 interface</b> <br>
-The following <b>ioctl</b>(2) requests are defined on file
+The following <a href="https://man.page/2/ioctl">ioctl(2)</a> requests are defined on file
 descriptors connected to either <i>/dev/random</i> or
 <i>/dev/urandom</i>. All requests performed will interact
 with the input entropy pool impacting both
@@ -341,7 +341,7 @@ pools.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an overview
 and comparison of the various interfaces that can be used to
-obtain randomness, see <b>random</b>(7).</p>
+obtain randomness, see <a href="https://man.page/7/random">random(7)</a>.</p>
 
 <h2>BUGS
 <a name="BUGS"></a>
@@ -358,8 +358,8 @@ prior to the entropy pool being initialized.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>mknod</b>(1),
-<b>getrandom</b>(2), <b>random</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/mknod">mknod(1)</a>,
+<a href="https://man.page/2/getrandom">getrandom(2)</a>, <a href="https://man.page/7/random">random(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">RFC&nbsp;1750,
 &quot;Randomness Recommendations for Security&quot;</p>

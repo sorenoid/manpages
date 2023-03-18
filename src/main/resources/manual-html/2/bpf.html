@@ -171,7 +171,7 @@ BPF_MAP_CREATE</b></p>
 
 <p style="margin-left:22%;">Create a map and return a file
 descriptor that refers to the map. The close-on-exec file
-descriptor flag (see <b>fcntl</b>(2)) is automatically
+descriptor flag (see <a href="https://man.page/2/fcntl">fcntl(2)</a>) is automatically
 enabled for the new file descriptor.</p>
 
 <p style="margin-left:11%;"><b>BPF_MAP_LOOKUP_ELEM</b></p>
@@ -200,7 +200,7 @@ specified map and return the key of the next element.</p>
 <p style="margin-left:22%;">Verify and load an eBPF
 program, returning a new file descriptor associated with the
 program. The close-on-exec file descriptor flag (see
-<b>fcntl</b>(2)) is automatically enabled for the new file
+<a href="https://man.page/2/fcntl">fcntl(2)</a>) is automatically enabled for the new file
 descriptor.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
@@ -968,7 +968,7 @@ and <i>log_size</i> must be zero.</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">Applying
-<b>close</b>(2) to the file descriptor returned by
+<a href="https://man.page/2/close">close(2)</a> to the file descriptor returned by
 <b>BPF_PROG_LOAD</b> will unload the eBPF program (but see
 NOTES).</p>
 
@@ -1046,7 +1046,7 @@ Various kernel subsystems have different ways to do so.</p>
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 3.19, the following call will attach the program
 <i>prog_fd</i> to the socket <i>sockfd</i>, which was
-created by an earlier call to <b>socket</b>(2):</p>
+created by an earlier call to <a href="https://man.page/2/socket">socket(2)</a>:</p>
 
 
 <p style="margin-left:17%; margin-top: 1em">setsockopt(sockfd,
@@ -1057,7 +1057,7 @@ SOL_SOCKET, SO_ATTACH_BPF, <br>
 4.1, the following call may be used to attach the eBPF
 program referred to by the file descriptor <i>prog_fd</i> to
 a perf event file descriptor, <i>event_fd</i>, that was
-created by a previous call to <b>perf_event_open</b>(2):</p>
+created by a previous call to <a href="https://man.page/2/perf_event_open">perf_event_open(2)</a>:</p>
 
 
 <p style="margin-left:17%; margin-top: 1em">ioctl(event_fd,
@@ -1334,12 +1334,12 @@ access may be blocked by writing the value 1 to the file
 
 <p style="margin-left:11%; margin-top: 1em">eBPF objects
 (maps and programs) can be shared between processes. For
-example, after <b>fork</b>(2), the child inherits file
+example, after <a href="https://man.page/2/fork">fork(2)</a>, the child inherits file
 descriptors referring to the same eBPF objects. In addition,
 file descriptors referring to eBPF objects can be
 transferred over UNIX domain sockets. File descriptors
 referring to eBPF objects can be duplicated in the usual
-way, using <b>dup</b>(2) and similar calls. An eBPF object
+way, using <a href="https://man.page/2/dup">dup(2)</a> and similar calls. An eBPF object
 is deallocated only after all file descriptors referring to
 the object have been closed.</p>
 
@@ -1643,8 +1643,8 @@ directory in the kernel source tree.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>seccomp</b>(2),
-<b>bpf-helpers</b>(7), <b>socket</b>(7), <b>tc</b>(8),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/seccomp">seccomp(2)</a>,
+<a href="https://man.page/7/bpf-helpers">bpf-helpers(7)</a>, <a href="https://man.page/7/socket">socket(7)</a>, <b>tc</b>(8),
 <b>tc-bpf</b>(8)</p>
 
 <p style="margin-left:11%; margin-top: 1em">Both classic

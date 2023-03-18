@@ -76,7 +76,7 @@ descriptors, and so on.</p>
 <p style="margin-left:11%; margin-top: 1em">Permission to
 employ <b>kcmp</b>() is governed by ptrace access mode
 <b>PTRACE_MODE_READ_REALCREDS</b> checks against both
-<i>pid1</i> and <i>pid2</i>; see <b>ptrace</b>(2).</p>
+<i>pid1</i> and <i>pid2</i>; see <a href="https://man.page/2/ptrace">ptrace(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <i>type</i>
 argument specifies which resource is to be compared in the
@@ -85,19 +85,19 @@ KCMP_FILE</b></p>
 
 <p style="margin-left:22%;">Check whether a file descriptor
 <i>idx1</i> in the process <i>pid1</i> refers to the same
-open file description (see <b>open</b>(2)) as file
+open file description (see <a href="https://man.page/2/open">open(2)</a>) as file
 descriptor <i>idx2</i> in the process <i>pid2</i>. The
 existence of two file descriptors that refer to the same
-open file description can occur as a result of <b>dup</b>(2)
-(and similar) <b>fork</b>(2), or passing file descriptors
-via a domain socket (see <b>unix</b>(7)).</p>
+open file description can occur as a result of <a href="https://man.page/2/dup">dup(2)</a>
+(and similar) <a href="https://man.page/2/fork">fork(2)</a>, or passing file descriptors
+via a domain socket (see <a href="https://man.page/7/unix">unix(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>KCMP_FILES</b></p>
 
 <p style="margin-left:22%;">Check whether the processes
 share the same set of open file descriptors. The arguments
 <i>idx1</i> and <i>idx2</i> are ignored. See the discussion
-of the <b>CLONE_FILES</b> flag in <b>clone</b>(2).</p>
+of the <b>CLONE_FILES</b> flag in <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>KCMP_FS</b></p>
 
@@ -106,21 +106,21 @@ share the same filesystem information (i.e., file mode
 creation mask, working directory, and filesystem root). The
 arguments <i>idx1</i> and <i>idx2</i> are ignored. See the
 discussion of the <b>CLONE_FS</b> flag in
-<b>clone</b>(2).</p>
+<a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>KCMP_IO</b></p>
 
 <p style="margin-left:22%;">Check whether the processes
 share I/O context. The arguments <i>idx1</i> and <i>idx2</i>
 are ignored. See the discussion of the <b>CLONE_IO</b> flag
-in <b>clone</b>(2).</p>
+in <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>KCMP_SIGHAND</b></p>
 
 <p style="margin-left:22%;">Check whether the processes
 share the same table of signal dispositions. The arguments
 <i>idx1</i> and <i>idx2</i> are ignored. See the discussion
-of the <b>CLONE_SIGHAND</b> flag in <b>clone</b>(2).</p>
+of the <b>CLONE_SIGHAND</b> flag in <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>KCMP_SYSVSEM</b></p>
 
@@ -128,21 +128,21 @@ of the <b>CLONE_SIGHAND</b> flag in <b>clone</b>(2).</p>
 share the same list of System&nbsp;V semaphore undo
 operations. The arguments <i>idx1</i> and <i>idx2</i> are
 ignored. See the discussion of the <b>CLONE_SYSVSEM</b> flag
-in <b>clone</b>(2).</p>
+in <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>KCMP_VM</b></p>
 
 <p style="margin-left:22%;">Check whether the processes
 share the same address space. The arguments <i>idx1</i> and
 <i>idx2</i> are ignored. See the discussion of the
-<b>CLONE_VM</b> flag in <b>clone</b>(2).</p>
+<b>CLONE_VM</b> flag in <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>KCMP_EPOLL_TFD</b> (since
 Linux 4.13)</p>
 
 <p style="margin-left:22%;">Check whether the file
 descriptor <i>idx1</i> of the process <i>pid1</i> is present
-in the <b>epoll</b>(7) instance described by <i>idx2</i> of
+in the <a href="https://man.page/7/epoll">epoll(7)</a> instance described by <i>idx2</i> of
 the process <i>pid2</i>. The argument <i>idx2</i> is a
 pointer to a structure where the target file is described.
 This structure has the form:</p>
@@ -156,7 +156,7 @@ __u64 toff; <br>
 
 <p style="margin-left:11%; margin-top: 1em">Within this
 structure, <i>efd</i> is an epoll file descriptor returned
-from <b>epoll_create</b>(2), <i>tfd</i> is a target file
+from <a href="https://man.page/2/epoll_create">epoll_create(2)</a>, <i>tfd</i> is a target file
 descriptor number, and <i>toff</i> is a target file offset
 counted from zero. Several different targets may be
 registered with the same file descriptor number and setting
@@ -166,7 +166,7 @@ a specific offset helps to investigate each of them.</p>
 <b>kcmp</b>() is not protected against false positives which
 may occur if the processes are currently running. One should
 stop the processes by sending <b>SIGSTOP</b> (see
-<b>signal</b>(7)) prior to inspection with this system call
+<a href="https://man.page/7/signal">signal(7)</a>) prior to inspection with this system call
 to obtain meaningful results.</p>
 
 <h2>RETURN VALUE
@@ -296,7 +296,7 @@ the user&rsquo;s address space.</p></td></tr>
 <td width="78%">
 
 
-<p>The target file is not present in <b>epoll</b>(7)
+<p>The target file is not present in <a href="https://man.page/7/epoll">epoll(7)</a>
 instance.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -313,7 +313,7 @@ The <b>CAP_SYS_PTRACE</b> capability is required to inspect
 processes that you do not own. Other ptrace limitations may
 also apply, such as <b>CONFIG_SECURITY_YAMA</b>, which, when
 <i>/proc/sys/kernel/yama/ptrace_scope</i> is 2, limits
-<b>kcmp</b>() to child processes; see <b>ptrace</b>(2).</p></td></tr>
+<b>kcmp</b>() to child processes; see <a href="https://man.page/2/ptrace">ptrace(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -351,7 +351,7 @@ intended to be portable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Glibc does not
 provide a wrapper for this system call; call it using
-<b>syscall</b>(2).</p>
+<a href="https://man.page/2/syscall">syscall(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This system
 call is available only if the kernel was configured with
@@ -359,11 +359,11 @@ call is available only if the kernel was configured with
 call is for the checkpoint/restore in user space (CRIU)
 feature. The alternative to this system call would have been
 to expose suitable process information via the
-<b>proc</b>(5) filesystem; this was deemed to be unsuitable
+<a href="https://man.page/5/proc">proc(5)</a> filesystem; this was deemed to be unsuitable
 for security reasons.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>clone</b>(2) for some background information on the
+<a href="https://man.page/2/clone">clone(2)</a> for some background information on the
 shared resources referred to on this page.</p>
 
 <h2>EXAMPLES
@@ -579,8 +579,8 @@ wait(NULL); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>clone</b>(2),
-<b>unshare</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/unshare">unshare(2)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

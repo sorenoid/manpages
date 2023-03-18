@@ -241,7 +241,7 @@ As well as various <i>/proc</i> files described below, the
 namespaces API includes the following system calls: <b><br>
 clone</b>(2)</p>
 
-<p style="margin-left:22%;">The <b>clone</b>(2) system call
+<p style="margin-left:22%;">The <a href="https://man.page/2/clone">clone(2)</a> system call
 creates a new process. If the <i>flags</i> argument of the
 call specifies one or more of the <b>CLONE_NEW*</b> flags
 listed below, then new namespaces are created for each flag,
@@ -249,17 +249,17 @@ and the child process is made a member of those namespaces.
 (This system call also implements a number of features
 unrelated to namespaces.)</p>
 
-<p style="margin-left:11%;"><b>setns</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/setns">setns(2)</a></p>
 
-<p style="margin-left:22%;">The <b>setns</b>(2) system call
+<p style="margin-left:22%;">The <a href="https://man.page/2/setns">setns(2)</a> system call
 allows the calling process to join an existing namespace.
 The namespace to join is specified via a file descriptor
 that refers to one of the <i>/proc/[pid]/ns</i> files
 described below.</p>
 
-<p style="margin-left:11%;"><b>unshare</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/unshare">unshare(2)</a></p>
 
-<p style="margin-left:22%;">The <b>unshare</b>(2) system
+<p style="margin-left:22%;">The <a href="https://man.page/2/unshare">unshare(2)</a> system
 call moves the calling process to a new namespace. If the
 <i>flags</i> argument of the call specifies one or more of
 the <b>CLONE_NEW*</b> flags listed below, then new
@@ -268,15 +268,15 @@ process is made a member of those namespaces. (This system
 call also implements a number of features unrelated to
 namespaces.)</p>
 
-<p style="margin-left:11%;"><b>ioctl</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/ioctl">ioctl(2)</a></p>
 
-<p style="margin-left:22%;">Various <b>ioctl</b>(2)
+<p style="margin-left:22%;">Various <a href="https://man.page/2/ioctl">ioctl(2)</a>
 operations can be used to discover information about
 namespaces. These operations are described in
-<b>ioctl_ns</b>(2).</p>
+<a href="https://man.page/2/ioctl_ns">ioctl_ns(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Creation of new
-namespaces using <b>clone</b>(2) and <b>unshare</b>(2) in
+namespaces using <a href="https://man.page/2/clone">clone(2)</a> and <a href="https://man.page/2/unshare">unshare(2)</a> in
 most cases requires the <b>CAP_SYS_ADMIN</b> capability,
 since, in the new namespace, the creator will have the power
 to change global resources that are visible to other
@@ -289,7 +289,7 @@ namespace.</p>
 /proc/[pid]/ns/ directory</b> <br>
 Each process has a <i>/proc/[pid]/ns/</i> subdirectory
 containing one entry for each namespace that supports being
-manipulated by <b>setns</b>(2):</p>
+manipulated by <a href="https://man.page/2/setns">setns(2)</a>:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>ls -l
 /proc/$$/ns | awk '{print $1, $9, $10, $11}'</b> <br>
@@ -306,7 +306,7 @@ lrwxrwxrwx. user -&gt; user:[4026531837] <br>
 lrwxrwxrwx. uts -&gt; uts:[4026531838]</p>
 
 <p style="margin-left:11%; margin-top: 1em">Bind mounting
-(see <b>mount</b>(2)) one of the files in this directory to
+(see <a href="https://man.page/2/mount">mount(2)</a>) one of the files in this directory to
 somewhere else in the filesystem keeps the corresponding
 namespace of the process specified by <i>pid</i> alive even
 if all processes currently in the namespace terminate.</p>
@@ -318,7 +318,7 @@ corresponding namespace of the process specified by
 <i>pid</i>. As long as this file descriptor remains open,
 the namespace will remain alive, even if all processes in
 the namespace terminate. The file descriptor can be passed
-to <b>setns</b>(2).</p>
+to <a href="https://man.page/2/setns">setns(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In Linux 3.7
 and earlier, these files were visible as hard links. Since
@@ -327,7 +327,7 @@ are in the same namespace, then the device IDs and inode
 numbers of their <i>/proc/[pid]/ns/xxx</i> symbolic links
 will be the same; an application can check this using the
 <i>stat.st_dev</i> and <i>stat.st_ino</i> fields returned by
-<b>stat</b>(2). The content of this symbolic link is a
+<a href="https://man.page/2/stat">stat(2)</a>. The content of this symbolic link is a
 string containing the namespace type and inode number as in
 the following example:</p>
 
@@ -375,11 +375,11 @@ namespace membership never changes).</p>
 <p style="margin-left:22%;">This file is a handle for the
 PID namespace of child processes created by this process.
 This can change as a consequence of calls to
-<b>unshare</b>(2) and <b>setns</b>(2) (see
-<b>pid_namespaces</b>(7)), so the file may differ from
+<a href="https://man.page/2/unshare">unshare(2)</a> and <a href="https://man.page/2/setns">setns(2)</a> (see
+<a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>), so the file may differ from
 <i>/proc/[pid]/ns/pid</i>. The symbolic link gains a value
 only after the first child process is created in the
-namespace. (Beforehand, <b>readlink</b>(2) of the symbolic
+namespace. (Beforehand, <a href="https://man.page/2/readlink">readlink(2)</a> of the symbolic
 link will return an empty buffer.)</p>
 
 <p style="margin-left:11%;"><i>/proc/[pid]/ns/time</i>
@@ -395,8 +395,8 @@ time namespace of the process.</p>
 <p style="margin-left:22%;">This file is a handle for the
 time namespace of child processes created by this process.
 This can change as a consequence of calls to
-<b>unshare</b>(2) and <b>setns</b>(2) (see
-<b>time_namespaces</b>(7)), so the file may differ from
+<a href="https://man.page/2/unshare">unshare(2)</a> and <a href="https://man.page/2/setns">setns(2)</a> (see
+<a href="https://man.page/7/time_namespaces">time_namespaces(7)</a>), so the file may differ from
 <i>/proc/[pid]/ns/time</i>.</p>
 
 <p style="margin-left:11%;"><i>/proc/[pid]/ns/user</i>
@@ -412,10 +412,10 @@ user namespace of the process.</p>
 UTS namespace of the process.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Permission to
-dereference or read (<b>readlink</b>(2)) these symbolic
+dereference or read (<a href="https://man.page/2/readlink">readlink(2)</a>) these symbolic
 links is governed by a ptrace access mode
 <b>PTRACE_MODE_READ_FSCREDS</b> check; see
-<b>ptrace</b>(2).</p>
+<a href="https://man.page/2/ptrace">ptrace(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The
 /proc/sys/user directory</b> <br>
@@ -547,8 +547,8 @@ namespaces) that may be enforced.</p></td></tr>
 <td width="85%">
 
 
-<p>Upon encountering these limits, <b>clone</b>(2) and
-<b>unshare</b>(2) fail with the error <b>ENOSPC</b>.</p></td></tr>
+<p>Upon encountering these limits, <a href="https://man.page/2/clone">clone(2)</a> and
+<a href="https://man.page/2/unshare">unshare(2)</a> fail with the error <b>ENOSPC</b>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -707,7 +707,7 @@ refers to the namespace via a
 
 
 <p>It is an IPC namespace, and a corresponding mount of an
-<i>mqueue</i> filesystem (see <b>mq_overview</b>(7)) refers
+<i>mqueue</i> filesystem (see <a href="https://man.page/7/mq_overview">mq_overview(7)</a>) refers
 to this namespace.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -720,7 +720,7 @@ to this namespace.</p></td></tr>
 
 
 <p>It is a PID namespace, and a corresponding mount of a
-<b>proc</b>(5) filesystem refers to this namespace.</p></td></tr>
+<a href="https://man.page/5/proc">proc(5)</a> filesystem refers to this namespace.</p></td></tr>
 </table>
 
 <h2>EXAMPLES
@@ -729,7 +729,7 @@ to this namespace.</p></td></tr>
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>clone</b>(2) and <b>user_namespaces</b>(7).</p>
+<a href="https://man.page/2/clone">clone(2)</a> and <a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -737,14 +737,14 @@ to this namespace.</p></td></tr>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>nsenter</b>(1),
-<b>readlink</b>(1), <b>unshare</b>(1), <b>clone</b>(2),
-<b>ioctl_ns</b>(2), <b>setns</b>(2), <b>unshare</b>(2),
-<b>proc</b>(5), <b>capabilities</b>(7),
-<b>cgroup_namespaces</b>(7), <b>cgroups</b>(7),
-<b>credentials</b>(7), <b>ipc_namespaces</b>(7),
-<b>network_namespaces</b>(7), <b>pid_namespaces</b>(7),
-<b>user_namespaces</b>(7), <b>uts_namespaces</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/nsenter">nsenter(1)</a>,
+<a href="https://man.page/1/readlink">readlink(1)</a>, <a href="https://man.page/1/unshare">unshare(1)</a>, <a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/ioctl_ns">ioctl_ns(2)</a>, <a href="https://man.page/2/setns">setns(2)</a>, <a href="https://man.page/2/unshare">unshare(2)</a>,
+<a href="https://man.page/5/proc">proc(5)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/cgroup_namespaces">cgroup_namespaces(7)</a>, <a href="https://man.page/7/cgroups">cgroups(7)</a>,
+<a href="https://man.page/7/credentials">credentials(7)</a>, <a href="https://man.page/7/ipc_namespaces">ipc_namespaces(7)</a>,
+<a href="https://man.page/7/network_namespaces">network_namespaces(7)</a>, <a href="https://man.page/7/pid_namespaces">pid_namespaces(7)</a>,
+<a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>, <a href="https://man.page/7/uts_namespaces">uts_namespaces(7)</a>,
 <b>lsns</b>(8), <b>pam_namespace</b>(8),
 <b>switch_root</b>(8)</p>
 

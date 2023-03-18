@@ -81,9 +81,9 @@ are used to transmit a message to another socket.</p>
 <b>send</b>() call may be used only when the socket is in a
 <i>connected</i> state (so that the intended recipient is
 known). The only difference between <b>send</b>() and
-<b>write</b>(2) is the presence of <i>flags</i>. With a zero
+<a href="https://man.page/2/write">write(2)</a> is the presence of <i>flags</i>. With a zero
 <i>flags</i> argument, <b>send</b>() is equivalent to
-<b>write</b>(2). Also, the following call</p>
+<a href="https://man.page/2/write">write(2)</a>. Also, the following call</p>
 
 <p style="margin-left:11%; margin-top: 1em">send(sockfd,
 buf, len, flags);</p>
@@ -133,7 +133,7 @@ message does not fit into the send buffer of the socket,
 <b>send</b>() normally blocks, unless the socket has been
 placed in nonblocking I/O mode. In nonblocking mode it would
 fail with the error <b>EAGAIN</b> or <b>EWOULDBLOCK</b> in
-this case. The <b>select</b>(2) call may be used to
+this case. The <a href="https://man.page/2/select">select(2)</a> call may be used to
 determine when it is possible to send more data.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The flags
@@ -148,7 +148,7 @@ the other side. If the link layer doesn&rsquo;t get this it
 will regularly reprobe the neighbor (e.g., via a unicast
 ARP). Valid only on <b>SOCK_DGRAM</b> and <b>SOCK_RAW</b>
 sockets and currently implemented only for IPv4 and IPv6.
-See <b>arp</b>(7) for details.</p>
+See <a href="https://man.page/7/arp">arp(7)</a> for details.</p>
 
 <p style="margin-left:11%;"><b>MSG_DONTROUTE</b></p>
 
@@ -165,10 +165,10 @@ Linux 2.2)</p>
 if the operation would block, <b>EAGAIN</b> or
 <b>EWOULDBLOCK</b> is returned. This provides similar
 behavior to setting the <b>O_NONBLOCK</b> flag (via the
-<b>fcntl</b>(2) <b>F_SETFL</b> operation), but differs in
+<a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_SETFL</b> operation), but differs in
 that <b>MSG_DONTWAIT</b> is a per-call option, whereas
 <b>O_NONBLOCK</b> is a setting on the open file description
-(see <b>open</b>(2)), which will affect all threads in the
+(see <a href="https://man.page/2/open">open(2)</a>), which will affect all threads in the
 calling process and as well as other processes that hold
 file descriptors referring to the same open file
 description.</p>
@@ -186,7 +186,7 @@ notion is supported, as for sockets of type
 <p style="margin-left:22%;">The caller has more data to
 send. This flag is used with TCP sockets to obtain the same
 effect as the <b>TCP_CORK</b> socket option (see
-<b>tcp</b>(7)), with the difference that this flag can be
+<a href="https://man.page/7/tcp">tcp(7)</a>), with the difference that this flag can be
 set on a per-call basis.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Since Linux
@@ -195,7 +195,7 @@ informs the kernel to package all of the data sent in calls
 with this flag set into a single datagram which is
 transmitted only when a call is performed that does not
 specify this flag. (See also the <b>UDP_CORK</b> socket
-option described in <b>udp</b>(7).)</p>
+option described in <a href="https://man.page/7/udp">udp(7)</a>.)</p>
 
 <p style="margin-left:11%;"><b>MSG_NOSIGNAL</b> (since
 Linux 2.2)</p>
@@ -204,7 +204,7 @@ Linux 2.2)</p>
 <b>SIGPIPE</b> signal if the peer on a stream-oriented
 socket has closed the connection. The <b>EPIPE</b> error is
 still returned. This provides similar behavior to using
-<b>sigaction</b>(2) to ignore <b>SIGPIPE</b>, but, whereas
+<a href="https://man.page/2/sigaction">sigaction(2)</a> to ignore <b>SIGPIPE</b>, but, whereas
 <b>MSG_NOSIGNAL</b> is a per-call feature, ignoring
 <b>SIGPIPE</b> sets a process attribute that affects all
 threads in the process.</p>
@@ -243,17 +243,17 @@ respectively.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>msg_iov</i> and <i>msg_iovlen</i> fields specify
-scatter-gather locations, as for <b>writev</b>(2).</p>
+scatter-gather locations, as for <a href="https://man.page/2/writev">writev(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">You may send
 control information (ancillary data) using the
 <i>msg_control</i> and <i>msg_controllen</i> members. The
 maximum control buffer length the kernel can process is
 limited per socket by the value in
-<i>/proc/sys/net/core/optmem_max</i>; see <b>socket</b>(7).
+<i>/proc/sys/net/core/optmem_max</i>; see <a href="https://man.page/7/socket">socket(7)</a>.
 For further information on the use of ancillary data in
-various socket domains, see <b>unix</b>(7) and
-<b>ip</b>(7).</p>
+various socket domains, see <a href="https://man.page/7/unix">unix(7)</a> and
+<a href="https://man.page/7/ip">ip(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>msg_flags</i> field is ignored.</p>
@@ -293,7 +293,7 @@ protocol modules; see their respective manual pages.</p>
 pathname) Write permission is denied on the destination
 socket file, or search permission is denied for one of the
 directories the path prefix. (See
-<b>path_resolution</b>(7).)</p> </td></tr>
+<a href="https://man.page/7/path_resolution">path_resolution(7)</a>.)</p> </td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">(For UDP
@@ -328,7 +328,7 @@ address and, upon attempting to bind it to an ephemeral
 port, it was determined that all port numbers in the
 ephemeral port range are currently in use. See the
 discussion of <i>/proc/sys/net/ipv4/ip_local_port_range</i>
-in <b>ip</b>(7).</p></td></tr>
+in <a href="https://man.page/7/ip">ip(7)</a>.</p></td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>EALREADY</b></p>
@@ -387,7 +387,7 @@ argument.</p> </td></tr>
 
 
 <p>A signal occurred before any data was transmitted; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -498,7 +498,7 @@ and the <i>msg_iovlen</i> field should be typed as
 <i>size_t</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>sendmmsg</b>(2) for information about a Linux-specific
+<a href="https://man.page/2/sendmmsg">sendmmsg(2)</a> for information about a Linux-specific
 system call that can be used to transmit multiple datagrams
 in a single call.</p>
 
@@ -517,7 +517,7 @@ return <b>EPIPE</b> instead of <b>ENOTCONN</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An example of
 the use of <b>sendto</b>() is shown in
-<b>getaddrinfo</b>(3).</p>
+<a href="https://man.page/3/getaddrinfo">getaddrinfo(3)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -525,12 +525,12 @@ the use of <b>sendto</b>() is shown in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fcntl</b>(2),
-<b>getsockopt</b>(2), <b>recv</b>(2), <b>select</b>(2),
-<b>sendfile</b>(2), <b>sendmmsg</b>(2), <b>shutdown</b>(2),
-<b>socket</b>(2), <b>write</b>(2), <b>cmsg</b>(3),
-<b>ip</b>(7), <b>ipv6</b>(7), <b>socket</b>(7),
-<b>tcp</b>(7), <b>udp</b>(7), <b>unix</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fcntl">fcntl(2)</a>,
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a>, <a href="https://man.page/2/recv">recv(2)</a>, <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/sendfile">sendfile(2)</a>, <a href="https://man.page/2/sendmmsg">sendmmsg(2)</a>, <a href="https://man.page/2/shutdown">shutdown(2)</a>,
+<a href="https://man.page/2/socket">socket(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/3/cmsg">cmsg(3)</a>,
+<a href="https://man.page/7/ip">ip(7)</a>, <a href="https://man.page/7/ipv6">ipv6(7)</a>, <a href="https://man.page/7/socket">socket(7)</a>,
+<a href="https://man.page/7/tcp">tcp(7)</a>, <a href="https://man.page/7/udp">udp(7)</a>, <a href="https://man.page/7/unix">unix(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

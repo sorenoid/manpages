@@ -80,7 +80,7 @@ raw socket are passed to this socket. For a list of the
 allowed protocols, see the IANA list of assigned protocol
 numbers at
 <a href="http://www.iana.org/assignments/protocol-numbers/">http://www.iana.org/assignments/protocol-numbers/</a>
-and <b>getprotobyname</b>(3).</p>
+and <a href="https://man.page/3/getprotobyname">getprotobyname(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A protocol of
 <b>IPPROTO_RAW</b> implies enabled <b>IP_HDRINCL</b> and is
@@ -101,8 +101,8 @@ lookup is done anyway but gatewayed routes are ignored.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
 <b>IP_HDRINCL</b> isn&rsquo;t set, then IP header options
-can be set on raw sockets with <b>setsockopt</b>(2); see
-<b>ip</b>(7) for more information.</p>
+can be set on raw sockets with <a href="https://man.page/2/setsockopt">setsockopt(2)</a>; see
+<a href="https://man.page/7/ip">ip(7)</a> for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Starting with
 Linux 2.2, all IP header fields and options can be set using
@@ -117,10 +117,10 @@ handlers (e.g., kernel protocol modules).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Address
 format</b> <br>
-For sending and receiving datagrams (<b>sendto</b>(2),
-<b>recvfrom</b>(2), and similar), raw sockets use the
+For sending and receiving datagrams (<a href="https://man.page/2/sendto">sendto(2)</a>,
+<a href="https://man.page/2/recvfrom">recvfrom(2)</a>, and similar), raw sockets use the
 standard <i>sockaddr_in</i> address structure defined in
-<b>ip</b>(7). The <i>sin_port</i> field could be used to
+<a href="https://man.page/7/ip">ip(7)</a>. The <i>sin_port</i> field could be used to
 specify the IP protocol number, but it is ignored for
 sending in Linux 2.2 and later, and should be always set to
 0 (see BUGS). For incoming packets, <i>sin_port</i> is set
@@ -128,8 +128,8 @@ to zero.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
 options</b> <br>
-Raw socket options can be set with <b>setsockopt</b>(2) and
-read with <b>getsockopt</b>(2) by passing the
+Raw socket options can be set with <a href="https://man.page/2/setsockopt">setsockopt(2)</a> and
+read with <a href="https://man.page/2/getsockopt">getsockopt(2)</a> by passing the
 <b>IPPROTO_RAW</b> family flag. <b><br>
 ICMP_FILTER</b></p>
 
@@ -139,7 +139,7 @@ has a bit set for each ICMP message type which should be
 filtered out. The default is to filter no ICMP messages.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In addition,
-all <b>ip</b>(7) <b>IPPROTO_IP</b> socket options valid for
+all <a href="https://man.page/7/ip">ip(7)</a> <b>IPPROTO_IP</b> socket options valid for
 datagram sockets are supported.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Error
@@ -266,28 +266,28 @@ application should decrease the packet size. Path MTU
 discovery can be also turned off using the
 <b>IP_MTU_DISCOVER</b> socket option or the
 <i>/proc/sys/net/ipv4/ip_no_pmtu_disc</i> file, see
-<b>ip</b>(7) for details. When turned off, raw sockets will
+<a href="https://man.page/7/ip">ip(7)</a> for details. When turned off, raw sockets will
 fragment outgoing packets that exceed the interface MTU.
 However, disabling it is not recommended for performance and
 reliability reasons.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A raw socket
 can be bound to a specific local address using the
-<b>bind</b>(2) call. If it isn&rsquo;t bound, all packets
+<a href="https://man.page/2/bind">bind(2)</a> call. If it isn&rsquo;t bound, all packets
 with the specified IP protocol are received. In addition, a
 raw socket can be bound to a specific network device using
-<b>SO_BINDTODEVICE</b>; see <b>socket</b>(7).</p>
+<b>SO_BINDTODEVICE</b>; see <a href="https://man.page/7/socket">socket(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An
 <b>IPPROTO_RAW</b> socket is send only. If you really want
-to receive all IP packets, use a <b>packet</b>(7) socket
+to receive all IP packets, use a <a href="https://man.page/7/packet">packet(7)</a> socket
 with the <b>ETH_P_IP</b> protocol. Note that packet sockets
 don&rsquo;t reassemble IP fragments, unlike raw sockets.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If you want to
 receive all ICMP packets for a datagram socket, it is often
 better to use <b>IP_RECVERR</b> on that particular socket;
-see <b>ip</b>(7).</p>
+see <a href="https://man.page/7/ip">ip(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Raw sockets may
 tap all IP protocols in Linux, even protocols like ICMP or
@@ -326,7 +326,7 @@ fragmented and are limited to the interface MTU.</p>
 <p style="margin-left:11%; margin-top: 1em">Setting the IP
 protocol for sending in <i>sin_port</i> got lost in Linux
 2.2. The protocol that the socket was bound to or that was
-specified in the initial <b>socket</b>(2) call is always
+specified in the initial <a href="https://man.page/2/socket">socket(2)</a> call is always
 used.</p>
 
 <h2>SEE ALSO
@@ -335,9 +335,9 @@ used.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>recvmsg</b>(2),
-<b>sendmsg</b>(2), <b>capabilities</b>(7), <b>ip</b>(7),
-<b>socket</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/recvmsg">recvmsg(2)</a>,
+<a href="https://man.page/2/sendmsg">sendmsg(2)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>, <a href="https://man.page/7/ip">ip(7)</a>,
+<a href="https://man.page/7/socket">socket(7)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>RFC&nbsp;1191</b>

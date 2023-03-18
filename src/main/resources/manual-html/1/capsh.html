@@ -120,7 +120,7 @@ Useful for testing <b>exec</b>() behavior.</p></td></tr>
 <p style="margin-left:22%;">Set the prevailing process
 capabilities to those specified by <i>cap-set</i>. Where
 <i>cap-set</i> is a text-representation of capability state
-as per <b>cap_from_text</b>(3).</p>
+as per <a href="https://man.page/3/cap_from_text">cap_from_text(3)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>--drop=</b><i>cap-list</i></p>
@@ -128,7 +128,7 @@ as per <b>cap_from_text</b>(3).</p>
 <p style="margin-left:22%;">Remove the listed capabilities
 from the prevailing bounding set. The capabilities are a
 comma-separated list of capabilities as recognized by the
-<b>cap_from_name</b>(3) function. Use of this feature
+<a href="https://man.page/3/cap_from_name">cap_from_name(3)</a> function. Use of this feature
 requires that <b>capsh</b> is operating with
 <b>CAP_SETPCAP</b> in its effective set.</p>
 
@@ -148,9 +148,9 @@ operating with <b>CAP_SETPCAP</b> in its effective set.</p>
 
 <p style="margin-left:22%;">Assume the identity of the
 named user. That is, look up the user&rsquo;s UID and GID
-with <b>getpwuid</b>(3) and their group memberships with
-<b>getgrouplist</b>(3) and set them all using
-<b>cap_setuid</b>(3) and <b>cap_setgroups</b>(3). Following
+with <a href="https://man.page/3/getpwuid">getpwuid(3)</a> and their group memberships with
+<a href="https://man.page/3/getgrouplist">getgrouplist(3)</a> and set them all using
+<a href="https://man.page/3/cap_setuid">cap_setuid(3)</a> and <a href="https://man.page/3/cap_setgroups">cap_setgroups(3)</a>. Following
 this command, the effective capabilities will be cleared,
 but the permitted set will not be, so the running program is
 still privileged.</p>
@@ -163,7 +163,7 @@ supported by <b>--mode</b>.</p>
 <p style="margin-left:11%;"><b>--mode=</b>&lt;mode&gt;</p>
 
 <p style="margin-left:22%;">Force the program into a
-<b>cap_set_mode</b>(3) security mode. This is a set of
+<a href="https://man.page/3/cap_set_mode">cap_set_mode(3)</a> security mode. This is a set of
 securebits and prevailing capability arrangement recommended
 for its pre-determined security stance.</p>
 
@@ -177,14 +177,14 @@ a status 1.</p>
 <p style="margin-left:11%;"><b>--uid=</b><i>id</i></p>
 
 <p style="margin-left:22%;">Force all UID values to equal
-<i>id</i> using the <b>setuid</b>(2) system call. This
+<i>id</i> using the <a href="https://man.page/2/setuid">setuid(2)</a> system call. This
 argument may require explicit preparation of the effective
 set.</p>
 
 
 <p style="margin-left:11%;"><b>--cap-uid=</b>&lt;uid&gt;</p>
 
-<p style="margin-left:22%;">use the <b>cap_setuid</b>(3)
+<p style="margin-left:22%;">use the <a href="https://man.page/3/cap_setuid">cap_setuid(3)</a>
 function to set the UID of the current process. This
 performs all preparations for setting the UID without
 dropping capabilities in the process. Following this command
@@ -200,7 +200,7 @@ current UID equals <i>&lt;id&gt;</i>.</p>
 <p style="margin-left:11%;"><b>--gid=</b><i>&lt;id&gt;</i></p>
 
 <p style="margin-left:22%;">Force all GID values to equal
-<i>id</i> using the <b>setgid</b>(2) system call.</p>
+<i>id</i> using the <a href="https://man.page/2/setgid">setgid(2)</a> system call.</p>
 
 
 <p style="margin-left:11%;"><b>--is-gid=</b><i>&lt;id&gt;</i></p>
@@ -213,7 +213,7 @@ current GIQ equals <i>&lt;id&gt;</i>.</p>
 
 <p style="margin-left:22%;">Set the supplementary groups to
 the numerical list provided. The groups are set with the
-<b>setgroups</b>(2) system call. See <b>--user</b> for a
+<a href="https://man.page/2/setgroups">setgroups(2)</a> system call. See <b>--user</b> for a
 more convenient way of doing this.</p>
 
 
@@ -224,7 +224,7 @@ the kernel provides liberal privilege to the super-user.
 However, it is normally the case that when the super-user
 changes UID to some lesser user, then capabilities are
 dropped. For these situations, the kernel can permit the
-process to retain its capabilities after a <b>setuid</b>(2)
+process to retain its capabilities after a <a href="https://man.page/2/setuid">setuid(2)</a>
 system call. This feature is known as <i>keep-caps</i>
 support. The way to activate it using this program is with
 this argument. Setting the value to 1 will cause
@@ -237,18 +237,18 @@ feature.</p>
 <p style="margin-left:11%;"><b>--secbits=</b><i>N</i></p>
 
 <p style="margin-left:22%;">Set the security-bits for the
-program. This is done using the <b>prctl</b>(2)
+program. This is done using the <a href="https://man.page/2/prctl">prctl(2)</a>
 <b>PR_SET_SECUREBITS</b> operation. The list of supported
 bits and their meaning can be found in the
 <b>&lt;sys/secbits.h&gt;</b> header file. The program will
 list these bits via the <b>--print</b> command. The argument
 is expressed as a numeric bitmask, in any of the formats
-permitted by <b>strtoul</b>(3).</p>
+permitted by <a href="https://man.page/3/strtoul">strtoul(3)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>--chroot=</b><i>path</i></p>
 
-<p style="margin-left:22%;">Execute the <b>chroot</b>(2)
+<p style="margin-left:22%;">Execute the <a href="https://man.page/2/chroot">chroot(2)</a>
 system call with the new root-directory (/) equal to
 <i>path</i>. This operation requires <b>CAP_SYS_CHROOT</b>
 to be in effect.</p>
@@ -267,7 +267,7 @@ time.</p>
 <p style="margin-left:11%;"><b>--killit=</b><i>sig</i></p>
 
 <p style="margin-left:22%;">This commands causes a
-<b>--forkfor</b> child to be <b>kill</b>(2)d with the
+<b>--forkfor</b> child to be <a href="https://man.page/2/kill">kill(2)</a>d with the
 specified signal. The command then waits for the child to
 exit. If the exit status does not match the signal being
 used to kill it, the <b>capsh</b> program exits with status
@@ -420,9 +420,9 @@ https://bugzilla.kernel.org/buglist.cgi?component=libcap&amp;list_id=1047723&amp
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>libcap</b>(3),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/libcap">libcap(3)</a>,
 <b>getcap</b>(8), <b>setcap</b>(8) and
-<b>capabilities</b>(7).</p>
+<a href="https://man.page/7/capabilities">capabilities(7)</a>.</p>
 <hr>
 </body>
 </html>

@@ -72,8 +72,8 @@ packet was received on, various rarely used header fields,
 an extended error description, a set of file descriptors, or
 UNIX credentials. For instance, control messages can be used
 to send additional header fields such as IP options.
-Ancillary data is sent by calling <b>sendmsg</b>(2) and
-received by calling <b>recvmsg</b>(2). See their manual
+Ancillary data is sent by calling <a href="https://man.page/2/sendmsg">sendmsg(2)</a> and
+received by calling <a href="https://man.page/2/recvmsg">recvmsg(2)</a>. See their manual
 pages for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Ancillary data
@@ -82,7 +82,7 @@ data. See the specific protocol man pages for the available
 control message types. The maximum ancillary buffer size
 allowed per socket can be set using
 <i>/proc/sys/net/core/optmem_max</i>; see
-<b>socket</b>(7).</p>
+<a href="https://man.page/7/socket">socket(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>cmsghdr</i> structure is defined as follows:</p>
@@ -137,7 +137,7 @@ buffer.</p> </td></tr>
 <p style="margin-left:15%; margin-top: 1em">When
 initializing a buffer that will contain a series of
 <i>cmsghdr</i> structures (e.g., to be sent with
-<b>sendmsg</b>(2)), that buffer should first be
+<a href="https://man.page/2/sendmsg">sendmsg(2)</a>), that buffer should first be
 zero-initialized to ensure the correct operation of
 <b>CMSG_NXTHDR</b>().</p>
 
@@ -184,7 +184,7 @@ of a <i>cmsghdr</i>. The pointer returned cannot be assumed
 to be suitably aligned for accessing arbitrary payload data
 types. Applications should not cast it to a pointer type
 matching the payload, but should instead use
-<b>memcpy</b>(3) to copy data to or from a suitably declared
+<a href="https://man.page/3/memcpy">memcpy(3)</a> to copy data to or from a suitably declared
 object.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -215,7 +215,7 @@ and the data portion using <b>CMSG_DATA</b>(). Finally, the
 <i>msg_controllen</i> field of the <i>msghdr</i> should be
 set to the sum of the <b>CMSG_SPACE</b>() of the length of
 all control messages in the buffer. For more information on
-the <i>msghdr</i>, see <b>recvmsg</b>(2).</p>
+the <i>msghdr</i>, see <a href="https://man.page/2/recvmsg">recvmsg(2)</a>.</p>
 
 <h2>CONFORMING TO
 <a name="CONFORMING TO"></a>
@@ -322,8 +322,8 @@ memcpy(CMSG_DATA(cmsg), myfds, sizeof(myfds));</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>recvmsg</b>(2),
-<b>sendmsg</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/recvmsg">recvmsg(2)</a>,
+<a href="https://man.page/2/sendmsg">sendmsg(2)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em">RFC&nbsp;2292</p>

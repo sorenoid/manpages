@@ -81,16 +81,16 @@ by state (connected, listening, and so on.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that
 sock_diag reports only those sockets that have a name; that
-is, either sockets bound explicitly with <b>bind</b>(2) or
+is, either sockets bound explicitly with <a href="https://man.page/2/bind">bind(2)</a> or
 sockets that were automatically bound to an address (e.g.,
-by <b>connect</b>(2)). This is the same set of sockets that
+by <a href="https://man.page/2/connect">connect(2)</a>). This is the same set of sockets that
 is available via <i>/proc/net/unix</i>,
 <i>/proc/net/tcp</i>, <i>/proc/net/udp</i>, and so on.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Request</b>
 <br>
 The request starts with a <i>struct nlmsghdr</i> header
-described in <b>netlink</b>(7) with <i>nlmsg_type</i> field
+described in <a href="https://man.page/7/netlink">netlink(7)</a> with <i>nlmsg_type</i> field
 set to <b>SOCK_DIAG_BY_FAMILY</b>. It is followed by a
 header specific to the address family that starts with a
 common part shared by all address families:</p>
@@ -127,11 +127,11 @@ about an individual socket.</p>
 The response starts with a <i>struct nlmsghdr</i> header and
 is followed by an array of objects specific to the address
 family. The array is to be accessed with the standard
-<b>NLMSG_*</b> macros from the <b>netlink</b>(3) API.</p>
+<b>NLMSG_*</b> macros from the <a href="https://man.page/3/netlink">netlink(3)</a> API.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each object is
 the NLA (netlink attributes) list that is to be accessed
-with the <b>RTA_*</b> macros from <b>rtnetlink</b>(3)
+with the <b>RTA_*</b> macros from <a href="https://man.page/3/rtnetlink">rtnetlink(3)</a>
 API.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>UNIX domain
@@ -249,8 +249,8 @@ connected sockets only.</p>
 answer to this request is <b>UNIX_DIAG_ICONS</b>. The
 payload associated with this attribute is an array of __u32
 values which are inode numbers of sockets that has passed
-the <b>connect</b>(2) call, but hasn&rsquo;t been processed
-with <b>accept</b>(2) yet. This attribute is reported for
+the <a href="https://man.page/2/connect">connect(2)</a> call, but hasn&rsquo;t been processed
+with <a href="https://man.page/2/accept">accept(2)</a> yet. This attribute is reported for
 listening sockets only.</p>
 
 <p style="margin-left:22%;"><b>UDIAG_SHOW_RQLEN</b></p>
@@ -282,7 +282,7 @@ sockets: the amount of data in incoming queue.</p>
 
 <p style="margin-left:43%;">For listening sockets: the
 backlog length which equals to the value passed as the
-second argument to <b>listen</b>(2).</p>
+second argument to <a href="https://man.page/2/listen">listen(2)</a>.</p>
 
 <p style="margin-left:43%; margin-top: 1em">For established
 sockets: the amount of memory available for sending.</p>
@@ -302,7 +302,7 @@ UNIX_DIAG_SHUTDOWN</b></p>
 
 <p style="margin-left:32%;">The payload associated with
 this attribute is __u8 value which represents bits of
-<b>shutdown</b>(2) state.</p>
+<a href="https://man.page/2/shutdown">shutdown(2)</a> state.</p>
 
 <p style="margin-left:11%;"><i>udiag_cookie</i></p>
 
@@ -1061,8 +1061,8 @@ return ret; <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>netlink</b>(3),
-<b>rtnetlink</b>(3), <b>netlink</b>(7), <b>tcp</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/netlink">netlink(3)</a>,
+<a href="https://man.page/3/rtnetlink">rtnetlink(3)</a>, <a href="https://man.page/7/netlink">netlink(7)</a>, <a href="https://man.page/7/tcp">tcp(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

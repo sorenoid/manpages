@@ -73,7 +73,7 @@ signal trampoline code in turn calls <b>sigreturn</b>().</p>
 <p style="margin-left:11%; margin-top: 1em">This
 <b>sigreturn</b>() call undoes everything that was
 done&mdash;changing the process&rsquo;s signal mask,
-switching signal stacks (see <b>sigaltstack</b>(2))&mdash;in
+switching signal stacks (see <a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>)&mdash;in
 order to invoke the signal handler. Using the information
 that was earlier saved on the user-space stack
 <b>sigreturn</b>() restores the process&rsquo;s signal mask,
@@ -126,8 +126,8 @@ the user stack. Nowadays, pages of the user stack are
 protected so as to disallow code execution. Thus, on
 contemporary Linux systems, depending on the architecture,
 the signal trampoline code lives either in the
-<b>vdso</b>(7) or in the C library. In the latter case, the
-C library&rsquo;s <b>sigaction</b>(2) wrapper function
+<a href="https://man.page/7/vdso">vdso(7)</a> or in the C library. In the latter case, the
+C library&rsquo;s <a href="https://man.page/2/sigaction">sigaction(2)</a> wrapper function
 informs the kernel of the location of the trampoline code by
 placing its address in the <i>sa_restorer</i> field of the
 <i>sigaction</i> structure, and sets the <b>SA_RESTORER</b>
@@ -137,7 +137,7 @@ flag in the <i>sa_flags</i> field.</p>
 process context information is placed in a <i>ucontext_t</i>
 structure (see <i>&lt;sys/ucontext.h&gt;</i>). That
 structure is visible within the signal handler as the third
-argument of a handler established via <b>sigaction</b>(2)
+argument of a handler established via <a href="https://man.page/2/sigaction">sigaction(2)</a>
 with the <b>SA_SIGINFO</b> flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On some other
@@ -163,10 +163,10 @@ hides these details from us, transparently employing
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>kill</b>(2),
-<b>restart_syscall</b>(2), <b>sigaltstack</b>(2),
-<b>signal</b>(2), <b>getcontext</b>(3), <b>signal</b>(7),
-<b>vdso</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/kill">kill(2)</a>,
+<a href="https://man.page/2/restart_syscall">restart_syscall(2)</a>, <a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>,
+<a href="https://man.page/2/signal">signal(2)</a>, <a href="https://man.page/3/getcontext">getcontext(3)</a>, <a href="https://man.page/7/signal">signal(7)</a>,
+<a href="https://man.page/7/vdso">vdso(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -88,7 +88,7 @@ init</b>(1)) */ <br>
 (in <i>ut_tv</i>) */ <br>
 #define OLD_TIME 4 /* Time before system clock change <br>
 (in <i>ut_tv</i>) */ <br>
-#define INIT_PROCESS 5 /* Process spawned by <b>init</b>(1)
+#define INIT_PROCESS 5 /* Process spawned by <a href="https://man.page/1/init">init(1)</a>
 */ <br>
 #define LOGIN_PROCESS 6 /* Session leader process for user
 login */ <br>
@@ -131,7 +131,7 @@ memory to be shared between 32- and 64-bit applications. */
 <br>
 #if __WORDSIZE == 64 &amp;&amp; defined __WORDSIZE_COMPAT32
 <br>
-int32_t ut_session; /* Session ID (<b>getsid</b>(2)), <br>
+int32_t ut_session; /* Session ID (<a href="https://man.page/2/getsid">getsid(2)</a>), <br>
 used for windowing */ <br>
 struct { <br>
 int32_t tv_sec; /* Seconds */ <br>
@@ -161,20 +161,20 @@ compatibility hacks */ <br>
 <p style="margin-left:11%; margin-top: 1em">This structure
 gives the name of the special file associated with the
 user&rsquo;s terminal, the user&rsquo;s login name, and the
-time of login in the form of <b>time</b>(2). String fields
+time of login in the form of <a href="https://man.page/2/time">time(2)</a>. String fields
 are terminated by a null byte ('\0') if they are shorter
 than the size of the field.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The first
-entries ever created result from <b>init</b>(1) processing
-<b>inittab</b>(5). Before an entry is processed, though,
-<b>init</b>(1) cleans up utmp by setting <i>ut_type</i> to
+entries ever created result from <a href="https://man.page/1/init">init(1)</a> processing
+<a href="https://man.page/5/inittab">inittab(5)</a>. Before an entry is processed, though,
+<a href="https://man.page/1/init">init(1)</a> cleans up utmp by setting <i>ut_type</i> to
 <b>DEAD_PROCESS</b>, clearing <i>ut_user</i>,
 <i>ut_host</i>, and <i>ut_time</i> with null bytes for each
 record which <i>ut_type</i> is not <b>DEAD_PROCESS</b> or
 <b>RUN_LVL</b> and where no process with PID <i>ut_pid</i>
 exists. If no empty record with the needed <i>ut_id</i> can
-be found, <b>init</b>(1) creates a new one. It sets
+be found, <a href="https://man.page/1/init">init(1)</a> creates a new one. It sets
 <i>ut_id</i> from the inittab, <i>ut_pid</i> and
 <i>ut_time</i> to the current values, and <i>ut_type</i> to
 <b>INIT_PROCESS</b>.</p>
@@ -184,22 +184,22 @@ be found, <b>init</b>(1) creates a new one. It sets
 (or <b>agetty</b>(8)) locates the entry by the PID, changes
 <i>ut_type</i> to <b>LOGIN_PROCESS</b>, changes
 <i>ut_time</i>, sets <i>ut_line</i>, and waits for
-connection to be established. <b>login</b>(1), after a user
+connection to be established. <a href="https://man.page/1/login">login(1)</a>, after a user
 has been authenticated, changes <i>ut_type</i> to
 <b>USER_PROCESS</b>, changes <i>ut_time</i>, and sets
 <i>ut_host</i> and <i>ut_addr</i>. Depending on
 <b>mingetty</b>(8) (or <b>agetty</b>(8)) and
-<b>login</b>(1), records may be located by <i>ut_line</i>
+<a href="https://man.page/1/login">login(1)</a>, records may be located by <i>ut_line</i>
 instead of the preferable <i>ut_pid</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When
-<b>init</b>(1) finds that a process has exited, it locates
+<a href="https://man.page/1/init">init(1)</a> finds that a process has exited, it locates
 its utmp entry by <i>ut_pid</i>, sets <i>ut_type</i> to
 <b>DEAD_PROCESS</b>, and clears <i>ut_user</i>,
 <i>ut_host</i>, and <i>ut_time</i> with null bytes.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>xterm</b>(1)
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/xterm">xterm(1)</a>
 and other terminal emulators directly create a
 <b>USER_PROCESS</b> record and generate the <i>ut_id</i> by
 using the string that suffix part of the terminal name (the
@@ -213,7 +213,7 @@ null <i>ut_line</i>, <i>ut_time</i>, <i>ut_user</i>, and
 
 <p style="margin-left:11%; margin-top: 1em"><b>telnetd</b>(8)
 sets up a <b>LOGIN_PROCESS</b> entry and leaves the rest to
-<b>login</b>(1) as usual. After the telnet session ends,
+<a href="https://man.page/1/login">login(1)</a> as usual. After the telnet session ends,
 <b>telnetd</b>(8) cleans up utmp in the described way.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <i>wtmp</i>
@@ -223,8 +223,8 @@ logout on the associated terminal. Furthermore, the terminal
 name <b>~</b> with username <b>shutdown</b> or <b>reboot</b>
 indicates a system shutdown or reboot and the pair of
 terminal names <b>|</b>/<b>}</b> logs the old/new system
-time when <b>date</b>(1) changes it. <i>wtmp</i> is
-maintained by <b>login</b>(1), <b>init</b>(1), and some
+time when <a href="https://man.page/1/date">date(1)</a> changes it. <i>wtmp</i> is
+maintained by <a href="https://man.page/1/login">login(1)</a>, <a href="https://man.page/1/init">init(1)</a>, and some
 versions of <b>getty</b>(8) (e.g., <b>mingetty</b>(8) or
 <b>agetty</b>(8)). None of these programs creates the file,
 so if it is removed, record-keeping is turned off.</p>
@@ -291,7 +291,7 @@ contents, as documented above.</p>
 <p style="margin-left:11%; margin-top: 1em">Unlike various
 other systems, where utmp logging can be disabled by
 removing the file, utmp must always exist on Linux. If you
-want to disable <b>who</b>(1), then do not make utmp world
+want to disable <a href="https://man.page/1/who">who(1)</a>, then do not make utmp world
 readable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The file format
@@ -334,12 +334,12 @@ ut.ut_tv.tv_usec = tv.tv_usec;</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ac</b>(1),
-<b>date</b>(1), <b>init</b>(1), <b>last</b>(1),
-<b>login</b>(1), <b>logname</b>(1), <b>lslogins</b>(1),
-<b>users</b>(1), <b>utmpdump</b>(1), <b>who</b>(1),
-<b>getutent</b>(3), <b>getutmp</b>(3), <b>login</b>(3),
-<b>logout</b>(3), <b>logwtmp</b>(3), <b>updwtmp</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ac">ac(1)</a>,
+<a href="https://man.page/1/date">date(1)</a>, <a href="https://man.page/1/init">init(1)</a>, <a href="https://man.page/1/last">last(1)</a>,
+<a href="https://man.page/1/login">login(1)</a>, <a href="https://man.page/1/logname">logname(1)</a>, <a href="https://man.page/1/lslogins">lslogins(1)</a>,
+<a href="https://man.page/1/users">users(1)</a>, <a href="https://man.page/1/utmpdump">utmpdump(1)</a>, <a href="https://man.page/1/who">who(1)</a>,
+<a href="https://man.page/3/getutent">getutent(3)</a>, <a href="https://man.page/3/getutmp">getutmp(3)</a>, <a href="https://man.page/3/login">login(3)</a>,
+<a href="https://man.page/3/logout">logout(3)</a>, <a href="https://man.page/3/logwtmp">logwtmp(3)</a>, <a href="https://man.page/3/updwtmp">updwtmp(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -100,7 +100,7 @@ filesystem permissions.</p>
 in the system belongs to exactly one cpuset. A process is
 confined to run only on the CPUs in the cpuset it belongs
 to, and to allocate memory only on the memory nodes in that
-cpuset. When a process <b>fork</b>(2)s, the child process is
+cpuset. When a process <a href="https://man.page/2/fork">fork(2)</a>s, the child process is
 placed in the same cpuset as its parent. With sufficient
 privilege, a process may be moved from one cpuset to another
 and the allowed CPUs and memory nodes of an existing cpuset
@@ -116,9 +116,9 @@ system administrator, and processes may be placed in these
 other cpusets.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Cpusets are
-integrated with the <b>sched_setaffinity</b>(2) scheduling
-affinity mechanism and the <b>mbind</b>(2) and
-<b>set_mempolicy</b>(2) memory-placement mechanisms in the
+integrated with the <a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a> scheduling
+affinity mechanism and the <a href="https://man.page/2/mbind">mbind(2)</a> and
+<a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a> memory-placement mechanisms in the
 kernel. Neither of these mechanisms let a process make use
 of a CPU or memory node that is not allowed by that
 process&rsquo;s cpuset. If changes to a process&rsquo;s
@@ -151,8 +151,8 @@ fixed set of pseudo-files describing the state of that
 cpuset.</p>
 
 <p style="margin-left:11%; margin-top: 1em">New cpusets are
-created using the <b>mkdir</b>(2) system call or the
-<b>mkdir</b>(1) command. The properties of a cpuset, such as
+created using the <a href="https://man.page/2/mkdir">mkdir(2)</a> system call or the
+<a href="https://man.page/1/mkdir">mkdir(1)</a> command. The properties of a cpuset, such as
 its flags, allowed CPUs and memory nodes, and attached
 processes, are queried and modified by reading or writing to
 the appropriate file in that cpuset&rsquo;s directory, as
@@ -161,23 +161,23 @@ listed below.</p>
 <p style="margin-left:11%; margin-top: 1em">The
 pseudo-files in each cpuset directory are automatically
 created when the cpuset is created, as a result of the
-<b>mkdir</b>(2) invocation. It is not possible to directly
+<a href="https://man.page/2/mkdir">mkdir(2)</a> invocation. It is not possible to directly
 add or remove these pseudo-files.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A cpuset
 directory that contains no child cpuset directories, and has
-no attached processes, can be removed using <b>rmdir</b>(2)
-or <b>rmdir</b>(1). It is not necessary, or possible, to
+no attached processes, can be removed using <a href="https://man.page/2/rmdir">rmdir(2)</a>
+or <a href="https://man.page/1/rmdir">rmdir(1)</a>. It is not necessary, or possible, to
 remove the pseudo-files inside the directory before removing
 it.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 pseudo-files in each cpuset directory are small text files
 that may be read and written using traditional shell
-utilities such as <b>cat</b>(1), and <b>echo</b>(1), or from
+utilities such as <a href="https://man.page/1/cat">cat(1)</a>, and <a href="https://man.page/1/echo">echo(1)</a>, or from
 a program by using file I/O library functions or system
-calls, such as <b>open</b>(2), <b>read</b>(2),
-<b>write</b>(2), and <b>close</b>(2).</p>
+calls, such as <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, and <a href="https://man.page/2/close">close(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 pseudo-files in a cpuset directory represent internal kernel
@@ -621,7 +621,7 @@ process is running.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The setting of
 these flags does not affect the data segment (see
-<b>brk</b>(2)) or stack segment pages of a process.</p>
+<a href="https://man.page/2/brk">brk(2)</a>) or stack segment pages of a process.</p>
 
 <p style="margin-left:11%; margin-top: 1em">By default,
 both kinds of memory spreading are off and the kernel
@@ -641,8 +641,8 @@ spreading causes allocations for the affected page or slab
 caches to ignore the process&rsquo;s NUMA memory policy and
 be spread instead. However, the effect of these changes in
 memory placement caused by cpuset-specified memory spreading
-is hidden from the <b>mbind</b>(2) or
-<b>set_mempolicy</b>(2) calls. These two NUMA memory policy
+is hidden from the <a href="https://man.page/2/mbind">mbind(2)</a> or
+<a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a> calls. These two NUMA memory policy
 calls always appear to behave as if no cpuset-specified
 memory spreading is in effect, even if it is. If cpuset
 memory spreading is subsequently turned off, the NUMA memory
@@ -740,7 +740,7 @@ If one CPU is underutilized, the kernel will look for
 processes on other more overloaded CPUs and move those
 processes to the underutilized CPU, within the constraints
 of such placement mechanisms as cpusets and
-<b>sched_setaffinity</b>(2).</p>
+<a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The algorithmic
 cost of load balancing and its impact on key shared kernel
@@ -807,7 +807,7 @@ per-cpuset flag <i>sched_load_balance</i> is enabled (the
 default setting), it requests load balancing across all the
 CPUs in that cpuset&rsquo;s allowed CPUs, ensuring that load
 balancing can move a process (not otherwise pinned, as by
-<b>sched_setaffinity</b>(2)) from any CPU in that cpuset to
+<a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>) from any CPU in that cpuset to
 any other.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the
@@ -852,14 +852,14 @@ whenever a CPU becomes free or another task becomes
 runnable. This load balancing works to ensure that as many
 CPUs as possible are usefully employed running tasks. The
 kernel also performs periodic load balancing off the
-software clock described in <b>time</b>(7). The setting of
+software clock described in <a href="https://man.page/7/time">time(7)</a>. The setting of
 <i>sched_relax_domain_level</i> applies only to immediate
 load balancing. Regardless of the
 <i>sched_relax_domain_level</i> setting, periodic load
 balancing is attempted over all CPUs (unless disabled by
 turning off <i>sched_load_balance</i>.) In any case, of
 course, tasks will be scheduled to run only on CPUs allowed
-by their cpuset, as modified by <b>sched_setaffinity</b>(2)
+by their cpuset, as modified by <a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>
 system calls.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On small
@@ -1127,7 +1127,7 @@ file.</p>
 constraint is applied to requests to place some other
 process in a cpuset. One process may not attach another to a
 cpuset unless it would have permission to send that process
-a signal (see <b>kill</b>(2)).</p>
+a signal (see <a href="https://man.page/2/kill">kill(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">A process may
 create a child cpuset if it can access and write the parent
@@ -1149,7 +1149,7 @@ to the process&rsquo;s current cpuset. The only ways that
 cpuset paths relative to a process&rsquo;s current cpuset
 can be used are if either the process&rsquo;s current
 working directory is its cpuset (it first did a <b>cd</b> or
-<b>chdir</b>(2) to its cpuset directory beneath
+<a href="https://man.page/2/chdir">chdir(2)</a> to its cpuset directory beneath
 <i>/dev/cpuset</i>, which is a bit unusual) or if some user
 code converts the relative cpuset path to a full filesystem
 path.</p>
@@ -1186,7 +1186,7 @@ echo command</b> <br>
 When using the <b>echo</b> command at the shell prompt to
 change the values of cpuset files, beware that the built-in
 <b>echo</b> command in some shells does not display an error
-message if the <b>write</b>(2) system call fails. For
+message if the <a href="https://man.page/2/write">write(2)</a> system call fails. For
 example, if the command:</p>
 
 <p style="margin-left:17%; margin-top: 1em">echo 19 &gt;
@@ -1197,7 +1197,7 @@ memory node 19 was not allowed (perhaps the current system
 does not have a memory node 19), then the <b>echo</b>
 command might not display any error. It is better to use the
 <b>/bin/echo</b> external command to change cpuset file
-settings, as this command will display <b>write</b>(2)
+settings, as this command will display <a href="https://man.page/2/write">write(2)</a>
 errors, as in the example:</p>
 
 <p style="margin-left:17%; margin-top: 1em">/bin/echo 19
@@ -1244,7 +1244,7 @@ confined by cpusets.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Renaming
 cpusets</b> <br>
-You can use the <b>rename</b>(2) system call to rename
+You can use the <a href="https://man.page/2/rename">rename(2)</a> system call to rename
 cpusets. Only simple renaming is supported; that is,
 changing the name of a cpuset directory is permitted, but
 moving a directory into a different directory is not
@@ -1276,7 +1276,7 @@ cpuset call are as listed below.</p>
 <td width="78%">
 
 
-<p style="margin-top: 1em">Attempted a <b>write</b>(2) on a
+<p style="margin-top: 1em">Attempted a <a href="https://man.page/2/write">write(2)</a> on a
 special cpuset file with a length larger than some
 kernel-determined upper limit on the length of such
 writes.</p> </td></tr>
@@ -1290,7 +1290,7 @@ writes.</p> </td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) the process ID (PID) of a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> the process ID (PID) of a
 process to a cpuset <i>tasks</i> file when one lacks
 permission to move that process.</p></td></tr>
 <tr valign="top" align="left">
@@ -1303,7 +1303,7 @@ permission to move that process.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to add, using <b>write</b>(2), a CPU or memory
+<p>Attempted to add, using <a href="https://man.page/2/write">write(2)</a>, a CPU or memory
 node to a cpuset, when that CPU or memory node was not
 already in its parent.</p></td></tr>
 <tr valign="top" align="left">
@@ -1316,7 +1316,7 @@ already in its parent.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to set, using <b>write</b>(2),
+<p>Attempted to set, using <a href="https://man.page/2/write">write(2)</a>,
 <i>cpuset.cpu_exclusive</i> or <i>cpuset.mem_exclusive</i>
 on a cpuset whose parent lacks the same setting.</p></td></tr>
 <tr valign="top" align="left">
@@ -1329,7 +1329,7 @@ on a cpuset whose parent lacks the same setting.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a
 <i>cpuset.memory_pressure</i> file.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1352,7 +1352,7 @@ on a cpuset whose parent lacks the same setting.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to remove, using <b>rmdir</b>(2), a cpuset
+<p>Attempted to remove, using <a href="https://man.page/2/rmdir">rmdir(2)</a>, a cpuset
 with attached processes.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1364,7 +1364,7 @@ with attached processes.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to remove, using <b>rmdir</b>(2), a cpuset
+<p>Attempted to remove, using <a href="https://man.page/2/rmdir">rmdir(2)</a>, a cpuset
 with child cpusets.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1388,7 +1388,7 @@ that is also in a child of that cpuset.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to create, using <b>mkdir</b>(2), a cpuset
+<p>Attempted to create, using <a href="https://man.page/2/mkdir">mkdir(2)</a>, a cpuset
 that already exists.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1400,7 +1400,7 @@ that already exists.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>rename</b>(2) a cpuset to a name that
+<p>Attempted to <a href="https://man.page/2/rename">rename(2)</a> a cpuset to a name that
 already exists.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1412,7 +1412,7 @@ already exists.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>read</b>(2) or <b>write</b>(2) a cpuset
+<p>Attempted to <a href="https://man.page/2/read">read(2)</a> or <a href="https://man.page/2/write">write(2)</a> a cpuset
 file using a buffer that is outside the writing processes
 accessible address space.</p></td></tr>
 <tr valign="top" align="left">
@@ -1425,7 +1425,7 @@ accessible address space.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to change a cpuset, using <b>write</b>(2), in
+<p>Attempted to change a cpuset, using <a href="https://man.page/2/write">write(2)</a>, in
 a way that would violate a <i>cpu_exclusive</i> or
 <i>mem_exclusive</i> attribute of that cpuset or any of its
 siblings.</p> </td></tr>
@@ -1439,7 +1439,7 @@ siblings.</p> </td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) an empty <i>cpuset.cpus</i>
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> an empty <i>cpuset.cpus</i>
 or <i>cpuset.mems</i> list to a cpuset which has attached
 processes or child cpusets.</p></td></tr>
 <tr valign="top" align="left">
@@ -1452,7 +1452,7 @@ processes or child cpusets.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a <i>cpuset.cpus</i> or
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a <i>cpuset.cpus</i> or
 <i>cpuset.mems</i> list which included a range with the
 second number smaller than the first number.</p></td></tr>
 <tr valign="top" align="left">
@@ -1465,7 +1465,7 @@ second number smaller than the first number.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a <i>cpuset.cpus</i> or
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a <i>cpuset.cpus</i> or
 <i>cpuset.mems</i> list which included an invalid character
 in the string.</p></td></tr>
 <tr valign="top" align="left">
@@ -1478,7 +1478,7 @@ in the string.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a list to a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a list to a
 <i>cpuset.cpus</i> file that did not include any online
 CPUs.</p> </td></tr>
 <tr valign="top" align="left">
@@ -1491,7 +1491,7 @@ CPUs.</p> </td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a list to a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a list to a
 <i>cpuset.mems</i> file that did not include any online
 memory nodes.</p></td></tr>
 <tr valign="top" align="left">
@@ -1504,7 +1504,7 @@ memory nodes.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a list to a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a list to a
 <i>cpuset.mems</i> file that included a node that held no
 memory.</p> </td></tr>
 <tr valign="top" align="left">
@@ -1517,7 +1517,7 @@ memory.</p> </td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) a string to a cpuset
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> a string to a cpuset
 <i>tasks</i> file that does not begin with an ASCII decimal
 integer.</p> </td></tr>
 <tr valign="top" align="left">
@@ -1530,26 +1530,26 @@ integer.</p> </td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>rename</b>(2) a cpuset into a different
+<p>Attempted to <a href="https://man.page/2/rename">rename(2)</a> a cpuset into a different
 directory.</p> </td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>ENAMETOOLONG</b></p>
 
-<p style="margin-left:22%;">Attempted to <b>read</b>(2) a
+<p style="margin-left:22%;">Attempted to <a href="https://man.page/2/read">read(2)</a> a
 <i>/proc/&lt;pid&gt;/cpuset</i> file for a cpuset path that
 is longer than the kernel page size.</p>
 
 <p style="margin-left:11%;"><b>ENAMETOOLONG</b></p>
 
 <p style="margin-left:22%;">Attempted to create, using
-<b>mkdir</b>(2), a cpuset whose base directory name is
+<a href="https://man.page/2/mkdir">mkdir(2)</a>, a cpuset whose base directory name is
 longer than 255 characters.</p>
 
 <p style="margin-left:11%;"><b>ENAMETOOLONG</b></p>
 
 <p style="margin-left:22%;">Attempted to create, using
-<b>mkdir</b>(2), a cpuset whose full pathname, including the
+<a href="https://man.page/2/mkdir">mkdir(2)</a>, a cpuset whose full pathname, including the
 mount point (typically &quot;/dev/cpuset/&quot;) prefix, is
 longer than 4095 characters.</p>
 
@@ -1566,7 +1566,7 @@ longer than 4095 characters.</p>
 
 
 <p>The cpuset was removed by another process at the same
-time as a <b>write</b>(2) was attempted on one of the
+time as a <a href="https://man.page/2/write">write(2)</a> was attempted on one of the
 pseudo-files in the cpuset directory.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1578,7 +1578,7 @@ pseudo-files in the cpuset directory.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to create, using <b>mkdir</b>(2), a cpuset in
+<p>Attempted to create, using <a href="https://man.page/2/mkdir">mkdir(2)</a>, a cpuset in
 a parent cpuset that doesn&rsquo;t exist.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1590,7 +1590,7 @@ a parent cpuset that doesn&rsquo;t exist.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>access</b>(2) or <b>open</b>(2) a
+<p>Attempted to <a href="https://man.page/2/access">access(2)</a> or <a href="https://man.page/2/open">open(2)</a> a
 nonexistent file in a cpuset directory.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1615,7 +1615,7 @@ only if the system is extremely short of memory.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) the process ID (PID) of a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> the process ID (PID) of a
 process to a cpuset <i>tasks</i> file when the cpuset had an
 empty <i>cpuset.cpus</i> or empty <i>cpuset.mems</i>
 setting.</p> </td></tr>
@@ -1629,14 +1629,14 @@ setting.</p> </td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) an empty <i>cpuset.cpus</i>
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> an empty <i>cpuset.cpus</i>
 or <i>cpuset.mems</i> setting to a cpuset that has tasks
 attached.</p> </td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>ENOTDIR</b></p>
 
-<p style="margin-left:22%;">Attempted to <b>rename</b>(2) a
+<p style="margin-left:22%;">Attempted to <a href="https://man.page/2/rename">rename(2)</a> a
 nonexistent cpuset.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -1675,7 +1675,7 @@ kernel to set in its bit masks.</p></td></tr>
 <td width="78%">
 
 
-<p>Attempted to <b>write</b>(2) the process ID (PID) of a
+<p>Attempted to <a href="https://man.page/2/write">write(2)</a> the process ID (PID) of a
 nonexistent process to a cpuset <i>tasks</i> file.</p></td></tr>
 </table>
 
@@ -1696,7 +1696,7 @@ appeared in version 2.6.12 of the Linux kernel.</p>
 name, the <i>pid</i> parameter is actually a thread ID, and
 each thread in a threaded group can be attached to a
 different cpuset. The value returned from a call to
-<b>gettid</b>(2) can be passed in the argument
+<a href="https://man.page/2/gettid">gettid(2)</a> can be passed in the argument
 <i>pid</i>.</p>
 
 <h2>BUGS
@@ -1707,9 +1707,9 @@ different cpuset. The value returned from a call to
 
 <p style="margin-left:11%; margin-top: 1em"><i>cpuset.memory_pressure</i>
 cpuset files can be opened for writing, creation, or
-truncation, but then the <b>write</b>(2) fails with
+truncation, but then the <a href="https://man.page/2/write">write(2)</a> fails with
 <i>errno</i> set to <b>EACCES</b>, and the creation and
-truncation options on <b>open</b>(2) have no effect.</p>
+truncation options on <a href="https://man.page/2/open">open(2)</a> have no effect.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -1761,7 +1761,7 @@ done)</p> </td></tr>
 <td width="83%">
 
 
-<p>Create the new cpuset using <b>mkdir</b>(1).</p></td></tr>
+<p>Create the new cpuset using <a href="https://man.page/1/mkdir">mkdir(1)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="3%">
@@ -1902,7 +1902,7 @@ last step of the above sequence did not do:</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>while</i> loop, rather than the seemingly easier use of
-the <b>cp</b>(1) command, was necessary because only one
+the <a href="https://man.page/1/cp">cp(1)</a> command, was necessary because only one
 process PID at a time may be written to the <i>tasks</i>
 file.</p>
 
@@ -1911,7 +1911,7 @@ file.</p>
 accomplished more efficiently, in fewer keystrokes and in
 syntax that works on any shell, but alas more obscurely, by
 using the <b>-u</b> (unbuffered) option of
-<b>sed</b>(1):</p>
+<a href="https://man.page/1/sed">sed(1)</a>:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>sed -un p
 &lt; ../alpha/tasks &gt; tasks</b></p>
@@ -1922,12 +1922,12 @@ using the <b>-u</b> (unbuffered) option of
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>taskset</b>(1),
-<b>get_mempolicy</b>(2), <b>getcpu</b>(2), <b>mbind</b>(2),
-<b>sched_getaffinity</b>(2), <b>sched_setaffinity</b>(2),
-<b>sched_setscheduler</b>(2), <b>set_mempolicy</b>(2),
-<b>CPU_SET</b>(3), <b>proc</b>(5), <b>cgroups</b>(7),
-<b>numa</b>(7), <b>sched</b>(7), <b>migratepages</b>(8),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/taskset">taskset(1)</a>,
+<a href="https://man.page/2/get_mempolicy">get_mempolicy(2)</a>, <a href="https://man.page/2/getcpu">getcpu(2)</a>, <a href="https://man.page/2/mbind">mbind(2)</a>,
+<a href="https://man.page/2/sched_getaffinity">sched_getaffinity(2)</a>, <a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>,
+<a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a>, <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>,
+<a href="https://man.page/3/CPU_SET">CPU_SET(3)</a>, <a href="https://man.page/5/proc">proc(5)</a>, <a href="https://man.page/7/cgroups">cgroups(7)</a>,
+<a href="https://man.page/7/numa">numa(7)</a>, <a href="https://man.page/7/sched">sched(7)</a>, <b>migratepages</b>(8),
 <b>numactl</b>(8)</p>
 
 

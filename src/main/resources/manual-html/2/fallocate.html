@@ -63,7 +63,7 @@ off_t</b> <i>offset</i><b>, off_t</b>
 <p style="margin-left:11%; margin-top: 1em">This is a
 nonportable, Linux-specific system call. For the portable,
 POSIX.1-specified method of ensuring that space is allocated
-for a file, see <b>posix_fallocate</b>(3).</p>
+for a file, see <a href="https://man.page/3/posix_fallocate">posix_fallocate(3)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>fallocate</b>()
@@ -82,12 +82,12 @@ disk space</b> <br>
 The default operation (i.e., <i>mode</i> is zero) of
 <b>fallocate</b>() allocates the disk space within the range
 specified by <i>offset</i> and <i>len</i>. The file size (as
-reported by <b>stat</b>(2)) will be changed if
+reported by <a href="https://man.page/2/stat">stat(2)</a>) will be changed if
 <i>offset</i>+<i>len</i> is greater than the file size. Any
 subregion within the range specified by <i>offset</i> and
 <i>len</i> that did not contain data before the call will be
 initialized to zero. This default behavior closely resembles
-the behavior of the <b>posix_fallocate</b>(3) library
+the behavior of the <a href="https://man.page/3/posix_fallocate">posix_fallocate(3)</a> library
 function, and is intended as a method of optimally
 implementing that function.</p>
 
@@ -133,7 +133,7 @@ return zeros.</p>
 <b>FALLOC_FL_PUNCH_HOLE</b> flag must be ORed with
 <b>FALLOC_FL_KEEP_SIZE</b> in <i>mode</i>; in other words,
 even when punching off the end of the file, the file size
-(as reported by <b>stat</b>(2)) does not change.</p>
+(as reported by <a href="https://man.page/2/stat">stat(2)</a>) does not change.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Not all
 filesystems support <b>FALLOC_FL_PUNCH_HOLE</b>; if a
@@ -192,7 +192,7 @@ following filesystems:</p>
 <td width="40%">
 
 
-<p><b>tmpfs</b>(5) (since Linux 3.5)</p></td>
+<p><a href="https://man.page/5/tmpfs">tmpfs(5)</a> (since Linux 3.5)</p></td>
 <td width="45%">
 </td></tr>
 <tr valign="top" align="left">
@@ -205,7 +205,7 @@ following filesystems:</p>
 <td width="40%">
 
 
-<p><b>gfs2</b>(5) (since Linux 4.16)</p></td>
+<p><a href="https://man.page/5/gfs2">gfs2(5)</a> (since Linux 4.16)</p></td>
 <td width="45%">
 </td></tr>
 </table>
@@ -234,7 +234,7 @@ a requirement, <b>fallocate</b>() fails with the error
 <p style="margin-left:11%; margin-top: 1em">If the region
 specified by <i>offset</i> plus <i>len</i> reaches or passes
 the end of file, an error is returned; instead, use
-<b>ftruncate</b>(2) to truncate a file.</p>
+<a href="https://man.page/2/ftruncate">ftruncate(2)</a> to truncate a file.</p>
 
 <p style="margin-left:11%; margin-top: 1em">No other flags
 may be specified in <i>mode</i> in conjunction with
@@ -351,7 +351,7 @@ granularity requirements are not met, <b>fallocate</b>()
 fails with the error <b>EINVAL</b>. If the <i>offset</i> is
 equal to or greater than the end of file, an error is
 returned. For such operations (i.e., inserting a hole at the
-end of file), <b>ftruncate</b>(2) should be used.</p>
+end of file), <a href="https://man.page/2/ftruncate">ftruncate(2)</a> should be used.</p>
 
 <p style="margin-left:11%; margin-top: 1em">No other flags
 may be specified in <i>mode</i> in conjunction with
@@ -427,7 +427,7 @@ size.</p> </td></tr>
 
 
 <p>A signal was caught during execution; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -579,7 +579,7 @@ filesystem containing the file referred to by <i>fd</i>.</p>
 
 
 <p>The file referred to by <i>fd</i> is marked immutable
-(see <b>chattr</b>(1)).</p></td></tr>
+(see <a href="https://man.page/1/chattr">chattr(1)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -593,7 +593,7 @@ filesystem containing the file referred to by <i>fd</i>.</p>
 <p><i>mode</i> specifies <b>FALLOC_FL_PUNCH_HOLE</b> or
 <b>FALLOC_FL_COLLAPSE_RANGE</b> or
 <b>FALLOC_FL_INSERT_RANGE</b> and the file referred to by
-<i>fd</i> is marked append-only (see <b>chattr</b>(1)).</p></td></tr>
+<i>fd</i> is marked append-only (see <a href="https://man.page/1/chattr">chattr(1)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -605,7 +605,7 @@ filesystem containing the file referred to by <i>fd</i>.</p>
 
 
 <p>The operation was prevented by a file seal; see
-<b>fcntl</b>(2).</p> </td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -653,9 +653,9 @@ is Linux-specific.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fallocate</b>(1),
-<b>ftruncate</b>(2), <b>posix_fadvise</b>(3),
-<b>posix_fallocate</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/fallocate">fallocate(1)</a>,
+<a href="https://man.page/2/ftruncate">ftruncate(2)</a>, <a href="https://man.page/3/posix_fadvise">posix_fadvise(3)</a>,
+<a href="https://man.page/3/posix_fallocate">posix_fallocate(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -50,13 +50,13 @@ kernel.</p>
 <p style="margin-left:11%; margin-top: 1em">System call
 interfaces are provided so that user-space programs can
 manage those objects and also use the facility for their own
-purposes; see <b>add_key</b>(2), <b>request_key</b>(2), and
-<b>keyctl</b>(2).</p>
+purposes; see <a href="https://man.page/2/add_key">add_key(2)</a>, <a href="https://man.page/2/request_key">request_key(2)</a>, and
+<a href="https://man.page/2/keyctl">keyctl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A library and
 some user-space utilities are provided to allow access to
-the facility. See <b>keyctl</b>(1), <b>keyctl</b>(3), and
-<b>keyutils</b>(7) for more information.</p>
+the facility. See <a href="https://man.page/1/keyctl">keyctl(1)</a>, <a href="https://man.page/3/keyctl">keyctl(3)</a>, and
+<a href="https://man.page/7/keyutils">keyutils(7)</a> for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Keys</b>
 <br>
@@ -105,7 +105,7 @@ content of a key. This is usually set when a key is created,
 but it is possible for the kernel to upcall to user space to
 finish the instantiation of a key if that key wasn&rsquo;t
 already known to the kernel when it was requested. For
-further details, see <b>request_key</b>(2).</p>
+further details, see <a href="https://man.page/2/request_key">request_key(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A key&rsquo;s
 payload can be read and updated if the key type supports it
@@ -191,7 +191,7 @@ Linux 3.3)</p>
 
 <p style="margin-left:22%;">This key type is essentially
 the same as <i>&quot;user&quot;</i>, but it does not provide
-reading (i.e., the <b>keyctl</b>(2) <b>KEYCTL_READ</b>
+reading (i.e., the <a href="https://man.page/2/keyctl">keyctl(2)</a> <b>KEYCTL_READ</b>
 operation), meaning that the key payload is never visible
 from user space. This is suitable for storing
 username-password pairs that should not be readable from
@@ -291,8 +291,8 @@ searched for a key matching a particular type and
 description.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>keyctl_clear</b>(3), <b>keyctl_link</b>(3),
-<b>keyctl_search</b>(3), and <b>keyctl_unlink</b>(3) for
+<a href="https://man.page/3/keyctl_clear">keyctl_clear(3)</a>, <a href="https://man.page/3/keyctl_link">keyctl_link(3)</a>,
+<a href="https://man.page/3/keyctl_search">keyctl_search(3)</a>, and <a href="https://man.page/3/keyctl_unlink">keyctl_unlink(3)</a> for
 more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Anchoring
@@ -320,15 +320,15 @@ is usually as long as the process exists.</p>
 
 <p style="margin-left:22%; margin-top: 1em">There are three
 keyrings with different inheritance/sharing rules: the
-<b>session-keyring</b>(7) (inherited and shared by all child
-processes), the <b>process-keyring</b>(7) (shared by all
-threads in a process) and the <b>thread-keyring</b>(7)
+<a href="https://man.page/7/session-keyring">session-keyring(7)</a> (inherited and shared by all child
+processes), the <a href="https://man.page/7/process-keyring">process-keyring(7)</a> (shared by all
+threads in a process) and the <a href="https://man.page/7/thread-keyring">thread-keyring(7)</a>
 (specific to a particular thread).</p>
 
 <p style="margin-left:22%; margin-top: 1em">As an
 alternative to using the actual keyring IDs, in calls to
-<b>add_key</b>(2), <b>keyctl</b>(2), and
-<b>request_key</b>(2), the special keyring values
+<a href="https://man.page/2/add_key">add_key(2)</a>, <a href="https://man.page/2/keyctl">keyctl(2)</a>, and
+<a href="https://man.page/2/request_key">request_key(2)</a>, the special keyring values
 <b>KEY_SPEC_SESSION_KEYRING</b>,
 <b>KEY_SPEC_PROCESS_KEYRING</b>, and
 <b>KEY_SPEC_THREAD_KEYRING</b> can be used to refer to the
@@ -338,14 +338,14 @@ caller&rsquo;s own instances of these keyrings.</p>
 
 <p style="margin-left:22%;">Each UID known to the kernel
 has a record that contains two keyrings: the
-<b>user-keyring</b>(7) and the
-<b>user-session-keyring</b>(7). These exist for as long as
+<a href="https://man.page/7/user-keyring">user-keyring(7)</a> and the
+<a href="https://man.page/7/user-session-keyring">user-session-keyring(7)</a>. These exist for as long as
 the UID record in the kernel exists.</p>
 
 <p style="margin-left:22%; margin-top: 1em">As an
 alternative to using the actual keyring IDs, in calls to
-<b>add_key</b>(2), <b>keyctl</b>(2), and
-<b>request_key</b>(2), the special keyring values
+<a href="https://man.page/2/add_key">add_key(2)</a>, <a href="https://man.page/2/keyctl">keyctl(2)</a>, and
+<a href="https://man.page/2/request_key">request_key(2)</a>, the special keyring values
 <b>KEY_SPEC_USER_KEYRING</b> and
 <b>KEY_SPEC_USER_SESSION_KEYRING</b> can be used to refer to
 the caller&rsquo;s own instances of these keyrings.</p>
@@ -358,7 +358,7 @@ initiated.</p>
 <p style="margin-left:11%;">Persistent keyrings</p>
 
 <p style="margin-left:22%;">There is a
-<b>persistent-keyring</b>(7) available to each UID known to
+<a href="https://man.page/7/persistent-keyring">persistent-keyring(7)</a> available to each UID known to
 the system. It may persist beyond the life of the UID record
 previously mentioned, but has an expiration time set such
 that it is automatically cleaned up after a set time. The
@@ -421,8 +421,8 @@ rules.</p> </td></tr>
 <td width="83%">
 
 
-<p>A thread possesses its <b>session-keyring</b>(7),
-<b>process-keyring</b>(7), and <b>thread-keyring</b>(7)
+<p>A thread possesses its <a href="https://man.page/7/session-keyring">session-keyring(7)</a>,
+<a href="https://man.page/7/process-keyring">process-keyring(7)</a>, and <a href="https://man.page/7/thread-keyring">thread-keyring(7)</a>
 directly because those keyrings are referred to by its
 credentials.</p> </td></tr>
 <tr valign="top" align="left">
@@ -460,7 +460,7 @@ rule (3) applies recursively.</p></td></tr>
 
 
 <p>If a process is upcalled from the kernel to instantiate
-a key (see <b>request_key</b>(2)), then it also possesses
+a key (see <a href="https://man.page/2/request_key">request_key(2)</a>), then it also possesses
 the requester&rsquo;s keyrings as in rule (1) as if it were
 the requester.</p></td></tr>
 </table>
@@ -478,7 +478,7 @@ on the basis of UID and GID matches.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When it creates
 the session keyring, <b>pam_keyinit</b>(8) adds a link to
-the <b>user-keyring</b>(7), thus making the user keyring and
+the <a href="https://man.page/7/user-keyring">user-keyring(7)</a>, thus making the user keyring and
 anything it contains possessed by default.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Access
@@ -689,18 +689,18 @@ access rights, any active Linux Security Module (LSM) may
 prevent access to a key if its policy so dictates. A key may
 be given a security label or other attribute by the LSM;
 this label is retrievable via
-<b>keyctl_get_security</b>(3).</p>
+<a href="https://man.page/3/keyctl_get_security">keyctl_get_security(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>keyctl_chown</b>(3), <b>keyctl_describe</b>(3),
-<b>keyctl_get_security</b>(3), <b>keyctl_setperm</b>(3), and
+<a href="https://man.page/3/keyctl_chown">keyctl_chown(3)</a>, <a href="https://man.page/3/keyctl_describe">keyctl_describe(3)</a>,
+<a href="https://man.page/3/keyctl_get_security">keyctl_get_security(3)</a>, <a href="https://man.page/3/keyctl_setperm">keyctl_setperm(3)</a>, and
 <b>selinux</b>(8) for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Searching
 for keys</b> <br>
 One of the key features of the Linux key-management facility
 is the ability to find a key that a process is retaining.
-The <b>request_key</b>(2) system call is the primary point
+The <a href="https://man.page/2/request_key">request_key(2)</a> system call is the primary point
 of access for user-space applications to find a key.
 (Internally, the kernel has something similar available for
 use by internal components that make use of keys.)</p>
@@ -721,10 +721,10 @@ algorithm works as follows:</p>
 
 
 <p>The process keyrings are searched in the following
-order: the thread <b>thread-keyring</b>(7) if it exists, the
-<b>process-keyring</b>(7) if it exists, and then either the
-<b>session-keyring</b>(7) if it exists or the
-<b>user-session-keyring</b>(7) if that exists.</p></td></tr>
+order: the thread <a href="https://man.page/7/thread-keyring">thread-keyring(7)</a> if it exists, the
+<a href="https://man.page/7/process-keyring">process-keyring(7)</a> if it exists, and then either the
+<a href="https://man.page/7/session-keyring">session-keyring(7)</a> if it exists or the
+<a href="https://man.page/7/user-session-keyring">user-session-keyring(7)</a> if that exists.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="4%">
@@ -736,8 +736,8 @@ order: the thread <b>thread-keyring</b>(7) if it exists, the
 
 
 <p>If the caller was a process that was invoked by the
-<b>request_key</b>(2) upcall mechanism, then the keyrings of
-the original caller of <b>request_key</b>(2) will be
+<a href="https://man.page/2/request_key">request_key(2)</a> upcall mechanism, then the keyrings of
+the original caller of <a href="https://man.page/2/request_key">request_key(2)</a> will be
 searched as well.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -797,12 +797,12 @@ possible to search a specific keyring, in which case only
 steps (3) to (6) apply.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>request_key</b>(2) and <b>keyctl_search</b>(3) for more
+<a href="https://man.page/2/request_key">request_key(2)</a> and <a href="https://man.page/3/keyctl_search">keyctl_search(3)</a> for more
 information.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>On-demand
 key creation</b> <br>
-If a key cannot be found, <b>request_key</b>(2) will, if
+If a key cannot be found, <a href="https://man.page/2/request_key">request_key(2)</a> will, if
 given a <i>callout_info</i> argument, create a new key and
 then upcall to user space to instantiate the key. This
 allows keys to be created on an as-needed basis.</p>
@@ -819,9 +819,9 @@ searches performed by the handler program to also search the
 requester&rsquo;s keyrings.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>request_key</b>(2), <b>keyctl_assume_authority</b>(3),
-<b>keyctl_instantiate</b>(3), <b>keyctl_negate</b>(3),
-<b>keyctl_reject</b>(3), <b>request-key</b>(8), and
+<a href="https://man.page/2/request_key">request_key(2)</a>, <a href="https://man.page/3/keyctl_assume_authority">keyctl_assume_authority(3)</a>,
+<a href="https://man.page/3/keyctl_instantiate">keyctl_instantiate(3)</a>, <a href="https://man.page/3/keyctl_negate">keyctl_negate(3)</a>,
+<a href="https://man.page/3/keyctl_reject">keyctl_reject(3)</a>, <b>request-key</b>(8), and
 <b>request-key.conf</b>(5) for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>/proc
@@ -952,7 +952,7 @@ garbage collection.)</p></td></tr>
 
 
 <p>The key is under construction via a callback to user
-space; see <b>request-key</b>(2).</p></td></tr>
+space; see <a href="https://man.page/2/request-key">request-key(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="32%"></td>
 <td width="2%">
@@ -1129,13 +1129,13 @@ linked to the keyring.</p>
 <p style="margin-left:43%;">The payload size in bytes,
 followed either by the string <i>[file]</i>, if the key
 payload exceeds the threshold that means that the payload is
-stored in a (swappable) <b>tmpfs</b>(5) filesystem, or
+stored in a (swappable) <a href="https://man.page/5/tmpfs">tmpfs(5)</a> filesystem, or
 otherwise the string <i>[buff]</i>, indicating that the key
 is small enough to reside in kernel memory.</p>
 
 <p style="margin-left:32%; margin-top: 1em">For the
 <i>&quot;.request_key_auth&quot;</i> key type (authorization
-key; see <b>request_key</b>(2)), the description field has
+key; see <a href="https://man.page/2/request_key">request_key(2)</a>), the description field has
 the form shown in the following example:</p>
 
 <p style="margin-left:32%; margin-top: 1em">key:c9a9b19
@@ -1269,7 +1269,7 @@ value in this file is 300 (i.e., 5 minutes).</p>
 <p style="margin-left:22%;">This file defines an interval,
 in seconds, to which the persistent keyring&rsquo;s
 expiration timer is reset each time the keyring is accessed
-(via <b>keyctl_get_persistent</b>(3) or the <b>keyctl</b>(2)
+(via <a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a> or the <a href="https://man.page/2/keyctl">keyctl(2)</a>
 <b>KEYCTL_GET_PERSISTENT</b> operation.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">The default
@@ -1381,12 +1381,12 @@ scripts can use them.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>keyctl</b>(1),
-<b>add_key</b>(2), <b>keyctl</b>(2), <b>request_key</b>(2),
-<b>keyctl</b>(3), <b>keyutils</b>(7),
-<b>persistent-keyring</b>(7), <b>process-keyring</b>(7),
-<b>session-keyring</b>(7), <b>thread-keyring</b>(7),
-<b>user-keyring</b>(7), <b>user-session-keyring</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/keyctl">keyctl(1)</a>,
+<a href="https://man.page/2/add_key">add_key(2)</a>, <a href="https://man.page/2/keyctl">keyctl(2)</a>, <a href="https://man.page/2/request_key">request_key(2)</a>,
+<a href="https://man.page/3/keyctl">keyctl(3)</a>, <a href="https://man.page/7/keyutils">keyutils(7)</a>,
+<a href="https://man.page/7/persistent-keyring">persistent-keyring(7)</a>, <a href="https://man.page/7/process-keyring">process-keyring(7)</a>,
+<a href="https://man.page/7/session-keyring">session-keyring(7)</a>, <a href="https://man.page/7/thread-keyring">thread-keyring(7)</a>,
+<a href="https://man.page/7/user-keyring">user-keyring(7)</a>, <a href="https://man.page/7/user-session-keyring">user-session-keyring(7)</a>,
 <b>pam_keyinit</b>(8), <b>request-key</b>(8)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel

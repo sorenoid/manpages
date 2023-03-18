@@ -176,7 +176,7 @@ the mapping are visible to other processes mapping the same
 region, and (in the case of file-backed mappings) are
 carried through to the underlying file. (To precisely
 control when updates are carried through to the underlying
-file requires the use of <b>msync</b>(2).)</p>
+file requires the use of <a href="https://man.page/2/msync">msync(2)</a>.)</p>
 
 <p style="margin-left:11%;"><b>MAP_SHARED_VALIDATE</b>
 (since Linux 4.15)</p>
@@ -352,13 +352,13 @@ discovered by listing the subdirectories in
 2.5.37)</p>
 
 <p style="margin-left:22%;">Mark the mapped region to be
-locked in the same way as <b>mlock</b>(2). This
+locked in the same way as <a href="https://man.page/2/mlock">mlock(2)</a>. This
 implementation will try to populate (prefault) the whole
 range but the <b>mmap</b>() call doesn&rsquo;t fail with
 <b>ENOMEM</b> if this fails. Therefore major faults might
 happen later on. So the semantic is not as strong as
-<b>mlock</b>(2). One should use <b>mmap</b>() plus
-<b>mlock</b>(2) when major faults are not acceptable after
+<a href="https://man.page/2/mlock">mlock(2)</a>. One should use <b>mmap</b>() plus
+<a href="https://man.page/2/mlock">mlock(2)</a> when major faults are not acceptable after
 the initialization of the mapping. The <b>MAP_LOCKED</b>
 flag is ignored in older kernels.</p>
 
@@ -381,7 +381,7 @@ guarantee that it is possible to modify the mapping. When
 swap space is not reserved one might get <b>SIGSEGV</b> upon
 a write if no physical memory is available. See also the
 discussion of the file <i>/proc/sys/vm/overcommit_memory</i>
-in <b>proc</b>(5). In kernels before 2.6, this flag had
+in <a href="https://man.page/5/proc">proc(5)</a>. In kernels before 2.6, this flag had
 effect only for private writable mappings.</p>
 
 <p style="margin-left:11%;"><b>MAP_POPULATE</b> (since
@@ -515,7 +515,7 @@ open in read/write (<b>O_RDWR</b>) mode. Or
 
 
 <p>The file has been locked, or too much memory has been
-locked (see <b>setrlimit</b>(2)).</p></td></tr>
+locked (see <a href="https://man.page/2/setrlimit">setrlimit(2)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -638,7 +638,7 @@ on either side of the region being unmapped.</p></td></tr>
 
 
 <p>(since Linux 4.7) The process&rsquo;s <b>RLIMIT_DATA</b>
-limit, described in <b>getrlimit</b>(2), would have been
+limit, described in <a href="https://man.page/2/getrlimit">getrlimit(2)</a>, would have been
 exceeded.</p> </td></tr>
 </table>
 
@@ -676,7 +676,7 @@ mounted no-exec.</p></td></tr>
 
 
 <p>The operation was prevented by a file seal; see
-<b>fcntl</b>(2).</p> </td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p> </td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>ETXTBSY</b></p>
@@ -718,7 +718,7 @@ size, see NOTES.</p></td></tr>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3251151.png" alt="Image grohtml-3251151.png"></p>
@@ -732,10 +732,10 @@ explanation of the terms used in this section, see
 POSIX.1-2008, SVr4, 4.4BSD.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On POSIX
-systems on which <b>mmap</b>(), <b>msync</b>(2), and
+systems on which <b>mmap</b>(), <a href="https://man.page/2/msync">msync(2)</a>, and
 <b>munmap</b>() are available, <b>_POSIX_MAPPED_FILES</b> is
 defined in <i>&lt;unistd.h&gt;</i> to a value greater than
-0. (See also <b>sysconf</b>(3).)</p>
+0. (See also <a href="https://man.page/3/sysconf">sysconf(3)</a>.)</p>
 
 <h2>NOTES
 <a name="NOTES"></a>
@@ -743,7 +743,7 @@ defined in <i>&lt;unistd.h&gt;</i> to a value greater than
 
 
 <p style="margin-left:11%; margin-top: 1em">Memory mapped
-by <b>mmap</b>() is preserved across <b>fork</b>(2), with
+by <b>mmap</b>() is preserved across <a href="https://man.page/2/fork">fork(2)</a>, with
 the same attributes.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A file is
@@ -789,7 +789,7 @@ relevant flags are: <b>MAP_32BIT</b>, <b>MAP_ANONYMOUS</b>
 <p style="margin-left:11%; margin-top: 1em">An application
 can determine which pages of a mapping are currently
 resident in the buffer/page cache using
-<b>mincore</b>(2).</p>
+<a href="https://man.page/2/mincore">mincore(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Using
 MAP_FIXED safely</b> <br>
@@ -809,14 +809,14 @@ address range. When thread A subsequently employs
 <b>mmap(MAP_FIXED)</b>, it will effectively clobber the
 mapping that thread B created. In this scenario, thread B
 need not create a mapping directly; simply making a library
-call that, internally, uses <b>dlopen</b>(3) to load some
-other shared library, will suffice. The <b>dlopen</b>(3)
+call that, internally, uses <a href="https://man.page/3/dlopen">dlopen(3)</a> to load some
+other shared library, will suffice. The <a href="https://man.page/3/dlopen">dlopen(3)</a>
 call will map the library into the process&rsquo;s address
 space. Furthermore, almost any library call may be
 implemented in a way that adds memory mappings to the
 address space, either with this technique, or by simply
-allocating memory. Examples include <b>brk</b>(2),
-<b>malloc</b>(3), <b>pthread_create</b>(3), and the PAM
+allocating memory. Examples include <a href="https://man.page/2/brk">brk(2)</a>,
+<a href="https://man.page/3/malloc">malloc(3)</a>, <a href="https://man.page/3/pthread_create">pthread_create(3)</a>, and the PAM
 libraries
 <a href="http://www.linux-pam.org">http://www.linux-pam.org</a>.</p>
 
@@ -839,7 +839,7 @@ not been already.</p>
 <i>st_ctime</i> and <i>st_mtime</i> field for a file mapped
 with <b>PROT_WRITE</b> and <b>MAP_SHARED</b> will be updated
 after a write to the mapped region, and before a subsequent
-<b>msync</b>(2) with the <b>MS_SYNC</b> or <b>MS_ASYNC</b>
+<a href="https://man.page/2/msync">msync(2)</a> with the <b>MS_SYNC</b> or <b>MS_ASYNC</b>
 flag, if one occurs.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Huge page
@@ -864,9 +864,9 @@ library/kernel differences</b> <br>
 This page describes the interface provided by the glibc
 <b>mmap</b>() wrapper function. Originally, this function
 invoked a system call of the same name. Since kernel 2.4,
-that system call has been superseded by <b>mmap2</b>(2), and
+that system call has been superseded by <a href="https://man.page/2/mmap2">mmap2(2)</a>, and
 nowadays the glibc <b>mmap</b>() wrapper function invokes
-<b>mmap2</b>(2) with a suitably adjusted value for
+<a href="https://man.page/2/mmap2">mmap2(2)</a> with a suitably adjusted value for
 <i>offset</i>.</p>
 
 <h2>BUGS
@@ -899,10 +899,10 @@ object, the data stays in the page cache even after the file
 is closed and unmapped and even though the data is never
 written to the file itself, subsequent mappings may see the
 modified content. In some cases, this could be fixed by
-calling <b>msync</b>(2) before the unmap takes place;
-however, this doesn&rsquo;t work on <b>tmpfs</b>(5) (for
+calling <a href="https://man.page/2/msync">msync(2)</a> before the unmap takes place;
+however, this doesn&rsquo;t work on <a href="https://man.page/5/tmpfs">tmpfs(5)</a> (for
 example, when using the POSIX shared memory interface
-documented in <b>shm_overview</b>(7)).</p>
+documented in <a href="https://man.page/7/shm_overview">shm_overview(7)</a>).</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -915,7 +915,7 @@ command-line argument to standard output. The range of bytes
 to be printed is specified via offset and length values in
 the second and third command-line arguments. The program
 creates a memory mapping of the required pages of the file
-and then uses <b>write</b>(2) to output the desired
+and then uses <a href="https://man.page/2/write">write(2)</a> to output the desired
 bytes.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Program
@@ -1015,16 +1015,16 @@ close(fd);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ftruncate</b>(2),
-<b>getpagesize</b>(2), <b>memfd_create</b>(2),
-<b>mincore</b>(2), <b>mlock</b>(2), <b>mmap2</b>(2),
-<b>mprotect</b>(2), <b>mremap</b>(2), <b>msync</b>(2),
-<b>remap_file_pages</b>(2), <b>setrlimit</b>(2),
-<b>shmat</b>(2), <b>userfaultfd</b>(2), <b>shm_open</b>(3),
-<b>shm_overview</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/ftruncate">ftruncate(2)</a>,
+<a href="https://man.page/2/getpagesize">getpagesize(2)</a>, <a href="https://man.page/2/memfd_create">memfd_create(2)</a>,
+<a href="https://man.page/2/mincore">mincore(2)</a>, <a href="https://man.page/2/mlock">mlock(2)</a>, <a href="https://man.page/2/mmap2">mmap2(2)</a>,
+<a href="https://man.page/2/mprotect">mprotect(2)</a>, <a href="https://man.page/2/mremap">mremap(2)</a>, <a href="https://man.page/2/msync">msync(2)</a>,
+<a href="https://man.page/2/remap_file_pages">remap_file_pages(2)</a>, <a href="https://man.page/2/setrlimit">setrlimit(2)</a>,
+<a href="https://man.page/2/shmat">shmat(2)</a>, <a href="https://man.page/2/userfaultfd">userfaultfd(2)</a>, <a href="https://man.page/3/shm_open">shm_open(3)</a>,
+<a href="https://man.page/7/shm_overview">shm_overview(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-descriptions of the following files in <b>proc</b>(5):
+descriptions of the following files in <a href="https://man.page/5/proc">proc(5)</a>:
 <i>/proc/[pid]/maps</i>, <i>/proc/[pid]/map_files</i>, and
 <i>/proc/[pid]/smaps</i>.</p>
 

@@ -79,7 +79,7 @@ used instead of the ID stored in /etc/machine-id.</p>
 does not change based on local or network configuration or
 when hardware is replaced. Due to this and its greater
 length, it is a more useful replacement for the
-<b>gethostid</b>(3) call that POSIX specifies.</p>
+<a href="https://man.page/3/gethostid">gethostid(3)</a> call that POSIX specifies.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This machine ID
 adheres to the same format and logic as the D-Bus machine
@@ -97,7 +97,7 @@ fixed, application-specific key. That way the ID will be
 properly unique, and derived in a constant way from the
 machine ID but there will be no way to retrieve the original
 machine ID from the application-specific one. The
-<b>sd_id128_get_machine_app_specific</b>(3) API provides an
+<a href="https://man.page/3/sd_id128_get_machine_app_specific">sd_id128_get_machine_app_specific(3)</a> API provides an
 implementation of such an algorithm.</p>
 
 <h2>INITIALIZATION
@@ -117,7 +117,7 @@ created for a specific machine, /etc/machine-id should be
 populated during installation.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>systemd-machine-id-setup</b>(1)
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/systemd-machine-id-setup">systemd-machine-id-setup(1)</a>
 may be used by installer tools to initialize the machine ID
 at install time, but /etc/machine-id may also be written
 using any other means.</p>
@@ -135,12 +135,12 @@ bind-mounted over the real file, in case the image is used
 read-only.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>systemd-firstboot</b>(1)
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/systemd-firstboot">systemd-firstboot(1)</a>
 may be used to initialize /etc/machine-id on mounted (but
 not booted) system images.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a machine
-is booted with <b>systemd</b>(1) the ID of the machine will
+is booted with <a href="https://man.page/1/systemd">systemd(1)</a> the ID of the machine will
 be established. If <i>systemd.machine_id=</i> or
 <b>--machine-id=</b> options (see first section) are
 specified, this value will be used. Otherwise, the value in
@@ -152,7 +152,7 @@ product_uuid or the devicetree vm,uuid (on KVM systems), and
 finally a randomly generated UUID.</p>
 
 <p style="margin-left:11%; margin-top: 1em">After the
-machine ID is established, <b>systemd</b>(1) will attempt to
+machine ID is established, <a href="https://man.page/1/systemd">systemd(1)</a> will attempt to
 save it to /etc/machine-id. If this fails, it will attempt
 to bind-mount a temporary file over /etc/machine-id. It is
 an error if the file system is read-only and does not
@@ -256,12 +256,12 @@ by D-Bus. In fact, this latter file might be a symlink to
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
-<b>systemd-machine-id-setup</b>(1), <b>gethostid</b>(3),
-<b>hostname</b>(5), <b>machine-info</b>(5),
-<b>os-release</b>(5), <b>sd-id128</b>(3),
-<b>sd_id128_get_machine</b>(3),
-<b>systemd-firstboot</b>(1)</font></p>
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/1/systemd-machine-id-setup">systemd-machine-id-setup(1)</a>, <a href="https://man.page/3/gethostid">gethostid(3)</a>,
+<a href="https://man.page/5/hostname">hostname(5)</a>, <a href="https://man.page/5/machine-info">machine-info(5)</a>,
+<a href="https://man.page/5/os-release">os-release(5)</a>, <a href="https://man.page/3/sd-id128">sd-id128(3)</a>,
+<a href="https://man.page/3/sd_id128_get_machine">sd_id128_get_machine(3)</a>,
+<a href="https://man.page/1/systemd-firstboot">systemd-firstboot(1)</a></font></p>
 
 <h2>NOTES
 <a name="NOTES"></a>

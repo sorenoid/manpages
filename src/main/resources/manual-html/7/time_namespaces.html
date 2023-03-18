@@ -84,14 +84,14 @@ includes any time that the system is suspended.</p></td></tr>
 <p style="margin-left:11%; margin-top: 1em">Thus, the
 processes in a time namespace share per-namespace values for
 these clocks. This affects various APIs that measure against
-these clocks, including: <b>clock_gettime</b>(2),
-<b>clock_nanosleep</b>(2), <b>nanosleep</b>(2),
-<b>timer_settime</b>(2), <b>timerfd_settime</b>(2), and
+these clocks, including: <a href="https://man.page/2/clock_gettime">clock_gettime(2)</a>,
+<a href="https://man.page/2/clock_nanosleep">clock_nanosleep(2)</a>, <a href="https://man.page/2/nanosleep">nanosleep(2)</a>,
+<a href="https://man.page/2/timer_settime">timer_settime(2)</a>, <a href="https://man.page/2/timerfd_settime">timerfd_settime(2)</a>, and
 <i>/proc/uptime</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Currently, the
 only way to create a time namespace is by calling
-<b>unshare</b>(2) with the <b>CLONE_NEWTIME</b> flag. This
+<a href="https://man.page/2/unshare">unshare(2)</a> with the <b>CLONE_NEWTIME</b> flag. This
 call creates a new time namespace but does <i>not</i> place
 the calling process in the new namespace. Instead, the
 calling process&rsquo;s subsequently created children are
@@ -101,7 +101,7 @@ process is placed in the namespace. The
 <i>/proc/[pid]/ns/time_for_children</i> symbolic link shows
 the time namespace in which the children of a process will
 be created. (A process can use a file descriptor opened on
-this symbolic link in a call to <b>setns</b>(2) in order to
+this symbolic link in a call to <a href="https://man.page/2/setns">setns(2)</a> in order to
 move into the namespace.)</p>
 
 
@@ -146,7 +146,7 @@ offsets can be modified by writing newline-terminated
 records of the same form to the <i>timens_offsets</i> file.
 The file can be written to multiple times, but after the
 first process has been created in or has entered the
-namespace, <b>write</b>(2)s on this file fail with the error
+namespace, <a href="https://man.page/2/write">write(2)</a>s on this file fail with the error
 <b>EACCES</b>. In order to write to the
 <i>timens_offsets</i> file, a process must have the
 <b>CAP_SYS_TIME</b> capability in the user namespace that
@@ -240,7 +240,7 @@ to a maximum of approximately 146 years).</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">In a new time
-namespace created by <b>unshare</b>(2), the contents of the
+namespace created by <a href="https://man.page/2/unshare">unshare(2)</a>, the contents of the
 <i>timens_offsets</i> file are inherited from the time
 namespace of the creating process.</p>
 
@@ -288,8 +288,8 @@ time:[4026531834]</p>
 
 <p style="margin-left:11%; margin-top: 1em">Continuing in
 the initial time namespace, we display the system uptime
-using <b>uptime</b>(1) and use the <i>clock_times</i>
-example program shown in <b>clock_getres</b>(2) to display
+using <a href="https://man.page/1/uptime">uptime(1)</a> and use the <i>clock_times</i>
+example program shown in <a href="https://man.page/2/clock_getres">clock_getres(2)</a> to display
 the values of various clocks:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>uptime
@@ -303,8 +303,8 @@ CLOCK_MONOTONIC: 56338.247 (15h 38m 58s) <br>
 CLOCK_BOOTTIME : 76633.544 (21h 17m 13s)</p>
 
 <p style="margin-left:11%; margin-top: 1em">We then use
-<b>unshare</b>(1) to create a time namespace and execute a
-<b>bash</b>(1) shell. From the new shell, we use the
+<a href="https://man.page/1/unshare">unshare(1)</a> to create a time namespace and execute a
+<a href="https://man.page/1/bash">bash(1)</a> shell. From the new shell, we use the
 built-in <b>echo</b> command to write records to the
 <i>timens_offsets</i> file adjusting the offset for the
 <b>CLOCK_MONOTONIC</b> clock forward 2 days and the offset
@@ -319,15 +319,15 @@ ns2# <b>echo &quot;boottime $((7*24*60*60)) 0&quot; &gt;
 /proc/$$/timens_offsets</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">Above, we
-started the <b>bash</b>(1) shell with the <b>--norc</b>
+started the <a href="https://man.page/1/bash">bash(1)</a> shell with the <b>--norc</b>
 options so that no start-up scripts were executed. This
 ensures that no child processes are created from the shell
 before we have a chance to update the <i>timens_offsets</i>
 file.</p>
 
 <p style="margin-left:11%; margin-top: 1em">We then use
-<b>cat</b>(1) to display the contents of the
-<i>timens_offsets</i> file. The execution of <b>cat</b>(1)
+<a href="https://man.page/1/cat">cat(1)</a> to display the contents of the
+<i>timens_offsets</i> file. The execution of <a href="https://man.page/1/cat">cat(1)</a>
 creates the first process in the new time namespace, after
 which further attempts to update the <i>timens_offsets</i>
 file produce an error.</p>
@@ -341,7 +341,7 @@ ns2# <b>echo &quot;boottime $((9*24*60*60)) 0&quot; &gt;
 bash: echo: write error: Permission denied</p>
 
 <p style="margin-left:11%; margin-top: 1em">Continuing in
-the new namespace, we execute <b>uptime</b>(1) and the
+the new namespace, we execute <a href="https://man.page/1/uptime">uptime(1)</a> and the
 <i>clock_times</i> example program:</p>
 
 <p style="margin-left:17%; margin-top: 1em">ns2# <b>uptime
@@ -396,9 +396,9 @@ CLOCK_BOOTTIME : 76633.544 (21h 19m 23s)</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>nsenter</b>(1),
-<b>unshare</b>(1), <b>clock_settime</b>(2), <b>setns</b>(2),
-<b>unshare</b>(2), <b>namespaces</b>(7), <b>time</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/nsenter">nsenter(1)</a>,
+<a href="https://man.page/1/unshare">unshare(1)</a>, <a href="https://man.page/2/clock_settime">clock_settime(2)</a>, <a href="https://man.page/2/setns">setns(2)</a>,
+<a href="https://man.page/2/unshare">unshare(2)</a>, <a href="https://man.page/7/namespaces">namespaces(7)</a>, <a href="https://man.page/7/time">time(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

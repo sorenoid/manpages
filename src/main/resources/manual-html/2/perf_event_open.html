@@ -73,8 +73,8 @@ NOTES.</p>
 <p style="margin-left:11%; margin-top: 1em">Given a list of
 parameters, <b>perf_event_open</b>() returns a file
 descriptor, for use in subsequent system calls
-(<b>read</b>(2), <b>mmap</b>(2), <b>prctl</b>(2),
-<b>fcntl</b>(2), etc.).</p>
+(<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/prctl">prctl(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, etc.).</p>
 
 <p style="margin-left:11%; margin-top: 1em">A call to
 <b>perf_event_open</b>() creates a file descriptor that
@@ -84,8 +84,8 @@ can be grouped together to measure multiple events
 simultaneously.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Events can be
-enabled and disabled in two ways: via <b>ioctl</b>(2) and
-via <b>prctl</b>(2). When an event is disabled it does not
+enabled and disabled in two ways: via <a href="https://man.page/2/ioctl">ioctl(2)</a> and
+via <a href="https://man.page/2/prctl">prctl(2)</a>. When an event is disabled it does not
 count or generate overflows but does continue to exist and
 maintain its count value.</p>
 
@@ -93,9 +93,9 @@ maintain its count value.</p>
 two flavors: counting and sampled. A <i>counting</i> event
 is one that is used for counting the aggregate number of
 events that occur. In general, counting event results are
-gathered with a <b>read</b>(2) call. A <i>sampling</i> event
+gathered with a <a href="https://man.page/2/read">read(2)</a> call. A <i>sampling</i> event
 periodically writes measurements to a buffer that can then
-be accessed via <b>mmap</b>(2).</p>
+be accessed via <a href="https://man.page/2/mmap">mmap(2)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Arguments</b>
@@ -144,7 +144,7 @@ will return an error.</p>
 is greater than zero, permission to perform this system call
 is governed by <b>CAP_PERFMON</b> (since Linux 5.9) and a
 ptrace access mode <b>PTRACE_MODE_READ_REALCREDS</b> check
-on older Linux versions; see <b>ptrace</b>(2).</p>
+on older Linux versions; see <a href="https://man.page/2/ptrace">ptrace(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>group_fd</i> argument allows event groups to be created.
@@ -171,12 +171,12 @@ PERF_FLAG_FD_CLOEXEC</b> (since Linux 3.14)</p>
 <p style="margin-left:22%;">This flag enables the
 close-on-exec flag for the created event file descriptor, so
 that the file descriptor is automatically closed on
-<b>execve</b>(2). Setting the close-on-exec flags at
-creation time, rather than later with <b>fcntl</b>(2),
+<a href="https://man.page/2/execve">execve(2)</a>. Setting the close-on-exec flags at
+creation time, rather than later with <a href="https://man.page/2/fcntl">fcntl(2)</a>,
 avoids potential race conditions where the calling thread
-invokes <b>perf_event_open</b>() and <b>fcntl</b>(2) at the
-same time as another thread calls <b>fork</b>(2) then
-<b>execve</b>(2).</p>
+invokes <b>perf_event_open</b>() and <a href="https://man.page/2/fcntl">fcntl(2)</a> at the
+same time as another thread calls <a href="https://man.page/2/fork">fork(2)</a> then
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>PERF_FLAG_FD_NO_GROUP</b></p>
@@ -754,7 +754,7 @@ rate. The rate of adjustment is a timer tick.</p>
 <p style="margin-left:22%;">The various bits in this field
 specify which values to include in the sample. They will be
 recorded in a ring-buffer, which is available to user space
-using <b>mmap</b>(2). The order in which the values are
+using <a href="https://man.page/2/mmap">mmap(2)</a>. The order in which the values are
 saved in the sample are documented in the MMAP Layout
 subsection below; it is not the <i>enum
 perf_event_sample_format</i> order. <b><br>
@@ -924,7 +924,7 @@ the <b>PERF_RECORD_CGROUP</b> event.</p>
 <p style="margin-left:11%;"><i>read_format</i></p>
 
 <p style="margin-left:22%;">This field specifies the format
-of the data returned by <b>read</b>(2) on a
+of the data returned by <a href="https://man.page/2/read">read(2)</a> on a
 <b>perf_event_open</b>() file descriptor. <b><br>
 PERF_FORMAT_TOTAL_TIME_ENABLED</b></p>
 
@@ -956,7 +956,7 @@ event group to be read with one read.</p>
 <p style="margin-left:22%;">The <i>disabled</i> bit
 specifies whether the counter starts out disabled or
 enabled. If disabled, the event can later be enabled by
-<b>ioctl</b>(2), <b>prctl</b>(2), or
+<a href="https://man.page/2/ioctl">ioctl(2)</a>, <a href="https://man.page/2/prctl">prctl(2)</a>, or
 <i>enable_on_exec</i>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">When creating
@@ -998,7 +998,7 @@ counter cannot be put onto the CPU (e.g., because there are
 not enough hardware counters or because of a conflict with
 some other event), then the counter goes into an
 &rsquo;error&rsquo; state, where reads return end-of-file
-(i.e., <b>read</b>(2) returns 0) until the counter is
+(i.e., <a href="https://man.page/2/read">read(2)</a> returns 0) until the counter is
 subsequently enabled or disabled.</p></td></tr>
 </table>
 
@@ -1056,7 +1056,7 @@ software events.</p>
 
 
 <p>The <i>mmap</i> bit enables generation of
-<b>PERF_RECORD_MMAP</b> samples for every <b>mmap</b>(2)
+<b>PERF_RECORD_MMAP</b> samples for every <a href="https://man.page/2/mmap">mmap(2)</a>
 call that has <b>PROT_EXEC</b> set. This allows tools to
 notice new executable code being mapped into a program
 (dynamic shared libraries for example) so that addresses can
@@ -1072,12 +1072,12 @@ be mapped back to the original code.</p></td></tr>
 
 
 <p>The <i>comm</i> bit enables tracking of process command
-name as modified by the <b>exec</b>(2) and
+name as modified by the <a href="https://man.page/2/exec">exec(2)</a> and
 <b>prctl</b>(PR_SET_NAME) system calls as well as writing to
 <i>/proc/self/comm</i>. If the <i>comm_exec</i> flag is also
 successfully set (possible since Linux 3.16), then the misc
 flag <b>PERF_RECORD_MISC_COMM_EXEC</b> can be used to
-differentiate the <b>exec</b>(2) case from the others.</p></td></tr>
+differentiate the <a href="https://man.page/2/exec">exec(2)</a> case from the others.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="6%">
@@ -1102,7 +1102,7 @@ meaningful only if the <i>inherit</i> field is set.</p>
 <p style="margin-left:11%;"><i>enable_on_exec</i></p>
 
 <p style="margin-left:22%;">If this bit is set, a counter
-is automatically enabled after a call to <b>exec</b>(2).</p>
+is automatically enabled after a call to <a href="https://man.page/2/exec">exec(2)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -1195,7 +1195,7 @@ description of <b>PERF_RECORD_MISC_EXACT_IP</b>.</p></td></tr>
 
 <p style="margin-left:22%;">This is the counterpart of the
 <i>mmap</i> field. This enables generation of
-<b>PERF_RECORD_MMAP</b> samples for <b>mmap</b>(2) calls
+<b>PERF_RECORD_MMAP</b> samples for <a href="https://man.page/2/mmap">mmap(2)</a> calls
 that do not have <b>PROT_EXEC</b> set (for example data and
 SysV shared memory).</p>
 
@@ -1278,7 +1278,7 @@ If this flag can successfully be set, then, when <i>comm</i>
 is enabled, the <b>PERF_RECORD_MISC_COMM_EXEC</b> flag will
 be set in the <i>misc</i> field of a comm record header if
 the rename event being reported was caused by a call to
-<b>exec</b>(2). This allows tools to distinguish between the
+<a href="https://man.page/2/exec">exec(2)</a>. This allows tools to distinguish between the
 various types of process renaming.</p>
 
 <p style="margin-left:11%;"><i>use_clockid</i> (since Linux
@@ -1722,7 +1722,7 @@ When using <b>perf_event_open</b>() in sampled mode,
 asynchronous events (like counter overflow or
 <b>PROT_EXEC</b> mmap tracking) are logged into a
 ring-buffer. This ring-buffer is created and accessed
-through <b>mmap</b>(2).</p>
+through <a href="https://man.page/2/mmap">mmap(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The mmap size
 should be 1+2^n pages, where the first page is a metadata
@@ -2019,7 +2019,7 @@ sample region within the mmap buffer.</p>
 Linux 4.1)</p>
 
 <p style="margin-left:22%;">The AUX region allows
-<b>mmap</b>(2)-ing a separate sample buffer for
+<a href="https://man.page/2/mmap">mmap(2)</a>-ing a separate sample buffer for
 high-bandwidth data streams (separate from the main perf
 sample buffer). An example of a high-bandwidth stream is
 instruction tracing support, as is found in newer Intel
@@ -2033,7 +2033,7 @@ The desired offset and size must be page aligned, and the
 size must be a power of two. These values are then passed to
 mmap in order to map the AUX buffer. Pages in the AUX buffer
 are included as part of the <b>RLIMIT_MEMLOCK</b> resource
-limit (see <b>setrlimit</b>(2)), and also as part of the
+limit (see <a href="https://man.page/2/setrlimit">setrlimit(2)</a>), and also as part of the
 <i>perf_event_mlock_kb</i> allowance.</p>
 
 <p style="margin-left:22%; margin-top: 1em">By default, the
@@ -2162,7 +2162,7 @@ not executable; otherwise the mapping is executable.</p>
 <p style="margin-left:32%;">This is set for a
 <b>PERF_RECORD_COMM</b> record on kernels more recent than
 Linux 3.16 if a process name change was caused by an
-<b>exec</b>(2) system call.</p>
+<a href="https://man.page/2/exec">exec(2)</a> system call.</p>
 
 
 <p style="margin-left:22%;"><b>PERF_RECORD_MISC_SWITCH_OUT</b>
@@ -3202,7 +3202,7 @@ the pathname of the cgroup, the ID should match to one in a
 <p style="margin-left:22%;"><b>PERF_RECORD_MMAP2</b></p>
 
 <p style="margin-left:28%;">This record includes extended
-information on <b>mmap</b>(2) calls returning executable
+information on <a href="https://man.page/2/mmap">mmap(2)</a> calls returning executable
 mappings. The format is similar to that of the
 <b>PERF_RECORD_MMAP</b> record, but includes extra values
 that allow uniquely identifying shared mappings.</p>
@@ -3781,7 +3781,7 @@ struct sample_id sample_id; <br>
 
 
 <p>is the cgroup identifier. This can be also retrieved by
-<b>name_to_handle_at</b>(2) on the cgroup path (as a file
+<a href="https://man.page/2/name_to_handle_at">name_to_handle_at(2)</a> on the cgroup path (as a file
 handle).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="28%"></td>
@@ -3858,12 +3858,12 @@ bytes.</p> </td></tr>
 handling</b> <br>
 Events can be set to notify when a threshold is crossed,
 indicating an overflow. Overflow conditions can be captured
-by monitoring the event file descriptor with <b>poll</b>(2),
-<b>select</b>(2), or <b>epoll</b>(7). Alternatively, the
+by monitoring the event file descriptor with <a href="https://man.page/2/poll">poll(2)</a>,
+<a href="https://man.page/2/select">select(2)</a>, or <a href="https://man.page/7/epoll">epoll(7)</a>. Alternatively, the
 overflow events can be captured via sa signal handler, by
 enabling I/O signaling on the file descriptor; see the
 discussion of the <b>F_SETOWN</b> and <b>F_SETSIG</b>
-operations in <b>fcntl</b>(2).</p>
+operations in <a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Overflows are
 generated only by sampling events (<i>sample_period</i> must
@@ -4041,7 +4041,7 @@ ioctl.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The argument is
 a BPF program file descriptor that was created by a previous
-<b>bpf</b>(2) system call.</p>
+<a href="https://man.page/2/bpf">bpf(2)</a> system call.</p>
 
 
 <p style="margin-left:11%;"><b>PERF_EVENT_IOC_PAUSE_OUTPUT</b>
@@ -4110,7 +4110,7 @@ program IDs that were successfully copied.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Using
 prctl(2)</b> <br>
 A process can enable or disable all currently open event
-groups using the <b>prctl</b>(2)
+groups using the <a href="https://man.page/2/prctl">prctl(2)</a>
 <b>PR_TASK_PERF_EVENTS_ENABLE</b> and
 <b>PR_TASK_PERF_EVENTS_DISABLE</b> operations. This applies
 only to events created locally by the calling process. This
@@ -4206,7 +4206,7 @@ trace.</p>
 <p style="margin-left:17%;"><i>/proc/sys/kernel/perf_event_mlock_kb</i></p>
 
 <p style="margin-left:28%;">Maximum number of pages an
-unprivileged user can <b>mlock</b>(2). The default is 516
+unprivileged user can <a href="https://man.page/2/mlock">mlock(2)</a>. The default is 516
 (kB).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Files in
@@ -4571,7 +4571,7 @@ should not be used in programs intended to be portable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Glibc does not
 provide a wrapper for this system call; call it using
-<b>syscall</b>(2). See the example below.</p>
+<a href="https://man.page/2/syscall">syscall(2)</a>. See the example below.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The official
 way of knowing if <b>perf_event_open</b>() support is
@@ -4597,7 +4597,7 @@ favor of the <b>CAP_PERFMON</b> capability.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>F_SETOWN_EX</b> option to <b>fcntl</b>(2) is needed to
+<b>F_SETOWN_EX</b> option to <a href="https://man.page/2/fcntl">fcntl(2)</a> is needed to
 properly get overflow signals in threads. This was
 introduced in Linux 2.6.32.</p>
 
@@ -4658,7 +4658,7 @@ wrong thing on AMD machines until Linux 2.6.35.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 is a short example that measures the total instruction count
-of a call to <b>printf</b>(3).</p>
+of a call to <a href="https://man.page/3/printf">printf(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">#include
 &lt;stdlib.h&gt; <br>
@@ -4733,9 +4733,9 @@ read(fd, &amp;count, sizeof(count));</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>perf</b>(1),
-<b>fcntl</b>(2), <b>mmap</b>(2), <b>open</b>(2),
-<b>prctl</b>(2), <b>read</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/perf">perf(1)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/2/prctl">prctl(2)</a>, <a href="https://man.page/2/read">read(2)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/admin-guide/perf-security.rst</i>

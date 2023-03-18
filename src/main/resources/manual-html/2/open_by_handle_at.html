@@ -75,7 +75,7 @@ int</b> <i>flags</i><b>);</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>name_to_handle_at</b>() and <b>open_by_handle_at</b>()
-system calls split the functionality of <b>openat</b>(2)
+system calls split the functionality of <a href="https://man.page/2/openat">openat(2)</a>
 into two parts: <b>name_to_handle_at</b>() returns an opaque
 handle that corresponds to a specified file;
 <b>open_by_handle_at</b>() opens the file corresponding to a
@@ -192,7 +192,7 @@ relative pathname and <i>dirfd</i> is a file descriptor
 referring to a directory, then <i>pathname</i> is
 interpreted relative to the directory referred to by
 <i>dirfd</i>, and a handle is returned for the file to which
-it refers. (See <b>openat</b>(2) for an explanation of why
+it refers. (See <a href="https://man.page/2/openat">openat(2)</a> for an explanation of why
 &quot;directory file descriptors&quot; are useful.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -259,7 +259,7 @@ special value <b>AT_FDCWD</b> can be specified, meaning the
 current working directory of the caller.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<i>flags</i> argument is as for <b>open</b>(2). If
+<i>flags</i> argument is as for <a href="https://man.page/2/open">open(2)</a>. If
 <i>handle</i> refers to a symbolic link, the caller must
 specify the <b>O_PATH</b> flag, and the symbolic link is not
 dereferenced; the <b>O_NOFOLLOW</b> flag, if specified, is
@@ -291,7 +291,7 @@ to indicate the cause of the error.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>name_to_handle_at</b>()
 and <b>open_by_handle_at</b>() can fail for the same errors
-as <b>openat</b>(2). In addition, they can fail with the
+as <a href="https://man.page/2/openat">openat(2)</a>. In addition, they can fail with the
 errors noted below.</p>
 
 
@@ -511,7 +511,7 @@ symbolic link by converting the handle to a file descriptor
 using <b>open_by_handle_at</b>() with the <b>O_PATH</b>
 flag, and then passing the file descriptor as the
 <i>dirfd</i> argument in system calls such as
-<b>readlinkat</b>(2) and <b>fchownat</b>(2).</p>
+<a href="https://man.page/2/readlinkat">readlinkat(2)</a> and <a href="https://man.page/2/fchownat">fchownat(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Obtaining a
 persistent filesystem ID</b> <br>
@@ -529,7 +529,7 @@ one can use the device name in the fifth field of the
 <i>mountinfo</i> record to search for the corresponding
 device UUID via the symbolic links in
 <i>/dev/disks/by-uuid</i>. (A more comfortable way of
-obtaining the UUID is to use the <b>libblkid</b>(3)
+obtaining the UUID is to use the <a href="https://man.page/3/libblkid">libblkid(3)</a>
 library.) That process can then be reversed, using the UUID
 to look up the device name, and then obtaining the
 corresponding mount point, in order to produce the
@@ -879,8 +879,8 @@ errExit(&quot;read&quot;);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>open</b>(2),
-<b>libblkid</b>(3), <b>blkid</b>(8), <b>findfs</b>(8),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/3/libblkid">libblkid(3)</a>, <b>blkid</b>(8), <b>findfs</b>(8),
 <b>mount</b>(8)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The

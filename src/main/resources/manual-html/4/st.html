@@ -145,7 +145,7 @@ After system start-up the tape device options are defined by
 the drive firmware. For example, if the drive firmware
 selects fixed-block mode, the tape device uses fixed-block
 mode. The options can be changed with explicit
-<b>ioctl</b>(2) calls and remain in effect when the device
+<a href="https://man.page/2/ioctl">ioctl(2)</a> calls and remain in effect when the device
 is closed and reopened. Setting the options affects both the
 auto-rewind and the nonrewind device.</p>
 
@@ -162,14 +162,14 @@ supports <b>tape partitions</b> if they are supported by the
 drive. (Note that the tape partitions have nothing to do
 with disk partitions. A partitioned tape can be seen as
 several logical tapes within one medium.) Partition support
-has to be enabled with an <b>ioctl</b>(2). The tape location
+has to be enabled with an <a href="https://man.page/2/ioctl">ioctl(2)</a>. The tape location
 is preserved within each partition across partition changes.
 The partition used for subsequent tape operations is
-selected with an <b>ioctl</b>(2). The partition switch is
+selected with an <a href="https://man.page/2/ioctl">ioctl(2)</a>. The partition switch is
 executed together with the next tape operation in order to
 avoid unnecessary tape movement. The maximum number of
 partitions on a tape is defined by a compile-time constant
-(originally four). The driver contains an <b>ioctl</b>(2)
+(originally four). The driver contains an <a href="https://man.page/2/ioctl">ioctl(2)</a>
 that can format a tape with either one or two
 partitions.</p>
 
@@ -237,7 +237,7 @@ an error.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Ioctls</b>
 <br>
-The driver supports three <b>ioctl</b>(2) requests. Requests
+The driver supports three <a href="https://man.page/2/ioctl">ioctl(2)</a> requests. Requests
 not recognized by the <b>st</b> driver are passed to the
 <b>SCSI</b> driver. The definitions below are from
 <i>/usr/include/linux/mtio.h</i>:</p>
@@ -987,7 +987,7 @@ medium type.</p></td></tr>
 
 
 <p style="margin-top: 1em"><b>GMT_ONLINE</b>(<i>x</i>): The
-last <b>open</b>(2) found the drive with a tape in place and
+last <a href="https://man.page/2/open">open(2)</a> found the drive with a tape in place and
 ready for operation.</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -1086,7 +1086,7 @@ long mt_blkno; /* current block number */ <br>
 
 <p style="margin-top: 1em">An attempt was made to write or
 erase a write-protected tape. (This error is not detected
-during <b>open</b>(2).)</p></td></tr>
+during <a href="https://man.page/2/open">open(2)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1121,7 +1121,7 @@ the calling process.</p></td></tr>
 <td width="78%">
 
 
-<p>An <b>ioctl</b>(2) had an invalid argument, or a
+<p>An <a href="https://man.page/2/ioctl">ioctl(2)</a> had an invalid argument, or a
 requested block size was invalid.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -1144,7 +1144,7 @@ requested block size was invalid.</p></td></tr>
 <td width="78%">
 
 
-<p>The byte count in <b>read</b>(2) is smaller than the
+<p>The byte count in <a href="https://man.page/2/read">read(2)</a> is smaller than the
 next physical block on the tape. (Before 2.2.18 and 2.4.0
 the extra bytes have been silently ignored.)</p></td></tr>
 <tr valign="top" align="left">
@@ -1169,7 +1169,7 @@ tape reached end-of-medium.</p></td></tr>
 <td width="78%">
 
 
-<p>Unknown <b>ioctl</b>(2).</p></td></tr>
+<p>Unknown <a href="https://man.page/2/ioctl">ioctl(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1262,7 +1262,7 @@ bus.</p> </td></tr>
 <td width="83%">
 
 
-<p>Many programs (e.g., <b>tar</b>(1)) allow the user to
+<p>Many programs (e.g., <a href="https://man.page/1/tar">tar(1)</a>) allow the user to
 specify the blocking factor on the command line. Note that
 this determines the physical block size on tape only in
 variable-block mode.</p></td></tr>
@@ -1308,7 +1308,7 @@ kernel configuration.</p></td></tr>
 
 <p>The driver&rsquo;s internal buffering allows good
 throughput in fixed-block mode also with small
-<b>read</b>(2) and <b>write</b>(2) byte counts. With direct
+<a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a> byte counts. With direct
 transfers this is not possible and may cause a surprise when
 moving to the 2.6 kernel. The solution is to tell the
 software to use larger transfers (often telling it to use
@@ -1322,7 +1322,7 @@ can be disabled.</p></td></tr>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>mt</b>(1)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/mt">mt(1)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The file
 <i>drivers/scsi/README.st</i> or

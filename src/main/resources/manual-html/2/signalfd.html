@@ -65,17 +65,17 @@ signalfd(int</b> <i>fd</i><b>, const sigset_t
 <p style="margin-left:11%; margin-top: 1em"><b>signalfd</b>()
 creates a file descriptor that can be used to accept signals
 targeted at the caller. This provides an alternative to the
-use of a signal handler or <b>sigwaitinfo</b>(2), and has
+use of a signal handler or <a href="https://man.page/2/sigwaitinfo">sigwaitinfo(2)</a>, and has
 the advantage that the file descriptor may be monitored by
-<b>select</b>(2), <b>poll</b>(2), and <b>epoll</b>(7).</p>
+<a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, and <a href="https://man.page/7/epoll">epoll(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <i>mask</i>
 argument specifies the set of signals that the caller wishes
 to accept via the file descriptor. This argument is a signal
 set whose contents can be initialized using the macros
-described in <b>sigsetops</b>(3). Normally, the set of
+described in <a href="https://man.page/3/sigsetops">sigsetops(3)</a>. Normally, the set of
 signals to be received via the file descriptor should be
-blocked using <b>sigprocmask</b>(2), to prevent the signals
+blocked using <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>, to prevent the signals
 being handled according to their default dispositions. It is
 not possible to receive <b>SIGKILL</b> or <b>SIGSTOP</b>
 signals via a signalfd file descriptor; these signals are
@@ -107,9 +107,9 @@ Linux 2.6.27, the following values may be bitwise ORed in
 
 
 <p>Set the <b>O_NONBLOCK</b> file status flag on the open
-file description (see <b>open</b>(2)) referred to by the new
+file description (see <a href="https://man.page/2/open">open(2)</a>) referred to by the new
 file descriptor. Using this flag saves extra calls to
-<b>fcntl</b>(2) to achieve the same result.</p></td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> to achieve the same result.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="18%">
@@ -122,7 +122,7 @@ file descriptor. Using this flag saves extra calls to
 
 <p>Set the close-on-exec (<b>FD_CLOEXEC</b>) flag on the
 new file descriptor. See the description of the
-<b>O_CLOEXEC</b> flag in <b>open</b>(2) for reasons why this
+<b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a> for reasons why this
 may be useful.</p></td></tr>
 </table>
 
@@ -138,42 +138,42 @@ read</b>(2)</p>
 
 <p style="margin-left:22%;">If one or more of the signals
 specified in <i>mask</i> is pending for the process, then
-the buffer supplied to <b>read</b>(2) is used to return one
+the buffer supplied to <a href="https://man.page/2/read">read(2)</a> is used to return one
 or more <i>signalfd_siginfo</i> structures (see below) that
-describe the signals. The <b>read</b>(2) returns information
+describe the signals. The <a href="https://man.page/2/read">read(2)</a> returns information
 for as many signals as are pending and will fit in the
 supplied buffer. The buffer must be at least
 <i>sizeof(struct signalfd_siginfo)</i> bytes. The return
-value of the <b>read</b>(2) is the total number of bytes
+value of the <a href="https://man.page/2/read">read(2)</a> is the total number of bytes
 read.</p>
 
 <p style="margin-left:22%; margin-top: 1em">As a
-consequence of the <b>read</b>(2), the signals are consumed,
+consequence of the <a href="https://man.page/2/read">read(2)</a>, the signals are consumed,
 so that they are no longer pending for the process (i.e.,
 will not be caught by signal handlers, and cannot be
-accepted using <b>sigwaitinfo</b>(2)).</p>
+accepted using <a href="https://man.page/2/sigwaitinfo">sigwaitinfo(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">If none of the
 signals in <i>mask</i> is pending for the process, then the
-<b>read</b>(2) either blocks until one of the signals in
+<a href="https://man.page/2/read">read(2)</a> either blocks until one of the signals in
 <i>mask</i> is generated for the process, or fails with the
 error <b>EAGAIN</b> if the file descriptor has been made
 nonblocking.</p>
 
-<p style="margin-left:11%;"><b>poll</b>(2),
-<b>select</b>(2) (and similar)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/poll">poll(2)</a>,
+<a href="https://man.page/2/select">select(2)</a> (and similar)</p>
 
 <p style="margin-left:22%;">The file descriptor is readable
-(the <b>select</b>(2) <i>readfds</i> argument; the
-<b>poll</b>(2) <b>POLLIN</b> flag) if one or more of the
+(the <a href="https://man.page/2/select">select(2)</a> <i>readfds</i> argument; the
+<a href="https://man.page/2/poll">poll(2)</a> <b>POLLIN</b> flag) if one or more of the
 signals in <i>mask</i> is pending for the process.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The signalfd
 file descriptor also supports the other file-descriptor
-multiplexing APIs: <b>pselect</b>(2), <b>ppoll</b>(2), and
-<b>epoll</b>(7).</p>
+multiplexing APIs: <a href="https://man.page/2/pselect">pselect(2)</a>, <a href="https://man.page/2/ppoll">ppoll(2)</a>, and
+<a href="https://man.page/7/epoll">epoll(7)</a>.</p>
 
-<p style="margin-left:11%;"><b>close</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/close">close(2)</a></p>
 
 <p style="margin-left:22%;">When the file descriptor is no
 longer required it should be closed. When all file
@@ -184,7 +184,7 @@ kernel.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>The
 signalfd_siginfo structure</b> <br>
 The format of the <i>signalfd_siginfo</i> structure(s)
-returned by <b>read</b>(2)s from a signalfd file descriptor
+returned by <a href="https://man.page/2/read">read(2)</a>s from a signalfd file descriptor
 is as follows:</p>
 
 <p style="margin-left:17%; margin-top: 1em">struct
@@ -222,17 +222,17 @@ additional fields in the future) */ <br>
 fields in this structure is analogous to the similarly named
 field in the <i>siginfo_t</i> structure. The
 <i>siginfo_t</i> structure is described in
-<b>sigaction</b>(2). Not all fields in the returned
+<a href="https://man.page/2/sigaction">sigaction(2)</a>. Not all fields in the returned
 <i>signalfd_siginfo</i> structure will be valid for a
 specific signal; the set of valid fields can be determined
 from the value returned in the <i>ssi_code</i> field. This
 field is the analog of the <i>siginfo_t si_code</i> field;
-see <b>sigaction</b>(2) for details.</p>
+see <a href="https://man.page/2/sigaction">sigaction(2)</a> for details.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>fork(2)
 semantics</b> <br>
-After a <b>fork</b>(2), the child inherits a copy of the
-signalfd file descriptor. A <b>read</b>(2) from the file
+After a <a href="https://man.page/2/fork">fork(2)</a>, the child inherits a copy of the
+signalfd file descriptor. A <a href="https://man.page/2/read">read(2)</a> from the file
 descriptor in the child will return information about
 signals queued to the child.</p>
 
@@ -240,20 +240,20 @@ signals queued to the child.</p>
 file descriptor passing</b> <br>
 As with other file descriptors, signalfd file descriptors
 can be passed to another process via a UNIX domain socket
-(see <b>unix</b>(7)). In the receiving process, a
-<b>read</b>(2) from the received file descriptor will return
+(see <a href="https://man.page/7/unix">unix(7)</a>). In the receiving process, a
+<a href="https://man.page/2/read">read(2)</a> from the received file descriptor will return
 information about signals queued to that process.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>execve(2)
 semantics</b> <br>
 Just like any other file descriptor, a signalfd file
-descriptor remains open across an <b>execve</b>(2), unless
-it has been marked for close-on-exec (see <b>fcntl</b>(2)).
+descriptor remains open across an <a href="https://man.page/2/execve">execve(2)</a>, unless
+it has been marked for close-on-exec (see <a href="https://man.page/2/fcntl">fcntl(2)</a>).
 Any signals that were available for reading before the
-<b>execve</b>(2) remain available to the newly loaded
+<a href="https://man.page/2/execve">execve(2)</a> remain available to the newly loaded
 program. (This is analogous to traditional signal semantics,
 where a blocked signal that is pending remains pending
-across an <b>execve</b>(2).)</p>
+across an <a href="https://man.page/2/execve">execve(2)</a>.)</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Thread
 semantics</b> <br>
@@ -268,22 +268,22 @@ threads in the process.)</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>epoll(7)
 semantics</b> <br>
-If a process adds (via <b>epoll_ctl</b>(2)) a signalfd file
-descriptor to an <b>epoll</b>(7) instance, then
-<b>epoll_wait</b>(2) returns events only for signals sent to
+If a process adds (via <a href="https://man.page/2/epoll_ctl">epoll_ctl(2)</a>) a signalfd file
+descriptor to an <a href="https://man.page/7/epoll">epoll(7)</a> instance, then
+<a href="https://man.page/2/epoll_wait">epoll_wait(2)</a> returns events only for signals sent to
 that process. In particular, if the process then uses
-<b>fork</b>(2) to create a child process, then the child
-will be able to <b>read</b>(2) signals that are sent to it
-using the signalfd file descriptor, but <b>epoll_wait</b>(2)
+<a href="https://man.page/2/fork">fork(2)</a> to create a child process, then the child
+will be able to <a href="https://man.page/2/read">read(2)</a> signals that are sent to it
+using the signalfd file descriptor, but <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>
 will <b>not</b> indicate that the signalfd file descriptor
 is ready. In this scenario, a possible workaround is that
-after the <b>fork</b>(2), the child process can close the
+after the <a href="https://man.page/2/fork">fork(2)</a>, the child process can close the
 signalfd file descriptor that it inherited from the parent
 process and then create another signalfd file descriptor and
 add it to the epoll instance. Alternatively, the parent and
 the child could delay creating their (separate) signalfd
 file descriptors and adding them to the epoll instance until
-after the call to <b>fork</b>(2).</p>
+after the call to <a href="https://man.page/2/fork">fork(2)</a>.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -418,8 +418,8 @@ and <b>signalfd4</b>() are Linux-specific.</p>
 create multiple signalfd file descriptors. This makes it
 possible to accept different signals on different file
 descriptors. (This may be useful if monitoring the file
-descriptors using <b>select</b>(2), <b>poll</b>(2), or
-<b>epoll</b>(7): the arrival of different signals will make
+descriptors using <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, or
+<a href="https://man.page/7/epoll">epoll(7)</a>: the arrival of different signals will make
 different file descriptors ready.) If a signal appears in
 the <i>mask</i> of more than one of the file descriptors,
 then occurrences of that signal can be read (once) from any
@@ -433,7 +433,7 @@ silently ignored.</p>
 employed by a signalfd file descriptor can be viewed via the
 entry for the corresponding file descriptor in the
 process&rsquo;s <i>/proc/[pid]/fdinfo</i> directory. See
-<b>proc</b>(5) for further details.</p>
+<a href="https://man.page/5/proc">proc(5)</a> for further details.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Limitations</b>
@@ -449,16 +449,16 @@ signal handler.</p>
 above, in normal usage one blocks the signals that will be
 accepted via <b>signalfd</b>(). If spawning a child process
 to execute a helper program (that does not need the signalfd
-file descriptor), then, after the call to <b>fork</b>(2),
+file descriptor), then, after the call to <a href="https://man.page/2/fork">fork(2)</a>,
 you will normally want to unblock those signals before
-calling <b>execve</b>(2), so that the helper program can see
+calling <a href="https://man.page/2/execve">execve(2)</a>, so that the helper program can see
 any signals that it expects to see. Be aware, however, that
 this won&rsquo;t be possible in the case of a helper program
 spawned behind the scenes by any library function that the
 program may call. In such cases, one must fall back to using
 a traditional signal handler that writes to a file
-descriptor monitored by <b>select</b>(2), <b>poll</b>(2), or
-<b>epoll</b>(7).</p>
+descriptor monitored by <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, or
+<a href="https://man.page/7/epoll">epoll(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>C
 library/kernel differences</b> <br>
@@ -486,7 +486,7 @@ available.</p>
 <p style="margin-left:11%; margin-top: 1em">In kernels
 before 2.6.25, the <i>ssi_ptr</i> and <i>ssi_int</i> fields
 are not filled in with the data accompanying a signal sent
-by <b>sigqueue</b>(3).</p>
+by <a href="https://man.page/3/sigqueue">sigqueue(3)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -571,12 +571,12 @@ printf(&quot;Read unexpected signal\n&quot;); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>eventfd</b>(2),
-<b>poll</b>(2), <b>read</b>(2), <b>select</b>(2),
-<b>sigaction</b>(2), <b>sigprocmask</b>(2),
-<b>sigwaitinfo</b>(2), <b>timerfd_create</b>(2),
-<b>sigsetops</b>(3), <b>sigwait</b>(3), <b>epoll</b>(7),
-<b>signal</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/eventfd">eventfd(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/sigaction">sigaction(2)</a>, <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>,
+<a href="https://man.page/2/sigwaitinfo">sigwaitinfo(2)</a>, <a href="https://man.page/2/timerfd_create">timerfd_create(2)</a>,
+<a href="https://man.page/3/sigsetops">sigsetops(3)</a>, <a href="https://man.page/3/sigwait">sigwait(3)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>,
+<a href="https://man.page/7/signal">signal(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

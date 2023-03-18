@@ -149,7 +149,7 @@ units, which encapsulate local IPC or network sockets in the
 system, useful for socket-based activation. For details
 about socket units, see <b>systemd.socket</b>(5), for
 details on socket-based activation and other forms of
-activation, see <b>daemon</b>(7).</p>
+activation, see <a href="https://man.page/7/daemon">daemon(7)</a>.</p>
 
 <p style="margin-left:17%; margin-top: 1em">3. Target units
 are useful to group units, or provide well-known
@@ -288,7 +288,7 @@ effectively keep track of processes. Control group
 information is maintained in the kernel, and is accessible
 via the file system hierarchy (beneath
 /sys/fs/cgroup/systemd/), or in tools such as
-<b>systemd-cgls</b>(1) or <b>ps</b>(1) (<b>ps xawf -eo
+<a href="https://man.page/1/systemd-cgls">systemd-cgls(1)</a> or <a href="https://man.page/1/ps">ps(1)</a> (<b>ps xawf -eo
 pid,user,cgroup,args</b> is particularly useful to list all
 processes and the systemd units they belong to.).</font></p>
 
@@ -408,7 +408,7 @@ precedence. <b>pkg-config systemd
 --variable=systemdsystemconfdir</b> returns the path of the
 system configuration directory. Packages should alter the
 content of these directories only with the <b>enable</b> and
-<b>disable</b> commands of the <b>systemctl</b>(1) tool.
+<b>disable</b> commands of the <a href="https://man.page/1/systemctl">systemctl(1)</a> tool.
 Full list of directories is provided in
 <b>systemd.unit</b>(5).</font></p>
 
@@ -427,7 +427,7 @@ returned by <b>pkg-config systemd
 --variable=systemduserunitdir</b>. Global configuration is
 done in the directory reported by <b>pkg-config systemd
 --variable=systemduserconfdir</b>. The <b>enable</b> and
-<b>disable</b> commands of the <b>systemctl</b>(1) tool can
+<b>disable</b> commands of the <a href="https://man.page/1/systemctl">systemctl(1)</a> tool can
 handle both global (i.e. for all users) and private (for one
 user) enabling/disabling of units. Full list of directories
 is provided in <b>systemd.unit</b>(5).</font></p>
@@ -724,7 +724,7 @@ suppressed). Either one of (in order of decreasing
 importance) <b>emerg</b>, <b>alert</b>, <b>crit</b>,
 <b>err</b>, <b>warning</b>, <b>notice</b>, <b>info</b>,
 <b>debug</b>, or an integer in the range 0...7. See
-<b>syslog</b>(3) for more information.</font></p>
+<a href="https://man.page/3/syslog">syslog(3)</a> for more information.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
@@ -778,7 +778,7 @@ numerical thread ID (TID).</font></p>
 destination for log messages. One of <b>console</b> (log to
 the attached tty), <b>console-prefixed</b> (log to the
 attached tty but with prefixes encoding the log level and
-&quot;facility&quot;, see <b>syslog</b>(3), <b>kmsg</b> (log
+&quot;facility&quot;, see <a href="https://man.page/3/syslog">syslog(3)</a>, <b>kmsg</b> (log
 to the kernel circular log buffer), <b>journal</b> (log to
 the journal), <b>journal-or-kmsg</b> (log to the journal if
 available, and to kmsg otherwise), <b>auto</b> (determine
@@ -825,8 +825,8 @@ the usual set of paths.</font></p>
 use when <b>--no-pager</b> is not given; overrides
 <i>$PAGER</i>. If neither <i>$SYSTEMD_PAGER</i> nor
 <i>$PAGER</i> are set, a set of well-known pager
-implementations are tried in turn, including <b>less</b>(1)
-and <b>more</b>(1), until one is found. If no pager
+implementations are tried in turn, including <a href="https://man.page/1/less">less(1)</a>
+and <a href="https://man.page/1/more">more(1)</a>, until one is found. If no pager
 implementation is discovered no pager is invoked. Setting
 this environment variable to an empty string or the value
 &quot;cat&quot; is equivalent to passing
@@ -873,7 +873,7 @@ the mouse.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
-<b>less</b>(1) for more discussion.</font></p>
+<a href="https://man.page/1/less">less(1)</a> for more discussion.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LESSCHARSET</i></font></p>
@@ -891,20 +891,20 @@ boolean argument. When true, the &quot;secure&quot; mode of
 the pager is enabled; if false, disabled. If
 <i>$SYSTEMD_PAGERSECURE</i> is not set at all, secure mode
 is enabled if the effective UID is not the same as the owner
-of the login session, see <b>geteuid</b>(2) and
-<b>sd_pid_get_owner_uid</b>(3). In secure mode,
+of the login session, see <a href="https://man.page/2/geteuid">geteuid(2)</a> and
+<a href="https://man.page/3/sd_pid_get_owner_uid">sd_pid_get_owner_uid(3)</a>. In secure mode,
 <b>LESSSECURE=1</b> will be set when invoking the pager, and
 the pager shall disable commands that open or create new
 files or start new subprocesses. When
 <i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
 are not known to implement secure mode will not be used.
-(Currently only <b>less</b>(1) implements secure
+(Currently only <a href="https://man.page/1/less">less(1)</a> implements secure
 mode.)</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note:
 when commands are invoked with elevated privileges, for
-example under <b>sudo</b>(8) or <b>pkexec</b>(1), care must
+example under <b>sudo</b>(8) or <a href="https://man.page/1/pkexec">pkexec(1)</a>, care must
 be taken to ensure that unintended interactive features are
 not enabled. &quot;Secure&quot; mode for the pager may be
 enabled automatically as describe above. Setting
@@ -945,7 +945,7 @@ conditions.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Set by
 systemd for supervised processes during socket-based
-activation. See <b>sd_listen_fds</b>(3) for more
+activation. See <a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a> for more
 information.</font></p>
 
 
@@ -953,7 +953,7 @@ information.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Set by
 systemd for supervised processes for status and start-up
-completion notification. See <b>sd_notify</b>(3) for more
+completion notification. See <a href="https://man.page/3/sd_notify">sd_notify(3)</a> for more
 information.</font></p>
 
 
@@ -1259,13 +1259,13 @@ type.</font></p>
 <p style="margin-left:17%;"><font color="#000000">Set the
 system locale to use. This overrides the settings in
 /etc/locale.conf. For more information, see
-<b>locale.conf</b>(5) and <b>locale</b>(7).</font></p>
+<b>locale.conf</b>(5) and <a href="https://man.page/7/locale">locale(7)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
 other kernel command line parameters understood by
 components of the core OS, please refer to
-<b>kernel-command-line</b>(7).</font></p>
+<a href="https://man.page/7/kernel-command-line">kernel-command-line(7)</a>.</font></p>
 
 <h2>OPTIONS
 <a name="OPTIONS"></a>
@@ -1276,7 +1276,7 @@ components of the core OS, please refer to
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>
 is only very rarely invoked directly, since it is started
 early and is already running by the time users may interact
-with it. Normally, tools like <b>systemctl</b>(1) are used
+with it. Normally, tools like <a href="https://man.page/1/systemctl">systemctl(1)</a> are used
 to give commands to the manager. Since <b>systemd</b> is
 usually not invoked directly, the options listed below are
 mostly useful for debugging and special purposes.</font></p>
@@ -1501,14 +1501,14 @@ and <i>systemd.default_standard_error=</i> above.</font></p>
 status notification socket. This is an <b>AF_UNIX</b>
 datagram socket and is used to implement the daemon
 notification logic as implemented by
-<b>sd_notify</b>(3).</font></p>
+<a href="https://man.page/3/sd_notify">sd_notify(3)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">/run/systemd/private</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Used
 internally as communication channel between
-<b>systemctl</b>(1) and the systemd process. This is an
+<a href="https://man.page/1/systemctl">systemctl(1)</a> and the systemd process. This is an
 <b>AF_UNIX</b> stream socket. This interface is private to
 systemd and should not be used in external
 projects.</font></p>
@@ -1532,12 +1532,12 @@ and should not be used in new applications.</font></p>
 <b><font color="#0000FF">systemd Homepage</font></b>
 <small><font color="#000000">[11]</font></small>
 <font color="#000000">, <b>systemd-system.conf</b>(5),
-<b>locale.conf</b>(5), <b>systemctl</b>(1),
-<b>journalctl</b>(1), <b>systemd-notify</b>(1),
-<b>daemon</b>(7), <b>sd-daemon</b>(3),
+<b>locale.conf</b>(5), <a href="https://man.page/1/systemctl">systemctl(1)</a>,
+<a href="https://man.page/1/journalctl">journalctl(1)</a>, <a href="https://man.page/1/systemd-notify">systemd-notify(1)</a>,
+<a href="https://man.page/7/daemon">daemon(7)</a>, <a href="https://man.page/3/sd-daemon">sd-daemon(3)</a>,
 <b>org.freedesktop.systemd1</b>(5), <b>systemd.unit</b>(5),
-<b>systemd.special</b>(7), <b>pkg-config</b>(1),
-<b>kernel-command-line</b>(7), <b>bootup</b>(7),
+<b>systemd.special</b>(7), <a href="https://man.page/1/pkg-config">pkg-config(1)</a>,
+<a href="https://man.page/7/kernel-command-line">kernel-command-line(7)</a>, <a href="https://man.page/7/bootup">bootup(7)</a>,
 <b>systemd.directives</b>(7)</font></p>
 
 <h2>NOTES

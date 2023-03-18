@@ -68,22 +68,22 @@ writes up to <i>count</i> bytes from the buffer starting at
 bytes written may be less than <i>count</i> if, for example,
 there is insufficient space on the underlying physical
 medium, or the <b>RLIMIT_FSIZE</b> resource limit is
-encountered (see <b>setrlimit</b>(2)), or the call was
+encountered (see <a href="https://man.page/2/setrlimit">setrlimit(2)</a>), or the call was
 interrupted by a signal handler after having written less
-than <i>count</i> bytes. (See also <b>pipe</b>(7).)</p>
+than <i>count</i> bytes. (See also <a href="https://man.page/7/pipe">pipe(7)</a>.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">For a seekable
-file (i.e., one to which <b>lseek</b>(2) may be applied, for
+file (i.e., one to which <a href="https://man.page/2/lseek">lseek(2)</a> may be applied, for
 example, a regular file) writing takes place at the file
 offset, and the file offset is incremented by the number of
-bytes actually written. If the file was <b>open</b>(2)ed
+bytes actually written. If the file was <a href="https://man.page/2/open">open(2)</a>ed
 with <b>O_APPEND</b>, the file offset is first set to the
 end of the file before writing. The adjustment of the file
 offset and the write operation are performed as an atomic
 step.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX requires
-that a <b>read</b>(2) that can be proved to occur after a
+that a <a href="https://man.page/2/read">read(2)</a> that can be proved to occur after a
 <b>write</b>() has returned will return the new data. Note
 that not all filesystems are POSIX conforming.</p>
 
@@ -145,7 +145,7 @@ results are not specified.</p>
 <p style="margin-top: 1em">The file descriptor <i>fd</i>
 refers to a file other than a socket and has been marked
 nonblocking (<b>O_NONBLOCK</b>), and the write would block.
-See <b>open</b>(2) for further details on the
+See <a href="https://man.page/2/open">open(2)</a> for further details on the
 <b>O_NONBLOCK</b> flag.</p></td></tr>
 </table>
 
@@ -180,7 +180,7 @@ for writing.</p></td></tr>
 
 <p style="margin-left:22%;"><i>fd</i> refers to a datagram
 socket for which a peer address has not been set using
-<b>connect</b>(2).</p>
+<a href="https://man.page/2/connect">connect(2)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -233,7 +233,7 @@ past the maximum allowed offset.</p></td></tr>
 
 
 <p>The call was interrupted by a signal before any data was
-written; see <b>signal</b>(7).</p></td></tr>
+written; see <a href="https://man.page/7/signal">signal(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -266,12 +266,12 @@ issued to a different file descriptor on the same file.
 Since Linux 4.13, errors from write-back come with a promise
 that they <i>may</i> be reported by subsequent.
 <b>write</b>() requests, and <i>will</i> be reported by a
-subsequent <b>fsync</b>(2) (whether or not they were also
+subsequent <a href="https://man.page/2/fsync">fsync(2)</a> (whether or not they were also
 reported by <b>write</b>()). An alternate cause of
 <b>EIO</b> on networked filesystems is when an advisory lock
 had been taken out on the file descriptor and this lock has
 been lost. See the <i>Lost locks</i> section of
-<b>fcntl</b>(2) for further details.</p></td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> for further details.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -295,7 +295,7 @@ has no room for the data.</p></td></tr>
 
 
 <p>The operation was prevented by a file seal; see
-<b>fcntl</b>(2).</p> </td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -344,8 +344,8 @@ data has been committed to disk. On some filesystems,
 including NFS, it does not even guarantee that space has
 successfully been reserved for the data. In this case, some
 errors might be delayed until a future <b>write</b>(),
-<b>fsync</b>(2), or even <b>close</b>(2). The only way to be
-sure is to call <b>fsync</b>(2) after you are done writing
+<a href="https://man.page/2/fsync">fsync(2)</a>, or even <a href="https://man.page/2/close">close(2)</a>. The only way to be
+sure is to call <a href="https://man.page/2/fsync">fsync(2)</a> after you are done writing
 all your data.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If a
@@ -383,13 +383,13 @@ other in the effects specified in POSIX.1-2008 when they
 operate on regular files or symbolic links: ...</p>
 
 <p style="margin-left:11%; margin-top: 1em">Among the APIs
-subsequently listed are <b>write</b>() and <b>writev</b>(2).
+subsequently listed are <b>write</b>() and <a href="https://man.page/2/writev">writev(2)</a>.
 And among the effects that should be atomic across threads
 (and processes) are updates of the file offset. However, on
 Linux before version 3.14, this was not the case: if two
 processes that share an open file description (see
-<b>open</b>(2)) perform a <b>write</b>() (or
-<b>writev</b>(2)) at the same time, then the I/O operations
+<a href="https://man.page/2/open">open(2)</a>) perform a <b>write</b>() (or
+<a href="https://man.page/2/writev">writev(2)</a>) at the same time, then the I/O operations
 were not atomic with respect updating the file offset, with
 the result that the blocks of data output by the two
 processes might (incorrectly) overlap. This problem was
@@ -401,11 +401,11 @@ fixed in Linux 3.14.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2),
-<b>fcntl</b>(2), <b>fsync</b>(2), <b>ioctl</b>(2),
-<b>lseek</b>(2), <b>open</b>(2), <b>pwrite</b>(2),
-<b>read</b>(2), <b>select</b>(2), <b>writev</b>(2),
-<b>fwrite</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/close">close(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/fsync">fsync(2)</a>, <a href="https://man.page/2/ioctl">ioctl(2)</a>,
+<a href="https://man.page/2/lseek">lseek(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/pwrite">pwrite(2)</a>,
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/writev">writev(2)</a>,
+<a href="https://man.page/3/fwrite">fwrite(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

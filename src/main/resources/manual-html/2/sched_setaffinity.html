@@ -87,7 +87,7 @@ recommences execution on a different CPU.</p>
 mask is represented by the <i>cpu_set_t</i> structure, a
 &quot;CPU set&quot;, pointed to by <i>mask</i>. A set of
 macros for manipulating CPU sets is described in
-<b>CPU_SET</b>(3).</p>
+<a href="https://man.page/3/CPU_SET">CPU_SET(3)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>sched_setaffinity</b>()
@@ -157,7 +157,7 @@ invalid.</p> </td></tr>
 that are currently physically on the system and permitted to
 the thread according to any restrictions that may be imposed
 by <i>cpuset</i> cgroups or the &quot;cpuset&quot; mechanism
-described in <b>cpuset</b>(7).</p></td></tr>
+described in <a href="https://man.page/7/cpuset">cpuset(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -234,7 +234,7 @@ thread will actually run is the intersection of the set
 specified in the <i>mask</i> argument and the set of CPUs
 actually present on the system. The system may further
 restrict the set of CPUs on which the thread runs if the
-&quot;cpuset&quot; mechanism described in <b>cpuset</b>(7)
+&quot;cpuset&quot; mechanism described in <a href="https://man.page/7/cpuset">cpuset(7)</a>
 is being used. These restrictions on the actual set of CPUs
 on which the thread will run are silently imposed by the
 kernel.</p>
@@ -242,26 +242,26 @@ kernel.</p>
 <p style="margin-left:11%; margin-top: 1em">There are
 various ways of determining the number of CPUs available on
 the system, including: inspecting the contents of
-<i>/proc/cpuinfo</i>; using <b>sysconf</b>(3) to obtain the
+<i>/proc/cpuinfo</i>; using <a href="https://man.page/3/sysconf">sysconf(3)</a> to obtain the
 values of the <b>_SC_NPROCESSORS_CONF</b> and
 <b>_SC_NPROCESSORS_ONLN</b> parameters; and inspecting the
 list of CPU directories under
 <i>/sys/devices/system/cpu/</i>.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>sched</b>(7)
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/7/sched">sched(7)</a>
 has a description of the Linux scheduling scheme.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The affinity
 mask is a per-thread attribute that can be adjusted
 independently for each of the threads in a thread group. The
-value returned from a call to <b>gettid</b>(2) can be passed
+value returned from a call to <a href="https://man.page/2/gettid">gettid(2)</a> can be passed
 in the argument <i>pid</i>. Specifying <i>pid</i> as 0 will
 set the attribute for the calling thread, and passing the
-value returned from a call to <b>getpid</b>(2) will set the
+value returned from a call to <a href="https://man.page/2/getpid">getpid(2)</a> will set the
 attribute for the main thread of the thread group. (If you
 are using the POSIX threads API, then use
-<b>pthread_setaffinity_np</b>(3) instead of
+<a href="https://man.page/3/pthread_setaffinity_np">pthread_setaffinity_np(3)</a> instead of
 <b>sched_setaffinity</b>().)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -269,7 +269,7 @@ are using the POSIX threads API, then use
 more CPUs at boot time, so that no processes are scheduled
 onto those CPUs. Following the use of this boot option, the
 only way to schedule processes onto the isolated CPUs is via
-<b>sched_setaffinity</b>() or the <b>cpuset</b>(7)
+<b>sched_setaffinity</b>() or the <a href="https://man.page/7/cpuset">cpuset(7)</a>
 mechanism. For further information, see the kernel source
 file <i>Documentation/admin-guide/kernel-parameters.txt</i>.
 As noted in that file, <i>isolcpus</i> is the preferred
@@ -278,9 +278,9 @@ manually setting the CPU affinity of all processes on the
 system).</p>
 
 <p style="margin-left:11%; margin-top: 1em">A child created
-via <b>fork</b>(2) inherits its parent&rsquo;s CPU affinity
+via <a href="https://man.page/2/fork">fork(2)</a> inherits its parent&rsquo;s CPU affinity
 mask. The affinity mask is preserved across an
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>C
 library/kernel differences</b> <br>
@@ -324,14 +324,14 @@ system.)</p>
 <p style="margin-left:11%; margin-top: 1em">When working on
 systems with large kernel CPU affinity masks, one must
 dynamically allocate the <i>mask</i> argument (see
-<b>CPU_ALLOC</b>(3)). Currently, the only way to do this is
+<a href="https://man.page/3/CPU_ALLOC">CPU_ALLOC(3)</a>). Currently, the only way to do this is
 by probing for the size of the required mask using
 <b>sched_getaffinity</b>() calls with increasing mask sizes
 (until the call does not fail with the error
 <b>EINVAL</b>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Be aware that
-<b>CPU_ALLOC</b>(3) may allocate a slightly larger CPU set
+<a href="https://man.page/3/CPU_ALLOC">CPU_ALLOC(3)</a> may allocate a slightly larger CPU set
 than requested (because CPU sets are implemented as bit
 masks allocated in units of <i>sizeof(long)</i>).
 Consequently, <b>sched_getaffinity</b>() can set bits beyond
@@ -339,7 +339,7 @@ the requested allocation size, because the kernel sees a few
 additional bits. Therefore, the caller should iterate over
 the bits in the returned set, counting those which are set,
 and stop upon reaching the value returned by
-<b>CPU_COUNT</b>(3) (rather than iterating over the number
+<a href="https://man.page/3/CPU_COUNT">CPU_COUNT(3)</a> (rather than iterating over the number
 of bits requested to be allocated).</p>
 
 <h2>EXAMPLES
@@ -363,7 +363,7 @@ caching effects and whether the processes are using the same
 CPU.</p>
 
 <p style="margin-left:11%; margin-top: 1em">We first employ
-<b>lscpu</b>(1) to determine that this (x86) system has two
+<a href="https://man.page/1/lscpu">lscpu(1)</a> to determine that this (x86) system has two
 cores, each with two CPUs:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>lscpu |
@@ -474,16 +474,16 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>lscpu</b>(1),
-<b>nproc</b>(1), <b>taskset</b>(1), <b>clone</b>(2),
-<b>getcpu</b>(2), <b>getpriority</b>(2), <b>gettid</b>(2),
-<b>nice</b>(2), <b>sched_get_priority_max</b>(2),
-<b>sched_get_priority_min</b>(2),
-<b>sched_getscheduler</b>(2), <b>sched_setscheduler</b>(2),
-<b>setpriority</b>(2), <b>CPU_SET</b>(3),
-<b>get_nprocs</b>(3), <b>pthread_setaffinity_np</b>(3),
-<b>sched_getcpu</b>(3), <b>capabilities</b>(7),
-<b>cpuset</b>(7), <b>sched</b>(7), <b>numactl</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/lscpu">lscpu(1)</a>,
+<a href="https://man.page/1/nproc">nproc(1)</a>, <a href="https://man.page/1/taskset">taskset(1)</a>, <a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/getcpu">getcpu(2)</a>, <a href="https://man.page/2/getpriority">getpriority(2)</a>, <a href="https://man.page/2/gettid">gettid(2)</a>,
+<a href="https://man.page/2/nice">nice(2)</a>, <a href="https://man.page/2/sched_get_priority_max">sched_get_priority_max(2)</a>,
+<a href="https://man.page/2/sched_get_priority_min">sched_get_priority_min(2)</a>,
+<a href="https://man.page/2/sched_getscheduler">sched_getscheduler(2)</a>, <a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a>,
+<a href="https://man.page/2/setpriority">setpriority(2)</a>, <a href="https://man.page/3/CPU_SET">CPU_SET(3)</a>,
+<a href="https://man.page/3/get_nprocs">get_nprocs(3)</a>, <a href="https://man.page/3/pthread_setaffinity_np">pthread_setaffinity_np(3)</a>,
+<a href="https://man.page/3/sched_getcpu">sched_getcpu(3)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/cpuset">cpuset(7)</a>, <a href="https://man.page/7/sched">sched(7)</a>, <b>numactl</b>(8)</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

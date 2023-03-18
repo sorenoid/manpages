@@ -152,20 +152,20 @@ authenticated via <b><font color="#0000FF">polkit</font></b>
 <i>StaticHostname</i> property exposes the
 &quot;static&quot; hostname configured in /etc/hostname. It
 is not always in sync with the current hostname as returned
-by the <b>gethostname</b>(3) system call. If no static
+by the <a href="https://man.page/3/gethostname">gethostname(3)</a> system call. If no static
 hostname is configured this property will be the empty
 string.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">When
-<b>systemd</b>(1) or <b>systemd-hostnamed.service</b>(8) set
+<a href="https://man.page/1/systemd">systemd(1)</a> or <b>systemd-hostnamed.service</b>(8) set
 the hostname, this static hostname <i>has the highest
 priority</i>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
 <i>Hostname</i> property exposes the actual hostname
-configured in the kernel via <b>sethostname</b>(3). It can
+configured in the kernel via <a href="https://man.page/3/sethostname">sethostname(3)</a>. It can
 be different from the static hostname. This property is
 never empty.</font></p>
 
@@ -184,7 +184,7 @@ such as the dynamic hostname.</font></p>
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
 <i>DefaultHostname</i> property exposes the default hostname
-(configured through <b>os-release</b>(5), or a fallback set
+(configured through <a href="https://man.page/5/os-release">os-release(5)</a>, or a fallback set
 at compilation time).</font></p>
 
 
@@ -244,7 +244,7 @@ should be assumed to be highly dynamic, and hence should be
 watched directly, without depending on
 <b>PropertyChanged</b> messages from systemd-hostnamed. To
 accomplish this, open /proc/sys/kernel/hostname and
-<b>poll</b>(3) for <b>SIGHUP</b> which is triggered by the
+<a href="https://man.page/3/poll">poll(3)</a> for <b>SIGHUP</b> which is triggered by the
 kernel every time the hostname changes. Again: this is
 special for the transient (dynamic) hostname, and does not
 apply to the configured (fixed) hostname.</font></p>
@@ -252,9 +252,9 @@ apply to the configured (fixed) hostname.</font></p>
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">Applications
 may read the hostname data directly if hostname change
-notifications are not necessary. Use <b>gethostname</b>(3),
+notifications are not necessary. Use <a href="https://man.page/3/gethostname">gethostname(3)</a>,
 /etc/hostname (possibly with per-distribution fallbacks),
-and <b>machine-info</b>(3) for that. For more information on
+and <a href="https://man.page/3/machine-info">machine-info(3)</a> for that. For more information on
 these files and syscalls see the respective man
 pages.</font></p>
 
@@ -263,11 +263,11 @@ pages.</font></p>
 <i>KernelRelease</i>, and <i>KernelVersion</i> expose the
 kernel name (e.g. &quot;Linux&quot;), release (e.g.
 &quot;5.0.0-11&quot;), and version (i.e. the build number,
-e.g. &quot;#11&quot;) as reported by <b>uname</b>(2).
+e.g. &quot;#11&quot;) as reported by <a href="https://man.page/2/uname">uname(2)</a>.
 <i>OperatingSystemPrettyName</i>,
 <i>OperatingSystemCPEName</i>, and <i>HomeURL</i> expose the
 <i>PRETTY_NAME=</i>, <i>CPE_NAME=</i> and <i>HOME_URL=</i>
-fields from <b>os-release</b>(5). The purpose of those
+fields from <a href="https://man.page/5/os-release">os-release(5)</a>. The purpose of those
 properties is to allow remote clients to access this
 information over D-Bus. Local clients can access the
 information directly.</font></p>
@@ -309,7 +309,7 @@ name of the icon representing for the machine),
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>PrettyHostname</i>,
 <i>IconName</i>, <i>Chassis</i>, <i>Deployment</i>, and
 <i>Location</i> are stored in /etc/machine-info. See
-<b>machine-info</b>(5) for the semantics of those
+<a href="https://man.page/5/machine-info">machine-info(5)</a> for the semantics of those
 settings.</font></p>
 
 
@@ -376,7 +376,7 @@ icon with the icon name, if it is set.</font></p>
 properly handle name lookups with changing local hostnames
 without having to edit /etc/hosts, we recommend using
 systemd-hostnamed in combination with
-<b>nss-myhostname</b>(3).</font></p>
+<a href="https://man.page/3/nss-myhostname">nss-myhostname(3)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">Here

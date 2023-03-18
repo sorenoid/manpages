@@ -48,7 +48,7 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">For an overview
-of namespaces, see <b>namespaces</b>(7).</p>
+of namespaces, see <a href="https://man.page/7/namespaces">namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Mount
 namespaces provide isolation of the list of mount points
@@ -60,14 +60,14 @@ distinct single-directory hierarchies.</p>
 provided by the <i>/proc/[pid]/mounts</i>,
 <i>/proc/[pid]/mountinfo</i>, and
 <i>/proc/[pid]/mountstats</i> files (all described in
-<b>proc</b>(5)) correspond to the mount namespace in which
+<a href="https://man.page/5/proc">proc(5)</a>) correspond to the mount namespace in which
 the process with the PID <i>[pid]</i> resides. (All of the
 processes that reside in the same mount namespace will see
 the same view in these files.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">A new mount
-namespace is created using either <b>clone</b>(2) or
-<b>unshare</b>(2) with the <b>CLONE_NEWNS</b> flag. When a
+namespace is created using either <a href="https://man.page/2/clone">clone(2)</a> or
+<a href="https://man.page/2/unshare">unshare(2)</a> with the <b>CLONE_NEWNS</b> flag. When a
 new mount namespace is created, its mount point list is
 initialized as follows:</p>
 
@@ -83,7 +83,7 @@ initialized as follows:</p>
 <td width="85%">
 
 
-<p>If the namespace is created using <b>clone</b>(2), the
+<p>If the namespace is created using <a href="https://man.page/2/clone">clone(2)</a>, the
 mount point list of the child&rsquo;s namespace is a copy of
 the mount point list in the parent&rsquo;s namespace.</p></td></tr>
 <tr valign="top" align="left">
@@ -96,15 +96,15 @@ the mount point list in the parent&rsquo;s namespace.</p></td></tr>
 <td width="85%">
 
 
-<p>If the namespace is created using <b>unshare</b>(2), the
+<p>If the namespace is created using <a href="https://man.page/2/unshare">unshare(2)</a>, the
 mount point list of the new namespace is a copy of the mount
 point list in the caller&rsquo;s previous mount
 namespace.</p> </td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">Subsequent
-modifications to the mount point list (<b>mount</b>(2) and
-<b>umount</b>(2)) in either mount namespace will not (by
+modifications to the mount point list (<a href="https://man.page/2/mount">mount(2)</a> and
+<a href="https://man.page/2/umount">umount(2)</a>) in either mount namespace will not (by
 default) affect the mount point list seen in the other
 namespace (but see the following discussion of shared
 subtrees).</p>
@@ -162,7 +162,7 @@ more privileged mount namespaces.</p></td></tr>
 
 <p>Mounts that come as a single unit from a more privileged
 mount namespace are locked together and may not be separated
-in a less privileged mount namespace. (The <b>unshare</b>(2)
+in a less privileged mount namespace. (The <a href="https://man.page/2/unshare">unshare(2)</a>
 <b>CLONE_NEWNS</b> operation brings across all of the mounts
 from the original mount namespace as a single unit, and
 recursive mounts that propagate between mount namespaces
@@ -177,7 +177,7 @@ propagate as a single unit.)</p></td></tr>
 <td width="85%">
 
 
-<p>The <b>mount</b>(2) flags <b>MS_RDONLY</b>,
+<p>The <a href="https://man.page/2/mount">mount(2)</a> flags <b>MS_RDONLY</b>,
 <b>MS_NOSUID</b>, <b>MS_NOEXEC</b>, and the
 &quot;atime&quot; flags (<b>MS_NOATIME</b>,
 <b>MS_NODIRATIME</b>, <b>MS_RELATIME</b>) settings become
@@ -196,7 +196,7 @@ less privileged mount namespace.</p></td></tr>
 
 <p>A file or directory that is a mount point in one
 namespace that is not a mount point in another namespace,
-may be renamed, unlinked, or removed (<b>rmdir</b>(2)) in
+may be renamed, unlinked, or removed (<a href="https://man.page/2/rmdir">rmdir(2)</a>) in
 the mount namespace in which it is not a mount point
 (subject to the usual permission checks). Consequently, the
 mount point is removed in the mount namespace where it was a
@@ -231,7 +231,7 @@ of a <i>peer group</i> that are propagating events to one
 another).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each mount
-point is marked (via <b>mount</b>(2)) as having one of the
+point is marked (via <a href="https://man.page/2/mount">mount(2)</a>) as having one of the
 following <i>propagation types</i>: <b><br>
 MS_SHARED</b></p>
 
@@ -268,11 +268,11 @@ group can be the slave of another peer group.)</p>
 
 <p style="margin-left:22%;">This is like a private mount,
 and in addition this mount can&rsquo;t be bind mounted.
-Attempts to bind mount this mount (<b>mount</b>(2) with the
+Attempts to bind mount this mount (<a href="https://man.page/2/mount">mount(2)</a> with the
 <b>MS_BIND</b> flag) will fail.</p>
 
 <p style="margin-left:22%; margin-top: 1em">When a
-recursive bind mount (<b>mount</b>(2) with the
+recursive bind mount (<a href="https://man.page/2/mount">mount(2)</a> with the
 <b>MS_BIND</b> and <b>MS_REC</b> flags) is performed on a
 directory subtree, any bind mounts within the subtree are
 automatically pruned (i.e., not replicated) when replicating
@@ -350,7 +350,7 @@ has no more member processes).</p>
 <p style="margin-left:11%; margin-top: 1em">The propagation
 type of the mount points in a mount namespace can be
 discovered via the &quot;optional fields&quot; exposed in
-<i>/proc/[pid]/mountinfo</i>. (See <b>proc</b>(5) for
+<i>/proc/[pid]/mountinfo</i>. (See <a href="https://man.page/5/proc">proc(5)</a> for
 details of this file.) The following tags can appear in the
 optional fields for a record in that file: <i><br>
 shared:X</i></p>
@@ -434,7 +434,7 @@ namespace received a copy of the initial mount
 namespace&rsquo;s mount points. These new mount points
 maintain the same propagation types, but have unique mount
 IDs. (The <i>--propagation&nbsp;unchanged</i> option
-prevents <b>unshare</b>(1) from marking all mounts as
+prevents <a href="https://man.page/1/unshare">unshare(1)</a> from marking all mounts as
 private when creating a new mount namespace, which it does
 by default.)</p>
 
@@ -978,7 +978,7 @@ the chain of propagation between the mounts it can see.</p>
 <p style="margin-left:11%; margin-top: 1em">In the
 following example, we first create a two-link master-slave
 chain between the mounts <i>/mnt</i>, <i>/tmp/etc</i>, and
-<i>/mnt/tmp/etc</i>. Then the <b>chroot</b>(1) command is
+<i>/mnt/tmp/etc</i>. Then the <a href="https://man.page/1/chroot">chroot(1)</a> command is
 used to make the <i>/tmp/etc</i> mount point unreachable
 from the root directory, creating a situation where the
 master of <i>/mnt/tmp/etc</i> is not reachable from the
@@ -987,7 +987,7 @@ master of <i>/mnt/tmp/etc</i> is not reachable from the
 <p style="margin-left:11%; margin-top: 1em">First, we bind
 mount the root directory onto <i>/mnt</i> and then bind
 mount <i>/proc</i> at <i>/mnt/proc</i> so that after the
-later <b>chroot</b>(1) the <b>proc</b>(5) filesystem remains
+later <a href="https://man.page/1/chroot">chroot(1)</a> the <a href="https://man.page/5/proc">proc(5)</a> filesystem remains
 visible at the correct location in the chroot-ed
 environment.</p>
 
@@ -1059,7 +1059,7 @@ we see that <i>/mnt</i> is the master of the slave
 <i>/mnt/tmp/etc</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">We then
-<b>chroot</b>(1) to the <i>/mnt</i> directory, which renders
+<a href="https://man.page/1/chroot">chroot(1)</a> to the <i>/mnt</i> directory, which renders
 the mount with ID 267 unreachable from the (new) root
 directory:</p>
 
@@ -1084,7 +1084,7 @@ unreachable, and so a <i>propagate_from</i> tag is
 displayed, indicating that the closest dominant peer group
 (i.e., the nearest reachable mount in the slave chain) is
 the peer group with the ID 102 (corresponding to the
-<i>/mnt</i> mount point before the <b>chroot</b>(1) was
+<i>/mnt</i> mount point before the <a href="https://man.page/1/chroot">chroot(1)</a> was
 performed.</p>
 
 <h2>VERSIONS
@@ -1121,18 +1121,18 @@ Otherwise, the propagation type of the new mount is
 <p style="margin-left:11%; margin-top: 1em">Notwithstanding
 the fact that the default propagation type for new mount
 points is in many cases <b>MS_PRIVATE</b>, <b>MS_SHARED</b>
-is typically more useful. For this reason, <b>systemd</b>(1)
+is typically more useful. For this reason, <a href="https://man.page/1/systemd">systemd(1)</a>
 automatically remounts all mount points as <b>MS_SHARED</b>
 on system startup. Thus, on most modern systems, the default
 propagation type is in practice <b>MS_SHARED</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since, when one
-uses <b>unshare</b>(1) to create a mount namespace, the goal
+uses <a href="https://man.page/1/unshare">unshare(1)</a> to create a mount namespace, the goal
 is commonly to provide full isolation of the mount points in
-the new namespace, <b>unshare</b>(1) (since
+the new namespace, <a href="https://man.page/1/unshare">unshare(1)</a> (since
 <i>util-linux</i> version 2.27) in turn reverses the step
-performed by <b>systemd</b>(1), by making all mount points
-private in the new namespace. That is, <b>unshare</b>(1)
+performed by <a href="https://man.page/1/systemd">systemd(1)</a>, by making all mount points
+private in the new namespace. That is, <a href="https://man.page/1/unshare">unshare(1)</a>
 performs the equivalent of the following in the new mount
 namespace:</p>
 
@@ -1141,13 +1141,13 @@ namespace:</p>
 
 <p style="margin-left:11%; margin-top: 1em">To prevent
 this, one can use the <i>--propagation&nbsp;unchanged</i>
-option to <b>unshare</b>(1).</p>
+option to <a href="https://man.page/1/unshare">unshare(1)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An application
 that creates a new mount namespace directly using
-<b>clone</b>(2) or <b>unshare</b>(2) may desire to prevent
+<a href="https://man.page/2/clone">clone(2)</a> or <a href="https://man.page/2/unshare">unshare(2)</a> may desire to prevent
 propagation of mount events to other mount namespaces (as is
-done by <b>unshare</b>(1)). This can be done by changing the
+done by <a href="https://man.page/1/unshare">unshare(1)</a>). This can be done by changing the
 propagation type of mount points in the new namespace to
 either <b>MS_SLAVE</b> or <b>MS_PRIVATE</b>. using a call
 such as the following:</p>
@@ -1166,7 +1166,7 @@ see <i>Documentation/filesystems/sharedsubtree.txt</i>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>pivot_root</b>(2).</p>
+<a href="https://man.page/2/pivot_root">pivot_root(2)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -1174,11 +1174,11 @@ see <i>Documentation/filesystems/sharedsubtree.txt</i>.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>unshare</b>(1),
-<b>clone</b>(2), <b>mount</b>(2), <b>pivot_root</b>(2),
-<b>setns</b>(2), <b>umount</b>(2), <b>unshare</b>(2),
-<b>proc</b>(5), <b>namespaces</b>(7),
-<b>user_namespaces</b>(7), <b>findmnt</b>(8),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/unshare">unshare(1)</a>,
+<a href="https://man.page/2/clone">clone(2)</a>, <a href="https://man.page/2/mount">mount(2)</a>, <a href="https://man.page/2/pivot_root">pivot_root(2)</a>,
+<a href="https://man.page/2/setns">setns(2)</a>, <a href="https://man.page/2/umount">umount(2)</a>, <a href="https://man.page/2/unshare">unshare(2)</a>,
+<a href="https://man.page/5/proc">proc(5)</a>, <a href="https://man.page/7/namespaces">namespaces(7)</a>,
+<a href="https://man.page/7/user_namespaces">user_namespaces(7)</a>, <b>findmnt</b>(8),
 <b>mount</b>(8), <b>pivot_root</b>(8), <b>umount</b>(8)</p>
 
 

@@ -185,7 +185,7 @@ be set in order to employ that controller.</p>
 <p style="margin-left:11%; margin-top: 1em">In order to use
 a v1 controller, it must be mounted against a cgroup
 filesystem. The usual place for such mounts is under a
-<b>tmpfs</b>(5) filesystem mounted at <i>/sys/fs/cgroup</i>.
+<a href="https://man.page/5/tmpfs">tmpfs(5)</a> filesystem mounted at <i>/sys/fs/cgroup</i>.
 Thus, one might mount the <i>cpu</i> controller as
 follows:</p>
 
@@ -233,7 +233,7 @@ hierarchy.</p>
 <p style="margin-left:11%; margin-top: 1em">Note that on
 many systems, the v1 controllers are automatically mounted
 under <i>/sys/fs/cgroup</i>; in particular,
-<b>systemd</b>(1) automatically creates such mount
+<a href="https://man.page/1/systemd">systemd(1)</a> automatically creates such mount
 points.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Unmounting
@@ -495,7 +495,7 @@ recycled while reading from the list.)</p>
 <p style="margin-left:11%; margin-top: 1em">In cgroups v1,
 an individual thread can be moved to another cgroup by
 writing its thread ID (i.e., the kernel thread ID returned
-by <b>clone</b>(2) and <b>gettid</b>(2)) to the <i>tasks</i>
+by <a href="https://man.page/2/clone">clone(2)</a> and <a href="https://man.page/2/gettid">gettid(2)</a>) to the <i>tasks</i>
 file in a cgroup directory. This file can be read to
 discover the set of threads that are members of the
 cgroup.</p>
@@ -563,7 +563,7 @@ must have a unique name. The only purpose of such
 hierarchies is to track processes. (See the discussion of
 release notification below.) An example of this is the
 <i>name=systemd</i> cgroup hierarchy that is used by
-<b>systemd</b>(1) to track services and user sessions.</p>
+<a href="https://man.page/1/systemd">systemd(1)</a> to track services and user sessions.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 5.0, the <i>cgroup_no_v1</i> kernel boot option (described
@@ -689,7 +689,7 @@ another way, it is not possible to employ the same
 controller against both a v1 hierarchy and the unified v2
 hierarchy. This means that it may be necessary first to
 unmount a v1 controller (as described above) before that
-controller is available in v2. Since <b>systemd</b>(1) makes
+controller is available in v2. Since <a href="https://man.page/1/systemd">systemd(1)</a> makes
 heavy use of some v1 controllers by default, it can in some
 cases be simpler to boot the system with selected v1
 controllers disabled. To do this, specify the
@@ -697,11 +697,11 @@ controllers disabled. To do this, specify the
 line; <i>list</i> is a comma-separated list of the names of
 the controllers to disable, or the word <i>all</i> to
 disable all v1 controllers. (This situation is correctly
-handled by <b>systemd</b>(1), which falls back to operating
+handled by <a href="https://man.page/1/systemd">systemd(1)</a>, which falls back to operating
 without the specified controllers.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that on
-many modern systems, <b>systemd</b>(1) automatically mounts
+many modern systems, <a href="https://man.page/1/systemd">systemd(1)</a> automatically mounts
 the <i>cgroup2</i> filesystem at
 <i>/sys/fs/cgroup/unified</i> during the boot process.</p>
 
@@ -917,8 +917,8 @@ this cgroup is currently frozen, or 0 if it is not.</p>
 <i>cgroup.events</i> file can be monitored, in order to
 receive notification when the value of one of its keys
 changes. Such monitoring can be done using
-<b>inotify</b>(7), which notifies changes as
-<b>IN_MODIFY</b> events, or <b>poll</b>(2), which notifies
+<a href="https://man.page/7/inotify">inotify(7)</a>, which notifies changes as
+<b>IN_MODIFY</b> events, or <a href="https://man.page/2/poll">poll(2)</a>, which notifies
 changes by returning the <b>POLLPRI</b> and <b>POLLERR</b>
 bits in the <i>revents</i> field.</p>
 
@@ -1246,7 +1246,7 @@ performed in the initial mount namespace; in other mount
 namespaces, the option is silently ignored.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Note</i>: On
-some systems, <b>systemd</b>(1) automatically mounts the
+some systems, <a href="https://man.page/1/systemd">systemd(1)</a> automatically mounts the
 cgroup v2 filesystem. In order to experiment with the
 <i>nsdelegate</i> operation, it may be useful to boot the
 kernel with the following command-line options:</p>
@@ -1258,7 +1258,7 @@ systemd.legacy_systemd_cgroup_controller</p>
 <p style="margin-left:11%; margin-top: 1em">These options
 cause the kernel to boot with the cgroups v1 controllers
 disabled (meaning that the controllers are available in the
-v2 hierarchy), and tells <b>systemd</b>(1) not to mount and
+v2 hierarchy), and tells <a href="https://man.page/1/systemd">systemd(1)</a> not to mount and
 use the cgroup v2 hierarchy, so that the v2 hierarchy can be
 manually mounted with the desired options after boot-up.</p>
 
@@ -1726,7 +1726,7 @@ tree. This has the effect of making all of the threads in
 the process members of the corresponding cgroup and makes
 the process a member of the threaded subtree. The threads of
 the process can then be spread across the threaded subtree
-by writing their thread IDs (see <b>gettid</b>(2)) to the
+by writing their thread IDs (see <a href="https://man.page/2/gettid">gettid(2)</a>) to the
 <i>cgroup.threads</i> files in different cgroups inside the
 subtree. The threads of a process must all reside in the
 same threaded subtree.</p>
@@ -2074,16 +2074,16 @@ As at Linux 4.19, the cgroups v2 <i>cpu</i> controller does
 not support control of realtime threads (specifically
 threads scheduled under any of the policies
 <b>SCHED_FIFO</b>, <b>SCHED_RR</b>, described
-<b>SCHED_DEADLINE</b>; see <b>sched</b>(7)). Therefore, the
+<b>SCHED_DEADLINE</b>; see <a href="https://man.page/7/sched">sched(7)</a>). Therefore, the
 <i>cpu</i> controller can be enabled in the root cgroup only
 if all realtime threads are in the root cgroup. (If there
 are realtime threads in nonroot cgroups, then a
-<b>write</b>(2) of the string <i>&quot;+cpu&quot;</i> to the
+<a href="https://man.page/2/write">write(2)</a> of the string <i>&quot;+cpu&quot;</i> to the
 <i>cgroup.subtree_control</i> file fails with the error
 <b>EINVAL</b>.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">On some
-systems, <b>systemd</b>(1) places certain realtime threads
+systems, <a href="https://man.page/1/systemd">systemd(1)</a> places certain realtime threads
 in nonroot cgroups in the v2 hierarchy. On such systems,
 these threads must first be moved to the root cgroup before
 the <i>cpu</i> controller can be enabled.</p>
@@ -2094,7 +2094,7 @@ the <i>cpu</i> controller can be enabled.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The following
-errors can occur for <b>mount</b>(2):</p>
+errors can occur for <a href="https://man.page/2/mount">mount(2)</a>:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -2120,12 +2120,12 @@ option (to mount a named hierarchy) nor a controller name
 
 
 <p style="margin-left:11%; margin-top: 1em">A child process
-created via <b>fork</b>(2) inherits its parent&rsquo;s
+created via <a href="https://man.page/2/fork">fork(2)</a> inherits its parent&rsquo;s
 cgroup memberships. A process&rsquo;s cgroup memberships are
-preserved across <b>execve</b>(2).</p>
+preserved across <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>clone3</b>(2) <b>CLONE_INTO_CGROUP</b> flag can be used
+<a href="https://man.page/2/clone3">clone3(2)</a> <b>CLONE_INTO_CGROUP</b> flag can be used
 to create a child process that begins its life in a
 different version 2 cgroup from the parent process.</p>
 
@@ -2378,13 +2378,13 @@ memory_localevents</i> (since Linux 5.2)</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>prlimit</b>(1),
-<b>systemd</b>(1), <b>systemd-cgls</b>(1),
-<b>systemd-cgtop</b>(1), <b>clone</b>(2),
-<b>ioprio_set</b>(2), <b>perf_event_open</b>(2),
-<b>setrlimit</b>(2), <b>cgroup_namespaces</b>(7),
-<b>cpuset</b>(7), <b>namespaces</b>(7), <b>sched</b>(7),
-<b>user_namespaces</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/prlimit">prlimit(1)</a>,
+<a href="https://man.page/1/systemd">systemd(1)</a>, <a href="https://man.page/1/systemd-cgls">systemd-cgls(1)</a>,
+<a href="https://man.page/1/systemd-cgtop">systemd-cgtop(1)</a>, <a href="https://man.page/2/clone">clone(2)</a>,
+<a href="https://man.page/2/ioprio_set">ioprio_set(2)</a>, <a href="https://man.page/2/perf_event_open">perf_event_open(2)</a>,
+<a href="https://man.page/2/setrlimit">setrlimit(2)</a>, <a href="https://man.page/7/cgroup_namespaces">cgroup_namespaces(7)</a>,
+<a href="https://man.page/7/cpuset">cpuset(7)</a>, <a href="https://man.page/7/namespaces">namespaces(7)</a>, <a href="https://man.page/7/sched">sched(7)</a>,
+<a href="https://man.page/7/user_namespaces">user_namespaces(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel
 source file

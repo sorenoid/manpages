@@ -218,8 +218,8 @@ recommended.</p>
 <p style="margin-top: 1em">Functions marked with
 <i>term</i> as an MT-Safety issue may change the terminal
 settings in the recommended way, namely: call
-<b>tcgetattr</b>(3), modify some flags, and then call
-<b>tcsetattr</b>(3), this creates a window in which changes
+<a href="https://man.page/3/tcgetattr">tcgetattr(3)</a>, modify some flags, and then call
+<a href="https://man.page/3/tcsetattr">tcsetattr(3)</a>, this creates a window in which changes
 made by other threads are lost. Thus, functions marked with
 <i>term</i> are MT-Unsafe.</p></td></tr>
 </table>
@@ -287,7 +287,7 @@ contexts, which makes the former safe.</p>
 
 <p style="margin-top: 1em">Functions marked with <i>env</i>
 as an MT-Safety issue access the environment with
-<b>getenv</b>(3) or similar, without any guards to ensure
+<a href="https://man.page/3/getenv">getenv(3)</a> or similar, without any guards to ensure
 safety in the presence of concurrent modifications.</p></td></tr>
 </table>
 
@@ -318,9 +318,9 @@ system-wide data structures that hold the &quot;host
 ID&quot; of the machine. These data structures cannot
 generally be modified atomically. Since it is expected that
 the &quot;host ID&quot; will not normally change, the
-function that reads from it (<b>gethostid</b>(3)) is
+function that reads from it (<a href="https://man.page/3/gethostid">gethostid(3)</a>) is
 regarded as safe, whereas the function that modifies it
-(<b>sethostid</b>(3)) is marked with <i>const:hostid</i>,
+(<a href="https://man.page/3/sethostid">sethostid(3)</a>) is marked with <i>const:hostid</i>,
 indicating it may require special care if it is to be
 called. In this specific case, the special care amounts to
 system-wide (not merely intra-process) coordination.</p></td></tr>
@@ -364,10 +364,10 @@ asynchronous signal or cancellation handlers.</p></td></tr>
 
 <p style="margin-left:22%; margin-top: 1em">This is not
 enough of a reason to mark so-marked functions as MT-Unsafe,
-but when this behavior is optional (e.g., <b>nftw</b>(3)
+but when this behavior is optional (e.g., <a href="https://man.page/3/nftw">nftw(3)</a>
 with <b>FTW_CHDIR</b>), avoiding the option may be a good
 alternative to using full pathnames or file
-descriptor-relative (e.g., <b>openat</b>(2)) system
+descriptor-relative (e.g., <a href="https://man.page/2/openat">openat(2)</a>) system
 calls.</p>
 
 <p style="margin-left:11%;"><i>:identifier</i></p>
@@ -417,8 +417,8 @@ function can be regarded as safe.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pthreads</b>(7),
-<b>signal-safety</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/7/pthreads">pthreads(7)</a>,
+<a href="https://man.page/7/signal-safety">signal-safety(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

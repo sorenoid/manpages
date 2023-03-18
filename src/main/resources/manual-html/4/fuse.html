@@ -67,8 +67,8 @@ abstracts away the low-level interface.</p>
 FUSE is a simple client-server protocol, in which the Linux
 kernel is the client and the daemon is the server. After
 obtaining a file descriptor for this device, the daemon may
-<b>read</b>(2) requests from that file descriptor and is
-expected to <b>write</b>(2) back its replies. It is
+<a href="https://man.page/2/read">read(2)</a> requests from that file descriptor and is
+expected to <a href="https://man.page/2/write">write(2)</a> back its replies. It is
 important to note that a file descriptor is associated with
 a unique FUSE filesystem. In particular, opening a second
 copy of this device, will not allow access to resources
@@ -105,7 +105,7 @@ operation is indicated by <i>opcode</i>).</p>
 should then process the request and if applicable send a
 reply (almost all operations require a reply; if they do
 not, this is documented below), by performing a
-<b>write</b>(2) to the file descriptor. All replies must
+<a href="https://man.page/2/write">write(2)</a> to the file descriptor. All replies must
 start with the following header:</p>
 
 <p style="margin-left:17%; margin-top: 1em">struct
@@ -202,12 +202,12 @@ uint64_t fh; /* Set only if <br>
 
 <p style="margin-left:22%; margin-top: 1em">The requested
 operation is to compute the attributes to be returned by
-<b>stat</b>(2) and similar operations for the given
+<a href="https://man.page/2/stat">stat(2)</a> and similar operations for the given
 filesystem object. The object for which the attributes
 should be computed is indicated either by
 <i>header-&gt;nodeid</i> or, if the <b>FUSE_GETATTR_FH</b>
 flag is set, by the file handle <i>fh</i>. The latter case
-of operation is analogous to <b>fstat</b>(2).</p>
+of operation is analogous to <a href="https://man.page/2/fstat">fstat(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For performance
 reasons, these attributes may be cached in the kernel for a
@@ -428,7 +428,7 @@ the request has been completely processed.</p>
 <p style="margin-left:11%;"><b>FUSE_STATFS</b></p>
 
 <p style="margin-left:22%;">This operation implements
-<b>statfs</b>(2) for this filesystem. There is no input data
+<a href="https://man.page/2/statfs">statfs(2)</a> for this filesystem. There is no input data
 associated with this request. The expected reply data has
 the following structure:</p>
 
@@ -452,7 +452,7 @@ struct fuse_kstatfs st; <br>
 };</p>
 
 <p style="margin-left:22%; margin-top: 1em">For the
-interpretation of these fields, see <b>statfs</b>(2).</p>
+interpretation of these fields, see <a href="https://man.page/2/statfs">statfs(2)</a>.</p>
 
 <h2>ERRORS
 <a name="ERRORS"></a>
@@ -471,7 +471,7 @@ interpretation of these fields, see <b>statfs</b>(2).</p>
 <td width="78%">
 
 
-<p style="margin-top: 1em">Returned from <b>read</b>(2)
+<p style="margin-top: 1em">Returned from <a href="https://man.page/2/read">read(2)</a>
 operations when the kernel&rsquo;s request is too large for
 the provided buffer and the request was
 <b>FUSE_SETXATTR</b>.</p> </td></tr>
@@ -485,7 +485,7 @@ the provided buffer and the request was
 <td width="78%">
 
 
-<p>Returned from <b>write</b>(2) if validation of the reply
+<p>Returned from <a href="https://man.page/2/write">write(2)</a> if validation of the reply
 failed. Not all mistakes in replies will be caught by this
 validation. However, basic mistakes, such as short replies
 or an incorrect <i>unique</i> value, are detected.</p></td></tr>
@@ -499,7 +499,7 @@ or an incorrect <i>unique</i> value, are detected.</p></td></tr>
 <td width="78%">
 
 
-<p>Returned from <b>read</b>(2) operations when the
+<p>Returned from <a href="https://man.page/2/read">read(2)</a> operations when the
 kernel&rsquo;s request is too large for the provided
 buffer.</p> </td></tr>
 </table>
@@ -549,7 +549,7 @@ the kernel expected.</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">Returned from
-<b>read</b>(2) and <b>write</b>(2) if the FUSE filesystem
+<a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a> if the FUSE filesystem
 was unmounted.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -624,7 +624,7 @@ FUSE_WRITE</b></p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fusermount</b>(1),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/fusermount">fusermount(1)</a>,
 <b>mount.fuse</b>(8)</p>
 
 <h2>COLOPHON

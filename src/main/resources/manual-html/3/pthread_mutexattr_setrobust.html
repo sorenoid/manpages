@@ -66,7 +66,7 @@ link with <i>-pthread</i>.</p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>pthread_mutexattr_getrobust</b>(),
@@ -99,7 +99,7 @@ PTHREAD_MUTEX_STALLED</b></p>
 mutex attributes object. If a mutex is initialized with the
 <b>PTHREAD_MUTEX_STALLED</b> attribute and its owner dies
 without unlocking it, the mutex remains locked afterwards
-and any future attempts to call <b>pthread_mutex_lock</b>(3)
+and any future attempts to call <a href="https://man.page/3/pthread_mutex_lock">pthread_mutex_lock(3)</a>
 on the mutex will block indefinitely.</p>
 
 
@@ -108,33 +108,33 @@ on the mutex will block indefinitely.</p>
 <p style="margin-left:22%;">If a mutex is initialized with
 the <b>PTHREAD_MUTEX_ROBUST</b> attribute and its owner dies
 without unlocking it, any future attempts to call
-<b>pthread_mutex_lock</b>(3) on this mutex will succeed and
+<a href="https://man.page/3/pthread_mutex_lock">pthread_mutex_lock(3)</a> on this mutex will succeed and
 return <b>EOWNERDEAD</b> to indicate that the original owner
 no longer exists and the mutex is in an inconsistent state.
 Usually after <b>EOWNERDEAD</b> is returned, the next owner
-should call <b>pthread_mutex_consistent</b>(3) on the
+should call <a href="https://man.page/3/pthread_mutex_consistent">pthread_mutex_consistent(3)</a> on the
 acquired mutex to make it consistent again before using it
 any further.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If the next
-owner unlocks the mutex using <b>pthread_mutex_unlock</b>(3)
+owner unlocks the mutex using <a href="https://man.page/3/pthread_mutex_unlock">pthread_mutex_unlock(3)</a>
 before making it consistent, the mutex will be permanently
 unusable and any subsequent attempts to lock it using
-<b>pthread_mutex_lock</b>(3) will fail with the error
+<a href="https://man.page/3/pthread_mutex_lock">pthread_mutex_lock(3)</a> will fail with the error
 <b>ENOTRECOVERABLE</b>. The only permitted operation on such
-a mutex is <b>pthread_mutex_destroy</b>(3).</p>
+a mutex is <a href="https://man.page/3/pthread_mutex_destroy">pthread_mutex_destroy(3)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If the next
 owner terminates before calling
-<b>pthread_mutex_consistent</b>(3), further
-<b>pthread_mutex_lock</b>(3) operations on this mutex will
+<a href="https://man.page/3/pthread_mutex_consistent">pthread_mutex_consistent(3)</a>, further
+<a href="https://man.page/3/pthread_mutex_lock">pthread_mutex_lock(3)</a> operations on this mutex will
 still return <b>EOWNERDEAD</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that the
 <i>attr</i> argument of <b>pthread_mutexattr_getrobust</b>()
 and <b>pthread_mutexattr_setrobust</b>() should refer to a
 mutex attributes object that was initialized by
-<b>pthread_mutexattr_init</b>(3), otherwise the behavior is
+<a href="https://man.page/3/pthread_mutexattr_init">pthread_mutexattr_init(3)</a>, otherwise the behavior is
 undefined.</p>
 
 <h2>RETURN VALUE
@@ -199,7 +199,7 @@ in version 2.12.</p>
 implementation, when using process-shared robust mutexes, a
 waiting thread also receives the <b>EOWNERDEAD</b>
 notification if the owner of a robust mutex performs an
-<b>execve</b>(2) without first unlocking the mutex. POSIX.1
+<a href="https://man.page/2/execve">execve(2)</a> without first unlocking the mutex. POSIX.1
 does not specify this detail, but the same behavior also
 occurs in at least some other implementations.</p>
 
@@ -348,11 +348,11 @@ handle_error_en(s, &quot;pthread_mutex_lock&quot;); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>get_robust_list</b>(2),
-<b>set_robust_list</b>(2),
-<b>pthread_mutex_consistent</b>(3),
-<b>pthread_mutex_init</b>(3), <b>pthread_mutex_lock</b>(3),
-<b>pthreads</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/get_robust_list">get_robust_list(2)</a>,
+<a href="https://man.page/2/set_robust_list">set_robust_list(2)</a>,
+<a href="https://man.page/3/pthread_mutex_consistent">pthread_mutex_consistent(3)</a>,
+<a href="https://man.page/3/pthread_mutex_init">pthread_mutex_init(3)</a>, <a href="https://man.page/3/pthread_mutex_lock">pthread_mutex_lock(3)</a>,
+<a href="https://man.page/7/pthreads">pthreads(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

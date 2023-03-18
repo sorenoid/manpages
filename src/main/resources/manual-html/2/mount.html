@@ -179,7 +179,7 @@ MS_DIRSYNC</b> (since Linux 2.5.19)</p>
 <p style="margin-left:22%;">Make directory changes on this
 filesystem synchronous. (This property can be obtained for
 individual directories or subtrees using
-<b>chattr</b>(1).)</p>
+<a href="https://man.page/1/chattr">chattr(1)</a>.)</p>
 
 <p style="margin-left:11%;"><b>MS_LAZYTIME</b> (since Linux
 4.0)</p>
@@ -213,8 +213,8 @@ to file timestamps;</p></td></tr>
 <td width="71%">
 
 
-<p>the application employs <b>fsync</b>(2),
-<b>syncfs</b>(2), or <b>sync</b>(2);</p></td></tr>
+<p>the application employs <a href="https://man.page/2/fsync">fsync(2)</a>,
+<a href="https://man.page/2/syncfs">syncfs(2)</a>, or <a href="https://man.page/2/sync">sync(2)</a>;</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="4%">
@@ -252,7 +252,7 @@ include frequent random writes to preallocated files, as
 well as cases where the <b>MS_STRICTATIME</b> mount option
 is also enabled. (The advantage of combining
 <b>MS_STRICTATIME</b> and <b>MS_LAZYTIME</b> is that
-<b>stat</b>(2) will return the correctly updated atime, but
+<a href="https://man.page/2/stat">stat(2)</a> will return the correctly updated atime, but
 the atime updates will be flushed to disk only in the cases
 listed above.)</p>
 
@@ -261,7 +261,7 @@ listed above.)</p>
 <p style="margin-left:22%;">Permit mandatory locking on
 files in this filesystem. (Mandatory locking must still be
 enabled on a per-file basis, as described in
-<b>fcntl</b>(2).) Since Linux 4.5, this mount option
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.) Since Linux 4.5, this mount option
 requires the <b>CAP_SYS_ADMIN</b> capability and a kernel
 configured with the <b>CONFIG_MANDATORY_FILE_LOCKING</b>
 option.</p>
@@ -315,7 +315,7 @@ is accessed, update the file&rsquo;s last access time
 (atime) only if the current value of atime is less than or
 equal to the file&rsquo;s last modification time (mtime) or
 last status change time (ctime). This option is useful for
-programs, such as <b>mutt</b>(1), that need to know when a
+programs, such as <a href="https://man.page/1/mutt">mutt(1)</a>, that need to know when a
 file has been read since it was last modified. Since Linux
 2.6.30, the kernel defaults to the behavior provided by this
 flag (unless <b>MS_NOATIME</b> was specified), and the
@@ -346,7 +346,7 @@ Specifying this flag overrides the effect of setting the
 
 <p style="margin-left:22%;">Make writes on this filesystem
 synchronous (as though the <b>O_SYNC</b> flag to
-<b>open</b>(2) was specified for all file opens to this
+<a href="https://man.page/2/open">open(2)</a> was specified for all file opens to this
 filesystem).</p>
 
 <p style="margin-left:11%;"><b>MS_NOSYMFOLLOW</b> (since
@@ -354,8 +354,8 @@ Linux 5.10)</p>
 
 <p style="margin-left:22%;">Do not follow symbolic links
 when resolving paths. Symbolic links can still be created,
-and <b>readlink</b>(1), <b>readlink</b>(2),
-<b>realpath</b>(1), and <b>realpath</b>(3) all still work
+and <a href="https://man.page/1/readlink">readlink(1)</a>, <a href="https://man.page/2/readlink">readlink(2)</a>,
+<a href="https://man.page/1/realpath">realpath(1)</a>, and <a href="https://man.page/3/realpath">realpath(3)</a> all still work
 properly.</p>
 
 <p style="margin-left:11%; margin-top: 1em">From Linux 2.4
@@ -487,7 +487,7 @@ If <i>mountflags</i> includes <b>MS_BIND</b> (available
 since Linux 2.4), then perform a bind mount. A bind mount
 makes a file or a directory subtree visible at another point
 within the single directory hierarchy. Bind mounts may cross
-filesystem boundaries and span <b>chroot</b>(2) jails.</p>
+filesystem boundaries and span <a href="https://man.page/2/chroot">chroot(2)</a> jails.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <i>filesystemtype</i> and <i>data</i> arguments are
@@ -586,7 +586,7 @@ points under <i>target</i> is also changed.</p>
 <p style="margin-left:11%; margin-top: 1em">For further
 details regarding mount propagation types (including the
 default propagation type assigned to new mounts), see
-<b>mount_namespaces</b>(7).</p>
+<a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Moving a
 mount</b> <br>
@@ -650,7 +650,7 @@ code for details.</p>
 
 
 <p>A component of a path was not searchable. (See also
-<b>path_resolution</b>(7).)</p> </td></tr>
+<a href="https://man.page/7/path_resolution">path_resolution(7)</a>.)</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -1062,16 +1062,16 @@ as one in which a single namespace was shared by every
 process on the system.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">A child process
-created by <b>fork</b>(2) shares its parent&rsquo;s mount
+created by <a href="https://man.page/2/fork">fork(2)</a> shares its parent&rsquo;s mount
 namespace; the mount namespace is preserved across an
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A process can
 obtain a private mount namespace if: it was created using
-the <b>clone</b>(2) <b>CLONE_NEWNS</b> flag, in which case
+the <a href="https://man.page/2/clone">clone(2)</a> <b>CLONE_NEWNS</b> flag, in which case
 its new namespace is initialized to be a <i>copy</i> of the
-namespace of the process that called <b>clone</b>(2); or it
-calls <b>unshare</b>(2) with the <b>CLONE_NEWNS</b> flag,
+namespace of the process that called <a href="https://man.page/2/clone">clone(2)</a>; or it
+calls <a href="https://man.page/2/unshare">unshare(2)</a> with the <b>CLONE_NEWNS</b> flag,
 which causes the caller&rsquo;s mount namespace to obtain a
 private copy of the namespace that it was previously sharing
 with other processes, so that future mounts and unmounts by
@@ -1081,7 +1081,7 @@ versa.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For further
 details on mount namespaces, see
-<b>mount_namespaces</b>(7).</p>
+<a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Parental
 relationship between mount points</b> <br>
@@ -1113,7 +1113,7 @@ process with the specified ID. The
 information about mount points, including the propagation
 type and mount ID information that makes it possible to
 discover the parental relationship between mount points. See
-<b>proc</b>(5) and <b>mount_namespaces</b>(7) for details of
+<a href="https://man.page/5/proc">proc(5)</a> and <a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a> for details of
 this file.</p>
 
 <h2>SEE ALSO
@@ -1122,10 +1122,10 @@ this file.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>mountpoint</b>(1),
-<b>chroot</b>(2), <b>ioctl_iflags</b>(2),
-<b>pivot_root</b>(2), <b>umount</b>(2),
-<b>mount_namespaces</b>(7), <b>path_resolution</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/mountpoint">mountpoint(1)</a>,
+<a href="https://man.page/2/chroot">chroot(2)</a>, <a href="https://man.page/2/ioctl_iflags">ioctl_iflags(2)</a>,
+<a href="https://man.page/2/pivot_root">pivot_root(2)</a>, <a href="https://man.page/2/umount">umount(2)</a>,
+<a href="https://man.page/7/mount_namespaces">mount_namespaces(7)</a>, <a href="https://man.page/7/path_resolution">path_resolution(7)</a>,
 <b>findmnt</b>(8), <b>lsblk</b>(8), <b>mount</b>(8),
 <b>umount</b>(8)</p>
 

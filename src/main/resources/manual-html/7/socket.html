@@ -64,7 +64,7 @@ stacks in the kernel. The protocol modules are grouped into
 <i>protocol families</i> such as <b>AF_INET</b>,
 <b>AF_IPX</b>, and <b>AF_PACKET</b>, and <i>socket types</i>
 such as <b>SOCK_STREAM</b> or <b>SOCK_DGRAM</b>. See
-<b>socket</b>(2) for more information on families and
+<a href="https://man.page/2/socket">socket(2)</a> for more information on families and
 types.</p>
 
 
@@ -75,63 +75,63 @@ receive packets and to do other socket operations. For more
 information see their respective manual pages.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>socket</b>(2)
-creates a socket, <b>connect</b>(2) connects a socket to a
-remote socket address, the <b>bind</b>(2) function binds a
-socket to a local socket address, <b>listen</b>(2) tells the
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/socket">socket(2)</a>
+creates a socket, <a href="https://man.page/2/connect">connect(2)</a> connects a socket to a
+remote socket address, the <a href="https://man.page/2/bind">bind(2)</a> function binds a
+socket to a local socket address, <a href="https://man.page/2/listen">listen(2)</a> tells the
 socket that new connections shall be accepted, and
-<b>accept</b>(2) is used to get a new socket with a new
-incoming connection. <b>socketpair</b>(2) returns two
+<a href="https://man.page/2/accept">accept(2)</a> is used to get a new socket with a new
+incoming connection. <a href="https://man.page/2/socketpair">socketpair(2)</a> returns two
 connected anonymous sockets (implemented only for a few
 local families like <b>AF_UNIX</b>)</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>send</b>(2),
-<b>sendto</b>(2), and <b>sendmsg</b>(2) send data over a
-socket, and <b>recv</b>(2), <b>recvfrom</b>(2),
-<b>recvmsg</b>(2) receive data from a socket. <b>poll</b>(2)
-and <b>select</b>(2) wait for arriving data or a readiness
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/send">send(2)</a>,
+<a href="https://man.page/2/sendto">sendto(2)</a>, and <a href="https://man.page/2/sendmsg">sendmsg(2)</a> send data over a
+socket, and <a href="https://man.page/2/recv">recv(2)</a>, <a href="https://man.page/2/recvfrom">recvfrom(2)</a>,
+<a href="https://man.page/2/recvmsg">recvmsg(2)</a> receive data from a socket. <a href="https://man.page/2/poll">poll(2)</a>
+and <a href="https://man.page/2/select">select(2)</a> wait for arriving data or a readiness
 to send data. In addition, the standard I/O operations like
-<b>write</b>(2), <b>writev</b>(2), <b>sendfile</b>(2),
-<b>read</b>(2), and <b>readv</b>(2) can be used to read and
+<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/writev">writev(2)</a>, <a href="https://man.page/2/sendfile">sendfile(2)</a>,
+<a href="https://man.page/2/read">read(2)</a>, and <a href="https://man.page/2/readv">readv(2)</a> can be used to read and
 write data.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>getsockname</b>(2)
-returns the local socket address and <b>getpeername</b>(2)
-returns the remote socket address. <b>getsockopt</b>(2) and
-<b>setsockopt</b>(2) are used to set or get socket layer or
-protocol options. <b>ioctl</b>(2) can be used to set or read
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/getsockname">getsockname(2)</a>
+returns the local socket address and <a href="https://man.page/2/getpeername">getpeername(2)</a>
+returns the remote socket address. <a href="https://man.page/2/getsockopt">getsockopt(2)</a> and
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> are used to set or get socket layer or
+protocol options. <a href="https://man.page/2/ioctl">ioctl(2)</a> can be used to set or read
 some other options.</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2)
-is used to close a socket. <b>shutdown</b>(2) closes parts
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/close">close(2)</a>
+is used to close a socket. <a href="https://man.page/2/shutdown">shutdown(2)</a> closes parts
 of a full-duplex socket connection.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Seeking, or
-calling <b>pread</b>(2) or <b>pwrite</b>(2) with a nonzero
+calling <a href="https://man.page/2/pread">pread(2)</a> or <a href="https://man.page/2/pwrite">pwrite(2)</a> with a nonzero
 position is not supported on sockets.</p>
 
 <p style="margin-left:11%; margin-top: 1em">It is possible
 to do nonblocking I/O on sockets by setting the
 <b>O_NONBLOCK</b> flag on a socket file descriptor using
-<b>fcntl</b>(2). Then all operations that would block will
+<a href="https://man.page/2/fcntl">fcntl(2)</a>. Then all operations that would block will
 (usually) return with <b>EAGAIN</b> (operation should be
-retried later); <b>connect</b>(2) will return
+retried later); <a href="https://man.page/2/connect">connect(2)</a> will return
 <b>EINPROGRESS</b> error. The user can then wait for various
-events via <b>poll</b>(2) or <b>select</b>(2).</p>
+events via <a href="https://man.page/2/poll">poll(2)</a> or <a href="https://man.page/2/select">select(2)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3524441.png" alt="Image grohtml-3524441.png"></p>
 
 <p style="margin-left:11%; margin-top: 1em">An alternative
-to <b>poll</b>(2) and <b>select</b>(2) is to let the kernel
+to <a href="https://man.page/2/poll">poll(2)</a> and <a href="https://man.page/2/select">select(2)</a> is to let the kernel
 inform the application about events via a <b>SIGIO</b>
 signal. For that the <b>O_ASYNC</b> flag must be set on a
-socket file descriptor via <b>fcntl</b>(2) and a valid
+socket file descriptor via <a href="https://man.page/2/fcntl">fcntl(2)</a> and a valid
 signal handler for <b>SIGIO</b> must be installed via
-<b>sigaction</b>(2). See the <i>Signals</i> discussion
+<a href="https://man.page/2/sigaction">sigaction(2)</a>. See the <i>Signals</i> discussion
 below.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
@@ -141,8 +141,8 @@ with a domain-specific address structure. Each of these
 structures begins with an integer &quot;family&quot; field
 (typed as <i>sa_family_t</i>) that indicates the type of the
 address structure. This allows the various system calls
-(e.g., <b>connect</b>(2), <b>bind</b>(2), <b>accept</b>(2),
-<b>getsockname</b>(2), <b>getpeername</b>(2)), which are
+(e.g., <a href="https://man.page/2/connect">connect(2)</a>, <a href="https://man.page/2/bind">bind(2)</a>, <a href="https://man.page/2/accept">accept(2)</a>,
+<a href="https://man.page/2/getsockname">getsockname(2)</a>, <a href="https://man.page/2/getpeername">getpeername(2)</a>), which are
 generic to all socket domains, to determine the domain of a
 particular socket address.</p>
 
@@ -176,7 +176,7 @@ addresses).</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
 options</b> <br>
 The socket options listed below can be set by using
-<b>setsockopt</b>(2) and read with <b>getsockopt</b>(2) with
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> and read with <a href="https://man.page/2/getsockopt">getsockopt(2)</a> with
 the socket level set to <b>SOL_SOCKET</b> for all sockets.
 Unless otherwise noted, <i>optval</i> is a pointer to an
 <i>int</i>. <b><br>
@@ -184,7 +184,7 @@ SO_ACCEPTCONN</b></p>
 
 <p style="margin-left:22%;">Returns a value indicating
 whether or not this socket has been marked to accept
-connections with <b>listen</b>(2). The value 0 indicates
+connections with <a href="https://man.page/2/listen">listen(2)</a>. The value 0 indicates
 that this is not a listening socket, the value 1 indicates
 that this is a listening socket. This socket option is
 read-only.</p>
@@ -215,7 +215,7 @@ struct sock_filter *filter; <br>
 
 <p style="margin-left:22%; margin-top: 1em">The argument
 for <b>SO_ATTACH_BPF</b> is a file descriptor returned by
-the <b>bpf</b>(2) system call and must refer to a program of
+the <a href="https://man.page/2/bpf">bpf(2)</a> system call and must refer to a program of
 type <b>BPF_PROG_TYPE_SOCKET_FILTER</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">These options
@@ -251,11 +251,11 @@ plain <b>SO_REUSEPORT</b> mechanism.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Sockets are
 numbered in the order in which they are added to the group
-(that is, the order of <b>bind</b>(2) calls for UDP sockets
-or the order of <b>listen</b>(2) calls for TCP sockets). New
+(that is, the order of <a href="https://man.page/2/bind">bind(2)</a> calls for UDP sockets
+or the order of <a href="https://man.page/2/listen">listen(2)</a> calls for TCP sockets). New
 sockets added to a reuseport group will inherit the BPF
 program. When a socket is removed from a reuseport group
-(via <b>close</b>(2)), the last socket in the group will be
+(via <a href="https://man.page/2/close">close(2)</a>), the last socket in the group will be
 moved into the closed socket&rsquo;s position.</p>
 
 <p style="margin-left:22%; margin-top: 1em">These options
@@ -285,12 +285,12 @@ of <b>IFNAMSIZ</b>. If a socket is bound to an interface,
 only packets received from that particular interface are
 processed by the socket. Note that this works only for some
 socket types, particularly <b>AF_INET</b> sockets. It is not
-supported for packet sockets (use normal <b>bind</b>(2)
+supported for packet sockets (use normal <a href="https://man.page/2/bind">bind(2)</a>
 there).</p>
 
 <p style="margin-left:22%; margin-top: 1em">Before Linux
 3.8, this socket option could be set, but could not
-retrieved with <b>getsockopt</b>(2). Since Linux 3.8, it is
+retrieved with <a href="https://man.page/2/getsockopt">getsockopt(2)</a>. Since Linux 3.8, it is
 readable. The <i>optlen</i> argument should contain the
 buffer size available to receive the device name and is
 recommended to be <b>IFNAMSIZ</b> bytes. The real device
@@ -338,7 +338,7 @@ value is ignored.</p>
 
 <p style="margin-left:22%;">Retrieves the socket domain as
 an integer, returning a value such as <b>AF_INET6</b>. See
-<b>socket</b>(2) for details. This socket option is
+<a href="https://man.page/2/socket">socket(2)</a> for details. This socket option is
 read-only.</p>
 
 <p style="margin-left:11%;"><b>SO_ERROR</b></p>
@@ -352,7 +352,7 @@ integer.</p>
 <p style="margin-left:22%;">Don&rsquo;t send via a gateway,
 send only to directly connected hosts. The same effect can
 be achieved by setting the <b>MSG_DONTROUTE</b> flag on a
-socket <b>send</b>(2) operation. Expects an integer boolean
+socket <a href="https://man.page/2/send">send(2)</a> operation. Expects an integer boolean
 flag.</p>
 
 <p style="margin-left:11%;"><b>SO_INCOMING_CPU</b>
@@ -412,12 +412,12 @@ int l_linger; /* how many seconds to linger for */ <br>
 };</p>
 
 <p style="margin-left:22%; margin-top: 1em">When enabled, a
-<b>close</b>(2) or <b>shutdown</b>(2) will not return until
+<a href="https://man.page/2/close">close(2)</a> or <a href="https://man.page/2/shutdown">shutdown(2)</a> will not return until
 all queued messages for the socket have been successfully
 sent or the linger timeout has been reached. Otherwise, the
 call returns immediately and the closing is done in the
 background. When the socket is closed as part of
-<b>exit</b>(2), it always lingers in the background.</p>
+<a href="https://man.page/2/exit">exit(2)</a>, it always lingers in the background.</p>
 
 <p style="margin-left:11%;"><b>SO_LOCK_FILTER</b></p>
 
@@ -463,26 +463,26 @@ stream. Otherwise, out-of-band data is passed only when the
 
 <p style="margin-left:22%;">Enable or disable the receiving
 of the <b>SCM_CREDENTIALS</b> control message. For more
-information see <b>unix</b>(7).</p>
+information see <a href="https://man.page/7/unix">unix(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>SO_PASSSEC</b></p>
 
 <p style="margin-left:22%;">Enable or disable the receiving
 of the <b>SCM_SECURITY</b> control message. For more
-information see <b>unix</b>(7).</p>
+information see <a href="https://man.page/7/unix">unix(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>SO_PEEK_OFF</b> (since Linux
 3.4)</p>
 
 <p style="margin-left:22%;">This option, which is currently
-supported only for <b>unix</b>(7) sockets, sets the value of
-the &quot;peek offset&quot; for the <b>recv</b>(2) system
+supported only for <a href="https://man.page/7/unix">unix(7)</a> sockets, sets the value of
+the &quot;peek offset&quot; for the <a href="https://man.page/2/recv">recv(2)</a> system
 call when used with <b>MSG_PEEK</b> flag.</p>
 
 <p style="margin-left:22%; margin-top: 1em">When this
 option is set to a negative value (it is set to -1 for all
 new sockets), traditional behavior is provided:
-<b>recv</b>(2) with the <b>MSG_PEEK</b> flag will peek data
+<a href="https://man.page/2/recv">recv(2)</a> with the <b>MSG_PEEK</b> flag will peek data
 from the front of the queue.</p>
 
 <p style="margin-left:22%; margin-top: 1em">When the option
@@ -495,7 +495,7 @@ subsequent peek will return the next data in the queue.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If data is
 removed from the front of the queue via a call to
-<b>recv</b>(2) (or similar) without the <b>MSG_PEEK</b>
+<a href="https://man.page/2/recv">recv(2)</a> (or similar) without the <b>MSG_PEEK</b>
 flag, the &quot;peek offset&quot; will be decreased by the
 number of bytes removed. In other words, receiving data
 without the <b>MSG_PEEK</b> flag will cause the &quot;peek
@@ -518,7 +518,7 @@ data:</p>
 <p style="margin-left:22%; margin-top: 1em">aabbccddeeff</p>
 
 <p style="margin-left:22%; margin-top: 1em">The following
-sequence of <b>recv</b>(2) calls would have the effect noted
+sequence of <a href="https://man.page/2/recv">recv(2)</a> calls would have the effect noted
 in the comments:</p>
 
 <p style="margin-left:28%; margin-top: 1em">int ov = 4; //
@@ -539,14 +539,14 @@ set to 8</p>
 
 <p style="margin-left:22%;">Return the credentials of the
 peer process connected to this socket. For further details,
-see <b>unix</b>(7).</p>
+see <a href="https://man.page/7/unix">unix(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>SO_PEERSEC</b> (since Linux
 2.6.2)</p>
 
 <p style="margin-left:22%;">Return the security context of
 the peer socket connected to this socket. For further
-details, see <b>unix</b>(7) and <b>ip</b>(7).</p>
+details, see <a href="https://man.page/7/unix">unix(7)</a> and <a href="https://man.page/7/ip">ip(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>SO_PRIORITY</b></p>
 
@@ -563,7 +563,7 @@ capability.</p>
 
 <p style="margin-left:22%;">Retrieves the socket protocol
 as an integer, returning a value such as
-<b>IPPROTO_SCTP</b>. See <b>socket</b>(2) for details. This
+<b>IPPROTO_SCTP</b>. See <a href="https://man.page/2/socket">socket(2)</a> for details. This
 socket option is read-only.</p>
 
 <p style="margin-left:11%;"><b>SO_RCVBUF</b></p>
@@ -571,8 +571,8 @@ socket option is read-only.</p>
 <p style="margin-left:22%;">Sets or gets the maximum socket
 receive buffer in bytes. The kernel doubles this value (to
 allow space for bookkeeping overhead) when it is set using
-<b>setsockopt</b>(2), and this doubled value is returned by
-<b>getsockopt</b>(2). The default value is set by the
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a>, and this doubled value is returned by
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a>. The default value is set by the
 <i>/proc/sys/net/core/rmem_default</i> file, and the maximum
 allowed value is set by the
 <i>/proc/sys/net/core/rmem_max</i> file. The minimum
@@ -594,18 +594,18 @@ bytes in the buffer until the socket layer will pass the
 data to the protocol (<b>SO_SNDLOWAT</b>) or the user on
 receiving (<b>SO_RCVLOWAT</b>). These two values are
 initialized to 1. <b>SO_SNDLOWAT</b> is not changeable on
-Linux (<b>setsockopt</b>(2) fails with the error
+Linux (<a href="https://man.page/2/setsockopt">setsockopt(2)</a> fails with the error
 <b>ENOPROTOOPT</b>). <b>SO_RCVLOWAT</b> is changeable only
 since Linux 2.4.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Before Linux
-2.6.28 <b>select</b>(2), <b>poll</b>(2), and <b>epoll</b>(7)
+2.6.28 <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, and <a href="https://man.page/7/epoll">epoll(7)</a>
 did not respect the <b>SO_RCVLOWAT</b> setting on Linux, and
 indicated a socket as readable when even a single byte of
 data was available. A subsequent read from the socket would
 then block until <b>SO_RCVLOWAT</b> bytes are available.
-Since Linux 2.6.28, <b>select</b>(2), <b>poll</b>(2), and
-<b>epoll</b>(7) indicate a socket as readable only if at
+Since Linux 2.6.28, <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, and
+<a href="https://man.page/7/epoll">epoll(7)</a> indicate a socket as readable only if at
 least <b>SO_RCVLOWAT</b> bytes are available.</p>
 
 <p style="margin-left:11%;"><b>SO_RCVTIMEO</b> and
@@ -619,19 +619,19 @@ the return value of that function will be the amount of data
 transferred; if no data has been transferred and the timeout
 has been reached, then -1 is returned with <i>errno</i> set
 to <b>EAGAIN</b> or <b>EWOULDBLOCK</b>, or
-<b>EINPROGRESS</b> (for <b>connect</b>(2)) just as if the
+<b>EINPROGRESS</b> (for <a href="https://man.page/2/connect">connect(2)</a>) just as if the
 socket was specified to be nonblocking. If the timeout is
 set to zero (the default), then the operation will never
 timeout. Timeouts only have effect for system calls that
-perform socket I/O (e.g., <b>read</b>(2), <b>recvmsg</b>(2),
-<b>send</b>(2), <b>sendmsg</b>(2)); timeouts have no effect
-for <b>select</b>(2), <b>poll</b>(2), <b>epoll_wait</b>(2),
+perform socket I/O (e.g., <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/recvmsg">recvmsg(2)</a>,
+<a href="https://man.page/2/send">send(2)</a>, <a href="https://man.page/2/sendmsg">sendmsg(2)</a>); timeouts have no effect
+for <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>,
 and so on.</p>
 
 <p style="margin-left:11%;"><b>SO_REUSEADDR</b></p>
 
 <p style="margin-left:22%;">Indicates that the rules used
-in validating addresses supplied in a <b>bind</b>(2) call
+in validating addresses supplied in a <a href="https://man.page/2/bind">bind(2)</a> call
 should allow reuse of local addresses. For <b>AF_INET</b>
 sockets this means that a socket may bind, except when there
 is an active listening socket bound to the address. When the
@@ -646,20 +646,20 @@ Linux 3.9)</p>
 <p style="margin-left:22%;">Permits multiple <b>AF_INET</b>
 or <b>AF_INET6</b> sockets to be bound to an identical
 socket address. This option must be set on each socket
-(including the first socket) prior to calling <b>bind</b>(2)
+(including the first socket) prior to calling <a href="https://man.page/2/bind">bind(2)</a>
 on the socket. To prevent port hijacking, all of the
 processes binding to the same address must have the same
 effective UID. This option can be employed with both TCP and
 UDP sockets.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For TCP
-sockets, this option allows <b>accept</b>(2) load
+sockets, this option allows <a href="https://man.page/2/accept">accept(2)</a> load
 distribution in a multi-threaded server to be improved by
 using a distinct listener socket for each thread. This
 provides improved load distribution as compared to
 traditional techniques such using a single
-<b>accept</b>(2)ing thread that distributes connections, or
-having multiple threads that compete to <b>accept</b>(2)
+<a href="https://man.page/2/accept">accept(2)</a>ing thread that distributes connections, or
+having multiple threads that compete to <a href="https://man.page/2/accept">accept(2)</a>
 from the same socket.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For UDP
@@ -682,14 +682,14 @@ the socket since its creation.</p>
 
 <p style="margin-left:22%;">When this option is set on a
 socket, an error condition on a socket causes notification
-not only via the <i>exceptfds</i> set of <b>select</b>(2).
-Similarly, <b>poll</b>(2) also returns a <b>POLLPRI</b>
+not only via the <i>exceptfds</i> set of <a href="https://man.page/2/select">select(2)</a>.
+Similarly, <a href="https://man.page/2/poll">poll(2)</a> also returns a <b>POLLPRI</b>
 whenever an <b>POLLERR</b> event is returned.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Background:
 this option was added when waking up on an error condition
 occurred only via the <i>readfds</i> and <i>writefds</i>
-sets of <b>select</b>(2). The option was added to allow
+sets of <a href="https://man.page/2/select">select(2)</a>. The option was added to allow
 monitoring for error conditions via the <i>exceptfds</i>
 argument without simultaneously having to receive
 notifications (via <i>readfds</i>) for regular data that can
@@ -703,8 +703,8 @@ backwards compatibility.</p>
 <p style="margin-left:22%;">Sets or gets the maximum socket
 send buffer in bytes. The kernel doubles this value (to
 allow space for bookkeeping overhead) when it is set using
-<b>setsockopt</b>(2), and this doubled value is returned by
-<b>getsockopt</b>(2). The default value is set by the
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a>, and this doubled value is returned by
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a>. The default value is set by the
 <i>/proc/sys/net/core/wmem_default</i> file and the maximum
 allowed value is set by the
 <i>/proc/sys/net/core/wmem_max</i> file. The minimum
@@ -726,7 +726,7 @@ control message is sent with level <b>SOL_SOCKET</b> and a
 <i>cmsg_type</i> of <b>SCM_TIMESTAMP</b>. The
 <i>cmsg_data</i> field is a <i>struct timeval</i> indicating
 the reception time of the last packet passed to the user in
-this call. See <b>cmsg</b>(3) for details on control
+this call. See <a href="https://man.page/3/cmsg">cmsg(3)</a> for details on control
 messages.</p>
 
 <p style="margin-left:11%;"><b>SO_TIMESTAMPNS</b> (since
@@ -739,7 +739,7 @@ control message is sent with level <b>SOL_SOCKET</b> and a
 <i>cmsg_data</i> field is a <i>struct timespec</i>
 indicating the reception time of the last packet passed to
 the user in this call. The clock used for the timestamp is
-<b>CLOCK_REALTIME</b>. See <b>cmsg</b>(3) for details on
+<b>CLOCK_REALTIME</b>. See <a href="https://man.page/3/cmsg">cmsg(3)</a> for details on
 control messages.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A socket cannot
@@ -764,7 +764,7 @@ file.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The value in
 the <i>/proc/sys/net/core/busy_poll</i> file determines how
-long <b>select</b>(2) and <b>poll</b>(2) will busy poll when
+long <a href="https://man.page/2/select">select(2)</a> and <a href="https://man.page/2/poll">poll(2)</a> will busy poll when
 they operate on sockets with <b>SO_BUSY_POLL</b> set and no
 events to report are found.</p>
 
@@ -788,13 +788,13 @@ The signal is not sent when the write call specified the
 <p style="margin-left:11%; margin-top: 1em">When requested
 with the <b>FIOSETOWN fcntl</b>(2) or <b>SIOCSPGRP
 ioctl</b>(2), <b>SIGIO</b> is sent when an I/O event occurs.
-It is possible to use <b>poll</b>(2) or <b>select</b>(2) in
+It is possible to use <a href="https://man.page/2/poll">poll(2)</a> or <a href="https://man.page/2/select">select(2)</a> in
 the signal handler to find out which socket the event
 occurred on. An alternative (in Linux 2.2) is to set a
 real-time signal using the <b>F_SETSIG fcntl</b>(2); the
 handler of the real time signal will be called with the file
 descriptor in the <i>si_fd</i> field of its
-<i>siginfo_t</i>. See <b>fcntl</b>(2) for more
+<i>siginfo_t</i>. See <a href="https://man.page/2/fcntl">fcntl(2)</a> for more
 information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Under some
@@ -849,7 +849,7 @@ data and user control data like the iovecs per socket.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Ioctls</b>
 <br>
-These operations can be accessed using <b>ioctl</b>(2):</p>
+These operations can be accessed using <a href="https://man.page/2/ioctl">ioctl(2)</a>:</p>
 
 <p style="margin-left:17%; margin-top: 1em"><i>error</i>
 <b>= ioctl(</b><i>ip_socket</i><b>,</b>
@@ -861,14 +861,14 @@ These operations can be accessed using <b>ioctl</b>(2):</p>
 <p style="margin-left:22%;">Return a <i>struct timeval</i>
 with the receive timestamp of the last packet passed to the
 user. This is useful for accurate round trip time
-measurements. See <b>setitimer</b>(2) for a description of
+measurements. See <a href="https://man.page/2/setitimer">setitimer(2)</a> for a description of
 <i>struct timeval</i>. This ioctl should be used only if the
 socket options <b>SO_TIMESTAMP</b> and <b>SO_TIMESTAMPNS</b>
 are not set on the socket. Otherwise, it returns the
 timestamp of the last packet that was received while
 <b>SO_TIMESTAMP</b> and <b>SO_TIMESTAMPNS</b> were not set,
 or it fails if no such packet has been received, (i.e.,
-<b>ioctl</b>(2) returns -1 with <i>errno</i> set to
+<a href="https://man.page/2/ioctl">ioctl(2)</a> returns -1 with <i>errno</i> set to
 <b>ENOENT</b>).</p>
 
 <p style="margin-left:11%;"><b>SIOCSPGRP</b></p>
@@ -878,7 +878,7 @@ group that is to receive <b>SIGIO</b> or <b>SIGURG</b>
 signals when I/O becomes possible or urgent data is
 available. The argument is a pointer to a <i>pid_t</i>. For
 further details, see the description of <b>F_SETOWN</b> in
-<b>fcntl</b>(2).</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>FIOASYNC</b></p>
 
@@ -890,7 +890,7 @@ event occurs.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Argument is an
 integer boolean flag. (This operation is synonymous with the
-use of <b>fcntl</b>(2) to set the <b>O_ASYNC</b> flag.)</p>
+use of <a href="https://man.page/2/fcntl">fcntl(2)</a> to set the <b>O_ASYNC</b> flag.)</p>
 
 <p style="margin-left:11%;"><b>SIOCGPGRP</b></p>
 
@@ -899,7 +899,7 @@ process group that receives <b>SIGIO</b> or <b>SIGURG</b>
 signals, or 0 when none is set.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Valid
-<b>fcntl</b>(2) operations: <b><br>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> operations: <b><br>
 FIOGETOWN</b></p>
 
 <p style="margin-left:22%;">The same as the <b>SIOCGPGRP
@@ -938,7 +938,7 @@ wire.</p>
 <p style="margin-left:11%; margin-top: 1em">Linux will
 allow port reuse only with the <b>SO_REUSEADDR</b> option
 when this option was set both in the previous program that
-performed a <b>bind</b>(2) to the port and in the program
+performed a <a href="https://man.page/2/bind">bind(2)</a> to the port and in the program
 that wants to reuse the port. This differs from some
 implementations (e.g., FreeBSD) where only the later program
 needs to set the <b>SO_REUSEADDR</b> option. Typically this
@@ -951,13 +951,13 @@ program is designed to always set this option.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>wireshark</b>(1),
-<b>bpf</b>(2), <b>connect</b>(2), <b>getsockopt</b>(2),
-<b>setsockopt</b>(2), <b>socket</b>(2), <b>pcap</b>(3),
-<b>address_families</b>(7), <b>capabilities</b>(7),
-<b>ddp</b>(7), <b>ip</b>(7), <b>ipv6</b>(7),
-<b>packet</b>(7), <b>tcp</b>(7), <b>udp</b>(7),
-<b>unix</b>(7), <b>tcpdump</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/wireshark">wireshark(1)</a>,
+<a href="https://man.page/2/bpf">bpf(2)</a>, <a href="https://man.page/2/connect">connect(2)</a>, <a href="https://man.page/2/getsockopt">getsockopt(2)</a>,
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a>, <a href="https://man.page/2/socket">socket(2)</a>, <a href="https://man.page/3/pcap">pcap(3)</a>,
+<a href="https://man.page/7/address_families">address_families(7)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/ddp">ddp(7)</a>, <a href="https://man.page/7/ip">ip(7)</a>, <a href="https://man.page/7/ipv6">ipv6(7)</a>,
+<a href="https://man.page/7/packet">packet(7)</a>, <a href="https://man.page/7/tcp">tcp(7)</a>, <a href="https://man.page/7/udp">udp(7)</a>,
+<a href="https://man.page/7/unix">unix(7)</a>, <b>tcpdump</b>(8)</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

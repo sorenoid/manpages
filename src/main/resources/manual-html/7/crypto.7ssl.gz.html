@@ -98,9 +98,9 @@ operation has a different set of functions associated with
 it. For example to perform an encryption operation using
 <small>AES</small> (or any other encryption algorithm) you
 would use the encryption functions detailed on the
-<b>EVP_EncryptInit</b>(3) page. Or to perform a digest
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a> page. Or to perform a digest
 operation using <small>SHA256</small> then you would use the
-digesting functions on the <b>EVP_DigestInit</b>(3)
+digesting functions on the <a href="https://man.page/3/EVP_DigestInit">EVP_DigestInit(3)</a>
 page.</p>
 
 
@@ -164,8 +164,8 @@ As long as OpenSSL has been built with support for threads
 <i>functions</i> are thread-safe in the sense that it is
 safe to call the same function from multiple threads at the
 same time. However most OpenSSL <i>data structures</i> are
-not thread-safe. For example the <b>BIO_write</b>(3) and
-<b>BIO_read</b>(3) functions are thread safe. However it
+not thread-safe. For example the <a href="https://man.page/3/BIO_write">BIO_write(3)</a> and
+<a href="https://man.page/3/BIO_read">BIO_read(3)</a> functions are thread safe. However it
 would not be thread safe to call <b>BIO_write()</b> from one
 thread while calling <b>BIO_read()</b> in another where both
 functions are passed the same <b><small>BIO</small></b>
@@ -181,7 +181,7 @@ fully thread safe. For example it is safe to use an
 <b><small>OSSL_LIB_CTX</small></b> in multiple threads.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>openssl-threads</b>(7) for a more detailed discussion on
+<a href="https://man.page/7/openssl-threads">openssl-threads(7)</a> for a more detailed discussion on
 OpenSSL threading support.</p>
 
 <h2>ALGORITHM FETCHING
@@ -213,14 +213,14 @@ default provider.</p>
 strings can be specified explicitly as an argument to a
 function. It is also possible to specify a default property
 query string for the whole library context using the
-<b>EVP_set_default_properties</b>(3) function. Where both
+<a href="https://man.page/3/EVP_set_default_properties">EVP_set_default_properties(3)</a> function. Where both
 default properties and function specific properties are
 specified then they are combined. Function specific
 properties will override default properties where there is a
 conflict.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>property</b>(7) for more information about
+<a href="https://man.page/7/property">property(7)</a> for more information about
 properties.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Explicit
@@ -232,7 +232,7 @@ that do the work, and they return an appropriate algorithm
 object back to the user. These functions usually have the
 name &quot;APINAME_fetch&quot;, where &quot;APINAME&quot; is
 the name of the operation. For example
-<b>EVP_MD_fetch</b>(3) can be used to explicitly fetch a
+<a href="https://man.page/3/EVP_MD_fetch">EVP_MD_fetch(3)</a> can be used to explicitly fetch a
 digest algorithm implementation. The user is responsible for
 freeing the object returned from the
 &quot;APINAME_fetch&quot; function using
@@ -248,11 +248,11 @@ The library context</p>
 description. This may be <small>NULL</small> to signify the
 default (global) library context, or a context created by
 the user. Only providers loaded in this library context (see
-<b>OSSL_PROVIDER_load</b>(3)) will be considered by the
+<a href="https://man.page/3/OSSL_PROVIDER_load">OSSL_PROVIDER_load(3)</a>) will be considered by the
 fetching function. In case no provider has been loaded in
 this library context then the default provider will be
 loaded as a fallback (see
-<b>OSSL_PROVIDER-default</b>(7)).</p>
+<a href="https://man.page/7/OSSL_PROVIDER-default">OSSL_PROVIDER-default(7)</a>).</p>
 
 <p style="margin-left:11%;">An identifier</p>
 
@@ -267,23 +267,23 @@ to guide selection of the algorithm implementation.</p>
 <p style="margin-left:11%; margin-top: 1em">The algorithm
 implementation that is fetched can then be used with other
 diverse functions that use them. For example the
-<b>EVP_DigestInit_ex</b>(3) function takes as a parameter an
+<a href="https://man.page/3/EVP_DigestInit_ex">EVP_DigestInit_ex(3)</a> function takes as a parameter an
 <b><small>EVP_MD</small></b> object which may have been
-returned from an earlier call to <b>EVP_MD_fetch</b>(3).</p>
+returned from an earlier call to <a href="https://man.page/3/EVP_MD_fetch">EVP_MD_fetch(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Implicit
 fetch</b> <br>
 OpenSSL has a number of functions that return an algorithm
 object with no associated implementation, such as
-<b>EVP_sha256</b>(3), <b>EVP_aes_128_cbc</b>(3),
-<b>EVP_get_cipherbyname</b>(3) or
-<b>EVP_get_digestbyname</b>(3). These are present for
+<a href="https://man.page/3/EVP_sha256">EVP_sha256(3)</a>, <a href="https://man.page/3/EVP_aes_128_cbc">EVP_aes_128_cbc(3)</a>,
+<a href="https://man.page/3/EVP_get_cipherbyname">EVP_get_cipherbyname(3)</a> or
+<a href="https://man.page/3/EVP_get_digestbyname">EVP_get_digestbyname(3)</a>. These are present for
 compatibility with OpenSSL before version 3.0 where explicit
 fetching was not available.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When they are
-used with functions like <b>EVP_DigestInit_ex</b>(3) or
-<b>EVP_CipherInit_ex</b>(3), the actual implementation to be
+used with functions like <a href="https://man.page/3/EVP_DigestInit_ex">EVP_DigestInit_ex(3)</a> or
+<a href="https://man.page/3/EVP_CipherInit_ex">EVP_CipherInit_ex(3)</a>, the actual implementation to be
 used is fetched implicitly using default search
 criteria.</p>
 
@@ -297,7 +297,7 @@ context in which it is being used.</p>
 <p style="margin-left:11%; margin-top: 1em">Functions that
 revolve around <b><small>EVP_PKEY_CTX</small></b> and
 <b><small>EVP_PKEY</small></b> (3), such as
-<b>EVP_DigestSignInit</b>(3) and friends, all fetch the
+<a href="https://man.page/3/EVP_DigestSignInit">EVP_DigestSignInit(3)</a> and friends, all fetch the
 implementations implicitly. Because these functions involve
 both an operation type (such as
 <b><small>EVP_SIGNATURE</small></b> (3)) and an
@@ -463,12 +463,12 @@ with a set of providers.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The algorithms
 available in each of these providers may vary due to build
-time configuration options. The <b>openssl-list</b>(1)
+time configuration options. The <a href="https://man.page/1/openssl-list">openssl-list(1)</a>
 command can be used to list the currently available
 algorithms.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The names of
-the algorithms shown from <b>openssl-list</b>(1) can be used
+the algorithms shown from <a href="https://man.page/1/openssl-list">openssl-list(1)</a> can be used
 as an algorithm identifier to the appropriate fetching
 function. Also see the provider specific manual pages linked
 below for further details about using the algorithms
@@ -477,7 +477,7 @@ available in each of the providers.</p>
 <p style="margin-left:11%; margin-top: 1em">As well as the
 OpenSSL providers third parties can also implement
 providers. For information on writing a provider see
-<b>provider</b>(7).</p>
+<a href="https://man.page/7/provider">provider(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Default
 provider</b> <br>
@@ -499,7 +499,7 @@ If you explicitly load any provider then the
 explicitly loaded if it is required.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>OSSL_PROVIDER-default</b>(7).</p>
+<a href="https://man.page/7/OSSL_PROVIDER-default">OSSL_PROVIDER-default(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Base
 provider</b> <br>
@@ -518,7 +518,7 @@ mode&quot;. The property query string &quot;fips=yes&quot;
 can be used to select such algorithms.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>OSSL_PROVIDER-base</b>(7).</p>
+<a href="https://man.page/7/OSSL_PROVIDER-base">OSSL_PROVIDER-base(7)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b><small>FIPS</small>
@@ -526,7 +526,7 @@ provider</b> <br>
 The <small>FIPS</small> provider is a dynamically loadable
 module, and must therefore be loaded explicitly, either in
 code or through OpenSSL configuration (see
-<b>config</b>(5)). It contains algorithm implementations
+<a href="https://man.page/5/config">config(5)</a>). It contains algorithm implementations
 that have been validated according to the <small>FIPS
 140-2</small> standard. Should it be needed (if other
 providers are loaded and offer implementations of the same
@@ -541,13 +541,13 @@ property &quot;fips=no&quot;.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7) and
-<b>fips_module</b>(7).</p>
+<a href="https://man.page/7/fips_module">fips_module(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Legacy
 provider</b> <br>
 The legacy provider is a dynamically loadable module, and
 must therefore be loaded explicitly, either in code or
-through OpenSSL configuration (see <b>config</b>(5)). It
+through OpenSSL configuration (see <a href="https://man.page/5/config">config(5)</a>). It
 contains algorithm implementations that are considered
 insecure, or are no longer in common use such as
 <small>MD2</small> or <small>RC4.</small> Should it be
@@ -557,7 +557,7 @@ implementations of the same algorithms), the property
 criterion for these implementations.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>OSSL_PROVIDER-legacy</b>(7).</p>
+<a href="https://man.page/7/OSSL_PROVIDER-legacy">OSSL_PROVIDER-legacy(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Null
 provider</b> <br>
@@ -569,7 +569,7 @@ explicitly loaded. To prevent that from happening you can
 explicitly load the null provider.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>OSSL_PROVIDER-null</b>(7).</p>
+<a href="https://man.page/7/OSSL_PROVIDER-null">OSSL_PROVIDER-null(7)</a>.</p>
 
 <h2>USING ALGORITHMS IN APPLICATIONS
 <a name="USING ALGORITHMS IN APPLICATIONS"></a>
@@ -582,7 +582,7 @@ the &quot; <small>EVP&quot;</small> APIs. Each of the
 various operations such as encryption, digesting, message
 authentication codes, etc., have a set of <small>EVP</small>
 function calls that can be invoked to use them. See the
-<b>evp</b>(7) page for further details.</p>
+<a href="https://man.page/7/evp">evp(7)</a> page for further details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Most of these
 follow a common pattern. A &quot;context&quot; object is
@@ -678,7 +678,7 @@ OpenSSL will load a configuration file when it is first
 used. This will set up various configuration settings within
 the default library context. Applications that create their
 own library contexts may optionally configure them with a
-config file using the <b>OSSL_LIB_CTX_load_config</b>(3)
+config file using the <a href="https://man.page/3/OSSL_LIB_CTX_load_config">OSSL_LIB_CTX_load_config(3)</a>
 function.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -687,7 +687,7 @@ providers and set up default property query strings.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For information
 on the OpenSSL configuration file format see
-<b>config</b>(5).</p>
+<a href="https://man.page/5/config">config(5)</a>.</p>
 
 <h2>ENCODING AND DECODING KEYS
 <a name="ENCODING AND DECODING KEYS"></a>
@@ -697,10 +697,10 @@ on the OpenSSL configuration file format see
 <p style="margin-left:11%; margin-top: 1em">Many algorithms
 require the use of a key. Keys can be generated dynamically
 using the <small>EVP</small> APIs (for example see
-<b>EVP_PKEY_Q_keygen</b>(3)). However it is often necessary
+<a href="https://man.page/3/EVP_PKEY_Q_keygen">EVP_PKEY_Q_keygen(3)</a>). However it is often necessary
 to save or load keys (or their associated parameters) to or
 from some external format such as <small>PEM</small> or
-<small>DER</small> (see <b>openssl-glossary</b>(7)). OpenSSL
+<small>DER</small> (see <a href="https://man.page/7/openssl-glossary">openssl-glossary(7)</a>). OpenSSL
 uses encoders and decoders to perform this task.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Encoders and
@@ -711,9 +711,9 @@ are available in the default provider. They are also
 duplicated in the base provider.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For information
-about encoders see <b>OSSL_ENCODER_CTX_new_for_pkey</b>(3).
+about encoders see <a href="https://man.page/3/OSSL_ENCODER_CTX_new_for_pkey">OSSL_ENCODER_CTX_new_for_pkey(3)</a>.
 For information about decoders see
-<b>OSSL_DECODER_CTX_new_for_pkey</b>(3).</p>
+<a href="https://man.page/3/OSSL_DECODER_CTX_new_for_pkey">OSSL_DECODER_CTX_new_for_pkey(3)</a>.</p>
 
 <h2>LIBRARY CONVENTIONS
 <a name="LIBRARY CONVENTIONS"></a>
@@ -761,16 +761,16 @@ application will still be responsible for freeing the
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>openssl</b>(1),
-<b>ssl</b>(7), <b>evp</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/openssl">openssl(1)</a>,
+<a href="https://man.page/7/ssl">ssl(7)</a>, <a href="https://man.page/7/evp">evp(7)</a>,
 <b><small>OSSL_LIB_CTX</small></b> (3),
-<b>openssl-threads</b>(7), <b>property</b>(7),
-<b>OSSL_PROVIDER-default</b>(7),
-<b>OSSL_PROVIDER-base</b>(7),
+<a href="https://man.page/7/openssl-threads">openssl-threads(7)</a>, <a href="https://man.page/7/property">property(7)</a>,
+<a href="https://man.page/7/OSSL_PROVIDER-default">OSSL_PROVIDER-default(7)</a>,
+<a href="https://man.page/7/OSSL_PROVIDER-base">OSSL_PROVIDER-base(7)</a>,
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7),
-<b>OSSL_PROVIDER-legacy</b>(7),
-<b>OSSL_PROVIDER-null</b>(7), <b>openssl-glossary</b>(7),
-<b>provider</b>(7)</p>
+<a href="https://man.page/7/OSSL_PROVIDER-legacy">OSSL_PROVIDER-legacy(7)</a>,
+<a href="https://man.page/7/OSSL_PROVIDER-null">OSSL_PROVIDER-null(7)</a>, <a href="https://man.page/7/openssl-glossary">openssl-glossary(7)</a>,
+<a href="https://man.page/7/provider">provider(7)</a></p>
 
 <h2>COPYRIGHT
 <a name="COPYRIGHT"></a>

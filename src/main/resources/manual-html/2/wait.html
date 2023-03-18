@@ -68,7 +68,7 @@ NOTES for information on the raw system call. */</p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>waitid</b>():</p>
@@ -103,7 +103,7 @@ already changed state, then these calls return immediately.
 Otherwise, they block until either a child changes state or
 a signal handler interrupts the call (assuming that system
 calls are not automatically restarted using the
-<b>SA_RESTART</b> flag of <b>sigaction</b>(2)). In the
+<b>SA_RESTART</b> flag of <a href="https://man.page/2/sigaction">sigaction(2)</a>). In the
 remainder of this page, a child whose state has changed and
 which has not yet been waited upon by one of these system
 calls is termed <i>waitable</i>.</p>
@@ -191,7 +191,7 @@ has exited.</p>
 <p style="margin-left:11%;"><b>WUNTRACED</b></p>
 
 <p style="margin-left:22%;">also return if a child has
-stopped (but not traced via <b>ptrace</b>(2)). Status for
+stopped (but not traced via <a href="https://man.page/2/ptrace">ptrace(2)</a>). Status for
 <i>traced</i> children which have stopped is provided even
 if this option is not specified.</p>
 
@@ -214,8 +214,8 @@ and <b>waitpid</b>()!): <b><br>
 WIFEXITED(</b><i>wstatus</i><b>)</b></p>
 
 <p style="margin-left:22%;">returns true if the child
-terminated normally, that is, by calling <b>exit</b>(3) or
-<b>_exit</b>(2), or by returning from main().</p>
+terminated normally, that is, by calling <a href="https://man.page/3/exit">exit(3)</a> or
+<a href="https://man.page/2/_exit">_exit(2)</a>, or by returning from main().</p>
 
 
 <p style="margin-left:11%;"><b>WEXITSTATUS(</b><i>wstatus</i><b>)</b></p>
@@ -223,7 +223,7 @@ terminated normally, that is, by calling <b>exit</b>(3) or
 <p style="margin-left:22%;">returns the exit status of the
 child. This consists of the least significant 8 bits of the
 <i>status</i> argument that the child specified in a call to
-<b>exit</b>(3) or <b>_exit</b>(2) or as the argument for a
+<a href="https://man.page/3/exit">exit(3)</a> or <a href="https://man.page/2/_exit">_exit(2)</a> or as the argument for a
 return statement in main(). This macro should be employed
 only if <b>WIFEXITED</b> returned true.</p>
 
@@ -245,7 +245,7 @@ true.</p>
 <p style="margin-left:11%;"><b>WCOREDUMP(</b><i>wstatus</i><b>)</b></p>
 
 <p style="margin-left:22%;">returns true if the child
-produced a core dump (see <b>core</b>(5)). This macro should
+produced a core dump (see <a href="https://man.page/5/core">core(5)</a>). This macro should
 be employed only if <b>WIFSIGNALED</b> returned true.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This macro is
@@ -259,7 +259,7 @@ its use inside <i>#ifdef WCOREDUMP ... #endif</i>.</p>
 <p style="margin-left:22%;">returns true if the child
 process was stopped by delivery of a signal; this is
 possible only if the call was done using <b>WUNTRACED</b> or
-when the child is being traced (see <b>ptrace</b>(2)).</p>
+when the child is being traced (see <a href="https://man.page/2/ptrace">ptrace(2)</a>).</p>
 
 
 <p style="margin-left:11%;"><b>WSTOPSIG(</b><i>wstatus</i><b>)</b></p>
@@ -295,7 +295,7 @@ process ID matches <i>id</i>.</p>
 
 <p style="margin-left:22%;">Wait for the child referred to
 by the PID file descriptor specified in <i>id</i>. (See
-<b>pidfd_open</b>(2) for further information on PID file
+<a href="https://man.page/2/pidfd_open">pidfd_open(2)</a> for further information on PID file
 descriptors.)</p>
 
 <p style="margin-left:11%;"><i>idtype</i> ==
@@ -383,7 +383,7 @@ most other implementations.)</p></td></tr>
 <p style="margin-left:11%;"><i>si_status</i></p>
 
 <p style="margin-left:22%;">Either the exit status of the
-child, as given to <b>_exit</b>(2) (or <b>exit</b>(3)), or
+child, as given to <a href="https://man.page/2/_exit">_exit(2)</a> (or <a href="https://man.page/3/exit">exit(3)</a>), or
 the signal that caused the child to terminate, stop, or
 continue. The <i>si_code</i> field can be used to determine
 how to interpret this field.</p>
@@ -391,7 +391,7 @@ how to interpret this field.</p>
 <p style="margin-left:11%;"><i>si_code</i></p>
 
 <p style="margin-left:22%;">Set to one of:
-<b>CLD_EXITED</b> (child called <b>_exit</b>(2));
+<b>CLD_EXITED</b> (child called <a href="https://man.page/2/_exit">_exit(2)</a>);
 <b>CLD_KILLED</b> (child killed by signal);
 <b>CLD_DUMPED</b> (child killed by signal, and dumped core);
 <b>CLD_STOPPED</b> (child stopped by signal);
@@ -494,7 +494,7 @@ section about threads.)</p></td></tr>
 
 
 <p><b>WNOHANG</b> was not set and an unblocked signal or a
-<b>SIGCHLD</b> was caught; see <b>signal</b>(7).</p></td></tr>
+<b>SIGCHLD</b> was caught; see <a href="https://man.page/7/signal">signal(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -532,16 +532,16 @@ system via a wait, it will consume a slot in the kernel
 process table, and if this table fills, it will not be
 possible to create further processes. If a parent process
 terminates, then its &quot;zombie&quot; children (if any)
-are adopted by <b>init</b>(1), (or by the nearest
+are adopted by <a href="https://man.page/1/init">init(1)</a>, (or by the nearest
 &quot;subreaper&quot; process as defined through the use of
-the <b>prctl</b>(2) <b>PR_SET_CHILD_SUBREAPER</b>
-operation); <b>init</b>(1) automatically performs a wait to
+the <a href="https://man.page/2/prctl">prctl(2)</a> <b>PR_SET_CHILD_SUBREAPER</b>
+operation); <a href="https://man.page/1/init">init(1)</a> automatically performs a wait to
 remove the zombies.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX.1-2001
 specifies that if the disposition of <b>SIGCHLD</b> is set
 to <b>SIG_IGN</b> or the <b>SA_NOCLDWAIT</b> flag is set for
-<b>SIGCHLD</b> (see <b>sigaction</b>(2)), then children that
+<b>SIGCHLD</b> (see <a href="https://man.page/2/sigaction">sigaction(2)</a>), then children that
 terminate do not become zombies and a call to <b>wait</b>()
 or <b>waitpid</b>() will block until all children have
 terminated, and then fail with <i>errno</i> set to
@@ -566,9 +566,9 @@ notes</b> <br>
 In the Linux kernel, a kernel-scheduled thread is not a
 distinct construct from a process. Instead, a thread is
 simply a process that is created using the Linux-unique
-<b>clone</b>(2) system call; other routines such as the
-portable <b>pthread_create</b>(3) call are implemented using
-<b>clone</b>(2). Before Linux 2.4, a thread was just a
+<a href="https://man.page/2/clone">clone(2)</a> system call; other routines such as the
+portable <a href="https://man.page/3/pthread_create">pthread_create(3)</a> call are implemented using
+<a href="https://man.page/2/clone">clone(2)</a>. Before Linux 2.4, a thread was just a
 special case of a process, and as a consequence one thread
 could not wait on the children of another thread, even when
 the latter belongs to the same thread group. However, POSIX
@@ -578,7 +578,7 @@ in the same thread group.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 Linux-specific <i>options</i> are for use with children
-created using <b>clone</b>(2); they can also, since Linux
+created using <a href="https://man.page/2/clone">clone(2)</a>; they can also, since Linux
 4.7, be used with <b>waitid</b>(): <b><br>
 __WCLONE</b></p>
 
@@ -610,19 +610,19 @@ child is being ptraced.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>C
 library/kernel differences <br>
 wait</b>() is actually a library function that (in glibc) is
-implemented as a call to <b>wait4</b>(2).</p>
+implemented as a call to <a href="https://man.page/2/wait4">wait4(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">On some
 architectures, there is no <b>waitpid</b>() system call;
 instead, this interface is implemented via a C library
-wrapper function that calls <b>wait4</b>(2).</p>
+wrapper function that calls <a href="https://man.page/2/wait4">wait4(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The raw
 <b>waitid</b>() system call takes a fifth argument, of type
 <i>struct rusage&nbsp;*</i>. If this argument is non-NULL,
 then it is used to return resource usage information about
-the child, in the same manner as <b>wait4</b>(2). See
-<b>getrusage</b>(2) for details.</p>
+the child, in the same manner as <a href="https://man.page/2/wait4">wait4(2)</a>. See
+<a href="https://man.page/2/getrusage">getrusage(2)</a> for details.</p>
 
 <h2>BUGS
 <a name="BUGS"></a>
@@ -644,10 +644,10 @@ unnecessary feature.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The following
-program demonstrates the use of <b>fork</b>(2) and
+program demonstrates the use of <a href="https://man.page/2/fork">fork(2)</a> and
 <b>waitpid</b>(). The program creates a child process. If no
 command-line argument is supplied to the program, then the
-child suspends its execution using <b>pause</b>(2), to allow
+child suspends its execution using <a href="https://man.page/2/pause">pause(2)</a>, to allow
 the user to send signals to the child. Otherwise, if a
 command-line argument is supplied, then the child exits
 immediately, using the integer supplied on the command line
@@ -735,11 +735,11 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>_exit</b>(2),
-<b>clone</b>(2), <b>fork</b>(2), <b>kill</b>(2),
-<b>ptrace</b>(2), <b>sigaction</b>(2), <b>signal</b>(2),
-<b>wait4</b>(2), <b>pthread_create</b>(3), <b>core</b>(5),
-<b>credentials</b>(7), <b>signal</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/_exit">_exit(2)</a>,
+<a href="https://man.page/2/clone">clone(2)</a>, <a href="https://man.page/2/fork">fork(2)</a>, <a href="https://man.page/2/kill">kill(2)</a>,
+<a href="https://man.page/2/ptrace">ptrace(2)</a>, <a href="https://man.page/2/sigaction">sigaction(2)</a>, <a href="https://man.page/2/signal">signal(2)</a>,
+<a href="https://man.page/2/wait4">wait4(2)</a>, <a href="https://man.page/3/pthread_create">pthread_create(3)</a>, <a href="https://man.page/5/core">core(5)</a>,
+<a href="https://man.page/7/credentials">credentials(7)</a>, <a href="https://man.page/7/signal">signal(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

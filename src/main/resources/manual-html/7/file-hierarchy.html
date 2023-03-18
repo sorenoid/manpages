@@ -53,13 +53,13 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">Operating
-systems using the <b>systemd</b>(1) system and service
+systems using the <a href="https://man.page/1/systemd">systemd(1)</a> system and service
 manager are organized based on a file system hierarchy
 inspired by UNIX, more specifically the hierarchy described
 in the <b><font color="#0000FF">File System
 Hierarchy</font></b>
 <small><font color="#000000">[1]</font></small>
-<font color="#000000">specification and <b>hier</b>(7), with
+<font color="#000000">specification and <a href="https://man.page/7/hier">hier(7)</a>, with
 various extensions, partially documented in the</font>
 <b><font color="#0000FF">XDG Base Directory
 Specification</font></b>
@@ -76,7 +76,7 @@ hierarchy.</font></p>
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">Many
 of the paths described here can be queried with the
-<b>systemd-path</b>(1) tool.</font></p>
+<a href="https://man.page/1/systemd-path">systemd-path(1)</a> tool.</font></p>
 
 <h2>GENERAL STRUCTURE
 <a name="GENERAL STRUCTURE"></a>
@@ -179,7 +179,7 @@ automatically deleted.</font></p>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">If
 applications find the environment variable <i>$TMPDIR</i>
 set, they should use the directory specified in it instead
-of /tmp/ (see <b>environ</b>(7) and</font>
+of /tmp/ (see <a href="https://man.page/7/environ">environ(7)</a> and</font>
 <b><font color="#0000FF">IEEE Std 1003.1</font></b>
 <small><font color="#000000">[4]</font></small>
 <font color="#000000">for details).</font></p>
@@ -188,7 +188,7 @@ of /tmp/ (see <b>environ</b>(7) and</font>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">Since
 /tmp/ is accessible to other users of the system, it is
 essential that files and subdirectories under this directory
-are only created with <b>mkstemp</b>(3), <b>mkdtemp</b>(3),
+are only created with <a href="https://man.page/3/mkstemp">mkstemp(3)</a>, <a href="https://man.page/3/mkdtemp">mkdtemp(3)</a>,
 and similar calls. For more details, see</font>
 <b><font color="#0000FF">Using /tmp/ and /var/tmp/
 Safely</font></b>
@@ -379,7 +379,7 @@ this directory.</font></p>
 <p style="margin-left:17%;"><font color="#000000">Persistent
 system logs. System components may place private logs in
 this directory, though it is recommended to do most logging
-via the <b>syslog</b>(3) and <b>sd_journal_print</b>(3)
+via the <a href="https://man.page/3/syslog">syslog(3)</a> and <a href="https://man.page/3/sd_journal_print">sd_journal_print(3)</a>
 calls.</font></p>
 
 
@@ -406,12 +406,12 @@ applied.</font></p>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">If
 applications find the environment variable <i>$TMPDIR</i>
 set, they should use the directory specified in it instead
-of /var/tmp/ (see <b>environ</b>(7) for details).</font></p>
+of /var/tmp/ (see <a href="https://man.page/7/environ">environ(7)</a> for details).</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">The
 same security restrictions as with /tmp/ apply:
-<b>mkstemp</b>(3), <b>mkdtemp</b>(3), and similar calls
+<a href="https://man.page/3/mkstemp">mkstemp(3)</a>, <a href="https://man.page/3/mkdtemp">mkdtemp(3)</a>, and similar calls
 should be used. For further details about this directory,
 see</font> <b><font color="#0000FF">Using /tmp/ and
 /var/tmp/ Safely</font></b>
@@ -440,7 +440,7 @@ systems might be mounted below this directory.</font></p>
 
 <p style="margin-left:17%;"><font color="#000000">Place for
 POSIX shared memory segments, as created via
-<b>shm_open</b>(3). This directory is flushed on boot, and
+<a href="https://man.page/3/shm_open">shm_open(3)</a>. This directory is flushed on boot, and
 is a &quot;tmpfs&quot; file system. Since all users have
 write access to this directory, special care should be taken
 to avoid name clashes and vulnerabilities. For normal users,
@@ -459,7 +459,7 @@ security-sensitive name clashes.</font></p>
 kernel file system exposing the process list and other
 functionality. This file system is mostly an API to
 interface with the kernel and not a place where normal files
-may be stored. For details, see <b>proc</b>(5). A number of
+may be stored. For details, see <a href="https://man.page/5/proc">proc(5)</a>. A number of
 special purpose virtual file systems might be mounted below
 this directory.</font></p>
 
@@ -677,7 +677,7 @@ is OK on special-purpose installations or systems where all
 software that may be installed is known and doesn't require
 such functionality. See the discussion of
 <b>nosuid</b>/<b>nodev</b>/<b>noexec</b> in <b>mount</b>(8)
-and <b>PROT_EXEC</b> in <b>mmap</b>(2).</font></p>
+and <b>PROT_EXEC</b> in <a href="https://man.page/2/mmap">mmap(2)</a>.</font></p>
 
 <h2>NODE TYPES
 <a name="NODE TYPES"></a>
@@ -784,10 +784,10 @@ package variable file locations</b></font></p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
-<b>hier</b>(7), <b>systemd-path</b>(1),
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/7/hier">hier(7)</a>, <a href="https://man.page/1/systemd-path">systemd-path(1)</a>,
 <b>systemd-gpt-auto-generator</b>(8), <b>sysctl.d</b>(5),
-<b>tmpfiles.d</b>(5), <b>pkg-config</b>(1),
+<b>tmpfiles.d</b>(5), <a href="https://man.page/1/pkg-config">pkg-config(1)</a>,
 <b>systemd.unit</b>(5)</font></p>
 
 <h2>NOTES

@@ -103,7 +103,7 @@ speed_t</b> <i>speed</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>cfsetspeed</b>(),
@@ -140,7 +140,7 @@ may be assigned to these fields are described below. In the
 case of the first four bit-mask fields, the definitions of
 some of the associated flags that may be set are exposed
 only if a specific feature test macro (see
-<b>feature_test_macros</b>(7)) is defined, as noted in
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>) is defined, as noted in
 brackets (&quot;[]&quot;).</p>
 
 <p style="margin-left:11%; margin-top: 1em">In the
@@ -881,7 +881,7 @@ terminal.</p> </td></tr>
 
 <p>(not in POSIX; not supported under Linux) All characters
 in the input queue are reprinted when the next character is
-read. (<b>bash</b>(1) handles typeahead this way.) [requires
+read. (<a href="https://man.page/1/bash">bash(1)</a> handles typeahead this way.) [requires
 <b>_BSD_SOURCE</b> or <b>_SVID_SOURCE</b>]</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -942,7 +942,7 @@ passed as input.</p></td></tr>
 precisely: this character causes the pending tty buffer to
 be sent to the waiting user program without waiting for
 end-of-line. If it is the first character of the line, the
-<b>read</b>(2) in the user program returns 0, which
+<a href="https://man.page/2/read">read(2)</a> in the user program returns 0, which
 signifies end-of-file. Recognized when <b>ICANON</b> is set,
 and then not passed as input.</p></td></tr>
 <tr valign="top" align="left">
@@ -1219,7 +1219,7 @@ mode:</p>
 available when one of the line delimiters is typed (NL, EOL,
 EOL2; or EOF at the start of line). Except in the case of
 EOF, the line delimiter is included in the buffer returned
-by <b>read</b>(2).</p></td></tr>
+by <a href="https://man.page/2/read">read(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1232,11 +1232,11 @@ by <b>read</b>(2).</p></td></tr>
 
 <p>Line editing is enabled (ERASE, KILL; and if the
 <b>IEXTEN</b> flag is set: WERASE, REPRINT, LNEXT). A
-<b>read</b>(2) returns at most one line of input; if the
-<b>read</b>(2) requested fewer bytes than are available in
+<a href="https://man.page/2/read">read(2)</a> returns at most one line of input; if the
+<a href="https://man.page/2/read">read(2)</a> requested fewer bytes than are available in
 the current line of input, then only as many bytes as
 requested are read, and the remaining characters will be
-available for a future <b>read</b>(2).</p></td></tr>
+available for a future <a href="https://man.page/2/read">read(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1265,19 +1265,19 @@ will only accept 4095 chars; this provides the necessary
 space for a newline char if the input mode is switched to
 canonical. The settings of MIN (<i>c_cc[VMIN]</i>) and TIME
 (<i>c_cc[VTIME]</i>) determine the circumstances in which a
-<b>read</b>(2) completes; there are four distinct cases:
+<a href="https://man.page/2/read">read(2)</a> completes; there are four distinct cases:
 <br>
 MIN == 0, TIME == 0 (polling read)</p>
 
 <p style="margin-left:22%;">If data is available,
-<b>read</b>(2) returns immediately, with the lesser of the
+<a href="https://man.page/2/read">read(2)</a> returns immediately, with the lesser of the
 number of bytes available, or the number of bytes requested.
-If no data is available, <b>read</b>(2) returns 0.</p>
+If no data is available, <a href="https://man.page/2/read">read(2)</a> returns 0.</p>
 
 <p style="margin-left:11%;">MIN &gt; 0, TIME == 0 (blocking
 read)</p>
 
-<p style="margin-left:22%;"><b>read</b>(2) blocks until MIN
+<p style="margin-left:22%;"><a href="https://man.page/2/read">read(2)</a> blocks until MIN
 bytes are available, and returns up to the number of bytes
 requested.</p>
 
@@ -1286,11 +1286,11 @@ with timeout)</p>
 
 <p style="margin-left:22%;">TIME specifies the limit for a
 timer in tenths of a second. The timer is started when
-<b>read</b>(2) is called. <b>read</b>(2) returns either when
+<a href="https://man.page/2/read">read(2)</a> is called. <a href="https://man.page/2/read">read(2)</a> returns either when
 at least one byte of data is available, or when the timer
 expires. If the timer expires without any input becoming
-available, <b>read</b>(2) returns 0. If data is already
-available at the time of the call to <b>read</b>(2), the
+available, <a href="https://man.page/2/read">read(2)</a> returns 0. If data is already
+available at the time of the call to <a href="https://man.page/2/read">read(2)</a>, the
 call behaves as though the data was received immediately
 after the call.</p>
 
@@ -1300,7 +1300,7 @@ with interbyte timeout)</p>
 <p style="margin-left:22%;">TIME specifies the limit for a
 timer in tenths of a second. Once an initial byte of input
 becomes available, the timer is restarted after each further
-byte is received. <b>read</b>(2) returns when any of the
+byte is received. <a href="https://man.page/2/read">read(2)</a> returns when any of the
 following conditions is met:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -1337,26 +1337,26 @@ following conditions is met:</p>
 <td width="74%">
 
 
-<p>The number of bytes requested by <b>read</b>(2) has been
+<p>The number of bytes requested by <a href="https://man.page/2/read">read(2)</a> has been
 received. (POSIX does not specify this termination
-condition, and on some other implementations <b>read</b>(2)
+condition, and on some other implementations <a href="https://man.page/2/read">read(2)</a>
 does not return in this case.)</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">Because the
 timer is started only after the initial byte becomes
 available, at least one byte will be read. If data is
-already available at the time of the call to <b>read</b>(2),
+already available at the time of the call to <a href="https://man.page/2/read">read(2)</a>,
 the call behaves as though the data was received immediately
 after the call.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX does not
 specify whether the setting of the <b>O_NONBLOCK</b> file
 status flag takes precedence over the MIN and TIME settings.
-If <b>O_NONBLOCK</b> is set, a <b>read</b>(2) in
+If <b>O_NONBLOCK</b> is set, a <a href="https://man.page/2/read">read(2)</a> in
 noncanonical mode may return immediately, regardless of the
 setting of MIN or TIME. Furthermore, if no data is
-available, POSIX permits a <b>read</b>(2) in noncanonical
+available, POSIX permits a <a href="https://man.page/2/read">read(2)</a> in noncanonical
 mode to return either 0, or -1 with <i>errno</i> set to
 <b>EAGAIN</b>.</p>
 
@@ -1711,7 +1711,7 @@ performed successfully.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3337011.png" alt="Image grohtml-3337011.png"></p>
@@ -1773,10 +1773,10 @@ of the <b>TABDLY</b> mask).</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>reset</b>(1),
-<b>setterm</b>(1), <b>stty</b>(1), <b>tput</b>(1),
-<b>tset</b>(1), <b>tty</b>(1), <b>ioctl_console</b>(2),
-<b>ioctl_tty</b>(2), <b>setserial</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/reset">reset(1)</a>,
+<a href="https://man.page/1/setterm">setterm(1)</a>, <a href="https://man.page/1/stty">stty(1)</a>, <a href="https://man.page/1/tput">tput(1)</a>,
+<a href="https://man.page/1/tset">tset(1)</a>, <a href="https://man.page/1/tty">tty(1)</a>, <a href="https://man.page/2/ioctl_console">ioctl_console(2)</a>,
+<a href="https://man.page/2/ioctl_tty">ioctl_tty(2)</a>, <b>setserial</b>(8)</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

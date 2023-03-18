@@ -114,9 +114,9 @@ specified as 0.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Higher-level
 interfaces layered on top of the above operations are
-provided in the <b>libcap</b>(3) library in the form of
-<b>cap_get_ambient</b>(3), <b>cap_set_ambient</b>(3), and
-<b>cap_reset_ambient</b>(3).</p>
+provided in the <a href="https://man.page/3/libcap">libcap(3)</a> library in the form of
+<a href="https://man.page/3/cap_get_ambient">cap_get_ambient(3)</a>, <a href="https://man.page/3/cap_set_ambient">cap_set_ambient(3)</a>, and
+<a href="https://man.page/3/cap_reset_ambient">cap_reset_ambient(3)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_CAPBSET_READ</b> (since
 Linux 2.6.25)</p>
@@ -128,7 +128,7 @@ is not. (The capability constants are defined in
 <i>&lt;linux/capability.h&gt;</i>.) The capability bounding
 set dictates whether the process can receive the capability
 through a file&rsquo;s permitted capability set on a
-subsequent call to <b>execve</b>(2).</p>
+subsequent call to <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If the
 capability specified in <i>arg2</i> is not valid, then the
@@ -136,8 +136,8 @@ call fails with the error <b>EINVAL</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A higher-level
 interface layered on top of this operation is provided in
-the <b>libcap</b>(3) library in the form of
-<b>cap_get_bound</b>(3).</p>
+the <a href="https://man.page/3/libcap">libcap(3)</a> library in the form of
+<a href="https://man.page/3/cap_get_bound">cap_get_bound(3)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_CAPBSET_DROP</b> (since
 Linux 2.6.25)</p>
@@ -158,8 +158,8 @@ case bounding sets are not supported.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A higher-level
 interface layered on top of this operation is provided in
-the <b>libcap</b>(3) library in the form of
-<b>cap_drop_bound</b>(3).</p>
+the <a href="https://man.page/3/libcap">libcap(3)</a> library in the form of
+<a href="https://man.page/3/cap_drop_bound">cap_drop_bound(3)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_SET_CHILD_SUBREAPER</b>
 (since Linux 3.4)</p>
@@ -169,21 +169,21 @@ the &quot;child subreaper&quot; attribute of the calling
 process; if <i>arg2</i> is zero, unset the attribute.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A subreaper
-fulfills the role of <b>init</b>(1) for its descendant
+fulfills the role of <a href="https://man.page/1/init">init(1)</a> for its descendant
 processes. When a process becomes orphaned (i.e., its
 immediate parent terminates), then that process will be
 reparented to the nearest still living ancestor subreaper.
-Subsequently, calls to <b>getppid</b>(2) in the orphaned
+Subsequently, calls to <a href="https://man.page/2/getppid">getppid(2)</a> in the orphaned
 process will now return the PID of the subreaper process,
 and when the orphan terminates, it is the subreaper process
 that will receive a <b>SIGCHLD</b> signal and will be able
-to <b>wait</b>(2) on the process to discover its termination
+to <a href="https://man.page/2/wait">wait(2)</a> on the process to discover its termination
 status.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The setting of
 the &quot;child subreaper&quot; attribute is not inherited
-by children created by <b>fork</b>(2) and <b>clone</b>(2).
-The setting is preserved across <b>execve</b>(2).</p>
+by children created by <a href="https://man.page/2/fork">fork(2)</a> and <a href="https://man.page/2/clone">clone(2)</a>.
+The setting is preserved across <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Establishing a
 subreaper process is useful in session management frameworks
@@ -191,8 +191,8 @@ where a hierarchical group of processes is managed by a
 subreaper process that needs to be informed when one of the
 processes&mdash;for example, a double-forked
 daemon&mdash;terminates (perhaps so that it can restart that
-process). Some <b>init</b>(1) frameworks (e.g.,
-<b>systemd</b>(1)) employ a subreaper process for similar
+process). Some <a href="https://man.page/1/init">init(1)</a> frameworks (e.g.,
+<a href="https://man.page/1/systemd">systemd(1)</a>) employ a subreaper process for similar
 reasons.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_CHILD_SUBREAPER</b>
@@ -219,7 +219,7 @@ kernels 2.6.13 and 2.6.17, the value 2 was also permitted,
 which caused any binary which normally would not be dumped
 to be dumped readable by root only; for security reasons,
 this feature has been removed. (See also the description of
-<i>/proc/sys/fs/ suid_dumpable</i> in <b>proc</b>(5).)</p>
+<i>/proc/sys/fs/ suid_dumpable</i> in <a href="https://man.page/5/proc">proc(5)</a>.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">Normally, the
 &quot;dumpable&quot; attribute is set to 1. However, it is
@@ -252,7 +252,7 @@ changed.</p> </td></tr>
 
 
 <p>The process&rsquo;s filesystem user or group ID is
-changed (see <b>credentials</b>(7)).</p></td></tr>
+changed (see <a href="https://man.page/7/credentials">credentials(7)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
 <td width="1%">
@@ -263,7 +263,7 @@ changed (see <b>credentials</b>(7)).</p></td></tr>
 <td width="74%">
 
 
-<p>The process executes (<b>execve</b>(2)) a set-user-ID or
+<p>The process executes (<a href="https://man.page/2/execve">execve(2)</a>) a set-user-ID or
 set-group-ID program, resulting in a change of either the
 effective user ID or the effective group ID.</p></td></tr>
 <tr valign="top" align="left">
@@ -276,21 +276,21 @@ effective user ID or the effective group ID.</p></td></tr>
 <td width="74%">
 
 
-<p>The process executes (<b>execve</b>(2)) a program that
-has file capabilities (see <b>capabilities</b>(7)), but only
+<p>The process executes (<a href="https://man.page/2/execve">execve(2)</a>) a program that
+has file capabilities (see <a href="https://man.page/7/capabilities">capabilities(7)</a>), but only
 if the permitted capabilities gained exceed those already
 permitted for the process.</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">Processes that
-are not dumpable can not be attached via <b>ptrace</b>(2)
-<b>PTRACE_ATTACH</b>; see <b>ptrace</b>(2) for further
+are not dumpable can not be attached via <a href="https://man.page/2/ptrace">ptrace(2)</a>
+<b>PTRACE_ATTACH</b>; see <a href="https://man.page/2/ptrace">ptrace(2)</a> for further
 details.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If a process is
 not dumpable, the ownership of files in the process&rsquo;s
 <i>/proc/[pid]</i> directory is affected as described in
-<b>proc</b>(5).</p>
+<a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_DUMPABLE</b> (since
 Linux 2.3.20)</p>
@@ -477,7 +477,7 @@ capability.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The IO_FLUSHER
 state is inherited by a child process created via
-<b>fork</b>(2) and is preserved across <b>execve</b>(2).</p>
+<a href="https://man.page/2/fork">fork(2)</a> and is preserved across <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Examples of
 IO_FLUSHER applications are FUSE daemons, SCSI device
@@ -504,17 +504,17 @@ Linux 2.2.18)</p>
 
 <p style="margin-left:22%;">Set the state of the calling
 thread&rsquo;s &quot;keep capabilities&quot; flag. The
-effect of this flag is described in <b>capabilities</b>(7).
+effect of this flag is described in <a href="https://man.page/7/capabilities">capabilities(7)</a>.
 <i>arg2</i> must be either 0 (clear the flag) or 1 (set the
 flag). The &quot;keep capabilities&quot; value will be reset
-to 0 on subsequent calls to <b>execve</b>(2).</p>
+to 0 on subsequent calls to <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_KEEPCAPS</b> (since
 Linux 2.2.18)</p>
 
 <p style="margin-left:22%;">Return (as the function result)
 the current state of the calling thread&rsquo;s &quot;keep
-capabilities&quot; flag. See <b>capabilities</b>(7) for a
+capabilities&quot; flag. See <a href="https://man.page/7/capabilities">capabilities(7)</a> for a
 description of this flag.</p>
 
 <p style="margin-left:11%;"><b>PR_MCE_KILL</b> (since Linux
@@ -526,7 +526,7 @@ corruption kill policy for the calling thread. If
 memory corruption kill policy and use the system-wide
 default. (The system-wide default is defined by
 <i>/proc/sys/vm/memory_failure_early_kill</i>; see
-<b>proc</b>(5).) If <i>arg2</i> is <b>PR_MCE_KILL_SET</b>,
+<a href="https://man.page/5/proc">proc(5)</a>.) If <i>arg2</i> is <b>PR_MCE_KILL_SET</b>,
 use a thread-specific memory corruption kill policy. In this
 case, <i>arg3</i> defines whether the policy is <i>early
 kill</i> (<b>PR_MCE_KILL_EARLY</b>), <i>late kill</i>
@@ -535,7 +535,7 @@ kill</i> (<b>PR_MCE_KILL_EARLY</b>), <i>late kill</i>
 thread receives a <b>SIGBUS</b> signal as soon as hardware
 memory corruption is detected inside its address space. In
 late kill mode, the process is killed only when it accesses
-a corrupted page. See <b>sigaction</b>(2) for more
+a corrupted page. See <a href="https://man.page/2/sigaction">sigaction(2)</a> for more
 information on the <b>SIGBUS</b> signal. The policy is
 inherited by children. The remaining unused <b>prctl</b>()
 arguments must be zero for future compatibility.</p>
@@ -574,7 +574,7 @@ PR_SET_MM_START_CODE</b></p>
 <p style="margin-left:32%;">Set the address above which the
 program text can run. The corresponding memory area must be
 readable and executable, but not writable or shareable (see
-<b>mprotect</b>(2) and <b>mmap</b>(2) for more
+<a href="https://man.page/2/mprotect">mprotect(2)</a> and <a href="https://man.page/2/mmap">mmap(2)</a> for more
 information).</p>
 
 <p style="margin-left:22%;"><b>PR_SET_MM_END_CODE</b></p>
@@ -608,16 +608,16 @@ writable.</p>
 <p style="margin-left:22%;"><b>PR_SET_MM_START_BRK</b></p>
 
 <p style="margin-left:32%;">Set the address above which the
-program heap can be expanded with <b>brk</b>(2) call. The
+program heap can be expanded with <a href="https://man.page/2/brk">brk(2)</a> call. The
 address must be greater than the ending address of the
 current program data segment. In addition, the combined size
 of the resulting heap and the size of the data segment
 can&rsquo;t exceed the <b>RLIMIT_DATA</b> resource limit
-(see <b>setrlimit</b>(2)).</p>
+(see <a href="https://man.page/2/setrlimit">setrlimit(2)</a>).</p>
 
 <p style="margin-left:22%;"><b>PR_SET_MM_BRK</b></p>
 
-<p style="margin-left:32%;">Set the current <b>brk</b>(2)
+<p style="margin-left:32%;">Set the current <a href="https://man.page/2/brk">brk(2)</a>
 value. The requirements for the address are the same as for
 the <b>PR_SET_MM_START_BRK</b> option.</p>
 
@@ -650,7 +650,7 @@ passed with <b>PR_SET_MM_ARG_START</b>,
 area. Thus, the corresponding memory area must be readable,
 writable, and (depending on the kernel configuration) have
 the <b>MAP_GROWSDOWN</b> attribute set (see
-<b>mmap</b>(2)).</p>
+<a href="https://man.page/2/mmap">mmap(2)</a>).</p>
 
 <p style="margin-left:22%;"><b>PR_SET_MM_AUXV</b></p>
 
@@ -664,7 +664,7 @@ vector. The <i>arg4</i> is the size of the vector.</p>
 <i>/proc/pid/exe</i> symbolic link with a new one pointing
 to a new executable file identified by the file descriptor
 provided in <i>arg3</i> argument. The file descriptor should
-be obtained with a regular <b>open</b>(2) call.</p>
+be obtained with a regular <a href="https://man.page/2/open">open(2)</a> call.</p>
 
 <p style="margin-left:32%; margin-top: 1em">To change the
 symbolic link, one needs to unmap all existing executable
@@ -763,8 +763,8 @@ enabled.</p>
 a process are affected by these calls.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The child of a
-<b>fork</b>(2) inherits the state of MPX management. During
-<b>execve</b>(2), MPX management is reset to a state as if
+<a href="https://man.page/2/fork">fork(2)</a> inherits the state of MPX management. During
+<a href="https://man.page/2/execve">execve(2)</a>, MPX management is reset to a state as if
 <b>PR_MPX_DISABLE_MANAGEMENT</b> had been called.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For further
@@ -785,12 +785,12 @@ thread, using the value in the location pointed to by
 long, including the terminating null byte. (If the length of
 the string, including the terminating null byte, exceeds 16
 bytes, the string is silently truncated.) This is the same
-attribute that can be set via <b>pthread_setname_np</b>(3)
-and retrieved using <b>pthread_getname_np</b>(3). The
+attribute that can be set via <a href="https://man.page/3/pthread_setname_np">pthread_setname_np(3)</a>
+and retrieved using <a href="https://man.page/3/pthread_getname_np">pthread_getname_np(3)</a>. The
 attribute is likewise accessible via
-<i>/proc/self/task/[tid]/comm</i> (see <b>proc</b>(5)),
+<i>/proc/self/task/[tid]/comm</i> (see <a href="https://man.page/5/proc">proc(5)</a>),
 where <i>[tid]</i> is the thread ID of the calling thread,
-as returned by <b>gettid</b>(2).</p>
+as returned by <a href="https://man.page/2/gettid">gettid(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_NAME</b> (since Linux
 2.6.11)</p>
@@ -805,15 +805,15 @@ the returned string will be null-terminated.</p>
 
 <p style="margin-left:22%;">Set the calling thread&rsquo;s
 <i>no_new_privs</i> attribute to the value in <i>arg2</i>.
-With <i>no_new_privs</i> set to 1, <b>execve</b>(2) promises
+With <i>no_new_privs</i> set to 1, <a href="https://man.page/2/execve">execve(2)</a> promises
 not to grant privileges to do anything that could not have
-been done without the <b>execve</b>(2) call (for example,
+been done without the <a href="https://man.page/2/execve">execve(2)</a> call (for example,
 rendering the set-user-ID and set-group-ID mode bits, and
 file capabilities non-functional). Once set, the
 <i>no_new_privs</i> attribute cannot be unset. The setting
 of this attribute is inherited by children created by
-<b>fork</b>(2) and <b>clone</b>(2), and preserved across
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/fork">fork(2)</a> and <a href="https://man.page/2/clone">clone(2)</a>, and preserved across
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Since Linux
 4.10, the value of a thread&rsquo;s <i>no_new_privs</i>
@@ -824,7 +824,7 @@ the <i>/proc/[pid]/status</i> file.</p>
 information, see the kernel source file
 <i>Documentation/userspace-api/no_new_privs.rst</i> (or
 <i>Documentation/prctl/no_new_privs.txt</i> before Linux
-4.13). See also <b>seccomp</b>(2).</p>
+4.13). See also <a href="https://man.page/2/seccomp">seccomp(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_NO_NEW_PRIVS</b>
 (since Linux 3.5)</p>
@@ -832,8 +832,8 @@ information, see the kernel source file
 <p style="margin-left:22%;">Return (as the function result)
 the value of the <i>no_new_privs</i> attribute for the
 calling thread. A value of 0 indicates the regular
-<b>execve</b>(2) behavior. A value of 1 indicates
-<b>execve</b>(2) will operate in the privilege-restricting
+<a href="https://man.page/2/execve">execve(2)</a> behavior. A value of 1 indicates
+<a href="https://man.page/2/execve">execve(2)</a> will operate in the privilege-restricting
 mode described above.</p>
 
 <p style="margin-left:11%;"><b>PR_PAC_RESET_KEYS</b> (since
@@ -878,7 +878,7 @@ Since new keys could be added in future, this is the
 recommended way to completely wipe the existing keys when
 establishing a clean execution context. Note that there is
 no need to use <b>PR_PAC_RESET_KEYS</b> in preparation for
-calling <b>execve</b>(2), since <b>execve</b>(2) resets all
+calling <a href="https://man.page/2/execve">execve(2)</a>, since <a href="https://man.page/2/execve">execve(2)</a> resets all
 the pointer authentication keys.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The remaining
@@ -920,7 +920,7 @@ dies.</p>
 the &quot;parent&quot; in this case is considered to be the
 <i>thread</i> that created this process. In other words, the
 signal will be sent when that thread terminates (via, for
-example, <b>pthread_exit</b>(3)), rather than after all of
+example, <a href="https://man.page/3/pthread_exit">pthread_exit(3)</a>), rather than after all of
 the threads in the parent process terminate.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
@@ -935,19 +935,19 @@ signal is sent to the caller.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
 parent-death signal is process-directed (see
-<b>signal</b>(7)) and, if the child installs a handler using
-the <b>sigaction</b>(2) <b>SA_SIGINFO</b> flag, the
+<a href="https://man.page/7/signal">signal(7)</a>) and, if the child installs a handler using
+the <a href="https://man.page/2/sigaction">sigaction(2)</a> <b>SA_SIGINFO</b> flag, the
 <i>si_pid</i> field of the <i>siginfo_t</i> argument of the
 handler contains the PID of the terminating parent
 process.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
 parent-death signal setting is cleared for the child of a
-<b>fork</b>(2). It is also (since Linux 2.4.36 / 2.6.23)
+<a href="https://man.page/2/fork">fork(2)</a>. It is also (since Linux 2.4.36 / 2.6.23)
 cleared when executing a set-user-ID or set-group-ID binary,
 or a binary that has associated capabilities (see
-<b>capabilities</b>(7)); otherwise, this value is preserved
-across <b>execve</b>(2). The parent-death signal setting is
+<a href="https://man.page/7/capabilities">capabilities(7)</a>); otherwise, this value is preserved
+across <a href="https://man.page/2/execve">execve(2)</a>. The parent-death signal setting is
 also cleared upon changes to any of the following thread
 credentials: effective user ID, effective group ID,
 filesystem user ID, or filesystem group ID.</p>
@@ -968,7 +968,7 @@ ptrace&quot;, visible via
 <i>/proc/sys/kernel/yama/ptrace_scope</i>). When a
 &quot;ptracer process ID&quot; is passed in <i>arg2</i>, the
 caller is declaring that the ptracer process can
-<b>ptrace</b>(2) the calling process as if it were a direct
+<a href="https://man.page/2/ptrace">ptrace(2)</a> the calling process as if it were a direct
 process ancestor. Each <b>PR_SET_PTRACER</b> operation
 replaces the previous &quot;ptracer process ID&quot;.
 Employing <b>PR_SET_PTRACER</b> with <i>arg2</i> set to 0
@@ -988,7 +988,7 @@ Linux 2.6.23)</p>
 
 <p style="margin-left:22%;">Set the secure computing
 (seccomp) mode for the calling thread, to limit the
-available system calls. The more recent <b>seccomp</b>(2)
+available system calls. The more recent <a href="https://man.page/2/seccomp">seccomp(2)</a>
 system call provides a superset of the functionality of
 <b>PR_SET_SECCOMP</b>.</p>
 
@@ -999,8 +999,8 @@ defined in <i>&lt;linux/seccomp.h&gt;</i>.)</p>
 <p style="margin-left:22%; margin-top: 1em">With
 <i>arg2</i> set to <b>SECCOMP_MODE_STRICT</b>, the only
 system calls that the thread is permitted to make are
-<b>read</b>(2), <b>write</b>(2), <b>_exit</b>(2) (but not
-<b>exit_group</b>(2)), and <b>sigreturn</b>(2). Other system
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/_exit">_exit(2)</a> (but not
+<a href="https://man.page/2/exit_group">exit_group(2)</a>), and <a href="https://man.page/2/sigreturn">sigreturn(2)</a>. Other system
 calls result in the delivery of a <b>SIGKILL</b> signal.
 Strict secure computing mode is useful for number-crunching
 applications that may need to execute untrusted byte code,
@@ -1018,10 +1018,10 @@ This mode is available only if the kernel is configured with
 <b>CONFIG_SECCOMP_FILTER</b> enabled.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If
-<b>SECCOMP_MODE_FILTER</b> filters permit <b>fork</b>(2),
+<b>SECCOMP_MODE_FILTER</b> filters permit <a href="https://man.page/2/fork">fork(2)</a>,
 then the seccomp mode is inherited by children created by
-<b>fork</b>(2); if <b>execve</b>(2) is permitted, then the
-seccomp mode is preserved across <b>execve</b>(2). If the
+<a href="https://man.page/2/fork">fork(2)</a>; if <a href="https://man.page/2/execve">execve(2)</a> is permitted, then the
+seccomp mode is preserved across <a href="https://man.page/2/execve">execve(2)</a>. If the
 filters permit <b>prctl</b>() calls, then additional filters
 can be added; they are run in order until the first
 non-allow result is seen.</p>
@@ -1051,21 +1051,21 @@ enabled.</p>
 3.8, the <i>Seccomp</i> field of the
 <i>/proc/[pid]/status</i> file provides a method of
 obtaining the same information, without the risk that the
-process is killed; see <b>proc</b>(5).</p>
+process is killed; see <a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_SET_SECUREBITS</b> (since
 Linux 2.6.26)</p>
 
 <p style="margin-left:22%;">Set the &quot;securebits&quot;
 flags of the calling thread to the value supplied in
-<i>arg2</i>. See <b>capabilities</b>(7).</p>
+<i>arg2</i>. See <a href="https://man.page/7/capabilities">capabilities(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_SECUREBITS</b> (since
 Linux 2.6.26)</p>
 
 <p style="margin-left:22%;">Return (as the function result)
 the &quot;securebits&quot; flags of the calling thread. See
-<b>capabilities</b>(7).</p>
+<a href="https://man.page/7/capabilities">capabilities(7)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_SPECULATION_CTRL</b>
 (since Linux 4.17)</p>
@@ -1103,7 +1103,7 @@ but cannot be undone.</p>
 (since Linux 5.1)</p>
 
 <p style="margin-left:32%;">Same as <b>PR_SPEC_DISABLE</b>,
-but the state will be cleared on <b>execve</b>(2).</p>
+but the state will be cleared on <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If all bits are
 0, then the CPU is not affected by the speculation
@@ -1169,7 +1169,7 @@ will fail with the error <b>EPERM</b>.</p>
 (since Linux 5.1)</p>
 
 <p style="margin-left:32%;">Same as <b>PR_SPEC_DISABLE</b>,
-but the state will be cleared on <b>execve</b>(2). Currently
+but the state will be cleared on <a href="https://man.page/2/execve">execve(2)</a>. Currently
 only supported for <i>arg2</i> equal to
 <b>PR_SPEC_STORE_BYPASS.</b></p>
 
@@ -1225,7 +1225,7 @@ following combinations of flags:</p>
 
 
 <p>Perform the change immediately. At the next
-<b>execve</b>(2) in the thread, the vector length will be
+<a href="https://man.page/2/execve">execve(2)</a> in the thread, the vector length will be
 reset to the value configured in
 <i>/proc/sys/abi/sve_default_vector_length</i>.</p> </td></tr>
 </table>
@@ -1233,15 +1233,15 @@ reset to the value configured in
 <p style="margin-left:22%;"><b>PR_SVE_VL_INHERIT</b></p>
 
 <p style="margin-left:32%;">Perform the change immediately.
-Subsequent <b>execve</b>(2) calls will preserve the new
+Subsequent <a href="https://man.page/2/execve">execve(2)</a> calls will preserve the new
 vector length.</p>
 
 
 <p style="margin-left:22%;"><b>PR_SVE_SET_VL_ONEXEC</b></p>
 
 <p style="margin-left:32%;">Defer the change, so that it is
-performed at the next <b>execve</b>(2) in the thread.
-Further <b>execve</b>(2) calls will reset the vector length
+performed at the next <a href="https://man.page/2/execve">execve(2)</a> in the thread.
+Further <a href="https://man.page/2/execve">execve(2)</a> calls will reset the vector length
 to the value configured in
 <i>/proc/sys/abi/sve_default_vector_length</i>.</p>
 
@@ -1249,8 +1249,8 @@ to the value configured in
 PR_SVE_VL_INHERIT</b></p>
 
 <p style="margin-left:32%;">Defer the change, so that it is
-performed at the next <b>execve</b>(2) in the thread.
-Further <b>execve</b>(2) calls will preserve the new vector
+performed at the next <a href="https://man.page/2/execve">execve(2)</a> in the thread.
+Further <a href="https://man.page/2/execve">execve(2)</a> calls will preserve the new vector
 length.</p>
 
 <p style="margin-left:22%; margin-top: 1em">In all cases,
@@ -1279,7 +1279,7 @@ the return value corresponding to
 
 <p style="margin-left:22%; margin-top: 1em">The
 configuration (including any pending deferred change) is
-inherited across <b>fork</b>(2) and <b>clone</b>(2).</p>
+inherited across <a href="https://man.page/2/fork">fork(2)</a> and <a href="https://man.page/2/clone">clone(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">For more
 information, see the kernel source file
@@ -1311,7 +1311,7 @@ succeeds, returning a nonnegative value that describes the
 <b>PR_SVE_VL_LEN_MASK</b> contain the currently configured
 vector length in bytes. The bit corresponding to
 <b>PR_SVE_VL_INHERIT</b> indicates whether the vector length
-will be inherited across <b>execve</b>(2).</p>
+will be inherited across <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Note that there
 is no way to determine whether there is a pending vector
@@ -1389,9 +1389,9 @@ must always be untagged:</p>
 <td width="75%">
 
 
-<p><b>brk</b>(2), <b>mmap</b>(2), <b>shmat</b>(2),
-<b>shmdt</b>(2), and the <i>new_address</i> argument of
-<b>mremap</b>(2).</p> </td></tr>
+<p><a href="https://man.page/2/brk">brk(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/shmat">shmat(2)</a>,
+<a href="https://man.page/2/shmdt">shmdt(2)</a>, and the <i>new_address</i> argument of
+<a href="https://man.page/2/mremap">mremap(2)</a>.</p> </td></tr>
 </table>
 
 <p style="margin-left:25%; margin-top: 1em">(Prior to Linux
@@ -1413,9 +1413,9 @@ not be what you expect. Don&rsquo;t rely on it.)</p>
 <p style="margin-top: 1em">&rsquo;polymorphic&rsquo;
 interfaces that accept pointers to arbitrary types cast to a
 <i>void *</i> or other generic type, specifically
-<b>prctl</b>(), <b>ioctl</b>(2), and in general
-<b>setsockopt</b>(2) (only certain specific
-<b>setsockopt</b>(2) options allow tagged addresses).</p></td></tr>
+<b>prctl</b>(), <a href="https://man.page/2/ioctl">ioctl(2)</a>, and in general
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> (only certain specific
+<a href="https://man.page/2/setsockopt">setsockopt(2)</a> options allow tagged addresses).</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">This list of
@@ -1426,8 +1426,8 @@ purposes of new software the effect of passing tagged
 addresses to these interfaces is unspecified.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The mode set by
-this call is inherited across <b>fork</b>(2) and
-<b>clone</b>(2). The mode is reset by <b>execve</b>(2) to 0
+this call is inherited across <a href="https://man.page/2/fork">fork(2)</a> and
+<a href="https://man.page/2/clone">clone(2)</a>. The mode is reset by <a href="https://man.page/2/execve">execve(2)</a> to 0
 (i.e., tagged addresses not permitted in the user/kernel
 ABI).</p>
 
@@ -1508,11 +1508,11 @@ disable&quot; flag for the calling thread. If <i>arg2</i>
 has a nonzero value, the flag is set, otherwise it is
 cleared. Setting this flag provides a method for disabling
 transparent huge pages for jobs where the code cannot be
-modified, and using a malloc hook with <b>madvise</b>(2) is
+modified, and using a malloc hook with <a href="https://man.page/2/madvise">madvise(2)</a> is
 not an option (i.e., statically allocated data). The setting
 of the &quot;THP disable&quot; flag is inherited by a child
-created via <b>fork</b>(2) and is preserved across
-<b>execve</b>(2).</p>
+created via <a href="https://man.page/2/fork">fork(2)</a> and is preserved across
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_THP_DISABLE</b>
 (since Linux 3.15)</p>
@@ -1527,7 +1527,7 @@ it is not.</p>
 
 <p style="margin-left:22%;">Return the
 <i>clear_child_tid</i> address set by
-<b>set_tid_address</b>(2) and the <b>clone</b>(2)
+<a href="https://man.page/2/set_tid_address">set_tid_address(2)</a> and the <a href="https://man.page/2/clone">clone(2)</a>
 <b>CLONE_CHILD_CLEARTID</b> flag, in the location pointed to
 by <i>(int&nbsp;**)&nbsp;arg2</i>. This feature is available
 only if the kernel is built with the
@@ -1565,20 +1565,20 @@ by minimizing CPU wake-ups.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The timer
 expirations affected by timer slack are those set by
-<b>select</b>(2), <b>pselect</b>(2), <b>poll</b>(2),
-<b>ppoll</b>(2), <b>epoll_wait</b>(2),
-<b>epoll_pwait</b>(2), <b>clock_nanosleep</b>(2),
-<b>nanosleep</b>(2), and <b>futex</b>(2) (and thus the
+<a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/pselect">pselect(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>,
+<a href="https://man.page/2/ppoll">ppoll(2)</a>, <a href="https://man.page/2/epoll_wait">epoll_wait(2)</a>,
+<a href="https://man.page/2/epoll_pwait">epoll_pwait(2)</a>, <a href="https://man.page/2/clock_nanosleep">clock_nanosleep(2)</a>,
+<a href="https://man.page/2/nanosleep">nanosleep(2)</a>, and <a href="https://man.page/2/futex">futex(2)</a> (and thus the
 library functions implemented via futexes, including
-<b>pthread_cond_timedwait</b>(3),
-<b>pthread_mutex_timedlock</b>(3),
-<b>pthread_rwlock_timedrdlock</b>(3),
-<b>pthread_rwlock_timedwrlock</b>(3), and
-<b>sem_timedwait</b>(3)).</p>
+<a href="https://man.page/3/pthread_cond_timedwait">pthread_cond_timedwait(3)</a>,
+<a href="https://man.page/3/pthread_mutex_timedlock">pthread_mutex_timedlock(3)</a>,
+<a href="https://man.page/3/pthread_rwlock_timedrdlock">pthread_rwlock_timedrdlock(3)</a>,
+<a href="https://man.page/3/pthread_rwlock_timedwrlock">pthread_rwlock_timedwrlock(3)</a>, and
+<a href="https://man.page/3/sem_timedwait">sem_timedwait(3)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">Timer slack is
 not applied to threads that are scheduled under a real-time
-scheduling policy (see <b>sched_setscheduler</b>(2)).</p>
+scheduling policy (see <a href="https://man.page/2/sched_setscheduler">sched_setscheduler(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">When a new
 thread is created, the two timer slack values are made the
@@ -1589,13 +1589,13 @@ thread. Thereafter, a thread can adjust its
 can&rsquo;t be changed. The timer slack values of
 <i>init</i> (PID 1), the ancestor of all processes, are
 50,000 nanoseconds (50 microseconds). The timer slack value
-is inherited by a child created via <b>fork</b>(2), and is
-preserved across <b>execve</b>(2).</p>
+is inherited by a child created via <a href="https://man.page/2/fork">fork(2)</a>, and is
+preserved across <a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Since Linux
 4.6, the &quot;current&quot; timer slack value of any
 process can be examined and changed via the file
-<i>/proc/[pid]/timerslack_ns</i>. See <b>proc</b>(5).</p>
+<i>/proc/[pid]/timerslack_ns</i>. See <a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 <p style="margin-left:11%;"><b>PR_GET_TIMERSLACK</b> (since
 Linux 2.6.28)</p>
@@ -2157,7 +2157,7 @@ unsupported value.</p>
 caller does not have the <b>CAP_SETPCAP</b> capability, or
 tried to unset a &quot;locked&quot; flag, or tried to set a
 flag whose corresponding locked flag was set (see
-<b>capabilities</b>(7)).</p> </td></tr>
+<a href="https://man.page/7/capabilities">capabilities(7)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -2184,7 +2184,7 @@ again.</p> </td></tr>
 
 <p><i>option</i> is <b>PR_SET_KEEPCAPS</b>, and the
 caller&rsquo;s <b>SECBIT_KEEP_CAPS_LOCKED</b> flag is set
-(see <b>capabilities</b>(7)).</p></td></tr>
+(see <a href="https://man.page/7/capabilities">capabilities(7)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -2276,8 +2276,8 @@ get or set the maximum stack size, and so on.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>signal</b>(2),
-<b>core</b>(5)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/signal">signal(2)</a>,
+<a href="https://man.page/5/core">core(5)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

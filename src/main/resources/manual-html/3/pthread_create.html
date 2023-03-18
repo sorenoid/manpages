@@ -87,9 +87,9 @@ terminates in one of the following ways:</p>
 <td width="86%">
 
 
-<p>It calls <b>pthread_exit</b>(3), specifying an exit
+<p>It calls <a href="https://man.page/3/pthread_exit">pthread_exit(3)</a>, specifying an exit
 status value that is available to another thread in the same
-process that calls <b>pthread_join</b>(3).</p></td></tr>
+process that calls <a href="https://man.page/3/pthread_join">pthread_join(3)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -101,7 +101,7 @@ process that calls <b>pthread_join</b>(3).</p></td></tr>
 
 
 <p>It returns from <i>start_routine</i>(). This is
-equivalent to calling <b>pthread_exit</b>(3) with the value
+equivalent to calling <a href="https://man.page/3/pthread_exit">pthread_exit(3)</a> with the value
 supplied in the <i>return</i> statement.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -113,7 +113,7 @@ supplied in the <i>return</i> statement.</p></td></tr>
 <td width="86%">
 
 
-<p>It is canceled (see <b>pthread_cancel</b>(3)).</p></td></tr>
+<p>It is canceled (see <a href="https://man.page/3/pthread_cancel">pthread_cancel(3)</a>).</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -124,7 +124,7 @@ supplied in the <i>return</i> statement.</p></td></tr>
 <td width="86%">
 
 
-<p>Any of the threads in the process calls <b>exit</b>(3),
+<p>Any of the threads in the process calls <a href="https://man.page/3/exit">exit(3)</a>,
 or the main thread performs a return from <i>main</i>().
 This causes the termination of all threads in the
 process.</p> </td></tr>
@@ -134,7 +134,7 @@ process.</p> </td></tr>
 argument points to a <i>pthread_attr_t</i> structure whose
 contents are used at thread creation time to determine
 attributes for the new thread; this structure is initialized
-using <b>pthread_attr_init</b>(3) and related functions. If
+using <a href="https://man.page/3/pthread_attr_init">pthread_attr_init(3)</a> and related functions. If
 <i>attr</i> is NULL, then the thread is created with default
 attributes.</p>
 
@@ -146,25 +146,25 @@ thread in subsequent calls to other pthreads functions.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The new thread
 inherits a copy of the creating thread&rsquo;s signal mask
-(<b>pthread_sigmask</b>(3)). The set of pending signals for
-the new thread is empty (<b>sigpending</b>(2)). The new
+(<a href="https://man.page/3/pthread_sigmask">pthread_sigmask(3)</a>). The set of pending signals for
+the new thread is empty (<a href="https://man.page/2/sigpending">sigpending(2)</a>). The new
 thread does not inherit the creating thread&rsquo;s
-alternate signal stack (<b>sigaltstack</b>(2)).</p>
+alternate signal stack (<a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The new thread
 inherits the calling thread&rsquo;s floating-point
-environment (<b>fenv</b>(3)).</p>
+environment (<a href="https://man.page/3/fenv">fenv(3)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The initial
 value of the new thread&rsquo;s CPU-time clock is 0 (see
-<b>pthread_getcpuclockid</b>(3)).</p>
+<a href="https://man.page/3/pthread_getcpuclockid">pthread_getcpuclockid(3)</a>).</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Linux-specific
 details</b> <br>
 The new thread inherits copies of the calling thread&rsquo;s
-capability sets (see <b>capabilities</b>(7)) and CPU
-affinity mask (see <b>sched_setaffinity</b>(2)).</p>
+capability sets (see <a href="https://man.page/7/capabilities">capabilities(7)</a>) and CPU
+affinity mask (see <a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>).</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -208,13 +208,13 @@ another thread.</p></td></tr>
 <p>A system-imposed limit on the number of threads was
 encountered. There are a number of limits that may trigger
 this error: the <b>RLIMIT_NPROC</b> soft resource limit (set
-via <b>setrlimit</b>(2)), which limits the number of
+via <a href="https://man.page/2/setrlimit">setrlimit(2)</a>), which limits the number of
 processes and threads for a real user ID, was reached; the
 kernel&rsquo;s system-wide limit on the number of processes
 and threads, <i>/proc/sys/kernel/threads-max</i>, was
-reached (see <b>proc</b>(5)); or the maximum number of PIDs,
+reached (see <a href="https://man.page/5/proc">proc(5)</a>); or the maximum number of PIDs,
 <i>/proc/sys/kernel/pid_max</i>, was reached (see
-<b>proc</b>(5)).</p> </td></tr>
+<a href="https://man.page/5/proc">proc(5)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -247,7 +247,7 @@ parameters specified in <i>attr</i>.</p></td></tr>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3286341.png" alt="Image grohtml-3286341.png"></p>
@@ -266,7 +266,7 @@ POSIX.1-2008.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>pthread_self</b>(3) for further information on the thread
+<a href="https://man.page/3/pthread_self">pthread_self(3)</a> for further information on the thread
 ID returned in <i>*thread</i> by <b>pthread_create</b>().
 Unless real-time scheduling policies are being employed,
 after a call to <b>pthread_create</b>(), it is indeterminate
@@ -276,7 +276,7 @@ next execute.</p>
 <p style="margin-left:11%; margin-top: 1em">A thread may
 either be <i>joinable</i> or <i>detached</i>. If a thread is
 joinable, then another thread can call
-<b>pthread_join</b>(3) to wait for the thread to terminate
+<a href="https://man.page/3/pthread_join">pthread_join(3)</a> to wait for the thread to terminate
 and fetch its exit status. Only when a terminated joinable
 thread has been joined are the last of its resources
 released back to the system. When a detached thread
@@ -287,14 +287,14 @@ useful for some types of daemon threads whose exit status
 the application does not need to care about. By default, a
 new thread is created in a joinable state, unless
 <i>attr</i> was set to create the thread in a detached state
-(using <b>pthread_attr_setdetachstate</b>(3)).</p>
+(using <a href="https://man.page/3/pthread_attr_setdetachstate">pthread_attr_setdetachstate(3)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Under the NPTL
 threading implementation, if the <b>RLIMIT_STACK</b> soft
 resource limit <i>at the time the program started</i> has
 any value other than &quot;unlimited&quot;, then it
 determines the default stack size of new threads. Using
-<b>pthread_attr_setstacksize</b>(3), the stack size
+<a href="https://man.page/3/pthread_attr_setstacksize">pthread_attr_setstacksize(3)</a>, the stack size
 attribute can be explicitly set in the <i>attr</i> argument
 used to create a thread, in order to obtain a stack size
 other than the default. If the <b>RLIMIT_STACK</b> resource
@@ -315,7 +315,7 @@ LinuxThreads implementation, each of the threads in a
 process has a different process ID. This is in violation of
 the POSIX threads specification, and is the source of many
 other nonconformances to the standard; see
-<b>pthreads</b>(7).</p>
+<a href="https://man.page/7/pthreads">pthreads(7)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -347,7 +347,7 @@ Joined with thread 3; returned value was SERVUS</p>
 
 <p style="margin-left:11%; margin-top: 1em">In the next
 run, the program explicitly sets a stack size of 1&nbsp;MB
-(using <b>pthread_attr_setstacksize</b>(3)) for the created
+(using <a href="https://man.page/3/pthread_attr_setstacksize">pthread_attr_setstacksize(3)</a>) for the created
 threads:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>./a.out -s
@@ -530,12 +530,12 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>getrlimit</b>(2),
-<b>pthread_attr_init</b>(3), <b>pthread_cancel</b>(3),
-<b>pthread_detach</b>(3), <b>pthread_equal</b>(3),
-<b>pthread_exit</b>(3), <b>pthread_getattr_np</b>(3),
-<b>pthread_join</b>(3), <b>pthread_self</b>(3),
-<b>pthread_setattr_default_np</b>(3), <b>pthreads</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/getrlimit">getrlimit(2)</a>,
+<a href="https://man.page/3/pthread_attr_init">pthread_attr_init(3)</a>, <a href="https://man.page/3/pthread_cancel">pthread_cancel(3)</a>,
+<a href="https://man.page/3/pthread_detach">pthread_detach(3)</a>, <a href="https://man.page/3/pthread_equal">pthread_equal(3)</a>,
+<a href="https://man.page/3/pthread_exit">pthread_exit(3)</a>, <a href="https://man.page/3/pthread_getattr_np">pthread_getattr_np(3)</a>,
+<a href="https://man.page/3/pthread_join">pthread_join(3)</a>, <a href="https://man.page/3/pthread_self">pthread_self(3)</a>,
+<a href="https://man.page/3/pthread_setattr_default_np">pthread_setattr_default_np(3)</a>, <a href="https://man.page/7/pthreads">pthreads(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

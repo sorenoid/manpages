@@ -82,7 +82,7 @@ EFD_CLOEXEC</b> (since Linux 2.6.27)</p>
 
 <p style="margin-left:22%;">Set the close-on-exec
 (<b>FD_CLOEXEC</b>) flag on the new file descriptor. See the
-description of the <b>O_CLOEXEC</b> flag in <b>open</b>(2)
+description of the <b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a>
 for reasons why this may be useful.</p>
 
 <p style="margin-left:11%;"><b>EFD_NONBLOCK</b> (since
@@ -90,8 +90,8 @@ Linux 2.6.27)</p>
 
 <p style="margin-left:22%;">Set the <b>O_NONBLOCK</b> file
 status flag on the open file description (see
-<b>open</b>(2)) referred to by the new file descriptor.
-Using this flag saves extra calls to <b>fcntl</b>(2) to
+<a href="https://man.page/2/open">open(2)</a>) referred to by the new file descriptor.
+Using this flag saves extra calls to <a href="https://man.page/2/fcntl">fcntl(2)</a> to
 achieve the same result.</p>
 
 <p style="margin-left:11%;"><b>EFD_SEMAPHORE</b> (since
@@ -110,18 +110,18 @@ operations can be performed on the file descriptor returned
 by <b>eventfd</b>(): <b><br>
 read</b>(2)</p>
 
-<p style="margin-left:22%;">Each successful <b>read</b>(2)
-returns an 8-byte integer. A <b>read</b>(2) fails with the
+<p style="margin-left:22%;">Each successful <a href="https://man.page/2/read">read(2)</a>
+returns an 8-byte integer. A <a href="https://man.page/2/read">read(2)</a> fails with the
 error <b>EINVAL</b> if the size of the supplied buffer is
 less than 8 bytes.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The value
-returned by <b>read</b>(2) is in host byte order&mdash;that
+returned by <a href="https://man.page/2/read">read(2)</a> is in host byte order&mdash;that
 is, the native byte order for integers on the host
 machine.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The semantics
-of <b>read</b>(2) depend on whether the eventfd counter
+of <a href="https://man.page/2/read">read(2)</a> depend on whether the eventfd counter
 currently has a nonzero value and whether the
 <b>EFD_SEMAPHORE</b> flag was specified when creating the
 eventfd file descriptor:</p>
@@ -139,7 +139,7 @@ eventfd file descriptor:</p>
 
 
 <p>If <b>EFD_SEMAPHORE</b> was not specified and the
-eventfd counter has a nonzero value, then a <b>read</b>(2)
+eventfd counter has a nonzero value, then a <a href="https://man.page/2/read">read(2)</a>
 returns 8 bytes containing that value, and the
 counter&rsquo;s value is reset to zero.</p></td></tr>
 <tr valign="top" align="left">
@@ -153,7 +153,7 @@ counter&rsquo;s value is reset to zero.</p></td></tr>
 
 
 <p>If <b>EFD_SEMAPHORE</b> was specified and the eventfd
-counter has a nonzero value, then a <b>read</b>(2) returns 8
+counter has a nonzero value, then a <a href="https://man.page/2/read">read(2)</a> returns 8
 bytes containing the value 1, and the counter&rsquo;s value
 is decremented by 1.</p></td></tr>
 <tr valign="top" align="left">
@@ -167,37 +167,37 @@ is decremented by 1.</p></td></tr>
 
 
 <p>If the eventfd counter is zero at the time of the call
-to <b>read</b>(2), then the call either blocks until the
-counter becomes nonzero (at which time, the <b>read</b>(2)
+to <a href="https://man.page/2/read">read(2)</a>, then the call either blocks until the
+counter becomes nonzero (at which time, the <a href="https://man.page/2/read">read(2)</a>
 proceeds as described above) or fails with the error
 <b>EAGAIN</b> if the file descriptor has been made
 nonblocking.</p> </td></tr>
 </table>
 
-<p style="margin-left:11%;"><b>write</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/write">write(2)</a></p>
 
-<p style="margin-left:22%;">A <b>write</b>(2) call adds the
+<p style="margin-left:22%;">A <a href="https://man.page/2/write">write(2)</a> call adds the
 8-byte integer value supplied in its buffer to the counter.
 The maximum value that may be stored in the counter is the
 largest unsigned 64-bit value minus 1 (i.e.,
 0xfffffffffffffffe). If the addition would cause the
 counter&rsquo;s value to exceed the maximum, then the
-<b>write</b>(2) either blocks until a <b>read</b>(2) is
+<a href="https://man.page/2/write">write(2)</a> either blocks until a <a href="https://man.page/2/read">read(2)</a> is
 performed on the file descriptor, or fails with the error
 <b>EAGAIN</b> if the file descriptor has been made
 nonblocking.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A
-<b>write</b>(2) fails with the error <b>EINVAL</b> if the
+<a href="https://man.page/2/write">write(2)</a> fails with the error <b>EINVAL</b> if the
 size of the supplied buffer is less than 8 bytes, or if an
 attempt is made to write the value 0xffffffffffffffff.</p>
 
-<p style="margin-left:11%;"><b>poll</b>(2),
-<b>select</b>(2) (and similar)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/poll">poll(2)</a>,
+<a href="https://man.page/2/select">select(2)</a> (and similar)</p>
 
 <p style="margin-left:22%;">The returned file descriptor
-supports <b>poll</b>(2) (and analogously <b>epoll</b>(7))
-and <b>select</b>(2), as follows:</p>
+supports <a href="https://man.page/2/poll">poll(2)</a> (and analogously <a href="https://man.page/7/epoll">epoll(7)</a>)
+and <a href="https://man.page/2/select">select(2)</a>, as follows:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -211,8 +211,8 @@ and <b>select</b>(2), as follows:</p>
 <td width="74%">
 
 
-<p>The file descriptor is readable (the <b>select</b>(2)
-<i>readfds</i> argument; the <b>poll</b>(2) <b>POLLIN</b>
+<p>The file descriptor is readable (the <a href="https://man.page/2/select">select(2)</a>
+<i>readfds</i> argument; the <a href="https://man.page/2/poll">poll(2)</a> <b>POLLIN</b>
 flag) if the counter has a value greater than 0.</p></td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -224,8 +224,8 @@ flag) if the counter has a value greater than 0.</p></td></tr>
 <td width="74%">
 
 
-<p>The file descriptor is writable (the <b>select</b>(2)
-<i>writefds</i> argument; the <b>poll</b>(2) <b>POLLOUT</b>
+<p>The file descriptor is writable (the <a href="https://man.page/2/select">select(2)</a>
+<i>writefds</i> argument; the <a href="https://man.page/2/poll">poll(2)</a> <b>POLLOUT</b>
 flag) if it is possible to write a value of at least
 &quot;1&quot; without blocking.</p></td></tr>
 <tr valign="top" align="left">
@@ -239,23 +239,23 @@ flag) if it is possible to write a value of at least
 
 
 <p>If an overflow of the counter value was detected, then
-<b>select</b>(2) indicates the file descriptor as being both
-readable and writable, and <b>poll</b>(2) returns a
-<b>POLLERR</b> event. As noted above, <b>write</b>(2) can
+<a href="https://man.page/2/select">select(2)</a> indicates the file descriptor as being both
+readable and writable, and <a href="https://man.page/2/poll">poll(2)</a> returns a
+<b>POLLERR</b> event. As noted above, <a href="https://man.page/2/write">write(2)</a> can
 never overflow the counter. However an overflow can occur if
 2^64 eventfd &quot;signal posts&quot; were performed by the
 KAIO subsystem (theoretically possible, but practically
-unlikely). If an overflow has occurred, then <b>read</b>(2)
+unlikely). If an overflow has occurred, then <a href="https://man.page/2/read">read(2)</a>
 will return that maximum <i>uint64_t</i> value (i.e.,
 0xffffffffffffffff).</p> </td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">The eventfd
 file descriptor also supports the other file-descriptor
-multiplexing APIs: <b>pselect</b>(2) and
-<b>ppoll</b>(2).</p>
+multiplexing APIs: <a href="https://man.page/2/pselect">pselect(2)</a> and
+<a href="https://man.page/2/ppoll">ppoll(2)</a>.</p>
 
-<p style="margin-left:11%;"><b>close</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/close">close(2)</a></p>
 
 <p style="margin-left:22%;">When the file descriptor is no
 longer required it should be closed. When all file
@@ -265,10 +265,10 @@ kernel.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A copy of the
 file descriptor created by <b>eventfd</b>() is inherited by
-the child produced by <b>fork</b>(2). The duplicate file
+the child produced by <a href="https://man.page/2/fork">fork(2)</a>. The duplicate file
 descriptor is associated with the same eventfd object. File
 descriptors created by <b>eventfd</b>() are preserved across
-<b>execve</b>(2), unless the close-on-exec flag has been
+<a href="https://man.page/2/execve">execve(2)</a>, unless the close-on-exec flag has been
 set.</p>
 
 <h2>RETURN VALUE
@@ -370,7 +370,7 @@ system call, if it is supported by the kernel.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3272561.png" alt="Image grohtml-3272561.png"></p>
@@ -391,7 +391,7 @@ and <b>eventfd2</b>() are Linux-specific.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Applications
 can use an eventfd file descriptor instead of a pipe (see
-<b>pipe</b>(2)) in all cases where a pipe is used simply to
+<a href="https://man.page/2/pipe">pipe(2)</a>) in all cases where a pipe is used simply to
 signal events. The kernel overhead of an eventfd file
 descriptor is much lower than that of a pipe, and only one
 file descriptor is required (versus the two required for a
@@ -405,19 +405,19 @@ descriptor that some operation is complete.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A key point
 about an eventfd file descriptor is that it can be monitored
-just like any other file descriptor using <b>select</b>(2),
-<b>poll</b>(2), or <b>epoll</b>(7). This means that an
+just like any other file descriptor using <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, or <a href="https://man.page/7/epoll">epoll(7)</a>. This means that an
 application can simultaneously monitor the readiness of
 &quot;traditional&quot; files and the readiness of other
 kernel mechanisms that support the eventfd interface.
 (Without the <b>eventfd</b>() interface, these mechanisms
-could not be multiplexed via <b>select</b>(2),
-<b>poll</b>(2), or <b>epoll</b>(7).)</p>
+could not be multiplexed via <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, or <a href="https://man.page/7/epoll">epoll(7)</a>.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">The current
 value of an eventfd counter can be viewed via the entry for
 the corresponding file descriptor in the process&rsquo;s
-<i>/proc/[pid]/fdinfo</i> directory. See <b>proc</b>(5) for
+<i>/proc/[pid]/fdinfo</i> directory. See <a href="https://man.page/5/proc">proc(5)</a> for
 further details.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>C
@@ -547,11 +547,11 @@ handle_error(&quot;fork&quot;); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>futex</b>(2),
-<b>pipe</b>(2), <b>poll</b>(2), <b>read</b>(2),
-<b>select</b>(2), <b>signalfd</b>(2),
-<b>timerfd_create</b>(2), <b>write</b>(2), <b>epoll</b>(7),
-<b>sem_overview</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/futex">futex(2)</a>,
+<a href="https://man.page/2/pipe">pipe(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/signalfd">signalfd(2)</a>,
+<a href="https://man.page/2/timerfd_create">timerfd_create(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>,
+<a href="https://man.page/7/sem_overview">sem_overview(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

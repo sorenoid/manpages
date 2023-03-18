@@ -72,15 +72,15 @@ creates a new userfaultfd object that can be used for
 delegation of page-fault handling to a user-space
 application, and returns a file descriptor that refers to
 the new object. The new userfaultfd object is configured
-using <b>ioctl</b>(2).</p>
+using <a href="https://man.page/2/ioctl">ioctl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Once the
 userfaultfd object is configured, the application can use
-<b>read</b>(2) to receive userfaultfd notifications. The
+<a href="https://man.page/2/read">read(2)</a> to receive userfaultfd notifications. The
 reads from userfaultfd may be blocking or non-blocking,
 depending on the value of <i>flags</i> used for the creation
 of the userfaultfd or subsequent calls to
-<b>fcntl</b>(2).</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 values may be bitwise ORed in <i>flags</i> to change the
@@ -89,13 +89,13 @@ O_CLOEXEC</b></p>
 
 <p style="margin-left:22%;">Enable the close-on-exec flag
 for the new userfaultfd file descriptor. See the description
-of the <b>O_CLOEXEC</b> flag in <b>open</b>(2).</p>
+of the <b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a>.</p>
 
 <p style="margin-left:11%;"><b>O_NONBLOCK</b></p>
 
 <p style="margin-left:22%;">Enables non-blocking operation
 for the userfaultfd object. See the description of the
-<b>O_NONBLOCK</b> flag in <b>open</b>(2).</p>
+<b>O_NONBLOCK</b> flag in <a href="https://man.page/2/open">open(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the last
 file descriptor referring to a userfaultfd object is closed,
@@ -112,7 +112,7 @@ faulting thread is put to sleep and an event is generated
 that can be read via the userfaultfd file descriptor. The
 fault-handling thread reads events from this file descriptor
 and services them using the operations described in
-<b>ioctl_userfaultfd</b>(2). When servicing the page fault
+<a href="https://man.page/2/ioctl_userfaultfd">ioctl_userfaultfd(2)</a>. When servicing the page fault
 events, the fault-handling thread can trigger a wake-up for
 the sleeping thread.</p>
 
@@ -131,7 +131,7 @@ faulting process to avoid memory corruption.</p>
 Linux 4.11, userfaultfd can also notify the fault-handling
 threads about changes in the virtual memory layout of the
 faulting process. In addition, if the faulting process
-invokes <b>fork</b>(2), the userfaultfd objects associated
+invokes <a href="https://man.page/2/fork">fork(2)</a>, the userfaultfd objects associated
 with the parent may be duplicated into the child process and
 the userfaultfd monitor will be notified (via the
 <b>UFFD_EVENT_FORK</b> described below) about the file
@@ -142,7 +142,7 @@ faults which have to be synchronous and require an explicit
 or implicit wakeup, all other events are delivered
 asynchronously and the non-cooperative process resumes
 execution as soon as the userfaultfd manager executes
-<b>read</b>(2). The userfaultfd manager should carefully
+<a href="https://man.page/2/read">read(2)</a>. The userfaultfd manager should carefully
 synchronize calls to <b>UFFDIO_COPY</b> with the processing
 of events.</p>
 
@@ -159,7 +159,7 @@ the <b>UFFDIO_API ioctl</b>(2) operation. This operation
 allows a handshake between the kernel and user space to
 determine the API version and supported features. This
 operation must be performed before any of the other
-<b>ioctl</b>(2) operations described below (or those
+<a href="https://man.page/2/ioctl">ioctl(2)</a> operations described below (or those
 operations fail with the <b>EINVAL</b> error).</p>
 
 <p style="margin-left:11%; margin-top: 1em">After a
@@ -191,12 +191,12 @@ through a memory mapping.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>UFFD_FEATURE_SIGBUS</b> feature is implicitly inherited
-through <b>fork</b>(2) if used in combination with
+through <a href="https://man.page/2/fork">fork(2)</a> if used in combination with
 <b>UFFD_FEATURE_FORK</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Details of the
-various <b>ioctl</b>(2) operations can be found in
-<b>ioctl_userfaultfd</b>(2).</p>
+various <a href="https://man.page/2/ioctl">ioctl(2)</a> operations can be found in
+<a href="https://man.page/2/ioctl_userfaultfd">ioctl_userfaultfd(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 4.11, events other than page-fault may enabled during
@@ -209,7 +209,7 @@ used with hugetlbfs and shared memory mappings.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Reading from
 the userfaultfd structure</b> <br>
-Each <b>read</b>(2) from the userfaultfd file descriptor
+Each <a href="https://man.page/2/read">read(2)</a> from the userfaultfd file descriptor
 returns one or more <i>uffd_msg</i> structures, each of
 which describes a page-fault event or an event required for
 the non-cooperative userfaultfd usage:</p>
@@ -251,10 +251,10 @@ fields omitted */ <br>
 
 <p style="margin-left:11%; margin-top: 1em">If multiple
 events are available and the supplied buffer is large
-enough, <b>read</b>(2) returns as many events as will fit in
+enough, <a href="https://man.page/2/read">read(2)</a> returns as many events as will fit in
 the supplied buffer. If the buffer supplied to
-<b>read</b>(2) is smaller than the size of the
-<i>uffd_msg</i> structure, the <b>read</b>(2) fails with the
+<a href="https://man.page/2/read">read(2)</a> is smaller than the size of the
+<i>uffd_msg</i> structure, the <a href="https://man.page/2/read">read(2)</a> fails with the
 error <b>EINVAL</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The fields set
@@ -291,7 +291,7 @@ field.</p>
 Linux 4.11)</p>
 
 <p style="margin-left:32%;">Generated when the faulting
-process invokes <b>fork</b>(2) (or <b>clone</b>(2) without
+process invokes <a href="https://man.page/2/fork">fork(2)</a> (or <a href="https://man.page/2/clone">clone(2)</a> without
 the <b>CLONE_VM</b> flag). The event details are available
 in the <i>fork</i> field.</p>
 
@@ -299,14 +299,14 @@ in the <i>fork</i> field.</p>
 Linux 4.11)</p>
 
 <p style="margin-left:32%;">Generated when the faulting
-process invokes <b>mremap</b>(2). The event details are
+process invokes <a href="https://man.page/2/mremap">mremap(2)</a>. The event details are
 available in the <i>remap</i> field.</p>
 
 <p style="margin-left:22%;"><b>UFFD_EVENT_REMOVE</b> (since
 Linux 4.11)</p>
 
 <p style="margin-left:32%;">Generated when the faulting
-process invokes <b>madvise</b>(2) with <b>MADV_DONTNEED</b>
+process invokes <a href="https://man.page/2/madvise">madvise(2)</a> with <b>MADV_DONTNEED</b>
 or <b>MADV_REMOVE</b> advice. The event details are
 available in the <i>remove</i> field.</p>
 
@@ -315,8 +315,8 @@ Linux 4.11)</p>
 
 <p style="margin-left:32%;">Generated when the faulting
 process unmaps a memory range, either explicitly using
-<b>munmap</b>(2) or implicitly during <b>mmap</b>(2) or
-<b>mremap</b>(2). The event details are available in the
+<a href="https://man.page/2/munmap">munmap(2)</a> or implicitly during <a href="https://man.page/2/mmap">mmap(2)</a> or
+<a href="https://man.page/2/mremap">mremap(2)</a>. The event details are available in the
 <i>remove</i> field.</p>
 
 <p style="margin-left:11%;"><i>pagefault.address</i></p>
@@ -334,42 +334,42 @@ UFFD_PAGEFAULT_FLAG_WRITE</b></p>
 <p style="margin-left:32%;">If the address is in a range
 that was registered with the
 <b>UFFDIO_REGISTER_MODE_MISSING</b> flag (see
-<b>ioctl_userfaultfd</b>(2)) and this flag is set, this a
+<a href="https://man.page/2/ioctl_userfaultfd">ioctl_userfaultfd(2)</a>) and this flag is set, this a
 write fault; otherwise it is a read fault.</p>
 
 <p style="margin-left:11%;"><i>fork.ufd</i></p>
 
 <p style="margin-left:22%;">The file descriptor associated
 with the userfault object created for the child created by
-<b>fork</b>(2).</p>
+<a href="https://man.page/2/fork">fork(2)</a>.</p>
 
 <p style="margin-left:11%;"><i>remap.from</i></p>
 
 <p style="margin-left:22%;">The original address of the
-memory range that was remapped using <b>mremap</b>(2).</p>
+memory range that was remapped using <a href="https://man.page/2/mremap">mremap(2)</a>.</p>
 
 <p style="margin-left:11%;"><i>remap.to</i></p>
 
 <p style="margin-left:22%;">The new address of the memory
-range that was remapped using <b>mremap</b>(2).</p>
+range that was remapped using <a href="https://man.page/2/mremap">mremap(2)</a>.</p>
 
 <p style="margin-left:11%;"><i>remap.len</i></p>
 
 <p style="margin-left:22%;">The original length of the
-memory range that was remapped using <b>mremap</b>(2).</p>
+memory range that was remapped using <a href="https://man.page/2/mremap">mremap(2)</a>.</p>
 
 <p style="margin-left:11%;"><i>remove.start</i></p>
 
 <p style="margin-left:22%;">The start address of the memory
-range that was freed using <b>madvise</b>(2) or unmapped</p>
+range that was freed using <a href="https://man.page/2/madvise">madvise(2)</a> or unmapped</p>
 
 <p style="margin-left:11%;"><i>remove.end</i></p>
 
 <p style="margin-left:22%;">The end address of the memory
-range that was freed using <b>madvise</b>(2) or unmapped</p>
+range that was freed using <a href="https://man.page/2/madvise">madvise(2)</a> or unmapped</p>
 
 <p style="margin-left:11%; margin-top: 1em">A
-<b>read</b>(2) on a userfaultfd file descriptor can fail
+<a href="https://man.page/2/read">read(2)</a> on a userfaultfd file descriptor can fail
 with the following errors:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -391,12 +391,12 @@ the <b>UFFDIO_API ioctl</b>(2) operation</p></td></tr>
 <p style="margin-left:11%; margin-top: 1em">If the
 <b>O_NONBLOCK</b> flag is enabled in the associated open
 file description, the userfaultfd file descriptor can be
-monitored with <b>poll</b>(2), <b>select</b>(2), and
-<b>epoll</b>(7). When events are available, the file
+monitored with <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/select">select(2)</a>, and
+<a href="https://man.page/7/epoll">epoll(7)</a>. When events are available, the file
 descriptor indicates as readable. If the <b>O_NONBLOCK</b>
-flag is not enabled, then <b>poll</b>(2) (always) indicates
+flag is not enabled, then <a href="https://man.page/2/poll">poll(2)</a> (always) indicates
 the file as having a <b>POLLERR</b> condition, and
-<b>select</b>(2) indicates the file descriptor as both
+<a href="https://man.page/2/select">select(2)</a> indicates the file descriptor as both
 readable and writable.</p>
 
 <h2>RETURN VALUE
@@ -504,12 +504,12 @@ intended to be portable.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Glibc does not
 provide a wrapper for this system call; call it using
-<b>syscall</b>(2).</p>
+<a href="https://man.page/2/syscall">syscall(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The userfaultfd
 mechanism can be used as an alternative to traditional
 user-space paging techniques based on the use of the
-<b>SIGSEGV</b> signal and <b>mmap</b>(2). It can also be
+<b>SIGSEGV</b> signal and <a href="https://man.page/2/mmap">mmap(2)</a>. It can also be
 used to implement lazy restore for checkpoint/restore
 mechanisms, as well as post-copy migration to allow (nearly)
 uninterrupted execution when transferring virtual machines
@@ -522,7 +522,7 @@ and Linux containers from one host to another.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
 <b>UFFD_FEATURE_EVENT_FORK</b> is enabled and a system call
-from the <b>fork</b>(2) family is interrupted by a signal or
+from the <a href="https://man.page/2/fork">fork(2)</a> family is interrupted by a signal or
 failed, a stale userfaultfd descriptor might be created. In
 this case, a spurious <b>UFFD_EVENT_FORK</b> will be
 delivered to the userfaultfd monitor.</p>
@@ -536,7 +536,7 @@ delivered to the userfaultfd monitor.</p>
 below demonstrates the use of the userfaultfd mechanism. The
 program creates two threads, one of which acts as the
 page-fault handler for the process, for the pages in a
-demand-page zero region created using <b>mmap</b>(2).</p>
+demand-page zero region created using <a href="https://man.page/2/mmap">mmap(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The program
 takes one command-line argument, which is the number of
@@ -560,7 +560,7 @@ descriptor.</p>
 page-fault events is handled by the second thread, which
 sits in a loop processing input from the userfaultfd file
 descriptor. In each loop iteration, the second thread first
-calls <b>poll</b>(2) to check the state of the file
+calls <a href="https://man.page/2/poll">poll(2)</a> to check the state of the file
 descriptor, and then reads an event from the file
 descriptor. All such events should be
 <b>UFFD_EVENT_PAGEFAULT</b> events, which the thread handles
@@ -878,9 +878,9 @@ usleep(100000); /* Slow things down a little */ <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fcntl</b>(2),
-<b>ioctl</b>(2), <b>ioctl_userfaultfd</b>(2),
-<b>madvise</b>(2), <b>mmap</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/fcntl">fcntl(2)</a>,
+<a href="https://man.page/2/ioctl">ioctl(2)</a>, <a href="https://man.page/2/ioctl_userfaultfd">ioctl_userfaultfd(2)</a>,
+<a href="https://man.page/2/madvise">madvise(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/admin-guide/mm/userfaultfd.rst</i>

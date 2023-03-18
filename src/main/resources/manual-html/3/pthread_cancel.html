@@ -71,7 +71,7 @@ its cancelability <i>state</i> and <i>type</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A
 thread&rsquo;s cancelability state, determined by
-<b>pthread_setcancelstate</b>(3), can be <i>enabled</i> (the
+<a href="https://man.page/3/pthread_setcancelstate">pthread_setcancelstate(3)</a>, can be <i>enabled</i> (the
 default for new threads) or <i>disabled</i>. If a thread has
 disabled cancellation, then a cancellation request remains
 queued until the thread enables cancellation. If a thread
@@ -80,7 +80,7 @@ determines when cancellation occurs.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A
 thread&rsquo;s cancellation type, determined by
-<b>pthread_setcanceltype</b>(3), may be either
+<a href="https://man.page/3/pthread_setcanceltype">pthread_setcanceltype(3)</a>, may be either
 <i>asynchronous</i> or <i>deferred</i> (the default for new
 threads). Asynchronous cancelability means that the thread
 can be canceled at any time (usually immediately, but the
@@ -88,7 +88,7 @@ system does not guarantee this). Deferred cancelability
 means that cancellation will be delayed until the thread
 next calls a function that is a <i>cancellation point</i>. A
 list of functions that are or may be cancellation points is
-provided in <b>pthreads</b>(7).</p>
+provided in <a href="https://man.page/7/pthreads">pthreads(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a
 cancellation requested is acted on, the following steps
@@ -108,7 +108,7 @@ occur for <i>thread</i> (in this order):</p>
 
 <p>Cancellation clean-up handlers are popped (in the
 reverse of the order in which they were pushed) and called.
-(See <b>pthread_cleanup_push</b>(3).)</p></td></tr>
+(See <a href="https://man.page/3/pthread_cleanup_push">pthread_cleanup_push(3)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="3%">
@@ -120,7 +120,7 @@ reverse of the order in which they were pushed) and called.
 
 
 <p>Thread-specific data destructors are called, in an
-unspecified order. (See <b>pthread_key_create</b>(3).)</p></td></tr>
+unspecified order. (See <a href="https://man.page/3/pthread_key_create">pthread_key_create(3)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="3%">
@@ -132,7 +132,7 @@ unspecified order. (See <b>pthread_key_create</b>(3).)</p></td></tr>
 
 
 <p>The thread is terminated. (See
-<b>pthread_exit</b>(3).)</p> </td></tr>
+<a href="https://man.page/3/pthread_exit">pthread_exit(3)</a>.)</p> </td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">The above steps
@@ -143,7 +143,7 @@ the cancellation request was successfully queued.</p>
 
 <p style="margin-left:11%; margin-top: 1em">After a
 canceled thread has terminated, a join with that thread
-using <b>pthread_join</b>(3) obtains <b>PTHREAD_CANCELED</b>
+using <a href="https://man.page/3/pthread_join">pthread_join(3)</a> obtains <b>PTHREAD_CANCELED</b>
 as the thread&rsquo;s exit status. (Joining with a thread is
 the only way to know that cancellation has completed.)</p>
 
@@ -186,7 +186,7 @@ nonzero error number.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3429281.png" alt="Image grohtml-3429281.png"></p>
@@ -331,12 +331,12 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pthread_cleanup_push</b>(3),
-<b>pthread_create</b>(3), <b>pthread_exit</b>(3),
-<b>pthread_join</b>(3), <b>pthread_key_create</b>(3),
-<b>pthread_setcancelstate</b>(3),
-<b>pthread_setcanceltype</b>(3),
-<b>pthread_testcancel</b>(3), <b>pthreads</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/pthread_cleanup_push">pthread_cleanup_push(3)</a>,
+<a href="https://man.page/3/pthread_create">pthread_create(3)</a>, <a href="https://man.page/3/pthread_exit">pthread_exit(3)</a>,
+<a href="https://man.page/3/pthread_join">pthread_join(3)</a>, <a href="https://man.page/3/pthread_key_create">pthread_key_create(3)</a>,
+<a href="https://man.page/3/pthread_setcancelstate">pthread_setcancelstate(3)</a>,
+<a href="https://man.page/3/pthread_setcanceltype">pthread_setcanceltype(3)</a>,
+<a href="https://man.page/3/pthread_testcancel">pthread_testcancel(3)</a>, <a href="https://man.page/7/pthreads">pthreads(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

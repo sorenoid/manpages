@@ -63,8 +63,8 @@ int setcontext(const ucontext_t *</b><i>ucp</i><b>);</b></p>
 V-like environment, one has the two types <i>mcontext_t</i>
 and <i>ucontext_t</i> defined in <i>&lt;ucontext.h&gt;</i>
 and the four functions <b>getcontext</b>(),
-<b>setcontext</b>(), <b>makecontext</b>(3), and
-<b>swapcontext</b>(3) that allow user-level context
+<b>setcontext</b>(), <a href="https://man.page/3/makecontext">makecontext(3)</a>, and
+<a href="https://man.page/3/swapcontext">swapcontext(3)</a> that allow user-level context
 switching between multiple threads of control within a
 process.</p>
 
@@ -87,10 +87,10 @@ mcontext_t uc_mcontext; <br>
 <i>&lt;signal.h&gt;</i>. Here <i>uc_link</i> points to the
 context that will be resumed when the current context
 terminates (in case the current context was created using
-<b>makecontext</b>(3)), <i>uc_sigmask</i> is the set of
-signals blocked in this context (see <b>sigprocmask</b>(2)),
+<a href="https://man.page/3/makecontext">makecontext(3)</a>), <i>uc_sigmask</i> is the set of
+signals blocked in this context (see <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>),
 <i>uc_stack</i> is the stack used by this context (see
-<b>sigaltstack</b>(2)), and <i>uc_mcontext</i> is the
+<a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>), and <i>uc_mcontext</i> is the
 machine-specific representation of the saved context, that
 includes the calling thread&rsquo;s machine registers.</p>
 
@@ -102,22 +102,22 @@ includes the calling thread&rsquo;s machine registers.</p>
 <b>setcontext</b>() restores the user context pointed to by
 <i>ucp</i>. A successful call does not return. The context
 should have been obtained by a call of <b>getcontext</b>(),
-or <b>makecontext</b>(3), or received as the third argument
+or <a href="https://man.page/3/makecontext">makecontext(3)</a>, or received as the third argument
 to a signal handler (see the discussion of the
-<b>SA_SIGINFO</b> flag in <b>sigaction</b>(2)).</p>
+<b>SA_SIGINFO</b> flag in <a href="https://man.page/2/sigaction">sigaction(2)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the context
 was obtained by a call of <b>getcontext</b>(), program
 execution continues as if this call just returned.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the context
-was obtained by a call of <b>makecontext</b>(3), program
+was obtained by a call of <a href="https://man.page/3/makecontext">makecontext(3)</a>, program
 execution continues by a call to the function <i>func</i>
 specified as the second argument of that call to
-<b>makecontext</b>(3). When the function <i>func</i>
+<a href="https://man.page/3/makecontext">makecontext(3)</a>. When the function <i>func</i>
 returns, we continue with the <i>uc_link</i> member of the
 structure <i>ucp</i> specified as the first argument of that
-call to <b>makecontext</b>(3). When this member is NULL, the
+call to <a href="https://man.page/3/makecontext">makecontext(3)</a>. When this member is NULL, the
 thread exits.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the context
@@ -153,7 +153,7 @@ defined.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -199,9 +199,9 @@ threads instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The earliest
 incarnation of this mechanism was the
-<b>setjmp</b>(3)/<b>longjmp</b>(3) mechanism. Since that
+<a href="https://man.page/3/setjmp">setjmp(3)</a>/<a href="https://man.page/3/longjmp">longjmp(3)</a> mechanism. Since that
 does not define the handling of the signal context, the next
-stage was the <b>sigsetjmp</b>(3)/<b>siglongjmp</b>(3) pair.
+stage was the <a href="https://man.page/3/sigsetjmp">sigsetjmp(3)</a>/<a href="https://man.page/3/siglongjmp">siglongjmp(3)</a> pair.
 The present mechanism gives much more control. On the other
 hand, there is no easy way to detect whether a return from
 <b>getcontext</b>() is from the first call, or via a
@@ -212,8 +212,8 @@ since registers are restored.</p>
 <p style="margin-left:11%; margin-top: 1em">When a signal
 occurs, the current user context is saved and a new context
 is created by the kernel for the signal handler. Do not
-leave the handler using <b>longjmp</b>(3): it is undefined
-what would happen with contexts. Use <b>siglongjmp</b>(3) or
+leave the handler using <a href="https://man.page/3/longjmp">longjmp(3)</a>: it is undefined
+what would happen with contexts. Use <a href="https://man.page/3/siglongjmp">siglongjmp(3)</a> or
 <b>setcontext</b>() instead.</p>
 
 <h2>SEE ALSO
@@ -222,10 +222,10 @@ what would happen with contexts. Use <b>siglongjmp</b>(3) or
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>sigaction</b>(2),
-<b>sigaltstack</b>(2), <b>sigprocmask</b>(2),
-<b>longjmp</b>(3), <b>makecontext</b>(3),
-<b>sigsetjmp</b>(3), <b>signal</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/sigaction">sigaction(2)</a>,
+<a href="https://man.page/2/sigaltstack">sigaltstack(2)</a>, <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>,
+<a href="https://man.page/3/longjmp">longjmp(3)</a>, <a href="https://man.page/3/makecontext">makecontext(3)</a>,
+<a href="https://man.page/3/sigsetjmp">sigsetjmp(3)</a>, <a href="https://man.page/7/signal">signal(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

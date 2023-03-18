@@ -82,8 +82,8 @@ The function <b>dlopen</b>() loads the dynamic shared object
 (shared library) file named by the null-terminated string
 <i>filename</i> and returns an opaque &quot;handle&quot; for
 the loaded object. This handle is employed with other
-functions in the dlopen API, such as <b>dlsym</b>(3),
-<b>dladdr</b>(3), <b>dlinfo</b>(3), and
+functions in the dlopen API, such as <a href="https://man.page/3/dlsym">dlsym(3)</a>,
+<a href="https://man.page/3/dladdr">dladdr(3)</a>, <a href="https://man.page/3/dlinfo">dlinfo(3)</a>, and
 <b>dlclose</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
@@ -243,7 +243,7 @@ contained in objects that have already been loaded.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
 <i>filename</i> is NULL, then the returned handle is for the
-main program. When given to <b>dlsym</b>(3), this handle
+main program. When given to <a href="https://man.page/3/dlsym">dlsym(3)</a>, this handle
 causes a search for a symbol in the main program, followed
 by all shared objects loaded at program startup, and then
 all shared objects loaded by <b>dlopen</b>() with the flag
@@ -260,13 +260,13 @@ dependencies that were loaded for that object).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Any global
 symbols in the executable that were placed into its dynamic
-symbol table by <b>ld</b>(1) can also be used to resolve
+symbol table by <a href="https://man.page/1/ld">ld(1)</a> can also be used to resolve
 references in a dynamically loaded shared object. Symbols
 may be placed in the dynamic symbol table either because the
 executable was linked with the flag &quot;-rdynamic&quot;
 (or, synonymously, &quot;--export-dynamic&quot;), which
 causes all of the executable&rsquo;s global symbols to be
-placed in the dynamic symbol table, or because <b>ld</b>(1)
+placed in the dynamic symbol table, or because <a href="https://man.page/1/ld">ld(1)</a>
 noted a dependency on a symbol in another object during
 static linking.</p>
 
@@ -312,7 +312,7 @@ refers to a namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <i>lmid</i>
 argument is either the ID of an existing namespace (which
-can be obtained using the <b>dlinfo</b>(3)
+can be obtained using the <a href="https://man.page/3/dlinfo">dlinfo(3)</a>
 <b>RTLD_DI_LMID</b> request) or one of the following special
 values: <b><br>
 LM_ID_BASE</b></p>
@@ -381,7 +381,7 @@ value.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Errors from
 these functions can be diagnosed using
-<b>dlerror</b>(3).</p>
+<a href="https://man.page/3/dlerror">dlerror(3)</a>.</p>
 
 <h2>VERSIONS
 <a name="VERSIONS"></a>
@@ -400,7 +400,7 @@ and <b>dlclose</b>() are present in glibc 2.0 and later.
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3296431.png" alt="Image grohtml-3296431.png"></p>
@@ -499,7 +499,7 @@ routine named <b>_fini</b>(), then that routine is called
 just before the object is unloaded. In this case, one must
 avoid linking against the system startup files, which
 contain default versions of these files; this can be done by
-using the <b>gcc</b>(1) <i>-nostartfiles</i> command-line
+using the <a href="https://man.page/1/gcc">gcc(1)</a> <i>-nostartfiles</i> command-line
 option.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Use of
@@ -509,7 +509,7 @@ other advantages, permit multiple initialization and
 finalization functions to be defined.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since glibc
-2.2.3, <b>atexit</b>(3) can be used to register an exit
+2.2.3, <a href="https://man.page/3/atexit">atexit(3)</a> can be used to register an exit
 handler that is automatically called when a shared object is
 unloaded.</p>
 
@@ -538,7 +538,7 @@ namespace.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The program
 below loads the (glibc) math library, looks up the address
-of the <b>cos</b>(3) function, and prints the cosine of 2.0.
+of the <a href="https://man.page/3/cos">cos(3)</a> function, and prints the cosine of 2.0.
 The following is an example of building and running the
 program:</p>
 
@@ -620,10 +620,10 @@ exit(EXIT_SUCCESS); <br>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ld</b>(1),
-<b>ldd</b>(1), <b>pldd</b>(1), <b>dl_iterate_phdr</b>(3),
-<b>dladdr</b>(3), <b>dlerror</b>(3), <b>dlinfo</b>(3),
-<b>dlsym</b>(3), <b>rtld-audit</b>(7), <b>ld.so</b>(8),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ld">ld(1)</a>,
+<a href="https://man.page/1/ldd">ldd(1)</a>, <a href="https://man.page/1/pldd">pldd(1)</a>, <a href="https://man.page/3/dl_iterate_phdr">dl_iterate_phdr(3)</a>,
+<a href="https://man.page/3/dladdr">dladdr(3)</a>, <a href="https://man.page/3/dlerror">dlerror(3)</a>, <a href="https://man.page/3/dlinfo">dlinfo(3)</a>,
+<a href="https://man.page/3/dlsym">dlsym(3)</a>, <a href="https://man.page/7/rtld-audit">rtld-audit(7)</a>, <b>ld.so</b>(8),
 <b>ldconfig</b>(8)</p>
 
 <p style="margin-left:11%; margin-top: 1em">gcc info pages,

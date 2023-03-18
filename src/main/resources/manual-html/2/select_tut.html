@@ -46,7 +46,7 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>select</b>(2)</p>
+<a href="https://man.page/2/select">select(2)</a></p>
 
 <h2>DESCRIPTION
 <a name="DESCRIPTION"></a>
@@ -65,7 +65,7 @@ descriptors.</p>
 provides background and tutorial information on the use of
 these system calls. For details of the arguments and
 semantics of <b>select</b>() and <b>pselect</b>(), see
-<b>select</b>(2).</p>
+<a href="https://man.page/2/select">select(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Combining
 signal and data events <br>
@@ -91,7 +91,7 @@ to set the signal mask to a set of signals that are to be
 received only within the <b>pselect</b>() call. For
 instance, let us say that the event in question was the exit
 of a child process. Before the start of the main loop, we
-would block <b>SIGCHLD</b> using <b>sigprocmask</b>(2). Our
+would block <b>SIGCHLD</b> using <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>. Our
 <b>pselect</b>() call would enable <b>SIGCHLD</b> by using
 an empty signal mask. Our program would look like:</p>
 
@@ -172,7 +172,7 @@ to sleep if there is no activity. UNIX programmers often
 find themselves in a position where they have to handle I/O
 from more than one file descriptor where the data flow may
 be intermittent. If you were to merely create a sequence of
-<b>read</b>(2) and <b>write</b>(2) calls, you would find
+<a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a> calls, you would find
 that one of your calls may block waiting for data from/to a
 file descriptor, while another file descriptor is unused
 though ready for I/O. <b>select</b>() efficiently copes with
@@ -252,8 +252,8 @@ all sets should be checked to see if they are ready.</p></td></tr>
 <td width="83%">
 
 
-<p>The functions <b>read</b>(2), <b>recv</b>(2),
-<b>write</b>(2), and <b>send</b>(2) do <i>not</i>
+<p>The functions <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/recv">recv(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, and <a href="https://man.page/2/send">send(2)</a> do <i>not</i>
 necessarily read/write the full amount of data that you have
 requested. If they do read/write the full amount, it&rsquo;s
 because you have a low traffic load and a fast stream. This
@@ -286,11 +286,11 @@ made larger.</p></td></tr>
 <td width="83%">
 
 
-<p>Calls to <b>read</b>(2), <b>recv</b>(2),
-<b>write</b>(2), <b>send</b>(2), and <b>select</b>() can
+<p>Calls to <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/recv">recv(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/send">send(2)</a>, and <b>select</b>() can
 fail with the error <b>EINTR</b>, and calls to
-<b>read</b>(2), <b>recv</b>(2) <b>write</b>(2), and
-<b>send</b>(2) can fail with <i>errno</i> set to
+<a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/recv">recv(2)</a> <a href="https://man.page/2/write">write(2)</a>, and
+<a href="https://man.page/2/send">send(2)</a> can fail with <i>errno</i> set to
 <b>EAGAIN</b> (<b>EWOULDBLOCK</b>). These results must be
 properly managed (not done properly above). If your program
 is not going to receive any signals, then it is unlikely you
@@ -306,8 +306,8 @@ nonblocking I/O, you will not get <b>EAGAIN</b>.</p></td></tr>
 <td width="83%">
 
 
-<p>Never call <b>read</b>(2), <b>recv</b>(2),
-<b>write</b>(2), or <b>send</b>(2) with a buffer length of
+<p>Never call <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/recv">recv(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, or <a href="https://man.page/2/send">send(2)</a> with a buffer length of
 zero.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -319,8 +319,8 @@ zero.</p> </td></tr>
 <td width="83%">
 
 
-<p>If the functions <b>read</b>(2), <b>recv</b>(2),
-<b>write</b>(2), and <b>send</b>(2) fail with errors other
+<p>If the functions <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/recv">recv(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, and <a href="https://man.page/2/send">send(2)</a> fail with errors other
 than those listed in <b>7.</b>, or one of the input
 functions returns 0, indicating end of file, then you should
 <i>not</i> pass that file descriptor to <b>select</b>()
@@ -362,7 +362,7 @@ reinitialized before each call.</p></td></tr>
 
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>select</b>(2).</p>
+<a href="https://man.page/2/select">select(2)</a>.</p>
 
 <h2>NOTES
 <a name="NOTES"></a>
@@ -378,16 +378,16 @@ using threads, forking, IPCs, signals, memory sharing, and
 so on.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>poll</b>(2) system call has the same functionality as
+<a href="https://man.page/2/poll">poll(2)</a> system call has the same functionality as
 <b>select</b>(), and is somewhat more efficient when
 monitoring sparse file descriptor sets. It is nowadays
 widely available, but historically was less portable than
 <b>select</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-Linux-specific <b>epoll</b>(7) API provides an interface
-that is more efficient than <b>select</b>(2) and
-<b>poll</b>(2) when monitoring large numbers of file
+Linux-specific <a href="https://man.page/7/epoll">epoll(7)</a> API provides an interface
+that is more efficient than <a href="https://man.page/2/select">select(2)</a> and
+<a href="https://man.page/2/poll">poll(2)</a> when monitoring large numbers of file
 descriptors.</p>
 
 <h2>EXAMPLES
@@ -725,10 +725,10 @@ program properly forwards most kinds of TCP connections
 including OOB signal data transmitted by <b>telnet</b>
 servers. It handles the tricky problem of having data flow
 in both directions simultaneously. You might think it more
-efficient to use a <b>fork</b>(2) call and devote a thread
+efficient to use a <a href="https://man.page/2/fork">fork(2)</a> call and devote a thread
 to each stream. This becomes more tricky than you might
 suspect. Another idea is to set nonblocking I/O using
-<b>fcntl</b>(2). This also has its problems because you end
+<a href="https://man.page/2/fcntl">fcntl(2)</a>. This also has its problems because you end
 up using inefficient timeouts.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The program
@@ -744,10 +744,10 @@ dropped.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>accept</b>(2),
-<b>connect</b>(2), <b>poll</b>(2), <b>read</b>(2),
-<b>recv</b>(2), <b>select</b>(2), <b>send</b>(2),
-<b>sigprocmask</b>(2), <b>write</b>(2), <b>epoll</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/accept">accept(2)</a>,
+<a href="https://man.page/2/connect">connect(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/recv">recv(2)</a>, <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/send">send(2)</a>,
+<a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

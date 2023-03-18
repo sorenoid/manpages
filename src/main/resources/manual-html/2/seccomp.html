@@ -74,9 +74,9 @@ Linux supports the following <i>operation</i> values:
 SECCOMP_SET_MODE_STRICT</b></p>
 
 <p style="margin-left:22%;">The only system calls that the
-calling thread is permitted to make are <b>read</b>(2),
-<b>write</b>(2), <b>_exit</b>(2) (but not
-<b>exit_group</b>(2)), and <b>sigreturn</b>(2). Other system
+calling thread is permitted to make are <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/2/_exit">_exit(2)</a> (but not
+<a href="https://man.page/2/exit_group">exit_group(2)</a>), and <a href="https://man.page/2/sigreturn">sigreturn(2)</a>. Other system
 calls result in the delivery of a <b>SIGKILL</b> signal.
 Strict secure computing mode is useful for number-crunching
 applications that may need to execute untrusted byte code,
@@ -84,15 +84,15 @@ perhaps obtained by reading from a pipe or socket.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Note that
 although the calling thread can no longer call
-<b>sigprocmask</b>(2), it can use <b>sigreturn</b>(2) to
+<a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>, it can use <a href="https://man.page/2/sigreturn">sigreturn(2)</a> to
 block all signals apart from <b>SIGKILL</b> and
-<b>SIGSTOP</b>. This means that <b>alarm</b>(2) (for
+<b>SIGSTOP</b>. This means that <a href="https://man.page/2/alarm">alarm(2)</a> (for
 example) is not sufficient for restricting the
 process&rsquo;s execution time. Instead, to reliably
 terminate the process, <b>SIGKILL</b> must be used. This can
-be done by using <b>timer_create</b>(2) with
+be done by using <a href="https://man.page/2/timer_create">timer_create(2)</a> with
 <b>SIGEV_SIGNAL</b> and <i>sigev_signo</i> set to
-<b>SIGKILL</b>, or by using <b>setrlimit</b>(2) to set the
+<b>SIGKILL</b>, or by using <a href="https://man.page/2/setrlimit">setrlimit(2)</a> to set the
 hard limit for <b>RLIMIT_CPU</b>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This operation
@@ -121,11 +121,11 @@ filter is invalid, <b>seccomp</b>() fails, returning
 <b>EINVAL</b> in <i>errno</i>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If
-<b>fork</b>(2) or <b>clone</b>(2) is allowed by the filter,
+<a href="https://man.page/2/fork">fork(2)</a> or <a href="https://man.page/2/clone">clone(2)</a> is allowed by the filter,
 any child processes will be constrained to the same system
-call filters as the parent. If <b>execve</b>(2) is allowed,
+call filters as the parent. If <a href="https://man.page/2/execve">execve(2)</a> is allowed,
 the existing filters will be preserved across a call to
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">In order to use
 the <b>SECCOMP_SET_MODE_FILTER</b> operation, either the
@@ -144,9 +144,9 @@ following call:</p>
 <b>EACCES</b> in <i>errno</i>. This requirement ensures that
 an unprivileged process cannot apply a malicious filter and
 then invoke a set-user-ID or other privileged program using
-<b>execve</b>(2), thus potentially compromising that
+<a href="https://man.page/2/execve">execve(2)</a>, thus potentially compromising that
 program. (Such a malicious filter might, for example, cause
-an attempt to use <b>setuid</b>(2) to set the caller&rsquo;s
+an attempt to use <a href="https://man.page/2/setuid">setuid(2)</a> to set the caller&rsquo;s
 user IDs to nonzero values to instead return 0 without
 actually making the system call. Thus, the program might be
 tricked into retaining superuser privileges in circumstances
@@ -154,7 +154,7 @@ where it is possible to influence it to do dangerous things
 because it did not actually drop privileges.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">If
-<b>prctl</b>(2) or <b>seccomp</b>() is allowed by the
+<a href="https://man.page/2/prctl">prctl(2)</a> or <b>seccomp</b>() is allowed by the
 attached filter, further filters may be added. This will
 increase evaluation time, but allows for further reduction
 of the attack surface during execution of a thread.</p>
@@ -266,7 +266,7 @@ numbering of system calls varies between architectures and
 some architectures (e.g., x86-64) allow user-space code to
 use the calling conventions of multiple architectures (and
 the convention being used may vary over the life of a
-process that uses <b>execve</b>(2) to execute binaries that
+process that uses <a href="https://man.page/2/execve">execve(2)</a> to execute binaries that
 employ the different conventions), it is usually necessary
 to verify the value of the <i>arch</i> field.</p>
 
@@ -302,7 +302,7 @@ in the ranges 512-547 as well as the corresponding non-x32
 syscalls ORed with <b>__X32_SYSCALL_BIT</b>. For example,
 <i>nr</i> == 521 and <i>nr</i> == (101 |
 <b>__X32_SYSCALL_BIT</b>) would result in invocations of
-<b>ptrace</b>(2) with potentially confused x32-vs-x86_64
+<a href="https://man.page/2/ptrace">ptrace(2)</a> with potentially confused x32-vs-x86_64
 semantics in the kernel. Policies intended to work on
 kernels before Linux 5.4 must ensure that they deny or
 otherwise correctly handle these system calls. On Linux 5.4
@@ -315,8 +315,8 @@ machine-language instruction that performed the system call.
 This might be useful in conjunction with the use of
 <i>/proc/[pid]/maps</i> to perform checks based on which
 region (mapping) of the program made the system call.
-(Probably, it is wise to lock down the <b>mmap</b>(2) and
-<b>mprotect</b>(2) system calls to prevent the program from
+(Probably, it is wise to lock down the <a href="https://man.page/2/mmap">mmap(2)</a> and
+<a href="https://man.page/2/mprotect">mprotect(2)</a> system calls to prevent the program from
 subverting such checks.)</p>
 
 <p style="margin-left:11%; margin-top: 1em">When checking
@@ -365,14 +365,14 @@ call is not executed. By contrast with
 <b>SECCOMP_RET_KILL_THREAD</b> below, all threads in the
 thread group are terminated. (For a discussion of thread
 groups, see the description of the <b>CLONE_THREAD</b> flag
-in <b>clone</b>(2).)</p>
+in <a href="https://man.page/2/clone">clone(2)</a>.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">The process
 terminates <i>as though</i> killed by a <b>SIGSYS</b>
 signal. Even if a signal handler has been registered for
 <b>SIGSYS</b>, the handler will be ignored in this case and
 the process always terminates. To a parent process that is
-waiting on this process (using <b>waitpid</b>(2) or
+waiting on this process (using <a href="https://man.page/2/waitpid">waitpid(2)</a> or
 similar), the returned <i>wstatus</i> will indicate that its
 child was terminated as though by a <b>SIGSYS</b>
 signal.</p>
@@ -392,7 +392,7 @@ signal. See <b>SECCOMP_RET_KILL_PROCESS</b> above.</p>
 <p style="margin-left:22%; margin-top: 1em">Before Linux
 4.11, any process terminated in this way would not trigger a
 coredump (even though <b>SIGSYS</b> is documented in
-<b>signal</b>(7) as having a default action of termination
+<a href="https://man.page/7/signal">signal(7)</a> as having a default action of termination
 with a core dump). Since Linux 4.11, a single-threaded
 process will dump core if terminated in this way.</p>
 
@@ -414,7 +414,7 @@ state.</p>
 kernel sending a thread-directed <b>SIGSYS</b> signal to the
 triggering thread. (The system call is not executed.)
 Various fields will be set in the <i>siginfo_t</i> structure
-(see <b>sigaction</b>(2)) associated with signal:</p>
+(see <a href="https://man.page/2/sigaction">sigaction(2)</a>) associated with signal:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -498,7 +498,7 @@ without executing the system call.</p>
 
 <p style="margin-left:22%;">When returned, this value will
 cause the kernel to attempt to notify a
-<b>ptrace</b>(2)-based tracer prior to executing the system
+<a href="https://man.page/2/ptrace">ptrace(2)</a>-based tracer prior to executing the system
 call. If there is no tracer present, the system call is not
 executed and returns a failure status with <i>errno</i> set
 to <b>ENOSYS</b>.</p>
@@ -523,7 +523,7 @@ puts in the return value register.</p>
 4.8, the seccomp check will not be run again after the
 tracer is notified. (This means that, on older kernels,
 seccomp-based sandboxes <b>must not</b> allow use of
-<b>ptrace</b>(2)&mdash;even of other sandboxed
+<a href="https://man.page/2/ptrace">ptrace(2)</a>&mdash;even of other sandboxed
 processes&mdash;without extreme care; ptracers can use this
 mechanism to escape from the seccomp sandbox.)</p>
 
@@ -679,7 +679,7 @@ logged.</p> </td></tr>
 <b>SECCOMP_FILTER_FLAG_TSYNC</b> was used, the return value
 is the ID of the thread that caused the synchronization
 failure. (This ID is a kernel thread ID of the type returned
-by <b>clone</b>(2) and <b>gettid</b>(2).) On other errors,
+by <a href="https://man.page/2/clone">clone(2)</a> and <a href="https://man.page/2/gettid">gettid(2)</a>.) On other errors,
 -1 is returned, and <i>errno</i> is set to indicate the
 cause of the error.</p>
 
@@ -866,16 +866,16 @@ filters.</p>
 <p style="margin-left:11%; margin-top: 1em">The
 <i>Seccomp</i> field of the <i>/proc/[pid]/status</i> file
 provides a method of viewing the seccomp mode of a process;
-see <b>proc</b>(5).</p>
+see <a href="https://man.page/5/proc">proc(5)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>seccomp</b>()
 provides a superset of the functionality provided by the
-<b>prctl</b>(2) <b>PR_SET_SECCOMP</b> operation (which does
+<a href="https://man.page/2/prctl">prctl(2)</a> <b>PR_SET_SECCOMP</b> operation (which does
 not support <i>flags</i>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
-4.4, the <b>ptrace</b>(2) <b>PTRACE_SECCOMP_GET_FILTER</b>
+4.4, the <a href="https://man.page/2/ptrace">ptrace(2)</a> <b>PTRACE_SECCOMP_GET_FILTER</b>
 operation can be used to dump a process&rsquo;s seccomp
 filters.</p>
 
@@ -1012,12 +1012,12 @@ seccomp filters to a program, including the following:</p>
 
 
 <p style="margin-top: 1em">Some traditional system calls
-have user-space implementations in the <b>vdso</b>(7) on
+have user-space implementations in the <a href="https://man.page/7/vdso">vdso(7)</a> on
 many architectures. Notable examples include
-<b>clock_gettime</b>(2), <b>gettimeofday</b>(2), and
-<b>time</b>(2). On such architectures, seccomp filtering for
+<a href="https://man.page/2/clock_gettime">clock_gettime(2)</a>, <a href="https://man.page/2/gettimeofday">gettimeofday(2)</a>, and
+<a href="https://man.page/2/time">time(2)</a>. On such architectures, seccomp filtering for
 these system calls will have no effect. (However, there are
-cases where the <b>vdso</b>(7) implementations may fall back
+cases where the <a href="https://man.page/7/vdso">vdso(7)</a> implementations may fall back
 to invoking the true system call, in which case seccomp
 filters would see the system call.)</p></td></tr>
 <tr valign="top" align="left">
@@ -1051,9 +1051,9 @@ one must be aware of the following:</p></td></tr>
 <p style="margin-top: 1em">The glibc wrappers for some
 traditional system calls may actually employ system calls
 with different names in the kernel. For example, the
-<b>exit</b>(2) wrapper function actually employs the
-<b>exit_group</b>(2) system call, and the <b>fork</b>(2)
-wrapper function actually calls <b>clone</b>(2).</p></td></tr>
+<a href="https://man.page/2/exit">exit(2)</a> wrapper function actually employs the
+<a href="https://man.page/2/exit_group">exit_group(2)</a> system call, and the <a href="https://man.page/2/fork">fork(2)</a>
+wrapper function actually calls <a href="https://man.page/2/clone">clone(2)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="15%"></td>
 <td width="2%">
@@ -1081,9 +1081,9 @@ different architectures.</p></td></tr>
 
 <p>Finally, the behavior of wrapper functions can change
 across glibc versions. For example, in older versions, the
-glibc wrapper function for <b>open</b>(2) invoked the system
+glibc wrapper function for <a href="https://man.page/2/open">open(2)</a> invoked the system
 call of the same name, but starting in glibc 2.26, the
-implementation switched to calling <b>openat</b>(2) on all
+implementation switched to calling <a href="https://man.page/2/openat">openat(2)</a> on all
 architectures.</p> </td></tr>
 </table>
 
@@ -1198,8 +1198,8 @@ number.</p> </td></tr>
 <p style="margin-left:11%; margin-top: 1em">The remaining
 command-line arguments specify the pathname and additional
 arguments of a program that the example program should
-attempt to execute using <b>execv</b>(3) (a library function
-that employs the <b>execve</b>(2) system call). Some example
+attempt to execute using <a href="https://man.page/3/execv">execv(3)</a> (a library function
+that employs the <a href="https://man.page/2/execve">execve(2)</a> system call). Some example
 runs of the program are shown below.</p>
 
 <p style="margin-left:11%; margin-top: 1em">First, we
@@ -1228,8 +1228,8 @@ EADDRNOTAVAIL 99 Cannot assign requested address</p>
 
 <p style="margin-left:11%; margin-top: 1em">In the
 following example, we attempt to run the command
-<b>whoami</b>(1), but the BPF filter rejects the
-<b>execve</b>(2) system call, so that the command is not
+<a href="https://man.page/1/whoami">whoami(1)</a>, but the BPF filter rejects the
+<a href="https://man.page/2/execve">execve(2)</a> system call, so that the command is not
 even executed:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>syscall_nr
@@ -1244,9 +1244,9 @@ $ <b>./a.out 59 0xC000003E 99 /bin/whoami</b> <br>
 execv: Cannot assign requested address</p>
 
 <p style="margin-left:11%; margin-top: 1em">In the next
-example, the BPF filter rejects the <b>write</b>(2) system
+example, the BPF filter rejects the <a href="https://man.page/2/write">write(2)</a> system
 call, so that, although it is successfully started, the
-<b>whoami</b>(1) command is not able to write output:</p>
+<a href="https://man.page/1/whoami">whoami(1)</a> command is not able to write output:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>syscall_nr
 write</b> <br>
@@ -1255,7 +1255,7 @@ $ <b>./a.out 1 0xC000003E 99 /bin/whoami</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">In the final
 example, the BPF filter rejects a system call that is not
-used by the <b>whoami</b>(1) command, so it is able to
+used by the <a href="https://man.page/1/whoami">whoami(1)</a> command, so it is able to
 successfully execute and produce output:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ <b>syscall_nr
@@ -1395,16 +1395,16 @@ exit(EXIT_FAILURE); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>bpfc</b>(1),
-<b>strace</b>(1), <b>bpf</b>(2), <b>prctl</b>(2),
-<b>ptrace</b>(2), <b>sigaction</b>(2), <b>proc</b>(5),
-<b>signal</b>(7), <b>socket</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/bpfc">bpfc(1)</a>,
+<a href="https://man.page/1/strace">strace(1)</a>, <a href="https://man.page/2/bpf">bpf(2)</a>, <a href="https://man.page/2/prctl">prctl(2)</a>,
+<a href="https://man.page/2/ptrace">ptrace(2)</a>, <a href="https://man.page/2/sigaction">sigaction(2)</a>, <a href="https://man.page/5/proc">proc(5)</a>,
+<a href="https://man.page/7/signal">signal(7)</a>, <a href="https://man.page/7/socket">socket(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">Various pages
 from the <i>libseccomp</i> library, including:
-<b>scmp_sys_resolver</b>(1), <b>seccomp_export_bpf</b>(3),
-<b>seccomp_init</b>(3), <b>seccomp_load</b>(3), and
-<b>seccomp_rule_add</b>(3).</p>
+<a href="https://man.page/1/scmp_sys_resolver">scmp_sys_resolver(1)</a>, <a href="https://man.page/3/seccomp_export_bpf">seccomp_export_bpf(3)</a>,
+<a href="https://man.page/3/seccomp_init">seccomp_init(3)</a>, <a href="https://man.page/3/seccomp_load">seccomp_load(3)</a>, and
+<a href="https://man.page/3/seccomp_rule_add">seccomp_rule_add(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The kernel
 source files <i>Documentation/networking/filter.txt</i> and

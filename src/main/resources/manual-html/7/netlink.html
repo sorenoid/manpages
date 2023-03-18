@@ -87,7 +87,7 @@ NETLINK_ROUTE</b></p>
 updates and may be used to modify the routing tables (both
 IPv4 and IPv6), IP addresses, link parameters, neighbor
 setups, queueing disciplines, traffic classes and packet
-classifiers (see <b>rtnetlink</b>(7)).</p>
+classifiers (see <a href="https://man.page/7/rtnetlink">rtnetlink(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>NETLINK_W1</b> (Linux 2.6.13
 to 2.16.17)</p>
@@ -114,7 +114,7 @@ Linux 3.3)</p>
 
 <p style="margin-left:22%;">Query information about sockets
 of various protocol families from the kernel (see
-<b>sock_diag</b>(7)).</p>
+<a href="https://man.page/7/sock_diag">sock_diag(7)</a>).</p>
 
 <p style="margin-left:11%;"><b>NETLINK_INET_DIAG</b> (since
 Linux 2.6.14)</p>
@@ -212,7 +212,7 @@ API.</p>
 messages consist of a byte stream with one or multiple
 <i>nlmsghdr</i> headers and associated payload. The byte
 stream should be accessed only with the standard
-<b>NLMSG_*</b> macros. See <b>netlink</b>(3) for further
+<b>NLMSG_*</b> macros. See <a href="https://man.page/3/netlink">netlink(3)</a> for further
 information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In multipart
@@ -253,7 +253,7 @@ struct nlmsghdr msg; /* Message header that caused the error
 <p style="margin-left:11%; margin-top: 1em">A netlink
 family usually specifies more message types, see the
 appropriate manual pages for that, for example,
-<b>rtnetlink</b>(7) for <b>NETLINK_ROUTE</b>.</p>
+<a href="https://man.page/7/rtnetlink">rtnetlink(7)</a> for <b>NETLINK_ROUTE</b>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3527211.png" alt="Image grohtml-3527211.png"></p>
@@ -301,7 +301,7 @@ the socket buffer is full: the message will be dropped and
 the kernel and the user-space process will no longer have
 the same view of kernel state. It is up to the application
 to detect when this happens (via the <b>ENOBUFS</b> error
-returned by <b>recvmsg</b>(2)) and resynchronize.</p>
+returned by <a href="https://man.page/2/recvmsg">recvmsg(2)</a>) and resynchronize.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Address
 formats</b> <br>
@@ -328,7 +328,7 @@ owns several netlink sockets, then <i>nl_pid</i> can be
 equal to the process ID only for at most one socket. There
 are two ways to assign <i>nl_pid</i> to a netlink socket. If
 the application sets <i>nl_pid</i> before calling
-<b>bind</b>(2), then it is up to the application to make
+<a href="https://man.page/2/bind">bind(2)</a>, then it is up to the application to make
 sure that <i>nl_pid</i> is unique. If the application sets
 it to 0, the kernel takes care of assigning it. The kernel
 assigns the process ID to the first netlink socket the
@@ -339,15 +339,15 @@ netlink socket that the process subsequently creates.</p>
 <p style="margin-left:11%; margin-top: 1em"><i>nl_groups</i>
 is a bit mask with every bit representing a netlink group
 number. Each netlink family has a set of 32 multicast
-groups. When <b>bind</b>(2) is called on the socket, the
+groups. When <a href="https://man.page/2/bind">bind(2)</a> is called on the socket, the
 <i>nl_groups</i> field in the <i>sockaddr_nl</i> should be
 set to a bit mask of the groups which it wishes to listen
 to. The default value for this field is zero which means
 that no multicasts will be received. A socket may multicast
 messages to any of the multicast groups by setting
 <i>nl_groups</i> to a bit mask of the groups it wishes to
-send to when it calls <b>sendmsg</b>(2) or does a
-<b>connect</b>(2). Only processes with an effective UID of 0
+send to when it calls <a href="https://man.page/2/sendmsg">sendmsg(2)</a> or does a
+<a href="https://man.page/2/connect">connect(2)</a>. Only processes with an effective UID of 0
 or the <b>CAP_NET_ADMIN</b> capability may send or listen to
 a netlink multicast group. Since Linux 2.6.13, messages
 can&rsquo;t be broadcast to multiple groups. Any replies to
@@ -363,7 +363,7 @@ users to send messages.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Socket
 options</b> <br>
 To set or get a netlink socket option, call
-<b>getsockopt</b>(2) to read or <b>setsockopt</b>(2) to
+<a href="https://man.page/2/getsockopt">getsockopt(2)</a> to read or <a href="https://man.page/2/setsockopt">setsockopt(2)</a> to
 write the option with the option level argument set to
 <b>SOL_NETLINK</b>. Unless otherwise noted, <i>optval</i> is
 a pointer to an <i>int</i>. <b><br>
@@ -540,9 +540,9 @@ with parsing payload */ <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>cmsg</b>(3),
-<b>netlink</b>(3), <b>capabilities</b>(7),
-<b>rtnetlink</b>(7), <b>sock_diag</b>(7) <br>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/cmsg">cmsg(3)</a>,
+<a href="https://man.page/3/netlink">netlink(3)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/rtnetlink">rtnetlink(7)</a>, <a href="https://man.page/7/sock_diag">sock_diag(7)</a> <br>
 
 <a href="ftp://ftp.inr.ac.ru/ip-routing/iproute2*">information
 about libnetlink</a> <br>

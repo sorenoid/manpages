@@ -52,7 +52,7 @@ Traditionally, daemons are implemented following a scheme
 originating in SysV Unix. Modern daemons should follow a
 simpler yet more powerful scheme (here called
 &quot;new-style&quot; daemons), as implemented by
-<b>systemd</b>(1). This manual page covers both schemes, and
+<a href="https://man.page/1/systemd">systemd(1)</a>. This manual page covers both schemes, and
 in particular includes recommendations for daemons that
 shall be included in the systemd init system.</p>
 
@@ -258,7 +258,7 @@ for details.</font></p>
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">9.
 If applicable, a daemon should notify the init system about
 startup completion or status updates via the
-<b>sd_notify</b>(3) interface.</font></p>
+<a href="https://man.page/3/sd_notify">sd_notify(3)</a> interface.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">10.
@@ -271,7 +271,7 @@ log lines with strings like &quot;&lt;4&gt;&quot; (for log
 level 4 &quot;WARNING&quot; in the syslog priority scheme),
 following a similar style as the Linux kernel's
 <b>printk()</b> level system. For details, see
-<b>sd-daemon</b>(3) and <b>systemd.exec</b>(5).</font></p>
+<a href="https://man.page/3/sd-daemon">sd-daemon(3)</a> and <b>systemd.exec</b>(5).</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000">11.
@@ -380,7 +380,7 @@ daemons which support socket activation must be able to
 receive their sockets from the init system instead of
 creating and binding them themselves. For details about the
 programming interfaces for this scheme provided by systemd,
-see <b>sd_listen_fds</b>(3) and <b>sd-daemon</b>(3). For
+see <a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a> and <a href="https://man.page/3/sd-daemon">sd-daemon(3)</a>. For
 details about porting existing daemons to socket-based
 activation, see below. With minimal effort, it is possible
 to implement socket-based activation in addition to
@@ -449,7 +449,7 @@ in bluetooth.target from them and bluetoothd.service from
 that target. This provides for nicer abstraction and gives
 administrators the option to enable bluetoothd.service via
 controlling a bluetooth.target.wants/ symlink uniformly with
-a command like <b>enable</b> of <b>systemctl</b>(1) instead
+a command like <b>enable</b> of <a href="https://man.page/1/systemctl">systemctl(1)</a> instead
 of manipulating the udev ruleset.</font></p>
 
 
@@ -579,12 +579,12 @@ request but not activate them automatically during boot.
 Optionally, during package installation (e.g. <b>rpm -i</b>
 by the administrator), symlinks should be created in the
 systemd configuration directories via the <b>enable</b>
-command of the <b>systemctl</b>(1) tool to activate them
+command of the <a href="https://man.page/1/systemctl">systemctl(1)</a> tool to activate them
 automatically on boot.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">Packages
-using <b>autoconf</b>(1) are recommended to use a configure
+using <a href="https://man.page/1/autoconf">autoconf(1)</a> are recommended to use a configure
 script excerpt like the following to determine the unit
 installation path during source configuration:</font></p>
 
@@ -633,7 +633,7 @@ for the reader.)</font></p>
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">Additionally,
 to ensure that <b>make distcheck</b> continues to work, it
 is recommended to add the following to the top-level
-Makefile.am file in <b>automake</b>(1)-based
+Makefile.am file in <a href="https://man.page/1/automake">automake(1)</a>-based
 projects:</font></p>
 
 
@@ -772,7 +772,7 @@ the local system via local <b>AF_UNIX</b> sockets, consider
 implementing socket-based activation (see above). Usually, a
 minimal patch is sufficient to implement this: Extend the
 socket creation in the daemon code so that
-<b>sd_listen_fds</b>(3) is checked for already passed
+<a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a> is checked for already passed
 sockets first. If sockets are passed (i.e. when
 <b>sd_listen_fds()</b> returns a positive value), skip the
 socket creation step and use the passed sockets. Secondly,
@@ -810,7 +810,7 @@ for details.</font></p>
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">It
 is recommended to follow the general guidelines for placing
 package files, as discussed in
-<b>file-hierarchy</b>(7).</font></p>
+<a href="https://man.page/7/file-hierarchy">file-hierarchy(7)</a>.</font></p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -818,11 +818,11 @@ package files, as discussed in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
-<b>sd-daemon</b>(3), <b>sd_listen_fds</b>(3),
-<b>sd_notify</b>(3), <b>daemon</b>(3),
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
+<a href="https://man.page/3/sd-daemon">sd-daemon(3)</a>, <a href="https://man.page/3/sd_listen_fds">sd_listen_fds(3)</a>,
+<a href="https://man.page/3/sd_notify">sd_notify(3)</a>, <a href="https://man.page/3/daemon">daemon(3)</a>,
 <b>systemd.service</b>(5),
-<b>file-hierarchy</b>(7)</font></p>
+<a href="https://man.page/7/file-hierarchy">file-hierarchy(7)</a></font></p>
 
 <h2>NOTES
 <a name="NOTES"></a>

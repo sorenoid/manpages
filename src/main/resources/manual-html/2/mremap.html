@@ -80,7 +80,7 @@ description of <b>MREMAP_FIXED</b> below.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the value of
 <i>old_size</i> is zero, and <i>old_address</i> refers to a
-shareable mapping (see <b>mmap</b>(2) <b>MAP_SHARED</b>),
+shareable mapping (see <a href="https://man.page/2/mmap">mmap(2)</a> <b>MAP_SHARED</b>),
 then <b>mremap</b>() will create a new mapping of the same
 pages. <i>new_size</i> will be the size of the new mapping
 and the location of the new mapping may be specified with
@@ -107,7 +107,7 @@ starting address of the mapping should be employed).</p>
 Linux 2.3.31)</p>
 
 <p style="margin-left:22%;">This flag serves a similar
-purpose to the <b>MAP_FIXED</b> flag of <b>mmap</b>(2). If
+purpose to the <b>MAP_FIXED</b> flag of <a href="https://man.page/2/mmap">mmap(2)</a>. If
 this flag is specified, then <b>mremap</b>() accepts a fifth
 argument, <i>void&nbsp;*new_address</i>, which specifies a
 page-aligned address to which the mapping must be moved. Any
@@ -130,14 +130,14 @@ to a new address but does not unmap the mapping at
 <b>MREMAP_DONTUNMAP</b> flag can be used only with private
 anonymous mappings (see the description of
 <b>MAP_PRIVATE</b> and <b>MAP_ANONYMOUS</b> in
-<b>mmap</b>(2)).</p>
+<a href="https://man.page/2/mmap">mmap(2)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">After
 completion, any access to the range specified by
 <i>old_address</i> and <i>old_size</i> will result in a page
 fault. The page fault will be handled by a
-<b>userfaultfd</b>(2) handler if the address is in a range
-previously registered with <b>userfaultfd</b>(2). Otherwise,
+<a href="https://man.page/2/userfaultfd">userfaultfd(2)</a> handler if the address is in a range
+previously registered with <a href="https://man.page/2/userfaultfd">userfaultfd(2)</a>. Otherwise,
 the kernel allocates a zero-filled page to handle the
 fault.</p>
 
@@ -148,7 +148,7 @@ some possible applications of <b>MREMAP_DONTUNMAP</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the memory
 segment specified by <i>old_address</i> and <i>old_size</i>
-is locked (using <b>mlock</b>(2) or similar), then this lock
+is locked (using <a href="https://man.page/2/mlock">mlock(2)</a> or similar), then this lock
 is maintained when the segment is resized and/or relocated.
 As a consequence, the amount of memory locked by the process
 may change.</p>
@@ -401,7 +401,7 @@ to be portable.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>mremap</b>()
 changes the mapping between virtual addresses and memory
 pages. This can be used to implement a very efficient
-<b>realloc</b>(3).</p>
+<a href="https://man.page/3/realloc">realloc(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">In Linux,
 memory is divided into pages. A process has (one or) several
@@ -416,7 +416,7 @@ segmentation violation.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
 <b>mremap</b>() is used to move or expand an area locked
-with <b>mlock</b>(2) or equivalent, the <b>mremap</b>() call
+with <a href="https://man.page/2/mlock">mlock(2)</a> or equivalent, the <b>mremap</b>() call
 will make a best effort to populate the new area but will
 not fail with <b>ENOMEM</b> if the area cannot be
 populated.</p>
@@ -445,9 +445,9 @@ include:</p>
 
 
 <p style="margin-top: 1em">Non-cooperative
-<b>userfaultfd</b>(2): an application can yank out a virtual
+<a href="https://man.page/2/userfaultfd">userfaultfd(2)</a>: an application can yank out a virtual
 address range using <b>MREMAP_DONTUNMAP</b> and then employ
-a <b>userfaultfd</b>(2) handler to handle the page faults
+a <a href="https://man.page/2/userfaultfd">userfaultfd(2)</a> handler to handle the page faults
 that subsequently occur as other threads in the process
 touch pages in the yanked range.</p></td></tr>
 <tr valign="top" align="left">
@@ -461,7 +461,7 @@ touch pages in the yanked range.</p></td></tr>
 
 
 <p>Garbage collection: <b>MREMAP_DONTUNMAP</b> can be used
-in conjunction with <b>userfaultfd</b>(2) to implement
+in conjunction with <a href="https://man.page/2/userfaultfd">userfaultfd(2)</a> to implement
 garbage collection algorithms (e.g., in a Java virtual
 machine). Such an implementation can be cheaper (and
 simpler) than conventional garbage collection techniques
@@ -478,7 +478,7 @@ accesses to those pages.</p></td></tr>
 <p style="margin-left:11%; margin-top: 1em">Before Linux
 4.14, if <i>old_size</i> was zero and the mapping referred
 to by <i>old_address</i> was a private mapping
-(<b>mmap</b>(2) <b>MAP_PRIVATE</b>), <b>mremap</b>() created
+(<a href="https://man.page/2/mmap">mmap(2)</a> <b>MAP_PRIVATE</b>), <b>mremap</b>() created
 a new private mapping unrelated to the original mapping.
 This behavior was unintended and probably unexpected in
 user-space applications (since the intention of
@@ -491,10 +491,10 @@ with the error <b>EINVAL</b> in this scenario.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>brk</b>(2),
-<b>getpagesize</b>(2), <b>getrlimit</b>(2), <b>mlock</b>(2),
-<b>mmap</b>(2), <b>sbrk</b>(2), <b>malloc</b>(3),
-<b>realloc</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/brk">brk(2)</a>,
+<a href="https://man.page/2/getpagesize">getpagesize(2)</a>, <a href="https://man.page/2/getrlimit">getrlimit(2)</a>, <a href="https://man.page/2/mlock">mlock(2)</a>,
+<a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/sbrk">sbrk(2)</a>, <a href="https://man.page/3/malloc">malloc(3)</a>,
+<a href="https://man.page/3/realloc">realloc(3)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">Your favorite
 text book on operating systems for more information on paged

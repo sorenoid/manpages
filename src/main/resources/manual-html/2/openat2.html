@@ -70,7 +70,7 @@ NOTES.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>openat2</b>() system call is an extension of
-<b>openat</b>(2) and provides a superset of its
+<a href="https://man.page/2/openat">openat(2)</a> and provides a superset of its
 functionality.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -80,7 +80,7 @@ may optionally (if <b>O_CREAT</b> is specified in
 <i>how.flags</i>) be created.</p>
 
 <p style="margin-left:11%; margin-top: 1em">As with
-<b>openat</b>(2), if <i>pathname</i> is a relative pathname,
+<a href="https://man.page/2/openat">openat(2)</a>, if <i>pathname</i> is a relative pathname,
 then it is interpreted relative to the directory referred to
 by the file descriptor <i>dirfd</i> (or the current working
 directory of the calling process, if <i>dirfd</i> is the
@@ -100,7 +100,7 @@ extensions. The <i>size</i> argument must be specified as
 structure</b> <br>
 The <i>how</i> argument specifies how <i>pathname</i> should
 be opened, and acts as a superset of the <i>flags</i> and
-<i>mode</i> arguments to <b>openat</b>(2). This argument is
+<i>mode</i> arguments to <a href="https://man.page/2/openat">openat(2)</a>. This argument is
 a pointer to a structure of the following form:</p>
 
 <p style="margin-left:17%; margin-top: 1em">struct open_how
@@ -137,12 +137,12 @@ the <i>open_how</i> structure are as follows:</p>
 
 <p>This field specifies the file creation and file status
 flags to use when opening the file. All of the <b>O_*</b>
-flags defined for <b>openat</b>(2) are valid
+flags defined for <a href="https://man.page/2/openat">openat(2)</a> are valid
 <b>openat2</b>() flag values.</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">Whereas
-<b>openat</b>(2) ignores unknown bits in its <i>flags</i>
+<a href="https://man.page/2/openat">openat(2)</a> ignores unknown bits in its <i>flags</i>
 argument, <b>openat2</b>() returns an error if unknown or
 conflicting flags are specified in <i>how.flags</i>.</p>
 
@@ -160,11 +160,11 @@ conflicting flags are specified in <i>how.flags</i>.</p>
 
 <p style="margin-top: 1em">This field specifies the mode
 for the new file, with identical semantics to the
-<i>mode</i> argument of <b>openat</b>(2).</p></td></tr>
+<i>mode</i> argument of <a href="https://man.page/2/openat">openat(2)</a>.</p></td></tr>
 </table>
 
 <p style="margin-left:22%; margin-top: 1em">Whereas
-<b>openat</b>(2) ignores bits other than those in the range
+<a href="https://man.page/2/openat">openat(2)</a> ignores bits other than those in the range
 <i>07777</i> in its <i>mode</i> argument, <b>openat2</b>()
 returns an error if <i>how.mode</i> contains bits other than
 <i>07777</i>. Similarly, an error is returned if
@@ -177,7 +177,7 @@ and <i>how.flags</i> does not contain <b>O_CREAT</b> or
 <p style="margin-left:22%;">This is a bit-mask of flags
 that modify the way in which <b>all</b> components of
 <i>pathname</i> will be resolved. (See
-<b>path_resolution</b>(7) for background information.)</p>
+<a href="https://man.page/7/path_resolution">path_resolution(7)</a> for background information.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">The primary use
 case for these flags is to allow trusted programs to
@@ -212,9 +212,9 @@ also interpreted relative to <i>dirfd</i>.</p>
 
 <p style="margin-left:32%; margin-top: 1em">The effect of
 this flag is as though the calling process had used
-<b>chroot</b>(2) to (temporarily) modify its root directory
+<a href="https://man.page/2/chroot">chroot(2)</a> to (temporarily) modify its root directory
 (to the directory referred to by <i>dirfd</i>). However,
-unlike <b>chroot</b>(2) (which changes the filesystem root
+unlike <a href="https://man.page/2/chroot">chroot(2)</a> (which changes the filesystem root
 permanently for a process), <b>RESOLVE_IN_ROOT</b> allows a
 program to efficiently restrict path resolution on a
 per-open basis.</p>
@@ -233,8 +233,8 @@ resolution during path resolution.</p>
 
 <p style="margin-left:32%; margin-top: 1em">Magic links are
 symbolic link-like objects that are most notably found in
-<b>proc</b>(5); examples include <i>/proc/[pid]/exe</i> and
-<i>/proc/[pid]/fd/*</i>. (See <b>symlink</b>(7) for more
+<a href="https://man.page/5/proc">proc(5)</a>; examples include <i>/proc/[pid]/exe</i> and
+<i>/proc/[pid]/fd/*</i>. (See <a href="https://man.page/7/symlink">symlink(7)</a> for more
 details.)</p>
 
 <p style="margin-left:32%; margin-top: 1em">Unknowingly
@@ -255,7 +255,7 @@ Examples of such risks include the following:</p>
 
 <p>If the process opening a pathname is a controlling
 process that currently has no controlling terminal (see
-<b>credentials</b>(7)), then opening a magic link inside
+<a href="https://man.page/7/credentials">credentials(7)</a>), then opening a magic link inside
 <i>/proc/[pid]/fd</i> that happens to refer to a terminal
 would cause the process to acquire a controlling
 terminal.</p> </td></tr>
@@ -363,7 +363,7 @@ and <i>errno</i> is set appropriately.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The set of
 errors returned by <b>openat2</b>() includes all of the
-errors returned by <b>openat</b>(2), as well as the
+errors returned by <a href="https://man.page/2/openat">openat(2)</a>, as well as the
 following additional errors:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -516,7 +516,7 @@ of <b>RESOLVE_BENEATH</b> were modeled after FreeBSD&rsquo;s
 
 <p style="margin-left:11%; margin-top: 1em">Glibc does not
 provide a wrapper for this system call; call it using
-<b>syscall</b>(2).</p>
+<a href="https://man.page/2/syscall">syscall(2)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>Extensibility</b>
@@ -530,8 +530,8 @@ backwards-compatibility, with <i>size</i> acting as an
 implicit version number. (Because new extension fields will
 always be appended, the structure size will always
 increase.) This extensibility design is very similar to
-other system calls such as <b>sched_setattr</b>(2),
-<b>perf_event_open</b>(2), and <b>clone3</b>(2).</p>
+other system calls such as <a href="https://man.page/2/sched_setattr">sched_setattr(2)</a>,
+<a href="https://man.page/2/perf_event_open">perf_event_open(2)</a>, and <a href="https://man.page/2/clone3">clone3(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If we let
 <i>usize</i> be the size of the structure as specified by
@@ -605,7 +605,7 @@ how = { .flags = O_RDWR, <br>
 .resolve = RESOLVE_IN_ROOT };</p>
 
 <p style="margin-left:11%; margin-top: 1em">or explicitly
-using <b>memset</b>(3) or similar:</p>
+using <a href="https://man.page/3/memset">memset(3)</a> or similar:</p>
 
 <p style="margin-left:17%; margin-top: 1em">struct open_how
 how; <br>
@@ -626,8 +626,8 @@ produce an error of <b>E2BIG</b>).</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>openat</b>(2),
-<b>path_resolution</b>(7), <b>symlink</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/openat">openat(2)</a>,
+<a href="https://man.page/7/path_resolution">path_resolution(7)</a>, <a href="https://man.page/7/symlink">symlink(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -50,10 +50,10 @@ actions.</p>
 <p style="margin-left:11%; margin-top: 1em">A semaphore is
 an integer whose value is never allowed to fall below zero.
 Two operations can be performed on semaphores: increment the
-semaphore value by one (<b>sem_post</b>(3)); and decrement
-the semaphore value by one (<b>sem_wait</b>(3)). If the
+semaphore value by one (<a href="https://man.page/3/sem_post">sem_post(3)</a>); and decrement
+the semaphore value by one (<a href="https://man.page/3/sem_wait">sem_wait(3)</a>). If the
 value of a semaphore is currently zero, then a
-<b>sem_wait</b>(3) operation will block until the value
+<a href="https://man.page/3/sem_wait">sem_wait(3)</a> operation will block until the value
 becomes greater than zero.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX
@@ -68,17 +68,17 @@ null-terminated string of up to <b>NAME_MAX</b><i>-4</i>
 followed by one or more characters, none of which are
 slashes. Two processes can operate on the same named
 semaphore by passing the same name to
-<b>sem_open</b>(3).</p>
+<a href="https://man.page/3/sem_open">sem_open(3)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The
-<b>sem_open</b>(3) function creates a new named semaphore or
+<a href="https://man.page/3/sem_open">sem_open(3)</a> function creates a new named semaphore or
 opens an existing named semaphore. After the semaphore has
-been opened, it can be operated on using <b>sem_post</b>(3)
-and <b>sem_wait</b>(3). When a process has finished using
-the semaphore, it can use <b>sem_close</b>(3) to close the
+been opened, it can be operated on using <a href="https://man.page/3/sem_post">sem_post(3)</a>
+and <a href="https://man.page/3/sem_wait">sem_wait(3)</a>. When a process has finished using
+the semaphore, it can use <a href="https://man.page/3/sem_close">sem_close(3)</a> to close the
 semaphore. When all processes have finished using the
 semaphore, it can be removed from the system using
-<b>sem_unlink</b>(3).</p>
+<a href="https://man.page/3/sem_unlink">sem_unlink(3)</a>.</p>
 
 <p style="margin-left:11%;"><b>Unnamed semaphores
 (memory-based semaphores)</b></p>
@@ -92,16 +92,16 @@ is placed in an area of memory shared between the threads of
 a process, for example, a global variable. A process-shared
 semaphore must be placed in a shared memory region (e.g., a
 System V shared memory segment created using
-<b>shmget</b>(2), or a POSIX shared memory object built
-created using <b>shm_open</b>(3)).</p>
+<a href="https://man.page/2/shmget">shmget(2)</a>, or a POSIX shared memory object built
+created using <a href="https://man.page/3/shm_open">shm_open(3)</a>).</p>
 
 <p style="margin-left:22%; margin-top: 1em">Before being
 used, an unnamed semaphore must be initialized using
-<b>sem_init</b>(3). It can then be operated on using
-<b>sem_post</b>(3) and <b>sem_wait</b>(3). When the
+<a href="https://man.page/3/sem_init">sem_init(3)</a>. It can then be operated on using
+<a href="https://man.page/3/sem_post">sem_post(3)</a> and <a href="https://man.page/3/sem_wait">sem_wait(3)</a>. When the
 semaphore is no longer required, and before the memory in
 which it is located is deallocated, the semaphore should be
-destroyed using <b>sem_destroy</b>(3).</p>
+destroyed using <a href="https://man.page/3/sem_destroy">sem_destroy(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The remainder
 of this section describes some specific details of the Linux
@@ -119,7 +119,7 @@ complete implementation of POSIX semaphores is provided.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Persistence</b>
 <br>
 POSIX named semaphores have kernel persistence: if not
-removed by <b>sem_unlink</b>(3), a semaphore will exist
+removed by <a href="https://man.page/3/sem_unlink">sem_unlink(3)</a>, a semaphore will exist
 until the system is shut down.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Linking</b>
@@ -148,7 +148,7 @@ basis.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">System V
-semaphores (<b>semget</b>(2), <b>semop</b>(2), etc.) are an
+semaphores (<a href="https://man.page/2/semget">semget(2)</a>, <a href="https://man.page/2/semop">semop(2)</a>, etc.) are an
 older semaphore API. POSIX semaphores provide a simpler, and
 better designed interface than System V semaphores; on the
 other hand POSIX semaphores are less widely available
@@ -161,7 +161,7 @@ other hand POSIX semaphores are less widely available
 
 <p style="margin-left:11%; margin-top: 1em">An example of
 the use of various POSIX semaphore functions is shown in
-<b>sem_wait</b>(3).</p>
+<a href="https://man.page/3/sem_wait">sem_wait(3)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -169,11 +169,11 @@ the use of various POSIX semaphore functions is shown in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>sem_close</b>(3),
-<b>sem_destroy</b>(3), <b>sem_getvalue</b>(3),
-<b>sem_init</b>(3), <b>sem_open</b>(3), <b>sem_post</b>(3),
-<b>sem_unlink</b>(3), <b>sem_wait</b>(3),
-<b>pthreads</b>(7), <b>shm_overview</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/sem_close">sem_close(3)</a>,
+<a href="https://man.page/3/sem_destroy">sem_destroy(3)</a>, <a href="https://man.page/3/sem_getvalue">sem_getvalue(3)</a>,
+<a href="https://man.page/3/sem_init">sem_init(3)</a>, <a href="https://man.page/3/sem_open">sem_open(3)</a>, <a href="https://man.page/3/sem_post">sem_post(3)</a>,
+<a href="https://man.page/3/sem_unlink">sem_unlink(3)</a>, <a href="https://man.page/3/sem_wait">sem_wait(3)</a>,
+<a href="https://man.page/7/pthreads">pthreads(7)</a>, <a href="https://man.page/7/shm_overview">shm_overview(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

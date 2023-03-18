@@ -76,17 +76,17 @@ timerfd_gettime(int</b> <i>fd</i><b>, struct itimerspec
 <p style="margin-left:11%; margin-top: 1em">These system
 calls create and operate on a timer that delivers timer
 expiration notifications via a file descriptor. They provide
-an alternative to the use of <b>setitimer</b>(2) or
-<b>timer_create</b>(2), with the advantage that the file
-descriptor may be monitored by <b>select</b>(2),
-<b>poll</b>(2), and <b>epoll</b>(7).</p>
+an alternative to the use of <a href="https://man.page/2/setitimer">setitimer(2)</a> or
+<a href="https://man.page/2/timer_create">timer_create(2)</a>, with the advantage that the file
+descriptor may be monitored by <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, and <a href="https://man.page/7/epoll">epoll(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The use of
 these three system calls is analogous to the use of
-<b>timer_create</b>(2), <b>timer_settime</b>(2), and
-<b>timer_gettime</b>(2). (There is no analog of
-<b>timer_getoverrun</b>(2), since that functionality is
-provided by <b>read</b>(2), as described below.)</p>
+<a href="https://man.page/2/timer_create">timer_create(2)</a>, <a href="https://man.page/2/timer_settime">timer_settime(2)</a>, and
+<a href="https://man.page/2/timer_gettime">timer_gettime(2)</a>. (There is no analog of
+<a href="https://man.page/2/timer_getoverrun">timer_getoverrun(2)</a>, since that functionality is
+provided by <a href="https://man.page/2/read">read(2)</a>, as described below.)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>timerfd_create()
@@ -138,12 +138,12 @@ suspended. The caller must have the <b>CAP_WAKE_ALARM</b>
 capability in order to set a timer against this clock.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>clock_getres</b>(2) for some further details on the above
+<a href="https://man.page/2/clock_getres">clock_getres(2)</a> for some further details on the above
 clocks.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The current
 value of each of these clocks can be retrieved using
-<b>clock_gettime</b>(2).</p>
+<a href="https://man.page/2/clock_gettime">clock_gettime(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Starting with
 Linux 2.6.27, the following values may be bitwise ORed in
@@ -163,9 +163,9 @@ Linux 2.6.27, the following values may be bitwise ORed in
 
 
 <p>Set the <b>O_NONBLOCK</b> file status flag on the open
-file description (see <b>open</b>(2)) referred to by the new
+file description (see <a href="https://man.page/2/open">open(2)</a>) referred to by the new
 file descriptor. Using this flag saves extra calls to
-<b>fcntl</b>(2) to achieve the same result.</p></td></tr>
+<a href="https://man.page/2/fcntl">fcntl(2)</a> to achieve the same result.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="18%">
@@ -178,7 +178,7 @@ file descriptor. Using this flag saves extra calls to
 
 <p>Set the close-on-exec (<b>FD_CLOEXEC</b>) flag on the
 new file descriptor. See the description of the
-<b>O_CLOEXEC</b> flag in <b>open</b>(2) for reasons why this
+<b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a> for reasons why this
 may be useful.</p></td></tr>
 </table>
 
@@ -254,9 +254,9 @@ the timer&rsquo;s clock reaches the value specified in
 with <b>TFD_TIMER_ABSTIME</b> and the clock for this timer
 is <b>CLOCK_REALTIME</b> or <b>CLOCK_REALTIME_ALARM</b>,
 then mark this timer as cancelable if the real-time clock
-undergoes a discontinuous change (<b>settimeofday</b>(2),
-<b>clock_settime</b>(2), or similar). When such changes
-occur, a current or future <b>read</b>(2) from the file
+undergoes a discontinuous change (<a href="https://man.page/2/settimeofday">settimeofday(2)</a>,
+<a href="https://man.page/2/clock_settime">clock_settime(2)</a>, or similar). When such changes
+occur, a current or future <a href="https://man.page/2/read">read(2)</a> from the file
 descriptor will fail with the error <b>ECANCELED</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
@@ -297,23 +297,23 @@ read</b>(2)</p>
 <p style="margin-left:22%;">If the timer has already
 expired one or more times since its settings were last
 modified using <b>timerfd_settime</b>(), or since the last
-successful <b>read</b>(2), then the buffer given to
-<b>read</b>(2) returns an unsigned 8-byte integer
+successful <a href="https://man.page/2/read">read(2)</a>, then the buffer given to
+<a href="https://man.page/2/read">read(2)</a> returns an unsigned 8-byte integer
 (<i>uint64_t</i>) containing the number of expirations that
 have occurred. (The returned value is in host byte
 order&mdash;that is, the native byte order for integers on
 the host machine.)</p>
 
 <p style="margin-left:22%; margin-top: 1em">If no timer
-expirations have occurred at the time of the <b>read</b>(2),
+expirations have occurred at the time of the <a href="https://man.page/2/read">read(2)</a>,
 then the call either blocks until the next timer expiration,
 or fails with the error <b>EAGAIN</b> if the file descriptor
 has been made nonblocking (via the use of the
-<b>fcntl</b>(2) <b>F_SETFL</b> operation to set the
+<a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_SETFL</b> operation to set the
 <b>O_NONBLOCK</b> flag).</p>
 
 <p style="margin-left:22%; margin-top: 1em">A
-<b>read</b>(2) fails with the error <b>EINVAL</b> if the
+<a href="https://man.page/2/read">read(2)</a> fails with the error <b>EINVAL</b> if the
 size of the supplied buffer is less than 8 bytes.</p>
 
 <p style="margin-left:22%; margin-top: 1em">If the
@@ -321,7 +321,7 @@ associated clock is either <b>CLOCK_REALTIME</b> or
 <b>CLOCK_REALTIME_ALARM</b>, the timer is absolute
 (<b>TFD_TIMER_ABSTIME</b>), and the flag
 <b>TFD_TIMER_CANCEL_ON_SET</b> was specified when calling
-<b>timerfd_settime</b>(), then <b>read</b>(2) fails with the
+<b>timerfd_settime</b>(), then <a href="https://man.page/2/read">read(2)</a> fails with the
 error <b>ECANCELED</b> if the real-time clock undergoes a
 discontinuous change. (This allows the reading application
 to discover such discontinuous changes to the clock.)</p>
@@ -332,26 +332,26 @@ associated clock is either <b>CLOCK_REALTIME</b> or
 (<b>TFD_TIMER_ABSTIME</b>), and the flag
 <b>TFD_TIMER_CANCEL_ON_SET</b> was <i>not</i> specified when
 calling <b>timerfd_settime</b>(), then a discontinuous
-negative change to the clock (e.g., <b>clock_settime</b>(2))
-may cause <b>read</b>(2) to unblock, but return a value of 0
+negative change to the clock (e.g., <a href="https://man.page/2/clock_settime">clock_settime(2)</a>)
+may cause <a href="https://man.page/2/read">read(2)</a> to unblock, but return a value of 0
 (i.e., no bytes read), if the clock change occurs after the
-time expired, but before the <b>read</b>(2) on the file
+time expired, but before the <a href="https://man.page/2/read">read(2)</a> on the file
 descriptor.</p>
 
-<p style="margin-left:11%;"><b>poll</b>(2),
-<b>select</b>(2) (and similar)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/poll">poll(2)</a>,
+<a href="https://man.page/2/select">select(2)</a> (and similar)</p>
 
 <p style="margin-left:22%;">The file descriptor is readable
-(the <b>select</b>(2) <i>readfds</i> argument; the
-<b>poll</b>(2) <b>POLLIN</b> flag) if one or more timer
+(the <a href="https://man.page/2/select">select(2)</a> <i>readfds</i> argument; the
+<a href="https://man.page/2/poll">poll(2)</a> <b>POLLIN</b> flag) if one or more timer
 expirations have occurred.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The file
 descriptor also supports the other file-descriptor
-multiplexing APIs: <b>pselect</b>(2), <b>ppoll</b>(2), and
-<b>epoll</b>(7).</p>
+multiplexing APIs: <a href="https://man.page/2/pselect">pselect(2)</a>, <a href="https://man.page/2/ppoll">ppoll(2)</a>, and
+<a href="https://man.page/7/epoll">epoll(7)</a>.</p>
 
-<p style="margin-left:11%;"><b>ioctl</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/ioctl">ioctl(2)</a></p>
 
 <p style="margin-left:22%;">The following timerfd-specific
 command is supported: <b><br>
@@ -367,7 +367,7 @@ checkpoint/restore. This operation is available only if the
 kernel was configured with the
 <b>CONFIG_CHECKPOINT_RESTORE</b> option.</p>
 
-<p style="margin-left:11%;"><b>close</b>(2)</p>
+<p style="margin-left:11%;"><a href="https://man.page/2/close">close(2)</a></p>
 
 <p style="margin-left:22%;">When the file descriptor is no
 longer required it should be closed. When all file
@@ -377,17 +377,17 @@ the kernel.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>fork(2)
 semantics</b> <br>
-After a <b>fork</b>(2), the child inherits a copy of the
+After a <a href="https://man.page/2/fork">fork(2)</a>, the child inherits a copy of the
 file descriptor created by <b>timerfd_create</b>(). The file
 descriptor refers to the same underlying timer object as the
 corresponding file descriptor in the parent, and
-<b>read</b>(2)s in the child will return information about
+<a href="https://man.page/2/read">read(2)</a>s in the child will return information about
 expirations of the timer.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>execve(2)
 semantics</b> <br>
 A file descriptor created by <b>timerfd_create</b>() is
-preserved across <b>execve</b>(2), and continues to generate
+preserved across <a href="https://man.page/2/execve">execve(2)</a>, and continues to generate
 timer expirations if the timer was armed.</p>
 
 <h2>RETURN VALUE
@@ -633,7 +633,7 @@ and <b>TFD_TIMER_CANCEL_ON_SET</b> flags;</p></td></tr>
 <td width="83%">
 
 
-<p>A discontinuous change (e.g., <b>settimeofday</b>(2)) is
+<p>A discontinuous change (e.g., <a href="https://man.page/2/settimeofday">settimeofday(2)</a>) is
 subsequently made to the <b>CLOCK_REALTIME</b> clock;
 and</p> </td></tr>
 <tr valign="top" align="left">
@@ -647,7 +647,7 @@ and</p> </td></tr>
 
 
 <p>the caller once more calls <b>timerfd_settime</b>() to
-rearm the timer (without first doing a <b>read</b>(2) on the
+rearm the timer (without first doing a <a href="https://man.page/2/read">read(2)</a> on the
 file descriptor).</p></td></tr>
 </table>
 
@@ -694,7 +694,7 @@ that depend on this behaviour.)</p></td></tr>
 
 <p style="margin-left:11%; margin-top: 1em">Currently,
 <b>timerfd_create</b>() supports fewer types of clock IDs
-than <b>timer_create</b>(2).</p>
+than <a href="https://man.page/2/timer_create">timer_create(2)</a>.</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
@@ -850,11 +850,11 @@ PRIu64 &quot;\n&quot;, exp, tot_exp); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>eventfd</b>(2),
-<b>poll</b>(2), <b>read</b>(2), <b>select</b>(2),
-<b>setitimer</b>(2), <b>signalfd</b>(2),
-<b>timer_create</b>(2), <b>timer_gettime</b>(2),
-<b>timer_settime</b>(2), <b>epoll</b>(7), <b>time</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/eventfd">eventfd(2)</a>,
+<a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/read">read(2)</a>, <a href="https://man.page/2/select">select(2)</a>,
+<a href="https://man.page/2/setitimer">setitimer(2)</a>, <a href="https://man.page/2/signalfd">signalfd(2)</a>,
+<a href="https://man.page/2/timer_create">timer_create(2)</a>, <a href="https://man.page/2/timer_gettime">timer_gettime(2)</a>,
+<a href="https://man.page/2/timer_settime">timer_settime(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>, <a href="https://man.page/7/time">time(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

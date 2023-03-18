@@ -66,10 +66,10 @@ link with <i>-pthread</i>.</p>
 <b>pthread_exit</b>() function terminates the calling thread
 and returns a value via <i>retval</i> that (if the thread is
 joinable) is available to another thread in the same process
-that calls <b>pthread_join</b>(3).</p>
+that calls <a href="https://man.page/3/pthread_join">pthread_join(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Any clean-up
-handlers established by <b>pthread_cleanup_push</b>(3) that
+handlers established by <a href="https://man.page/3/pthread_cleanup_push">pthread_cleanup_push(3)</a> that
 have not yet been popped, are popped (in the reverse of the
 order in which they were pushed) and executed. If the thread
 has any thread-specific data, then, after the clean-up
@@ -80,13 +80,13 @@ functions are called, in an unspecified order.</p>
 terminates, process-shared resources (e.g., mutexes,
 condition variables, semaphores, and file descriptors) are
 not released, and functions registered using
-<b>atexit</b>(3) are not called.</p>
+<a href="https://man.page/3/atexit">atexit(3)</a> are not called.</p>
 
 <p style="margin-left:11%; margin-top: 1em">After the last
 thread in a process terminates, the process terminates as by
-calling <b>exit</b>(3) with an exit status of zero; thus,
+calling <a href="https://man.page/3/exit">exit(3)</a> with an exit status of zero; thus,
 process-shared resources are released and functions
-registered using <b>atexit</b>(3) are called.</p>
+registered using <a href="https://man.page/3/atexit">atexit(3)</a> are called.</p>
 
 <h2>RETURN VALUE
 <a name="RETURN VALUE"></a>
@@ -111,7 +111,7 @@ always succeeds.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -161,7 +161,7 @@ value as the thread&rsquo;s exit status.</p>
 <p style="margin-left:11%; margin-top: 1em">To allow other
 threads to continue execution, the main thread should
 terminate by calling <b>pthread_exit</b>() rather than
-<b>exit</b>(3).</p>
+<a href="https://man.page/3/exit">exit(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The value
 pointed to by <i>retval</i> should not be located on the
@@ -175,7 +175,7 @@ stack are undefined after the thread terminates.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Currently,
 there are limitations in the kernel implementation logic for
-<b>wait</b>(2)ing on a stopped thread group with a dead
+<a href="https://man.page/2/wait">wait(2)</a>ing on a stopped thread group with a dead
 thread group leader. This can manifest in problems such as a
 locked terminal if a stop signal is sent to a foreground
 process whose thread group leader has already called
@@ -187,8 +187,8 @@ process whose thread group leader has already called
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>pthread_create</b>(3),
-<b>pthread_join</b>(3), <b>pthreads</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/pthread_create">pthread_create(3)</a>,
+<a href="https://man.page/3/pthread_join">pthread_join(3)</a>, <a href="https://man.page/7/pthreads">pthreads(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

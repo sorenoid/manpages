@@ -57,15 +57,15 @@ the appropriate UID. Instead, it must first be linked to one
 of a process&rsquo;s keyrings, before that keyring can
 access the persistent keyring by virtue of its possessor
 permits. This linking is done with the
-<b>keyctl_get_persistent</b>(3) function.</p>
+<a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a> function.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If a persistent
 keyring does not exist when it is accessed by the
-<b>keyctl_get_persistent</b>(3) operation, it will be
+<a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a> operation, it will be
 automatically created.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each time the
-<b>keyctl_get_persistent</b>(3) operation is performed, the
+<a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a> operation is performed, the
 persistent key&rsquo;s expiration timer is reset to the
 value in:</p>
 
@@ -76,22 +76,22 @@ value in:</p>
 timeout be reached, the persistent keyring will be removed
 and everything it pins can then be garbage collected. The
 key will then be re-created on a subsequent call to
-<b>keyctl_get_persistent</b>(3).</p>
+<a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The persistent
-keyring is not directly searched by <b>request_key</b>(2);
+keyring is not directly searched by <a href="https://man.page/2/request_key">request_key(2)</a>;
 it is searched only if it is linked into one of the keyrings
-that is searched by <b>request_key</b>(2).</p>
+that is searched by <a href="https://man.page/2/request_key">request_key(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The persistent
-keyring is independent of <b>clone</b>(2), <b>fork</b>(2),
-<b>vfork</b>(2), <b>execve</b>(2), and <b>_exit</b>(2). It
+keyring is independent of <a href="https://man.page/2/clone">clone(2)</a>, <a href="https://man.page/2/fork">fork(2)</a>,
+<a href="https://man.page/2/vfork">vfork(2)</a>, <a href="https://man.page/2/execve">execve(2)</a>, and <a href="https://man.page/2/_exit">_exit(2)</a>. It
 persists until its expiration timer triggers, at which point
 it is garbage collected. This allows the persistent keyring
 to carry keys beyond the life of the kernel&rsquo;s record
 of the corresponding UID (the destruction of which results
-in the destruction of the <b>user-keyring</b>(7) and the
-<b>user-session-keyring</b>(7)). The persistent keyring can
+in the destruction of the <a href="https://man.page/7/user-keyring">user-keyring(7)</a> and the
+<a href="https://man.page/7/user-session-keyring">user-session-keyring(7)</a>). The persistent keyring can
 thus be used to hold authentication tokens for processes
 that run without user interaction, such as programs started
 by <b>cron</b>(8).</p>
@@ -107,9 +107,9 @@ automatically discarded.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Special
 operations</b> <br>
 The <i>keyutils</i> library provides the
-<b>keyctl_get_persistent</b>(3) function for manipulating
+<a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a> function for manipulating
 persistent keyrings. (This function is an interface to the
-<b>keyctl</b>(2) <b>KEYCTL_GET_PERSISTENT</b> operation.)
+<a href="https://man.page/2/keyctl">keyctl(2)</a> <b>KEYCTL_GET_PERSISTENT</b> operation.)
 This operation allows the calling thread to get the
 persistent keyring corresponding to its own UID or, if the
 thread has the <b>CAP_SETUID</b> capability, the persistent
@@ -127,7 +127,7 @@ that contains links to all of the persistent keys in that
 namespace. (The <i>.persistent_register</i> keyring can be
 seen when reading the contents of the <i>/proc/keys</i> file
 for the UID 0 in the namespace.) The
-<b>keyctl_get_persistent</b>(3) operation looks for a key
+<a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a> operation looks for a key
 with a name of the form <i>_persistent.&lt;UID&gt;</i> in
 that keyring, creates the key if it does not exist, and
 links it into the keyring.</p>
@@ -138,11 +138,11 @@ links it into the keyring.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>keyctl</b>(1),
-<b>keyctl</b>(3), <b>keyctl_get_persistent</b>(3),
-<b>keyrings</b>(7), <b>process-keyring</b>(7),
-<b>session-keyring</b>(7), <b>thread-keyring</b>(7),
-<b>user-keyring</b>(7), <b>user-session-keyring</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/keyctl">keyctl(1)</a>,
+<a href="https://man.page/3/keyctl">keyctl(3)</a>, <a href="https://man.page/3/keyctl_get_persistent">keyctl_get_persistent(3)</a>,
+<a href="https://man.page/7/keyrings">keyrings(7)</a>, <a href="https://man.page/7/process-keyring">process-keyring(7)</a>,
+<a href="https://man.page/7/session-keyring">session-keyring(7)</a>, <a href="https://man.page/7/thread-keyring">thread-keyring(7)</a>,
+<a href="https://man.page/7/user-keyring">user-keyring(7)</a>, <a href="https://man.page/7/user-session-keyring">user-session-keyring(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

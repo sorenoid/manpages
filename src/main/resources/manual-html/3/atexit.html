@@ -62,7 +62,7 @@ atexit(void (*</b><i>function</i><b>)(void));</b></p>
 <p style="margin-left:11%; margin-top: 1em">The
 <b>atexit</b>() function registers the given <i>function</i>
 to be called at normal process termination, either via
-<b>exit</b>(3) or via return from the program&rsquo;s
+<a href="https://man.page/3/exit">exit(3)</a> or via return from the program&rsquo;s
 <i>main</i>(). Functions so registered are called in the
 reverse order of their registration; no arguments are
 passed.</p>
@@ -75,12 +75,12 @@ for each registration.</p>
 requires that an implementation allow at least
 <b>ATEXIT_MAX</b> (32) such functions to be registered. The
 actual limit supported by an implementation can be obtained
-using <b>sysconf</b>(3).</p>
+using <a href="https://man.page/3/sysconf">sysconf(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When a child
-process is created via <b>fork</b>(2), it inherits copies of
+process is created via <a href="https://man.page/2/fork">fork(2)</a>, it inherits copies of
 its parent&rsquo;s registrations. Upon a successful call to
-one of the <b>exec</b>(3) functions, all registrations are
+one of the <a href="https://man.page/3/exec">exec(3)</a> functions, all registrations are
 removed.</p>
 
 <h2>RETURN VALUE
@@ -99,7 +99,7 @@ otherwise it returns a nonzero value.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -141,38 +141,38 @@ POSIX.1-2008, C89, C99, SVr4, 4.3BSD.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">Functions
-registered using <b>atexit</b>() (and <b>on_exit</b>(3)) are
+registered using <b>atexit</b>() (and <a href="https://man.page/3/on_exit">on_exit(3)</a>) are
 not called if a process terminates abnormally because of the
 delivery of a signal.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If one of the
-registered functions calls <b>_exit</b>(2), then any
+registered functions calls <a href="https://man.page/2/_exit">_exit(2)</a>, then any
 remaining functions are not invoked, and the other process
-termination steps performed by <b>exit</b>(3) are not
+termination steps performed by <a href="https://man.page/3/exit">exit(3)</a> are not
 performed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX.1 says
-that the result of calling <b>exit</b>(3) more than once
-(i.e., calling <b>exit</b>(3) within a function registered
+that the result of calling <a href="https://man.page/3/exit">exit(3)</a> more than once
+(i.e., calling <a href="https://man.page/3/exit">exit(3)</a> within a function registered
 using <b>atexit</b>()) is undefined. On some systems (but
 not Linux), this can result in an infinite recursion;
-portable programs should not invoke <b>exit</b>(3) inside a
+portable programs should not invoke <a href="https://man.page/3/exit">exit(3)</a> inside a
 function registered using <b>atexit</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>atexit</b>() and <b>on_exit</b>(3) functions register
+<b>atexit</b>() and <a href="https://man.page/3/on_exit">on_exit(3)</a> functions register
 functions on the same list: at normal process termination,
 the registered functions are invoked in reverse order of
 their registration by these two functions.</p>
 
 <p style="margin-left:11%; margin-top: 1em">According to
-POSIX.1, the result is undefined if <b>longjmp</b>(3) is
+POSIX.1, the result is undefined if <a href="https://man.page/3/longjmp">longjmp(3)</a> is
 used to terminate execution of one of the functions
 registered using <b>atexit</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Linux
 notes</b> <br>
-Since glibc 2.2.3, <b>atexit</b>() (and <b>on_exit</b>(3))
+Since glibc 2.2.3, <b>atexit</b>() (and <a href="https://man.page/3/on_exit">on_exit(3)</a>)
 can be used within a shared library to establish functions
 that are called when the shared library is unloaded.</p>
 
@@ -221,8 +221,8 @@ exit(EXIT_FAILURE); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>_exit</b>(2),
-<b>dlopen</b>(3), <b>exit</b>(3), <b>on_exit</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/_exit">_exit(2)</a>,
+<a href="https://man.page/3/dlopen">dlopen(3)</a>, <a href="https://man.page/3/exit">exit(3)</a>, <a href="https://man.page/3/on_exit">on_exit(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

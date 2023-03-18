@@ -58,14 +58,14 @@ ioctl(int</b> <i>fd</i><b>, int</b> <i>cmd</i><b>,
 
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>ioctl</b>(2) call for terminals and serial ports accepts
+<a href="https://man.page/2/ioctl">ioctl(2)</a> call for terminals and serial ports accepts
 many possible command arguments. Most require a third
 argument, of varying type, here called <i>argp</i> or
 <i>arg</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Use of
 <i>ioctl</i> makes for nonportable programs. Use the POSIX
-interface described in <b>termios</b>(3) whenever
+interface described in <a href="https://man.page/3/termios">termios(3)</a> whenever
 possible.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Get and set
@@ -378,7 +378,7 @@ TCXONC int</b> <i>arg</i></p>
 arg)</i>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">See
-<b>tcflow</b>(3) for the argument values <b>TCOOFF</b>,
+<a href="https://man.page/3/tcflow">tcflow(3)</a> for the argument values <b>TCOOFF</b>,
 <b>TCOON</b>, <b>TCIOFF</b>, <b>TCION</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Buffer count
@@ -406,7 +406,7 @@ output buffer.</p>
 arg)</i>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">See
-<b>tcflush</b>(3) for the argument values <b>TCIFLUSH</b>,
+<a href="https://man.page/3/tcflush">tcflush(3)</a> for the argument values <b>TCIFLUSH</b>,
 <b>TCOFLUSH</b>, <b>TCIOFLUSH</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Faking input
@@ -491,7 +491,7 @@ mode <br>
 TIOCEXCL void</b></p>
 
 <p style="margin-left:22%;">Put the terminal into exclusive
-mode. No further <b>open</b>(2) operations on the terminal
+mode. No further <a href="https://man.page/2/open">open(2)</a> operations on the terminal
 are permitted. (They fail with <b>EBUSY</b>, except for a
 process with the <b>CAP_SYS_ADMIN</b> capability.)</p>
 
@@ -529,7 +529,7 @@ TIOCPKT const int *</b><i>argp</i></p>
 nonzero) or disable packet mode. Can be applied to the
 master side of a pseudoterminal only (and will return
 <b>ENOTTY</b> otherwise). In packet mode, each subsequent
-<b>read</b>(2) will return a packet that either contains a
+<a href="https://man.page/2/read">read(2)</a> will return a packet that either contains a
 single nonzero control byte, or has a single byte containing
 zero ('\0') followed by data written on the slave side of
 the pseudoterminal. If the first byte is not
@@ -542,11 +542,11 @@ following bits:</p>
 <p style="margin-left:22%; margin-top: 1em">While packet
 mode is in use, the presence of control status information
 to be read from the master side may be detected by a
-<b>select</b>(2) for exceptional conditions or a
-<b>poll</b>(2) for the <b>POLLPRI</b> event.</p>
+<a href="https://man.page/2/select">select(2)</a> for exceptional conditions or a
+<a href="https://man.page/2/poll">poll(2)</a> for the <b>POLLPRI</b> event.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This mode is
-used by <b>rlogin</b>(1) and <b>rlogind</b>(8) to implement
+used by <a href="https://man.page/1/rlogin">rlogin(1)</a> and <b>rlogind</b>(8) to implement
 a remote-echoed, locally <b>^S</b>/<b>^Q</b> flow-controlled
 remote login.</p>
 
@@ -563,7 +563,7 @@ current packet mode setting in the integer pointed to by
 <p style="margin-left:22%;">Set (if <i>*argp</i> is
 nonzero) or remove (if <i>*argp</i> is zero) the lock on the
 pseudoterminal slave device. (See also
-<b>unlockpt</b>(3).)</p>
+<a href="https://man.page/3/unlockpt">unlockpt(3)</a>.)</p>
 
 <p style="margin-left:11%;"><b>TIOCGPTLCK int
 *</b><i>argp</i></p>
@@ -577,7 +577,7 @@ location pointed to by <i>argp</i>.</p>
 
 <p style="margin-left:22%;">(since Linux 4.13) Given a file
 descriptor in <i>fd</i> that refers to a pseudoterminal
-master, open (with the given <b>open</b>(2)-style
+master, open (with the given <a href="https://man.page/2/open">open(2)</a>-style
 <i>flags</i>) and return a new file descriptor that refers
 to the peer pseudoterminal slave device. This operation can
 be performed regardless of whether the pathname of the slave
@@ -587,10 +587,10 @@ mount namespace.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Security-conscious
 programs interacting with namespaces may wish to use this
-operation rather than <b>open</b>(2) with the pathname
-returned by <b>ptsname</b>(3), and similar library functions
+operation rather than <a href="https://man.page/2/open">open(2)</a> with the pathname
+returned by <a href="https://man.page/3/ptsname">ptsname(3)</a>, and similar library functions
 that have insecure APIs. (For example, confusion can occur
-in some cases using <b>ptsname</b>(3) with a pathname where
+in some cases using <a href="https://man.page/3/ptsname">ptsname(3)</a> with a pathname where
 a devpts filesystem has been mounted in a different mount
 namespace.)</p>
 
@@ -669,7 +669,7 @@ otherwise.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
 <b>CLOCAL</b> flag for a line is off, the hardware carrier
-detect (DCD) signal is significant, and an <b>open</b>(2) of
+detect (DCD) signal is significant, and an <a href="https://man.page/2/open">open(2)</a> of
 the corresponding terminal will block until DCD is asserted,
 unless the <b>O_NONBLOCK</b> flag is given. If <b>CLOCAL</b>
 is set, the line behaves as if DCD is always asserted. The
@@ -680,7 +680,7 @@ devices, and is off for lines with modems.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>Linux-specific</b>
 <br>
 For the <b>TIOCLINUX</b> ioctl, see
-<b>ioctl_console</b>(2).</p>
+<a href="https://man.page/2/ioctl_console">ioctl_console(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Kernel
 debugging <br>
@@ -697,7 +697,7 @@ Linux 2.5.67.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>ioctl</b>(2) system call returns 0 on success. On error,
+<a href="https://man.page/2/ioctl">ioctl(2)</a> system call returns 0 on success. On error,
 it returns -1 and sets <i>errno</i> appropriately.</p>
 
 <h2>ERRORS
@@ -790,9 +790,9 @@ close(fd); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ldattach</b>(1),
-<b>ioctl</b>(2), <b>ioctl_console</b>(2), <b>termios</b>(3),
-<b>pty</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ldattach">ldattach(1)</a>,
+<a href="https://man.page/2/ioctl">ioctl(2)</a>, <a href="https://man.page/2/ioctl_console">ioctl_console(2)</a>, <a href="https://man.page/3/termios">termios(3)</a>,
+<a href="https://man.page/7/pty">pty(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

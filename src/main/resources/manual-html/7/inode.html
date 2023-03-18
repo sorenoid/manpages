@@ -45,15 +45,15 @@ inode information</p>
 
 <p style="margin-left:11%; margin-top: 1em">Each file has
 an inode containing metadata about the file. An application
-can retrieve this metadata using <b>stat</b>(2) (or related
+can retrieve this metadata using <a href="https://man.page/2/stat">stat(2)</a> (or related
 calls), which returns a <i>stat</i> structure, or
-<b>statx</b>(2), which returns a <i>statx</i> structure.</p>
+<a href="https://man.page/2/statx">statx(2)</a>, which returns a <i>statx</i> structure.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The following
 is a list of the information typically found in, or
 associated with, the file inode, with the names of the
-corresponding structure fields returned by <b>stat</b>(2)
-and <b>statx</b>(2): <br>
+corresponding structure fields returned by <a href="https://man.page/2/stat">stat(2)</a>
+and <a href="https://man.page/2/statx">statx(2)</a>: <br>
 Device where inode resides</p>
 
 <p style="margin-left:22%;"><i>stat.st_dev</i>;
@@ -96,7 +96,7 @@ discussion of file type and mode, below.</p>
 <p style="margin-left:22%; margin-top: 1em">This field
 contains the number of hard links to the file. Additional
 links to an existing file are created using
-<b>link</b>(2).</p>
+<a href="https://man.page/2/link">link(2)</a>.</p>
 
 <p style="margin-left:11%;">User ID</p>
 
@@ -107,7 +107,7 @@ links to an existing file are created using
 records the user ID of the owner of the file. For newly
 created files, the file user ID is the effective user ID of
 the creating process. The user ID of a file can be changed
-using <b>chown</b>(2).</p>
+using <a href="https://man.page/2/chown">chown(2)</a>.</p>
 
 <p style="margin-left:11%;">Group ID</p>
 
@@ -121,7 +121,7 @@ the parent directory or the effective group ID of the
 creating process, depending on whether or not the
 set-group-ID bit is set on the parent directory (see below).
 The group ID of a file can be changed using
-<b>chown</b>(2).</p>
+<a href="https://man.page/2/chown">chown(2)</a>.</p>
 
 <p style="margin-left:11%;">Device represented by this
 inode</p>
@@ -182,9 +182,9 @@ may differ on a per-filesystem basis.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This is the
 file&rsquo;s last access timestamp. It is changed by file
-accesses, for example, by <b>execve</b>(2), <b>mknod</b>(2),
-<b>pipe</b>(2), <b>utime</b>(2), and <b>read</b>(2) (of more
-than zero bytes). Other interfaces, such as <b>mmap</b>(2),
+accesses, for example, by <a href="https://man.page/2/execve">execve(2)</a>, <a href="https://man.page/2/mknod">mknod(2)</a>,
+<a href="https://man.page/2/pipe">pipe(2)</a>, <a href="https://man.page/2/utime">utime(2)</a>, and <a href="https://man.page/2/read">read(2)</a> (of more
+than zero bytes). Other interfaces, such as <a href="https://man.page/2/mmap">mmap(2)</a>,
 may or may not update the atime timestamp</p>
 
 <p style="margin-left:22%; margin-top: 1em">Some filesystem
@@ -192,9 +192,9 @@ types allow mounting in such a way that file and/or
 directory accesses do not cause an update of the atime
 timestamp. (See <i>noatime</i>, <i>nodiratime</i>, and
 <i>relatime</i> in <b>mount</b>(8), and related information
-in <b>mount</b>(2).) In addition, the atime timestamp is not
+in <a href="https://man.page/2/mount">mount(2)</a>.) In addition, the atime timestamp is not
 updated if a file is opened with the <b>O_NOATIME</b> flag;
-see <b>open</b>(2).</p>
+see <a href="https://man.page/2/open">open(2)</a>.</p>
 
 <p style="margin-left:11%;">File creation (birth) timestamp
 (btime)</p>
@@ -218,8 +218,8 @@ is not currently supported by most Linux filesystems.</p>
 
 <p style="margin-left:22%; margin-top: 1em">This is the
 file&rsquo;s last modification timestamp. It is changed by
-file modifications, for example, by <b>mknod</b>(2),
-<b>truncate</b>(2), <b>utime</b>(2), and <b>write</b>(2) (of
+file modifications, for example, by <a href="https://man.page/2/mknod">mknod(2)</a>,
+<a href="https://man.page/2/truncate">truncate(2)</a>, <a href="https://man.page/2/utime">utime(2)</a>, and <a href="https://man.page/2/write">write(2)</a> (of
 more than zero bytes). Moreover, the mtime timestamp of a
 directory is changed by the creation or deletion of files in
 that directory. The mtime timestamp is <i>not</i> changed
@@ -239,7 +239,7 @@ link count, mode, etc.).</p>
 <p style="margin-left:11%; margin-top: 1em">The timestamp
 fields report time measured with a zero point at the
 <i>Epoch</i>, 1970-01-02 00:00:00 +0000, UTC (see
-<b>time</b>(7)).</p>
+<a href="https://man.page/7/time">time(7)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">Nanosecond
 timestamps are supported on XFS, JFS, Btrfs, and ext4 (since
@@ -248,14 +248,14 @@ ext2, ext3, and Reiserfs. In order to return timestamps with
 nanosecond precision, the timestamp fields in the
 <i>stat</i> and <i>statx</i> structures are defined as
 structures that include a nanosecond component. See
-<b>stat</b>(2) and <b>statx</b>(2) for details. On
+<a href="https://man.page/2/stat">stat(2)</a> and <a href="https://man.page/2/statx">statx(2)</a> for details. On
 filesystems that do not support subsecond timestamps, the
 nanosecond fields in the <i>stat</i> and <i>statx</i>
 structures are returned with the value 0.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The file
 type and mode</b> <br>
-The <i>stat.st_mode</i> field (for <b>statx</b>(2), the
+The <i>stat.st_mode</i> field (for <a href="https://man.page/2/statx">statx(2)</a>, the
 <i>statx.stx_mode</i> field) contains the file type and
 mode.</p>
 
@@ -500,7 +500,7 @@ of the creating process, and directories created there will
 also get the <b>S_ISGID</b> bit set. For an executable file,
 the set-group-ID bit causes the effective group ID of a
 process that executes the file to change as described in
-<b>execve</b>(2). For a file that does not have the group
+<a href="https://man.page/2/execve">execve(2)</a>. For a file that does not have the group
 execution bit (<b>S_IXGRP</b>) set, the set-group-ID bit
 indicates mandatory file/record locking.</p>
 
@@ -561,8 +561,8 @@ interpreted as a string).</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>stat</b>(1),
-<b>stat</b>(2), <b>statx</b>(2), <b>symlink</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/stat">stat(1)</a>,
+<a href="https://man.page/2/stat">stat(2)</a>, <a href="https://man.page/2/statx">statx(2)</a>, <a href="https://man.page/7/symlink">symlink(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

@@ -122,7 +122,7 @@ allow them to be remote.</p>
 usually does not pull in any non-target units directly, but
 rather does so indirectly via other early boot targets. It
 is instead meant as a synchronization point for late boot
-services. Refer to <b>bootup</b>(7) for details on the
+services. Refer to <a href="https://man.page/7/bootup">bootup(7)</a> for details on the
 targets involved.</p>
 
 
@@ -191,7 +191,7 @@ automatically gain a dependency on this unit.</p>
 
 <p style="margin-left:17%;">The default unit systemd starts
 at bootup. Usually, this should be aliased (symlinked) to
-multi-user.target or graphical.target. See <b>bootup</b>(7)
+multi-user.target or graphical.target. See <a href="https://man.page/7/bootup">bootup(7)</a>
 for more discussion.</p>
 
 <p style="margin-left:17%; margin-top: 1em">The default
@@ -199,7 +199,7 @@ unit systemd starts at bootup can be overridden with the
 <i>systemd.unit=</i> kernel command line option, or more
 conveniently, with the short names like <i>single</i>,
 <i>rescue</i>, <i>1</i>, <i>3</i>, <i>5</i>, ...; see
-<b>systemd</b>(1).</p>
+<a href="https://man.page/1/systemd">systemd(1)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">display-manager.service</p>
@@ -320,7 +320,7 @@ just halts the system rather than powering it down.</p>
 wanting to halt the system should not start this unit
 directly, but should instead execute <b>systemctl halt</b>
 (possibly with the <b>--no-block</b> option) or call
-<b>systemd</b>(1)'s
+<a href="https://man.page/1/systemd">systemd(1)</a>'s
 <b>org.freedesktop.systemd1.Manager.Halt</b> D-Bus method
 directly.</p>
 
@@ -336,13 +336,13 @@ active as long as the system is running.</p>
 <p style="margin-left:17%;">This is the default target in
 the initramfs, similar to default.target in the main system.
 It is used to mount the real root and transition to it. See
-<b>bootup</b>(7) for more discussion.</p>
+<a href="https://man.page/7/bootup">bootup(7)</a> for more discussion.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">initrd-fs.target</p>
 
 
-<p style="margin-left:17%;"><b>systemd-fstab-generator</b>(3)
+<p style="margin-left:17%;"><a href="https://man.page/3/systemd-fstab-generator">systemd-fstab-generator(3)</a>
 automatically adds dependencies of type <i>Before=</i> to
 sysroot-usr.mount and all mount points found in /etc/fstab
 that have the <b>x-initrd.mount</b> mount option set and do
@@ -357,15 +357,15 @@ in preparation for the transition to the host OS.</p>
 <p style="margin-left:17%;">A special initrd target unit
 that is reached when the root filesystem device is
 available, but before it has been mounted.
-<b>systemd-fstab-generator</b>(3) and
-<b>systemd-gpt-auto-generator</b>(3) automatically setup the
+<a href="https://man.page/3/systemd-fstab-generator">systemd-fstab-generator(3)</a> and
+<a href="https://man.page/3/systemd-gpt-auto-generator">systemd-gpt-auto-generator(3)</a> automatically setup the
 appropriate dependencies to make this happen.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">initrd-root-fs.target</p>
 
 
-<p style="margin-left:17%;"><b>systemd-fstab-generator</b>(3)
+<p style="margin-left:17%;"><a href="https://man.page/3/systemd-fstab-generator">systemd-fstab-generator(3)</a>
 automatically adds dependencies of type <i>Before=</i> to
 the sysroot.mount unit, which is generated from the kernel
 command line's <i>root=</i> setting (or equivalent).</p>
@@ -374,7 +374,7 @@ command line's <i>root=</i> setting (or equivalent).</p>
 <p style="margin-left:11%; margin-top: 1em">initrd-usr-fs.target</p>
 
 
-<p style="margin-left:17%;"><b>systemd-fstab-generator</b>(3)
+<p style="margin-left:17%;"><a href="https://man.page/3/systemd-fstab-generator">systemd-fstab-generator(3)</a>
 automatically adds dependencies of type <i>Before=</i> to
 the sysusr-usr.mount unit, which is generated from the
 kernel command line's <i>usr=</i> switch. Services may order
@@ -409,7 +409,7 @@ shutting down and rebooting the system via kexec.</p>
 wanting to reboot the system should not start this unit
 directly, but should instead execute <b>systemctl kexec</b>
 (possibly with the <b>--no-block</b> option) or call
-<b>systemd</b>(1)'s
+<a href="https://man.page/1/systemd">systemd(1)</a>'s
 <b>org.freedesktop.systemd1.Manager.KExec</b> D-Bus method
 directly.</p>
 
@@ -417,7 +417,7 @@ directly.</p>
 <p style="margin-left:11%; margin-top: 1em">local-fs.target</p>
 
 
-<p style="margin-left:17%;"><b>systemd-fstab-generator</b>(3)
+<p style="margin-left:17%;"><a href="https://man.page/3/systemd-fstab-generator">systemd-fstab-generator(3)</a>
 automatically adds dependencies of type <i>Before=</i> to
 all mount units that refer to local mount points for this
 target unit. In addition, it adds dependencies of type
@@ -721,7 +721,7 @@ should declare <i>DefaultDependencies=no</i> and specify all
 their dependencies manually, including access to anything
 more than a read only root filesystem. For details on the
 dependencies of this target, refer to
-<b>bootup</b>(7).</font></p>
+<a href="https://man.page/7/bootup">bootup(7)</a>.</font></p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><font color="#000000">syslog.socket</font></p>
@@ -941,7 +941,7 @@ protected block devices are fully stopped.</font></p>
 passive target is intended as a synchronization point for
 units that need to run once during the first boot. Only
 after all units ordered before this target have finished,
-will the <b>machine-id</b>(5) be committed to disk, marking
+will the <a href="https://man.page/5/machine-id">machine-id(5)</a> be committed to disk, marking
 the first boot as completed. If the boot is aborted at any
 time before that, the next boot will re-run any units with
 <i>ConditionFirstBoot=yes</i>.</font></p>
@@ -1265,7 +1265,7 @@ independently, symlinks in &quot;.wants/&quot; and
 <b>systemd.unit</b>(5). Those symlinks should either be
 shipped in packages, or should be added dynamically after
 installation, for example using &quot;systemctl
-add-wants&quot;, see <b>systemctl</b>(1).</font></p>
+add-wants&quot;, see <a href="https://man.page/1/systemctl">systemctl(1)</a>.</font></p>
 
 
 <p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;1.&nbsp;Nautilus
@@ -1378,10 +1378,10 @@ operations where latency is not important.</font></p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><a href="https://man.page/1/systemd">systemd(1)</a>,
 <b>systemd.unit</b>(5), <b>systemd.service</b>(5),
 <b>systemd.socket</b>(5), <b>systemd.target</b>(5),
-<b>systemd.slice</b>(5), <b>bootup</b>(7),
+<b>systemd.slice</b>(5), <a href="https://man.page/7/bootup">bootup(7)</a>,
 <b>systemd-fstab-generator</b>(8),
 <b>user@.service</b>(5)</font></p>
 

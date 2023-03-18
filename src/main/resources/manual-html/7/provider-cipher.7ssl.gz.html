@@ -102,14 +102,14 @@ OSSL_PARAM params[]);</p>
 
 <p style="margin-left:11%; margin-top: 1em">This
 documentation is primarily aimed at provider authors. See
-<b>provider</b>(7) for further information.</p>
+<a href="https://man.page/7/provider">provider(7)</a> for further information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <small>CIPHER</small> operation enables providers to
 implement cipher algorithms and make them available to
 applications via the <small>API</small> functions
-<b>EVP_EncryptInit_ex</b>(3), <b>EVP_EncryptUpdate</b>(3)
-and <b>EVP_EncryptFinal</b>(3) (as well as the decrypt
+<a href="https://man.page/3/EVP_EncryptInit_ex">EVP_EncryptInit_ex(3)</a>, <a href="https://man.page/3/EVP_EncryptUpdate">EVP_EncryptUpdate(3)</a>
+and <a href="https://man.page/3/EVP_EncryptFinal">EVP_EncryptFinal(3)</a> (as well as the decrypt
 equivalents and other related functions).</p>
 
 <p style="margin-left:11%; margin-top: 1em">All
@@ -120,7 +120,7 @@ pointers between <i>libcrypto</i> and the provider in
 returned by the provider&rsquo;s
 <b>provider_query_operation()</b> function (see
 &quot;Provider Functions&quot; in
-<b>provider-base</b>(7)).</p>
+<a href="https://man.page/7/provider-base">provider-base(7)</a>).</p>
 
 <p style="margin-left:11%; margin-top: 1em">All these
 &quot;functions&quot; have a corresponding function type
@@ -183,7 +183,7 @@ information during a cipher operation. A pointer to this
 context will be passed back in a number of the other cipher
 operation function calls. The parameter <i>provctx</i> is
 the provider context generated during provider
-initialisation (see <b>provider</b>(7)).</p>
+initialisation (see <a href="https://man.page/7/provider">provider(7)</a>).</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_cipher_freectx()</b>
@@ -234,8 +234,8 @@ cases a cipher implementation will typically cache partial
 blocks of input data until a complete block is obtained.
 <i>out</i> may be the same location as <i>in</i> but it
 should not partially overlap. The same expectations apply to
-<i>outsize</i> as documented for <b>EVP_EncryptUpdate</b>(3)
-and <b>EVP_DecryptUpdate</b>(3).</p>
+<i>outsize</i> as documented for <a href="https://man.page/3/EVP_EncryptUpdate">EVP_EncryptUpdate(3)</a>
+and <a href="https://man.page/3/EVP_DecryptUpdate">EVP_DecryptUpdate(3)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_cipher_final()</b>
@@ -248,8 +248,8 @@ Any final encryption/decryption output should be written to
 <i>out</i> and the amount of data written to <i>*outl</i>
 which should not exceed <i>outsize</i> bytes. The same
 expectations apply to <i>outsize</i> as documented for
-<b>EVP_EncryptFinal</b>(3) and
-<b>EVP_DecryptFinal</b>(3).</p>
+<a href="https://man.page/3/EVP_EncryptFinal">EVP_EncryptFinal(3)</a> and
+<a href="https://man.page/3/EVP_DecryptFinal">EVP_DecryptFinal(3)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>OSSL_FUNC_cipher_cipher()</b>
@@ -260,7 +260,7 @@ been previously initialised via a call to
 <b>OSSL_FUNC_cipher_decrypt_init()</b>. This should call the
 raw underlying cipher function without any padding. This
 will be invoked in the provider as a result of the
-application calling <b>EVP_Cipher</b>(3). The application is
+application calling <a href="https://man.page/3/EVP_Cipher">EVP_Cipher(3)</a>. The application is
 responsible for ensuring that the input is a multiple of the
 block length. The data to be encrypted/decrypted will be in
 <i>in</i>, and it will be <i>inl</i> bytes in length. The
@@ -314,7 +314,7 @@ associated with the provider side algorithm
 <p style="margin-left:11%; margin-top: 1em">Parameters
 currently recognised by built-in ciphers are listed in
 &quot; <small>PARAMETERS&quot;</small> in
-<b>EVP_EncryptInit</b>(3). Not all parameters are relevant
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>. Not all parameters are relevant
 to, or are understood by all ciphers.</p>
 
 <h2>RETURN VALUES
@@ -352,10 +352,10 @@ a constant <b><small>OSSL_PARAM</small></b> array, or
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>provider</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/7/provider">provider(7)</a>,
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7),
-<b>OSSL_PROVIDER-default</b>(7),
-<b>OSSL_PROVIDER-legacy</b>(7),
+<a href="https://man.page/7/OSSL_PROVIDER-default">OSSL_PROVIDER-default(7)</a>,
+<a href="https://man.page/7/OSSL_PROVIDER-legacy">OSSL_PROVIDER-legacy(7)</a>,
 <b><small>EVP_CIPHER-AES</small></b> (7),
 <b><small>EVP_CIPHER-ARIA</small></b> (7),
 <b><small>EVP_CIPHER-BLOWFISH</small></b> (7),
@@ -369,7 +369,7 @@ a constant <b><small>OSSL_PARAM</small></b> array, or
 <b><small>EVP_CIPHER-RC5</small></b> (7),
 <b><small>EVP_CIPHER-SEED</small></b> (7),
 <b><small>EVP_CIPHER-SM4</small></b> (7),
-<b>life_cycle-cipher</b>(7), <b>EVP_EncryptInit</b>(3)</p>
+<a href="https://man.page/7/life_cycle-cipher">life_cycle-cipher(7)</a>, <a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a></p>
 
 <h2>HISTORY
 <a name="HISTORY"></a>

@@ -58,7 +58,7 @@ OpenSSL. Currently this covers OpenSSL 3.0. For earlier
 versions refer to
 &lt;https://github.com/openssl/openssl/blob/master/CHANGES.md&gt;.
 For an overview of some of the key concepts introduced in
-OpenSSL 3.0 see <b>crypto</b>(7).</p>
+OpenSSL 3.0 see <a href="https://man.page/7/crypto">crypto(7)</a>.</p>
 
 <h2>OPENSSL 3.0
 <a name="OPENSSL 3.0"></a>
@@ -129,8 +129,8 @@ algorithms may be available for the application at a
 particular moment. If the application code uses any digest
 or cipher algorithm via the <small>EVP</small> interface,
 the application should verify the result of the
-<b>EVP_EncryptInit</b>(3), <b>EVP_EncryptInit_ex</b>(3), and
-<b>EVP_DigestInit</b>(3) functions. In case when the
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>, <a href="https://man.page/3/EVP_EncryptInit_ex">EVP_EncryptInit_ex(3)</a>, and
+<a href="https://man.page/3/EVP_DigestInit">EVP_DigestInit(3)</a> functions. In case when the
 requested algorithm is not available, these functions will
 fail.</p>
 
@@ -154,14 +154,14 @@ level&quot; APIs. The high level APIs are typically designed
 to work across all algorithm types. The &quot;low
 level&quot; APIs are targeted at a specific algorithm
 implementation. For example, the <small>EVP</small> APIs
-provide the functions <b>EVP_EncryptInit_ex</b>(3),
-<b>EVP_EncryptUpdate</b>(3) and <b>EVP_EncryptFinal</b>(3)
+provide the functions <a href="https://man.page/3/EVP_EncryptInit_ex">EVP_EncryptInit_ex(3)</a>,
+<a href="https://man.page/3/EVP_EncryptUpdate">EVP_EncryptUpdate(3)</a> and <a href="https://man.page/3/EVP_EncryptFinal">EVP_EncryptFinal(3)</a>
 to perform symmetric encryption. Those functions can be used
 with the algorithms <small>AES, CHACHA, 3DES</small> etc. On
 the other hand, to do <small>AES</small> encryption using
 the low level APIs you would have to call <small>AES</small>
-specific functions such as <b>AES_set_encrypt_key</b>(3),
-<b>AES_encrypt</b>(3), and so on. The functions for 3DES are
+specific functions such as <a href="https://man.page/3/AES_set_encrypt_key">AES_set_encrypt_key(3)</a>,
+<a href="https://man.page/3/AES_encrypt">AES_encrypt(3)</a>, and so on. The functions for 3DES are
 different. Use of the low level APIs has been informally
 discouraged by the OpenSSL development team for a long time.
 However in OpenSSL 3.0 this is made more formal. All such
@@ -188,13 +188,13 @@ algorithms are still available in OpenSSL 3.0 but not by
 default. If you want to use them then you must load the
 legacy provider. This can be as simple as a config file
 change, or can be done programmatically. See
-<b>OSSL_PROVIDER-legacy</b>(7) for a complete list of
+<a href="https://man.page/7/OSSL_PROVIDER-legacy">OSSL_PROVIDER-legacy(7)</a> for a complete list of
 algorithms. Applications using the <small>EVP</small> APIs
 to access these algorithms should instead use more modern
 algorithms. If that is not possible then these applications
 should ensure that the legacy provider has been loaded. This
 can be achieved either programmatically or via
-configuration. See <b>crypto</b>(7) man page for more
+configuration. See <a href="https://man.page/7/crypto">crypto(7)</a> man page for more
 information about providers.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Engines and
@@ -205,9 +205,9 @@ to support Providers conflicts internally with the APIs used
 to support engines, including the <small>ENGINE API</small>
 and any function that creates or modifies custom &quot;
 <small>METHODS&quot;</small> (for example
-<b>EVP_MD_meth_new</b>(3), <b>EVP_CIPHER_meth_new</b>(3),
-<b>EVP_PKEY_meth_new</b>(3), <b>RSA_meth_new</b>(3),
-<b>EC_KEY_METHOD_new</b>(3), etc.). These functions are
+<a href="https://man.page/3/EVP_MD_meth_new">EVP_MD_meth_new(3)</a>, <a href="https://man.page/3/EVP_CIPHER_meth_new">EVP_CIPHER_meth_new(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_meth_new">EVP_PKEY_meth_new(3)</a>, <a href="https://man.page/3/RSA_meth_new">RSA_meth_new(3)</a>,
+<a href="https://man.page/3/EC_KEY_METHOD_new">EC_KEY_METHOD_new(3)</a>, etc.). These functions are
 being deprecated in OpenSSL 3.0, and users of these APIs
 should know that their use can likely bypass provider
 selection and configuration, with unintended consequences.
@@ -233,7 +233,7 @@ provided via engines will still work.</p>
 keys can be loaded via custom
 <b><small>OSSL_STORE</small></b> implementation. In this
 case the <b><small>EVP_PKEY</small></b> objects created via
-<b>ENGINE_load_private_key</b>(3) will be concidered legacy
+<a href="https://man.page/3/ENGINE_load_private_key">ENGINE_load_private_key(3)</a> will be concidered legacy
 and will continue to work.</p>
 
 <p style="margin-left:11%; margin-top: 1em">To ensure the
@@ -265,7 +265,7 @@ compatible. If the major number changes then
 not guaranteed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For more
-information, see <b>OpenSSL_version</b>(3).</p>
+information, see <a href="https://man.page/3/OpenSSL_version">OpenSSL_version(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Other major
 new features</i></p>
@@ -276,7 +276,7 @@ Management Protocol ( <small>CMP, RFC 4210</small> )</p>
 <p style="margin-left:11%; margin-top: 1em">This also
 covers <small>CRMF</small> ( <small>RFC 4211</small> ) and
 <small>HTTP</small> transfer ( <small>RFC 6712</small> ) See
-<b>openssl-cmp</b>(1) and <b>OSSL_CMP_exec_certreq</b>(3) as
+<a href="https://man.page/1/openssl-cmp">openssl-cmp(1)</a> and <a href="https://man.page/3/OSSL_CMP_exec_certreq">OSSL_CMP_exec_certreq(3)</a> as
 starting points.</p>
 
 
@@ -306,7 +306,7 @@ may be slower as they use an <small>EVP_KDF</small> bridge
 internally. All new applications should use the new
 <b><small>EVP_KDF</small></b> (3) interface. See also
 &quot;Key Derivation Function ( <small>KDF</small> )&quot;
-in <b>OSSL_PROVIDER-default</b>(7) and &quot;Key Derivation
+in <a href="https://man.page/7/OSSL_PROVIDER-default">OSSL_PROVIDER-default(7)</a> and &quot;Key Derivation
 Function ( <small>KDF</small> )&quot; in
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7).</p>
 
@@ -322,13 +322,13 @@ implementations.</p>
 generic <small>EVP_PKEY</small> to <small>EVP_MAC</small>
 bridge, to facilitate the continued use of MACs through raw
 private keys in functionality such as
-<b>EVP_DigestSign</b>(3) and <b>EVP_DigestVerify</b>(3).</p>
+<a href="https://man.page/3/EVP_DigestSign">EVP_DigestSign(3)</a> and <a href="https://man.page/3/EVP_DigestVerify">EVP_DigestVerify(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">All new
 applications should use the new
 <b><small>EVP_MAC</small></b> (3) interface. See also
 &quot;Message Authentication Code ( <small>MAC</small>
-)&quot; in <b>OSSL_PROVIDER-default</b>(7) and &quot;Message
+)&quot; in <a href="https://man.page/7/OSSL_PROVIDER-default">OSSL_PROVIDER-default(7)</a> and &quot;Message
 Authentication Code ( <small>MAC</small> )&quot; in
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7).</p>
 
@@ -430,7 +430,7 @@ STEP&quot;</small> and &quot; <small>SSH&quot;</small></p></td>
 
 <p style="margin-left:17%; margin-top: 1em">See &quot;
 <small>SIV</small> Mode&quot; in
-<b>EVP_EncryptInit</b>(3).</p>
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -549,8 +549,8 @@ mode.</p>
 
 
 
-<p style="margin-top: 1em"><b>PKCS7_get_octet_string</b>(3)
-and <b>PKCS7_type_is_other</b>(3) were made public.</p></td></tr>
+<p style="margin-top: 1em"><a href="https://man.page/3/PKCS7_get_octet_string">PKCS7_get_octet_string(3)</a>
+and <a href="https://man.page/3/PKCS7_type_is_other">PKCS7_type_is_other(3)</a> were made public.</p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">PKCS#12
@@ -577,34 +577,34 @@ objects have also been enhanced where required. This
 includes:</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>PKCS12_add_key_ex</b>(3),
-<b>PKCS12_add_safe_ex</b>(3), <b>PKCS12_add_safes_ex</b>(3),
-<b>PKCS12_create_ex</b>(3),
-<b>PKCS12_decrypt_skey_ex</b>(3), <b>PKCS12_init_ex</b>(3),
-<b>PKCS12_item_decrypt_d2i_ex</b>(3),
-<b>PKCS12_item_i2d_encrypt_ex</b>(3),
-<b>PKCS12_key_gen_asc_ex</b>(3),
-<b>PKCS12_key_gen_uni_ex</b>(3),
-<b>PKCS12_key_gen_utf8_ex</b>(3),
-<b>PKCS12_pack_p7encdata_ex</b>(3),
-<b>PKCS12_pbe_crypt_ex</b>(3),
-<b>PKCS12_PBE_keyivgen_ex</b>(3),
-<b>PKCS12_SAFEBAG_create_pkcs8_encrypt_ex</b>(3),
-<b>PKCS5_pbe2_set_iv_ex</b>(3),
-<b>PKCS5_pbe_set0_algor_ex</b>(3),
-<b>PKCS5_pbe_set_ex</b>(3), <b>PKCS5_pbkdf2_set_ex</b>(3),
-<b>PKCS5_v2_PBE_keyivgen_ex</b>(3),
-<b>PKCS5_v2_scrypt_keyivgen_ex</b>(3),
-<b>PKCS8_decrypt_ex</b>(3), <b>PKCS8_encrypt_ex</b>(3),
-<b>PKCS8_set0_pbe_ex</b>(3).</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/PKCS12_add_key_ex">PKCS12_add_key_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_add_safe_ex">PKCS12_add_safe_ex(3)</a>, <a href="https://man.page/3/PKCS12_add_safes_ex">PKCS12_add_safes_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_create_ex">PKCS12_create_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_decrypt_skey_ex">PKCS12_decrypt_skey_ex(3)</a>, <a href="https://man.page/3/PKCS12_init_ex">PKCS12_init_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_item_decrypt_d2i_ex">PKCS12_item_decrypt_d2i_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_item_i2d_encrypt_ex">PKCS12_item_i2d_encrypt_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_key_gen_asc_ex">PKCS12_key_gen_asc_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_key_gen_uni_ex">PKCS12_key_gen_uni_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_key_gen_utf8_ex">PKCS12_key_gen_utf8_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_pack_p7encdata_ex">PKCS12_pack_p7encdata_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_pbe_crypt_ex">PKCS12_pbe_crypt_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_PBE_keyivgen_ex">PKCS12_PBE_keyivgen_ex(3)</a>,
+<a href="https://man.page/3/PKCS12_SAFEBAG_create_pkcs8_encrypt_ex">PKCS12_SAFEBAG_create_pkcs8_encrypt_ex(3)</a>,
+<a href="https://man.page/3/PKCS5_pbe2_set_iv_ex">PKCS5_pbe2_set_iv_ex(3)</a>,
+<a href="https://man.page/3/PKCS5_pbe_set0_algor_ex">PKCS5_pbe_set0_algor_ex(3)</a>,
+<a href="https://man.page/3/PKCS5_pbe_set_ex">PKCS5_pbe_set_ex(3)</a>, <a href="https://man.page/3/PKCS5_pbkdf2_set_ex">PKCS5_pbkdf2_set_ex(3)</a>,
+<a href="https://man.page/3/PKCS5_v2_PBE_keyivgen_ex">PKCS5_v2_PBE_keyivgen_ex(3)</a>,
+<a href="https://man.page/3/PKCS5_v2_scrypt_keyivgen_ex">PKCS5_v2_scrypt_keyivgen_ex(3)</a>,
+<a href="https://man.page/3/PKCS8_decrypt_ex">PKCS8_decrypt_ex(3)</a>, <a href="https://man.page/3/PKCS8_encrypt_ex">PKCS8_encrypt_ex(3)</a>,
+<a href="https://man.page/3/PKCS8_set0_pbe_ex">PKCS8_set0_pbe_ex(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">As part of this
 change the EVP_PBE_xxx APIs can also accept a library
 context and property query and will call an extended version
 of the key/IV derivation function which supports these
-parameters. This includes <b>EVP_PBE_CipherInit_ex</b>(3),
-<b>EVP_PBE_find_ex</b>(3) and
-<b>EVP_PBE_scrypt_ex</b>(3).</p>
+parameters. This includes <a href="https://man.page/3/EVP_PBE_CipherInit_ex">EVP_PBE_CipherInit_ex(3)</a>,
+<a href="https://man.page/3/EVP_PBE_find_ex">EVP_PBE_find_ex(3)</a> and
+<a href="https://man.page/3/EVP_PBE_scrypt_ex">EVP_PBE_scrypt_ex(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Windows thread
 synchronization changes</p>
@@ -628,18 +628,18 @@ configured with the &quot;enable-trace&quot; option.</p>
 <small>API</small> is enabled, the application can activate
 trace output by registering BIOs as trace channels for a
 number of tracing and debugging categories. See
-<b>OSSL_trace_enabled</b>(3).</p>
+<a href="https://man.page/3/OSSL_trace_enabled">OSSL_trace_enabled(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Key validation
 updates</p>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>EVP_PKEY_public_check</b>(3)
-and <b>EVP_PKEY_param_check</b>(3) now work for more key
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/3/EVP_PKEY_public_check">EVP_PKEY_public_check(3)</a>
+and <a href="https://man.page/3/EVP_PKEY_param_check">EVP_PKEY_param_check(3)</a> now work for more key
 types. This includes <small>RSA, DSA, ED25519, X25519,
 ED448</small> and X448. Previously (in 1.1.1) they would
 return -2. For key types that do not have parameters then
-<b>EVP_PKEY_param_check</b>(3) will always return 1.</p>
+<a href="https://man.page/3/EVP_PKEY_param_check">EVP_PKEY_param_check(3)</a> will always return 1.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Other
 notable deprecations and changes</i></p>
@@ -676,8 +676,8 @@ and <small>EVP_RAND_CTX.</small></p>
 <p style="margin-left:11%; margin-top: 1em">These functions
 are legacy APIs that are not applicable to the new provider
 model. Applications should instead use
-<b>EVP_default_properties_is_fips_enabled</b>(3) and
-<b>EVP_default_properties_enable_fips</b>(3).</p>
+<a href="https://man.page/3/EVP_default_properties_is_fips_enabled">EVP_default_properties_is_fips_enabled(3)</a> and
+<a href="https://man.page/3/EVP_default_properties_enable_fips">EVP_default_properties_enable_fips(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Key generation
 is slower</p>
@@ -709,7 +709,7 @@ by default in the fips provider.</p>
 disable the checks see
 <b><small>OSSL_KDF_PARAM_PKCS5</small></b> in
 <b><small>EVP_KDF-PBKDF2</small></b> (7). The parameter can
-be set using <b>EVP_KDF_derive</b>(3).</p>
+be set using <a href="https://man.page/3/EVP_KDF_derive">EVP_KDF_derive(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Enforce a
 minimum <small>DH</small> modulus size of 512 bits</p>
@@ -765,15 +765,15 @@ function has been removed.</p>
 return an internal key should be treated as read only</p>
 
 <p style="margin-left:11%; margin-top: 1em">Functions such
-as <b>EVP_PKEY_get0_RSA</b>(3) behave slightly differently
+as <a href="https://man.page/3/EVP_PKEY_get0_RSA">EVP_PKEY_get0_RSA(3)</a> behave slightly differently
 in OpenSSL 3.0. Previously they returned a pointer to the
 low-level key used internally by libcrypto. From OpenSSL 3.0
 this key may now be held in a provider. Calling these
 functions will only return a handle on the internal key
 where the <small>EVP_PKEY</small> was constructed using this
 key in the first place, for example using a function or
-macro such as <b>EVP_PKEY_assign_RSA</b>(3),
-<b>EVP_PKEY_set1_RSA</b>(3), etc. Where the
+macro such as <a href="https://man.page/3/EVP_PKEY_assign_RSA">EVP_PKEY_assign_RSA(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_set1_RSA">EVP_PKEY_set1_RSA(3)</a>, etc. Where the
 <small>EVP_PKEY</small> holds a provider managed key, then
 these functions now return a cached copy of the key. Changes
 to the internal provider key that take place after the first
@@ -785,16 +785,16 @@ internal provider key.</p>
 <p style="margin-left:11%; margin-top: 1em">For the above
 reasons the keys returned from these functions should
 typically be treated as read-only. To emphasise this the
-value returned from <b>EVP_PKEY_get0_RSA</b>(3),
-<b>EVP_PKEY_get0_DSA</b>(3), <b>EVP_PKEY_get0_EC_KEY</b>(3)
-and <b>EVP_PKEY_get0_DH</b>(3) have been made const. This
+value returned from <a href="https://man.page/3/EVP_PKEY_get0_RSA">EVP_PKEY_get0_RSA(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get0_DSA">EVP_PKEY_get0_DSA(3)</a>, <a href="https://man.page/3/EVP_PKEY_get0_EC_KEY">EVP_PKEY_get0_EC_KEY(3)</a>
+and <a href="https://man.page/3/EVP_PKEY_get0_DH">EVP_PKEY_get0_DH(3)</a> have been made const. This
 may break some existing code. Applications broken by this
 change should be modified. The preferred solution is to
 refactor the code to avoid the use of these deprecated
 functions. Failing this the code should be modified to use a
-const pointer instead. The <b>EVP_PKEY_get1_RSA</b>(3),
-<b>EVP_PKEY_get1_DSA</b>(3), <b>EVP_PKEY_get1_EC_KEY</b>(3)
-and <b>EVP_PKEY_get1_DH</b>(3) functions continue to return
+const pointer instead. The <a href="https://man.page/3/EVP_PKEY_get1_RSA">EVP_PKEY_get1_RSA(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get1_DSA">EVP_PKEY_get1_DSA(3)</a>, <a href="https://man.page/3/EVP_PKEY_get1_EC_KEY">EVP_PKEY_get1_EC_KEY(3)</a>
+and <a href="https://man.page/3/EVP_PKEY_get1_DH">EVP_PKEY_get1_DH(3)</a> functions continue to return
 a non-const pointer to enable them to be &quot;freed&quot;.
 However they should also be treated as read-only.</p>
 
@@ -803,8 +803,8 @@ check has moved from <b>EVP_PKEY_derive()</b> to
 <b>EVP_PKEY_derive_set_peer()</b></p>
 
 <p style="margin-left:11%; margin-top: 1em">This may mean
-result in an error in <b>EVP_PKEY_derive_set_peer</b>(3)
-rather than during <b>EVP_PKEY_derive</b>(3). To disable
+result in an error in <a href="https://man.page/3/EVP_PKEY_derive_set_peer">EVP_PKEY_derive_set_peer(3)</a>
+rather than during <a href="https://man.page/3/EVP_PKEY_derive">EVP_PKEY_derive(3)</a>. To disable
 this check use EVP_PKEY_derive_set_peer_ex(dh, peer, 0).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The print
@@ -812,8 +812,8 @@ format has cosmetic changes for some functions</p>
 
 <p style="margin-left:11%; margin-top: 1em">The output from
 numerous &quot;printing&quot; functions such as
-<b>X509_signature_print</b>(3), <b>X509_print_ex</b>(3),
-<b>X509_CRL_print_ex</b>(3), and other similar functions has
+<a href="https://man.page/3/X509_signature_print">X509_signature_print(3)</a>, <a href="https://man.page/3/X509_print_ex">X509_print_ex(3)</a>,
+<a href="https://man.page/3/X509_CRL_print_ex">X509_CRL_print_ex(3)</a>, and other similar functions has
 been amended such that there may be cosmetic differences
 between the output observed in 1.1.1 and 3.0. This also
 applies to the <b>-text</b> output from the <b>openssl
@@ -844,7 +844,7 @@ parameters</p>
 1.1.1) these conflicting parameters were allowed, but will
 now result in errors. See <b><small>EVP_PKEY-DH</small></b>
 (7) for further details. This affects the behaviour of
-<b>openssl-genpkey</b>(1) for <small>DH</small> parameter
+<a href="https://man.page/1/openssl-genpkey">openssl-genpkey(1)</a> for <small>DH</small> parameter
 generation.</p>
 
 
@@ -856,7 +856,7 @@ cipher from a provider the
 <b><small>EVP_CIPH_FLAG_LENGTH_BITS</small></b> flag can
 only be set <b>after</b> the cipher has been assigned to the
 cipher context. See &quot; <small>FLAGS&quot;</small> in
-<b>EVP_EncryptInit</b>(3) for more information.</p>
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a> for more information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Validation of
 operation context parameters</p>
@@ -1086,7 +1086,7 @@ installation of the <small>FIPS</small> Module&quot;.</p>
 <p style="margin-left:11%; margin-top: 1em">The function
 calls <b>FIPS_mode()</b> and <b>FIPS_mode_set()</b> have
 been removed from OpenSSL 3.0. You should rewrite your
-application to not use them. See <b>fips_module</b>(7) and
+application to not use them. See <a href="https://man.page/7/fips_module">fips_module(7)</a> and
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7) for
 details.</p>
 
@@ -1107,7 +1107,7 @@ just work with OpenSSL 3.0. However changes will be required
 if you want to take advantage of some of the new features
 that OpenSSL 3.0 makes available. In order to do that you
 need to understand some new concepts introduced in OpenSSL
-3.0. Read &quot;Library contexts&quot; in <b>crypto</b>(7)
+3.0. Read &quot;Library contexts&quot; in <a href="https://man.page/7/crypto">crypto(7)</a>
 for further information.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Library
@@ -1117,12 +1117,12 @@ Context</i></p>
 context allows different components of a complex application
 to each use a different library context and have different
 providers loaded with different configuration settings. See
-&quot;Library contexts&quot; in <b>crypto</b>(7) for further
+&quot;Library contexts&quot; in <a href="https://man.page/7/crypto">crypto(7)</a> for further
 info.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the user
 creates an <b><small>OSSL_LIB_CTX</small></b> via
-<b>OSSL_LIB_CTX_new</b>(3) then many functions may need to
+<a href="https://man.page/3/OSSL_LIB_CTX_new">OSSL_LIB_CTX_new(3)</a> then many functions may need to
 be changed to pass additional parameters to handle the
 library context.</p>
 
@@ -1133,25 +1133,25 @@ Context - Old functions that should be changed</p>
 context is needed then all EVP_* digest functions that
 return a <b>const <small>EVP_MD</small> *</b> such as
 <b>EVP_sha256()</b> should be replaced with a call to
-<b>EVP_MD_fetch</b>(3). See &quot; <small>ALGORITHM
-FETCHING&quot;</small> in <b>crypto</b>(7).</p>
+<a href="https://man.page/3/EVP_MD_fetch">EVP_MD_fetch(3)</a>. See &quot; <small>ALGORITHM
+FETCHING&quot;</small> in <a href="https://man.page/7/crypto">crypto(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If a library
 context is needed then all EVP_* cipher functions that
 return a <b>const <small>EVP_CIPHER</small> *</b> such as
 <b>EVP_aes_128_cbc()</b> should be replaced vith a call to
-<b>EVP_CIPHER_fetch</b>(3). See &quot; <small>ALGORITHM
-FETCHING&quot;</small> in <b>crypto</b>(7).</p>
+<a href="https://man.page/3/EVP_CIPHER_fetch">EVP_CIPHER_fetch(3)</a>. See &quot; <small>ALGORITHM
+FETCHING&quot;</small> in <a href="https://man.page/7/crypto">crypto(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Some functions
 can be passed an object that has already been set up with a
-library context such as <b>d2i_X509</b>(3),
-<b>d2i_X509_CRL</b>(3), <b>d2i_X509_REQ</b>(3) and
-<b>d2i_X509_PUBKEY</b>(3). If <small>NULL</small> is passed
+library context such as <a href="https://man.page/3/d2i_X509">d2i_X509(3)</a>,
+<a href="https://man.page/3/d2i_X509_CRL">d2i_X509_CRL(3)</a>, <a href="https://man.page/3/d2i_X509_REQ">d2i_X509_REQ(3)</a> and
+<a href="https://man.page/3/d2i_X509_PUBKEY">d2i_X509_PUBKEY(3)</a>. If <small>NULL</small> is passed
 instead then the created object will be set up with the
-default library context. Use <b>X509_new_ex</b>(3),
-<b>X509_CRL_new_ex</b>(3), <b>X509_REQ_new_ex</b>(3) and
-<b>X509_PUBKEY_new_ex</b>(3) if a library context is
+default library context. Use <a href="https://man.page/3/X509_new_ex">X509_new_ex(3)</a>,
+<a href="https://man.page/3/X509_CRL_new_ex">X509_CRL_new_ex(3)</a>, <a href="https://man.page/3/X509_REQ_new_ex">X509_REQ_new_ex(3)</a> and
+<a href="https://man.page/3/X509_PUBKEY_new_ex">X509_PUBKEY_new_ex(3)</a> if a library context is
 required.</p>
 
 <p style="margin-left:11%; margin-top: 1em">All functions
@@ -1173,10 +1173,10 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p style="margin-top: 1em"><b>ASN1_item_new</b>(3),
-<b>ASN1_item_d2i</b>(3), <b>ASN1_item_d2i_fp</b>(3),
-<b>ASN1_item_d2i_bio</b>(3), <b>ASN1_item_sign</b>(3) and
-<b>ASN1_item_verify</b>(3)</p> </td></tr>
+<p style="margin-top: 1em"><a href="https://man.page/3/ASN1_item_new">ASN1_item_new(3)</a>,
+<a href="https://man.page/3/ASN1_item_d2i">ASN1_item_d2i(3)</a>, <a href="https://man.page/3/ASN1_item_d2i_fp">ASN1_item_d2i_fp(3)</a>,
+<a href="https://man.page/3/ASN1_item_d2i_bio">ASN1_item_d2i_bio(3)</a>, <a href="https://man.page/3/ASN1_item_sign">ASN1_item_sign(3)</a> and
+<a href="https://man.page/3/ASN1_item_verify">ASN1_item_verify(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1187,7 +1187,7 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>BIO_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/BIO_new">BIO_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1209,7 +1209,7 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>BN_CTX_new</b>(3) and <b>BN_CTX_secure_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/BN_CTX_new">BN_CTX_new(3)</a> and <a href="https://man.page/3/BN_CTX_secure_new">BN_CTX_secure_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1220,13 +1220,13 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>CMS_AuthEnvelopedData_create</b>(3),
-<b>CMS_ContentInfo_new</b>(3), <b>CMS_data_create</b>(3),
-<b>CMS_digest_create</b>(3),
-<b>CMS_EncryptedData_encrypt</b>(3), <b>CMS_encrypt</b>(3),
-<b>CMS_EnvelopedData_create</b>(3),
-<b>CMS_ReceiptRequest_create0</b>(3) and
-<b>CMS_sign</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/CMS_AuthEnvelopedData_create">CMS_AuthEnvelopedData_create(3)</a>,
+<a href="https://man.page/3/CMS_ContentInfo_new">CMS_ContentInfo_new(3)</a>, <a href="https://man.page/3/CMS_data_create">CMS_data_create(3)</a>,
+<a href="https://man.page/3/CMS_digest_create">CMS_digest_create(3)</a>,
+<a href="https://man.page/3/CMS_EncryptedData_encrypt">CMS_EncryptedData_encrypt(3)</a>, <a href="https://man.page/3/CMS_encrypt">CMS_encrypt(3)</a>,
+<a href="https://man.page/3/CMS_EnvelopedData_create">CMS_EnvelopedData_create(3)</a>,
+<a href="https://man.page/3/CMS_ReceiptRequest_create0">CMS_ReceiptRequest_create0(3)</a> and
+<a href="https://man.page/3/CMS_sign">CMS_sign(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1237,7 +1237,7 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>CONF_modules_load_file</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/CONF_modules_load_file">CONF_modules_load_file(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1248,8 +1248,8 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>CTLOG_new</b>(3), <b>CTLOG_new_from_base64</b>(3) and
-<b>CTLOG_STORE_new</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/CTLOG_new">CTLOG_new(3)</a>, <a href="https://man.page/3/CTLOG_new_from_base64">CTLOG_new_from_base64(3)</a> and
+<a href="https://man.page/3/CTLOG_STORE_new">CTLOG_STORE_new(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1260,7 +1260,7 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>CT_POLICY_EVAL_CTX_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/CT_POLICY_EVAL_CTX_new">CT_POLICY_EVAL_CTX_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1271,8 +1271,8 @@ along with the respective name.</p>
 <td width="83%">
 
 
-<p><b>d2i_AutoPrivateKey</b>(3), <b>d2i_PrivateKey</b>(3)
-and <b>d2i_PUBKEY</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/d2i_AutoPrivateKey">d2i_AutoPrivateKey(3)</a>, <a href="https://man.page/3/d2i_PrivateKey">d2i_PrivateKey(3)</a>
+and <a href="https://man.page/3/d2i_PUBKEY">d2i_PUBKEY(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1283,13 +1283,13 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>d2i_PrivateKey_bio</b>(3) and
-<b>d2i_PrivateKey_fp</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/d2i_PrivateKey_bio">d2i_PrivateKey_bio(3)</a> and
+<a href="https://man.page/3/d2i_PrivateKey_fp">d2i_PrivateKey_fp(3)</a></p> </td></tr>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>d2i_PrivateKey_ex_bio</b>(3) and
-<b>d2i_PrivateKey_ex_fp</b>(3)</p>
+<a href="https://man.page/3/d2i_PrivateKey_ex_bio">d2i_PrivateKey_ex_bio(3)</a> and
+<a href="https://man.page/3/d2i_PrivateKey_ex_fp">d2i_PrivateKey_ex_fp(3)</a></p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -1303,14 +1303,14 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="23%">
 
 
-<p style="margin-top: 1em"><b>EC_GROUP_new</b>(3)</p></td>
+<p style="margin-top: 1em"><a href="https://man.page/3/EC_GROUP_new">EC_GROUP_new(3)</a></p></td>
 <td width="60%">
 </td></tr>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EC_GROUP_new_by_curve_name_ex</b>(3) or
-<b>EC_GROUP_new_from_params</b>(3).</p>
+<a href="https://man.page/3/EC_GROUP_new_by_curve_name_ex">EC_GROUP_new_by_curve_name_ex(3)</a> or
+<a href="https://man.page/3/EC_GROUP_new_from_params">EC_GROUP_new_from_params(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -1324,8 +1324,8 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p style="margin-top: 1em"><b>EVP_DigestSignInit</b>(3) and
-<b>EVP_DigestVerifyInit</b>(3)</p> </td></tr>
+<p style="margin-top: 1em"><a href="https://man.page/3/EVP_DigestSignInit">EVP_DigestSignInit(3)</a> and
+<a href="https://man.page/3/EVP_DigestVerifyInit">EVP_DigestVerifyInit(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1336,8 +1336,8 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>EVP_PBE_CipherInit</b>(3), <b>EVP_PBE_find</b>(3) and
-<b>EVP_PBE_scrypt</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_PBE_CipherInit">EVP_PBE_CipherInit(3)</a>, <a href="https://man.page/3/EVP_PBE_find">EVP_PBE_find(3)</a> and
+<a href="https://man.page/3/EVP_PBE_scrypt">EVP_PBE_scrypt(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1348,7 +1348,7 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PKCS5_PBE_keyivgen</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/PKCS5_PBE_keyivgen">PKCS5_PBE_keyivgen(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1370,11 +1370,11 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>EVP_PKEY_CTX_new_id</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/EVP_PKEY_CTX_new_id">EVP_PKEY_CTX_new_id(3)</a></p></td></tr>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EVP_PKEY_CTX_new_from_name</b>(3)</p>
+<a href="https://man.page/3/EVP_PKEY_CTX_new_from_name">EVP_PKEY_CTX_new_from_name(3)</a></p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -1389,9 +1389,9 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 
 
 
-<p style="margin-top: 1em"><b>EVP_PKEY_derive_set_peer</b>(3),
-<b>EVP_PKEY_new_raw_private_key</b>(3) and
-<b>EVP_PKEY_new_raw_public_key</b>(3)</p> </td></tr>
+<p style="margin-top: 1em"><a href="https://man.page/3/EVP_PKEY_derive_set_peer">EVP_PKEY_derive_set_peer(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_new_raw_private_key">EVP_PKEY_new_raw_private_key(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_new_raw_public_key">EVP_PKEY_new_raw_public_key(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1402,8 +1402,8 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>EVP_SignFinal</b>(3) and
-<b>EVP_VerifyFinal</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_SignFinal">EVP_SignFinal(3)</a> and
+<a href="https://man.page/3/EVP_VerifyFinal">EVP_VerifyFinal(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1414,7 +1414,7 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>NCONF_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/NCONF_new">NCONF_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1425,8 +1425,8 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>OCSP_RESPID_match</b>(3) and
-<b>OCSP_RESPID_set_by_key</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OCSP_RESPID_match">OCSP_RESPID_match(3)</a> and
+<a href="https://man.page/3/OCSP_RESPID_set_by_key">OCSP_RESPID_set_by_key(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1437,7 +1437,7 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>OPENSSL_thread_stop</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/OPENSSL_thread_stop">OPENSSL_thread_stop(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1448,7 +1448,7 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>OSSL_STORE_open</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/OSSL_STORE_open">OSSL_STORE_open(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1459,10 +1459,10 @@ and <b>d2i_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PEM_read_bio_Parameters</b>(3),
-<b>PEM_read_bio_PrivateKey</b>(3),
-<b>PEM_read_bio_PUBKEY</b>(3), <b>PEM_read_PrivateKey</b>(3)
-and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/PEM_read_bio_Parameters">PEM_read_bio_Parameters(3)</a>,
+<a href="https://man.page/3/PEM_read_bio_PrivateKey">PEM_read_bio_PrivateKey(3)</a>,
+<a href="https://man.page/3/PEM_read_bio_PUBKEY">PEM_read_bio_PUBKEY(3)</a>, <a href="https://man.page/3/PEM_read_PrivateKey">PEM_read_PrivateKey(3)</a>
+and <a href="https://man.page/3/PEM_read_PUBKEY">PEM_read_PUBKEY(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1473,10 +1473,10 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PEM_write_bio_PrivateKey</b>(3),
-<b>PEM_write_bio_PUBKEY</b>(3),
-<b>PEM_write_PrivateKey</b>(3) and
-<b>PEM_write_PUBKEY</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/PEM_write_bio_PrivateKey">PEM_write_bio_PrivateKey(3)</a>,
+<a href="https://man.page/3/PEM_write_bio_PUBKEY">PEM_write_bio_PUBKEY(3)</a>,
+<a href="https://man.page/3/PEM_write_PrivateKey">PEM_write_PrivateKey(3)</a> and
+<a href="https://man.page/3/PEM_write_PUBKEY">PEM_write_PUBKEY(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1487,8 +1487,8 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PEM_X509_INFO_read_bio</b>(3) and
-<b>PEM_X509_INFO_read</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/PEM_X509_INFO_read_bio">PEM_X509_INFO_read_bio(3)</a> and
+<a href="https://man.page/3/PEM_X509_INFO_read">PEM_X509_INFO_read(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1499,16 +1499,16 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PKCS12_add_key</b>(3), <b>PKCS12_add_safe</b>(3),
-<b>PKCS12_add_safes</b>(3), <b>PKCS12_create</b>(3),
-<b>PKCS12_decrypt_skey</b>(3), <b>PKCS12_init</b>(3),
-<b>PKCS12_item_decrypt_d2i</b>(3),
-<b>PKCS12_item_i2d_encrypt</b>(3),
-<b>PKCS12_key_gen_asc</b>(3), <b>PKCS12_key_gen_uni</b>(3),
-<b>PKCS12_key_gen_utf8</b>(3),
-<b>PKCS12_pack_p7encdata</b>(3), <b>PKCS12_pbe_crypt</b>(3),
-<b>PKCS12_PBE_keyivgen</b>(3),
-<b>PKCS12_SAFEBAG_create_pkcs8_encrypt</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/PKCS12_add_key">PKCS12_add_key(3)</a>, <a href="https://man.page/3/PKCS12_add_safe">PKCS12_add_safe(3)</a>,
+<a href="https://man.page/3/PKCS12_add_safes">PKCS12_add_safes(3)</a>, <a href="https://man.page/3/PKCS12_create">PKCS12_create(3)</a>,
+<a href="https://man.page/3/PKCS12_decrypt_skey">PKCS12_decrypt_skey(3)</a>, <a href="https://man.page/3/PKCS12_init">PKCS12_init(3)</a>,
+<a href="https://man.page/3/PKCS12_item_decrypt_d2i">PKCS12_item_decrypt_d2i(3)</a>,
+<a href="https://man.page/3/PKCS12_item_i2d_encrypt">PKCS12_item_i2d_encrypt(3)</a>,
+<a href="https://man.page/3/PKCS12_key_gen_asc">PKCS12_key_gen_asc(3)</a>, <a href="https://man.page/3/PKCS12_key_gen_uni">PKCS12_key_gen_uni(3)</a>,
+<a href="https://man.page/3/PKCS12_key_gen_utf8">PKCS12_key_gen_utf8(3)</a>,
+<a href="https://man.page/3/PKCS12_pack_p7encdata">PKCS12_pack_p7encdata(3)</a>, <a href="https://man.page/3/PKCS12_pbe_crypt">PKCS12_pbe_crypt(3)</a>,
+<a href="https://man.page/3/PKCS12_PBE_keyivgen">PKCS12_PBE_keyivgen(3)</a>,
+<a href="https://man.page/3/PKCS12_SAFEBAG_create_pkcs8_encrypt">PKCS12_SAFEBAG_create_pkcs8_encrypt(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1519,9 +1519,9 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PKCS5_pbe_set0_algor</b>(3), <b>PKCS5_pbe_set</b>(3),
-<b>PKCS5_pbe2_set_iv</b>(3), <b>PKCS5_pbkdf2_set</b>(3) and
-<b>PKCS5_v2_scrypt_keyivgen</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/PKCS5_pbe_set0_algor">PKCS5_pbe_set0_algor(3)</a>, <a href="https://man.page/3/PKCS5_pbe_set">PKCS5_pbe_set(3)</a>,
+<a href="https://man.page/3/PKCS5_pbe2_set_iv">PKCS5_pbe2_set_iv(3)</a>, <a href="https://man.page/3/PKCS5_pbkdf2_set">PKCS5_pbkdf2_set(3)</a> and
+<a href="https://man.page/3/PKCS5_v2_scrypt_keyivgen">PKCS5_v2_scrypt_keyivgen(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1532,8 +1532,8 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PKCS7_encrypt</b>(3), <b>PKCS7_new</b>(3) and
-<b>PKCS7_sign</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/PKCS7_encrypt">PKCS7_encrypt(3)</a>, <a href="https://man.page/3/PKCS7_new">PKCS7_new(3)</a> and
+<a href="https://man.page/3/PKCS7_sign">PKCS7_sign(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1544,8 +1544,8 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>PKCS8_decrypt</b>(3), <b>PKCS8_encrypt</b>(3) and
-<b>PKCS8_set0_pbe</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/PKCS8_decrypt">PKCS8_decrypt(3)</a>, <a href="https://man.page/3/PKCS8_encrypt">PKCS8_encrypt(3)</a> and
+<a href="https://man.page/3/PKCS8_set0_pbe">PKCS8_set0_pbe(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1556,7 +1556,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>RAND_bytes</b>(3) and <b>RAND_priv_bytes</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/RAND_bytes">RAND_bytes(3)</a> and <a href="https://man.page/3/RAND_priv_bytes">RAND_priv_bytes(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1567,7 +1567,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>SMIME_write_ASN1</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/SMIME_write_ASN1">SMIME_write_ASN1(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1578,7 +1578,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>SSL_load_client_CA_file</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/SSL_load_client_CA_file">SSL_load_client_CA_file(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1589,7 +1589,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>SSL_CTX_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/SSL_CTX_new">SSL_CTX_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1600,7 +1600,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>TS_RESP_CTX_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/TS_RESP_CTX_new">TS_RESP_CTX_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1611,7 +1611,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_CRL_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/X509_CRL_new">X509_CRL_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1622,8 +1622,8 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_load_cert_crl_file</b>(3) and
-<b>X509_load_cert_file</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/X509_load_cert_crl_file">X509_load_cert_crl_file(3)</a> and
+<a href="https://man.page/3/X509_load_cert_file">X509_load_cert_file(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1634,8 +1634,8 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_LOOKUP_by_subject</b>(3) and
-<b>X509_LOOKUP_ctrl</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/X509_LOOKUP_by_subject">X509_LOOKUP_by_subject(3)</a> and
+<a href="https://man.page/3/X509_LOOKUP_ctrl">X509_LOOKUP_ctrl(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1646,7 +1646,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_NAME_hash</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/X509_NAME_hash">X509_NAME_hash(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1657,7 +1657,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_new</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/X509_new">X509_new(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1668,7 +1668,7 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_REQ_new</b>(3) and <b>X509_REQ_verify</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/X509_REQ_new">X509_REQ_new(3)</a> and <a href="https://man.page/3/X509_REQ_verify">X509_REQ_verify(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1679,11 +1679,11 @@ and <b>PEM_read_PUBKEY</b>(3)</p></td></tr>
 <td width="83%">
 
 
-<p><b>X509_STORE_CTX_new</b>(3),
-<b>X509_STORE_set_default_paths</b>(3),
-<b>X509_STORE_load_file</b>(3),
-<b>X509_STORE_load_locations</b>(3) and
-<b>X509_STORE_load_store</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/X509_STORE_CTX_new">X509_STORE_CTX_new(3)</a>,
+<a href="https://man.page/3/X509_STORE_set_default_paths">X509_STORE_set_default_paths(3)</a>,
+<a href="https://man.page/3/X509_STORE_load_file">X509_STORE_load_file(3)</a>,
+<a href="https://man.page/3/X509_STORE_load_locations">X509_STORE_load_locations(3)</a> and
+<a href="https://man.page/3/X509_STORE_load_store">X509_STORE_load_store(3)</a></p> </td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">New functions
@@ -1707,7 +1707,7 @@ context.</p>
 
 
 
-<p style="margin-top: 1em"><b>BIO_new_from_core_bio</b>(3)</p> </td></tr>
+<p style="margin-top: 1em"><a href="https://man.page/3/BIO_new_from_core_bio">BIO_new_from_core_bio(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1718,8 +1718,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_ASYM_CIPHER_fetch</b>(3) and
-<b>EVP_ASYM_CIPHER_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_ASYM_CIPHER_fetch">EVP_ASYM_CIPHER_fetch(3)</a> and
+<a href="https://man.page/3/EVP_ASYM_CIPHER_do_all_provided">EVP_ASYM_CIPHER_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1730,8 +1730,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_CIPHER_fetch</b>(3) and
-<b>EVP_CIPHER_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_CIPHER_fetch">EVP_CIPHER_fetch(3)</a> and
+<a href="https://man.page/3/EVP_CIPHER_do_all_provided">EVP_CIPHER_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1742,8 +1742,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_default_properties_enable_fips</b>(3) and
-<b>EVP_default_properties_is_fips_enabled</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_default_properties_enable_fips">EVP_default_properties_enable_fips(3)</a> and
+<a href="https://man.page/3/EVP_default_properties_is_fips_enabled">EVP_default_properties_is_fips_enabled(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1754,8 +1754,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_KDF_fetch</b>(3) and
-<b>EVP_KDF_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_KDF_fetch">EVP_KDF_fetch(3)</a> and
+<a href="https://man.page/3/EVP_KDF_do_all_provided">EVP_KDF_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1766,8 +1766,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_KEM_fetch</b>(3) and
-<b>EVP_KEM_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_KEM_fetch">EVP_KEM_fetch(3)</a> and
+<a href="https://man.page/3/EVP_KEM_do_all_provided">EVP_KEM_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1778,8 +1778,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_KEYEXCH_fetch</b>(3) and
-<b>EVP_KEYEXCH_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_KEYEXCH_fetch">EVP_KEYEXCH_fetch(3)</a> and
+<a href="https://man.page/3/EVP_KEYEXCH_do_all_provided">EVP_KEYEXCH_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1790,8 +1790,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_KEYMGMT_fetch</b>(3) and
-<b>EVP_KEYMGMT_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_KEYMGMT_fetch">EVP_KEYMGMT_fetch(3)</a> and
+<a href="https://man.page/3/EVP_KEYMGMT_do_all_provided">EVP_KEYMGMT_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1802,8 +1802,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_MAC_fetch</b>(3) and
-<b>EVP_MAC_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_MAC_fetch">EVP_MAC_fetch(3)</a> and
+<a href="https://man.page/3/EVP_MAC_do_all_provided">EVP_MAC_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1814,8 +1814,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_MD_fetch</b>(3) and
-<b>EVP_MD_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_MD_fetch">EVP_MD_fetch(3)</a> and
+<a href="https://man.page/3/EVP_MD_do_all_provided">EVP_MD_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1826,7 +1826,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_PKEY_CTX_new_from_pkey</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/EVP_PKEY_CTX_new_from_pkey">EVP_PKEY_CTX_new_from_pkey(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1837,7 +1837,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_PKEY_Q_keygen</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/EVP_PKEY_Q_keygen">EVP_PKEY_Q_keygen(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1848,7 +1848,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_Q_mac</b>(3) and <b>EVP_Q_digest</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/EVP_Q_mac">EVP_Q_mac(3)</a> and <a href="https://man.page/3/EVP_Q_digest">EVP_Q_digest(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1860,7 +1860,7 @@ context.</p>
 
 
 <p><b><small>EVP_RAND</small></b> (3) and
-<b>EVP_RAND_do_all_provided</b>(3)</p> </td></tr>
+<a href="https://man.page/3/EVP_RAND_do_all_provided">EVP_RAND_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1871,7 +1871,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_set_default_properties</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/EVP_set_default_properties">EVP_set_default_properties(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1882,8 +1882,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>EVP_SIGNATURE_fetch</b>(3) and
-<b>EVP_SIGNATURE_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/EVP_SIGNATURE_fetch">EVP_SIGNATURE_fetch(3)</a> and
+<a href="https://man.page/3/EVP_SIGNATURE_do_all_provided">EVP_SIGNATURE_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1894,8 +1894,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_CMP_CTX_new</b>(3) and
-<b>OSSL_CMP_SRV_CTX_new</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_CMP_CTX_new">OSSL_CMP_CTX_new(3)</a> and
+<a href="https://man.page/3/OSSL_CMP_SRV_CTX_new">OSSL_CMP_SRV_CTX_new(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1906,7 +1906,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert">OSSL_CRMF_ENCRYPTEDVALUE_get1_encCert(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1917,8 +1917,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_CRMF_MSG_create_popo</b>(3) and
-<b>OSSL_CRMF_MSGS_verify_popo</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_CRMF_MSG_create_popo">OSSL_CRMF_MSG_create_popo(3)</a> and
+<a href="https://man.page/3/OSSL_CRMF_MSGS_verify_popo">OSSL_CRMF_MSGS_verify_popo(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1929,8 +1929,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_CRMF_pbm_new</b>(3) and
-<b>OSSL_CRMF_pbmp_new</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_CRMF_pbm_new">OSSL_CRMF_pbm_new(3)</a> and
+<a href="https://man.page/3/OSSL_CRMF_pbmp_new">OSSL_CRMF_pbmp_new(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1941,8 +1941,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_DECODER_CTX_add_extra</b>(3) and
-<b>OSSL_DECODER_CTX_new_for_pkey</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_DECODER_CTX_add_extra">OSSL_DECODER_CTX_add_extra(3)</a> and
+<a href="https://man.page/3/OSSL_DECODER_CTX_new_for_pkey">OSSL_DECODER_CTX_new_for_pkey(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1953,8 +1953,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_DECODER_fetch</b>(3) and
-<b>OSSL_DECODER_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_DECODER_fetch">OSSL_DECODER_fetch(3)</a> and
+<a href="https://man.page/3/OSSL_DECODER_do_all_provided">OSSL_DECODER_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1965,7 +1965,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_ENCODER_CTX_add_extra</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/OSSL_ENCODER_CTX_add_extra">OSSL_ENCODER_CTX_add_extra(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1976,8 +1976,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_ENCODER_fetch</b>(3) and
-<b>OSSL_ENCODER_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_ENCODER_fetch">OSSL_ENCODER_fetch(3)</a> and
+<a href="https://man.page/3/OSSL_ENCODER_do_all_provided">OSSL_ENCODER_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -1988,9 +1988,9 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_LIB_CTX_free</b>(3),
-<b>OSSL_LIB_CTX_load_config</b>(3) and
-<b>OSSL_LIB_CTX_set0_default</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_LIB_CTX_free">OSSL_LIB_CTX_free(3)</a>,
+<a href="https://man.page/3/OSSL_LIB_CTX_load_config">OSSL_LIB_CTX_load_config(3)</a> and
+<a href="https://man.page/3/OSSL_LIB_CTX_set0_default">OSSL_LIB_CTX_set0_default(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -2001,12 +2001,12 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_PROVIDER_add_builtin</b>(3),
-<b>OSSL_PROVIDER_available</b>(3),
-<b>OSSL_PROVIDER_do_all</b>(3),
-<b>OSSL_PROVIDER_load</b>(3),
-<b>OSSL_PROVIDER_set_default_search_path</b>(3) and
-<b>OSSL_PROVIDER_try_load</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_PROVIDER_add_builtin">OSSL_PROVIDER_add_builtin(3)</a>,
+<a href="https://man.page/3/OSSL_PROVIDER_available">OSSL_PROVIDER_available(3)</a>,
+<a href="https://man.page/3/OSSL_PROVIDER_do_all">OSSL_PROVIDER_do_all(3)</a>,
+<a href="https://man.page/3/OSSL_PROVIDER_load">OSSL_PROVIDER_load(3)</a>,
+<a href="https://man.page/3/OSSL_PROVIDER_set_default_search_path">OSSL_PROVIDER_set_default_search_path(3)</a> and
+<a href="https://man.page/3/OSSL_PROVIDER_try_load">OSSL_PROVIDER_try_load(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -2017,8 +2017,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_SELF_TEST_get_callback</b>(3) and
-<b>OSSL_SELF_TEST_set_callback</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_SELF_TEST_get_callback">OSSL_SELF_TEST_get_callback(3)</a> and
+<a href="https://man.page/3/OSSL_SELF_TEST_set_callback">OSSL_SELF_TEST_set_callback(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -2029,7 +2029,7 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_STORE_attach</b>(3)</p></td></tr>
+<p><a href="https://man.page/3/OSSL_STORE_attach">OSSL_STORE_attach(3)</a></p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -2040,8 +2040,8 @@ context.</p>
 <td width="83%">
 
 
-<p><b>OSSL_STORE_LOADER_fetch</b>(3) and
-<b>OSSL_STORE_LOADER_do_all_provided</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/OSSL_STORE_LOADER_fetch">OSSL_STORE_LOADER_fetch(3)</a> and
+<a href="https://man.page/3/OSSL_STORE_LOADER_do_all_provided">OSSL_STORE_LOADER_do_all_provided(3)</a></p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="1%">
@@ -2052,10 +2052,10 @@ context.</p>
 <td width="83%">
 
 
-<p><b>RAND_get0_primary</b>(3),
-<b>RAND_get0_private</b>(3), <b>RAND_get0_public</b>(3),
-<b>RAND_set_DRBG_type</b>(3) and
-<b>RAND_set_seed_source_type</b>(3)</p> </td></tr>
+<p><a href="https://man.page/3/RAND_get0_primary">RAND_get0_primary(3)</a>,
+<a href="https://man.page/3/RAND_get0_private">RAND_get0_private(3)</a>, <a href="https://man.page/3/RAND_get0_public">RAND_get0_public(3)</a>,
+<a href="https://man.page/3/RAND_set_DRBG_type">RAND_set_DRBG_type(3)</a> and
+<a href="https://man.page/3/RAND_set_seed_source_type">RAND_set_seed_source_type(3)</a></p> </td></tr>
 </table>
 
 
@@ -2063,8 +2063,8 @@ context.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Providers are
 described in detail here &quot;Providers&quot; in
-<b>crypto</b>(7). See also &quot; <small>OPENSSL
-PROVIDERS&quot;</small> in <b>crypto</b>(7).</p>
+<a href="https://man.page/7/crypto">crypto(7)</a>. See also &quot; <small>OPENSSL
+PROVIDERS&quot;</small> in <a href="https://man.page/7/crypto">crypto(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Fetching
 algorithms and property queries</i></p>
@@ -2072,7 +2072,7 @@ algorithms and property queries</i></p>
 <p style="margin-left:11%; margin-top: 1em">Implicit and
 Explicit Fetching is described in detail here &quot;
 <small>ALGORITHM FETCHING&quot;</small> in
-<b>crypto</b>(7).</p>
+<a href="https://man.page/7/crypto">crypto(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Mapping
 <small>EVP</small> controls and flags to provider</i>
@@ -2081,8 +2081,8 @@ Explicit Fetching is described in detail here &quot;
 
 <p style="margin-left:11%; margin-top: 1em">The existing
 functions for controls (such as
-<b>EVP_CIPHER_CTX_ctrl</b>(3)) and manipulating flags (such
-as <b>EVP_MD_CTX_set_flags</b>(3))internally use
+<a href="https://man.page/3/EVP_CIPHER_CTX_ctrl">EVP_CIPHER_CTX_ctrl(3)</a>) and manipulating flags (such
+as <a href="https://man.page/3/EVP_MD_CTX_set_flags">EVP_MD_CTX_set_flags(3)</a>)internally use
 <b><small>OSSL_PARAMS</small></b> to pass information
 to/from provider objects. See
 <b><small>OSSL_PARAM</small></b> (3) for additional
@@ -2090,17 +2090,17 @@ information related to parameters.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For ciphers see
 &quot; <small>CONTROLS&quot;</small> in
-<b>EVP_EncryptInit</b>(3), &quot; <small>FLAGS&quot;</small>
-in <b>EVP_EncryptInit</b>(3) and &quot;
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>, &quot; <small>FLAGS&quot;</small>
+in <a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a> and &quot;
 <small>PARAMETERS&quot;</small> in
-<b>EVP_EncryptInit</b>(3).</p>
+<a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For digests see
 &quot; <small>CONTROLS&quot;</small> in
-<b>EVP_DigestInit</b>(3), &quot; <small>FLAGS&quot;</small>
-in <b>EVP_DigestInit</b>(3) and &quot;
+<a href="https://man.page/3/EVP_DigestInit">EVP_DigestInit(3)</a>, &quot; <small>FLAGS&quot;</small>
+in <a href="https://man.page/3/EVP_DigestInit">EVP_DigestInit(3)</a> and &quot;
 <small>PARAMETERS&quot;</small> in
-<b>EVP_DigestInit</b>(3).</p>
+<a href="https://man.page/3/EVP_DigestInit">EVP_DigestInit(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Deprecation
 of Low Level Functions</i></p>
@@ -2135,7 +2135,7 @@ low-level key type have been deprecated. Applications should
 instead use the <b><small>OSSL_DECODER</small></b> (3) and
 <b><small>OSSL_ENCODER</small></b> (3) APIs to read and
 write files. See &quot;Migration&quot; in
-<b>d2i_RSAPrivateKey</b>(3) for further details.</p>
+<a href="https://man.page/3/d2i_RSAPrivateKey">d2i_RSAPrivateKey(3)</a> for further details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level key object getters and setters</p>
@@ -2144,24 +2144,24 @@ low-level key object getters and setters</p>
 that set or get low-level key objects (such as
 <b>EVP_PKEY_set1_DH()</b> or <b>EVP_PKEY_get0()</b>) should
 instead use the <small>OSSL_ENCODER</small> (See
-<b>OSSL_ENCODER_to_bio</b>(3)) or
+<a href="https://man.page/3/OSSL_ENCODER_to_bio">OSSL_ENCODER_to_bio(3)</a>) or
 <small>OSSL_DECODER</small> (See
-<b>OSSL_DECODER_from_bio</b>(3)) APIs, or alternatively use
-<b>EVP_PKEY_fromdata</b>(3) or
-<b>EVP_PKEY_todata</b>(3).</p>
+<a href="https://man.page/3/OSSL_DECODER_from_bio">OSSL_DECODER_from_bio(3)</a>) APIs, or alternatively use
+<a href="https://man.page/3/EVP_PKEY_fromdata">EVP_PKEY_fromdata(3)</a> or
+<a href="https://man.page/3/EVP_PKEY_todata">EVP_PKEY_todata(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level key parameter getters</p>
 
 <p style="margin-left:11%; margin-top: 1em">Functions that
 access low-level objects directly such as
-<b>RSA_get0_n</b>(3) are now deprecated. Applications should
-use one of <b>EVP_PKEY_get_bn_param</b>(3),
-<b>EVP_PKEY_get_int_param</b>(3),
-l&lt;<b>EVP_PKEY_get_size_t_param</b>(3)&gt;,
-<b>EVP_PKEY_get_utf8_string_param</b>(3),
-<b>EVP_PKEY_get_octet_string_param</b>(3) or
-<b>EVP_PKEY_get_params</b>(3) to access fields from an
+<a href="https://man.page/3/RSA_get0_n">RSA_get0_n(3)</a> are now deprecated. Applications should
+use one of <a href="https://man.page/3/EVP_PKEY_get_bn_param">EVP_PKEY_get_bn_param(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get_int_param">EVP_PKEY_get_int_param(3)</a>,
+l&lt;<a href="https://man.page/3/EVP_PKEY_get_size_t_param">EVP_PKEY_get_size_t_param(3)</a>&gt;,
+<a href="https://man.page/3/EVP_PKEY_get_utf8_string_param">EVP_PKEY_get_utf8_string_param(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get_octet_string_param">EVP_PKEY_get_octet_string_param(3)</a> or
+<a href="https://man.page/3/EVP_PKEY_get_params">EVP_PKEY_get_params(3)</a> to access fields from an
 <small>EVP_PKEY.</small> Gettable parameters are listed in
 &quot;Common <small>RSA</small> parameters&quot; in
 <b><small>EVP_PKEY-RSA</small></b> (7), &quot;
@@ -2176,19 +2176,19 @@ l&lt;<b>EVP_PKEY_get_size_t_param</b>(3)&gt;,
 X25519, X448, <small>ED25519</small> and
 <small>ED448</small> parameters&quot; in
 <b><small>EVP_PKEY-X25519</small></b> (7). Applications may
-also use <b>EVP_PKEY_todata</b>(3) to return all fields.</p>
+also use <a href="https://man.page/3/EVP_PKEY_todata">EVP_PKEY_todata(3)</a> to return all fields.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level key parameter setters</p>
 
 <p style="margin-left:11%; margin-top: 1em">Functions that
 access low-level objects directly such as
-<b>RSA_set0_crt_params</b>(3) are now deprecated.
-Applications should use <b>EVP_PKEY_fromdata</b>(3) to
+<a href="https://man.page/3/RSA_set0_crt_params">RSA_set0_crt_params(3)</a> are now deprecated.
+Applications should use <a href="https://man.page/3/EVP_PKEY_fromdata">EVP_PKEY_fromdata(3)</a> to
 create new keys from user provided key data. Keys should be
 immutable once they are created, so if required the user may
-use <b>EVP_PKEY_todata</b>(3), <b>OSSL_PARAM_merge</b>(3),
-and <b>EVP_PKEY_fromdata</b>(3) to create a modified key.
+use <a href="https://man.page/3/EVP_PKEY_todata">EVP_PKEY_todata(3)</a>, <a href="https://man.page/3/OSSL_PARAM_merge">OSSL_PARAM_merge(3)</a>,
+and <a href="https://man.page/3/EVP_PKEY_fromdata">EVP_PKEY_fromdata(3)</a> to create a modified key.
 See &quot;Examples&quot; in
 <b><small>EVP_PKEY-DH</small></b> (7) for more information.
 See &quot;Deprecated low-level key generation
@@ -2200,13 +2200,13 @@ low-level object creation</p>
 
 <p style="margin-left:11%; margin-top: 1em">Low-level
 objects were created using methods such as
-<b>RSA_new</b>(3), <b>RSA_up_ref</b>(3) and
-<b>RSA_free</b>(3). Applications should instead use the
+<a href="https://man.page/3/RSA_new">RSA_new(3)</a>, <a href="https://man.page/3/RSA_up_ref">RSA_up_ref(3)</a> and
+<a href="https://man.page/3/RSA_free">RSA_free(3)</a>. Applications should instead use the
 high-level <small>EVP_PKEY</small> APIs, e.g.
-<b>EVP_PKEY_new</b>(3), <b>EVP_PKEY_up_ref</b>(3) and
-<b>EVP_PKEY_free</b>(3). See also
-<b>EVP_PKEY_CTX_new_from_name</b>(3) and
-<b>EVP_PKEY_CTX_new_from_pkey</b>(3).</p>
+<a href="https://man.page/3/EVP_PKEY_new">EVP_PKEY_new(3)</a>, <a href="https://man.page/3/EVP_PKEY_up_ref">EVP_PKEY_up_ref(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_free">EVP_PKEY_free(3)</a>. See also
+<a href="https://man.page/3/EVP_PKEY_CTX_new_from_name">EVP_PKEY_CTX_new_from_name(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_CTX_new_from_pkey">EVP_PKEY_CTX_new_from_pkey(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">EVP_PKEYs may
 be created in a variety of ways: See also &quot;Deprecated
@@ -2218,25 +2218,25 @@ low-level key reading and writing functions&quot; and
 low-level encryption functions</p>
 
 <p style="margin-left:11%; margin-top: 1em">Low-level
-encryption functions such as <b>AES_encrypt</b>(3) and
-<b>AES_decrypt</b>(3) have been informally discouraged from
+encryption functions such as <a href="https://man.page/3/AES_encrypt">AES_encrypt(3)</a> and
+<a href="https://man.page/3/AES_decrypt">AES_decrypt(3)</a> have been informally discouraged from
 use for a long time. Applications should instead use the
 high level <small>EVP</small> APIs
-<b>EVP_EncryptInit_ex</b>(3), <b>EVP_EncryptUpdate</b>(3),
-and <b>EVP_EncryptFinal_ex</b>(3) or
-<b>EVP_DecryptInit_ex</b>(3), <b>EVP_DecryptUpdate</b>(3)
-and <b>EVP_DecryptFinal_ex</b>(3).</p>
+<a href="https://man.page/3/EVP_EncryptInit_ex">EVP_EncryptInit_ex(3)</a>, <a href="https://man.page/3/EVP_EncryptUpdate">EVP_EncryptUpdate(3)</a>,
+and <a href="https://man.page/3/EVP_EncryptFinal_ex">EVP_EncryptFinal_ex(3)</a> or
+<a href="https://man.page/3/EVP_DecryptInit_ex">EVP_DecryptInit_ex(3)</a>, <a href="https://man.page/3/EVP_DecryptUpdate">EVP_DecryptUpdate(3)</a>
+and <a href="https://man.page/3/EVP_DecryptFinal_ex">EVP_DecryptFinal_ex(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level digest functions</p>
 
 <p style="margin-left:11%; margin-top: 1em">Use of
-low-level digest functions such as <b>SHA1_Init</b>(3) have
+low-level digest functions such as <a href="https://man.page/3/SHA1_Init">SHA1_Init(3)</a> have
 been informally discouraged from use for a long time.
 Applications should instead use the the high level
-<small>EVP</small> APIs <b>EVP_DigestInit_ex</b>(3),
-<b>EVP_DigestUpdate</b>(3) and <b>EVP_DigestFinal_ex</b>(3),
-or the quick one-shot <b>EVP_Q_digest</b>(3).</p>
+<small>EVP</small> APIs <a href="https://man.page/3/EVP_DigestInit_ex">EVP_DigestInit_ex(3)</a>,
+<a href="https://man.page/3/EVP_DigestUpdate">EVP_DigestUpdate(3)</a> and <a href="https://man.page/3/EVP_DigestFinal_ex">EVP_DigestFinal_ex(3)</a>,
+or the quick one-shot <a href="https://man.page/3/EVP_Q_digest">EVP_Q_digest(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that the
 functions <b><small>SHA1</small></b> (3),
@@ -2244,16 +2244,16 @@ functions <b><small>SHA1</small></b> (3),
 <b><small>SHA256</small></b> (3),
 <b><small>SHA384</small></b> (3) and
 <b><small>SHA512</small></b> (3) have changed to macros that
-use <b>EVP_Q_digest</b>(3).</p>
+use <a href="https://man.page/3/EVP_Q_digest">EVP_Q_digest(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level signing functions</p>
 
 <p style="margin-left:11%; margin-top: 1em">Use of
-low-level signing functions such as <b>DSA_sign</b>(3) have
+low-level signing functions such as <a href="https://man.page/3/DSA_sign">DSA_sign(3)</a> have
 been informally discouraged for a long time. Instead
-applications should use <b>EVP_DigestSign</b>(3) and
-<b>EVP_DigestVerify</b>(3). See also
+applications should use <a href="https://man.page/3/EVP_DigestSign">EVP_DigestSign(3)</a> and
+<a href="https://man.page/3/EVP_DigestVerify">EVP_DigestVerify(3)</a>. See also
 <b><small>EVP_SIGNATURE-RSA</small></b> (7),
 <b><small>EVP_SIGNATURE-DSA</small></b> (7),
 <b><small>EVP_SIGNATURE-ECDSA</small></b> (7) and
@@ -2263,20 +2263,20 @@ applications should use <b>EVP_DigestSign</b>(3) and
 low-level <small>MAC</small> functions</p>
 
 <p style="margin-left:11%; margin-top: 1em">Low-level mac
-functions such as <b>CMAC_Init</b>(3) are deprecated.
+functions such as <a href="https://man.page/3/CMAC_Init">CMAC_Init(3)</a> are deprecated.
 Applications should instead use the new
 <b><small>EVP_MAC</small></b> (3) interface, using
-<b>EVP_MAC_CTX_new</b>(3), <b>EVP_MAC_CTX_free</b>(3),
-<b>EVP_MAC_init</b>(3), <b>EVP_MAC_update</b>(3) and
-<b>EVP_MAC_final</b>(3) or the single-shot
-<small>MAC</small> function <b>EVP_Q_mac</b>(3). See
+<a href="https://man.page/3/EVP_MAC_CTX_new">EVP_MAC_CTX_new(3)</a>, <a href="https://man.page/3/EVP_MAC_CTX_free">EVP_MAC_CTX_free(3)</a>,
+<a href="https://man.page/3/EVP_MAC_init">EVP_MAC_init(3)</a>, <a href="https://man.page/3/EVP_MAC_update">EVP_MAC_update(3)</a> and
+<a href="https://man.page/3/EVP_MAC_final">EVP_MAC_final(3)</a> or the single-shot
+<small>MAC</small> function <a href="https://man.page/3/EVP_Q_mac">EVP_Q_mac(3)</a>. See
 <b><small>EVP_MAC</small></b> (3),
 <b><small>EVP_MAC-HMAC</small></b> (7),
 <b><small>EVP_MAC-CMAC</small></b> (7),
 <b><small>EVP_MAC-GMAC</small></b> (7),
 <b><small>EVP_MAC-KMAC</small></b> (7),
 <b><small>EVP_MAC-BLAKE2</small></b> (7),
-<b>EVP_MAC-Poly1305</b>(7) and <b>EVP_MAC-Siphash</b>(7) for
+<a href="https://man.page/7/EVP_MAC-Poly1305">EVP_MAC-Poly1305(7)</a> and <a href="https://man.page/7/EVP_MAC-Siphash">EVP_MAC-Siphash(7)</a> for
 additional information.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that the
@@ -2287,16 +2287,16 @@ available for compatability purposes.</p>
 low-level validation functions</p>
 
 <p style="margin-left:11%; margin-top: 1em">Low-level
-validation functions such as <b>DH_check</b>(3) have been
+validation functions such as <a href="https://man.page/3/DH_check">DH_check(3)</a> have been
 informally discouraged from use for a long time.
 Applications should instead use the high-level
 <small>EVP_PKEY</small> APIs such as
-<b>EVP_PKEY_check</b>(3), <b>EVP_PKEY_param_check</b>(3),
-<b>EVP_PKEY_param_check_quick</b>(3),
-<b>EVP_PKEY_public_check</b>(3),
-<b>EVP_PKEY_public_check_quick</b>(3),
-<b>EVP_PKEY_private_check</b>(3), and
-<b>EVP_PKEY_pairwise_check</b>(3).</p>
+<a href="https://man.page/3/EVP_PKEY_check">EVP_PKEY_check(3)</a>, <a href="https://man.page/3/EVP_PKEY_param_check">EVP_PKEY_param_check(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_param_check_quick">EVP_PKEY_param_check_quick(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_public_check">EVP_PKEY_public_check(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_public_check_quick">EVP_PKEY_public_check_quick(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_private_check">EVP_PKEY_private_check(3)</a>, and
+<a href="https://man.page/3/EVP_PKEY_pairwise_check">EVP_PKEY_pairwise_check(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level key exchange functions</p>
@@ -2304,7 +2304,7 @@ low-level key exchange functions</p>
 <p style="margin-left:11%; margin-top: 1em">Many low-level
 functions have been informally discouraged from use for a
 long time. Applications should instead use
-<b>EVP_PKEY_derive</b>(3). See
+<a href="https://man.page/3/EVP_PKEY_derive">EVP_PKEY_derive(3)</a>. See
 <b><small>EVP_KEYEXCH-DH</small></b> (7),
 <b><small>EVP_KEYEXCH-ECDH</small></b> (7) and
 <b><small>EVP_KEYEXCH-X25519</small></b> (7).</p>
@@ -2315,17 +2315,17 @@ low-level key generation functions</p>
 <p style="margin-left:11%; margin-top: 1em">Many low-level
 functions have been informally discouraged from use for a
 long time. Applications should instead use
-<b>EVP_PKEY_keygen_init</b>(3) and
-<b>EVP_PKEY_generate</b>(3) as described in
+<a href="https://man.page/3/EVP_PKEY_keygen_init">EVP_PKEY_keygen_init(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_generate">EVP_PKEY_generate(3)</a> as described in
 <b><small>EVP_PKEY-DSA</small></b> (7),
 <b><small>EVP_PKEY-DH</small></b> (7),
 <b><small>EVP_PKEY-RSA</small></b> (7),
 <b><small>EVP_PKEY-EC</small></b> (7) and
 <b><small>EVP_PKEY-X25519</small></b> (7). The
 &rsquo;quick&rsquo; one-shot function
-<b>EVP_PKEY_Q_keygen</b>(3) and macros for the most common
-cases: &lt;<b>EVP_RSA_gen</b>(3)&gt; and
-<b>EVP_EC_gen</b>(3) may also be used.</p>
+<a href="https://man.page/3/EVP_PKEY_Q_keygen">EVP_PKEY_Q_keygen(3)</a> and macros for the most common
+cases: &lt;<a href="https://man.page/3/EVP_RSA_gen">EVP_RSA_gen(3)</a>&gt; and
+<a href="https://man.page/3/EVP_EC_gen">EVP_EC_gen(3)</a> may also be used.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level key reading and writing functions</p>
@@ -2336,8 +2336,8 @@ informally discouraged from use for a long time. Functions
 to read and write these low-level objects (such as
 <b>PEM_read_DSA_PUBKEY()</b>) should be replaced.
 Applications should instead use
-<b>OSSL_ENCODER_to_bio</b>(3) and
-<b>OSSL_DECODER_from_bio</b>(3).</p>
+<a href="https://man.page/3/OSSL_ENCODER_to_bio">OSSL_ENCODER_to_bio(3)</a> and
+<a href="https://man.page/3/OSSL_DECODER_from_bio">OSSL_DECODER_from_bio(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Deprecated
 low-level key printing functions</p>
@@ -2348,14 +2348,14 @@ informally discouraged from use for a long time. Functions
 to print these low-level objects such as <b>DSA_print()</b>
 should be replaced with the equivalent
 <small>EVP_PKEY</small> functions. Application should use
-one of <b>EVP_PKEY_print_public</b>(3),
-<b>EVP_PKEY_print_private</b>(3),
-<b>EVP_PKEY_print_params</b>(3),
-<b>EVP_PKEY_print_public_fp</b>(3),
-<b>EVP_PKEY_print_private_fp</b>(3) or
-<b>EVP_PKEY_print_params_fp</b>(3). Note that internally
-these use <b>OSSL_ENCODER_to_bio</b>(3) and
-<b>OSSL_DECODER_from_bio</b>(3).</p>
+one of <a href="https://man.page/3/EVP_PKEY_print_public">EVP_PKEY_print_public(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_print_private">EVP_PKEY_print_private(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_print_params">EVP_PKEY_print_params(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_print_public_fp">EVP_PKEY_print_public_fp(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_print_private_fp">EVP_PKEY_print_private_fp(3)</a> or
+<a href="https://man.page/3/EVP_PKEY_print_params_fp">EVP_PKEY_print_params_fp(3)</a>. Note that internally
+these use <a href="https://man.page/3/OSSL_ENCODER_to_bio">OSSL_ENCODER_to_bio(3)</a> and
+<a href="https://man.page/3/OSSL_DECODER_from_bio">OSSL_DECODER_from_bio(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>Deprecated
 function mappings</i></p>
@@ -2493,7 +2493,7 @@ OpenSSL 0.9.7.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>ASN1_STRING_set</b>(3) or <b>ASN1_STRING_set0</b>(3)
+<a href="https://man.page/3/ASN1_STRING_set">ASN1_STRING_set(3)</a> or <a href="https://man.page/3/ASN1_STRING_set0">ASN1_STRING_set0(3)</a>
 instead. This was a potentially unsafe function that could
 change the bounds of a previously passed in pointer.</p>
 
@@ -2578,7 +2578,7 @@ respective non-deprecated <b>_ex()</b> functions.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>BN_check_prime</b>(3) which that avoids possible misuse
+<a href="https://man.page/3/BN_check_prime">BN_check_prime(3)</a> which that avoids possible misuse
 and always uses at least 64 rounds of the Miller-Rabin
 primality test.</p>
 
@@ -2601,7 +2601,7 @@ primality test.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>BN_rand</b>(3) and <b>BN_rand_range</b>(3).</p>
+<a href="https://man.page/3/BN_rand">BN_rand(3)</a> and <a href="https://man.page/3/BN_rand_range">BN_rand_range(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -2625,7 +2625,7 @@ primality test.</p>
 replacements for these low-level functions. They were used
 internally by <b>RSA_X931_derive_ex()</b> and
 <b>RSA_X931_generate_key_ex()</b> which are also deprecated.
-Use <b>EVP_PKEY_keygen</b>(3) instead.</p>
+Use <a href="https://man.page/3/EVP_PKEY_keygen">EVP_PKEY_keygen(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -2777,8 +2777,8 @@ level functions <b>EVP_CipherInit_ex2()</b>,
 <b>EVP_CipherUpdate()</b> and <b>EVP_CipherFinal_ex()</b>
 instead. See the &quot;cts_mode&quot; parameter in
 &quot;Gettable and Settable <small>EVP_CIPHER_CTX</small>
-parameters&quot; in <b>EVP_EncryptInit</b>(3). See &quot;
-<small>EXAMPLES&quot;</small> in <b>EVP_EncryptInit</b>(3)
+parameters&quot; in <a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>. See &quot;
+<small>EXAMPLES&quot;</small> in <a href="https://man.page/3/EVP_EncryptInit">EVP_EncryptInit(3)</a>
 for a <small>AES-256-CBC-CTS</small> example.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -2873,9 +2873,9 @@ the Legacy Provider.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EVP_PKEY_get_bits</b>(3),
-<b>EVP_PKEY_get_security_bits</b>(3) and
-<b>EVP_PKEY_get_size</b>(3).</p>
+<a href="https://man.page/3/EVP_PKEY_get_bits">EVP_PKEY_get_bits(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get_security_bits">EVP_PKEY_get_security_bits(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_get_size">EVP_PKEY_get_size(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3057,7 +3057,7 @@ key.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EVP_PKEY_CTX_set_dh_kdf_type</b>(3)
+should use <a href="https://man.page/3/EVP_PKEY_CTX_set_dh_kdf_type">EVP_PKEY_CTX_set_dh_kdf_type(3)</a>
 instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -3144,9 +3144,9 @@ method overrides&quot;</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EVP_PKEY_get_bits</b>(3),
-<b>EVP_PKEY_get_security_bits</b>(3) and
-<b>EVP_PKEY_get_size</b>(3).</p>
+<a href="https://man.page/3/EVP_PKEY_get_bits">EVP_PKEY_get_bits(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get_security_bits">EVP_PKEY_get_security_bits(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_get_size">EVP_PKEY_get_size(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3168,8 +3168,8 @@ method overrides&quot;</p>
 
 <p style="margin-left:17%; margin-top: 1em">There is no
 direct replacement. Applications may use
-<b>EVP_PKEY_copy_parameters</b>(3) and
-<b>EVP_PKEY_dup</b>(3) instead.</p>
+<a href="https://man.page/3/EVP_PKEY_copy_parameters">EVP_PKEY_copy_parameters(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_dup">EVP_PKEY_dup(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3278,8 +3278,8 @@ method overrides&quot;.</p>
 
 <p style="margin-left:17%; margin-top: 1em">There is no
 direct replacement. Applications may use
-<b>EVP_PKEY_copy_parameters</b>(3) and
-<b>EVP_PKEY_dup</b>(3) instead.</p>
+<a href="https://man.page/3/EVP_PKEY_copy_parameters">EVP_PKEY_copy_parameters(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_dup">EVP_PKEY_dup(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3407,7 +3407,7 @@ deprecated without replacement.</p>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
 may either set this using the helper function
-<b>EVP_PKEY_CTX_set_ecdh_kdf_type</b>(3) or by setting an
+<a href="https://man.page/3/EVP_PKEY_CTX_set_ecdh_kdf_type">EVP_PKEY_CTX_set_ecdh_kdf_type(3)</a> or by setting an
 <b><small>OSSL_PARAM</small></b> using the
 &quot;kdf-type&quot; as shown in &quot;
 <small>EXAMPLES&quot;</small> in
@@ -3452,7 +3452,7 @@ may either set this using the helper function
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EVP_PKEY_get_size</b>(3).</p>
+should use <a href="https://man.page/3/EVP_PKEY_get_size">EVP_PKEY_get_size(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3501,7 +3501,7 @@ constructed.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EC_GROUP_free</b>(3) instead.</p>
+<a href="https://man.page/3/EC_GROUP_free">EC_GROUP_free(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3525,8 +3525,8 @@ constructed.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EC_GROUP_get_curve</b>(3) and
-<b>EC_GROUP_set_curve</b>(3).</p>
+should use <a href="https://man.page/3/EC_GROUP_get_curve">EC_GROUP_get_curve(3)</a> and
+<a href="https://man.page/3/EC_GROUP_set_curve">EC_GROUP_set_curve(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3592,7 +3592,7 @@ should switch to a different suitable constructor.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EVP_PKEY_can_sign</b>(3) instead.</p>
+should use <a href="https://man.page/3/EVP_PKEY_can_sign">EVP_PKEY_can_sign(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3662,8 +3662,8 @@ See also &quot; <small>EXAMPLES&quot;</small> in
 
 <p style="margin-left:17%; margin-top: 1em">There is no
 direct replacement. Applications may use
-<b>EVP_PKEY_copy_parameters</b>(3) and
-<b>EVP_PKEY_dup</b>(3) instead.</p>
+<a href="https://man.page/3/EVP_PKEY_copy_parameters">EVP_PKEY_copy_parameters(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_dup">EVP_PKEY_dup(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3776,7 +3776,7 @@ method overrides&quot;</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EC_GROUP_get_field_type</b>(3) instead. See
+<a href="https://man.page/3/EC_GROUP_get_field_type">EC_GROUP_get_field_type(3)</a> instead. See
 &quot;Providers are a replacement for engines and low-level
 method overrides&quot;</p>
 
@@ -3952,8 +3952,8 @@ integers.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EC_POINT_get_affine_coordinates</b>(3) and
-<b>EC_POINT_set_affine_coordinates</b>(3) instead.</p>
+should use <a href="https://man.page/3/EC_POINT_get_affine_coordinates">EC_POINT_get_affine_coordinates(3)</a> and
+<a href="https://man.page/3/EC_POINT_set_affine_coordinates">EC_POINT_set_affine_coordinates(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -3976,8 +3976,8 @@ should use <b>EC_POINT_get_affine_coordinates</b>(3) and
 
 <p style="margin-left:17%; margin-top: 1em">These functions
 are not widely used. Applications should instead use the
-<b>EC_POINT_set_affine_coordinates</b>(3) and
-<b>EC_POINT_get_affine_coordinates</b>(3) functions.</p>
+<a href="https://man.page/3/EC_POINT_set_affine_coordinates">EC_POINT_set_affine_coordinates(3)</a> and
+<a href="https://man.page/3/EC_POINT_get_affine_coordinates">EC_POINT_get_affine_coordinates(3)</a> functions.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4022,7 +4022,7 @@ needed.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EC_POINT_set_compressed_coordinates</b>(3)
+should use <a href="https://man.page/3/EC_POINT_set_compressed_coordinates">EC_POINT_set_compressed_coordinates(3)</a>
 instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -4044,7 +4044,7 @@ instead.</p>
 
 <p style="margin-left:17%; margin-top: 1em">This function
 is not widely used. Applications should instead use the
-<b>EC_POINT_mul</b>(3) function.</p>
+<a href="https://man.page/3/EC_POINT_mul">EC_POINT_mul(3)</a> function.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4107,15 +4107,15 @@ needed.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">The new
-functions are <b>ERR_peek_error_func</b>(3),
-<b>ERR_peek_last_error_func</b>(3),
-<b>ERR_peek_error_data</b>(3),
-<b>ERR_peek_last_error_data</b>(3),
-<b>ERR_get_error_all</b>(3), <b>ERR_peek_error_all</b>(3)
-and <b>ERR_peek_last_error_all</b>(3). Applications should
-use <b>ERR_get_error_all</b>(3), or pick information with
+functions are <a href="https://man.page/3/ERR_peek_error_func">ERR_peek_error_func(3)</a>,
+<a href="https://man.page/3/ERR_peek_last_error_func">ERR_peek_last_error_func(3)</a>,
+<a href="https://man.page/3/ERR_peek_error_data">ERR_peek_error_data(3)</a>,
+<a href="https://man.page/3/ERR_peek_last_error_data">ERR_peek_last_error_data(3)</a>,
+<a href="https://man.page/3/ERR_get_error_all">ERR_get_error_all(3)</a>, <a href="https://man.page/3/ERR_peek_error_all">ERR_peek_error_all(3)</a>
+and <a href="https://man.page/3/ERR_peek_last_error_all">ERR_peek_last_error_all(3)</a>. Applications should
+use <a href="https://man.page/3/ERR_get_error_all">ERR_get_error_all(3)</a>, or pick information with
 ERR_peek functions and finish off with getting the error
-code by using <b>ERR_get_error</b>(3).</p>
+code by using <a href="https://man.page/3/ERR_get_error">ERR_get_error(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4137,10 +4137,10 @@ code by using <b>ERR_get_error</b>(3).</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should instead use <b>EVP_CIPHER_CTX_get_updated_iv</b>(3),
-<b>EVP_CIPHER_CTX_get_updated_iv</b>(3) and
-<b>EVP_CIPHER_CTX_get_original_iv</b>(3) respectively. See
-<b>EVP_CIPHER_CTX_get_original_iv</b>(3) for further
+should instead use <a href="https://man.page/3/EVP_CIPHER_CTX_get_updated_iv">EVP_CIPHER_CTX_get_updated_iv(3)</a>,
+<a href="https://man.page/3/EVP_CIPHER_CTX_get_updated_iv">EVP_CIPHER_CTX_get_updated_iv(3)</a> and
+<a href="https://man.page/3/EVP_CIPHER_CTX_get_original_iv">EVP_CIPHER_CTX_get_original_iv(3)</a> respectively. See
+<a href="https://man.page/3/EVP_CIPHER_CTX_get_original_iv">EVP_CIPHER_CTX_get_original_iv(3)</a> for further
 information.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -4236,7 +4236,7 @@ are obsolete and should not be required.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EVP_PKEY_CTX_set1_rsa_keygen_pubexp</b>(3)
+should use <a href="https://man.page/3/EVP_PKEY_CTX_set1_rsa_keygen_pubexp">EVP_PKEY_CTX_set1_rsa_keygen_pubexp(3)</a>
 instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -4258,9 +4258,9 @@ instead.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EVP_PKEY_eq</b>(3) and
-<b>EVP_PKEY_parameters_eq</b>(3) instead. See
-<b>EVP_PKEY_copy_parameters</b>(3) for further details.</p>
+should use <a href="https://man.page/3/EVP_PKEY_eq">EVP_PKEY_eq(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_parameters_eq">EVP_PKEY_parameters_eq(3)</a> instead. See
+<a href="https://man.page/3/EVP_PKEY_copy_parameters">EVP_PKEY_copy_parameters(3)</a> for further details.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4281,10 +4281,10 @@ should use <b>EVP_PKEY_eq</b>(3) and
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should use <b>EVP_PKEY_encrypt_init</b>(3) and
-<b>EVP_PKEY_encrypt</b>(3) or
-<b>EVP_PKEY_decrypt_init</b>(3) and
-<b>EVP_PKEY_decrypt</b>(3) instead.</p>
+should use <a href="https://man.page/3/EVP_PKEY_encrypt_init">EVP_PKEY_encrypt_init(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_encrypt">EVP_PKEY_encrypt(3)</a> or
+<a href="https://man.page/3/EVP_PKEY_decrypt_init">EVP_PKEY_decrypt_init(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_decrypt">EVP_PKEY_decrypt(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4418,8 +4418,8 @@ EVP_PKEY_get1_tls_encodedpoint()</b></p> </td></tr>
 were previously used by libssl to set or get an encoded
 public key into/from an <small>EVP_PKEY</small> object. With
 OpenSSL 3.0 these are replaced by the more generic functions
-<b>EVP_PKEY_set1_encoded_public_key</b>(3) and
-<b>EVP_PKEY_get1_encoded_public_key</b>(3). The old versions
+<a href="https://man.page/3/EVP_PKEY_set1_encoded_public_key">EVP_PKEY_set1_encoded_public_key(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_get1_encoded_public_key">EVP_PKEY_get1_encoded_public_key(3)</a>. The old versions
 have been converted to deprecated macros that just call the
 new functions.</p>
 
@@ -4532,7 +4532,7 @@ functions&quot;.</p>
 <p style="margin-left:17%; margin-top: 1em">See
 &quot;Deprecated low-level key reading and writing
 functions&quot; and &quot;Migration&quot; in
-<b>d2i_RSAPrivateKey</b>(3)</p>
+<a href="https://man.page/3/d2i_RSAPrivateKey">d2i_RSAPrivateKey(3)</a></p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4556,7 +4556,7 @@ functions&quot; and &quot;Migration&quot; in
 <p style="margin-left:17%; margin-top: 1em">See
 &quot;Deprecated low-level key reading and writing
 functions&quot; and &quot;Migration&quot; in
-<b>d2i_RSAPrivateKey</b>(3)</p>
+<a href="https://man.page/3/d2i_RSAPrivateKey">d2i_RSAPrivateKey(3)</a></p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4580,7 +4580,7 @@ functions&quot; and &quot;Migration&quot; in
 <p style="margin-left:17%; margin-top: 1em">See
 &quot;Deprecated low-level key reading and writing
 functions&quot; and &quot;Migration&quot; in
-<b>d2i_RSAPrivateKey</b>(3)</p>
+<a href="https://man.page/3/d2i_RSAPrivateKey">d2i_RSAPrivateKey(3)</a></p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4605,7 +4605,7 @@ functions&quot; and &quot;Migration&quot; in
 <p style="margin-left:17%; margin-top: 1em">See
 &quot;Deprecated low-level key reading and writing
 functions&quot; and &quot;Migration&quot; in
-<b>d2i_RSAPrivateKey</b>(3)</p>
+<a href="https://man.page/3/d2i_RSAPrivateKey">d2i_RSAPrivateKey(3)</a></p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4781,7 +4781,7 @@ Provider.</p>
 
 <p style="margin-left:17%; margin-top: 1em">This
 undocumented function has no replacement. See &quot;
-<small>HISTORY&quot;</small> in <b>config</b>(5) for more
+<small>HISTORY&quot;</small> in <a href="https://man.page/5/config">config(5)</a> for more
 details.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -4802,7 +4802,7 @@ details.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>OSSL_HTTP_parse_url</b>(3) instead.</p>
+<a href="https://man.page/3/OSSL_HTTP_parse_url">OSSL_HTTP_parse_url(3)</a> instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4890,7 +4890,7 @@ methods were unused by OpenSSL.</p>
 helped applications and engines create loaders for schemes
 they supported. These are all deprecated and discouraged in
 favour of provider implementations, see
-<b>provider-storemgmt</b>(7).</p>
+<a href="https://man.page/7/provider-storemgmt">provider-storemgmt(7)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -4987,10 +4987,10 @@ functions&quot;</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Applications
-should instead use <b>RAND_set_DRBG_type</b>(3),
+should instead use <a href="https://man.page/3/RAND_set_DRBG_type">RAND_set_DRBG_type(3)</a>,
 <b><small>EVP_RAND</small></b> (3) and
 <b><small>EVP_RAND</small></b> (7). See
-<b>RAND_set_rand_method</b>(3) for more details.</p>
+<a href="https://man.page/3/RAND_set_rand_method">RAND_set_rand_method(3)</a> for more details.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -5065,9 +5065,9 @@ Provider.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>EVP_PKEY_get_bits</b>(3),
-<b>EVP_PKEY_get_security_bits</b>(3) and
-<b>EVP_PKEY_get_size</b>(3).</p>
+<a href="https://man.page/3/EVP_PKEY_get_bits">EVP_PKEY_get_bits(3)</a>,
+<a href="https://man.page/3/EVP_PKEY_get_security_bits">EVP_PKEY_get_security_bits(3)</a> and
+<a href="https://man.page/3/EVP_PKEY_get_size">EVP_PKEY_get_size(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -5383,7 +5383,7 @@ signing functions&quot;.</p>
 
 <p style="margin-left:17%; margin-top: 1em">There is no
 direct replacement. Applications may use
-<b>EVP_PKEY_dup</b>(3).</p>
+<a href="https://man.page/3/EVP_PKEY_dup">EVP_PKEY_dup(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -5598,11 +5598,11 @@ to set the Diffie-Hellman ( <small>DH</small> ) parameters
 that are to be used by servers requiring ephemeral
 <small>DH</small> keys. Instead applications should consider
 using the built-in <small>DH</small> parameters that are
-available by calling <b>SSL_CTX_set_dh_auto</b>(3) or
-<b>SSL_set_dh_auto</b>(3). If custom parameters are
+available by calling <a href="https://man.page/3/SSL_CTX_set_dh_auto">SSL_CTX_set_dh_auto(3)</a> or
+<a href="https://man.page/3/SSL_set_dh_auto">SSL_set_dh_auto(3)</a>. If custom parameters are
 necessary then applications can use the alternative
-functions <b>SSL_CTX_set0_tmp_dh_pkey</b>(3) and
-<b>SSL_set0_tmp_dh_pkey</b>(3). There is no direct
+functions <a href="https://man.page/3/SSL_CTX_set0_tmp_dh_pkey">SSL_CTX_set0_tmp_dh_pkey(3)</a> and
+<a href="https://man.page/3/SSL_set0_tmp_dh_pkey">SSL_set0_tmp_dh_pkey(3)</a>. There is no direct
 replacement for the &quot;callback&quot; functions. The
 callback was originally useful in order to have different
 parameters for export and non-export ciphersuites. Export
@@ -5629,7 +5629,7 @@ methods described above.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use the new
-<b>SSL_CTX_set_tlsext_ticket_key_evp_cb</b>(3) function
+<a href="https://man.page/3/SSL_CTX_set_tlsext_ticket_key_evp_cb">SSL_CTX_set_tlsext_ticket_key_evp_cb(3)</a> function
 instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -5676,7 +5676,7 @@ Provider.</p>
 
 <p style="margin-left:17%; margin-top: 1em">This was an
 undocumented function. Applications can use
-<b>X509_get0_pubkey</b>(3) and <b>X509_get0_signature</b>(3)
+<a href="https://man.page/3/X509_get0_pubkey">X509_get0_pubkey(3)</a> and <a href="https://man.page/3/X509_get0_signature">X509_get0_signature(3)</a>
 instead.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -5698,12 +5698,12 @@ instead.</p>
 </table>
 
 <p style="margin-left:17%; margin-top: 1em">Use
-<b>X509_load_http</b>(3) and <b>X509_CRL_load_http</b>(3)
+<a href="https://man.page/3/X509_load_http">X509_load_http(3)</a> and <a href="https://man.page/3/X509_CRL_load_http">X509_CRL_load_http(3)</a>
 instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Using the
 <small>FIPS</small> Module in applications</b> <br>
-See <b>fips_module</b>(7) and
+See <a href="https://man.page/7/fips_module">fips_module(7)</a> and
 <b><small>OSSL_PROVIDER-FIPS</small></b> (7) for
 details.</p>
 
@@ -5729,7 +5729,7 @@ to be specified if required. The <b>-provider_path</b> must
 be specified before the <b>-provider</b> option.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <b>list</b>
-app has many new options. See <b>openssl-list</b>(1) for
+app has many new options. See <a href="https://man.page/1/openssl-list">openssl-list(1)</a> for
 more information.</p>
 
 
@@ -5885,9 +5885,9 @@ it is still possible to test whether these macros are
 defined or not.</p>
 
 <p style="margin-left:17%; margin-top: 1em">See
-<b>SSL_CTX_get_options</b>(3),
-<b>SSL_CTX_set_options</b>(3), <b>SSL_get_options</b>(3) and
-<b>SSL_set_options</b>(3).</p>
+<a href="https://man.page/3/SSL_CTX_get_options">SSL_CTX_get_options(3)</a>,
+<a href="https://man.page/3/SSL_CTX_set_options">SSL_CTX_set_options(3)</a>, <a href="https://man.page/3/SSL_get_options">SSL_get_options(3)</a> and
+<a href="https://man.page/3/SSL_set_options">SSL_set_options(3)</a>.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -5934,7 +5934,7 @@ is set, openssl cleanses (zeroizes) plaintext bytes from
 internal buffers after delivering them to the application.
 Note, the application is still responsible for cleansing
 other copies (e.g.: data received by
-<b>SSL_read</b>(3)).</p>
+<a href="https://man.page/3/SSL_read">SSL_read(3)</a>).</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -6110,7 +6110,7 @@ in <small>TLS</small> has been reduced.</p></td></tr>
 1.0</small> no longer working at the default security level
 of 1 and instead requires security level 0. The security
 level can be changed either using the cipher string with
-@SECLEVEL, or calling <b>SSL_CTX_set_security_level</b>(3).
+@SECLEVEL, or calling <a href="https://man.page/3/SSL_CTX_set_security_level">SSL_CTX_set_security_level(3)</a>.
 This also means that where the signature algorithms
 extension is missing from a ClientHello then the handshake
 will fail in <small>TLS 1.2</small> at security level 1.
@@ -6139,12 +6139,12 @@ requires the availability of <small>SHA1.</small></p>
 <p style="margin-left:17%; margin-top: 1em">In
 <small>TLS/SSL</small> the default security level is 1. It
 can be set either using the cipher string with @SECLEVEL, or
-calling <b>SSL_CTX_set_security_level</b>(3). If the leaf
+calling <a href="https://man.page/3/SSL_CTX_set_security_level">SSL_CTX_set_security_level(3)</a>. If the leaf
 certificate is signed with <small>SHA-1,</small> a call to
-<b>SSL_CTX_use_certificate</b>(3) will fail if the security
+<a href="https://man.page/3/SSL_CTX_use_certificate">SSL_CTX_use_certificate(3)</a> will fail if the security
 level is not lowered first. Outside <small>TLS/SSL,</small>
 the default security level is -1 (effectively 0). It can be
-set using <b>X509_VERIFY_PARAM_set_auth_level</b>(3) or
+set using <a href="https://man.page/3/X509_VERIFY_PARAM_set_auth_level">X509_VERIFY_PARAM_set_auth_level(3)</a> or
 using the <b>-auth_level</b> options of the commands.</p>
 
 <h2>SEE ALSO
@@ -6153,7 +6153,7 @@ using the <b>-auth_level</b> options of the commands.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>fips_module</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/7/fips_module">fips_module(7)</a></p>
 
 <h2>COPYRIGHT
 <a name="COPYRIGHT"></a>

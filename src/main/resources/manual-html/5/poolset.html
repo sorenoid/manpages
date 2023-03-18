@@ -58,8 +58,8 @@ the configuration of the system, the available non-volatile
 memory space may be divided into multiple memory devices. In
 such case, the maximum size of the transactional object
 store could be limited by the capacity of a single memory
-device. Therefore, <b>libpmemobj</b>(7),
-<b>libpmemblk</b>(7) and <b>libpmemlog</b>(7) allow building
+device. Therefore, <a href="https://man.page/7/libpmemobj">libpmemobj(7)</a>,
+<a href="https://man.page/7/libpmemblk">libpmemblk(7)</a> and <a href="https://man.page/7/libpmemlog">libpmemlog(7)</a> allow building
 object stores spanning multiple memory devices by creation
 of persistent memory pools consisting of multiple files,
 where each part of such a <i>pool set</i> may be stored on a
@@ -67,14 +67,14 @@ different pmem-aware filesystem.</p>
 
 <p style="margin-left:11%; margin-top: 1em">To improve
 reliability and eliminate single point of failure,
-<b>libpmemobj</b>(7) also allows all the data written to a
+<a href="https://man.page/7/libpmemobj">libpmemobj(7)</a> also allows all the data written to a
 persistent memory pool to be copied to local or remote pool
 <i>replicas</i>, thereby providing backup for the persistent
 memory pool by producing a <i>mirrored pool set</i>. In
 practice, the pool replicas may be considered as binary
 copies of the &ldquo;master&rdquo; pool set. Data
-replication is not supported in <b>libpmemblk</b>(7) and
-<b>libpmemlog</b>(7).</p>
+replication is not supported in <a href="https://man.page/7/libpmemblk">libpmemblk(7)</a> and
+<a href="https://man.page/7/libpmemlog">libpmemlog(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The <i>set</i>
 file for each type of pool is a plain text file. Lines in
@@ -207,7 +207,7 @@ devices must be 4KiB, unless the <i>SINGLEHDR</i> or
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">Please see
-<b>ndctl-create-namespace</b>(1) for more information on
+<a href="https://man.page/1/ndctl-create-namespace">ndctl-create-namespace(1)</a> for more information on
 Device DAX, including how to configure desired
 alignment.</p>
 
@@ -274,7 +274,7 @@ size of the pool set is equal to:</p>
 
 <p style="margin-left:11%; margin-top: 1em">Note that page
 size is OS specific. For more information please see
-<b>sysconf</b>(3).</p>
+<a href="https://man.page/3/sysconf">sysconf(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The minimum net
 pool size of a pool set is defined as follows:</p>
@@ -384,7 +384,7 @@ path to a remote pool set file:</p>
 
 
 <p style="margin-top: 1em"><i>hostname</i> must be in the
-format recognized by the <b>ssh</b>(1) remote login
+format recognized by the <a href="https://man.page/1/ssh">ssh(1)</a> remote login
 client</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -397,7 +397,7 @@ client</p> </td></tr>
 
 
 <p><i>pathname</i> is relative to the root config directory
-on the target node - see <b>librpmem</b>(7)</p></td></tr>
+on the target node - see <a href="https://man.page/7/librpmem">librpmem(7)</a></p></td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">There are no
@@ -559,35 +559,35 @@ directories.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Creation of all
 the parts of the pool set and the associated replica sets
-can be done with the <b>pmemobj_create</b>(3),
-<b>pmemblk_create</b>(3) or <b>pmemlog_create</b>(3)
-function, or by using the <b>pmempool</b>(1) utility.</p>
+can be done with the <a href="https://man.page/3/pmemobj_create">pmemobj_create(3)</a>,
+<a href="https://man.page/3/pmemblk_create">pmemblk_create(3)</a> or <a href="https://man.page/3/pmemlog_create">pmemlog_create(3)</a>
+function, or by using the <a href="https://man.page/1/pmempool">pmempool(1)</a> utility.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Restoring data
 from a local or remote replica can be done by using the
-<b>pmempool-sync</b>(1) command or the
-<b>pmempool_sync</b>() API from the <b>libpmempool</b>(7)
+<a href="https://man.page/1/pmempool-sync">pmempool-sync(1)</a> command or the
+<b>pmempool_sync</b>() API from the <a href="https://man.page/7/libpmempool">libpmempool(7)</a>
 library.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Modifications
 of a pool set file configuration can be done by using the
-<b>pmempool-transform</b>(1) command or the
+<a href="https://man.page/1/pmempool-transform">pmempool-transform(1)</a> command or the
 <b>pmempool_transform</b>() API from the
-<b>libpmempool</b>(7) library.</p>
+<a href="https://man.page/7/libpmempool">libpmempool(7)</a> library.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When creating a
 pool set consisting of multiple files, or when creating a
 replicated pool set, the <i>path</i> argument passed to
-<b>pmemobj_create</b>(3), <b>pmemblk_create</b>(3) or
-<b>pmemlog_create</b>(3) must point to the special
+<a href="https://man.page/3/pmemobj_create">pmemobj_create(3)</a>, <a href="https://man.page/3/pmemblk_create">pmemblk_create(3)</a> or
+<a href="https://man.page/3/pmemlog_create">pmemlog_create(3)</a> must point to the special
 <i>set</i> file that defines the pool layout and the
 location of all the parts of the pool set.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When opening a
 pool set consisting of multiple files, or when opening a
 replicated pool set, the <i>path</i> argument passed to
-<b>pmemobj_open</b>(3), <b>pmemblk_open</b>(3) or
-<b>pmemlog_open</b>(3) must point to the same <i>set</i>
+<a href="https://man.page/3/pmemobj_open">pmemobj_open(3)</a>, <a href="https://man.page/3/pmemblk_open">pmemblk_open(3)</a> or
+<a href="https://man.page/3/pmemlog_open">pmemlog_open(3)</a> must point to the same <i>set</i>
 file that was used for pool set creation.</p>
 
 <h2>SEE ALSO
@@ -596,11 +596,11 @@ file that was used for pool set creation.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ndctl-create-namespace</b>(1),
-<b>pmemblk_create</b>(3), <b>pmemlog_create</b>(3),
-<b>pmemobj_create</b>(3), <b>sysconf</b>(3),
-<b>libpmemblk</b>(7), <b>libpmemlog</b>(7),
-<b>libpmemobj</b>(7) and <b>&lt;https://pmem.io&gt;</b></p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ndctl-create-namespace">ndctl-create-namespace(1)</a>,
+<a href="https://man.page/3/pmemblk_create">pmemblk_create(3)</a>, <a href="https://man.page/3/pmemlog_create">pmemlog_create(3)</a>,
+<a href="https://man.page/3/pmemobj_create">pmemobj_create(3)</a>, <a href="https://man.page/3/sysconf">sysconf(3)</a>,
+<a href="https://man.page/7/libpmemblk">libpmemblk(7)</a>, <a href="https://man.page/7/libpmemlog">libpmemlog(7)</a>,
+<a href="https://man.page/7/libpmemobj">libpmemobj(7)</a> and <b>&lt;https://pmem.io&gt;</b></p>
 <hr>
 </body>
 </html>

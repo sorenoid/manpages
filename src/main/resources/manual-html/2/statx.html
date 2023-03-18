@@ -171,7 +171,7 @@ AT_EMPTY_PATH</b></p>
 
 <p style="margin-left:22%;">If <i>pathname</i> is an empty
 string, operate on the file referred to by <i>dirfd</i>
-(which may have been obtained using the <b>open</b>(2)
+(which may have been obtained using the <a href="https://man.page/2/open">open(2)</a>
 <b>O_PATH</b> flag). In this case, <i>dirfd</i> can refer to
 any type of file, not just a directory.</p>
 
@@ -200,7 +200,7 @@ define <b>_GNU_SOURCE</b> to obtain its definition.</p>
 
 <p style="margin-left:22%;">If <i>pathname</i> is a
 symbolic link, do not dereference it: instead return
-information about the link itself, like <b>lstat</b>(2).</p>
+information about the link itself, like <a href="https://man.page/2/lstat">lstat(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><i>flags</i>
 can also be used to control what sort of synchronization the
@@ -209,7 +209,7 @@ This is done by ORing in one of the following values:
 <b><br>
 AT_STATX_SYNC_AS_STAT</b></p>
 
-<p style="margin-left:22%;">Do whatever <b>stat</b>(2)
+<p style="margin-left:22%;">Do whatever <a href="https://man.page/2/stat">stat(2)</a>
 does. This is the default and is very much
 filesystem-specific.</p>
 
@@ -284,8 +284,8 @@ for performance and simplicity reasons, different fields in
 the <i>statx</i> structure may contain state information
 from different moments during the execution of the system
 call. For example, if <i>stx_mode</i> or <i>stx_uid</i> is
-changed by another process by calling <b>chmod</b>(2) or
-<b>chown</b>(2), <b>stat</b>() might return the old
+changed by another process by calling <a href="https://man.page/2/chmod">chmod(2)</a> or
+<a href="https://man.page/2/chown">chown(2)</a>, <b>stat</b>() might return the old
 <i>stx_mode</i> together with the new <i>stx_uid</i>, or the
 old <i>stx_uid</i> together with the new
 <i>stx_mode</i>.</p>
@@ -323,7 +323,7 @@ the group owner of the file.</p>
 <p style="margin-left:11%;"><i>stx_mode</i></p>
 
 <p style="margin-left:22%;">The file type and mode. See
-<b>inode</b>(7) for details.</p>
+<a href="https://man.page/7/inode">inode(7)</a> for details.</p>
 
 <p style="margin-left:11%;"><i>stx_ino</i></p>
 
@@ -384,7 +384,7 @@ modification timestamp.</p>
 device type.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For further
-information on the above fields, see <b>inode</b>(7).</p>
+information on the above fields, see <a href="https://man.page/7/inode">inode(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>File
 attributes</b> <br>
@@ -408,19 +408,19 @@ filesystem and may take extra resources to access.</p>
 <p style="margin-left:22%;">The file cannot be modified: it
 cannot be deleted or renamed, no hard links can be created
 to this file and no data can be written to it. See
-<b>chattr</b>(1).</p>
+<a href="https://man.page/1/chattr">chattr(1)</a>.</p>
 
 <p style="margin-left:11%;"><b>STATX_ATTR_APPEND</b></p>
 
 <p style="margin-left:22%;">The file can only be opened in
 append mode for writing. Random access writing is not
-permitted. See <b>chattr</b>(1).</p>
+permitted. See <a href="https://man.page/1/chattr">chattr(1)</a>.</p>
 
 <p style="margin-left:11%;"><b>STATX_ATTR_NODUMP</b></p>
 
 <p style="margin-left:22%;">File is not a candidate for
 backup when a backup program such as <b>dump</b>(8) is run.
-See <b>chattr</b>(1).</p>
+See <a href="https://man.page/1/chattr">chattr(1)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>STATX_ATTR_ENCRYPTED</b></p>
@@ -458,14 +458,14 @@ the kernel page cache.</p>
 <p style="margin-left:22%; margin-top: 1em">While the DAX
 property tends to result in data being transferred
 synchronously, it does not give the same guarantees as the
-<b>O_SYNC</b> flag (see <b>open</b>(2)), where data and the
+<b>O_SYNC</b> flag (see <a href="https://man.page/2/open">open(2)</a>), where data and the
 necessary metadata are transferred together.</p>
 
 <p style="margin-left:22%; margin-top: 1em">A DAX file may
 support being mapped with the <b>MAP_SYNC</b> flag, which
 enables a program to use CPU cache flush instructions to
 persist CPU store operations without an explicit
-<b>fsync</b>(2). See <b>mmap</b>(2) for more
+<a href="https://man.page/2/fsync">fsync(2)</a>. See <a href="https://man.page/2/mmap">mmap(2)</a> for more
 information.</p>
 
 <h2>RETURN VALUE
@@ -496,7 +496,7 @@ is set appropriately.</p>
 
 <p style="margin-top: 1em">Search permission is denied for
 one of the directories in the path prefix of
-<i>pathname</i>. (See also <b>path_resolution</b>(7).)</p></td></tr>
+<i>pathname</i>. (See also <a href="https://man.page/7/path_resolution">path_resolution(7)</a>.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -621,11 +621,11 @@ is Linux-specific.</p>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>ls</b>(1),
-<b>stat</b>(1), <b>access</b>(2), <b>chmod</b>(2),
-<b>chown</b>(2), <b>readlink</b>(2), <b>stat</b>(2),
-<b>utime</b>(2), <b>capabilities</b>(7), <b>inode</b>(7),
-<b>symlink</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/ls">ls(1)</a>,
+<a href="https://man.page/1/stat">stat(1)</a>, <a href="https://man.page/2/access">access(2)</a>, <a href="https://man.page/2/chmod">chmod(2)</a>,
+<a href="https://man.page/2/chown">chown(2)</a>, <a href="https://man.page/2/readlink">readlink(2)</a>, <a href="https://man.page/2/stat">stat(2)</a>,
+<a href="https://man.page/2/utime">utime(2)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>, <a href="https://man.page/7/inode">inode(7)</a>,
+<a href="https://man.page/7/symlink">symlink(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

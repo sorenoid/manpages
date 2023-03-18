@@ -75,9 +75,9 @@ policy defines from which node memory is allocated.</p>
 range specified by the <i>addr</i> and <i>len</i> arguments
 includes an &quot;anonymous&quot; region of
 memory&mdash;that is a region of memory created using the
-<b>mmap</b>(2) system call with the
+<a href="https://man.page/2/mmap">mmap(2)</a> system call with the
 <b>MAP_ANONYMOUS</b>&mdash;or a memory-mapped file, mapped
-using the <b>mmap</b>(2) system call with the
+using the <a href="https://man.page/2/mmap">mmap(2)</a> system call with the
 <b>MAP_PRIVATE</b> flag, pages will be allocated only
 according to the specified policy when the application
 writes (stores) to the page. For anonymous regions, an
@@ -97,8 +97,8 @@ thread that called <b>mbind</b>().</p>
 
 <p style="margin-left:11%; margin-top: 1em">If the
 specified memory range includes a shared memory region
-created using the <b>shmget</b>(2) system call and attached
-using the <b>shmat</b>(2) system call, pages allocated for
+created using the <a href="https://man.page/2/shmget">shmget(2)</a> system call and attached
+using the <a href="https://man.page/2/shmat">shmat(2)</a> system call, pages allocated for
 the anonymous or shared memory region will be allocated
 according to the policy specified, regardless of which
 process attached to the shared memory segment causes the
@@ -166,7 +166,7 @@ MPOL_DEFAULT</b></p>
 nondefault policy be removed, restoring default behavior.
 When applied to a range of memory via <b>mbind</b>(), this
 means to use the thread memory policy, which may have been
-set with <b>set_mempolicy</b>(2). If the mode of the thread
+set with <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>. If the mode of the thread
 memory policy is also <b>MPOL_DEFAULT</b>, the system-wide
 default policy will be used. The system-wide default policy
 allocates pages on the node of the CPU that triggers the
@@ -232,7 +232,7 @@ kernel will allocate memory from the &quot;local node&quot;
 whenever it becomes allowed by the thread&rsquo;s current
 cpuset context. By contrast, <b>MPOL_DEFAULT</b> reverts to
 the memory policy of the thread (which may be set via
-<b>set_mempolicy</b>(2)); that policy may be something other
+<a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>); that policy may be something other
 than &quot;local allocation&quot;.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If
@@ -379,7 +379,7 @@ call is Linux-specific.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">For information
-on library support, see <b>numa</b>(7).</p>
+on library support, see <a href="https://man.page/7/numa">numa(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">NUMA policy is
 not supported on a memory-mapped file range that was mapped
@@ -387,20 +387,20 @@ with the <b>MAP_SHARED</b> flag.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>MPOL_DEFAULT</b> mode can have different effects for
-<b>mbind</b>() and <b>set_mempolicy</b>(2). When
+<b>mbind</b>() and <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>. When
 <b>MPOL_DEFAULT</b> is specified for
-<b>set_mempolicy</b>(2), the thread&rsquo;s memory policy
+<a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>, the thread&rsquo;s memory policy
 reverts to the system default policy or local allocation.
 When <b>MPOL_DEFAULT</b> is specified for a range of memory
 using <b>mbind</b>(), any pages subsequently allocated for
 that range will use the thread&rsquo;s memory policy, as set
-by <b>set_mempolicy</b>(2). This effectively removes the
+by <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>. This effectively removes the
 explicit policy from the specified range, &quot;falling
 back&quot; to a possibly nondefault policy. To select
 explicit &quot;local allocation&quot; for a memory range,
 specify a <i>mode</i> of <b>MPOL_LOCAL</b> or
 <b>MPOL_PREFERRED</b> with an empty set of nodes. This
-method will work for <b>set_mempolicy</b>(2), as well.</p>
+method will work for <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>, as well.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Support for
 huge page policy was added with 2.6.16. For interleave
@@ -422,10 +422,10 @@ and <b>MPOL_MF_MOVE_ALL</b> are available only on Linux
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>get_mempolicy</b>(2),
-<b>getcpu</b>(2), <b>mmap</b>(2), <b>set_mempolicy</b>(2),
-<b>shmat</b>(2), <b>shmget</b>(2), <b>numa</b>(3),
-<b>cpuset</b>(7), <b>numa</b>(7), <b>numactl</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/get_mempolicy">get_mempolicy(2)</a>,
+<a href="https://man.page/2/getcpu">getcpu(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/set_mempolicy">set_mempolicy(2)</a>,
+<a href="https://man.page/2/shmat">shmat(2)</a>, <a href="https://man.page/2/shmget">shmget(2)</a>, <a href="https://man.page/3/numa">numa(3)</a>,
+<a href="https://man.page/7/cpuset">cpuset(7)</a>, <a href="https://man.page/7/numa">numa(7)</a>, <b>numactl</b>(8)</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

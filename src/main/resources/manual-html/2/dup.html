@@ -78,15 +78,15 @@ file descriptor for the new descriptor.</p>
 <p style="margin-left:11%; margin-top: 1em">After a
 successful return, the old and new file descriptors may be
 used interchangeably. They refer to the same open file
-description (see <b>open</b>(2)) and thus share file offset
+description (see <a href="https://man.page/2/open">open(2)</a>) and thus share file offset
 and file status flags; for example, if the file offset is
-modified by using <b>lseek</b>(2) on one of the file
+modified by using <a href="https://man.page/2/lseek">lseek(2)</a> on one of the file
 descriptors, the offset is also changed for the other.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The two file
 descriptors do not share file descriptor flags (the
 close-on-exec flag). The close-on-exec flag
-(<b>FD_CLOEXEC</b>; see <b>fcntl</b>(2)) for the duplicate
+(<b>FD_CLOEXEC</b>; see <a href="https://man.page/2/fcntl">fcntl(2)</a>) for the duplicate
 descriptor is off.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>dup2()</b>
@@ -102,7 +102,7 @@ before being reused.</p>
 closing and reusing the file descriptor <i>newfd</i> are
 performed <i>atomically</i>. This is important, because
 trying to implement equivalent functionality using
-<b>close</b>(2) and <b>dup</b>() would be subject to race
+<a href="https://man.page/2/close">close(2)</a> and <b>dup</b>() would be subject to race
 conditions, whereby <i>newfd</i> might be reused between the
 two steps. Such reuse could happen because the main program
 is interrupted by a signal handler that allocates a file
@@ -159,7 +159,7 @@ dup3</b>() is the same as <b>dup2</b>(), except that:</p>
 <p style="margin-top: 1em">The caller can force the
 close-on-exec flag to be set for the new file descriptor by
 specifying <b>O_CLOEXEC</b> in <i>flags</i>. See the
-description of the same flag in <b>open</b>(2) for reasons
+description of the same flag in <a href="https://man.page/2/open">open(2)</a> for reasons
 why this may be useful.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -215,7 +215,7 @@ file descriptor.</p></td></tr>
 
 <p><i>newfd</i> is out of the allowed range for file
 descriptors (see the discussion of <b>RLIMIT_NOFILE</b> in
-<b>getrlimit</b>(2)).</p> </td></tr>
+<a href="https://man.page/2/getrlimit">getrlimit(2)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -227,7 +227,7 @@ descriptors (see the discussion of <b>RLIMIT_NOFILE</b> in
 
 
 <p>(Linux only) This may be returned by <b>dup2</b>() or
-<b>dup3</b>() during a race condition with <b>open</b>(2)
+<b>dup3</b>() during a race condition with <a href="https://man.page/2/open">open(2)</a>
 and <b>dup</b>().</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -240,7 +240,7 @@ and <b>dup</b>().</p></td></tr>
 
 
 <p>The <b>dup2</b>() or <b>dup3</b>() call was interrupted
-by a signal; see <b>signal</b>(7).</p></td></tr>
+by a signal; see <a href="https://man.page/7/signal">signal(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -277,7 +277,7 @@ value.</p> </td></tr>
 
 <p>The per-process limit on the number of open file
 descriptors has been reached (see the discussion of
-<b>RLIMIT_NOFILE</b> in <b>getrlimit</b>(2)).</p></td></tr>
+<b>RLIMIT_NOFILE</b> in <a href="https://man.page/2/getrlimit">getrlimit(2)</a>).</p></td></tr>
 </table>
 
 <h2>VERSIONS
@@ -314,7 +314,7 @@ also sometimes returns <b>EINVAL</b> like
 
 <p style="margin-left:11%; margin-top: 1em">If <i>newfd</i>
 was open, any errors that would have been reported at
-<b>close</b>(2) time are lost. If this is of concern,
+<a href="https://man.page/2/close">close(2)</a> time are lost. If this is of concern,
 then&mdash;unless the program is single-threaded and does
 not allocate file descriptors in signal handlers&mdash;the
 correct approach is <i>not</i> to close <i>newfd</i> before
@@ -358,8 +358,8 @@ if (close(tmpfd) == -1) { <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>close</b>(2),
-<b>fcntl</b>(2), <b>open</b>(2), <b>pidfd_getfd</b>(2)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/close">close(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/open">open(2)</a>, <a href="https://man.page/2/pidfd_getfd">pidfd_getfd(2)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

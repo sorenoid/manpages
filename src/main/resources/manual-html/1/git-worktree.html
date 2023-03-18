@@ -78,8 +78,8 @@ to check out more than one branch at a time. With <b>git
 worktree add</b> a new working tree is associated with the
 repository. This new working tree is called a &quot;linked
 working tree&quot; as opposed to the &quot;main working
-tree&quot; prepared by <b>git-init</b>(1) or
-<b>git-clone</b>(1). A repository has one main working tree
+tree&quot; prepared by <a href="https://man.page/1/git-init">git-init(1)</a> or
+<a href="https://man.page/1/git-clone">git-clone(1)</a>. A repository has one main working tree
 (if it&rsquo;s not a bare repository) and zero or more
 linked working trees. When you are done with a linked
 working tree, remove it with <b>git worktree remove</b>.</p>
@@ -106,7 +106,7 @@ tree is deleted without using <b>git worktree remove</b>,
 then its associated administrative files, which reside in
 the repository (see &quot;DETAILS&quot; below), will
 eventually be removed automatically (see
-<b>gc.worktreePruneExpire</b> in <b>git-config</b>(1)), or
+<b>gc.worktreePruneExpire</b> in <a href="https://man.page/1/git-config">git-config(1)</a>), or
 you can run <b>git worktree prune</b> in the main or any
 linked working tree to clean up any stale administrative
 files.</p>
@@ -157,7 +157,7 @@ all remotes. Set it to e.g.
 <b>checkout.defaultRemote=origin</b> to always checkout
 remote branches from there if <b>&lt;branch&gt;</b> is
 ambiguous but exists on the <b>origin</b> remote. See also
-<b>checkout.defaultRemote</b> in <b>git-config</b>(1).</p>
+<b>checkout.defaultRemote</b> in <a href="https://man.page/1/git-config">git-config(1)</a>.</p>
 
 <p style="margin-left:17%; margin-top: 1em">If
 <b>&lt;commit-ish&gt;</b> is omitted and neither <b>-b</b>
@@ -298,7 +298,7 @@ safeguard, resetting <b>&lt;new-branch&gt;</b> to
 
 <p style="margin-left:17%;">With <b>add</b>, detach
 <b>HEAD</b> in the new working tree. See &quot;DETACHED
-HEAD&quot; in <b>git-checkout</b>(1).</p>
+HEAD&quot; in <a href="https://man.page/1/git-checkout">git-checkout(1)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">--[no-]checkout</p>
@@ -307,7 +307,7 @@ HEAD&quot; in <b>git-checkout</b>(1).</p>
 out <b>&lt;commit-ish&gt;</b>, however, <b>--no-checkout</b>
 can be used to suppress checkout in order to make
 customizations, such as configuring sparse-checkout. See
-&quot;Sparse checkout&quot; in <b>git-read-tree</b>(1).</p>
+&quot;Sparse checkout&quot; in <a href="https://man.page/1/git-read-tree">git-read-tree(1)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">--[no-]guess-remote</p>
@@ -331,7 +331,7 @@ be set up as the default behaviour by using the
 <b>&lt;commit-ish&gt;</b> is a branch, mark it as
 &quot;upstream&quot; from the new branch. This is the
 default if <b>&lt;commit-ish&gt;</b> is a remote-tracking
-branch. See <b>--track</b> in <b>git-branch</b>(1) for
+branch. See <b>--track</b> in <a href="https://man.page/1/git-branch">git-branch(1)</a> for
 details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">--lock</p>
@@ -440,8 +440,8 @@ value as the main working tree&rsquo;s <b>HEAD</b> and
 
 <p style="margin-left:11%; margin-top: 1em">To access refs,
 it&rsquo;s best not to look inside <b>$GIT_DIR</b> directly.
-Instead use commands such as <b>git-rev-parse</b>(1) or
-<b>git-update-ref</b>(1) which will handle refs
+Instead use commands such as <a href="https://man.page/1/git-rev-parse">git-rev-parse(1)</a> or
+<a href="https://man.page/1/git-update-ref">git-update-ref(1)</a> which will handle refs
 correctly.</p>
 
 <h2>CONFIGURATION FILE
@@ -529,7 +529,7 @@ refs are shared across all working trees, except
 <b>refs/bisect</b> and <b>refs/worktree</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">See
-<b>gitrepository-layout</b>(5) for more information. The
+<a href="https://man.page/5/gitrepository-layout">gitrepository-layout(5)</a> for more information. The
 rule of thumb is do not make any assumption about whether a
 path belongs to <b>$GIT_DIR</b> or <b>$GIT_COMMON_DIR</b>
 when you need to directly access something inside
@@ -558,7 +558,7 @@ working tree&rsquo;s <b>.git</b> file points to
 <b>/path/main/.git/worktrees/test-next</b> then a file named
 <b>/path/main/.git/worktrees/test-next/locked</b> will
 prevent the <b>test-next</b> entry from being pruned. See
-<b>gitrepository-layout</b>(5) for details.</p>
+<a href="https://man.page/5/gitrepository-layout">gitrepository-layout(5)</a> for details.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When
 <b>extensions.worktreeConfig</b> is enabled, the config file
@@ -670,7 +670,7 @@ prunable gitdir file points to non-existent location</p>
 reason contains &quot;unusual&quot; characters such as
 newline, they are escaped and the entire reason is quoted as
 explained for the configuration variable
-<b>core.quotePath</b> (see <b>git-config</b>(1)). For
+<b>core.quotePath</b> (see <a href="https://man.page/1/git-config">git-config(1)</a>). For
 Example:</p>
 
 <p style="margin-left:17%; margin-top: 1em">$ git worktree
@@ -687,7 +687,7 @@ locked &quot;reason\nwhy is locked&quot; <br>
 <p style="margin-left:11%; margin-top: 1em">You are in the
 middle of a refactoring session and your boss comes in and
 demands that you fix something immediately. You might
-typically use <b>git-stash</b>(1) to store your changes away
+typically use <a href="https://man.page/1/git-stash">git-stash(1)</a> to store your changes away
 temporarily, however, your working tree is in such a state
 of disarray (with new, moved, and removed files, and other
 bits and pieces strewn around) that you don&rsquo;t want to
@@ -720,7 +720,7 @@ multiple checkouts of a superproject.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">Part of the
-<b>git</b>(1) suite</p>
+<a href="https://man.page/1/git">git(1)</a> suite</p>
 <hr>
 </body>
 </html>

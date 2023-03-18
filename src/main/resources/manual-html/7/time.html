@@ -56,24 +56,24 @@ process. This is sometimes divided into <i>user</i> and
 executing code in user mode. System CPU time is the time
 spent by the kernel executing in system mode on behalf of
 the process (e.g., executing system calls). The
-<b>time</b>(1) command can be used to determine the amount
+<a href="https://man.page/1/time">time(1)</a> command can be used to determine the amount
 of CPU time consumed during the execution of a program. A
 program can determine the amount of CPU time it has consumed
-using <b>times</b>(2), <b>getrusage</b>(2), or
-<b>clock</b>(3).</p>
+using <a href="https://man.page/2/times">times(2)</a>, <a href="https://man.page/2/getrusage">getrusage(2)</a>, or
+<a href="https://man.page/3/clock">clock(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The hardware
 clock</b> <br>
 Most computers have a (battery-powered) hardware clock which
 the kernel reads at boot time in order to initialize the
-software clock. For further details, see <b>rtc</b>(4) and
+software clock. For further details, see <a href="https://man.page/4/rtc">rtc(4)</a> and
 <b>hwclock</b>(8).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>The software
 clock, HZ, and jiffies</b> <br>
 The accuracy of various system calls that set timeouts,
-(e.g., <b>select</b>(2), <b>sigtimedwait</b>(2)) and measure
-CPU time (e.g., <b>getrusage</b>(2)) is limited by the
+(e.g., <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/sigtimedwait">sigtimedwait(2)</a>) and measure
+CPU time (e.g., <a href="https://man.page/2/getrusage">getrusage(2)</a>) is limited by the
 resolution of the <i>software clock</i>, a clock maintained
 by the kernel which measures time in <i>jiffies</i>. The
 size of a jiffy is determined by the value of the kernel
@@ -93,7 +93,7 @@ divides evenly for the common video frame rates (PAL, 25 HZ;
 NTSC, 30 HZ).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
-<b>times</b>(2) system call is a special case. It reports
+<a href="https://man.page/2/times">times(2)</a> system call is a special case. It reports
 times with a granularity defined by the kernel constant
 <i>USER_HZ</i>. User-space applications can determine the
 value of this constant using
@@ -103,10 +103,10 @@ value of this constant using
 process clocks; time namespaces</b> <br>
 The kernel supports a range of clocks that measure various
 kinds of elapsed and virtual (i.e., consumed CPU) time.
-These clocks are described in <b>clock_gettime</b>(2). A few
-of the clocks are settable using <b>clock_settime</b>(2).
+These clocks are described in <a href="https://man.page/2/clock_gettime">clock_gettime(2)</a>. A few
+of the clocks are settable using <a href="https://man.page/2/clock_settime">clock_settime(2)</a>.
 The values of certain clocks are virtualized by time
-namespaces; see <b>time_namespaces</b>(7).</p>
+namespaces; see <a href="https://man.page/7/time_namespaces">time_namespaces(7)</a>.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>High-resolution
@@ -124,7 +124,7 @@ but instead can be as accurate as the hardware allows
 (microsecond accuracy is typical of modern hardware). You
 can determine whether high-resolution timers are supported
 by checking the resolution returned by a call to
-<b>clock_getres</b>(2) or looking at the
+<a href="https://man.page/2/clock_getres">clock_getres(2)</a> or looking at the
 &quot;resolution&quot; entries in
 <i>/proc/timer_list</i>.</p>
 
@@ -139,12 +139,12 @@ UNIX systems represent time in seconds since the
 
 <p style="margin-left:11%; margin-top: 1em">A program can
 determine the <i>calendar time</i> via the
-<b>clock_gettime</b>(2) <b>CLOCK_REALTIME</b> clock, which
+<a href="https://man.page/2/clock_gettime">clock_gettime(2)</a> <b>CLOCK_REALTIME</b> clock, which
 returns time (in seconds and nanoseconds) that have elapsed
-since the Epoch; <b>time</b>(2) provides similar
+since the Epoch; <a href="https://man.page/2/time">time(2)</a> provides similar
 information, but only with accuracy to the nearest second.
 The system time can be changed using
-<b>clock_settime</b>(2).</p>
+<a href="https://man.page/2/clock_settime">clock_settime(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Broken-down
 time</b> <br>
@@ -152,25 +152,25 @@ Certain library functions use a structure of type <i>tm</i>
 to represent <i>broken-down time</i>, which stores time
 value separated out into distinct components (year, month,
 day, hour, minute, second, etc.). This structure is
-described in <b>ctime</b>(3), which also describes functions
+described in <a href="https://man.page/3/ctime">ctime(3)</a>, which also describes functions
 that convert between calendar time and broken-down time.
 Functions for converting between broken-down time and
 printable string representations of the time are described
-in <b>ctime</b>(3), <b>strftime</b>(3), and
-<b>strptime</b>(3).</p>
+in <a href="https://man.page/3/ctime">ctime(3)</a>, <a href="https://man.page/3/strftime">strftime(3)</a>, and
+<a href="https://man.page/3/strptime">strptime(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Sleeping and
 setting timers</b> <br>
 Various system calls and functions allow a program to sleep
 (suspend execution) for a specified period of time; see
-<b>nanosleep</b>(2), <b>clock_nanosleep</b>(2), and
-<b>sleep</b>(3).</p>
+<a href="https://man.page/2/nanosleep">nanosleep(2)</a>, <a href="https://man.page/2/clock_nanosleep">clock_nanosleep(2)</a>, and
+<a href="https://man.page/3/sleep">sleep(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Various system
 calls allow a process to set a timer that expires at some
 point in the future, and optionally at repeated intervals;
-see <b>alarm</b>(2), <b>getitimer</b>(2),
-<b>timerfd_create</b>(2), and <b>timer_create</b>(2).</p>
+see <a href="https://man.page/2/alarm">alarm(2)</a>, <a href="https://man.page/2/getitimer">getitimer(2)</a>,
+<a href="https://man.page/2/timerfd_create">timerfd_create(2)</a>, and <a href="https://man.page/2/timer_create">timer_create(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Timer
 slack</b> <br>
@@ -181,7 +181,7 @@ wake-up of certain system calls that block with a timeout.
 Permitting this delay allows the kernel to coalesce wake-up
 events, thus possibly reducing the number of system wake-ups
 and saving power. For more details, see the description of
-<b>PR_SET_TIMERSLACK</b> in <b>prctl</b>(2).</p>
+<b>PR_SET_TIMERSLACK</b> in <a href="https://man.page/2/prctl">prctl(2)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -189,20 +189,20 @@ and saving power. For more details, see the description of
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>date</b>(1),
-<b>time</b>(1), <b>timeout</b>(1), <b>adjtimex</b>(2),
-<b>alarm</b>(2), <b>clock_gettime</b>(2),
-<b>clock_nanosleep</b>(2), <b>getitimer</b>(2),
-<b>getrlimit</b>(2), <b>getrusage</b>(2),
-<b>gettimeofday</b>(2), <b>nanosleep</b>(2), <b>stat</b>(2),
-<b>time</b>(2), <b>timer_create</b>(2),
-<b>timerfd_create</b>(2), <b>times</b>(2), <b>utime</b>(2),
-<b>adjtime</b>(3), <b>clock</b>(3),
-<b>clock_getcpuclockid</b>(3), <b>ctime</b>(3),
-<b>ntp_adjtime</b>(3), <b>ntp_gettime</b>(3),
-<b>pthread_getcpuclockid</b>(3), <b>sleep</b>(3),
-<b>strftime</b>(3), <b>strptime</b>(3), <b>timeradd</b>(3),
-<b>usleep</b>(3), <b>rtc</b>(4), <b>time_namespaces</b>(7),
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/date">date(1)</a>,
+<a href="https://man.page/1/time">time(1)</a>, <a href="https://man.page/1/timeout">timeout(1)</a>, <a href="https://man.page/2/adjtimex">adjtimex(2)</a>,
+<a href="https://man.page/2/alarm">alarm(2)</a>, <a href="https://man.page/2/clock_gettime">clock_gettime(2)</a>,
+<a href="https://man.page/2/clock_nanosleep">clock_nanosleep(2)</a>, <a href="https://man.page/2/getitimer">getitimer(2)</a>,
+<a href="https://man.page/2/getrlimit">getrlimit(2)</a>, <a href="https://man.page/2/getrusage">getrusage(2)</a>,
+<a href="https://man.page/2/gettimeofday">gettimeofday(2)</a>, <a href="https://man.page/2/nanosleep">nanosleep(2)</a>, <a href="https://man.page/2/stat">stat(2)</a>,
+<a href="https://man.page/2/time">time(2)</a>, <a href="https://man.page/2/timer_create">timer_create(2)</a>,
+<a href="https://man.page/2/timerfd_create">timerfd_create(2)</a>, <a href="https://man.page/2/times">times(2)</a>, <a href="https://man.page/2/utime">utime(2)</a>,
+<a href="https://man.page/3/adjtime">adjtime(3)</a>, <a href="https://man.page/3/clock">clock(3)</a>,
+<a href="https://man.page/3/clock_getcpuclockid">clock_getcpuclockid(3)</a>, <a href="https://man.page/3/ctime">ctime(3)</a>,
+<a href="https://man.page/3/ntp_adjtime">ntp_adjtime(3)</a>, <a href="https://man.page/3/ntp_gettime">ntp_gettime(3)</a>,
+<a href="https://man.page/3/pthread_getcpuclockid">pthread_getcpuclockid(3)</a>, <a href="https://man.page/3/sleep">sleep(3)</a>,
+<a href="https://man.page/3/strftime">strftime(3)</a>, <a href="https://man.page/3/strptime">strptime(3)</a>, <a href="https://man.page/3/timeradd">timeradd(3)</a>,
+<a href="https://man.page/3/usleep">usleep(3)</a>, <a href="https://man.page/4/rtc">rtc(4)</a>, <a href="https://man.page/7/time_namespaces">time_namespaces(7)</a>,
 <b>hwclock</b>(8)</p>
 
 <h2>COLOPHON

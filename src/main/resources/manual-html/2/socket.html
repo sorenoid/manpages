@@ -80,7 +80,7 @@ understood by the Linux kernel include:</p>
 <p style="margin-left:11%; margin-top: 1em">Further details
 of the above address families, as well as information on
 several other address families, can be found in
-<b>address_families</b>(7).</p>
+<a href="https://man.page/7/address_families">address_families(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The socket has
 the indicated <i>type</i>, which specifies the communication
@@ -161,7 +161,7 @@ guarantee ordering.</p></td></tr>
 
 
 <p>Obsolete and should not be used in new programs; see
-<b>packet</b>(7).</p> </td></tr>
+<a href="https://man.page/7/packet">packet(7)</a>.</p> </td></tr>
 </table>
 
 <p style="margin-left:11%; margin-top: 1em">Some socket
@@ -187,8 +187,8 @@ behavior of <b>socket</b>():</p>
 
 <p style="margin-top: 1em">Set the <b>O_NONBLOCK</b> file
 status flag on the open file description (see
-<b>open</b>(2)) referred to by the new file descriptor.
-Using this flag saves extra calls to <b>fcntl</b>(2) to
+<a href="https://man.page/2/open">open(2)</a>) referred to by the new file descriptor.
+Using this flag saves extra calls to <a href="https://man.page/2/fcntl">fcntl(2)</a> to
 achieve the same result.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -202,7 +202,7 @@ achieve the same result.</p></td></tr>
 
 <p>Set the close-on-exec (<b>FD_CLOEXEC</b>) flag on the
 new file descriptor. See the description of the
-<b>O_CLOEXEC</b> flag in <b>open</b>(2) for reasons why this
+<b>O_CLOEXEC</b> flag in <a href="https://man.page/2/open">open(2)</a> for reasons why this
 may be useful.</p></td></tr>
 </table>
 
@@ -215,8 +215,8 @@ However, it is possible that many protocols may exist, in
 which case a particular protocol must be specified in this
 manner. The protocol number to use is specific to the
 &ldquo;communication domain&rdquo; in which communication is
-to take place; see <b>protocols</b>(5). See
-<b>getprotoent</b>(3) on how to map protocol name strings to
+to take place; see <a href="https://man.page/5/protocols">protocols(5)</a>. See
+<a href="https://man.page/3/getprotoent">getprotoent(3)</a> on how to map protocol name strings to
 protocol numbers.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Sockets of type
@@ -224,13 +224,13 @@ protocol numbers.</p>
 preserve record boundaries. A stream socket must be in a
 <i>connected</i> state before any data may be sent or
 received on it. A connection to another socket is created
-with a <b>connect</b>(2) call. Once connected, data may be
-transferred using <b>read</b>(2) and <b>write</b>(2) calls
-or some variant of the <b>send</b>(2) and <b>recv</b>(2)
-calls. When a session has been completed a <b>close</b>(2)
+with a <a href="https://man.page/2/connect">connect(2)</a> call. Once connected, data may be
+transferred using <a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/write">write(2)</a> calls
+or some variant of the <a href="https://man.page/2/send">send(2)</a> and <a href="https://man.page/2/recv">recv(2)</a>
+calls. When a session has been completed a <a href="https://man.page/2/close">close(2)</a>
 may be performed. Out-of-band data may also be transmitted
-as described in <b>send</b>(2) and received as described in
-<b>recv</b>(2).</p>
+as described in <a href="https://man.page/2/send">send(2)</a> and received as described in
+<a href="https://man.page/2/recv">recv(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 communications protocols which implement a
@@ -245,7 +245,7 @@ raised if a process sends or receives on a broken stream;
 this causes naive processes, which do not handle the signal,
 to exit. <b>SOCK_SEQPACKET</b> sockets employ the same
 system calls as <b>SOCK_STREAM</b> sockets. The only
-difference is that <b>read</b>(2) calls will return only the
+difference is that <a href="https://man.page/2/read">read(2)</a> calls will return only the
 amount of data requested, and any data remaining in the
 arriving packet will be discarded. Also all message
 boundaries in incoming datagrams are preserved.</p>
@@ -253,25 +253,25 @@ boundaries in incoming datagrams are preserved.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>SOCK_DGRAM</b>
 and <b>SOCK_RAW</b> sockets allow sending of datagrams to
-correspondents named in <b>sendto</b>(2) calls. Datagrams
-are generally received with <b>recvfrom</b>(2), which
+correspondents named in <a href="https://man.page/2/sendto">sendto(2)</a> calls. Datagrams
+are generally received with <a href="https://man.page/2/recvfrom">recvfrom(2)</a>, which
 returns the next datagram along with the address of its
 sender.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>SOCK_PACKET</b>
 is an obsolete socket type to receive raw packets directly
-from the device driver. Use <b>packet</b>(7) instead.</p>
+from the device driver. Use <a href="https://man.page/7/packet">packet(7)</a> instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An
-<b>fcntl</b>(2) <b>F_SETOWN</b> operation can be used to
+<a href="https://man.page/2/fcntl">fcntl(2)</a> <b>F_SETOWN</b> operation can be used to
 specify a process or process group to receive a
 <b>SIGURG</b> signal when the out-of-band data arrives or
 <b>SIGPIPE</b> signal when a <b>SOCK_STREAM</b> connection
 breaks unexpectedly. This operation may also be used to set
 the process or process group that receives the I/O and
 asynchronous notification of I/O events via <b>SIGIO</b>.
-Using <b>F_SETOWN</b> is equivalent to an <b>ioctl</b>(2)
+Using <b>F_SETOWN</b> is equivalent to an <a href="https://man.page/2/ioctl">ioctl(2)</a>
 call with the <b>FIOSETOWN</b> or <b>SIOCSPGRP</b>
 argument.</p>
 
@@ -282,12 +282,12 @@ is set for the socket. The next operation on this socket
 will return the error code of the pending error. For some
 protocols it is possible to enable a per-socket error queue
 to retrieve detailed information about the error; see
-<b>IP_RECVERR</b> in <b>ip</b>(7).</p>
+<b>IP_RECVERR</b> in <a href="https://man.page/7/ip">ip(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The operation
 of sockets is controlled by socket level <i>options</i>.
 These options are defined in <i>&lt;sys/socket.h&gt;</i>.
-The functions <b>setsockopt</b>(2) and <b>getsockopt</b>(2)
+The functions <a href="https://man.page/2/setsockopt">setsockopt(2)</a> and <a href="https://man.page/2/getsockopt">getsockopt(2)</a>
 are used to set and get options.</p>
 
 <h2>RETURN VALUE
@@ -436,7 +436,7 @@ everywhere.</p>
 
 <p style="margin-left:11%; margin-top: 1em">An example of
 the use of <b>socket</b>() is shown in
-<b>getaddrinfo</b>(3).</p>
+<a href="https://man.page/3/getaddrinfo">getaddrinfo(3)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -444,16 +444,16 @@ the use of <b>socket</b>() is shown in
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>accept</b>(2),
-<b>bind</b>(2), <b>close</b>(2), <b>connect</b>(2),
-<b>fcntl</b>(2), <b>getpeername</b>(2),
-<b>getsockname</b>(2), <b>getsockopt</b>(2),
-<b>ioctl</b>(2), <b>listen</b>(2), <b>read</b>(2),
-<b>recv</b>(2), <b>select</b>(2), <b>send</b>(2),
-<b>shutdown</b>(2), <b>socketpair</b>(2), <b>write</b>(2),
-<b>getprotoent</b>(3), <b>address_families</b>(7),
-<b>ip</b>(7), <b>socket</b>(7), <b>tcp</b>(7),
-<b>udp</b>(7), <b>unix</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/accept">accept(2)</a>,
+<a href="https://man.page/2/bind">bind(2)</a>, <a href="https://man.page/2/close">close(2)</a>, <a href="https://man.page/2/connect">connect(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/getpeername">getpeername(2)</a>,
+<a href="https://man.page/2/getsockname">getsockname(2)</a>, <a href="https://man.page/2/getsockopt">getsockopt(2)</a>,
+<a href="https://man.page/2/ioctl">ioctl(2)</a>, <a href="https://man.page/2/listen">listen(2)</a>, <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/recv">recv(2)</a>, <a href="https://man.page/2/select">select(2)</a>, <a href="https://man.page/2/send">send(2)</a>,
+<a href="https://man.page/2/shutdown">shutdown(2)</a>, <a href="https://man.page/2/socketpair">socketpair(2)</a>, <a href="https://man.page/2/write">write(2)</a>,
+<a href="https://man.page/3/getprotoent">getprotoent(3)</a>, <a href="https://man.page/7/address_families">address_families(7)</a>,
+<a href="https://man.page/7/ip">ip(7)</a>, <a href="https://man.page/7/socket">socket(7)</a>, <a href="https://man.page/7/tcp">tcp(7)</a>,
+<a href="https://man.page/7/udp">udp(7)</a>, <a href="https://man.page/7/unix">unix(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">&ldquo;An
 Introductory 4.3BSD Interprocess Communication

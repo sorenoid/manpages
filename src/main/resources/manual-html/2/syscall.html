@@ -55,7 +55,7 @@ syscall(long</b> <i>number</i><b>, ...);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 <p style="margin-left:11%;"><b>syscall</b>():</p>
 
@@ -86,7 +86,7 @@ library.</p>
 saves CPU registers before making the system call, restores
 the registers upon return from the system call, and stores
 any error returned by the system call in
-<b>errno</b>(3).</p>
+<a href="https://man.page/3/errno">errno(3)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Symbolic
 constants for system call numbers can be found in the header
@@ -129,7 +129,7 @@ certain 32-bit architectures.</p>
 the ARM architecture Embedded ABI (EABI), a 64-bit value
 (e.g., <i>long long</i>) must be aligned to an even register
 pair. Thus, using <b>syscall</b>() instead of the wrapper
-provided by glibc, the <b>readahead</b>(2) system call would
+provided by glibc, the <a href="https://man.page/2/readahead">readahead(2)</a> system call would
 be invoked as follows on the ARM architecture with the EABI
 in little endian mode:</p>
 
@@ -158,16 +158,16 @@ the parisc C ABI also uses aligned register pairs, it uses a
 shim layer to hide the issue from user space.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The affected
-system calls are <b>fadvise64_64</b>(2),
-<b>ftruncate64</b>(2), <b>posix_fadvise</b>(2),
-<b>pread64</b>(2), <b>pwrite64</b>(2), <b>readahead</b>(2),
-<b>sync_file_range</b>(2), and <b>truncate64</b>(2).</p>
+system calls are <a href="https://man.page/2/fadvise64_64">fadvise64_64(2)</a>,
+<a href="https://man.page/2/ftruncate64">ftruncate64(2)</a>, <a href="https://man.page/2/posix_fadvise">posix_fadvise(2)</a>,
+<a href="https://man.page/2/pread64">pread64(2)</a>, <a href="https://man.page/2/pwrite64">pwrite64(2)</a>, <a href="https://man.page/2/readahead">readahead(2)</a>,
+<a href="https://man.page/2/sync_file_range">sync_file_range(2)</a>, and <a href="https://man.page/2/truncate64">truncate64(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">This does not
 affect syscalls that manually split and assemble 64-bit
-values such as <b>_llseek</b>(2), <b>preadv</b>(2),
-<b>preadv2</b>(2), <b>pwritev</b>(2), and
-<b>pwritev2</b>(2). Welcome to the wonderful world of
+values such as <a href="https://man.page/2/_llseek">_llseek(2)</a>, <a href="https://man.page/2/preadv">preadv(2)</a>,
+<a href="https://man.page/2/preadv2">preadv2(2)</a>, <a href="https://man.page/2/pwritev">pwritev(2)</a>, and
+<a href="https://man.page/2/pwritev2">pwritev2(2)</a>. Welcome to the wonderful world of
 historical baggage.</p>
 
 
@@ -180,7 +180,7 @@ architectures are listed in the two tables below.</p>
 <p style="margin-left:11%; margin-top: 1em">The first table
 lists the instruction used to transition to kernel mode
 (which might not be the fastest or best way to transition to
-the kernel, so you might have to refer to <b>vdso</b>(7)),
+the kernel, so you might have to refer to <a href="https://man.page/7/vdso">vdso(7)</a>),
 the register used to indicate the system call number, the
 register(s) used to return the system call result, and the
 register used to signal an error.</p>
@@ -301,7 +301,7 @@ defined as 19 for the x86-64 ABI and as
 <i>__X32_SYSCALL_BIT</i> | <b>515</b> for the x32 ABI. Most
 of these additional system calls are actually identical to
 the system calls used for providing i386 compat. There are
-some notable exceptions, however, such as <b>preadv2</b>(2),
+some notable exceptions, however, such as <a href="https://man.page/2/preadv2">preadv2(2)</a>,
 which uses <i>struct iovec</i> entities with 4-byte pointers
 and sizes (&quot;compat_iovec&quot; in kernel terms), but
 passes an 8-byte <i>pos</i> argument in a single register
@@ -321,9 +321,9 @@ and not two, as is done in every other ABI.</p></td></tr>
 architectures (namely, Alpha, IA-64, MIPS, SuperH, sparc/32,
 and sparc/64) use an additional register
 (&quot;Retval2&quot; in the above table) to pass back a
-second return value from the <b>pipe</b>(2) system call;
+second return value from the <a href="https://man.page/2/pipe">pipe(2)</a> system call;
 Alpha uses this technique in the architecture-specific
-<b>getxpid</b>(2), <b>getxuid</b>(2), and <b>getxgid</b>(2)
+<a href="https://man.page/2/getxpid">getxpid(2)</a>, <a href="https://man.page/2/getxuid">getxuid(2)</a>, and <a href="https://man.page/2/getxgid">getxgid(2)</a>
 system calls as well. Other architectures do not use the
 second return value register in the system call interface,
 even if it is defined in the System V ABI.</p>
@@ -387,9 +387,9 @@ syscall(SYS_tgkill, getpid(), tid, SIGHUP); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>_syscall</b>(2),
-<b>intro</b>(2), <b>syscalls</b>(2), <b>errno</b>(3),
-<b>vdso</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/_syscall">_syscall(2)</a>,
+<a href="https://man.page/2/intro">intro(2)</a>, <a href="https://man.page/2/syscalls">syscalls(2)</a>, <a href="https://man.page/3/errno">errno(3)</a>,
+<a href="https://man.page/7/vdso">vdso(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

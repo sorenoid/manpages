@@ -113,9 +113,9 @@ locks.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Locks created
 by <b>flock</b>() are associated with an open file
-description (see <b>open</b>(2)). This means that duplicate
-file descriptors (created by, for example, <b>fork</b>(2) or
-<b>dup</b>(2)) refer to the same lock, and this lock may be
+description (see <a href="https://man.page/2/open">open(2)</a>). This means that duplicate
+file descriptors (created by, for example, <a href="https://man.page/2/fork">fork(2)</a> or
+<a href="https://man.page/2/dup">dup(2)</a>) refer to the same lock, and this lock may be
 modified or released using any of these file descriptors.
 Furthermore, the lock is released either by an explicit
 <b>LOCK_UN</b> operation on any of these duplicate file
@@ -123,7 +123,7 @@ descriptors, or when all such file descriptors have been
 closed.</p>
 
 <p style="margin-left:11%; margin-top: 1em">If a process
-uses <b>open</b>(2) (or similar) to obtain more than one
+uses <a href="https://man.page/2/open">open(2)</a> (or similar) to obtain more than one
 file descriptor for the same file, these file descriptors
 are treated independently by <b>flock</b>(). An attempt to
 lock the file using one of these file descriptors may be
@@ -137,7 +137,7 @@ will convert an existing lock to the new lock mode.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Locks created
 by <b>flock</b>() are preserved across an
-<b>execve</b>(2).</p>
+<a href="https://man.page/2/execve">execve(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">A shared or
 exclusive lock can be placed on a file regardless of the
@@ -183,7 +183,7 @@ descriptor.</p> </td></tr>
 
 <p>While waiting to acquire a lock, the call was
 interrupted by delivery of a signal caught by a handler; see
-<b>signal</b>(7).</p> </td></tr>
+<a href="https://man.page/7/signal">signal(7)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -222,7 +222,7 @@ records.</p> </td></tr>
 <p style="margin-left:11%; margin-top: 1em">4.4BSD (the
 <b>flock</b>() call first appeared in 4.2BSD). A version of
 <b>flock</b>(), possibly implemented in terms of
-<b>fcntl</b>(2), appears on most UNIX systems.</p>
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, appears on most UNIX systems.</p>
 
 <h2>NOTES
 <a name="NOTES"></a>
@@ -232,11 +232,11 @@ records.</p> </td></tr>
 <p style="margin-left:11%; margin-top: 1em">Since kernel
 2.0, <b>flock</b>() is implemented as a system call in its
 own right rather than being emulated in the GNU C library as
-a call to <b>fcntl</b>(2). With this implementation, there
+a call to <a href="https://man.page/2/fcntl">fcntl(2)</a>. With this implementation, there
 is no interaction between the types of lock placed by
-<b>flock</b>() and <b>fcntl</b>(2), and <b>flock</b>() does
+<b>flock</b>() and <a href="https://man.page/2/fcntl">fcntl(2)</a>, and <b>flock</b>() does
 not detect deadlock. (Note, however, that on some systems,
-such as the modern BSDs, <b>flock</b>() and <b>fcntl</b>(2)
+such as the modern BSDs, <b>flock</b>() and <a href="https://man.page/2/fcntl">fcntl(2)</a>
 locks <i>do</i> interact with one another.)</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>flock</b>()
@@ -245,9 +245,9 @@ file, a process is free to ignore the use of <b>flock</b>()
 and perform I/O on the file.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>flock</b>()
-and <b>fcntl</b>(2) locks have different semantics with
-respect to forked processes and <b>dup</b>(2). On systems
-that implement <b>flock</b>() using <b>fcntl</b>(2), the
+and <a href="https://man.page/2/fcntl">fcntl(2)</a> locks have different semantics with
+respect to forked processes and <a href="https://man.page/2/dup">dup(2)</a>. On systems
+that implement <b>flock</b>() using <a href="https://man.page/2/fcntl">fcntl(2)</a>, the
 semantics of <b>flock</b>() will be different from those
 described in this manual page.</p>
 
@@ -264,24 +264,24 @@ behavior, and occurs on many other implementations.)</p>
 details</b> <br>
 In Linux kernels up to 2.6.11, <b>flock</b>() does not lock
 files over NFS (i.e., the scope of locks was limited to the
-local system). Instead, one could use <b>fcntl</b>(2)
+local system). Instead, one could use <a href="https://man.page/2/fcntl">fcntl(2)</a>
 byte-range locking, which does work over NFS, given a
 sufficiently recent version of Linux and a server which
 supports locking.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 2.6.12, NFS clients support <b>flock</b>() locks by
-emulating them as <b>fcntl</b>(2) byte-range locks on the
-entire file. This means that <b>fcntl</b>(2) and
+emulating them as <a href="https://man.page/2/fcntl">fcntl(2)</a> byte-range locks on the
+entire file. This means that <a href="https://man.page/2/fcntl">fcntl(2)</a> and
 <b>flock</b>() locks <i>do</i> interact with one another
 over NFS. It also means that in order to place an exclusive
 lock, the file must be opened for writing.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Since Linux
 2.6.37, the kernel supports a compatibility mode that allows
-<b>flock</b>() locks (and also <b>fcntl</b>(2) byte region
+<b>flock</b>() locks (and also <a href="https://man.page/2/fcntl">fcntl(2)</a> byte region
 locks) to be treated as local; see the discussion of the
-<i>local_lock</i> option in <b>nfs</b>(5).</p>
+<i>local_lock</i> option in <a href="https://man.page/5/nfs">nfs(5)</a>.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -289,10 +289,10 @@ locks) to be treated as local; see the discussion of the
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>flock</b>(1),
-<b>close</b>(2), <b>dup</b>(2), <b>execve</b>(2),
-<b>fcntl</b>(2), <b>fork</b>(2), <b>open</b>(2),
-<b>lockf</b>(3), <b>lslocks</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/flock">flock(1)</a>,
+<a href="https://man.page/2/close">close(2)</a>, <a href="https://man.page/2/dup">dup(2)</a>, <a href="https://man.page/2/execve">execve(2)</a>,
+<a href="https://man.page/2/fcntl">fcntl(2)</a>, <a href="https://man.page/2/fork">fork(2)</a>, <a href="https://man.page/2/open">open(2)</a>,
+<a href="https://man.page/3/lockf">lockf(3)</a>, <b>lslocks</b>(8)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/filesystems/locks.txt</i>

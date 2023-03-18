@@ -141,7 +141,7 @@ above policies, <i>param-&gt;sched_priority</i> must be
 special time-critical applications that need precise control
 over the way in which runnable threads are selected for
 execution. For the rules governing when a process may use
-these policies, see <b>sched</b>(7). The real-time policies
+these policies, see <a href="https://man.page/7/sched">sched(7)</a>. The real-time policies
 that may be specified in <i>policy</i> are:</p>
 
 <table width="100%" border="0" rules="none" frame="void"
@@ -178,8 +178,8 @@ and</p> </td>
 <p style="margin-left:11%; margin-top: 1em">For each of the
 above policies, <i>param-&gt;sched_priority</i> specifies a
 scheduling priority for the thread. This is a number in the
-range returned by calling <b>sched_get_priority_min</b>(2)
-and <b>sched_get_priority_max</b>(2) with the specified
+range returned by calling <a href="https://man.page/2/sched_get_priority_min">sched_get_priority_min(2)</a>
+and <a href="https://man.page/2/sched_get_priority_max">sched_get_priority_max(2)</a> with the specified
 <i>policy</i>. On Linux, these system calls return,
 respectively, 1 and 99.</p>
 
@@ -187,8 +187,8 @@ respectively, 1 and 99.</p>
 2.6.32, the <b>SCHED_RESET_ON_FORK</b> flag can be ORed in
 <i>policy</i> when calling <b>sched_setscheduler</b>(). As a
 result of including this flag, children created by
-<b>fork</b>(2) do not inherit privileged scheduling
-policies. See <b>sched</b>(7) for details.</p>
+<a href="https://man.page/2/fork">fork(2)</a> do not inherit privileged scheduling
+policies. See <a href="https://man.page/7/sched">sched(7)</a> for details.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>sched_getscheduler</b>()
@@ -293,9 +293,9 @@ and <b>SCHED_IDLE</b> policies are Linux-specific.</p>
 <p style="margin-left:11%; margin-top: 1em">Further details
 of the semantics of all of the above &quot;normal&quot; and
 &quot;real-time&quot; scheduling policies can be found in
-the <b>sched</b>(7) manual page. That page also describes an
+the <a href="https://man.page/7/sched">sched(7)</a> manual page. That page also describes an
 additional policy, <b>SCHED_DEADLINE</b>, which is settable
-only via <b>sched_setattr</b>(2).</p>
+only via <a href="https://man.page/2/sched_setattr">sched_setattr(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">POSIX systems
 on which <b>sched_setscheduler</b>() and
@@ -313,15 +313,15 @@ of the target.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The scheduling
 policy and parameters are in fact per-thread attributes on
-Linux. The value returned from a call to <b>gettid</b>(2)
+Linux. The value returned from a call to <a href="https://man.page/2/gettid">gettid(2)</a>
 can be passed in the argument <i>pid</i>. Specifying
 <i>pid</i> as 0 will operate on the attributes of the
 calling thread, and passing the value returned from a call
-to <b>getpid</b>(2) will operate on the attributes of the
+to <a href="https://man.page/2/getpid">getpid(2)</a> will operate on the attributes of the
 main thread of the thread group. (If you are using the POSIX
-threads API, then use <b>pthread_setschedparam</b>(3),
-<b>pthread_getschedparam</b>(3), and
-<b>pthread_setschedprio</b>(3), instead of the
+threads API, then use <a href="https://man.page/3/pthread_setschedparam">pthread_setschedparam(3)</a>,
+<a href="https://man.page/3/pthread_getschedparam">pthread_getschedparam(3)</a>, and
+<a href="https://man.page/3/pthread_setschedprio">pthread_setschedprio(3)</a>, instead of the
 <b>sched_*</b>(2) system calls.)</p>
 
 <h2>BUGS
@@ -341,15 +341,15 @@ requirement, since it always returns 0 on success.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>(1),
-<b>nice</b>(2), <b>sched_get_priority_max</b>(2),
-<b>sched_get_priority_min</b>(2),
-<b>sched_getaffinity</b>(2), <b>sched_getattr</b>(2),
-<b>sched_getparam</b>(2), <b>sched_rr_get_interval</b>(2),
-<b>sched_setaffinity</b>(2), <b>sched_setattr</b>(2),
-<b>sched_setparam</b>(2), <b>sched_yield</b>(2),
-<b>setpriority</b>(2), <b>capabilities</b>(7),
-<b>cpuset</b>(7), <b>sched</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/chrt">chrt(1)</a>,
+<a href="https://man.page/2/nice">nice(2)</a>, <a href="https://man.page/2/sched_get_priority_max">sched_get_priority_max(2)</a>,
+<a href="https://man.page/2/sched_get_priority_min">sched_get_priority_min(2)</a>,
+<a href="https://man.page/2/sched_getaffinity">sched_getaffinity(2)</a>, <a href="https://man.page/2/sched_getattr">sched_getattr(2)</a>,
+<a href="https://man.page/2/sched_getparam">sched_getparam(2)</a>, <a href="https://man.page/2/sched_rr_get_interval">sched_rr_get_interval(2)</a>,
+<a href="https://man.page/2/sched_setaffinity">sched_setaffinity(2)</a>, <a href="https://man.page/2/sched_setattr">sched_setattr(2)</a>,
+<a href="https://man.page/2/sched_setparam">sched_setparam(2)</a>, <a href="https://man.page/2/sched_yield">sched_yield(2)</a>,
+<a href="https://man.page/2/setpriority">setpriority(2)</a>, <a href="https://man.page/7/capabilities">capabilities(7)</a>,
+<a href="https://man.page/7/cpuset">cpuset(7)</a>, <a href="https://man.page/7/sched">sched(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

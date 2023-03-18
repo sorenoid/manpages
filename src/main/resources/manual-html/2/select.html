@@ -77,7 +77,7 @@ const sigset_t *</b><i>sigmask</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>pselect</b>():
@@ -95,13 +95,13 @@ waiting until one or more of the file descriptors become
 &quot;ready&quot; for some class of I/O operation (e.g.,
 input possible). A file descriptor is considered ready if it
 is possible to perform a corresponding I/O operation (e.g.,
-<b>read</b>(2), or a sufficiently small <b>write</b>(2))
+<a href="https://man.page/2/read">read(2)</a>, or a sufficiently small <a href="https://man.page/2/write">write(2)</a>)
 without blocking.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>select</b>()
 can monitor only file descriptors numbers that are less than
-<b>FD_SETSIZE</b>; <b>poll</b>(2) and <b>epoll</b>(7) do not
+<b>FD_SETSIZE</b>; <a href="https://man.page/2/poll">poll(2)</a> and <a href="https://man.page/7/epoll">epoll(7)</a> do not
 have this limitation. See BUGS.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>File
@@ -121,7 +121,7 @@ currently &quot;ready&quot;. Thus, if using <b>select</b>()
 within a loop, the sets <i>must be reinitialized</i> before
 each call. The implementation of the <i>fd_set</i> arguments
 as value-result arguments is a design error that is avoided
-in <b>poll</b>(2) and <b>epoll</b>(7).</p>
+in <a href="https://man.page/2/poll">poll(2)</a> and <a href="https://man.page/7/epoll">epoll(7)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The contents of
 a file descriptor set can be manipulated using the following
@@ -191,7 +191,7 @@ ready for writing.</p>
 <p style="margin-left:22%;">The file descriptors in this
 set are watched for &quot;exceptional conditions&quot;. For
 examples of some exceptional conditions, see the discussion
-of <b>POLLPRI</b> in <b>poll</b>(2).</p>
+of <b>POLLPRI</b> in <a href="https://man.page/2/poll">poll(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">After
 <b>select</b>() has returned, <i>exceptfds</i> will be
@@ -338,7 +338,7 @@ behaves as <b>pselect</b>() called with NULL
 </table>
 
 <p style="margin-left:11%; margin-top: 1em"><i>sigmask</i>
-is a pointer to a signal mask (see <b>sigprocmask</b>(2));
+is a pointer to a signal mask (see <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>);
 if it is not NULL, then <b>pselect</b>() first replaces the
 current signal mask by the one pointed to by <i>sigmask</i>,
 then does the &quot;select&quot; function, and then restores
@@ -462,7 +462,7 @@ However, see BUGS.</p></td></tr>
 <td width="78%">
 
 
-<p>A signal was caught; see <b>signal</b>(7).</p></td></tr>
+<p>A signal was caught; see <a href="https://man.page/7/signal">signal(7)</a>.</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -475,7 +475,7 @@ However, see BUGS.</p></td></tr>
 
 <p><i>nfds</i> is negative or exceeds the
 <b>RLIMIT_NOFILE</b> resource limit (see
-<b>getrlimit</b>(2)).</p> </td></tr>
+<a href="https://man.page/2/getrlimit">getrlimit(2)</a>).</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -552,7 +552,7 @@ the <b>O_NONBLOCK</b> flag.</p>
 UNIX systems, <b>select</b>() can fail with the error
 <b>EAGAIN</b> if the system fails to allocate
 kernel-internal resources, rather than <b>ENOMEM</b> as
-Linux does. POSIX specifies this error for <b>poll</b>(2),
+Linux does. POSIX specifies this error for <a href="https://man.page/2/poll">poll(2)</a>,
 but not for <b>select</b>(). Portable programs may wish to
 check for <b>EAGAIN</b> and loop, just as with
 <b>EINTR</b>.</p>
@@ -570,7 +570,7 @@ reading from and writing to the pipe.)</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>Emulating
 usleep(3)</b> <br>
-Before the advent of <b>usleep</b>(3), some code employed a
+Before the advent of <a href="https://man.page/3/usleep">usleep(3)</a>, some code employed a
 call to <b>select</b>() with all three sets empty,
 <i>nfds</i> zero, and a non-NULL <i>timeout</i> as a fairly
 portable way to sleep with subsecond precision.</p>
@@ -582,7 +582,7 @@ Within the Linux kernel source, we find the following
 definitions which show the correspondence between the
 readable, writable, and exceptional condition notifications
 of <b>select</b>() and the event notifications provided by
-<b>poll</b>(2) and <b>epoll</b>(7):</p>
+<a href="https://man.page/2/poll">poll(2)</a> and <a href="https://man.page/7/epoll">epoll(7)</a>:</p>
 
 <p style="margin-left:17%; margin-top: 1em">#define
 POLLIN_SET (EPOLLRDNORM | EPOLLRDBAND | EPOLLIN | <br>
@@ -648,7 +648,7 @@ pointed to by 'ss' */ <br>
 system call to obtain both a pointer to the signal set and
 its size, while allowing for the fact that most
 architectures support a maximum of 6 arguments to a system
-call. See <b>sigprocmask</b>(2) for a discussion of the
+call. See <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a> for a discussion of the
 difference between the kernel and libc notion of the signal
 set.</p>
 
@@ -675,8 +675,8 @@ kernel imposes no fixed limit, but the glibc implementation
 makes <i>fd_set</i> a fixed-size type, with
 <b>FD_SETSIZE</b> defined as 1024, and the <b>FD_*</b>()
 macros operating according to that limit. To monitor file
-descriptors greater than 1023, use <b>poll</b>(2) or
-<b>epoll</b>(7) instead.</p>
+descriptors greater than 1023, use <a href="https://man.page/2/poll">poll(2)</a> or
+<a href="https://man.page/7/epoll">epoll(7)</a> instead.</p>
 
 <p style="margin-left:11%; margin-top: 1em">According to
 POSIX, <b>select</b>() should check all specified file
@@ -690,7 +690,7 @@ result in the error <b>EBADF</b>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Starting with
 version 2.1, glibc provided an emulation of <b>pselect</b>()
-that was implemented using <b>sigprocmask</b>(2) and
+that was implemented using <a href="https://man.page/2/sigprocmask">sigprocmask(2)</a> and
 <b>select</b>(). This implementation remained vulnerable to
 the very race condition that <b>pselect</b>() was designed
 to prevent. Modern versions of glibc use the (race-free)
@@ -772,14 +772,14 @@ printf(&quot;No data within five seconds.\n&quot;);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>accept</b>(2),
-<b>connect</b>(2), <b>poll</b>(2), <b>read</b>(2),
-<b>recv</b>(2), <b>restart_syscall</b>(2), <b>send</b>(2),
-<b>sigprocmask</b>(2), <b>write</b>(2), <b>epoll</b>(7),
-<b>time</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/accept">accept(2)</a>,
+<a href="https://man.page/2/connect">connect(2)</a>, <a href="https://man.page/2/poll">poll(2)</a>, <a href="https://man.page/2/read">read(2)</a>,
+<a href="https://man.page/2/recv">recv(2)</a>, <a href="https://man.page/2/restart_syscall">restart_syscall(2)</a>, <a href="https://man.page/2/send">send(2)</a>,
+<a href="https://man.page/2/sigprocmask">sigprocmask(2)</a>, <a href="https://man.page/2/write">write(2)</a>, <a href="https://man.page/7/epoll">epoll(7)</a>,
+<a href="https://man.page/7/time">time(7)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">For a tutorial
-with discussion and examples, see <b>select_tut</b>(2).</p>
+with discussion and examples, see <a href="https://man.page/2/select_tut">select_tut(2)</a>.</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

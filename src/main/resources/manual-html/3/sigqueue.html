@@ -57,7 +57,7 @@ const union sigval</b> <i>value</i><b>);</b></p>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>sigqueue</b>():
@@ -72,8 +72,8 @@ _POSIX_C_SOURCE&nbsp;&gt;=&nbsp;199309L</p>
 <p style="margin-left:11%; margin-top: 1em"><b>sigqueue</b>()
 sends the signal specified in <i>sig</i> to the process
 whose PID is given in <i>pid</i>. The permissions required
-to send a signal are the same as for <b>kill</b>(2). As with
-<b>kill</b>(2), the null signal (0) can be used to check if
+to send a signal are the same as for <a href="https://man.page/2/kill">kill(2)</a>. As with
+<a href="https://man.page/2/kill">kill(2)</a>, the null signal (0) can be used to check if
 a process with a given PID exists.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
@@ -89,7 +89,7 @@ void *sival_ptr; <br>
 
 <p style="margin-left:11%; margin-top: 1em">If the
 receiving process has installed a handler for this signal
-using the <b>SA_SIGINFO</b> flag to <b>sigaction</b>(2),
+using the <b>SA_SIGINFO</b> flag to <a href="https://man.page/2/sigaction">sigaction(2)</a>,
 then it can obtain this data via the <i>si_value</i> field
 of the <i>siginfo_t</i> structure passed as the second
 argument to the handler. Furthermore, the <i>si_code</i>
@@ -124,7 +124,7 @@ error.</p>
 
 
 <p style="margin-top: 1em">The limit of signals which may
-be queued has been reached. (See <b>signal</b>(7) for
+be queued has been reached. (See <a href="https://man.page/7/signal">signal(7)</a> for
 further information.)</p></td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
@@ -149,7 +149,7 @@ further information.)</p></td></tr>
 
 <p>The process does not have permission to send the signal
 to the receiving process. For the required permissions, see
-<b>kill</b>(2).</p> </td></tr>
+<a href="https://man.page/2/kill">kill(2)</a>.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="9%">
@@ -180,7 +180,7 @@ first appeared in Linux 2.2.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3290801.png" alt="Image grohtml-3290801.png"></p>
@@ -203,18 +203,18 @@ function results in the sending of a signal to the process
 that invoked it, and that signal was not blocked by the
 calling thread, and no other threads were willing to handle
 this signal (either by having it unblocked, or by waiting
-for it using <b>sigwait</b>(3)), then at least some signal
+for it using <a href="https://man.page/3/sigwait">sigwait(3)</a>), then at least some signal
 must be delivered to this thread before this function
 returns.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>C
 library/kernel differences</b> <br>
 On Linux, <b>sigqueue</b>() is implemented using the
-<b>rt_sigqueueinfo</b>(2) system call. The system call
+<a href="https://man.page/2/rt_sigqueueinfo">rt_sigqueueinfo(2)</a> system call. The system call
 differs in its third argument, which is the <i>siginfo_t</i>
 structure that will be supplied to the receiving
 process&rsquo;s signal handler or returned by the receiving
-process&rsquo;s <b>sigtimedwait</b>(2) call. Inside the
+process&rsquo;s <a href="https://man.page/2/sigtimedwait">sigtimedwait(2)</a> call. Inside the
 glibc <b>sigqueue</b>() wrapper, this argument,
 <i>uinfo</i>, is initialized as follows:</p>
 
@@ -232,10 +232,10 @@ uinfo.si_value = val; /* Argument supplied to sigqueue()
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>kill</b>(2),
-<b>rt_sigqueueinfo</b>(2), <b>sigaction</b>(2),
-<b>signal</b>(2), <b>pthread_sigqueue</b>(3),
-<b>sigwait</b>(3), <b>signal</b>(7)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/kill">kill(2)</a>,
+<a href="https://man.page/2/rt_sigqueueinfo">rt_sigqueueinfo(2)</a>, <a href="https://man.page/2/sigaction">sigaction(2)</a>,
+<a href="https://man.page/2/signal">signal(2)</a>, <a href="https://man.page/3/pthread_sigqueue">pthread_sigqueue(3)</a>,
+<a href="https://man.page/3/sigwait">sigwait(3)</a>, <a href="https://man.page/7/signal">signal(7)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

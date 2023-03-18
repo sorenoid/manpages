@@ -84,7 +84,7 @@ PC/AT.</p>
 system clock</b> <br>
 RTCs should not be confused with the system clock, which is
 a software clock maintained by the kernel and used to
-implement <b>gettimeofday</b>(2) and <b>time</b>(2), as well
+implement <a href="https://man.page/2/gettimeofday">gettimeofday(2)</a> and <a href="https://man.page/2/time">time(2)</a>, as well
 as setting timestamps on files, and so on. The system clock
 reports seconds and microseconds since a start point,
 defined to be the POSIX Epoch: 1970-01-01 00:00:00 +0000
@@ -108,7 +108,7 @@ that data manually.</p>
 <p style="margin-left:11%; margin-top: 1em"><b>RTC
 functionality</b> <br>
 RTCs can be read and written with <b>hwclock</b>(8), or
-directly with the <b>ioctl</b>(2) requests listed below.</p>
+directly with the <a href="https://man.page/2/ioctl">ioctl(2)</a> requests listed below.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Besides
 tracking the date and time, many RTCs can also generate
@@ -165,17 +165,17 @@ interrupts, but another one can.</p>
 <p style="margin-left:11%; margin-top: 1em">The
 <i>/dev/rtc</i> (or <i>/dev/rtc0</i>, <i>/dev/rtc1</i>,
 etc.) device can be opened only once (until it is closed)
-and it is read-only. On <b>read</b>(2) and <b>select</b>(2)
+and it is read-only. On <a href="https://man.page/2/read">read(2)</a> and <a href="https://man.page/2/select">select(2)</a>
 the calling process is blocked until the next interrupt from
 that RTC is received. Following the interrupt, the process
 can read a long integer, of which the least significant byte
 contains a bit mask encoding the types of interrupt that
 occurred, while the remaining 3 bytes contain the number of
-interrupts since the last <b>read</b>(2).</p>
+interrupts since the last <a href="https://man.page/2/read">read(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>ioctl(2)
 interface</b> <br>
-The following <b>ioctl</b>(2) requests are defined on file
+The following <a href="https://man.page/2/ioctl">ioctl(2)</a> requests are defined on file
 descriptors connected to RTC devices: <b><br>
 RTC_RD_TIME</b></p>
 
@@ -197,15 +197,15 @@ int tm_isdst; /* unused */ <br>
 
 <p style="margin-left:22%; margin-top: 1em">The fields in
 this structure have the same meaning and ranges as for the
-<i>tm</i> structure described in <b>gmtime</b>(3). A pointer
+<i>tm</i> structure described in <a href="https://man.page/3/gmtime">gmtime(3)</a>. A pointer
 to this structure should be passed as the third
-<b>ioctl</b>(2) argument.</p>
+<a href="https://man.page/2/ioctl">ioctl(2)</a> argument.</p>
 
 <p style="margin-left:11%;"><b>RTC_SET_TIME</b></p>
 
 <p style="margin-left:22%;">Sets this RTC&rsquo;s time to
 the time specified by the <i>rtc_time</i> structure pointed
-to by the third <b>ioctl</b>(2) argument. To set the
+to by the third <a href="https://man.page/2/ioctl">ioctl(2)</a> argument. To set the
 RTC&rsquo;s time the process must be privileged (i.e., have
 the <b>CAP_SYS_TIME</b> capability).</p>
 
@@ -215,7 +215,7 @@ the <b>CAP_SYS_TIME</b> capability).</p>
 <p style="margin-left:22%;">Read and set the alarm time,
 for RTCs that support alarms. The alarm interrupt must be
 separately enabled or disabled using the <b>RTC_AIE_ON</b>,
-<b>RTC_AIE_OFF</b> requests. The third <b>ioctl</b>(2)
+<b>RTC_AIE_OFF</b> requests. The third <a href="https://man.page/2/ioctl">ioctl(2)</a>
 argument is a pointer to an <i>rtc_time</i> structure. Only
 the <i>tm_sec</i>, <i>tm_min</i>, and <i>tm_hour</i> fields
 of this structure are used.</p>
@@ -227,7 +227,7 @@ of this structure are used.</p>
 periodic interrupts, for RTCs that support periodic
 interrupts. The periodic interrupt must be separately
 enabled or disabled using the <b>RTC_PIE_ON</b>,
-<b>RTC_PIE_OFF</b> requests. The third <b>ioctl</b>(2)
+<b>RTC_PIE_OFF</b> requests. The third <a href="https://man.page/2/ioctl">ioctl(2)</a>
 argument is an <i>unsigned long&nbsp;*</i> or an <i>unsigned
 long</i>, respectively. The value is the frequency in
 interrupts per second. The set of allowable frequencies is
@@ -243,14 +243,14 @@ the value 64 by default.)</p>
 
 <p style="margin-left:22%;">Enable or disable the alarm
 interrupt, for RTCs that support alarms. The third
-<b>ioctl</b>(2) argument is ignored.</p>
+<a href="https://man.page/2/ioctl">ioctl(2)</a> argument is ignored.</p>
 
 <p style="margin-left:11%;"><b>RTC_UIE_ON</b>,
 <b>RTC_UIE_OFF</b></p>
 
 <p style="margin-left:22%;">Enable or disable the interrupt
 on every clock update, for RTCs that support this
-once-per-second interrupt. The third <b>ioctl</b>(2)
+once-per-second interrupt. The third <a href="https://man.page/2/ioctl">ioctl(2)</a>
 argument is ignored.</p>
 
 <p style="margin-left:11%;"><b>RTC_PIE_ON</b>,
@@ -258,7 +258,7 @@ argument is ignored.</p>
 
 <p style="margin-left:22%;">Enable or disable the periodic
 interrupt, for RTCs that support these periodic interrupts.
-The third <b>ioctl</b>(2) argument is ignored. Only a
+The third <a href="https://man.page/2/ioctl">ioctl(2)</a> argument is ignored. Only a
 privileged process (i.e., one having the
 <b>CAP_SYS_RESOURCE</b> capability) can enable the periodic
 interrupt if the frequency is currently set above the value
@@ -276,7 +276,7 @@ on Alpha and MIPS it might also be initialized to 1952,
 1980, or 2000, depending on the value of an RTC register for
 the year. With some RTCs, these operations can be used to
 read or to set the RTC&rsquo;s Epoch, respectively. The
-third <b>ioctl</b>(2) argument is an <i>unsigned
+third <a href="https://man.page/2/ioctl">ioctl(2)</a> argument is an <i>unsigned
 long&nbsp;*</i> or an <i>unsigned long</i>, respectively,
 and the value returned (or assigned) is the Epoch. To set
 the RTC&rsquo;s Epoch the process must be privileged (i.e.,
@@ -308,7 +308,7 @@ firmware). The <i>time</i> field is as used with
 <b>RTC_ALM_READ</b> and <b>RTC_ALM_SET</b> except that the
 <i>tm_mday</i>, <i>tm_mon</i>, and <i>tm_year</i> fields are
 also valid. A pointer to this structure should be passed as
-the third <b>ioctl</b>(2) argument.</p>
+the third <a href="https://man.page/2/ioctl">ioctl(2)</a> argument.</p>
 
 <h2>FILES
 <a name="FILES"></a>
@@ -333,7 +333,7 @@ files.</p>
 
 <p style="margin-left:11%; margin-top: 1em">When the
 kernel&rsquo;s system time is synchronized with an external
-reference using <b>adjtimex</b>(2) it will update a
+reference using <a href="https://man.page/2/adjtimex">adjtimex(2)</a> it will update a
 designated RTC periodically every 11 minutes. To do so, the
 kernel has to briefly turn off periodic interrupts; this
 might affect programs using that RTC.</p>
@@ -368,10 +368,10 @@ currently exposed by this API.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>date</b>(1),
-<b>adjtimex</b>(2), <b>gettimeofday</b>(2),
-<b>settimeofday</b>(2), <b>stime</b>(2), <b>time</b>(2),
-<b>gmtime</b>(3), <b>time</b>(7), <b>hwclock</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/date">date(1)</a>,
+<a href="https://man.page/2/adjtimex">adjtimex(2)</a>, <a href="https://man.page/2/gettimeofday">gettimeofday(2)</a>,
+<a href="https://man.page/2/settimeofday">settimeofday(2)</a>, <a href="https://man.page/2/stime">stime(2)</a>, <a href="https://man.page/2/time">time(2)</a>,
+<a href="https://man.page/3/gmtime">gmtime(3)</a>, <a href="https://man.page/7/time">time(7)</a>, <b>hwclock</b>(8)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><i>Documentation/rtc.txt</i>

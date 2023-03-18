@@ -62,7 +62,7 @@ mallopt(int</b> <i>param</i><b>, int</b>
 <p style="margin-left:11%; margin-top: 1em">The
 <b>mallopt</b>() function adjusts parameters that control
 the behavior of the memory-allocation functions (see
-<b>malloc</b>(3)). The <i>param</i> argument specifies the
+<a href="https://man.page/3/malloc">malloc(3)</a>). The <i>param</i> argument specifies the
 parameter to be modified, and <i>value</i> specifies the new
 value for that parameter.</p>
 
@@ -73,7 +73,7 @@ M_ARENA_MAX</b></p>
 <p style="margin-left:22%;">If this parameter has a nonzero
 value, it defines a hard limit on the maximum number of
 arenas that can be created. An arena represents a pool of
-memory that can be used by <b>malloc</b>(3) (and similar)
+memory that can be used by <a href="https://man.page/3/malloc">malloc(3)</a> (and similar)
 calls to service allocation requests. Arenas are thread safe
 and therefore may have multiple concurrent memory requests.
 The trade-off is between the number of threads and the
@@ -168,12 +168,12 @@ memory address where the error was detected.</p></td></tr>
 
 <p>If this bit is set, then, after printing any error
 message specified by bit 0, the program is terminated by
-calling <b>abort</b>(3). In glibc versions since 2.4, if bit
+calling <a href="https://man.page/3/abort">abort(3)</a>. In glibc versions since 2.4, if bit
 0 is also set, then, between printing the error message and
 aborting, the program also prints a stack trace in the
-manner of <b>backtrace</b>(3), and prints the
+manner of <a href="https://man.page/3/backtrace">backtrace(3)</a>, and prints the
 process&rsquo;s memory mapping in the style of
-<i>/proc/[pid]/maps</i> (see <b>proc</b>(5)).</p></td></tr>
+<i>/proc/[pid]/maps</i> (see <a href="https://man.page/5/proc">proc(5)</a>).</p></td></tr>
 </table>
 
 <p style="margin-left:22%;">Bit 2 (since glibc 2.4)</p>
@@ -279,15 +279,15 @@ problem is then very hard to track down.</p>
 
 <p style="margin-left:22%;">This parameter specifies the
 maximum number of allocation requests that may be
-simultaneously serviced using <b>mmap</b>(2). This parameter
+simultaneously serviced using <a href="https://man.page/2/mmap">mmap(2)</a>. This parameter
 exists because some systems have a limited number of
-internal tables for use by <b>mmap</b>(2), and using more
+internal tables for use by <a href="https://man.page/2/mmap">mmap(2)</a>, and using more
 than a few of them may degrade performance.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The default
 value is 65,536, a value which has no special significance
 and which serves only as a safeguard. Setting this parameter
-to 0 disables the use of <b>mmap</b>(2) for servicing large
+to 0 disables the use of <a href="https://man.page/2/mmap">mmap(2)</a> for servicing large
 allocation requests.</p>
 
 <p style="margin-left:11%;"><b>M_MMAP_THRESHOLD</b></p>
@@ -296,20 +296,20 @@ allocation requests.</p>
 equal to the limit specified (in bytes) by
 <b>M_MMAP_THRESHOLD</b> that can&rsquo;t be satisfied from
 the free list, the memory-allocation functions employ
-<b>mmap</b>(2) instead of increasing the program break using
-<b>sbrk</b>(2).</p>
+<a href="https://man.page/2/mmap">mmap(2)</a> instead of increasing the program break using
+<a href="https://man.page/2/sbrk">sbrk(2)</a>.</p>
 
 <p style="margin-left:22%; margin-top: 1em">Allocating
-memory using <b>mmap</b>(2) has the significant advantage
+memory using <a href="https://man.page/2/mmap">mmap(2)</a> has the significant advantage
 that the allocated memory blocks can always be independently
 released back to the system. (By contrast, the heap can be
 trimmed only if memory is freed at the top end.) On the
 other hand, there are some disadvantages to the use of
-<b>mmap</b>(2): deallocated space is not placed on the free
+<a href="https://man.page/2/mmap">mmap(2)</a>: deallocated space is not placed on the free
 list for reuse by later allocations; memory may be wasted
-because <b>mmap</b>(2) allocations must be page-aligned; and
+because <a href="https://man.page/2/mmap">mmap(2)</a> allocations must be page-aligned; and
 the kernel must perform the expensive task of zeroing out
-memory allocated via <b>mmap</b>(2). Balancing these factors
+memory allocated via <a href="https://man.page/2/mmap">mmap(2)</a>. Balancing these factors
 leads to a default setting of 128*1024 for the
 <b>M_MMAP_THRESHOLD</b> parameter.</p>
 
@@ -358,10 +358,10 @@ parameter is 0 to <i>80*sizeof(size_t)/4</i>. Setting
 
 <p style="margin-left:22%;">If this parameter is set to a
 nonzero value, then bytes of allocated memory (other than
-allocations via <b>calloc</b>(3)) are initialized to the
+allocations via <a href="https://man.page/3/calloc">calloc(3)</a>) are initialized to the
 complement of the value in the least significant byte of
 <i>value</i>, and when allocated memory is released using
-<b>free</b>(3), the freed bytes are set to the least
+<a href="https://man.page/3/free">free(3)</a>, the freed bytes are set to the least
 significant byte of <i>value</i>. This can be useful for
 detecting errors where programs incorrectly rely on
 allocated memory being initialized to zero, or reuse values
@@ -373,7 +373,7 @@ value for this parameter is 0.</p>
 <p style="margin-left:11%;"><b>M_TOP_PAD</b></p>
 
 <p style="margin-left:22%;">This parameter defines the
-amount of padding to employ when calling <b>sbrk</b>(2) to
+amount of padding to employ when calling <a href="https://man.page/2/sbrk">sbrk(2)</a> to
 modify the program break. (The measurement unit for this
 parameter is bytes.) This parameter has an effect in the
 following circumstances:</p>
@@ -391,7 +391,7 @@ following circumstances:</p>
 
 
 <p>When the program break is increased, then
-<b>M_TOP_PAD</b> bytes are added to the <b>sbrk</b>(2)
+<b>M_TOP_PAD</b> bytes are added to the <a href="https://man.page/2/sbrk">sbrk(2)</a>
 request.</p> </td></tr>
 <tr valign="top" align="left">
 <td width="22%"></td>
@@ -404,7 +404,7 @@ request.</p> </td></tr>
 
 
 <p>When the heap is trimmed as a consequence of calling
-<b>free</b>(3) (see the discussion of
+<a href="https://man.page/3/free">free(3)</a> (see the discussion of
 <b>M_TRIM_THRESHOLD</b>) this much free space is preserved
 at the top of the heap.</p></td></tr>
 </table>
@@ -426,12 +426,12 @@ value for this parameter is 128*1024.</p>
 
 <p style="margin-left:22%;">When the amount of contiguous
 free memory at the top of the heap grows sufficiently large,
-<b>free</b>(3) employs <b>sbrk</b>(2) to release this memory
+<a href="https://man.page/3/free">free(3)</a> employs <a href="https://man.page/2/sbrk">sbrk(2)</a> to release this memory
 back to the system. (This can be useful in programs that
 continue to execute for a long period after freeing a
 significant amount of memory.) The <b>M_TRIM_THRESHOLD</b>
 parameter specifies the minimum size (in bytes) that this
-block of memory must reach before <b>sbrk</b>(2) is used to
+block of memory must reach before <a href="https://man.page/2/sbrk">sbrk(2)</a> is used to
 trim the heap.</p>
 
 <p style="margin-left:22%; margin-top: 1em">The default
@@ -478,7 +478,7 @@ controls the same parameter as <b>mallopt</b>()
 <b>M_CHECK_ACTION</b>. If this variable is set to a nonzero
 value, then a special implementation of the
 memory-allocation functions is used. (This is accomplished
-using the <b>malloc_hook</b>(3) feature.) This
+using the <a href="https://man.page/3/malloc_hook">malloc_hook(3)</a> feature.) This
 implementation performs additional error checking, but is
 slower than the standard set of memory-allocation functions.
 (This implementation does not detect all possible errors;
@@ -700,12 +700,12 @@ call\n&quot;);</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>mmap</b>(2),
-<b>sbrk</b>(2), <b>mallinfo</b>(3), <b>malloc</b>(3),
-<b>malloc_hook</b>(3), <b>malloc_info</b>(3),
-<b>malloc_stats</b>(3), <b>malloc_trim</b>(3),
-<b>mcheck</b>(3), <b>mtrace</b>(3),
-<b>posix_memalign</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/2/mmap">mmap(2)</a>,
+<a href="https://man.page/2/sbrk">sbrk(2)</a>, <a href="https://man.page/3/mallinfo">mallinfo(3)</a>, <a href="https://man.page/3/malloc">malloc(3)</a>,
+<a href="https://man.page/3/malloc_hook">malloc_hook(3)</a>, <a href="https://man.page/3/malloc_info">malloc_info(3)</a>,
+<a href="https://man.page/3/malloc_stats">malloc_stats(3)</a>, <a href="https://man.page/3/malloc_trim">malloc_trim(3)</a>,
+<a href="https://man.page/3/mcheck">mcheck(3)</a>, <a href="https://man.page/3/mtrace">mtrace(3)</a>,
+<a href="https://man.page/3/posix_memalign">posix_memalign(3)</a></p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

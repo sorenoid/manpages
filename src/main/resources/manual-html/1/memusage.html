@@ -63,15 +63,15 @@ is a bash script which profiles memory usage of the program,
 library into the caller&rsquo;s environment (via the
 <b>LD_PRELOAD</b> environment variable; see
 <b>ld.so</b>(8)). The <b>libmemusage.so</b> library traces
-memory allocation by intercepting calls to <b>malloc</b>(3),
-<b>calloc</b>(3), <b>free</b>(3), and <b>realloc</b>(3);
-optionally, calls to <b>mmap</b>(2), <b>mremap</b>(2), and
-<b>munmap</b>(2) can also be intercepted.</p>
+memory allocation by intercepting calls to <a href="https://man.page/3/malloc">malloc(3)</a>,
+<a href="https://man.page/3/calloc">calloc(3)</a>, <a href="https://man.page/3/free">free(3)</a>, and <a href="https://man.page/3/realloc">realloc(3)</a>;
+optionally, calls to <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/2/mremap">mremap(2)</a>, and
+<a href="https://man.page/2/munmap">munmap(2)</a> can also be intercepted.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>memusage</b>
 can output the collected data in textual form, or it can use
-<b>memusagestat</b>(1) (see the <b>-p</b> option, below) to
+<a href="https://man.page/1/memusagestat">memusagestat(1)</a> (see the <b>-p</b> option, below) to
 create a PNG file containing graphical representation of the
 collected data.</p>
 
@@ -83,22 +83,22 @@ The &quot;Memory usage summary&quot; line output by
 <p style="margin-left:17%;"><b>heap total</b></p>
 
 <p style="margin-left:28%;">Sum of <i>size</i> arguments of
-all <b>malloc</b>(3) calls, products of arguments
-(<i>nmemb</i>*<i>size</i>) of all <b>calloc</b>(3) calls,
-and sum of <i>length</i> arguments of all <b>mmap</b>(2)
-calls. In the case of <b>realloc</b>(3) and
-<b>mremap</b>(2), if the new size of an allocation is larger
+all <a href="https://man.page/3/malloc">malloc(3)</a> calls, products of arguments
+(<i>nmemb</i>*<i>size</i>) of all <a href="https://man.page/3/calloc">calloc(3)</a> calls,
+and sum of <i>length</i> arguments of all <a href="https://man.page/2/mmap">mmap(2)</a>
+calls. In the case of <a href="https://man.page/3/realloc">realloc(3)</a> and
+<a href="https://man.page/2/mremap">mremap(2)</a>, if the new size of an allocation is larger
 than the previous size, the sum of all such differences (new
 size minus old size) is added.</p>
 
 <p style="margin-left:17%;"><b>heap peak</b></p>
 
 <p style="margin-left:28%;">Maximum of all <i>size</i>
-arguments of <b>malloc</b>(3), all products of
-<i>nmemb</i>*<i>size</i> of <b>calloc</b>(3), all
-<i>size</i> arguments of <b>realloc</b>(3), <i>length</i>
-arguments of <b>mmap</b>(2), and <i>new_size</i> arguments
-of <b>mremap</b>(2).</p>
+arguments of <a href="https://man.page/3/malloc">malloc(3)</a>, all products of
+<i>nmemb</i>*<i>size</i> of <a href="https://man.page/3/calloc">calloc(3)</a>, all
+<i>size</i> arguments of <a href="https://man.page/3/realloc">realloc(3)</a>, <i>length</i>
+arguments of <a href="https://man.page/2/mmap">mmap(2)</a>, and <i>new_size</i> arguments
+of <a href="https://man.page/2/mremap">mremap(2)</a>.</p>
 
 <p style="margin-left:17%;"><b>stack peak</b></p>
 
@@ -112,19 +112,19 @@ differences is then the stack peak.</p>
 <p style="margin-left:11%; margin-top: 1em">Immediately
 following this summary line, a table shows the number calls,
 total memory allocated or deallocated, and number of failed
-calls for each intercepted function. For <b>realloc</b>(3)
-and <b>mremap</b>(2), the additional field
+calls for each intercepted function. For <a href="https://man.page/3/realloc">realloc(3)</a>
+and <a href="https://man.page/2/mremap">mremap(2)</a>, the additional field
 &quot;nomove&quot; shows reallocations that changed the
 address of a block, and the additional &quot;dec&quot; field
 shows reallocations that decreased the size of the block.
-For <b>realloc</b>(3), the additional field &quot;free&quot;
+For <a href="https://man.page/3/realloc">realloc(3)</a>, the additional field &quot;free&quot;
 shows reallocations that caused a block to be freed (i.e.,
 the reallocated size was 0).</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 &quot;realloc/total memory&quot; of the table output by
 <b>memusage</b> does not reflect cases where
-<b>realloc</b>(3) is used to reallocate a block of memory to
+<a href="https://man.page/3/realloc">realloc(3)</a> is used to reallocate a block of memory to
 have a smaller size than previously. This can cause sum of
 all &quot;total memory&quot; cells (excluding
 &quot;free&quot;) to be larger than the &quot;free/total
@@ -178,8 +178,8 @@ before writing them out.</p>
 
 <p style="margin-left:11%;"><b>-m</b>,&nbsp;<b>--mmap</b></p>
 
-<p style="margin-left:22%;">Also trace <b>mmap</b>(2),
-<b>mremap</b>(2), and <b>munmap</b>(2).</p>
+<p style="margin-left:22%;">Also trace <a href="https://man.page/2/mmap">mmap(2)</a>,
+<a href="https://man.page/2/mremap">mremap(2)</a>, and <a href="https://man.page/2/munmap">munmap(2)</a>.</p>
 
 
 <p style="margin-left:11%;"><b>-?</b>,&nbsp;<b>--help</b></p>
@@ -329,8 +329,8 @@ exit(EXIT_SUCCESS); <br>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>memusagestat</b>(1),
-<b>mtrace</b>(1), <b>ld.so</b>(8)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/memusagestat">memusagestat(1)</a>,
+<a href="https://man.page/1/mtrace">mtrace(1)</a>, <b>ld.so</b>(8)</p>
 
 <h2>COLOPHON
 <a name="COLOPHON"></a>

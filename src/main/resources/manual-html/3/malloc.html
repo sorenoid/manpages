@@ -64,7 +64,7 @@ void *reallocarray(void</b> <i>*ptr</i><b>, size_t</b>
 
 <p style="margin-left:5%; margin-top: 1em">Feature Test
 Macro Requirements for glibc (see
-<b>feature_test_macros</b>(7)):</p>
+<a href="https://man.page/7/feature_test_macros">feature_test_macros(7)</a>):</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>reallocarray</b>():
@@ -202,7 +202,7 @@ can fail with the following error:</p>
 
 <p>Out of memory. Possibly, the application hit the
 <b>RLIMIT_AS</b> or <b>RLIMIT_DATA</b> limit described in
-<b>getrlimit</b>(2).</p> </td></tr>
+<a href="https://man.page/2/getrlimit">getrlimit(2)</a>.</p> </td></tr>
 </table>
 
 <h2>VERSIONS
@@ -221,7 +221,7 @@ first appeared in glibc in version 2.26.</p>
 
 <p style="margin-left:11%; margin-top: 1em">For an
 explanation of the terms used in this section, see
-<b>attributes</b>(7).</p>
+<a href="https://man.page/7/attributes">attributes(7)</a>.</p>
 
 
 <p align="center" style="margin-top: 1em"><img src="grohtml-3385711.png" alt="Image grohtml-3385711.png"></p>
@@ -254,23 +254,23 @@ turns out that the system is out of memory, one or more
 processes will be killed by the OOM killer. For more
 information, see the description of
 <i>/proc/sys/vm/overcommit_memory</i> and
-<i>/proc/sys/vm/oom_adj</i> in <b>proc</b>(5), and the Linux
+<i>/proc/sys/vm/oom_adj</i> in <a href="https://man.page/5/proc">proc(5)</a>, and the Linux
 kernel source file
 <i>Documentation/vm/overcommit-accounting.rst</i>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">Normally,
 <b>malloc</b>() allocates memory from the heap, and adjusts
-the size of the heap as required, using <b>sbrk</b>(2). When
+the size of the heap as required, using <a href="https://man.page/2/sbrk">sbrk(2)</a>. When
 allocating blocks of memory larger than
 <b>MMAP_THRESHOLD</b> bytes, the glibc <b>malloc</b>()
 implementation allocates the memory as a private anonymous
-mapping using <b>mmap</b>(2). <b>MMAP_THRESHOLD</b> is
+mapping using <a href="https://man.page/2/mmap">mmap(2)</a>. <b>MMAP_THRESHOLD</b> is
 128&nbsp;kB by default, but is adjustable using
-<b>mallopt</b>(3). Prior to Linux 4.7 allocations performed
-using <b>mmap</b>(2) were unaffected by the
+<a href="https://man.page/3/mallopt">mallopt(3)</a>. Prior to Linux 4.7 allocations performed
+using <a href="https://man.page/2/mmap">mmap(2)</a> were unaffected by the
 <b>RLIMIT_DATA</b> resource limit; since Linux 4.7, this
 limit is also enforced for allocations performed using
-<b>mmap</b>(2).</p>
+<a href="https://man.page/2/mmap">mmap(2)</a>.</p>
 
 <p style="margin-left:11%; margin-top: 1em">To avoid
 corruption in multithreaded applications, mutexes are used
@@ -282,7 +282,7 @@ handle memory allocation in multithreaded applications,
 glibc creates additional <i>memory allocation arenas</i> if
 mutex contention is detected. Each arena is a large region
 of memory that is internally allocated by the system (using
-<b>brk</b>(2) or <b>mmap</b>(2)), and managed with its own
+<a href="https://man.page/2/brk">brk(2)</a> or <a href="https://man.page/2/mmap">mmap(2)</a>), and managed with its own
 mutexes.</p>
 
 <p style="margin-left:11%; margin-top: 1em">SUSv2 requires
@@ -302,7 +302,7 @@ pointer twice.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The
 <b>malloc</b>() implementation is tunable via environment
-variables; see <b>mallopt</b>(3) for details.</p>
+variables; see <a href="https://man.page/3/mallopt">mallopt(3)</a> for details.</p>
 
 <h2>SEE ALSO
 <a name="SEE ALSO"></a>
@@ -310,12 +310,12 @@ variables; see <b>mallopt</b>(3) for details.</p>
 
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>valgrind</b>(1),
-<b>brk</b>(2), <b>mmap</b>(2), <b>alloca</b>(3),
-<b>malloc_get_state</b>(3), <b>malloc_info</b>(3),
-<b>malloc_trim</b>(3), <b>malloc_usable_size</b>(3),
-<b>mallopt</b>(3), <b>mcheck</b>(3), <b>mtrace</b>(3),
-<b>posix_memalign</b>(3)</p>
+<p style="margin-left:11%; margin-top: 1em"><a href="https://man.page/1/valgrind">valgrind(1)</a>,
+<a href="https://man.page/2/brk">brk(2)</a>, <a href="https://man.page/2/mmap">mmap(2)</a>, <a href="https://man.page/3/alloca">alloca(3)</a>,
+<a href="https://man.page/3/malloc_get_state">malloc_get_state(3)</a>, <a href="https://man.page/3/malloc_info">malloc_info(3)</a>,
+<a href="https://man.page/3/malloc_trim">malloc_trim(3)</a>, <a href="https://man.page/3/malloc_usable_size">malloc_usable_size(3)</a>,
+<a href="https://man.page/3/mallopt">mallopt(3)</a>, <a href="https://man.page/3/mcheck">mcheck(3)</a>, <a href="https://man.page/3/mtrace">mtrace(3)</a>,
+<a href="https://man.page/3/posix_memalign">posix_memalign(3)</a></p>
 
 <p style="margin-left:11%; margin-top: 1em">For details of
 the GNU C library implementation, see
