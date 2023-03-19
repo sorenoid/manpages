@@ -1,17 +1,18 @@
 import com.bandor.model.Manual
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
+import java.nio.file.DirectoryStream
 import java.util.jar.JarFile
 import java.util.regex.Pattern
 import java.util.stream.Collectors
+import kotlin.system.exitProcess
 
 fun String.guts(startTag: String, endTag: String): String =
-    replaceAfterLast(endTag, "")
-        .replaceBefore(startTag, "")
-        .replace(endTag, "")
-        .replace(startTag, "")
+    replaceAfterLast(endTag, "").replaceBefore(startTag, "").replace(endTag, "").replace(startTag, "")
 
 object FileSlurper {
     val manuals = mutableListOf<Manual>()
@@ -44,23 +45,69 @@ object FileSlurper {
             }
         }
 
-        // for running from the command line (without jar...)
-
-//        val manOne = this::class.java.classLoader.getResource("manual-html/1")
-//        val manOneDir = File(manOne.path)
-//        manOneDir.listFiles().forEach {
-//            val contents = this::class.java.classLoader.getResource("manual-html/1/${it.name}")!!.readText()
-//            val head = contents.guts("<head>", "</head>").lowercase()
-//            val body = contents.guts("<body>", "</body>")
-//
-//            val title = head.guts("<title>", "</title>")
-//            // println("body: $body")
-//            manuals.add(Manual(title, body))
-//        }
+//        slurpLocalTwo()
 
         manuals.sortByDescending { it.name }
-
         addIntroTocs()
+        serialize()
+    }
+
+    private val json = Json {
+        prettyPrint = true
+    }
+
+    private fun serialize() {
+        val outDir = File("/home/sorenoid/bandor/outputJson")
+        outDir.mkdirs()
+        outDir?.let {
+            val newDir = File("${it.path}/json")
+            newDir.mkdirs()
+            manuals
+                .filter { manny ->
+                    if (manny.name.contains("/")) {
+                        println("skipping ${manny.level} ${manny.name}")
+                        return@filter false
+                    } else {
+                        true
+                    }
+                }
+                .forEach { manual ->
+                    val levelDir = File(newDir, "${manual.level}")
+                    if (!levelDir.exists()) {
+                        levelDir.mkdirs()
+                    }
+                    val manJson = Json.encodeToString (manual)
+                    val jsonFile = File(levelDir, "${manual.name}.json")
+                    println("creating ${jsonFile.canonicalPath}")
+                    jsonFile.createNewFile()
+                    jsonFile.writeText(manJson)
+                }
+        }
+    }
+
+    fun slurpLocalTwo() {
+        val manOneDir = File(this::class.java.classLoader.getResource("manual-html/1").toExternalForm())
+
+        //val manOne = this::class.java.classLoader.getResource("manual-html/1")
+        //val manOneDir = File(manOne.toURI())
+        manOneDir.listFiles()?.forEach {
+            println("found file ${it}")
+        }
+        //manOneDir.canonicalPath
+        //}
+    }
+
+    fun slurpLocal(): Unit {
+        // for running from the command line (without jar...)
+//        repeat(7) {
+//            val level = it + 1
+//            val man = this::class.java.classLoader.getResource("manual-html")
+//            if (man.)
+//            val manDir = File(man, "$level")
+//            manDir.listFiles()?.forEach { levelDir ->
+//                slurpLocal(levelDir, level)
+//            } ?: throw IllegalAccessException("cant find $man level $level")
+//        }
     }
 
     private fun addIntroTocs() {
@@ -69,13 +116,11 @@ object FileSlurper {
         }.forEach { intro ->
             val levelManuals = mutableListOf<String>()
             intro.headings.add("<p>level ${intro.level} manuals</p><hr>")
-            manuals
-                .filter { manual ->
-                    manual.level == intro.level && manual.name != "intro"
-                }
-                .forEach { manual ->
-                    levelManuals.add("<a href=\"/${intro.level}/${manual.name}\">${manual.name.uppercase()}</a><br>")
-                }
+            manuals.filter { manual ->
+                manual.level == intro.level && manual.name != "intro"
+            }.forEach { manual ->
+                levelManuals.add("<a href=\"/${intro.level}/${manual.name}\">${manual.name.uppercase()}</a><br>")
+            }
 
             levelManuals.sort()
             intro.headings.addAll(levelManuals)
@@ -86,8 +131,7 @@ object FileSlurper {
         val headings = mutableListOf<String>()
         val inputStream = javaClass.classLoader.getResourceAsStream(name)
         if (inputStream != null) {
-            val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
+            val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines()
                 .collect(Collectors.joining("\n"))
             val head = contents.guts("<head>", "</head>").lowercase()
             var body = contents.guts("<body>", "</body>")
@@ -106,6 +150,39 @@ object FileSlurper {
                 // println("body: $body")
                 manuals.add(Manual(title, body, headings, level))
             }
+        }
+    }
+
+    private fun slurpLocal(file: File, level: Int) {
+        val manOne = this::class.java.classLoader.getResource("manual-html/1")
+//        val manOneDir = File(manOne.path)
+//        manOneDir.listFiles().forEach {
+//            val contents = this::class.java.classLoader.getResource("manual-html/1/${it.name}")!!.readText()
+//            val head = contents.guts("<head>", "</head>").lowercase()
+//            val body = contents.guts("<body>", "</body>")
+//
+//            val title = head.guts("<title>", "</title>")
+//            // println("body: $body")
+//            manuals.add(Manual(title, body))
+//        }
+        val headings = mutableListOf<String>()
+        val contents = this::class.java.classLoader.getResource("manual-html/${level}/${file.name}")!!.readText()
+        val head = contents.guts("<head>", "</head>").lowercase()
+        var body = contents.guts("<body>", "</body>")
+
+        val title = head.guts("<title>", "</title>")
+        if (title.isNotEmpty()) {
+            val matcher = headingPattern.matcher(body)
+            while (matcher.find()) {
+                val str = matcher.group().removeSuffix("<br>")
+
+                headings.add(str)
+            }
+            headings.forEach {
+                body = body.replaceFirst("$it<br>", "")
+            }
+            // println("body: $body")
+            manuals.add(Manual(title, body, headings, level))
         }
     }
 }
