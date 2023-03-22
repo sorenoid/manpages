@@ -1,4 +1,6 @@
 import com.bandor.model.Manual
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -14,7 +16,7 @@ fun String.guts(startTag: String, endTag: String): String =
         .replace(startTag, "")
 
 object FileSlurper {
-    val manuals = mutableListOf<Manual>()
+    val manuals = mutableSetOf<Manual>()
 
     private val headingPattern = Pattern.compile("(<a href=\"#.+\">.+</a><br>)")
 
@@ -58,7 +60,7 @@ object FileSlurper {
 //            manuals.add(Manual(title, body))
 //        }
 
-        manuals.sortByDescending { it.name }
+        //manuals.sortByDescending { it.name }
 
         addIntroTocs()
     }
@@ -108,4 +110,11 @@ object FileSlurper {
             }
         }
     }
+
+    val sentinel: MutableStateFlow<ServerStatus> = MutableStateFlow(ServerStatus.NotReady)
+}
+
+sealed class ServerStatus {
+    object NotReady: ServerStatus()
+    object Ready: ServerStatus()
 }

@@ -7,10 +7,21 @@ import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.response.*
 import io.ktor.server.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 fun Application.configureRouting() {
 
     routing {
+        runBlocking {
+            FileSlurper.sentinel.takeWhile {
+                it == ServerStatus.NotReady
+            }
+        }
+
        // trace { application.log.trace(it.buildText()) }
         static {
             staticBasePackage = "manual-html"
@@ -30,14 +41,17 @@ fun Application.configureRouting() {
                 val level = call.parameters.getOrFail<Int>("level").toInt()
                 val name = call.parameters.getOrFail<String>("name").toString()
                 //application.log.debug("GOT $level and $name")
-                FileSlurper.manuals.find { it.level == level && it.name.lowercase() == name.lowercase() }?.let {
+                val manual = FileSlurper.manuals.find { man -> man.level == level && man.name.lowercase() == name.lowercase() }
+                if (manual != null) {
                     call.respond(
                         FreeMarkerContent(
                             "show.ftl",
-                            mapOf("manual" to it)
+                            mapOf("manual" to manual)
                         )
                     )
-                } ?: call.respondRedirect("/")
+                } else {
+                    call.respondRedirect("/")
+                }
             } catch (e: Exception) {
                 //application.log.debug("GOT exception ")
                 e.printStackTrace()
