@@ -7,7 +7,7 @@ plugins {
     kotlin("jvm") version "1.7.20"
     id("io.ktor.plugin") version "2.1.3"
     id("com.google.cloud.tools.appengine") version "2.4.3"
-
+    kotlin("plugin.serialization") version "1.7.20"
 }
 
 group = "com.bandor"
@@ -39,6 +39,7 @@ appengine {
 
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-freemarker-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")

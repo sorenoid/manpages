@@ -26,7 +26,13 @@ fun Application.configureRouting() {
         static {
             staticBasePackage = "manual-html"
             resource("robots.txt")
-            resource("sitemap.xml.gz")
+            resource("sitemap-1.xml.gz")
+            resource("sitemap-2.xml.gz")
+            resource("sitemap-3.xml.gz")
+            resource("sitemap-4.xml.gz")
+            resource("sitemap-5.xml.gz")
+            resource("sitemap-6.xml.gz")
+            resource("sitemap-7.xml.gz")
             resource("___/css/style.css", resource = "styles.css" )
             resource("___/css/layout.css", resource = "layout.css" )
             resource("___/css/bg.gif", resource = "bg.gif" )
