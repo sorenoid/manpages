@@ -9,13 +9,6 @@ import java.nio.charset.StandardCharsets
 import java.util.jar.JarFile
 import java.util.regex.Pattern
 import java.util.stream.Collectors
-
-fun String.guts(startTag: String, endTag: String): String =
-    replaceAfterLast(endTag, "")
-        .replaceBefore(startTag, "")
-        .replace(endTag, "")
-        .replace(startTag, "")
-
 object FileSlurper {
     val manuals = mutableSetOf<Manual>()
 
@@ -29,20 +22,8 @@ object FileSlurper {
             val entries = jar.entries()
             while (entries.hasMoreElements()) {
                 val name = entries.nextElement().name
-                if (name.startsWith("json/1")) {
-                    slurpJson(name, 1)
-                } else if (name.startsWith("json/2")) {
-                    slurpJson(name, 2)
-                } else if (name.startsWith("json/3")) {
-                    slurpJson(name, 3)
-                } else if (name.startsWith("json/4")) {
-                    slurpJson(name, 4)
-                } else if (name.startsWith("json/5")) {
-                    slurpJson(name, 5)
-                } else if (name.startsWith("json/6")) {
-                    slurpJson(name, 6)
-                } else if (name.startsWith("json/7")) {
-                    slurpJson(name, 7)
+                if (name.startsWith("json/")) {
+                    slurpJson(name)
                 }
             }
         }
@@ -85,7 +66,7 @@ object FileSlurper {
         }
     }
 
-    private fun slurpJson(name: String, level: Int) {
+    private fun slurpJson(name: String) {
         val inputStream = javaClass.classLoader.getResourceAsStream(name)
         if (inputStream != null) {
             val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
@@ -94,34 +75,6 @@ object FileSlurper {
             if (contents.isNotEmpty()) {
                 val manual = Json.decodeFromString<Manual>(Manual.serializer(), contents)
                 manuals.add(manual)
-            }
-        }
-    }
-
-    private fun slurp(name: String, level: Int) {
-        val headings = mutableListOf<String>()
-        val inputStream = javaClass.classLoader.getResourceAsStream(name)
-        if (inputStream != null) {
-            val contents = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"))
-
-            val head = contents.guts("<head>", "</head>").lowercase()
-            var body = contents.guts("<body>", "</body>")
-
-            val title = head.guts("<title>", "</title>")
-            if (title.isNotEmpty()) {
-                val matcher = headingPattern.matcher(body)
-                while (matcher.find()) {
-                    val str = matcher.group().removeSuffix("<br>")
-
-                    headings.add(str)
-                }
-                headings.forEach {
-                    body = body.replaceFirst(it + "<br>", "")
-                }
-                // println("body: $body")
-                manuals.add(Manual(title, body, headings, level))
             }
         }
     }
