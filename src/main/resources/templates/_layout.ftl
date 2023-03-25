@@ -1,11 +1,13 @@
-<#macro head level = -1 name = "bar">
+<#macro head level = -1 name = "bar" description = "baz">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <#if level!=-1 && name !="bar">
     <title>${name}(${level}) man page</title>
+    <meta name="description" content="${description}"/>
     <#else>
     <title>Linux Manpages Online - man.page</title>
+    <meta name="description" content="Linux manual pages online for your browsing convenience"/>
     </#if>
     <meta name="robots" content="index,follow"/>
     <link rel="stylesheet" type="text/css" href="/___/css/layout.css"/>
