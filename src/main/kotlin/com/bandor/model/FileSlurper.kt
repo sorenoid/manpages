@@ -138,16 +138,7 @@ object FileSlurper {
                 .collect(Collectors.joining("\n"))
             val head = contents.guts("<head>", "</head>").lowercase()
             var body = contents.guts("<body>", "</body>")
-            var description = body
-                .eagerGuts("<a name=\"NAME\"></a>", "<h2>")
-                .guts("<p style=\"margin-left:11%; margin-top: 1em\">","</p>")
-                .replace("\n", " ")
 
-            if (description.toCharArray().size > 150) {
-                description = "${name}($level) - linux command line manual"
-            }
-
-            println ("FROTHY $name $level $description SROTHY")
             val title = head.guts("<title>", "</title>")
             if (title.isNotEmpty()) {
                 val matcher = headingPattern.matcher(body)
@@ -156,6 +147,17 @@ object FileSlurper {
 
                     headings.add(str)
                 }
+                var description = body
+                    .eagerGuts("<a name=\"NAME\"></a>", "<h2>")
+                    .guts("<p style=\"margin-left:11%; margin-top: 1em\">","</p>")
+                    .replace("\n", " ")
+
+                if (description.toCharArray().size > 150) {
+                    description = "${title}($level) - linux command line manual"
+                }
+
+                println ("FROTHY $name $level $description SROTHY")
+
                 headings.forEach {
                     body = body.replaceFirst(it + "<br>", "")
                 }
