@@ -12,8 +12,10 @@ import kotlinx.coroutines.launch
 
 fun main() {
     //prime this list so it is initialized for the first get request.
-    println("ready to serve up ${FileSlurper.manuals.size} manuals")
-
+    CoroutineScope(Dispatchers.Default).launch {
+        println("ready to serve up ${FileSlurper.manuals.size} manuals")
+        FileSlurper.sentinel.value = ServerStatus.Ready
+    }
     embeddedServer(Netty, port = (System.getenv("PORT")?:"8080").toInt(), module = Application::module)
         .start(wait = true)
 }
