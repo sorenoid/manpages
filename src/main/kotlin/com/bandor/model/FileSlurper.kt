@@ -135,7 +135,9 @@ object FileSlurper {
                 .collect(Collectors.joining("\n"))
             val head = contents.guts("<head>", "</head>").lowercase()
             var body = contents.guts("<body>", "</body>")
-
+            var description = body
+                .guts("<a name=\"NAME\"></a>", "<h2>SYNOPSIS")
+                .guts("<p style=\"margin-left:11%; margin-top: 1em\">","</p>")
             val title = head.guts("<title>", "</title>")
             if (title.isNotEmpty()) {
                 val matcher = headingPattern.matcher(body)
@@ -148,41 +150,41 @@ object FileSlurper {
                     body = body.replaceFirst(it + "<br>", "")
                 }
                 // println("body: $body")
-                manuals.add(Manual(title, body, headings, level))
+                manuals.add(Manual(title, description, body, headings, level))
             }
         }
     }
 
-    private fun slurpLocal(file: File, level: Int) {
-        val manOne = this::class.java.classLoader.getResource("manual-html/1")
-//        val manOneDir = File(manOne.path)
-//        manOneDir.listFiles().forEach {
-//            val contents = this::class.java.classLoader.getResource("manual-html/1/${it.name}")!!.readText()
-//            val head = contents.guts("<head>", "</head>").lowercase()
-//            val body = contents.guts("<body>", "</body>")
+//    private fun slurpLocal(file: File, level: Int) {
+//        val manOne = this::class.java.classLoader.getResource("manual-html/1")
+////        val manOneDir = File(manOne.path)
+////        manOneDir.listFiles().forEach {
+////            val contents = this::class.java.classLoader.getResource("manual-html/1/${it.name}")!!.readText()
+////            val head = contents.guts("<head>", "</head>").lowercase()
+////            val body = contents.guts("<body>", "</body>")
+////
+////            val title = head.guts("<title>", "</title>")
+////            // println("body: $body")
+////            manuals.add(Manual(title, body))
+////        }
+//        val headings = mutableListOf<String>()
+//        val contents = this::class.java.classLoader.getResource("manual-html/${level}/${file.name}")!!.readText()
+//        val head = contents.guts("<head>", "</head>").lowercase()
+//        var body = contents.guts("<body>", "</body>")
 //
-//            val title = head.guts("<title>", "</title>")
+//        val title = head.guts("<title>", "</title>")
+//        if (title.isNotEmpty()) {
+//            val matcher = headingPattern.matcher(body)
+//            while (matcher.find()) {
+//                val str = matcher.group().removeSuffix("<br>")
+//
+//                headings.add(str)
+//            }
+//            headings.forEach {
+//                body = body.replaceFirst("$it<br>", "")
+//            }
 //            // println("body: $body")
-//            manuals.add(Manual(title, body))
+//            manuals.add(Manual(title, body, headings, level))
 //        }
-        val headings = mutableListOf<String>()
-        val contents = this::class.java.classLoader.getResource("manual-html/${level}/${file.name}")!!.readText()
-        val head = contents.guts("<head>", "</head>").lowercase()
-        var body = contents.guts("<body>", "</body>")
-
-        val title = head.guts("<title>", "</title>")
-        if (title.isNotEmpty()) {
-            val matcher = headingPattern.matcher(body)
-            while (matcher.find()) {
-                val str = matcher.group().removeSuffix("<br>")
-
-                headings.add(str)
-            }
-            headings.forEach {
-                body = body.replaceFirst("$it<br>", "")
-            }
-            // println("body: $body")
-            manuals.add(Manual(title, body, headings, level))
-        }
-    }
+//    }
 }
