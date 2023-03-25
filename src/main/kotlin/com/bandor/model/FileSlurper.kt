@@ -14,6 +14,9 @@ import kotlin.system.exitProcess
 fun String.guts(startTag: String, endTag: String): String =
     replaceAfterLast(endTag, "").replaceBefore(startTag, "").replace(endTag, "").replace(startTag, "")
 
+fun String.eagerGuts(startTag: String, endTag: String): String =
+    replaceBefore(startTag,"").replaceAfter(endTag, "").replace(endTag, "").replace(startTag, "")
+
 object FileSlurper {
     val manuals = mutableListOf<Manual>()
 
@@ -136,8 +139,15 @@ object FileSlurper {
             val head = contents.guts("<head>", "</head>").lowercase()
             var body = contents.guts("<body>", "</body>")
             var description = body
-                .guts("<a name=\"NAME\"></a>", "<h2>SYNOPSIS")
+                .eagerGuts("<a name=\"NAME\"></a>", "<h2>")
                 .guts("<p style=\"margin-left:11%; margin-top: 1em\">","</p>")
+                .replace("\n", " ")
+
+            if (description.toCharArray().size > 150) {
+                description = "${name}($level) - linux command line manual"
+            }
+
+            println ("FROTHY $name $level $description SROTHY")
             val title = head.guts("<title>", "</title>")
             if (title.isNotEmpty()) {
                 val matcher = headingPattern.matcher(body)
