@@ -33,6 +33,7 @@ fun Application.configureRouting() {
             resource("sitemap-5.xml.gz")
             resource("sitemap-6.xml.gz")
             resource("sitemap-7.xml.gz")
+            resource("favicon.ico")
             resource("___/css/style.css", resource = "styles.css" )
             resource("___/css/layout.css", resource = "layout.css" )
             resource("___/css/bg.gif", resource = "bg.gif" )
