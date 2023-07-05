@@ -3,7 +3,7 @@ package com.bandor.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Manual constructor(
+data class Manual (
     val name: String,
     val description: String,
     val body: String,
