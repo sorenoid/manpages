@@ -25,6 +25,7 @@ fun Application.configureRouting() {
        // trace { application.log.trace(it.buildText()) }
         static {
             staticBasePackage = "www"
+            resource("ads.txt")
             resource("robots.txt")
             resource("sitemap-1.xml.gz")
             resource("sitemap-2.xml.gz")
